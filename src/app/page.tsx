@@ -1,6 +1,7 @@
 import styles from "./page.module.css";
 import Navbar from "@/components/Navbar";
 import Cards from "@/components/LandingPage/Cards";
+import Footer from "@/components/Footer";
 
 const HomePage = () => {
   return (
@@ -27,8 +28,9 @@ const HomePage = () => {
       </section>
 
       <Cards />
+
+      <Footer />
     </div>
   );
 };
-
 export default HomePage;

@@ -1,0 +1,34 @@
+.footer-container{
+    position: relative;
+    left: 0;
+    bottom:0;
+    height:300px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 90%;
+    margin: 0 auto;
+    align-content: center;
+    justify-items: start;
+}
+.logo-container{
+    padding-left:50px
+}
+.social-links{
+    list-style-type: none;
+    display: flex;
+    gap: 25px;
+    padding: 15px;
+}
+.nervaya-link-container{
+    display: grid;
+    gap:50px;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-content: center;
+}
+.link-box{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
