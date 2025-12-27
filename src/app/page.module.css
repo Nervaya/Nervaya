@@ -1,0 +1,91 @@
+.container {
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.heroSection {
+  padding-top: 20px;
+  padding-left: 160px;
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 80px 20px 40px;
+  }
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+}
+
+.heroSubtitle {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: fit-content;
+}
+
+@media (max-width: 480px) {
+  .buttonGroup {
+    max-width: 100%;
+  }
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 14px 40px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.primaryButton {
+  background: #7828C8;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #a855f7;
+  border: 2px solid #7c3aed;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+}

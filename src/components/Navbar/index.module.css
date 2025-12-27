@@ -1,0 +1,121 @@
+.navbar {
+  width: 100%;
+}
+
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .navbarContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.navbarLogo {
+  display: flex;
+  align-items: center;
+}
+
+.navbarMenu {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .navbarMenu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+.navbarMenu li {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbarMenu li {
+    font-size: 0.9rem;
+  }
+}
+
+.navbarMenu a {
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+}
+
+.navbarMenu a:hover {
+  opacity: 0.8;
+}
+
+.navbarDropdown {
+  position: relative;
+}
+
+.navbarSelect {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem 0.5rem 0;
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+}
+
+.navbarSelect:focus {
+  outline: none;
+}
+
+.navbarSelect option {
+  background: #1a1a2e;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+
+.navbarDropdown::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #ffffff;
+  pointer-events: none;
+}
+
+.navbarCta {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbarCta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}

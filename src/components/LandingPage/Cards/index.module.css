@@ -1,0 +1,93 @@
+.cardsSection {
+    padding: 80px 160px;
+}
+
+@media (max-width: 768px) {
+    .cardsSection {
+        padding: 60px 20px;
+    }
+}
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+}
+
+@media (max-width: 1024px) {
+    .cardsContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cardsContainer {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+.card {
+    background: linear-gradient(to bottom, #f5f3ff 0%, #f5f3ff 40%, #301050 40%, #301050 100%);
+    border-radius: 25px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.cardImageWrapper {
+    position: relative;
+    background: #f5f3ff;
+}
+
+.badge {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 10;
+}
+
+.cardImage {
+    width: 100%;
+    height: auto;
+    border-radius: 16px 16px 0 0;
+    object-fit: cover;
+}
+
+.cardContent {
+    padding: 32px 24px;
+    background: #301050;
+}
+
+.cardTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.cardDescription {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 24px;
+}
+
+.cardButton {
+    padding: 12px 28px;
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
