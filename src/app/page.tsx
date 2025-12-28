@@ -14,7 +14,7 @@ const HomePage = () => {
         </h1>
 
         <p className={styles.heroSubtitle}>
-          Personalized solutions for lasting sleep,Take our free sleep assessment to get one step closer to deep rest
+          Personalized solutions for lasting sleep, Take our free sleep assessment to get one step closer to deep rest
         </p>
 
         <div className={styles.buttonGroup}>

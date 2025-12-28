@@ -48,9 +48,10 @@ const Cards = () => {
                             <Image
                                 src={card.image}
                                 alt={card.title}
-                                width={300}
-                                height={200}
+                                width={400}
+                                height={280}
                                 className={styles.cardImage}
+                                priority={card.id === 1}
                             />
                         </div>
                         <div className={styles.cardContent}>
