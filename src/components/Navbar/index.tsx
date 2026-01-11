@@ -36,7 +36,7 @@ const Navbar = () => {
                         <Link href="/">Home</Link>
                     </li>
                     <li className={styles.navbarDropdown} ref={dropdownRef}>
-                        <button 
+                        <button
                             className={styles.navbarDropdownButton}
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             aria-expanded={isDropdownOpen}
@@ -63,7 +63,7 @@ const Navbar = () => {
                         <Link href="/about">About Us</Link>
                     </li>
                     <li>
-                        <Link href="/sign-up">SignUp/Log In</Link>
+                        <Link href="/login">SignUp/Log In</Link>
                     </li>
                     <li>
                         <button className={styles.navbarCta}>
