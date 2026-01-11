@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./index.module.css";
+import styles from "./styles.module.css";
 
 interface Card {
     id: number;
@@ -38,9 +38,9 @@ const cardsData: Card[] = [
 const Cards = () => {
     return (
         <section className={styles.cardsSection}>
-            <div className={styles.cardsContainer}>
+            <ul className={styles.cardsContainer}>
                 {cardsData.map((card) => (
-                    <div key={card.id} className={styles.card}>
+                    <li key={card.id} className={styles.card}>
                         <div className={styles.cardImageWrapper}>
                             {card.badge && (
                                 <span className={styles.badge}>{card.badge}</span>
@@ -59,9 +59,9 @@ const Cards = () => {
                             <p className={styles.cardDescription}>{card.description}</p>
                             <button className={styles.cardButton}>{card.buttonText}</button>
                         </div>
-                    </div>
+                    </li>
                 ))}
-            </div>
+            </ul>
         </section>
     );
 };

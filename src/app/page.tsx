@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import Navbar from "@/components/Navbar";
-import Cards from "@/components/LandingPage/Cards";
+import Cards from "@/components/LandingPageCards";
 import Footer from "@/components/Footer";
 
 const HomePage = () => {

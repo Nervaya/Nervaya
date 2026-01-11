@@ -3,9 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import styles from "./index.module.css";
+import { usePathname } from "next/navigation";
+import styles from "./styles.module.css";
 
 const Navbar = () => {
+    const pathname = usePathname();
+    const isHomePage = pathname === '/';
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLLIElement>(null);
 
@@ -26,7 +29,7 @@ const Navbar = () => {
     }, [isDropdownOpen]);
 
     return (
-        <nav className={styles.navbar}>
+        <nav className={`${styles.navbar} ${isHomePage ? styles.navbarTransparent : styles.navbarBlack}`}>
             <div className={styles.navbarContainer}>
                 <div className={styles.navbarLogo}>
                     <Image src="/icons/nervaya-logo.svg" alt="logo" width={150} height={50} />
@@ -60,7 +63,7 @@ const Navbar = () => {
                         )}
                     </li>
                     <li>
-                        <Link href="/about">About Us</Link>
+                        <Link href="/about-us">About Us</Link>
                     </li>
                     <li>
                         <Link href="/login">SignUp/Log In</Link>
