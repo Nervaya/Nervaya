@@ -202,12 +202,12 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
                             className={styles.illustrationContent}
                         >
                             <Image
-                                src={isLogin ? '/assets/auth/login-illustration.png' : '/assets/auth/signup-illustration.png'}
+                                src={isLogin ? '/assets/auth/login-illustration.jpg' : '/assets/auth/signup-illustration.png'}
                                 alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
-                                width={500}
-                                height={500}
+                                fill
                                 className={styles.illustrationImage}
                                 priority
+                                sizes="(max-width: 768px) 100vw, 50vw"
                             />
                         </motion.div>
                     </AnimatePresence>

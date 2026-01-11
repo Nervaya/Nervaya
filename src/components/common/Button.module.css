@@ -19,8 +19,9 @@
 }
 
 .primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #7c3aed;
     color: white;
+    box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);
 }
 
 .primary:hover:not(:disabled) {
