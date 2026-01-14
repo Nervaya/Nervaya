@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import Navbar from '@/components/Navbar';
 import PrivacyPolicyHeader from '@/components/PrivacyPolicy/PrivacyPolicyHeader';
 import PrivacyPolicyTOC from '@/components/PrivacyPolicy/PrivacyPolicyTOC';
 import PrivacyPolicySection from '@/components/PrivacyPolicy/PrivacyPolicySection';
@@ -99,8 +98,6 @@ const PrivacyPolicy = () => {
 
     return (
         <div className={styles.container}>
-            <Navbar />
-            
             <PrivacyPolicyHeader />
 
             <div className={styles.mainContent}>
