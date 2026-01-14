@@ -21,17 +21,24 @@ export class AuthenticationError extends AppError {
     }
 }
 
+export class ForbiddenError extends AppError {
+    constructor(message: string = 'Access denied') {
+        super(message, 403);
+    }
+}
+
 export class NotFoundError extends AppError {
     constructor(message: string) {
         super(message, 404);
     }
 }
 
-export function handleError(error: any): { message: string; statusCode: number } {
+export function handleError(error: any): { message: string; statusCode: number; error: any } {
     if (error instanceof AppError) {
         return {
             message: error.message,
             statusCode: error.statusCode,
+            error: null
         };
     }
 
@@ -39,6 +46,7 @@ export function handleError(error: any): { message: string; statusCode: number }
         return {
             message: 'User already exists',
             statusCode: 400,
+            error: null
         };
     }
 
@@ -49,6 +57,7 @@ export function handleError(error: any): { message: string; statusCode: number }
         return {
             message,
             statusCode: 400,
+            error: error.errors
         };
     }
 
@@ -56,5 +65,6 @@ export function handleError(error: any): { message: string; statusCode: number }
     return {
         message: 'Internal server error',
         statusCode: 500,
+        error: error.message || error
     };
 }

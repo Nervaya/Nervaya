@@ -3,12 +3,14 @@
   padding: 0 40px;
 }
 
-.navbarTransparent {
-  background: transparent;
-}
-
-.navbarBlack {
+.navbarMain {
   background: #000000;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -256,11 +258,10 @@
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
-}
-
-.dropdownItem:hover {
-  background-color: rgba(120, 40, 200, 0.25);
-  color: #ffffff;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: inherit;
 }
 
 @media (max-width: 768px) {

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
         if (!email || !password) {
             return NextResponse.json(
-                errorResponse('Email and password are required'),
+                errorResponse('Email and password are required', null, 400),
                 { status: 400 }
             );
         }
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         );
     } catch (error: any) {
-        const { message, statusCode } = handleError(error);
-        return NextResponse.json(errorResponse(message, error.message), { status: statusCode });
+        const { message, statusCode, error: errData } = handleError(error);
+        return NextResponse.json(errorResponse(message, errData, statusCode), { status: statusCode });
     }
 }

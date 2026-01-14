@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
+import { ApiResponse } from '@/lib/utils/response.util';
+import { ROLES, Role } from '@/lib/constants/roles';
 
 interface AuthData {
     user: {
         _id: string;
         email: string;
         name: string;
+        role: Role;
     };
     token: string;
 }
@@ -17,32 +21,33 @@ export function useAuth() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
+    const handleAuthSuccess = (data: AuthData) => {
+        if (data.token) {
+            document.cookie = `auth_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
+
+            if (data.user.role === ROLES.ADMIN) {
+                router.push('/dashboard'); // Or /admin/dashboard
+            } else {
+                router.push('/');
+            }
+        }
+    };
+
     const signup = async (email: string, password: string, name: string) => {
         setLoading(true);
         setError(null);
 
         try {
-            const response = await fetch('/api/auth/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, name }),
-            });
+            const response = await api.post<any, ApiResponse<AuthData>>('/auth/signup', { email, password, name });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Signup failed');
+            if (response.success && response.data) {
+                handleAuthSuccess(response.data);
             }
-
-            if (data.success && data.data?.token) {
-                document.cookie = `auth_token=${data.data.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-                router.push('/');
-            }
-
-            return data;
+            return response;
         } catch (err: any) {
-            setError(err.message);
-            throw err;
+            const message = err.message || 'Signup failed';
+            setError(message);
+            throw new Error(message);
         } finally {
             setLoading(false);
         }
@@ -53,27 +58,17 @@ export function useAuth() {
         setError(null);
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+            const response = await api.post<any, ApiResponse<AuthData>>('/auth/login', { email, password });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
+            if (response.success && response.data) {
+                handleAuthSuccess(response.data);
             }
-
-            if (data.success && data.data?.token) {
-                document.cookie = `auth_token=${data.data.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-                router.push('/');
-            }
-
-            return data;
+            return response;
         } catch (err: any) {
-            setError(err.message);
-            throw err;
+            const message = err.message || 'Login failed';
+            setError(message);
+            // Ensure we propagate the error message cleanly
+            throw new Error(message);
         } finally {
             setLoading(false);
         }

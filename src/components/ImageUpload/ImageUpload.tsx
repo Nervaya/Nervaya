@@ -1,0 +1,95 @@
+"use client";
+
+import { useState, useRef } from 'react';
+import styles from './styles.module.css';
+import { FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
+
+interface ImageUploadProps {
+    onUpload: (url: string) => void;
+    initialUrl?: string;
+    label?: string;
+}
+
+const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: ImageUploadProps) => {
+    const [preview, setPreview] = useState<string>(initialUrl);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setLoading(true);
+        setError(null);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.url) {
+                setPreview(data.url);
+                onUpload(data.url);
+            } else {
+                setError(data.error || 'Upload failed');
+            }
+        } catch (err: any) {
+            setError('Upload failed. Please try again.');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRemove = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setPreview('');
+        onUpload('');
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+
+    const handleClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    return (
+        <div className={`${styles.container} ${loading ? styles.uploading : ''}`} onClick={handleClick}>
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className={styles.input}
+                accept="image/*"
+            />
+
+            {loading ? (
+                <p>Uploading...</p>
+            ) : preview ? (
+                <>
+                    <img src={preview} alt="Preview" className={styles.preview} />
+                    <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
+                        <FaTimes size={12} />
+                    </button>
+                </>
+            ) : (
+                <>
+                    <FaCloudUploadAlt size={32} color="#7c3aed" />
+                    <p className={styles.label}>{label}</p>
+                </>
+            )}
+
+            {error && <p className={styles.error}>{error}</p>}
+        </div>
+    );
+};
+
+export default ImageUpload;

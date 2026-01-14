@@ -1,11 +1,12 @@
 import bcrypt from 'bcryptjs';
-import User from '../models/user.model';
-import { generateToken } from '../utils/jwt.util';
-import { validateEmail, validatePassword, validateName } from '../utils/validation.util';
-import { ValidationError, AuthenticationError } from '../utils/error.util';
-import connectDB from '../db/mongodb';
+import User from '@/lib/models/user.model';
+import { generateToken } from '@/lib/utils/jwt.util';
+import { validateEmail, validatePassword, validateName } from '@/lib/utils/validation.util';
+import { ValidationError, AuthenticationError } from '@/lib/utils/error.util';
+import connectDB from '@/lib/db/mongodb';
+import { ROLES, Role } from '@/lib/constants/roles';
 
-export async function registerUser(email: string, password: string, name: string) {
+export async function registerUser(email: string, password: string, name: string, role: Role = ROLES.CUSTOMER) {
     await connectDB();
 
     if (!validateEmail(email)) {
@@ -26,19 +27,26 @@ export async function registerUser(email: string, password: string, name: string
         throw new ValidationError('User with this email already exists');
     }
 
+    // Explicitly validate role if provided (though TS handles it, runtime safety matches plan)
+    if (!Object.values(ROLES).includes(role)) {
+        throw new ValidationError('Invalid role');
+    }
+
     const user = await User.create({
         email: email.toLowerCase(),
         password,
         name,
+        role,
     });
 
-    const token = generateToken(user._id.toString());
+    const token = await generateToken(user._id.toString(), user.role);
 
     return {
         user: {
             _id: user._id.toString(),
             email: user.email,
             name: user.name,
+            role: user.role,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         },
@@ -67,13 +75,14 @@ export async function loginUser(email: string, password: string) {
         throw new AuthenticationError('Invalid email or password');
     }
 
-    const token = generateToken(user._id.toString());
+    const token = await generateToken(user._id.toString(), user.role);
 
     return {
         user: {
             _id: user._id.toString(),
             email: user.email,
             name: user.name,
+            role: user.role,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         },

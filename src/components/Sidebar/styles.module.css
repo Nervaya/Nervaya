@@ -1,0 +1,233 @@
+.sidebar {
+    width: 250px;
+    background: #000;
+    color: #fff;
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 100px;
+    z-index: 1000;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transition: width 0.3s ease;
+}
+
+.collapsed {
+    width: 60px;
+}
+
+.mobileToggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.dashboardItem {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 0 0.5rem;
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #fff, #a78bfa);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.collapseBtn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.menuGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.groupTitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-weight: 600;
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    color: #9ca3af;
+    text-decoration: none;
+    transition: all 0.2s;
+    gap: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 0 0.5rem;
+}
+
+.navItem:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.active {
+    background: #8b5cf6;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.collapsed .navItem {
+    margin: 0 0.25rem;
+    padding: 0.75rem 0;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.collapsed .icon {
+    margin: 0;
+}
+
+.bottomMenu {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+    font-size: 1.25rem;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    /* Prevent icon from shrinking */
+}
+
+.title {
+    opacity: 1;
+    transition: opacity 0.2s ease-in;
+    white-space: nowrap;
+}
+
+.overlay {
+    display: none;
+}
+
+/* Main Content Area Styles */
+.mainContent {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    width: auto;
+    padding: 2rem;
+}
+
+/* On desktop, when Sidebar is collapsed (hover out), margin reduces */
+.mainContentCollapsed {
+    margin-left: 60px;
+}
+
+.mainContentCollapsed {
+    margin-left: 60px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        top: 80px;
+        height: calc(100vh - 80px);
+    }
+
+    .mobileOpen {
+        transform: translateX(0);
+    }
+
+    .mobileToggle {
+        display: block;
+    }
+
+    .overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 900;
+    }
+
+    .collapsed {
+        width: 280px;
+        /* Don't collapse on mobile, just slide out */
+    }
+
+    .collapseBtn {
+        display: none;
+    }
+
+    .mainContent {
+        margin-left: 0;
+    }
+
+    .mainContentCollapsed {
+        margin-left: 0;
+    }
+}
+
+.accountLink {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: #9ca3af;
+    text-decoration: none;
+    transition: all 0.2s;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accountLink:hover {
+    background: rgba(124, 58, 237, 0.1);
+    color: #a78bfa;
+}

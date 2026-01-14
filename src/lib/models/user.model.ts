@@ -1,10 +1,13 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+import { ROLES, Role } from '../constants/roles';
+
 export interface IUser extends Document {
     email: string;
     password: string;
     name: string;
+    role: Role;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -18,6 +21,12 @@ const userSchema = new Schema<IUser>(
             lowercase: true,
             trim: true,
             match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
+        },
+        role: {
+            type: String,
+            enum: Object.values(ROLES),
+            default: ROLES.CUSTOMER,
+            required: true,
         },
         password: {
             type: String,

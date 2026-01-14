@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+
 import styles from "./styles.module.css";
 import AboutUsCards from "@/components/AboutUS/AboutUsCards";
 import AboutUsTeam from "@/components/AboutUS/AboutUsTeam";
@@ -8,10 +8,10 @@ import AboutUsStats from "@/components/AboutUS/AboutUsStats";
 const AboutUs = () => {
     return (
         <div className={styles.container}>
-            <Navbar /> 
+
             <div className={styles.aboutUsSection}>
                 <h1 className={styles.aboutUsTitle}>About Us</h1>
-                
+
                 <div className={styles.card}>
                     <div className={styles.cardContent}>
                         <span className={styles.missionTag}>Our Mission</span>

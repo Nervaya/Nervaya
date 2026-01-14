@@ -1,0 +1,21 @@
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: #1e1e24;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.cardTitle {
+    margin-bottom: 0.5rem;
+}

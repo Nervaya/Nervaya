@@ -1,12 +1,11 @@
 import styles from "./page.module.css";
-import Navbar from "@/components/Navbar";
+
 import Cards from "@/components/LandingPageCards";
 import Footer from "@/components/Footer";
 
 const HomePage = () => {
   return (
     <div className={styles.container}>
-      <Navbar />
       <section className={styles.heroSection}>
         <h1 className={styles.heroTitle}>
           Begin the body's natural detox<br />

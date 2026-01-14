@@ -7,7 +7,7 @@
 }
 
 .heroSection {
-  padding-top: 40px;
+  padding-top: 140px;
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 60px;
@@ -24,13 +24,13 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    padding: 60px 30px 40px;
+    padding: 100px 30px 40px;
   }
 }
 
 @media (max-width: 480px) {
   .heroSection {
-    padding: 40px 20px 30px;
+    padding: 100px 20px 30px;
   }
 }
 
@@ -129,6 +129,7 @@
 }
 
 @media (max-width: 768px) {
+
   .primaryButton,
   .secondaryButton {
     width: 100%;
@@ -138,6 +139,7 @@
 }
 
 @media (max-width: 480px) {
+
   .primaryButton,
   .secondaryButton {
     padding: 12px 28px;
