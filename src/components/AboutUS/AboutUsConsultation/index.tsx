@@ -5,6 +5,8 @@ import styles from "./styles.module.css";
 import { FaRegComment, FaRegUser, FaRegEnvelope } from "react-icons/fa";
 import { IoVideocamOutline } from "react-icons/io5";
 import { CiCalendar } from "react-icons/ci";
+import Button from "@/components/common/Button/Button";
+import Input from "@/components/common/Input/Input";
 
 const AboutUsConsultation = () => {
     const [formData, setFormData] = useState({
@@ -49,35 +51,29 @@ const AboutUsConsultation = () => {
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formGrid}>
                         <div className={styles.formLeft}>
-                            <div className={styles.inputGroup}>
-                                <label className={styles.inputLabel}>
-                                    <FaRegUser className={styles.labelIcon} />
-                                    First Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    placeholder="John"
-                                    className={styles.input}
-                                />
-                            </div>
+                            <Input
+                                label="First Name"
+                                labelIcon={<FaRegUser className={styles.labelIcon} />}
+                                type="text"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
+                                placeholder="John"
+                                containerClassName={styles.customInputContainer}
+                                className={styles.customInput}
+                            />
 
-                            <div className={styles.inputGroup}>
-                                <label className={styles.inputLabel}>
-                                    <FaRegUser className={styles.labelIcon} />
-                                    Last Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    placeholder="Doe"
-                                    className={styles.input}
-                                />
-                            </div>
+                            <Input
+                                label="Last Name"
+                                labelIcon={<FaRegUser className={styles.labelIcon} />}
+                                type="text"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                                placeholder="Doe"
+                                containerClassName={styles.customInputContainer}
+                                className={styles.customInput}
+                            />
 
                             <div className={styles.inputGroup}>
                                 <label className={styles.inputLabel}>
@@ -101,17 +97,16 @@ const AboutUsConsultation = () => {
 
                         <div className={styles.formRight}>
                             <div className={styles.inputGroup}>
-                                <label className={styles.inputLabel}>
-                                    <FaRegEnvelope className={styles.labelIcon} />
-                                    Email Address
-                                </label>
-                                <input
+                                <Input
+                                    label="Email Address"
+                                    labelIcon={<FaRegEnvelope className={styles.labelIcon} />}
                                     type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
                                     placeholder="your.email@example.com"
-                                    className={styles.input}
+                                    containerClassName={styles.customInputContainer}
+                                    className={styles.customInput}
                                 />
                                 <p className={styles.inputHint}>
                                     We'll send the Google Meet link here
@@ -136,10 +131,10 @@ const AboutUsConsultation = () => {
                     </div>
 
                     <div className={styles.formFooter}>
-                        <button type="submit" className={styles.submitButton}>
+                        <Button type="submit" variant="primary" className={styles.submitButton}>
                             <CiCalendar className={styles.buttonIcon} />
                             Schedule Free Consultation
-                        </button>
+                        </Button>
                         <p className={styles.footerText}>
                             We'll respond within 24 hours to confirm your appointment
                         </p>

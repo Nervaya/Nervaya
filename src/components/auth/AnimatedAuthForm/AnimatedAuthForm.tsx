@@ -3,8 +3,8 @@
 import { useState, FormEvent } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
+import Input from '@/components/common/Input/Input';
+import Button from '@/components/common/Button/Button';
 import { useAuth } from '@/hooks/useAuth';
 import styles from './AnimatedAuthForm.module.css';
 

@@ -12,11 +12,12 @@ const Button: React.FC<ButtonProps> = ({
     loading = false,
     children,
     disabled,
+    className,
     ...props
 }) => {
     return (
         <button
-            className={`${styles.button} ${styles[variant]}`}
+            className={`${styles.button} ${styles[variant]} ${className || ''}`}
             disabled={disabled || loading}
             {...props}
         >
