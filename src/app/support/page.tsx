@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatWithUs from "@/components/Support/ChatWithUs";
+import FrequentlyAskedQuestions from "@/components/Support/FrequentlyAskedQuestions";
 import AboutUsConsultation from "@/components/AboutUS/AboutUsConsultation";
 import styles from "./support.module.css";
 
@@ -15,7 +16,7 @@ const SupportPage = () => {
                 </p>
             </div>
             <ChatWithUs />
-            {/* frequently asked questions component */}
+            <FrequentlyAskedQuestions />
             <AboutUsConsultation />
         </div>
     );
