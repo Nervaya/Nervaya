@@ -1,0 +1,473 @@
+.supportSection {
+    width: 94%;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 160px);
+    max-width: 800px;
+    padding: 24px 0 40px 0;
+    gap: 16px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+    .buttonContainer {
+        width: calc(100% - 120px);
+    }
+}
+
+@media (max-width: 768px) {
+    .buttonContainer {
+        width: calc(100% - 80px);
+        max-width: 100%;
+        padding: 20px 0 32px 0;
+        gap: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .buttonContainer {
+        width: calc(100% - 48px);
+        max-width: 100%;
+        padding: 16px 0 24px 0;
+        gap: 12px;
+    }
+}
+
+.chatBanner {
+    background: #7A30D0;
+    border-radius: 12px 12px 0 0;
+    padding: 36px 40px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .chatBanner {
+        padding: 36px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chatBanner {
+        padding: 28px 32px;
+        flex-direction: column;
+        text-align: center;
+        gap: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chatBanner {
+        padding: 24px;
+    }
+}
+
+.whatsappIconContainer {
+    width: 72px;
+    height: 72px;
+    padding: 8px;
+}
+
+@media (max-width: 768px) {
+    .whatsappIconContainer {
+        width: 64px;
+        height: 64px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsappIconContainer {
+        width: 56px;
+        height: 56px;
+        padding: 8px;
+    }
+}
+
+.whatsappIcon {
+    font-size: 2.25rem;
+    color: #25D366;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .whatsappIcon {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .whatsappIcon {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsappIcon {
+        font-size: 1.75rem;
+    }
+}
+
+.bannerText {
+    flex: 1;
+}
+
+.bannerTitle {
+    font-size: 1.625rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 6px 0;
+    line-height: 1.3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 1024px) {
+    .bannerTitle {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .bannerTitle {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bannerTitle {
+        font-size: 1.25rem;
+    }
+}
+
+.bannerSubtitle {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #FFFFFF;
+    margin: 0;
+    opacity: 0.95;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 1024px) {
+    .bannerSubtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .bannerSubtitle {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .bannerSubtitle {
+        font-size: 0.875rem;
+    }
+}
+
+.supportCard {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    margin: 32px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: calc(100% - 160px);
+    border: 1px solid #E9D4FF;
+}
+
+@media (max-width: 1200px) {
+    .supportCard {
+        width: calc(100% - 120px);
+    }
+}
+
+@media (max-width: 768px) {
+    .supportCard {
+        padding: 28px;
+        margin: 24px auto 0;
+        width: calc(100% - 80px);
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .supportCard {
+        padding: 24px;
+        margin: 20px auto 0;
+        width: calc(100% - 48px);
+        max-width: 100%;
+    }
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .cardHeader {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+}
+
+.cardIcon {
+    width: 48px;
+    height: 48px;
+    background: #7A30D0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .cardIcon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.125rem;
+    }
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333333;
+    margin: 0;
+    line-height: 1.3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 1024px) {
+    .cardTitle {
+        font-size: 1.375rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .cardTitle {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardTitle {
+        font-size: 1.125rem;
+    }
+}
+
+.cardDescription {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #555555;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    width: 100%;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .cardDescription {
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardDescription {
+        font-size: 0.875rem;
+        margin-bottom: 20px;
+    }
+}
+
+.whatsappButton {
+    width: 100%;
+    max-width: 100%;
+    background: #7A30D0 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 16px 24px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.2s ease;
+    box-shadow: none !important;
+    margin: 0;
+}
+
+.whatsappButton:hover:not(:disabled) {
+    background: #6B2AB8 !important;
+}
+
+.whatsappButton:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .whatsappButton {
+        padding: 14px 24px !important;
+        font-size: 0.9375rem !important;
+    }
+}
+
+.buttonIcon {
+    font-size: 1.125rem;
+    color: #FFFFFF;
+}
+
+@media (max-width: 480px) {
+    .buttonIcon {
+        font-size: 1.125rem;
+    }
+}
+
+.disclaimer {
+    font-size: 0.8125rem;
+    color: #888888;
+    margin: 0;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .disclaimer {
+        font-size: 0.8125rem;
+    }
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    width: 100%;
+    padding: 0 40px 40px 40px;
+}
+
+@media (max-width: 768px) {
+    .featuresGrid {
+        gap: 16px;
+        padding: 0 32px 32px 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .featuresGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 24px 24px 24px;
+    }
+}
+
+.featureCard {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 24px 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border: 1px solid #F0F0F0;
+}
+
+@media (max-width: 768px) {
+    .featureCard {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .featureCard {
+        padding: 20px;
+    }
+}
+
+.featureValue {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #7A30D0;
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 1024px) {
+    .featureValue {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .featureValue {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .featureValue {
+        font-size: 1.375rem;
+    }
+}
+
+.featureLabel {
+    font-size: 0.8125rem;
+    color: #555555;
+    margin: 0;
+    line-height: 1.4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 768px) {
+    .featureLabel {
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .featureLabel {
+        font-size: 0.8125rem;
+    }
+}
