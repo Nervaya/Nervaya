@@ -1,14 +1,14 @@
-import styles from "./page.module.css";
+import styles from './page.module.css';
 
-import Cards from "@/components/LandingPageCards";
-import Footer from "@/components/Footer";
+import Cards from '@/components/LandingPageCards';
+import Footer from '@/components/Footer';
 
 const HomePage = () => {
   return (
     <div className={styles.container}>
       <section className={styles.heroSection}>
         <h1 className={styles.heroTitle}>
-          Begin the body's natural detox<br />
+          Begin the body&apos;s natural detox<br />
           Sleep deeper, heal better.
         </h1>
 

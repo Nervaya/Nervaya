@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { ApiResponse } from '@/lib/utils/response.util';
 import { ROLES, Role } from '@/lib/constants/roles';
+import { COOKIE_NAMES, COOKIE_OPTIONS } from '@/utils/cookieConstants';
+import { ROUTES } from '@/utils/routesConstants';
 
 interface AuthData {
     user: {
@@ -17,67 +19,67 @@ interface AuthData {
 }
 
 export function useAuth() {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-    const handleAuthSuccess = (data: AuthData) => {
-        if (data.token) {
-            document.cookie = `auth_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
+  const handleAuthSuccess = (data: AuthData) => {
+    if (data.token) {
+      document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=${data.token}; path=/; max-age=${COOKIE_OPTIONS.AUTH_TOKEN_MAX_AGE}`;
 
-            if (data.user.role === ROLES.ADMIN) {
-                router.push('/dashboard'); // Or /admin/dashboard
-            } else {
-                router.push('/');
-            }
-        }
-    };
+      if (data.user.role === ROLES.ADMIN) {
+        router.push(ROUTES.ADMIN_DASHBOARD);
+      } else {
+        router.push(ROUTES.HOME);
+      }
+    }
+  };
 
-    const signup = async (email: string, password: string, name: string) => {
-        setLoading(true);
-        setError(null);
+  const signup = async (email: string, password: string, name: string) => {
+    setLoading(true);
+    setError(null);
 
-        try {
-            const response = await api.post<any, ApiResponse<AuthData>>('/auth/signup', { email, password, name });
+    try {
+      const response = await api.post<{ email: string; password: string; name: string }, ApiResponse<AuthData>>('/auth/signup', { email, password, name });
 
-            if (response.success && response.data) {
-                handleAuthSuccess(response.data);
-            }
-            return response;
-        } catch (err: any) {
-            const message = err.message || 'Signup failed';
-            setError(message);
-            throw new Error(message);
-        } finally {
-            setLoading(false);
-        }
-    };
+      if (response.success && response.data) {
+        handleAuthSuccess(response.data);
+      }
+      return response;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Signup failed';
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const login = async (email: string, password: string) => {
-        setLoading(true);
-        setError(null);
+  const login = async (email: string, password: string) => {
+    setLoading(true);
+    setError(null);
 
-        try {
-            const response = await api.post<any, ApiResponse<AuthData>>('/auth/login', { email, password });
+    try {
+      const response = await api.post<{ email: string; password: string }, ApiResponse<AuthData>>('/auth/login', { email, password });
 
-            if (response.success && response.data) {
-                handleAuthSuccess(response.data);
-            }
-            return response;
-        } catch (err: any) {
-            const message = err.message || 'Login failed';
-            setError(message);
-            // Ensure we propagate the error message cleanly
-            throw new Error(message);
-        } finally {
-            setLoading(false);
-        }
-    };
+      if (response.success && response.data) {
+        handleAuthSuccess(response.data);
+      }
+      return response;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setError(message);
+      // Ensure we propagate the error message cleanly
+      throw new Error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const logout = () => {
-        document.cookie = 'auth_token=; path=/; max-age=0';
-        router.push('/login');
-    };
+  const logout = () => {
+    document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=; path=/; max-age=0`;
+    router.push(ROUTES.LOGIN);
+  };
 
-    return { signup, login, logout, loading, error };
+  return { signup, login, logout, loading, error };
 }

@@ -8,22 +8,22 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({
-    variant = 'primary',
-    loading = false,
-    children,
-    disabled,
-    className,
-    ...props
+  variant = 'primary',
+  loading = false,
+  children,
+  disabled,
+  className,
+  ...props
 }) => {
-    return (
-        <button
-            className={`${styles.button} ${styles[variant]} ${className || ''}`}
-            disabled={disabled || loading}
-            {...props}
-        >
-            {loading ? <span className={styles.loader}></span> : children}
-        </button>
-    );
+  return (
+    <button
+      className={`${styles.button} ${styles[variant]} ${className || ''}`}
+      disabled={disabled || loading}
+      {...props}
+    >
+      {loading ? <span className={styles.loader}></span> : children}
+    </button>
+  );
 };
 
 export default Button;

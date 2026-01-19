@@ -13,44 +13,44 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>(
-    {
-        email: {
-            type: String,
-            required: [true, 'Email is required'],
-            unique: true,
-            lowercase: true,
-            trim: true,
-            match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
-        },
-        role: {
-            type: String,
-            enum: Object.values(ROLES),
-            default: ROLES.CUSTOMER,
-            required: true,
-        },
-        password: {
-            type: String,
-            required: [true, 'Password is required'],
-            minlength: [6, 'Password must be at least 6 characters'],
-        },
-        name: {
-            type: String,
-            required: [true, 'Name is required'],
-            trim: true,
-        },
+  {
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
     },
-    {
-        timestamps: true,
-    }
+    role: {
+      type: String,
+      enum: Object.values(ROLES),
+      default: ROLES.CUSTOMER,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password must be at least 6 characters'],
+    },
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
 );
 
 userSchema.pre('save', async function () {
-    if (!this.isModified('password')) {
-        return;
-    }
+  if (!this.isModified('password')) {
+    return;
+  }
 
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);

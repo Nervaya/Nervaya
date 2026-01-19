@@ -8,17 +8,17 @@ interface AuthFormProps {
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ title, subtitle, children }) => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.formCard}>
-                <div className={styles.header}>
-                    <h1 className={styles.title}>{title}</h1>
-                    <p className={styles.subtitle}>{subtitle}</p>
-                </div>
-                {children}
-            </div>
+  return (
+    <div className={styles.container}>
+      <div className={styles.formCard}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>{title}</h1>
+          <p className={styles.subtitle}>{subtitle}</p>
         </div>
-    );
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default AuthForm;

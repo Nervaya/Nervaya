@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI environment variable');
+  throw new Error('Please define the MONGODB_URI environment variable');
 }
 
 interface CachedConnection {
@@ -15,36 +15,37 @@ declare global {
     var mongoose: CachedConnection | undefined;
 }
 
-let cached: CachedConnection = global.mongoose || { conn: null, promise: null };
+const cached: CachedConnection = global.mongoose || { conn: null, promise: null };
 
 if (!global.mongoose) {
-    global.mongoose = cached;
+  global.mongoose = cached;
 }
 
 async function connectDB(): Promise<typeof mongoose> {
-    if (cached.conn) {
-        return cached.conn;
-    }
-
-    if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-
-        cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-            console.log('MongoDB connected successfully');
-            return mongoose;
-        });
-    }
-
-    try {
-        cached.conn = await cached.promise;
-    } catch (error) {
-        cached.promise = null;
-        throw error;
-    }
-
+  if (cached.conn) {
     return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+      // eslint-disable-next-line no-console
+      console.log('MongoDB connected successfully');
+      return mongoose;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (_error) {
+    cached.promise = null;
+    throw _error;
+  }
+
+  return cached.conn;
 }
 
 export default connectDB;
