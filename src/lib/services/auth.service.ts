@@ -65,13 +65,16 @@ export async function loginUser(email: string, password: string) {
     throw new ValidationError('Password is required');
   }
 
-  const user = await User.findOne({ email: email.toLowerCase() });
+  // Use select to explicitly include password field for comparison
+  const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
   if (!user) {
+    // Use generic error message to prevent user enumeration
     throw new AuthenticationError('Invalid email or password');
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
+    // Use generic error message to prevent user enumeration
     throw new AuthenticationError('Invalid email or password');
   }
 

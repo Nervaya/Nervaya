@@ -5,37 +5,55 @@ import { COOKIE_NAMES } from '@/utils/cookieConstants';
 
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
+  let response: NextResponse;
 
   const token = request.cookies.get(COOKIE_NAMES.AUTH_TOKEN)?.value;
 
   if (PROTECTED_ROUTES.some(route => currentPath.startsWith(route)) || ADMIN_ROUTES.some(route => currentPath.startsWith(route))) {
     if (!token) {
-      return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+      response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+    } else {
+      const decoded = await verifyToken(token);
+      if (!decoded) {
+        response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+        response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
+      } else if (ADMIN_ROUTES.some(route => currentPath.startsWith(route)) && decoded.role !== 'ADMIN') {
+        response = NextResponse.redirect(new URL(ROUTES.DASHBOARD, request.url));
+      } else {
+        response = NextResponse.next();
+      }
     }
-
-    const decoded = await verifyToken(token);
-    if (!decoded) {
-      const response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
-      response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
-      return response;
-    }
-
-    if (ADMIN_ROUTES.some(route => currentPath.startsWith(route)) && decoded.role !== 'ADMIN') { // Verified ADMIN matches constant
-      return NextResponse.redirect(new URL(ROUTES.DASHBOARD, request.url));
-    }
-  }
-
-  if (AUTH_ROUTES.some(route => currentPath.startsWith(route))) {
+  } else if (AUTH_ROUTES.some(route => currentPath.startsWith(route))) {
     if (token) {
       const decoded = await verifyToken(token);
       if (decoded) {
-        return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
+        response = NextResponse.redirect(new URL(ROUTES.HOME, request.url));
+      } else {
+        response = NextResponse.next();
       }
-      // If token is present but invalid, let them proceed to login page (and maybe clear cookie?)
+    } else {
+      response = NextResponse.next();
     }
+  } else {
+    response = NextResponse.next();
   }
 
-  return NextResponse.next();
+  // Add security headers
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  if (isProduction) {
+    response.headers.set(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains'
+    );
+  }
+
+  return response;
 }
 
 export const config = {

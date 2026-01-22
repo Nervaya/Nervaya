@@ -20,10 +20,14 @@ const Navbar = () => {
   const productsDropdownRef = useRef<HTMLLIElement>(null);
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
-  // Function to check authentication state
-  const checkAuth = () => {
-    const token = document.cookie.split('; ').find(row => row.startsWith(`${COOKIE_NAMES.AUTH_TOKEN}=`))?.split('=')[1];
-    setIsUserLoggedIn(!!token);
+  // Function to check authentication state via API
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('/api/auth/session');
+      setIsUserLoggedIn(response.ok);
+    } catch {
+      setIsUserLoggedIn(false);
+    }
   };
 
   useEffect(() => {
@@ -47,15 +51,21 @@ const Navbar = () => {
     };
   }, [pathname]); // Re-check when pathname changes
 
-  const handleLogout = () => {
-    document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=; path=/; max-age=0`;
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear HttpOnly cookie
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+
     setIsUserLoggedIn(false);
-    
+
     // Dispatch custom event to notify other components
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
-    
+
     router.push(ROUTES.LOGIN);
   };
 
@@ -130,7 +140,7 @@ const Navbar = () => {
               aria-expanded={isProductsDropdownOpen}
               aria-haspopup="true"
             >
-                            Products
+              Products
               <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
             </button>
             {isProductsDropdownOpen && (
@@ -184,7 +194,7 @@ const Navbar = () => {
           {!isUserLoggedIn && (
             <li>
               <button className={styles.navbarCta} onClick={closeMobileMenu}>
-                                Call Us
+                Call Us
               </button>
             </li>
           )}
