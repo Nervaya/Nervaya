@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { FaUserCircle } from 'react-icons/fa';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConstants';
@@ -12,6 +12,7 @@ import styles from './styles.module.css';
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,19 +20,42 @@ const Navbar = () => {
   const productsDropdownRef = useRef<HTMLLIElement>(null);
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
+  // Function to check authentication state
+  const checkAuth = () => {
+    const token = document.cookie.split('; ').find(row => row.startsWith(`${COOKIE_NAMES.AUTH_TOKEN}=`))?.split('=')[1];
+    setIsUserLoggedIn(!!token);
+  };
+
   useEffect(() => {
-    // Simple client-side check for token
-    // In a real app, useAuth or context would provide this
-    const checkAuth = () => {
-      const token = document.cookie.split('; ').find(row => row.startsWith(`${COOKIE_NAMES.AUTH_TOKEN}=`))?.split('=')[1];
-      setIsUserLoggedIn(!!token);
-    };
+    // Check auth on mount
     checkAuth();
-  }, []);
+
+    // Check auth on route changes
+    checkAuth();
+
+    // Listen for custom auth state change events
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener('auth-state-changed', handleAuthChange);
+    window.addEventListener('focus', checkAuth);
+
+    return () => {
+      window.removeEventListener('auth-state-changed', handleAuthChange);
+      window.removeEventListener('focus', checkAuth);
+    };
+  }, [pathname]); // Re-check when pathname changes
 
   const handleLogout = () => {
     document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=; path=/; max-age=0`;
     setIsUserLoggedIn(false);
+    
+    // Dispatch custom event to notify other components
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+    }
+    
     router.push(ROUTES.LOGIN);
   };
 

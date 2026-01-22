@@ -27,6 +27,11 @@ export function useAuth() {
     if (data.token) {
       document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=${data.token}; path=/; max-age=${COOKIE_OPTIONS.AUTH_TOKEN_MAX_AGE}`;
 
+      // Dispatch custom event to notify Navbar and other components
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('auth-state-changed'));
+      }
+
       if (data.user.role === ROLES.ADMIN) {
         router.push(ROUTES.ADMIN_DASHBOARD);
       } else {
@@ -78,6 +83,12 @@ export function useAuth() {
 
   const logout = () => {
     document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=; path=/; max-age=0`;
+    
+    // Dispatch custom event to notify Navbar and other components
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+    }
+    
     router.push(ROUTES.LOGIN);
   };
 
