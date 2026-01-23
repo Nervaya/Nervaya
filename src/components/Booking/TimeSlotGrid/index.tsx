@@ -38,11 +38,15 @@ function groupSlotsByPeriod(slots: TherapistSlot[]): GroupedSlots[] {
         grouped[period].push(slot);
     });
 
-    return [
-        { period: 'Morning', slots: grouped.Morning },
-        { period: 'Afternoon', slots: grouped.Afternoon },
-        { period: 'Evening', slots: grouped.Evening },
-    ].filter((group) => group.slots.length > 0);
+    const periods: TimePeriod[] = ['Morning', 'Afternoon', 'Evening'];
+    const result: GroupedSlots[] = periods
+        .map((period) => ({
+            period,
+            slots: grouped[period],
+        }))
+        .filter((group) => group.slots.length > 0);
+
+    return result;
 }
 
 export default function TimeSlotGrid({
