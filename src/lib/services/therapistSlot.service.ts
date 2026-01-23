@@ -157,3 +157,139 @@ export async function updateSlot(
         throw handleError(error);
     }
 }
+
+export async function createCustomSlot(
+    therapistId: string,
+    date: string,
+    startTime: string,
+    endTime: string,
+    isAvailable: boolean = true,
+) {
+    await connectDB();
+    try {
+        if (!Types.ObjectId.isValid(therapistId)) {
+            throw new ValidationError('Invalid Therapist ID');
+        }
+
+        // Check if slot already exists
+        const existingSlot = await TherapistSlot.findOne({
+            therapistId,
+            date,
+            startTime,
+        });
+
+        if (existingSlot) {
+            throw new ValidationError('Slot already exists for this date and time');
+        }
+
+        const slot = await TherapistSlot.create({
+            therapistId: new Types.ObjectId(therapistId),
+            date,
+            startTime,
+            endTime,
+            isAvailable,
+            isCustomized: true,
+        });
+
+        return slot;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
+export async function deleteSlot(slotId: string) {
+    await connectDB();
+    try {
+        if (!Types.ObjectId.isValid(slotId)) {
+            throw new ValidationError('Invalid Slot ID');
+        }
+
+        const slot = await TherapistSlot.findById(slotId);
+
+        if (!slot) {
+            throw new ValidationError('Slot not found');
+        }
+
+        // Prevent deletion of booked slots
+        if (!slot.isAvailable && slot.sessionId) {
+            throw new ValidationError('Cannot delete a slot that is already booked');
+        }
+
+        await TherapistSlot.findByIdAndDelete(slotId);
+
+        return { success: true, message: 'Slot deleted successfully' };
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
+export async function getSlotsByDateRange(
+    therapistId: string,
+    startDate: string,
+    endDate: string,
+    includeBooked: boolean = true,
+) {
+    await connectDB();
+    try {
+        if (!Types.ObjectId.isValid(therapistId)) {
+            throw new ValidationError('Invalid Therapist ID');
+        }
+
+        const filter: Record<string, unknown> = {
+            therapistId,
+            date: {
+                $gte: startDate,
+                $lte: endDate,
+            },
+        };
+
+        if (!includeBooked) {
+            filter.isAvailable = true;
+        }
+
+        const slots = await TherapistSlot.find(filter)
+            .sort({ date: 1, startTime: 1 });
+
+        return slots;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
+export async function bulkUpdateSlots(
+    therapistId: string,
+    dateRange: { startDate: string; endDate: string },
+    updates: Partial<ITherapistSlot>,
+) {
+    await connectDB();
+    try {
+        if (!Types.ObjectId.isValid(therapistId)) {
+            throw new ValidationError('Invalid Therapist ID');
+        }
+
+        const filter: Record<string, unknown> = {
+            therapistId,
+            date: {
+                $gte: dateRange.startDate,
+                $lte: dateRange.endDate,
+            },
+        };
+
+        // Don't update booked slots unless explicitly allowed
+        if (!updates.isAvailable && updates.isAvailable !== false) {
+            filter.isAvailable = true;
+        }
+
+        const result = await TherapistSlot.updateMany(
+            filter,
+            { ...updates, isCustomized: true },
+        );
+
+        return {
+            matchedCount: result.matchedCount,
+            modifiedCount: result.modifiedCount,
+        };
+    } catch (error) {
+        throw handleError(error);
+    }
+}

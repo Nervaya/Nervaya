@@ -72,6 +72,8 @@ export default function TherapyCornerPage() {
                 <div
                   className={styles.avatar}
                   style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
+                  role="img"
+                  aria-label={`${therapist.name} profile picture`}
                 />
                 <div>
                   <h3>{therapist.name}</h3>

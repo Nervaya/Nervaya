@@ -109,16 +109,22 @@ export default function AdminTherapistsPage() {
               </div>
               <div className={styles.actions}>
                 <Link
+                  href={`/admin/therapists/${therapist._id}/slots`}
+                  className={styles.slotsButton}
+                >
+                  Manage Slots
+                </Link>
+                <Link
                   href={`/admin/therapists/edit/${therapist._id}`}
                   className={styles.editButton}
                 >
-                                    Edit
+                  Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(therapist._id, therapist.name)}
                   className={styles.deleteButton}
                 >
-                                    Delete
+                  Delete
                 </button>
               </div>
             </div>

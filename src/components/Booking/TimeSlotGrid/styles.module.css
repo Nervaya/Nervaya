@@ -1,42 +1,79 @@
 .container {
   width: 100%;
-  margin-top: 1.5rem;
 }
 
-@media (max-width: 768px) {
-  .container {
-    margin-top: 1rem;
-  }
+.slotsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.heading {
-  font-size: 1.1rem;
+.emptyState {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #e5e7eb;
+}
+
+.emptyText {
+  font-size: 1rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 1rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .heading {
-    font-size: 1rem;
-  }
+.emptySubtext {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.periodGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.periodTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.periodIcon {
+  font-size: 1.25rem;
+}
+
+.periodCount {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: auto;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.75rem;
 }
 
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 0.5rem;
   }
 }
 
 .slot {
-  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   background: white;
@@ -44,25 +81,34 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 @media (max-width: 768px) {
   .slot {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.875rem;
   }
 }
 
 .slot:hover:not(:disabled) {
   border-color: #8b5cf6;
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 4px 6px rgba(139, 92, 246, 0.15);
+  background: #faf5ff;
 }
 
 .slot.selected {
   background: #8b5cf6;
   color: white;
   border-color: #8b5cf6;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.slot.selected:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
 }
 
 .slot.booked {
@@ -70,16 +116,64 @@
   color: #9ca3af;
   border-color: #e5e7eb;
   cursor: not-allowed;
+  opacity: 0.6;
+  position: relative;
+}
+
+.slot.booked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #9ca3af;
+  transform: translateY(-50%);
 }
 
 .slot.customized {
-  background: #dbeafe;
+  background: #eff6ff;
   border-color: #93c5fd;
   color: #1e40af;
 }
 
+.slot.customized:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #60a5fa;
+}
+
+.time {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.timeRange {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.slot.selected .timeRange {
+  opacity: 0.9;
+}
+
+.customizedBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.75rem;
+}
+
 @media (max-width: 768px) {
-  .slot.customized {
-    background: #dbeafe;
+  .time {
+    font-size: 0.875rem;
+  }
+
+  .timeRange {
+    font-size: 0.7rem;
+  }
+
+  .customizedBadge {
+    font-size: 0.7rem;
   }
 }
