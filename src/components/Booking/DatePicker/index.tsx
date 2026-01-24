@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 
 interface DatePickerProps {
@@ -22,6 +22,13 @@ export default function DatePicker({
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Sync currentMonth when selectedDate changes
+    useEffect(() => {
+        setCurrentMonth(
+            new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+        );
+    }, [selectedDate]);
 
     const isDateDisabled = (date: Date): boolean => {
         const dateOnly = new Date(date);
@@ -59,23 +66,58 @@ export default function DatePicker({
     };
 
     const navigateMonth = (direction: number) => {
-        setCurrentMonth(
-            new Date(
-                currentMonth.getFullYear(),
-                currentMonth.getMonth() + direction,
-                1
-            )
+        const newMonth = new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth() + direction,
+            1
         );
+        
+        // Check if the new date would be disabled due to minDate
+        if (minDate && newMonth < minDate) {
+            const minDateYear = minDate.getFullYear();
+            const minDateMonth = minDate.getMonth();
+            setCurrentMonth(new Date(minDateYear, minDateMonth, 1));
+            return;
+        }
+        
+        // Check if the new date would be disabled due to maxDate
+        if (maxDate && newMonth > maxDate) {
+            const maxDateYear = maxDate.getFullYear();
+            const maxDateMonth = maxDate.getMonth();
+            setCurrentMonth(new Date(maxDateYear, maxDateMonth, 1));
+            return;
+        }
+        
+        setCurrentMonth(newMonth);
     };
 
     const navigateYear = (direction: number) => {
-        setCurrentMonth(
-            new Date(
-                currentMonth.getFullYear() + direction,
-                currentMonth.getMonth(),
-                1
-            )
+        const newYear = currentMonth.getFullYear() + direction;
+        const newMonth = new Date(
+            newYear,
+            currentMonth.getMonth(),
+            1
         );
+        
+        // Check if the new date would be disabled due to minDate
+        if (minDate && newMonth < minDate) {
+            // If going to previous year would be before minDate, go to minDate instead
+            const minDateYear = minDate.getFullYear();
+            const minDateMonth = minDate.getMonth();
+            setCurrentMonth(new Date(minDateYear, minDateMonth, 1));
+            return;
+        }
+        
+        // Check if the new date would be disabled due to maxDate
+        if (maxDate && newMonth > maxDate) {
+            // If going to next year would be after maxDate, go to maxDate instead
+            const maxDateYear = maxDate.getFullYear();
+            const maxDateMonth = maxDate.getMonth();
+            setCurrentMonth(new Date(maxDateYear, maxDateMonth, 1));
+            return;
+        }
+        
+        setCurrentMonth(newMonth);
     };
 
     const getDaysInMonth = (date: Date): number => {
@@ -126,63 +168,18 @@ export default function DatePicker({
                     <button
                         type="button"
                         className={styles.navButton}
-                        onClick={() => navigateYear(-1)}
-                        aria-label="Previous year"
-                    >
-                        ‹‹
-                    </button>
-                    <button
-                        type="button"
-                        className={styles.navButton}
                         onClick={() => navigateMonth(-1)}
                         aria-label="Previous month"
+                        disabled={minDate && currentMonth <= new Date(minDate.getFullYear(), minDate.getMonth(), 1)}
                     >
                         ‹
                     </button>
                 </div>
                 
                 <div className={styles.monthYear}>
-                    <select
-                        value={currentMonth.getMonth()}
-                        onChange={(e) => {
-                            setCurrentMonth(
-                                new Date(
-                                    currentMonth.getFullYear(),
-                                    parseInt(e.target.value),
-                                    1
-                                )
-                            );
-                        }}
-                        className={styles.monthSelect}
-                    >
-                        {monthNames.map((month, index) => (
-                            <option key={month} value={index}>
-                                {month}
-                            </option>
-                        ))}
-                    </select>
-                    <select
-                        value={currentMonth.getFullYear()}
-                        onChange={(e) => {
-                            setCurrentMonth(
-                                new Date(
-                                    parseInt(e.target.value),
-                                    currentMonth.getMonth(),
-                                    1
-                                )
-                            );
-                        }}
-                        className={styles.yearSelect}
-                    >
-                        {Array.from({ length: 10 }, (_, i) => {
-                            const year = today.getFullYear() + i;
-                            return (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    <div className={styles.monthDisplay}>
+                        {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                    </div>
                 </div>
 
                 <div className={styles.navigation}>
@@ -191,16 +188,9 @@ export default function DatePicker({
                         className={styles.navButton}
                         onClick={() => navigateMonth(1)}
                         aria-label="Next month"
+                        disabled={maxDate && currentMonth >= new Date(maxDate.getFullYear(), maxDate.getMonth(), 1)}
                     >
                         ›
-                    </button>
-                    <button
-                        type="button"
-                        className={styles.navButton}
-                        onClick={() => navigateYear(1)}
-                        aria-label="Next year"
-                    >
-                        ››
                     </button>
                 </div>
             </div>

@@ -63,7 +63,8 @@ export default function MySessions() {
             ) : (
                 <div className={styles.sessionsList}>
                     {sessions.map((session) => {
-                        const therapist = session.therapist as unknown as Therapist;
+                        // The user's JSON shows 'therapistId' is the populated object
+                        const therapist = session.therapistId as unknown as Therapist;
 
                         return (
                             <div key={session._id} className={styles.sessionCard}>

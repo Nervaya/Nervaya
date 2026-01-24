@@ -1,5 +1,5 @@
 import Session, { ISession } from '@/lib/models/session.model';
-import TherapistSlot from '@/lib/models/therapistSlot.model';
+import { bookSlot, releaseSlot, getScheduleByDate } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
@@ -12,57 +12,48 @@ export async function createSession(
     startTime: string,
 ) {
     await connectDB();
-    
+
     try {
         if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(therapistId)) {
             throw new ValidationError('Invalid User ID or Therapist ID');
         }
 
-        // Use transaction to ensure atomicity
-        const dbSession = await mongoose.startSession();
-        let createdSession: ISession;
+        // Calculate endTime (1 hour duration)
+        // Note: startTime is expected in "HH:MM AM/PM" format
+        const startHour = parseInt(startTime.split(':')[0]);
+        const isPM = startTime.includes('PM');
+        const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
 
-        try {
-            await dbSession.withTransaction(async () => {
-                // Double-check slot availability within transaction
-                const slot = await TherapistSlot.findOne({
-                    therapistId,
-                    date,
-                    startTime,
-                    isAvailable: true,
-                }).session(dbSession);
+        let endHour = hour24 + 1;
+        const endPeriod = endHour >= 12 ? 'PM' : 'AM';
+        const displayEndHour = endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour === 12 ? 12 : endHour; // Handle noon/midnight correctly
+        // Simple logic for single-hour slots. 
+        // If hour is 23 (11 PM), end is 0 (12 AM).
 
-                if (!slot) {
-                    throw new ValidationError('Slot not available for booking');
-                }
+        const endTime = `${displayEndHour}:00 ${endPeriod}`;
 
-                const endTime = slot.endTime;
+        // Check for existing session
+        const existingSession = await Session.findOne({
+            therapistId,
+            date,
+            startTime,
+            status: { $ne: 'cancelled' }
+        });
 
-                // Create session
-                const [sessionDoc] = await Session.create(
-                    [{
-                        userId,
-                        therapistId,
-                        date,
-                        startTime,
-                        endTime,
-                        status: 'pending',
-                    }],
-                    { session: dbSession }
-                );
-
-                createdSession = sessionDoc;
-
-                // Mark slot as unavailable
-                slot.isAvailable = false;
-                slot.sessionId = sessionDoc._id as Types.ObjectId;
-                await slot.save({ session: dbSession });
-            });
-
-            return createdSession!;
-        } finally {
-            await dbSession.endSession();
+        if (existingSession) {
+            throw new ValidationError('Slot is already booked');
         }
+
+        const session = await Session.create({
+            userId,
+            therapistId,
+            date,
+            startTime,
+            endTime,
+            status: 'pending',
+        });
+
+        return session;
     } catch (error) {
         throw handleError(error);
     }
@@ -136,17 +127,12 @@ export async function cancelSession(sessionId: string, userId: string) {
         session.status = 'cancelled';
         await session.save();
 
-        const slot = await TherapistSlot.findOne({
-            therapistId: session.therapistId,
-            date: session.date,
-            startTime: session.startTime,
-        });
-
-        if (slot) {
-            slot.isAvailable = true;
-            slot.sessionId = undefined;
-            await slot.save();
-        }
+        // Release the slot using schedule service
+        await releaseSlot(
+            session.therapistId.toString(),
+            session.date,
+            session.startTime
+        );
 
         return session;
     } catch (error) {

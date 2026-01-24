@@ -16,56 +16,36 @@ const Navbar = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Validated state
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const productsDropdownRef = useRef<HTMLLIElement>(null);
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
-  // Function to check authentication state via API
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/auth/session');
-      setIsUserLoggedIn(response.ok);
-    } catch {
-      setIsUserLoggedIn(false);
-    }
+  const checkAuth = () => {
+    const isProtectedRoute = pathname.startsWith('/admin') || 
+                            pathname.startsWith('/account') ||
+                            pathname.startsWith('/therapy-corner');
+    const isNotAuthRoute = !pathname.startsWith('/login') && 
+                          !pathname.startsWith('/signup');
+    setIsUserLoggedIn(isProtectedRoute || (isNotAuthRoute && pathname !== '/'));
   };
 
   useEffect(() => {
-    // Check auth on mount
     checkAuth();
-
-    // Check auth on route changes
-    checkAuth();
-
-    // Listen for custom auth state change events
-    const handleAuthChange = () => {
-      checkAuth();
-    };
-
+    const handleAuthChange = () => checkAuth();
     window.addEventListener('auth-state-changed', handleAuthChange);
-    window.addEventListener('focus', checkAuth);
-
-    return () => {
-      window.removeEventListener('auth-state-changed', handleAuthChange);
-      window.removeEventListener('focus', checkAuth);
-    };
-  }, [pathname]); // Re-check when pathname changes
+    return () => window.removeEventListener('auth-state-changed', handleAuthChange);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
-      // Call logout API to clear HttpOnly cookie
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (error) {
       console.error('Logout failed:', error);
     }
-
     setIsUserLoggedIn(false);
-
-    // Dispatch custom event to notify other components
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
-
     router.push(ROUTES.LOGIN);
   };
 
@@ -162,7 +142,7 @@ const Navbar = () => {
           {isUserLoggedIn ? (
             <li className={styles.navbarDropdown} ref={accountDropdownRef}>
               <button
-                className={styles.myAccountLink} // Use similar style or new one
+                className={styles.myAccountLink}
                 onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
                 style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 'inherit' }}
               >

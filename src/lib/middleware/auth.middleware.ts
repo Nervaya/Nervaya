@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/utils/jwt.util';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { ROLES, Role } from '@/lib/constants/roles';
-import { AuthenticationError, ForbiddenError } from '@/lib/utils/error.util';
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -11,10 +10,6 @@ export interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-/**
- * Middleware to authenticate API requests
- * Verifies JWT token from cookies and attaches user info to request
- */
 export async function authenticateRequest(
   request: NextRequest
 ): Promise<{ user: { userId: string; role: Role } } | NextResponse> {
@@ -40,18 +35,6 @@ export async function authenticateRequest(
   return { user: { userId: decoded.userId, role: decoded.role } };
 }
 
-/**
- * Middleware to check if user has required role
- */
-export function requireRole(allowedRoles: Role[]) {
-  return (userRole: Role): boolean => {
-    return allowedRoles.includes(userRole);
-  };
-}
-
-/**
- * Combined authentication and authorization middleware
- */
 export async function requireAuth(
   request: NextRequest,
   allowedRoles?: Role[]
@@ -62,7 +45,7 @@ export async function requireAuth(
     return authResult;
   }
 
-  if (allowedRoles && !requireRole(allowedRoles)(authResult.user.role)) {
+  if (allowedRoles && !allowedRoles.includes(authResult.user.role)) {
     return NextResponse.json(
       { success: false, message: 'Insufficient permissions', data: null },
       { status: 403 }

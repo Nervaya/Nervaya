@@ -49,7 +49,6 @@ export const ADMIN_MENU_GROUP: NavigationMenuGroup = {
   items: [
     { title: 'Dashboard', path: '/admin/dashboard', icon: 'FaHome' },
     { title: 'Manage Therapists', path: '/admin/therapists', icon: 'FaUserMd' },
-    { title: 'Manage Therapies', path: '/admin/therapies', icon: 'FaHeartbeat' },
     { title: 'Settings', path: '/admin/settings', icon: 'FaCog' },
     { title: 'Users', path: '/admin/users', icon: 'FaUsers' },
     { title: 'Billing', path: '/admin/billing', icon: 'FaRupeeSign' },

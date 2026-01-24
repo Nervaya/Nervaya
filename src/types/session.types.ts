@@ -3,7 +3,7 @@ import { Therapist } from './therapist.types';
 export interface Session {
     _id: string;
     userId: string;
-    therapistId: string;
+    therapistId: string | Therapist;
     therapist?: Therapist;
     date: string;
     startTime: string;

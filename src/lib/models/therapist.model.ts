@@ -1,5 +1,12 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
+export interface IConsultingHour {
+    dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    startTime: string; // Format: "09:00 AM"
+    endTime: string; // Format: "05:00 PM"
+    isEnabled: boolean;
+}
+
 export interface ITherapist extends Document {
     name: string;
     qualifications: string[];
@@ -9,6 +16,7 @@ export interface ITherapist extends Document {
     image?: string;
     bio?: string;
     isAvailable: boolean;
+    consultingHours?: IConsultingHour[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -47,6 +55,31 @@ const therapistSchema = new Schema<ITherapist>(
     isAvailable: {
       type: Boolean,
       default: true,
+    },
+    consultingHours: {
+      type: [
+        {
+          dayOfWeek: {
+            type: Number,
+            required: true,
+            min: 0,
+            max: 6,
+          },
+          startTime: {
+            type: String,
+            required: true,
+          },
+          endTime: {
+            type: String,
+            required: true,
+          },
+          isEnabled: {
+            type: Boolean,
+            default: true,
+          },
+        },
+      ],
+      default: [],
     },
   },
   {

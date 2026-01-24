@@ -1,53 +1,28 @@
 .container {
     width: 100%;
     padding: 1.5rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #1a1a1a;
+    border-radius: 12px;
+    color: #ffffff;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #2a2a2a;
 }
 
 .title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1f2937;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem 0;
 }
 
-.controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.dateInput {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 0.875rem;
-}
-
-.addButton {
-    background: #8b5cf6;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.addButton:hover {
-    background: #7c3aed;
+.subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
 }
 
 .errorBanner {
@@ -55,285 +30,211 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    color: #dc2626;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-}
-
-.formCard {
-    background: #f9fafb;
-    padding: 1.5rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     border-radius: 8px;
-    margin-bottom: 1.5rem;
-    border: 1px solid #e5e7eb;
-}
-
-.formCard h4 {
+    color: #ef4444;
     margin-bottom: 1rem;
-    color: #1f2937;
-    font-size: 1.125rem;
-}
-
-.formRow {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.formRow label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
     font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-}
-
-.input {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 0.875rem;
-}
-
-.input:focus {
-    outline: none;
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-}
-
-.formActions {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.submitButton {
-    background: #8b5cf6;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.submitButton:hover {
-    background: #7c3aed;
-}
-
-.cancelButton {
-    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #e5e7eb;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.cancelButton:hover {
-    background: #e5e7eb;
 }
 
 .loading {
-    text-align: center;
-    padding: 2rem;
-    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    color: #8b5cf6;
+    font-size: 16px;
+}
+
+.loading::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(139, 92, 246, 0.2);
+    border-top-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .emptyState {
     text-align: center;
-    padding: 2rem;
+    padding: 3rem 2rem;
     color: #6b7280;
-    background: #f9fafb;
+    background: #2a2a2a;
     border-radius: 8px;
+    border: 1px dashed #3a3a3a;
 }
 
-.slotsList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.slotCard {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: white;
-    transition: all 0.2s;
-}
-
-.slotCard:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.slotCard.booked {
-    background: #fef2f2;
-    border-color: #fecaca;
-}
-
-.slotCard.customized {
-    background: #eff6ff;
-    border-color: #93c5fd;
-}
-
-.slotInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex: 1;
-}
-
-.timeInfo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.time {
-    font-size: 1rem;
+.emptyState p:first-child {
+    font-size: 16px;
     font-weight: 600;
-    color: #1f2937;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
 }
 
-.badge {
-    background: #dbeafe;
-    color: #1e40af;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.badgeBooked {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.slotMeta {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.875rem;
+.hint {
+    font-size: 14px;
     color: #6b7280;
+    margin-top: 0.5rem;
+    line-height: 1.5;
 }
 
-.slotActions {
-    display: flex;
-    gap: 0.5rem;
+.statsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.toggleButton,
-.editButton,
-.deleteButton {
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
+.statCard {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #3a3a3a;
+    text-align: center;
     transition: all 0.2s;
 }
 
-.toggleButton {
-    background: #f3f4f6;
-    color: #374151;
+.statCard:hover {
+    border-color: #8b5cf6;
+    transform: translateY(-2px);
 }
 
-.toggleButton:hover:not(:disabled) {
-    background: #e5e7eb;
+.statValue {
+    font-size: 32px;
+    font-weight: 700;
+    color: #8b5cf6;
+    margin-bottom: 0.5rem;
 }
 
-.toggleButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.statLabel {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.editButton {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.editButton:hover {
-    background: #bfdbfe;
-}
-
-.deleteButton {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.deleteButton:hover:not(:disabled) {
-    background: #fecaca;
-}
-
-.deleteButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+.calendarView {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.modalContent {
-    background: white;
-    padding: 2rem;
+.topRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.calendarSection {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+}
+
+.slotsRight {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    min-height: 350px;
+}
+
+.weekView {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    width: 100%;
+}
+
+.weekGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.weekDay {
+    background: #1a1a1a;
+    padding: 1rem;
     border-radius: 8px;
-    max-width: 500px;
-    width: 90%;
+    border: 1px solid #2a2a2a;
+    text-align: center;
+    transition: all 0.2s;
 }
 
-.modalContent h4 {
-    margin-bottom: 1rem;
-    color: #1f2937;
-    font-size: 1.125rem;
+.weekDay:hover {
+    border-color: #8b5cf6;
+    background: #2a1a3a;
+}
+
+.weekDayName {
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-size: 13px;
+}
+
+.weekDayStats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.totalSlots {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.bookedSlots {
+    font-size: 13px;
+    color: #ef4444;
+    font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+    .topRow {
+        grid-template-columns: 1fr;
+    }
+
+    .statsContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: stretch;
+    .container {
+        padding: 1rem;
     }
 
-    .controls {
-        flex-direction: column;
-    }
-
-    .slotCard {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-    }
-
-    .slotActions {
-        flex-wrap: wrap;
-    }
-
-    .formRow {
+    .statsContainer {
         grid-template-columns: 1fr;
+    }
+
+    .weekGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calendarSection,
+    .weekView,
+    .slotsRight {
+        padding: 1rem;
     }
 }

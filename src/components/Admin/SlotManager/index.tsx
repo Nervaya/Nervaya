@@ -1,195 +1,103 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TherapistSlot } from '@/types/session.types';
+import DatePicker from '@/components/Booking/DatePicker';
 import styles from './styles.module.css';
+
+interface Schedule {
+    date: string;
+    slots: Array<{
+        startTime: string;
+        endTime: string;
+        isAvailable: boolean;
+    }>;
+}
 
 interface SlotManagerProps {
     therapistId: string;
     onSlotUpdate?: () => void;
 }
 
-// Helper functions to convert between 24-hour format (HH:MM) and 12-hour format (HH:MM AM/PM)
-function convert24To12(time24: string): string {
-    if (!time24) return '';
-    const [hours, minutes] = time24.split(':');
-    const hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-}
-
-function convert12To24(time12: string): string {
-    if (!time12) return '';
-    const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-    if (!match) return time12; // Return as-is if format doesn't match
-    
-    let hour = parseInt(match[1], 10);
-    const minutes = match[2];
-    const ampm = match[3].toUpperCase();
-    
-    if (ampm === 'PM' && hour !== 12) hour += 12;
-    if (ampm === 'AM' && hour === 12) hour = 0;
-    
-    return `${hour.toString().padStart(2, '0')}:${minutes}`;
-}
-
 export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerProps) {
-    const [slots, setSlots] = useState<TherapistSlot[]>([]);
+    const [schedule, setSchedule] = useState<Schedule | null>(null);
+    const [weekSchedules, setWeekSchedules] = useState<Schedule[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState<string>(
-        new Date().toISOString().split('T')[0]
-    );
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [editingSlot, setEditingSlot] = useState<TherapistSlot | null>(null);
-    const [formData, setFormData] = useState({
-        date: '',
-        startTime: '',
-        endTime: '',
-        isAvailable: true,
-    });
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     useEffect(() => {
-        fetchSlots();
+        fetchSchedule();
+        fetchWeekSchedules();
     }, [selectedDate, therapistId]);
 
-    const fetchSlots = async () => {
+    const fetchSchedule = async () => {
         setLoading(true);
         setError(null);
         try {
+            const dateStr = selectedDate.toISOString().split('T')[0];
             const response = await fetch(
-                `/api/therapists/${therapistId}/slots?date=${selectedDate}&includeBooked=true`
+                `/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`
             );
-            if (!response.ok) throw new Error('Failed to fetch slots');
+            if (!response.ok) throw new Error('Failed to fetch schedule');
 
             const result = await response.json();
-            setSlots(result.data || []);
+            if (result.data && result.data.slots) {
+                setSchedule(result.data);
+            } else {
+                setSchedule({ date: dateStr, slots: [] });
+            }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to load slots');
+            setError(err instanceof Error ? err.message : 'Failed to load schedule');
+            setSchedule({ date: selectedDate.toISOString().split('T')[0], slots: [] });
         } finally {
             setLoading(false);
         }
     };
 
-    const handleCreateSlot = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-
+    const fetchWeekSchedules = async () => {
         try {
-            // Convert time format from 24-hour to 12-hour
-            const payload = {
-                ...formData,
-                startTime: convert24To12(formData.startTime),
-                endTime: convert24To12(formData.endTime),
-            };
+            const startDate = new Date(selectedDate);
+            startDate.setDate(startDate.getDate() - startDate.getDay());
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 6);
 
-            const response = await fetch(`/api/therapists/${therapistId}/slots`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            const startDateStr = startDate.toISOString().split('T')[0];
+            const endDateStr = endDate.toISOString().split('T')[0];
 
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || 'Failed to create slot');
-            }
-
-            setShowCreateForm(false);
-            setFormData({ date: '', startTime: '', endTime: '', isAvailable: true });
-            fetchSlots();
-            onSlotUpdate?.();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to create slot');
-        }
-    };
-
-    const handleUpdateSlot = async (slotId: string, updates: Partial<TherapistSlot>) => {
-        setError(null);
-
-        try {
             const response = await fetch(
-                `/api/therapists/${therapistId}/slots?slotId=${slotId}`,
-                {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updates),
-                }
+                `/api/therapists/${therapistId}/schedule?startDate=${startDateStr}&endDate=${endDateStr}&includeBooked=true`
             );
+            if (!response.ok) throw new Error('Failed to fetch week schedules');
 
             const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || 'Failed to update slot');
-            }
-
-            setEditingSlot(null);
-            fetchSlots();
-            onSlotUpdate?.();
+            setWeekSchedules(result.data || []);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to update slot');
+            setWeekSchedules([]);
         }
     };
 
-    const handleDeleteSlot = async (slotId: string) => {
-        if (!confirm('Are you sure you want to delete this slot?')) {
-            return;
-        }
-
-        setError(null);
-
-        try {
-            const response = await fetch(
-                `/api/therapists/${therapistId}/slots?slotId=${slotId}`,
-                {
-                    method: 'DELETE',
-                }
-            );
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || 'Failed to delete slot');
-            }
-
-            fetchSlots();
-            onSlotUpdate?.();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to delete slot');
-        }
+    const getSlotsForDate = (date: Date): Schedule['slots'] => {
+        const dateStr = date.toISOString().split('T')[0];
+        const scheduleForDate = weekSchedules.find((s) => s.date === dateStr);
+        return scheduleForDate?.slots || [];
     };
 
-    const toggleSlotAvailability = (slot: TherapistSlot) => {
-        if (!slot.isAvailable && slot.sessionId) {
-            alert('Cannot make a booked slot available. Cancel the session first.');
-            return;
-        }
-
-        handleUpdateSlot(slot._id, { isAvailable: !slot.isAvailable });
+    const getSlotsForDay = (dayOfWeek: number): Schedule['slots'] => {
+        const weekStart = new Date(selectedDate);
+        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+        const targetDate = new Date(weekStart);
+        targetDate.setDate(weekStart.getDate() + dayOfWeek);
+        return getSlotsForDate(targetDate);
     };
+
+    const bookedCount = schedule?.slots.filter(s => !s.isAvailable).length || 0;
+    const totalSlots = schedule?.slots.length || 0;
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h3 className={styles.title}>Manage Slots</h3>
-                <div className={styles.controls}>
-                    <input
-                        type="date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        className={styles.dateInput}
-                    />
-                    <button
-                        className={styles.addButton}
-                        onClick={() => {
-                            setShowCreateForm(true);
-                            setFormData({ ...formData, date: selectedDate });
-                        }}
-                    >
-                        + Add Slot
-                    </button>
-                </div>
+                <h2 className={styles.title}>Slot Overview</h2>
+                <p className={styles.subtitle}>View booked slots for this therapist</p>
             </div>
 
             {error && (
@@ -199,218 +107,76 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                 </div>
             )}
 
-            {showCreateForm && (
-                <div className={styles.formCard}>
-                    <h4>Create New Slot</h4>
-                    <form onSubmit={handleCreateSlot}>
-                        <div className={styles.formRow}>
-                            <label>
-                                Date
-                                <input
-                                    type="date"
-                                    value={formData.date}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, date: e.target.value })
-                                    }
-                                    required
-                                    className={styles.input}
-                                />
-                            </label>
-                            <label>
-                                Start Time
-                                <input
-                                    type="time"
-                                    value={formData.startTime}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, startTime: e.target.value })
-                                    }
-                                    required
-                                    className={styles.input}
-                                />
-                            </label>
-                            <label>
-                                End Time
-                                <input
-                                    type="time"
-                                    value={formData.endTime}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, endTime: e.target.value })
-                                    }
-                                    required
-                                    className={styles.input}
-                                />
-                            </label>
-                        </div>
-                        <div className={styles.formActions}>
-                            <button type="submit" className={styles.submitButton}>
-                                Create
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setShowCreateForm(false);
-                                    setFormData({
-                                        date: '',
-                                        startTime: '',
-                                        endTime: '',
-                                        isAvailable: true,
-                                    });
-                                }}
-                                className={styles.cancelButton}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
+            <div className={styles.calendarView}>
+                <div className={styles.topRow}>
+                    <div className={styles.calendarSection}>
+                        <h3 className={styles.sectionTitle}>Select Date</h3>
+                        <DatePicker
+                            selectedDate={selectedDate}
+                            onDateSelect={setSelectedDate}
+                            minDate={new Date()}
+                        />
+                    </div>
 
-            {loading ? (
-                <div className={styles.loading}>Loading slots...</div>
-            ) : slots.length === 0 ? (
-                <div className={styles.emptyState}>
-                    <p>No slots found for this date.</p>
-                </div>
-            ) : (
-                <div className={styles.slotsList}>
-                    {slots.map((slot) => (
-                        <div
-                            key={slot._id}
-                            className={`${styles.slotCard} ${
-                                !slot.isAvailable ? styles.booked : ''
-                            } ${slot.isCustomized ? styles.customized : ''}`}
-                        >
-                            <div className={styles.slotInfo}>
-                                <div className={styles.timeInfo}>
-                                    <span className={styles.time}>
-                                        {slot.startTime} - {slot.endTime}
-                                    </span>
-                                    {slot.isCustomized && (
-                                        <span className={styles.badge}>Custom</span>
-                                    )}
-                                    {!slot.isAvailable && (
-                                        <span className={styles.badgeBooked}>Booked</span>
-                                    )}
+                    <div className={styles.slotsRight}>
+                        <h3 className={styles.sectionTitle}>
+                            {selectedDate.toLocaleDateString('en-US', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
+                        </h3>
+
+                        {loading ? (
+                            <div className={styles.loading}>Loading...</div>
+                        ) : (
+                            <div className={styles.statsContainer}>
+                                <div className={styles.statCard}>
+                                    <div className={styles.statValue}>{totalSlots}</div>
+                                    <div className={styles.statLabel}>Total Slots</div>
                                 </div>
-                                <div className={styles.slotMeta}>
-                                    <span>Date: {slot.date}</span>
-                                    {slot.sessionId && (
-                                        <span>Session ID: {slot.sessionId}</span>
-                                    )}
+                                <div className={styles.statCard}>
+                                    <div className={styles.statValue}>{bookedCount}</div>
+                                    <div className={styles.statLabel}>Booked</div>
+                                </div>
+                                <div className={styles.statCard}>
+                                    <div className={styles.statValue}>{totalSlots - bookedCount}</div>
+                                    <div className={styles.statLabel}>Available</div>
                                 </div>
                             </div>
-                            <div className={styles.slotActions}>
-                                <button
-                                    className={styles.toggleButton}
-                                    onClick={() => toggleSlotAvailability(slot)}
-                                    disabled={!slot.isAvailable && !!slot.sessionId}
-                                >
-                                    {slot.isAvailable ? 'Mark Unavailable' : 'Mark Available'}
-                                </button>
-                                {slot.isCustomized && (
-                                    <>
-                                        <button
-                                            className={styles.editButton}
-                                            onClick={() => setEditingSlot(slot)}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className={styles.deleteButton}
-                                            onClick={() => handleDeleteSlot(slot._id)}
-                                            disabled={!slot.isAvailable && !!slot.sessionId}
-                                        >
-                                            Delete
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {editingSlot && (
-                <div className={styles.modal}>
-                    <div className={styles.modalContent}>
-                        <h4>Edit Slot</h4>
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                const updates = {
-                                    ...formData,
-                                    startTime: formData.startTime 
-                                        ? convert24To12(formData.startTime)
-                                        : editingSlot.startTime,
-                                    endTime: formData.endTime
-                                        ? convert24To12(formData.endTime)
-                                        : editingSlot.endTime,
-                                };
-                                handleUpdateSlot(editingSlot._id, updates);
-                            }}
-                        >
-                            <div className={styles.formRow}>
-                                <label>
-                                    Date
-                                    <input
-                                        type="date"
-                                        value={formData.date || editingSlot.date}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, date: e.target.value })
-                                        }
-                                        required
-                                        className={styles.input}
-                                    />
-                                </label>
-                                <label>
-                                    Start Time
-                                    <input
-                                        type="time"
-                                        value={formData.startTime || convert12To24(editingSlot.startTime)}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, startTime: e.target.value })
-                                        }
-                                        required
-                                        className={styles.input}
-                                    />
-                                </label>
-                                <label>
-                                    End Time
-                                    <input
-                                        type="time"
-                                        value={formData.endTime || convert12To24(editingSlot.endTime)}
-                                        onChange={(e) =>
-                                            setFormData({ ...formData, endTime: e.target.value })
-                                        }
-                                        required
-                                        className={styles.input}
-                                    />
-                                </label>
-                            </div>
-                            <div className={styles.formActions}>
-                                <button type="submit" className={styles.submitButton}>
-                                    Update
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setEditingSlot(null);
-                                        setFormData({
-                                            date: '',
-                                            startTime: '',
-                                            endTime: '',
-                                            isAvailable: true,
-                                        });
-                                    }}
-                                    className={styles.cancelButton}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
+                        )}
                     </div>
                 </div>
-            )}
+
+                <div className={styles.weekView}>
+                    <h3 className={styles.sectionTitle}>Week Overview</h3>
+                    <div className={styles.weekGrid}>
+                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
+                            (day, index) => {
+                                const daySlots = getSlotsForDay(index);
+                                const bookedCount = daySlots.filter(s => !s.isAvailable).length;
+                                const totalCount = daySlots.length;
+
+                                return (
+                                    <div key={day} className={styles.weekDay}>
+                                        <div className={styles.weekDayName}>{day}</div>
+                                        <div className={styles.weekDayStats}>
+                                            <span className={styles.totalSlots}>
+                                                {totalCount} slots
+                                            </span>
+                                            <span className={styles.bookedSlots}>
+                                                {bookedCount} booked
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
+

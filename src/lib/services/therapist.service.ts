@@ -1,4 +1,5 @@
-import Therapist, { ITherapist } from '@/lib/models/therapist.model';
+import Therapist, { ITherapist, IConsultingHour } from '@/lib/models/therapist.model';
+import { generateSlotsFromConsultingHours } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
@@ -6,7 +7,25 @@ import { Types } from 'mongoose';
 export async function createTherapist(data: Partial<ITherapist>) {
   await connectDB();
   try {
-    const therapist = await Therapist.create(data);
+    const defaultConsultingHours: IConsultingHour[] = [
+      { dayOfWeek: 0, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: false },
+      { dayOfWeek: 1, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: true },
+      { dayOfWeek: 2, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: true },
+      { dayOfWeek: 3, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: true },
+      { dayOfWeek: 4, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: true },
+      { dayOfWeek: 5, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: true },
+      { dayOfWeek: 6, startTime: '09:00 AM', endTime: '05:00 PM', isEnabled: false },
+    ];
+
+    const therapistData = {
+      ...data,
+      consultingHours: data.consultingHours || defaultConsultingHours,
+    };
+
+    const therapist = await Therapist.create(therapistData);
+    
+    await generateSlotsFromConsultingHours(therapist._id.toString(), new Date(), 90);
+    
     return therapist;
   } catch (error) {
     throw handleError(error);
@@ -46,7 +65,6 @@ export async function updateTherapist(id: string, data: Partial<ITherapist>) {
       throw new ValidationError('Invalid Therapist ID');
     }
 
-    // Ensure image URL is just updated if provided, previous one is not deleted automatically as per requirement
     const therapist = await Therapist.findByIdAndUpdate(id, data, {
       new: true,
       runValidators: true,
@@ -72,6 +90,73 @@ export async function deleteTherapist(id: string) {
       throw new ValidationError('Therapist not found');
     }
     return { message: 'Therapist deleted successfully' };
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
+export async function getConsultingHours(therapistId: string) {
+  await connectDB();
+  try {
+    if (!Types.ObjectId.isValid(therapistId)) {
+      throw new ValidationError('Invalid Therapist ID');
+    }
+    const therapist = await Therapist.findById(therapistId);
+    if (!therapist) {
+      throw new ValidationError('Therapist not found');
+    }
+    return therapist.consultingHours || [];
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
+export async function updateConsultingHours(
+  therapistId: string,
+  consultingHours: IConsultingHour[]
+) {
+  await connectDB();
+  try {
+    if (!Types.ObjectId.isValid(therapistId)) {
+      throw new ValidationError('Invalid Therapist ID');
+    }
+
+    const therapist = await Therapist.findById(therapistId);
+    if (!therapist) {
+      throw new ValidationError('Therapist not found');
+    }
+
+    for (const hour of consultingHours) {
+      if (hour.dayOfWeek < 0 || hour.dayOfWeek > 6) {
+        throw new ValidationError('Invalid day of week. Must be 0-6 (Sunday-Saturday)');
+      }
+      if (hour.isEnabled) {
+        if (!hour.startTime || !hour.endTime) {
+          throw new ValidationError(`Start time and end time are required for enabled days (Day ${hour.dayOfWeek})`);
+        }
+        const timeRegex = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i;
+        if (!timeRegex.test(hour.startTime) || !timeRegex.test(hour.endTime)) {
+          throw new ValidationError('Time must be in format "HH:MM AM/PM"');
+        }
+      }
+    }
+
+    therapist.consultingHours = consultingHours.map(h => ({
+      dayOfWeek: h.dayOfWeek,
+      startTime: h.startTime,
+      endTime: h.endTime,
+      isEnabled: h.isEnabled
+    }));
+
+    therapist.markModified('consultingHours');
+    await therapist.save();
+
+    const saved = await Therapist.findById(therapistId);
+    if (!saved) {
+      throw new ValidationError('Failed to verify save');
+    }
+
+    return saved.consultingHours || [];
   } catch (error) {
     throw handleError(error);
   }

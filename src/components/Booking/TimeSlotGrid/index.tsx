@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 interface TimeSlotGridProps {
     slots: TherapistSlot[];
     selectedSlot: string | null;
-    onSlotSelect: (slotId: string, startTime: string) => void;
+    onSlotSelect: (slotId: string, startTime?: string) => void;
 }
 
 type TimePeriod = 'Morning' | 'Afternoon' | 'Evening';
@@ -102,7 +102,7 @@ export default function TimeSlotGrid({
                                     <button
                                         key={slot._id}
                                         className={slotClassName}
-                                        onClick={() => onSlotSelect(slot._id, slot.startTime)}
+                                        onClick={() => onSlotSelect(slot._id)}
                                         disabled={isBooked}
                                         aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
                                         aria-pressed={isSelected}
@@ -110,7 +110,7 @@ export default function TimeSlotGrid({
                                         <span className={styles.time}>{slot.startTime}</span>
                                         {slot.endTime && (
                                             <span className={styles.timeRange}>
-                                                - {slot.endTime}
+                                                {slot.endTime}
                                             </span>
                                         )}
                                         {isCustomized && (

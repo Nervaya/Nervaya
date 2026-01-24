@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Session from '@/lib/models/session.model';
 import {
-    getAvailableSlots,
+    getScheduleByDate,
+    getSchedulesByDateRange,
     createCustomSlot,
     updateSlot,
     deleteSlot,
-    getSlotsByDateRange,
-    bulkUpdateSlots,
-} from '@/lib/services/therapistSlot.service';
+} from '@/lib/services/therapistSchedule.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -24,29 +24,26 @@ export async function GET(
         const { id: therapistId } = await params;
         const { searchParams } = new URL(req.url);
         const date = searchParams.get('date');
-        const startDate = searchParams.get('startDate');
-        const endDate = searchParams.get('endDate');
-        const includeBooked = searchParams.get('includeBooked') === 'true';
 
-        // Support both single date and date range queries
         if (date) {
-            const slots = await getAvailableSlots(therapistId, date);
-            return NextResponse.json(
-                successResponse('Slots fetched successfully', slots),
-            );
-        } else if (startDate && endDate) {
-            const slots = await getSlotsByDateRange(
+            // Fetch booked sessions for this date
+            const bookedSessions = await Session.find({
                 therapistId,
-                startDate,
-                endDate,
-                includeBooked,
-            );
+                date,
+                status: { $ne: 'cancelled' },
+            }).select('startTime');
+
+            const bookedSlots = bookedSessions.map((s) => s.startTime);
+
             return NextResponse.json(
-                successResponse('Slots fetched successfully', slots),
+                successResponse('Schedule fetched successfully', {
+                    date,
+                    bookedSlots,
+                }),
             );
         } else {
             return NextResponse.json(
-                errorResponse('Date or date range (startDate, endDate) parameter is required', null, 400),
+                errorResponse('Date parameter is required', null, 400),
                 { status: 400 },
             );
         }
@@ -64,7 +61,6 @@ export async function POST(
     { params }: RouteParams,
 ) {
     try {
-        // Require admin authentication
         const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
         if (authResult instanceof NextResponse) {
@@ -109,40 +105,25 @@ export async function PUT(
     { params }: RouteParams,
 ) {
     try {
-        // Require admin authentication
         const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
         if (authResult instanceof NextResponse) {
             return authResult;
         }
 
-        const { searchParams } = new URL(req.url);
-        const slotId = searchParams.get('slotId');
-
-        if (!slotId) {
-            return NextResponse.json(
-                errorResponse('slotId query parameter is required', null, 400),
-                { status: 400 },
-            );
-        }
-
+        const { id: therapistId } = await params;
         const body = await req.json();
-        const { date, startTime, endTime, isAvailable } = body;
 
-        const updates: Record<string, unknown> = {};
-        if (date !== undefined) updates.date = date;
-        if (startTime !== undefined) updates.startTime = startTime;
-        if (endTime !== undefined) updates.endTime = endTime;
-        if (isAvailable !== undefined) updates.isAvailable = isAvailable;
+        const { date, startTime, updates } = body;
 
-        if (Object.keys(updates).length === 0) {
+        if (!date || !startTime || !updates) {
             return NextResponse.json(
-                errorResponse('No valid fields to update', null, 400),
+                errorResponse('Missing required fields: date, startTime, updates', null, 400),
                 { status: 400 },
             );
         }
 
-        const slot = await updateSlot(slotId, updates);
+        const slot = await updateSlot(therapistId, date, startTime, updates);
 
         return NextResponse.json(
             successResponse('Slot updated successfully', slot),
@@ -161,27 +142,28 @@ export async function DELETE(
     { params }: RouteParams,
 ) {
     try {
-        // Require admin authentication
         const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
         if (authResult instanceof NextResponse) {
             return authResult;
         }
 
+        const { id: therapistId } = await params;
         const { searchParams } = new URL(req.url);
-        const slotId = searchParams.get('slotId');
+        const date = searchParams.get('date');
+        const startTime = searchParams.get('startTime');
 
-        if (!slotId) {
+        if (!date || !startTime) {
             return NextResponse.json(
-                errorResponse('slotId query parameter is required', null, 400),
+                errorResponse('Missing required parameters: date, startTime', null, 400),
                 { status: 400 },
             );
         }
 
-        const result = await deleteSlot(slotId);
+        await deleteSlot(therapistId, date, startTime);
 
         return NextResponse.json(
-            successResponse(result.message || 'Slot deleted successfully', result),
+            successResponse('Slot deleted successfully'),
         );
     } catch (error) {
         const { message, statusCode, error: errData } = handleError(error);

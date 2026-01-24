@@ -33,18 +33,11 @@ export default function TherapyCornerPage() {
     }
   };
 
-  const handleBookAppointment = async (therapist: Therapist) => {
-    try {
-      const response = await fetch('/api/auth/session');
-      if (!response.ok) {
-        router.push('/login');
-        return;
-      }
-
-      setSelectedTherapist(therapist);
-    } catch {
-      router.push('/login');
-    }
+  const handleBookAppointment = (therapist: Therapist) => {
+    // No API call needed - just open the booking modal
+    // The BookingModal component will handle authentication when user tries to book
+    // If not authenticated, the API will return 401 and we can redirect then
+    setSelectedTherapist(therapist);
   };
 
   return (
@@ -113,8 +106,7 @@ export default function TherapyCornerPage() {
           therapistName={selectedTherapist.name}
           onClose={() => setSelectedTherapist(null)}
           onSuccess={() => {
-            setSelectedTherapist(null);
-            router.push('/account');
+            // Modal stays open now
           }}
         />
       )}
