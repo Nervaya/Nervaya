@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button/Button';
 import { useAuth } from '@/hooks/useAuth';
@@ -74,7 +74,6 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        {/* Left Side - Form */}
         <div className={styles.formSection}>
           <div className={styles.formContent}>
             <div className={styles.logoContainer}>
@@ -89,7 +88,6 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
 
             <div className={styles.formContainer}>
               <div className={`${styles.formWrapper} ${isLogin ? styles.showLogin : styles.showSignup}`}>
-                {/* Login Header and Form */}
                 <div className={`${styles.formPanel} ${styles.loginPanel}`}>
                   <div className={styles.header}>
                     <h1 className={styles.title}>Welcome back</h1>
@@ -132,7 +130,6 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
                   </form>
                 </div>
 
-                {/* Signup Header and Form */}
                 <div className={`${styles.formPanel} ${styles.signupPanel}`}>
                   <div className={styles.header}>
                     <h1 className={styles.title}>Create your account</h1>
@@ -190,29 +187,30 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
           </div>
         </div>
 
-        {/* Right Side - Illustration */}
         <div className={styles.illustrationSection}>
-          <AnimatePresence mode='wait'>
-            <motion.div
-              key={isLogin ? 'login-img' : 'signup-img'}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.5 }}
-              className={styles.illustrationContent}
-              style={{ position: 'relative', width: '100%', height: '100%' }}
-            >
-              <Image
-                src={isLogin ? '/assets/auth/login-illustration.jpg' : '/assets/auth/signup-illustration.png'}
-                alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
-                fill
-                className={styles.illustrationImage}
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-              />
-            </motion.div>
-          </AnimatePresence>
+          <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
+            <AnimatePresence mode='wait'>
+              <m.div
+                key={isLogin ? 'login-img' : 'signup-img'}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.5 }}
+                className={styles.illustrationContent}
+                style={{ position: 'relative', width: '100%', height: '100%' }}
+              >
+                <Image
+                  src={isLogin ? '/assets/auth/login-illustration.jpg' : '/assets/auth/signup-illustration.png'}
+                  alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
+                  fill
+                  className={styles.illustrationImage}
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                />
+              </m.div>
+            </AnimatePresence>
+          </LazyMotion>
         </div>
       </div>
     </div>

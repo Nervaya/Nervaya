@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './styles.module.css';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa6';
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import Button from '@/components/common/Button/Button';
 

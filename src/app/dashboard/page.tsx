@@ -1,5 +1,5 @@
-import { FaBed, FaHeartbeat, FaCalendarCheck } from 'react-icons/fa';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import { FaBed, FaHeartPulse, FaCalendarCheck } from 'react-icons/fa6';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 import styles from './styles.module.css';
 
 export default function DashboardPage() {
@@ -20,7 +20,7 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.card}>
-            <div className={styles.iconWrapper}><FaHeartbeat /></div>
+            <div className={styles.iconWrapper}><FaHeartPulse /></div>
             <h3 className={styles.cardTitle}>Sessions Completed</h3>
             <p className={styles.cardValue}>12</p>
             <p className={styles.cardHint}>Keep it up!</p>

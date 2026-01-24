@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHeart, FaRibbon, FaUserFriends } from 'react-icons/fa';
+import { FaHeart, FaRibbon, FaUserGroup } from 'react-icons/fa6';
 
 export interface AboutUsCard {
     id: number;
@@ -23,7 +23,7 @@ export const aboutUsCardsData: AboutUsCard[] = [
   },
   {
     id: 3,
-    icon: <FaUserFriends />,
+    icon: <FaUserGroup />,
     title: 'Personalized Support',
     description: 'Every person is unique, and we tailor our approach to meet your individual needs and goals.',
   },

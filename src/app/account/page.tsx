@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { FaUser, FaEnvelope, FaSave } from 'react-icons/fa';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import { FaUser, FaEnvelope, FaFloppyDisk } from 'react-icons/fa6';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 
 export default function AccountPage() {
-  // In a real app, load this from useAuth or API
   const [formData, setFormData] = useState({
     name: 'Test Customer',
     email: 'customer@example.com',
@@ -58,7 +57,7 @@ export default function AccountPage() {
             </div>
 
             <button type="submit" className={styles.saveBtn}>
-              <FaSave /> Save Changes
+              <FaFloppyDisk /> Save Changes
             </button>
           </form>
         </div>

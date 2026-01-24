@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
-import { FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
+import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
 
 interface ImageUploadProps {
     onUpload: (url: string) => void;
@@ -88,12 +88,12 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
             unoptimized
           />
           <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
-            <FaTimes size={12} />
+            <FaXmark size={12} />
           </button>
         </>
       ) : (
         <>
-          <FaCloudUploadAlt size={32} color="#7c3aed" />
+          <FaCloudArrowUp size={32} color="#7c3aed" />
           <p className={styles.label}>{label}</p>
         </>
       )}

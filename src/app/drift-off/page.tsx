@@ -1,7 +1,7 @@
 'use client';
 
 import PageHeader from '@/components/PageHeader/PageHeader';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 import styles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 
 export default function DriftOffPage() {

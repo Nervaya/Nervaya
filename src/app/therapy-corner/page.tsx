@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import Sidebar from '@/components/Sidebar/Sidebar';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { formatCurrency } from '@/utils/currencyConstants';
 import { Therapy } from '@/types/therapy.types';

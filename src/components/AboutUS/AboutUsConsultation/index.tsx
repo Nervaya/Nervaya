@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { FaRegComment, FaRegUser, FaRegEnvelope } from 'react-icons/fa';
+import { FaRegComment, FaRegUser, FaRegEnvelope } from 'react-icons/fa6';
 import { IoVideocamOutline } from 'react-icons/io5';
 import { CiCalendar } from 'react-icons/ci';
 import Button from '@/components/common/Button/Button';
