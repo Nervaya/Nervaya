@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
-  FaHandsHelping, 
-  FaCalendarAlt, 
+  FaHandshake, 
+  FaCalendar, 
   FaCreditCard, 
   FaEnvelope, 
   FaChartLine, 
@@ -10,18 +10,18 @@ import {
   FaUserShield,
   FaClipboardCheck,
   FaDatabase,
-  FaCookie,
-  FaChartBar,
-  FaCog,
+  FaCookieBite,
+  FaChartSimple,
+  FaGear,
   FaEye,
-  FaEdit,
+  FaPenToSquare,
   FaTrash,
   FaDownload,
   FaBan,
-  FaPauseCircle,
+  FaCirclePause,
   FaPhone,
-  FaMapMarkerAlt,
-} from 'react-icons/fa';
+  FaLocationDot,
+} from 'react-icons/fa6';
 
 export interface TOCItem {
     id: string;
@@ -132,12 +132,12 @@ export const privacySections: PrivacySection[] = [
       ],
       gridItems: [
         {
-          icon: <FaHandsHelping />,
+          icon: <FaHandshake />,
           title: 'Service Provision',
           text: 'To provide, maintain, and improve our therapy and wellness services',
         },
         {
-          icon: <FaCalendarAlt />,
+          icon: <FaCalendar />,
           title: 'Appointment Scheduling',
           text: 'To schedule and manage therapy sessions and consultations',
         },
@@ -211,17 +211,17 @@ export const privacySections: PrivacySection[] = [
           title: 'Types of Cookies We Use',
           cookieCards: [
             {
-              icon: <FaCookie />,
+              icon: <FaCookieBite />,
               title: 'Essential Cookies',
               text: 'These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility.',
             },
             {
-              icon: <FaChartBar />,
+              icon: <FaChartSimple />,
               title: 'Analytics Cookies',
               text: 'These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.',
             },
             {
-              icon: <FaCog />,
+              icon: <FaGear />,
               title: 'Preference Cookies',
               text: 'These cookies remember your preferences and settings to provide a more personalized experience on future visits.',
             },
@@ -246,7 +246,7 @@ export const privacySections: PrivacySection[] = [
           text: 'You have the right to request access to the personal information we hold about you and receive a copy of that information.',
         },
         {
-          icon: <FaEdit />,
+          icon: <FaPenToSquare />,
           title: 'Correction',
           text: 'You can request that we correct any inaccurate or incomplete personal information we have about you.',
         },
@@ -266,7 +266,7 @@ export const privacySections: PrivacySection[] = [
           text: 'You can object to the processing of your personal information for certain purposes, such as direct marketing.',
         },
         {
-          icon: <FaPauseCircle />,
+          icon: <FaCirclePause />,
           title: 'Restriction',
           text: 'You may request that we restrict the processing of your personal information under certain circumstances.',
         },
@@ -295,7 +295,7 @@ export const privacySections: PrivacySection[] = [
           href: 'tel:+15551234567',
         },
         {
-          icon: <FaMapMarkerAlt />,
+          icon: <FaLocationDot />,
           label: 'Address',
           text: '123 Wellness Street, Suite 100, City, State 12345',
         },

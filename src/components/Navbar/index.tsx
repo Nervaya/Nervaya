@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaCircleUser } from 'react-icons/fa6';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConstants';
 import { ROUTES } from '@/utils/routesConstants';
@@ -146,7 +146,7 @@ const Navbar = () => {
                 onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
                 style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 'inherit' }}
               >
-                <FaUserCircle size={24} />
+                <FaCircleUser size={24} />
                 <span>Account</span>
                 <span className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}>   </span>
               </button>

@@ -1,29 +1,52 @@
-import {
-  FaHome,
+import { 
+  FaHouse,
   FaBed,
-  FaHeartbeat,
-  FaShoppingCart,
+  FaHeartPulse,
+  FaCartShopping,
+  FaChartPie,
+  FaCalendarCheck,
+  FaUserGroup,
+  FaClipboardList,
+  FaFileMedical,
+  FaMoneyBillWave,
+  FaBoxOpen,
   FaHeadset,
   FaCommentDots,
+  FaRegCommentDots,
   FaBars,
-  FaUserMd,
-  FaCog,
+  FaUserDoctor,
+  FaGear,
   FaUsers,
-  FaRupeeSign,
-} from 'react-icons/fa';
+  FaIndianRupeeSign,
+  FaBell,
+  FaShieldHalved,
+  FaStethoscope,
+} from 'react-icons/fa6';
+import type { NavigationMenuGroup } from '@/types/navigation.types';
 
 export const iconMap: { [key: string]: React.ReactElement } = {
-  FaHome: <FaHome />,
+  FaHouse: <FaHouse />,
   FaBed: <FaBed />,
-  FaHeartbeat: <FaHeartbeat />,
-  FaShoppingCart: <FaShoppingCart />,
+  FaHeartPulse: <FaHeartPulse />,
+  FaCartShopping: <FaCartShopping />,
+  FaChartPie: <FaChartPie />,
+  FaCalendarCheck: <FaCalendarCheck />,
+  FaUserGroup: <FaUserGroup />,
+  FaClipboardList: <FaClipboardList />,
+  FaFileMedical: <FaFileMedical />,
+  FaMoneyBillWave: <FaMoneyBillWave />,
+  FaBoxOpen: <FaBoxOpen />,
   FaHeadset: <FaHeadset />,
   FaCommentDots: <FaCommentDots />,
+  FaRegCommentDots: <FaRegCommentDots />,
   FaBars: <FaBars />,
-  FaUserMd: <FaUserMd />,
-  FaCog: <FaCog />,
+  FaUserDoctor: <FaUserDoctor />,
+  FaGear: <FaGear />,
   FaUsers: <FaUsers />,
-  FaRupeeSign: <FaRupeeSign />,
+  FaIndianRupeeSign: <FaIndianRupeeSign />,
+  FaBell: <FaBell />,
+  FaShieldHalved: <FaShieldHalved />,
+  FaStethoscope: <FaStethoscope />,
 };
 
 export interface SidebarNavItem {
@@ -33,19 +56,38 @@ export interface SidebarNavItem {
     isDashboard?: boolean;
 }
 
-export const sidebarNavItems: SidebarNavItem[] = [
-  {
-    title: 'Dashboard',
-    path: '/dashboard',
-    icon: 'FaHome',
-    isDashboard: true,
-  },
-];
-
 export const sidebarBottomNavItems: SidebarNavItem[] = [
   {
     title: 'Feedback',
     path: '/feedback',
-    icon: 'FaCommentDots',
+    icon: 'FaRegCommentDots',
+  },
+];
+
+export const sidebarMenuGroups: NavigationMenuGroup[] = [
+  {
+    title: 'Sleep',
+    items: [
+      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaHeartPulse' },
+    ],
+  },
+  {
+    title: 'Support',
+    items: [
+      { title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUserDoctor' },
+      { title: 'Support', path: '/support', icon: 'FaHeadset' },
+      { title: 'Account', path: '/account', icon: 'FaUsers' },
+    ],
+  },
+];
+
+export const adminMenuGroups: NavigationMenuGroup[] = [
+  {
+    title: 'Admin',
+    items: [
+      { title: 'Doctors', path: '/admin/doctors', icon: 'FaUserDoctor' },
+      { title: 'Therapies', path: '/admin/therapies', icon: 'FaStethoscope' },
+    ],
   },
 ];

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
 import { Therapist } from '@/types/therapist.types';
