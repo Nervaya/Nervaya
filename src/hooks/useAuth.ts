@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { ApiResponse } from '@/lib/utils/response.util';
 import { ROLES, Role } from '@/lib/constants/roles';
-import { COOKIE_NAMES, COOKIE_OPTIONS } from '@/utils/cookieConstants';
+import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { ROUTES } from '@/utils/routesConstants';
 
 interface AuthData {
@@ -24,19 +24,19 @@ export function useAuth() {
   const router = useRouter();
 
   const handleAuthSuccess = (data: AuthData) => {
-    if (data.token) {
-      document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=${data.token}; path=/; max-age=${COOKIE_OPTIONS.AUTH_TOKEN_MAX_AGE}`;
+    // Note: Cookie is now set server-side with HttpOnly flag for security
+    // The token in the response is only used for verification
+    // We don't set it client-side anymore to prevent XSS attacks
 
-      // Dispatch custom event to notify Navbar and other components
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('auth-state-changed'));
-      }
+    // Dispatch custom event to notify Navbar and other components
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+    }
 
-      if (data.user.role === ROLES.ADMIN) {
-        router.push(ROUTES.ADMIN_DASHBOARD);
-      } else {
-        router.push(ROUTES.HOME);
-      }
+    if (data.user.role === ROLES.ADMIN) {
+      router.push(ROUTES.ADMIN_DASHBOARD);
+    } else {
+      router.push(ROUTES.HOME);
     }
   };
 
@@ -81,8 +81,18 @@ export function useAuth() {
     }
   };
 
-  const logout = () => {
-    document.cookie = `${COOKIE_NAMES.AUTH_TOKEN}=; path=/; max-age=0`;
+  const logout = async () => {
+    setLoading(true);
+    try {
+      // Call logout API endpoint to properly clear server-side cookie
+      await api.post('/auth/logout');
+    } catch (error) {
+      // Even if API call fails, clear client-side state
+      // The cookie is HttpOnly so we can't clear it client-side, but we can still update UI
+      console.error('Logout API call failed:', error);
+    } finally {
+      setLoading(false);
+    }
     
     // Dispatch custom event to notify Navbar and other components
     if (typeof window !== 'undefined') {

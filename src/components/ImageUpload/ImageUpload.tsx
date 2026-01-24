@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
 import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
@@ -16,6 +16,13 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Update preview when initialUrl changes
+  useEffect(() => {
+    if (initialUrl) {
+      setPreview(initialUrl);
+    }
+  }, [initialUrl]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,11 +42,12 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
 
       const data = await response.json();
 
-      if (response.ok && data.url) {
-        setPreview(data.url);
-        onUpload(data.url);
+      if (response.ok && data.success && data.data?.url) {
+        const imageUrl = data.data.url;
+        setPreview(imageUrl);
+        onUpload(imageUrl);
       } else {
-        setError(data.error || 'Upload failed');
+        setError(data.message || data.error || 'Upload failed');
       }
     } catch (err) {
       setError('Upload failed. Please try again.');

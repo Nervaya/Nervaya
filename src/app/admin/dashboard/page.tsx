@@ -4,15 +4,11 @@ export default function AdminDashboardPage() {
   return (
     <div>
       <h1 className={styles.title}>Admin Dashboard</h1>
-      <p>Welcome, Admin! Use the sidebar to manage doctors and therapies.</p>
+      <p>Welcome, Admin! Use the sidebar to manage therapists and slots.</p>
       <div className={styles.grid}>
         <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Doctors</h3>
-          <p>Manage list of available doctors.</p>
-        </div>
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Therapies</h3>
-          <p>Manage therapy listings.</p>
+          <h3 className={styles.cardTitle}>Therapists</h3>
+          <p>Manage list of available therapists and their schedules.</p>
         </div>
       </div>
     </div>

@@ -6,8 +6,7 @@ export const PROTECTED_ROUTES = [
 
 export const ADMIN_ROUTES = [
   '/admin',
-  '/admin/doctors',
-  '/admin/therapies',
+  '/admin/therapists',
   '/admin/settings',
   '/admin/users',
   '/admin/billing',

@@ -1,44 +1,44 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
+import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { formatCurrency } from '@/utils/currencyConstants';
-import { Therapy } from '@/types/therapy.types';
-import { Doctor } from '@/types/doctor.types';
+import BookingModal from '@/components/Booking/BookingModal';
+import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
 export default function TherapyCornerPage() {
-  const [therapies, setTherapies] = useState<Therapy[]>([]);
+  const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchTherapies = async () => {
-      try {
-        const response = await fetch('/api/therapies');
-        if (!response.ok) {
-          throw new Error('Failed to fetch therapies');
-        }
-        const result = await response.json();
-        if (result.success && Array.isArray(result.data)) {
-          setTherapies(result.data);
-        } else if (Array.isArray(result)) {
-          // Fallback in case raw array is returned (backward compatibility during dev)
-          setTherapies(result);
-        } else {
-          setTherapies([]);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTherapies();
+    fetchTherapists();
   }, []);
+
+  const fetchTherapists = async () => {
+    try {
+      const response = await fetch('/api/therapists');
+      if (!response.ok) throw new Error('Failed to fetch therapists');
+
+      const result = await response.json();
+      setTherapists(result.data || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBookAppointment = (therapist: Therapist) => {
+    // No API call needed - just open the booking modal
+    // The BookingModal component will handle authentication when user tries to book
+    // If not authenticated, the API will return 401 and we can redirect then
+    setSelectedTherapist(therapist);
+  };
 
   return (
     <Sidebar>
@@ -46,62 +46,70 @@ export default function TherapyCornerPage() {
         <PageHeader
           title="Therapy Corner"
           subtitle="Finding the right therapist isn't easy."
-          description="Based on your sleep assessment, we've curated a shortlist tailored just for you."
+          description="Based on your needs, we've curated a shortlist tailored just for you."
         />
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>✨ Your Recommended Therapists</h2>
 
-          {loading && <p>Loading recommendations...</p>}
+          {loading && <p>Loading therapists...</p>}
           {error && <p className={styles.error}>{error}</p>}
 
-          {!loading && !error && therapies.length === 0 && (
+          {!loading && !error && therapists.length === 0 && (
             <p>No therapists found at the moment.</p>
           )}
 
-          {!loading && !error && therapies.map((therapy) => {
-            const doctor = typeof therapy.doctorId === 'object' && therapy.doctorId !== null
-              ? therapy.doctorId as Doctor
-              : null;
-
-            return (
-              <div key={therapy._id} className={styles.therapistCard}>
-                <div className={styles.therapistInfo}>
-                  <div
-                    className={styles.avatar}
-                    style={doctor?.image ? { backgroundImage: `url(${doctor.image})` } : {}}
-                  ></div>
-                  <div>
-                    <h3>{doctor?.name || 'Unknown Doctor'}</h3>
-                    <p className={styles.credentials}>
-                      {doctor?.qualifications?.join(', ') || 'No qualifications listed'}
-                    </p>
-                    <p className={styles.details}>
-                      Experience: {doctor?.experience || 'N/A'} |
-                      Languages: {doctor?.languages?.join(', ') || 'N/A'}
-                    </p>
-                    <div className={styles.tags}>
-                      {doctor?.specializations?.map((spec: string) => (
-                        <span key={spec}>{spec}</span>
-                      ))}
-                      {/* Fallback or additional tags can be added here if needed */}
-                    </div>
+          {!loading && !error && therapists.map((therapist) => (
+            <div key={therapist._id} className={styles.therapistCard}>
+              <div className={styles.therapistInfo}>
+                <div
+                  className={styles.avatar}
+                  style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
+                  role="img"
+                  aria-label={`${therapist.name} profile picture`}
+                />
+                <div>
+                  <h3>{therapist.name}</h3>
+                  <p className={styles.credentials}>
+                    {therapist.qualifications?.join(', ') || 'Professional Therapist'}
+                  </p>
+                  <p className={styles.details}>
+                    Experience: {therapist.experience || 'N/A'} |
+                    Languages: {therapist.languages?.join(', ') || 'N/A'}
+                  </p>
+                  <div className={styles.tags}>
+                    {therapist.specializations?.map((spec) => (
+                      <span key={spec}>{spec}</span>
+                    ))}
                   </div>
                 </div>
+              </div>
               <div className={styles.actions}>
-                <span className={styles.price}>
-                  {formatCurrency(therapy.price)} for {therapy.durationMinutes} min
-                </span>
                 <div className={styles.buttons}>
                   <button className={styles.outlineBtn}>View Profile</button>
-                  <button className={styles.primaryBtn}>Book Appointment</button>
+                  <button
+                    className={styles.primaryBtn}
+                    onClick={() => handleBookAppointment(therapist)}
+                  >
+                    Book Appointment
+                  </button>
                 </div>
               </div>
             </div>
-            );
-          })}
+          ))}
         </section>
       </div>
+
+      {selectedTherapist && (
+        <BookingModal
+          therapistId={selectedTherapist._id}
+          therapistName={selectedTherapist.name}
+          onClose={() => setSelectedTherapist(null)}
+          onSuccess={() => {
+            // Modal stays open now
+          }}
+        />
+      )}
     </Sidebar>
   );
 }
