@@ -4,13 +4,20 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
-import { FaBars } from 'react-icons/fa6';
+import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import styles from './styles.module.css';
 
 const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return window.localStorage.getItem('sidebar-collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const isAdminRoute = pathname.startsWith('/admin');
@@ -25,6 +32,14 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
       setIsDesktop(desktop);
       if (!desktop) {
         setIsCollapsed(false);
+        setIsMobileOpen(false);
+        return;
+      }
+      try {
+        const stored = window.localStorage.getItem('sidebar-collapsed');
+        if (stored !== null) setIsCollapsed(stored === 'true');
+      } catch {
+        // ignore
       }
     };
 
@@ -34,15 +49,28 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileOpen]);
+
   const mainMarginLeft = isDesktop ? sidebarWidth : 0;
-  
+  const closeMobileSidebar = () => setIsMobileOpen(false);
+
   return (
     <>
       <button
         className={styles.mobileToggle}
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        onClick={() => setIsMobileOpen((v) => !v)}
+        aria-label={isMobileOpen ? 'Close sidebar' : 'Open sidebar'}
+        aria-expanded={isMobileOpen}
+        aria-controls="app-sidebar"
       >
-        <FaBars />
+        {isMobileOpen ? <FaXmark /> : <FaBars />}
       </button>
 
       <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
@@ -50,19 +78,31 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
           {(isMobileOpen || isDesktop) && (
             <m.aside
               className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
+              id="app-sidebar"
               initial={false}
               animate={{ x: 0, width: sidebarWidth }}
               transition={{ type: 'spring', stiffness: 300, damping: 30, mass: 0.8 }}
               style={{ willChange: 'width, transform' }}
-              onMouseEnter={() => {
-                if (!isDesktop) return;
-                setIsCollapsed(false);
-              }}
-              onMouseLeave={() => {
-                if (!isDesktop) return;
-                setIsCollapsed(true);
-              }}
             >
+              <button
+                type="button"
+                className={styles.edgeToggle}
+                onClick={() =>
+                  setIsCollapsed((v) => {
+                    const next = !v;
+                    try {
+                      window.localStorage.setItem('sidebar-collapsed', String(next));
+                    } catch {
+                      // ignore
+                    }
+                    return next;
+                  })
+                }
+                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                aria-pressed={isCollapsed}
+              >
+                {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+              </button>
               <nav className={styles.nav}>
               <ul className={styles.navList}>
                 {menuGroups.map((group, groupIndex) => (
@@ -76,7 +116,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                           <Link
                             href={item.path}
                             className={`${styles.navItem} ${pathname === item.path ? styles.active : ''}`}
-                            onClick={() => setIsMobileOpen(false)}
+                            onClick={closeMobileSidebar}
                           >
                             <span className={styles.icon}>{iconMap[item.icon] || iconMap['FaHouse']}</span>
                             <span className={styles.title} aria-hidden={isCollapsed}>
@@ -97,7 +137,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                       <Link
                         href={item.path}
                         className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ''}`}
-                        onClick={() => setIsMobileOpen(false)}
+                        onClick={closeMobileSidebar}
                       >
                         <span className={styles.icon}>{iconMap[item.icon] || iconMap['FaHouse']}</span>
                         <span className={styles.title} aria-hidden={isCollapsed}>
@@ -114,7 +154,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
         </AnimatePresence>
       </LazyMotion>
 
-      {isMobileOpen && <div className={styles.overlay} onClick={() => setIsMobileOpen(false)} />}
+      {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
       <main
         className={`${styles.mainContent} ${className || ''}`}

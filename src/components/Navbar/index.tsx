@@ -142,7 +142,6 @@ const Navbar = () => {
           {isUserLoggedIn ? (
             <li className={styles.navbarDropdown} ref={accountDropdownRef}>
               <button
-                className={styles.myAccountLink}
                 onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
                 style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 'inherit' }}
               >
