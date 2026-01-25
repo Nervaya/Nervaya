@@ -21,20 +21,20 @@ const Navbar = () => {
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
   const checkAuth = () => {
-    const isProtectedRoute = pathname.startsWith('/admin') || 
-                            pathname.startsWith('/account') ||
-                            pathname.startsWith('/therapy-corner');
-    const isNotAuthRoute = !pathname.startsWith('/login') && 
-                          !pathname.startsWith('/signup');
-    setIsUserLoggedIn(isProtectedRoute || (isNotAuthRoute && pathname !== '/'));
+    if (typeof window !== 'undefined') {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsUserLoggedIn(isLoggedIn);
+    }
   };
 
   useEffect(() => {
+    // Initial check
     checkAuth();
+
     const handleAuthChange = () => checkAuth();
     window.addEventListener('auth-state-changed', handleAuthChange);
     return () => window.removeEventListener('auth-state-changed', handleAuthChange);
-  }, [pathname]);
+  }, []);
 
   const handleLogout = async () => {
     try {

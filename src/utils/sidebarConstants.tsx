@@ -1,4 +1,4 @@
-import { 
+import {
   FaHouse,
   FaBed,
   FaHeartPulse,
@@ -50,10 +50,10 @@ export const iconMap: { [key: string]: React.ReactElement } = {
 };
 
 export interface SidebarNavItem {
-    title: string;
-    path: string;
-    icon: string;
-    isDashboard?: boolean;
+  title: string;
+  path: string;
+  icon: string;
+  isDashboard?: boolean;
 }
 
 export const sidebarBottomNavItems: SidebarNavItem[] = [
@@ -86,8 +86,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
   {
     title: 'Admin',
     items: [
-      { title: 'Doctors', path: '/admin/doctors', icon: 'FaUserDoctor' },
-      { title: 'Therapies', path: '/admin/therapies', icon: 'FaStethoscope' },
+      { title: 'Therapists', path: '/admin/therapists', icon: 'FaUserDoctor' },
     ],
   },
 ];

@@ -9,13 +9,13 @@ import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { ROUTES } from '@/utils/routesConstants';
 
 interface AuthData {
-    user: {
-        _id: string;
-        email: string;
-        name: string;
-        role: Role;
-    };
-    token: string;
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+    role: Role;
+  };
+  token: string;
 }
 
 export function useAuth() {
@@ -30,6 +30,7 @@ export function useAuth() {
 
     // Dispatch custom event to notify Navbar and other components
     if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedIn', 'true');
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
 
@@ -93,12 +94,13 @@ export function useAuth() {
     } finally {
       setLoading(false);
     }
-    
+
     // Dispatch custom event to notify Navbar and other components
     if (typeof window !== 'undefined') {
+      localStorage.removeItem('isLoggedIn');
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
-    
+
     router.push(ROUTES.LOGIN);
   };
 

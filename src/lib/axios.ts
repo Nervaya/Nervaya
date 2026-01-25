@@ -18,7 +18,14 @@ api.interceptors.response.use(
       const axiosError = error as { response?: { status?: number; data?: unknown } };
       if (axiosError.response?.status === 401) {
         // Optional: Redirect to login or clear auth state
-        // window.location.href = '/login';
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('isLoggedIn');
+          window.dispatchEvent(new CustomEvent('auth-state-changed'));
+          // Avoid infinite reload loops by checking current path
+          if (!window.location.pathname.startsWith('/login')) {
+            window.location.href = '/login';
+          }
+        }
       }
       return Promise.reject(axiosError.response?.data || error);
     }
