@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Sidebar from '@/components/Sidebar/LazySidebar';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import BookingModal from '@/components/Booking/BookingModal';
-import { Therapist } from '@/types/therapist.types';
-import styles from './styles.module.css';
+import { useState, useEffect } from "react";
+
+import Sidebar from "@/components/Sidebar/LazySidebar";
+import PageHeader from "@/components/PageHeader/PageHeader";
+import BookingModal from "@/components/Booking/BookingModal";
+import { Therapist } from "@/types/therapist.types";
+import styles from "./styles.module.css";
 
 export default function TherapyCornerPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
-  const router = useRouter();
+  const [error, setError] = useState("");
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
+    null,
+  );
 
   useEffect(() => {
     fetchTherapists();
@@ -21,13 +22,15 @@ export default function TherapyCornerPage() {
 
   const fetchTherapists = async () => {
     try {
-      const response = await fetch('/api/therapists');
-      if (!response.ok) throw new Error('Failed to fetch therapists');
+      const response = await fetch("/api/therapists");
+      if (!response.ok) {
+        throw new Error("Failed to fetch therapists");
+      }
 
       const result = await response.json();
       setTherapists(result.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -50,7 +53,9 @@ export default function TherapyCornerPage() {
         />
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>✨ Your Recommended Therapists</h2>
+          <h2 className={styles.sectionTitle}>
+            ✨ Your Recommended Therapists
+          </h2>
 
           {loading && <p>Loading therapists...</p>}
           {error && <p className={styles.error}>{error}</p>}
@@ -59,44 +64,51 @@ export default function TherapyCornerPage() {
             <p>No therapists found at the moment.</p>
           )}
 
-          {!loading && !error && therapists.map((therapist) => (
-            <div key={therapist._id} className={styles.therapistCard}>
-              <div className={styles.therapistInfo}>
-                <div
-                  className={styles.avatar}
-                  style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
-                  role="img"
-                  aria-label={`${therapist.name} profile picture`}
-                />
-                <div>
-                  <h3>{therapist.name}</h3>
-                  <p className={styles.credentials}>
-                    {therapist.qualifications?.join(', ') || 'Professional Therapist'}
-                  </p>
-                  <p className={styles.details}>
-                    Experience: {therapist.experience || 'N/A'} |
-                    Languages: {therapist.languages?.join(', ') || 'N/A'}
-                  </p>
-                  <div className={styles.tags}>
-                    {therapist.specializations?.map((spec) => (
-                      <span key={spec}>{spec}</span>
-                    ))}
+          {!loading &&
+            !error &&
+            therapists.map((therapist) => (
+              <div key={therapist._id} className={styles.therapistCard}>
+                <div className={styles.therapistInfo}>
+                  <div
+                    className={styles.avatar}
+                    style={
+                      therapist.image
+                        ? { backgroundImage: `url(${therapist.image})` }
+                        : {}
+                    }
+                    role="img"
+                    aria-label={`${therapist.name} profile picture`}
+                  />
+                  <div>
+                    <h3>{therapist.name}</h3>
+                    <p className={styles.credentials}>
+                      {therapist.qualifications?.join(", ") ||
+                        "Professional Therapist"}
+                    </p>
+                    <p className={styles.details}>
+                      Experience: {therapist.experience || "N/A"} | Languages:{" "}
+                      {therapist.languages?.join(", ") || "N/A"}
+                    </p>
+                    <div className={styles.tags}>
+                      {therapist.specializations?.map((spec) => (
+                        <span key={spec}>{spec}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.actions}>
+                  <div className={styles.buttons}>
+                    <button className={styles.outlineBtn}>View Profile</button>
+                    <button
+                      className={styles.primaryBtn}
+                      onClick={() => handleBookAppointment(therapist)}
+                    >
+                      Book Appointment
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className={styles.actions}>
-                <div className={styles.buttons}>
-                  <button className={styles.outlineBtn}>View Profile</button>
-                  <button
-                    className={styles.primaryBtn}
-                    onClick={() => handleBookAppointment(therapist)}
-                  >
-                    Book Appointment
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
         </section>
       </div>
 

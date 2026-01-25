@@ -1,11 +1,15 @@
 export interface ApiResponse<T = unknown> {
-    success: boolean;
-    message: string;
-    data?: T;
-    statusCode: number;
+  success: boolean;
+  message: string;
+  data?: T;
+  statusCode: number;
 }
 
-export function successResponse<T>(message: string, data?: T, statusCode: number = 200): ApiResponse<T> {
+export function successResponse<T>(
+  message: string,
+  data?: T,
+  statusCode: number = 200,
+): ApiResponse<T> {
   return {
     success: true,
     message,
@@ -14,7 +18,11 @@ export function successResponse<T>(message: string, data?: T, statusCode: number
   };
 }
 
-export function errorResponse(message: string, _error?: unknown, statusCode: number = 400): ApiResponse<null> {
+export function errorResponse(
+  message: string,
+  _error?: unknown,
+  statusCode: number = 400,
+): ApiResponse<null> {
   return {
     success: false,
     message,
@@ -22,4 +30,3 @@ export function errorResponse(message: string, _error?: unknown, statusCode: num
     statusCode,
   };
 }
-

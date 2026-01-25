@@ -1,3 +1,3 @@
 export const CLOUDINARY_FOLDERS = {
-  ROOT: 'Nervaya',
+  ROOT: "Nervaya",
 } as const;

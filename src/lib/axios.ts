@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -14,16 +14,18 @@ api.interceptors.response.use(
   },
   (error: unknown) => {
     // Handle global errors if needed, e.g. token expiration redirect
-    if (error && typeof error === 'object' && 'response' in error) {
-      const axiosError = error as { response?: { status?: number; data?: unknown } };
+    if (error && typeof error === "object" && "response" in error) {
+      const axiosError = error as {
+        response?: { status?: number; data?: unknown };
+      };
       if (axiosError.response?.status === 401) {
         // Optional: Redirect to login or clear auth state
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('isLoggedIn');
-          window.dispatchEvent(new CustomEvent('auth-state-changed'));
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("isLoggedIn");
+          window.dispatchEvent(new CustomEvent("auth-state-changed"));
           // Avoid infinite reload loops by checking current path
-          if (!window.location.pathname.startsWith('/login')) {
-            window.location.href = '/login';
+          if (!window.location.pathname.startsWith("/login")) {
+            window.location.href = "/login";
           }
         }
       }

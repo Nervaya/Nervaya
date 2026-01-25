@@ -1,158 +1,158 @@
 .statsSection {
-    padding: 60px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
+  padding: 60px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 @media (max-width: 1200px) {
-    .statsSection {
-        padding: 50px 40px;
-    }
+  .statsSection {
+    padding: 50px 40px;
+  }
 }
 
 @media (max-width: 768px) {
-    .statsSection {
-        padding: 40px 30px;
-    }
+  .statsSection {
+    padding: 40px 30px;
+  }
 }
 
 @media (max-width: 480px) {
-    .statsSection {
-        padding: 30px 20px;
-    }
+  .statsSection {
+    padding: 30px 20px;
+  }
 }
 
 .statsContainer {
-    background: linear-gradient(to left, #FFFFFF, #E9D4FF);
-    border: 1px solid #7828C8;
-    border-radius: 30px;
-    padding: 48px 60px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 32px;
-    list-style: none;
-    margin: 0;
+  background: linear-gradient(to left, #ffffff, #e9d4ff);
+  border: 1px solid #7828c8;
+  border-radius: 30px;
+  padding: 48px 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
-    .statsContainer {
-        padding: 40px 48px;
-        gap: 24px;
-    }
+  .statsContainer {
+    padding: 40px 48px;
+    gap: 24px;
+  }
 }
 
 @media (max-width: 768px) {
-    .statsContainer {
-        flex-direction: column;
-        padding: 40px 32px;
-        gap: 32px;
-    }
+  .statsContainer {
+    flex-direction: column;
+    padding: 40px 32px;
+    gap: 32px;
+  }
 }
 
 @media (max-width: 480px) {
-    .statsContainer {
-        padding: 32px 24px;
-        gap: 24px;
-    }
+  .statsContainer {
+    padding: 32px 24px;
+    gap: 24px;
+  }
 }
 
 .statItem {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex: 1;
 }
 
 @media (max-width: 1024px) {
-    .statItem {
-        gap: 24px;
-    }
+  .statItem {
+    gap: 24px;
+  }
 }
 
 @media (max-width: 768px) {
-    .statItem {
-        width: 100%;
-        justify-content: center;
-        gap: 0;
-    }
+  .statItem {
+    width: 100%;
+    justify-content: center;
+    gap: 0;
+  }
 }
 
 .statContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  flex: 1;
 }
 
 @media (max-width: 768px) {
-    .statContent {
-        width: 100%;
-    }
+  .statContent {
+    width: 100%;
+  }
 }
 
 .statValue {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 700;
-    color: #301050;
-    line-height: 1.2;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #301050;
+  line-height: 1.2;
 }
 
 @media (max-width: 1024px) {
-    .statValue {
-        font-size: clamp(1.375rem, 3vw, 1.75rem);
-    }
+  .statValue {
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+  }
 }
 
 @media (max-width: 768px) {
-    .statValue {
-        font-size: clamp(1.25rem, 3vw, 1.5rem);
-    }
+  .statValue {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+  }
 }
 
 @media (max-width: 480px) {
-    .statValue {
-        font-size: clamp(1.125rem, 4vw, 1.375rem);
-    }
+  .statValue {
+    font-size: clamp(1.125rem, 4vw, 1.375rem);
+  }
 }
 
 .statLabel {
-    font-size: clamp(0.875rem, 1.2vw, 1rem);
-    font-weight: 500;
-    color: #4a4a4a;
-    line-height: 1.4;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  font-weight: 500;
+  color: #4a4a4a;
+  line-height: 1.4;
 }
 
 @media (max-width: 1024px) {
-    .statLabel {
-        font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
-    }
+  .statLabel {
+    font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+  }
 }
 
 @media (max-width: 768px) {
-    .statLabel {
-        font-size: clamp(0.8125rem, 1.5vw, 0.875rem);
-    }
+  .statLabel {
+    font-size: clamp(0.8125rem, 1.5vw, 0.875rem);
+  }
 }
 
 @media (max-width: 480px) {
-    .statLabel {
-        font-size: 0.8125rem;
-    }
+  .statLabel {
+    font-size: 0.8125rem;
+  }
 }
 
 .statDivider {
-    width: 2px;
-    height: 60px;
-    background: #DAB2FF;
-    flex-shrink: 0;
+  width: 2px;
+  height: 60px;
+  background: #dab2ff;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-    .statDivider {
-        display: none;
-    }
+  .statDivider {
+    display: none;
+  }
 }

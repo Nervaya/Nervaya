@@ -1,212 +1,212 @@
 .container {
-    background: #FAF5FF;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  background: #faf5ff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .aboutUsSection {
-    padding: 60px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-    flex: 1;
+  padding: 60px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
 }
 
 @media (max-width: 1200px) {
-    .aboutUsSection {
-        padding: 50px 40px;
-    }
+  .aboutUsSection {
+    padding: 50px 40px;
+  }
 }
 
 @media (max-width: 768px) {
-    .aboutUsSection {
-        padding: 40px 30px;
-    }
+  .aboutUsSection {
+    padding: 40px 30px;
+  }
 }
 
 @media (max-width: 480px) {
-    .aboutUsSection {
-        padding: 30px 20px;
-    }
+  .aboutUsSection {
+    padding: 30px 20px;
+  }
 }
 
 .aboutUsTitle {
-    font-size: 40px;
-    font-weight: 700;
-    color: #7828C8;
-    text-align: center;
-    margin-bottom: 60px;
-    letter-spacing: -0.02em;
+  font-size: 40px;
+  font-weight: 700;
+  color: #7828c8;
+  text-align: center;
+  margin-bottom: 60px;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 1024px) {
-    .aboutUsTitle {
-        font-size: clamp(2rem, 4vw, 3rem);
-        margin-bottom: 50px;
-    }
+  .aboutUsTitle {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 50px;
+  }
 }
 
 @media (max-width: 768px) {
-    .aboutUsTitle {
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-        margin-bottom: 40px;
-    }
+  .aboutUsTitle {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 40px;
+  }
 }
 
 @media (max-width: 480px) {
-    .aboutUsTitle {
-        font-size: clamp(1.5rem, 5vw, 2rem);
-        margin-bottom: 30px;
-    }
+  .aboutUsTitle {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: 30px;
+  }
 }
 
 .card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
 }
 
 @media (max-width: 1024px) {
-    .card {
-        gap: 32px;
-        padding: 32px;
-    }
+  .card {
+    gap: 32px;
+    padding: 32px;
+  }
 }
 
 @media (max-width: 768px) {
-    .card {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 28px;
-    }
+  .card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 28px;
+  }
 }
 
 @media (max-width: 480px) {
-    .card {
-        padding: 24px;
-        gap: 24px;
-    }
+  .card {
+    padding: 24px;
+    gap: 24px;
+  }
 }
 
 .cardContent {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 @media (max-width: 768px) {
-    .cardContent {
-        gap: 18px;
-    }
+  .cardContent {
+    gap: 18px;
+  }
 }
 
 @media (max-width: 480px) {
-    .cardContent {
-        gap: 16px;
-    }
+  .cardContent {
+    gap: 16px;
+  }
 }
 
 .missionTag {
-    display: inline-block;
-    background: #F3F8FF;
-    color: #7828C8;
-    padding: 8px 16px;
-    border-radius: 24px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    width: fit-content;
+  display: inline-block;
+  background: #f3f8ff;
+  color: #7828c8;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  width: fit-content;
 }
 
 @media (max-width: 480px) {
-    .missionTag {
-        font-size: 0.8125rem;
-        padding: 6px 14px;
-    }
+  .missionTag {
+    font-size: 0.8125rem;
+    padding: 6px 14px;
+  }
 }
 
 .cardHeading {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    font-weight: 700;
-    color: #1a1a1a;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
-    .cardHeading {
-        font-size: clamp(1.5rem, 3vw, 2.25rem);
-    }
+  .cardHeading {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
 }
 
 @media (max-width: 768px) {
-    .cardHeading {
-        font-size: clamp(1.5rem, 4vw, 2rem);
-    }
+  .cardHeading {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
 }
 
 @media (max-width: 480px) {
-    .cardHeading {
-        font-size: clamp(1.25rem, 5vw, 1.75rem);
-    }
+  .cardHeading {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+  }
 }
 
 .cardParagraph {
-    font-size: clamp(0.95rem, 1.2vw, 1rem);
-    line-height: 1.7;
-    color: #4a4a4a;
-    margin: 0;
+  font-size: clamp(0.95rem, 1.2vw, 1rem);
+  line-height: 1.7;
+  color: #4a4a4a;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
-    .cardParagraph {
-        font-size: clamp(0.9rem, 1.5vw, 0.95rem);
-    }
+  .cardParagraph {
+    font-size: clamp(0.9rem, 1.5vw, 0.95rem);
+  }
 }
 
 @media (max-width: 768px) {
-    .cardParagraph {
-        font-size: clamp(0.875rem, 2vw, 0.95rem);
-        line-height: 1.6;
-    }
+  .cardParagraph {
+    font-size: clamp(0.875rem, 2vw, 0.95rem);
+    line-height: 1.6;
+  }
 }
 
 @media (max-width: 480px) {
-    .cardParagraph {
-        font-size: 0.875rem;
-    }
+  .cardParagraph {
+    font-size: 0.875rem;
+  }
 }
 
 .cardImagePlaceholder {
-    background: #f5f3ff;
-    border-radius: 12px;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    min-height: 300px;
+  background: #f5f3ff;
+  border-radius: 12px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 300px;
 }
 
 @media (max-width: 1024px) {
-    .cardImagePlaceholder {
-        min-height: 280px;
-    }
+  .cardImagePlaceholder {
+    min-height: 280px;
+  }
 }
 
 @media (max-width: 768px) {
-    .cardImagePlaceholder {
-        min-height: 250px;
-        order: -1;
-    }
+  .cardImagePlaceholder {
+    min-height: 250px;
+    order: -1;
+  }
 }
 
 @media (max-width: 480px) {
-    .cardImagePlaceholder {
-        min-height: 220px;
-    }
+  .cardImagePlaceholder {
+    min-height: 220px;
+  }
 }
