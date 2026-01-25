@@ -8,6 +8,7 @@ export interface IQuestionOption {
 
 export interface ISleepAssessmentQuestion {
     _id: string;
+    questionId: string;
     questionKey: string;
     questionText: string;
     questionType: QuestionType;

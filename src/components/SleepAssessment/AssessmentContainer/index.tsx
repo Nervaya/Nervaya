@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import ProgressBar from '../ProgressBar';
 import QuestionCard from '../QuestionCard';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion, IQuestionAnswer } from '@/types/sleepAssessment.types';
 import axiosInstance from '@/lib/axios';
@@ -228,7 +229,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
                     aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
                 >
                     {isSubmitting ? (
-                        <span className={styles.loadingSpinner} />
+                        <Loader size="sm" color="white" />
                     ) : isLastQuestion ? (
                         'Submit'
                     ) : (

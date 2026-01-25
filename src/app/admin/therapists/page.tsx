@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loader from '@/components/common/Loader';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
@@ -24,7 +25,7 @@ export default function AdminTherapistsPage() {
     } catch (error) {
       // Error handling - could be improved with proper error logging service
       if (error instanceof Error) {
-         
+
         console.error('Failed to fetch therapists', error);
       }
     } finally {
@@ -55,7 +56,7 @@ export default function AdminTherapistsPage() {
       }
     } catch (error) {
       if (error instanceof Error) {
-         
+
         console.error('Error deleting therapist', error);
       }
     }
@@ -66,12 +67,14 @@ export default function AdminTherapistsPage() {
       <div className={styles.header}>
         <h2>Manage Therapists</h2>
         <Link href="/admin/therapists/add" className={styles.addButton}>
-                    Add New Therapist
+          Add New Therapist
         </Link>
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 20px' }}>
+          <Loader size="lg" text="Loading therapists..." />
+        </div>
       ) : (
         <div className={styles.list}>
           {therapists.map((therapist) => (

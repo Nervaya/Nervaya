@@ -2,13 +2,14 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
 
 interface ImageUploadProps {
-    onUpload: (url: string) => void;
-    initialUrl?: string;
-    label?: string;
+  onUpload: (url: string) => void;
+  initialUrl?: string;
+  label?: string;
 }
 
 const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: ImageUploadProps) => {
@@ -26,7 +27,7 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) {return;}
+    if (!file) { return; }
 
     setLoading(true);
     setError(null);
@@ -52,7 +53,7 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
     } catch (err) {
       setError('Upload failed. Please try again.');
       if (err instanceof Error) {
-         
+
         console.error(err);
       }
     } finally {
@@ -84,7 +85,7 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
       />
 
       {loading ? (
-        <p>Uploading...</p>
+        <Loader size="md" text="Uploading..." />
       ) : preview ? (
         <>
           <Image

@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
+import { v4 } from 'uuid';
 
 export interface IQuestionOption {
     id: string;
@@ -7,6 +8,7 @@ export interface IQuestionOption {
 }
 
 export interface ISleepAssessmentQuestion extends Document {
+    questionId: string;
     questionKey: string;
     questionText: string;
     questionType: 'single_choice' | 'multiple_choice' | 'text' | 'scale';
@@ -41,6 +43,13 @@ const questionOptionSchema = new Schema<IQuestionOption>(
 
 const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
     {
+        questionId: {
+            type: String,
+            required: true,
+            unique: true,
+            default: () => v4(),
+            index: true,
+        },
         questionKey: {
             type: String,
             required: [true, 'Question key is required'],
@@ -67,7 +76,7 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
             type: [questionOptionSchema],
             default: [],
             validate: {
-                validator: function (this: ISleepAssessmentQuestion, options: IQuestionOption[]) {
+                validator: function (this: any, options: IQuestionOption[]) {
                     if (this.questionType === 'text') return true;
                     return options.length >= 2;
                 },

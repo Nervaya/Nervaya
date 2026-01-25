@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import DatePicker from '@/components/Booking/DatePicker';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 
 interface Schedule {
@@ -129,7 +130,9 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                         </h3>
 
                         {loading ? (
-                            <div className={styles.loading}>Loading...</div>
+                            <div className={styles.loading}>
+                                <Loader size="md" />
+                            </div>
                         ) : (
                             <div className={styles.statsContainer}>
                                 <div className={styles.statCard}>

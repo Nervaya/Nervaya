@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ConsultingHour } from '@/types/therapist.types';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 
 interface ConsultingHoursManagerProps {
@@ -34,14 +35,14 @@ function convert12To24(time12: string): string {
     if (!time12) return '';
     const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
     if (!match) return time12;
-    
+
     let hour = parseInt(match[1], 10);
     const minutes = match[2];
     const ampm = match[3].toUpperCase();
-    
+
     if (ampm === 'PM' && hour !== 12) hour += 12;
     if (ampm === 'AM' && hour === 12) hour = 0;
-    
+
     return `${hour.toString().padStart(2, '0')}:${minutes}`;
 }
 
@@ -232,7 +233,7 @@ export default function ConsultingHoursManager({
     const isSaved = savedHours.length > 0 && !hasUnsavedChanges;
 
     if (loading) {
-        return <div className={styles.loading}>Loading consulting hours...</div>;
+        return <div className={styles.loading}><Loader size="lg" text="Loading consulting hours..." /></div>;
     }
 
     return (
@@ -287,8 +288,8 @@ export default function ConsultingHoursManager({
             )}
 
             {generationStatus && (
-                <div className={generationStatus.includes('Warning') || generationStatus.includes('Failed') 
-                    ? styles.errorBanner 
+                <div className={generationStatus.includes('Warning') || generationStatus.includes('Failed')
+                    ? styles.errorBanner
                     : styles.successBanner}>
                     <span>{generationStatus.includes('Warning') || generationStatus.includes('Failed') ? '⚠️' : '✓'}</span>
                     <span>{generationStatus}</span>
@@ -335,9 +336,8 @@ export default function ConsultingHoursManager({
                                 return (
                                     <div
                                         key={day.value}
-                                        className={`${styles.summaryDay} ${
-                                            dayHours?.isEnabled ? styles.summaryDayEnabled : ''
-                                        }`}
+                                        className={`${styles.summaryDay} ${dayHours?.isEnabled ? styles.summaryDayEnabled : ''
+                                            }`}
                                     >
                                         <div className={styles.summaryDayName}>{day.short}</div>
                                         {dayHours?.isEnabled ? (
@@ -362,9 +362,8 @@ export default function ConsultingHoursManager({
                         return (
                             <div
                                 key={day.value}
-                                className={`${styles.dayCard} ${
-                                    dayHours.isEnabled ? styles.enabled : ''
-                                }`}
+                                className={`${styles.dayCard} ${dayHours.isEnabled ? styles.enabled : ''
+                                    }`}
                             >
                                 <div className={styles.dayHeader}>
                                     <label className={styles.dayToggle}>
@@ -424,9 +423,9 @@ export default function ConsultingHoursManager({
                 </div>
                 <div className={styles.saveSection}>
                     <p className={styles.saveDescription}>
-                        {hasUnsavedChanges 
+                        {hasUnsavedChanges
                             ? 'You have unsaved changes. Click the button below to save your consulting hours to the database.'
-                            : isSaved 
+                            : isSaved
                                 ? 'Your consulting hours are saved. You can now generate time slots for patient bookings.'
                                 : 'Set at least one day with consulting hours, then save to continue.'}
                     </p>

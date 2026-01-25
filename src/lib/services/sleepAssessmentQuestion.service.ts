@@ -2,6 +2,7 @@ import SleepAssessmentQuestion, { ISleepAssessmentQuestion } from '@/lib/models/
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
+import { validate as validateUUID } from 'uuid';
 import type { CreateQuestionInput, UpdateQuestionInput } from '@/types/sleepAssessment.types';
 
 export async function getAllActiveQuestions(): Promise<ISleepAssessmentQuestion[]> {
@@ -14,7 +15,7 @@ export async function getAllActiveQuestions(): Promise<ISleepAssessmentQuestion[
 
         return questions as ISleepAssessmentQuestion[];
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
@@ -28,44 +29,40 @@ export async function getAllQuestions(): Promise<ISleepAssessmentQuestion[]> {
 
         return questions as ISleepAssessmentQuestion[];
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
-export async function getQuestionById(questionId: string): Promise<ISleepAssessmentQuestion> {
+async function findQuestion(identifier: string) {
+    if (validateUUID(identifier)) {
+        return await SleepAssessmentQuestion.findOne({ questionId: identifier });
+    }
+
+    if (Types.ObjectId.isValid(identifier)) {
+        return await SleepAssessmentQuestion.findById(identifier);
+    }
+
+    return await SleepAssessmentQuestion.findOne({ questionKey: identifier });
+}
+
+export async function getQuestionById(identifier: string): Promise<ISleepAssessmentQuestion> {
     await connectDB();
 
     try {
-        if (!Types.ObjectId.isValid(questionId)) {
-            throw new ValidationError('Invalid Question ID');
-        }
-
-        const question = await SleepAssessmentQuestion.findById(questionId).lean();
+        const question = await findQuestion(identifier);
 
         if (!question) {
             throw new NotFoundError('Question not found');
         }
 
-        return question as ISleepAssessmentQuestion;
+        return question.toObject() as ISleepAssessmentQuestion;
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
 export async function getQuestionByKey(questionKey: string): Promise<ISleepAssessmentQuestion> {
-    await connectDB();
-
-    try {
-        const question = await SleepAssessmentQuestion.findOne({ questionKey }).lean();
-
-        if (!question) {
-            throw new NotFoundError('Question not found');
-        }
-
-        return question as ISleepAssessmentQuestion;
-    } catch (error) {
-        throw handleError(error);
-    }
+    return getQuestionById(questionKey);
 }
 
 export async function createQuestion(input: CreateQuestionInput): Promise<ISleepAssessmentQuestion> {
@@ -81,11 +78,8 @@ export async function createQuestion(input: CreateQuestionInput): Promise<ISleep
         }
 
         const question = await SleepAssessmentQuestion.create({
+            ...input,
             questionKey: input.questionKey.toLowerCase(),
-            questionText: input.questionText,
-            questionType: input.questionType,
-            options: input.options,
-            order: input.order,
             isRequired: input.isRequired ?? true,
             isActive: input.isActive ?? true,
             category: input.category ?? 'general',
@@ -93,23 +87,23 @@ export async function createQuestion(input: CreateQuestionInput): Promise<ISleep
 
         return question.toObject() as ISleepAssessmentQuestion;
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
 export async function updateQuestion(
-    questionId: string,
+    identifier: string,
     input: UpdateQuestionInput,
 ): Promise<ISleepAssessmentQuestion> {
     await connectDB();
 
     try {
-        if (!Types.ObjectId.isValid(questionId)) {
-            throw new ValidationError('Invalid Question ID');
-        }
+        const query = Types.ObjectId.isValid(identifier)
+            ? { _id: identifier }
+            : { questionKey: identifier };
 
-        const question = await SleepAssessmentQuestion.findByIdAndUpdate(
-            questionId,
+        const question = await SleepAssessmentQuestion.findOneAndUpdate(
+            query,
             { $set: input },
             { new: true, runValidators: true },
         );
@@ -120,25 +114,25 @@ export async function updateQuestion(
 
         return question.toObject() as ISleepAssessmentQuestion;
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
-export async function deleteQuestion(questionId: string): Promise<void> {
+export async function deleteQuestion(identifier: string): Promise<void> {
     await connectDB();
 
     try {
-        if (!Types.ObjectId.isValid(questionId)) {
-            throw new ValidationError('Invalid Question ID');
-        }
+        const query = Types.ObjectId.isValid(identifier)
+            ? { _id: identifier }
+            : { questionKey: identifier };
 
-        const question = await SleepAssessmentQuestion.findByIdAndDelete(questionId);
+        const question = await SleepAssessmentQuestion.findOneAndDelete(query);
 
         if (!question) {
             throw new NotFoundError('Question not found');
         }
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
@@ -148,32 +142,38 @@ export async function reorderQuestions(
     await connectDB();
 
     try {
-        const bulkOps = questionOrders.map(({ questionId, order }) => ({
-            updateOne: {
-                filter: { _id: new Types.ObjectId(questionId) },
-                update: { $set: { order } },
-            },
-        }));
+        const bulkOps = questionOrders.map(({ questionId, order }) => {
+            const filter = Types.ObjectId.isValid(questionId)
+                ? { _id: new Types.ObjectId(questionId) }
+                : { questionKey: questionId };
+
+            return {
+                updateOne: {
+                    filter,
+                    update: { $set: { order } },
+                },
+            };
+        });
 
         await SleepAssessmentQuestion.bulkWrite(bulkOps);
     } catch (error) {
-        throw handleError(error);
+        throw error;
     }
 }
 
 export async function toggleQuestionActive(
-    questionId: string,
+    identifier: string,
     isActive: boolean,
 ): Promise<ISleepAssessmentQuestion> {
     await connectDB();
 
     try {
-        if (!Types.ObjectId.isValid(questionId)) {
-            throw new ValidationError('Invalid Question ID');
-        }
+        const query = Types.ObjectId.isValid(identifier)
+            ? { _id: identifier }
+            : { questionKey: identifier };
 
-        const question = await SleepAssessmentQuestion.findByIdAndUpdate(
-            questionId,
+        const question = await SleepAssessmentQuestion.findOneAndUpdate(
+            query,
             { $set: { isActive } },
             { new: true },
         );
@@ -184,6 +184,16 @@ export async function toggleQuestionActive(
 
         return question.toObject() as ISleepAssessmentQuestion;
     } catch (error) {
-        throw handleError(error);
+        throw error;
+    }
+}
+
+export async function deleteAllQuestions(): Promise<void> {
+    await connectDB();
+
+    try {
+        await SleepAssessmentQuestion.deleteMany({});
+    } catch (error) {
+        throw error;
     }
 }

@@ -1,13 +1,18 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
 export default function AdminSleepAssessmentPage() {
     const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState<'next' | 'prev' | null>(null);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const fetchQuestions = useCallback(async () => {
         try {
@@ -29,6 +34,64 @@ export default function AdminSleepAssessmentPage() {
     useEffect(() => {
         fetchQuestions();
     }, [fetchQuestions]);
+
+    // Keep currentIndex in bounds when questions change
+    useEffect(() => {
+        if (questions.length > 0 && currentIndex >= questions.length) {
+            setCurrentIndex(questions.length - 1);
+        }
+    }, [questions.length, currentIndex]);
+
+    const goToNext = useCallback(() => {
+        if (currentIndex < questions.length - 1 && !isAnimating) {
+            setDirection('next');
+            setIsAnimating(true);
+            setTimeout(() => {
+                setCurrentIndex(prev => prev + 1);
+                setIsAnimating(false);
+            }, 300);
+        }
+    }, [currentIndex, questions.length, isAnimating]);
+
+    const goToPrev = useCallback(() => {
+        if (currentIndex > 0 && !isAnimating) {
+            setDirection('prev');
+            setIsAnimating(true);
+            setTimeout(() => {
+                setCurrentIndex(prev => prev - 1);
+                setIsAnimating(false);
+            }, 300);
+        }
+    }, [currentIndex, isAnimating]);
+
+    const goToIndex = useCallback((index: number) => {
+        if (index !== currentIndex && !isAnimating) {
+            setDirection(index > currentIndex ? 'next' : 'prev');
+            setIsAnimating(true);
+            setTimeout(() => {
+                setCurrentIndex(index);
+                setIsAnimating(false);
+            }, 300);
+        }
+    }, [currentIndex, isAnimating]);
+
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (isAnimating || questions.length === 0) return;
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                goToNext();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                goToPrev();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isAnimating, questions.length, goToNext, goToPrev]);
 
     const handleDelete = async (id: string, questionText: string) => {
         const message = `WARNING: Are you sure you want to delete this question?\n\n"${questionText.substring(0, 50)}..."\n\nThis action cannot be undone.`;
@@ -102,8 +165,10 @@ export default function AdminSleepAssessmentPage() {
         return labels[type] || type;
     };
 
+    const currentQuestion = questions[currentIndex];
+
     return (
-        <div className={styles.container}>
+        <div className={styles.container} ref={containerRef}>
             <header className={styles.header}>
                 <div className={styles.headerContent}>
                     <h1 className={styles.title}>Sleep Assessment Questions</h1>
@@ -119,100 +184,177 @@ export default function AdminSleepAssessmentPage() {
 
             {loading ? (
                 <div className={styles.loadingContainer}>
-                    <div className={styles.loadingSpinner} />
-                    <p>Loading questions...</p>
+                    <Loader size="lg" text="Loading questions..." />
+                </div>
+            ) : questions.length === 0 ? (
+                <div className={styles.emptyState}>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M7 9H17M7 13H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <h3>No Questions Yet</h3>
+                    <p>Create your first assessment question or seed default questions to get started.</p>
+                    <div className={styles.emptyStateActions}>
+                        <Link href="/admin/sleep-assessment/add" className={styles.emptyStateButton}>
+                            Add Question
+                        </Link>
+                        <button
+                            onClick={async () => {
+                                if (confirm('This will wipe all existing questions and seed default ones. Are you sure?')) {
+                                    setLoading(true);
+                                    try {
+                                        const response = await fetch('/api/sleep-assessment/questions/seed?reset=true', { method: 'POST' });
+                                        if (response.ok) {
+                                            fetchQuestions();
+                                        } else {
+                                            alert('Failed to seed questions');
+                                        }
+                                    } catch (error) {
+                                        console.error(error);
+                                        alert('Error seeding questions');
+                                    } finally {
+                                        setLoading(false);
+                                    }
+                                }
+                            }}
+                            className={styles.seedButton}
+                        >
+                            Seed Default Questions
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSeedQuestions}
+                            className={styles.seedButton}
+                        >
+                            Seed Default Questions
+                        </button>
+                    </div>
                 </div>
             ) : (
-                <div className={styles.questionsList}>
-                    {questions.length === 0 ? (
-                        <div className={styles.emptyState}>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
-                                <path d="M7 9H17M7 13H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
-                            <h3>No Questions Yet</h3>
-                            <p>Create your first assessment question or seed default questions to get started.</p>
-                            <div className={styles.emptyStateActions}>
-                                <Link href="/admin/sleep-assessment/add" className={styles.emptyStateButton}>
-                                    Add Question
+                <div className={styles.carouselContainer}>
+                    {/* Progress indicator */}
+                    <div className={styles.progressBar}>
+                        <div
+                            className={styles.progressFill}
+                            style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+                        />
+                    </div>
+
+                    {/* Question counter */}
+                    <div className={styles.questionCounter}>
+                        <span className={styles.currentNum}>{currentIndex + 1}</span>
+                        <span className={styles.separator}>/</span>
+                        <span className={styles.totalNum}>{questions.length}</span>
+                    </div>
+
+                    {/* Navigation arrows - left */}
+                    <button
+                        type="button"
+                        className={`${styles.navButton} ${styles.navPrev}`}
+                        onClick={goToPrev}
+                        disabled={currentIndex === 0 || isAnimating}
+                        aria-label="Previous question"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+
+                    {/* Question card with animation */}
+                    <div className={styles.cardViewport}>
+                        <div
+                            className={`${styles.questionCard} ${styles.cardAnimated} ${isAnimating ? (direction === 'next' ? styles.slideOutLeft : styles.slideOutRight) : styles.slideIn
+                                }`}
+                            key={currentQuestion._id}
+                        >
+                            <div className={styles.questionHeader}>
+                                <span className={styles.orderBadge}>{currentQuestion.order}</span>
+                                <div className={styles.questionMeta}>
+                                    <span className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}>
+                                        {getQuestionTypeLabel(currentQuestion.questionType)}
+                                    </span>
+                                    <span className={`${styles.statusBadge} ${currentQuestion.isActive ? styles.active : styles.inactive}`}>
+                                        {currentQuestion.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                    {currentQuestion.isRequired && (
+                                        <span className={styles.requiredBadge}>Required</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={styles.questionContent}>
+                                <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
+                                <code className={styles.questionKey}>{currentQuestion.questionKey}</code>
+
+                                {currentQuestion.options && currentQuestion.options.length > 0 && (
+                                    <div className={styles.optionsPreview}>
+                                        <span className={styles.optionsLabel}>Options:</span>
+                                        <ul className={styles.optionsList}>
+                                            {currentQuestion.options.map((opt) => (
+                                                <li key={opt.id} className={styles.optionItem}>
+                                                    {opt.label}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className={styles.questionActions}>
+                                <button
+                                    type="button"
+                                    className={`${styles.toggleButton} ${currentQuestion.isActive ? styles.deactivate : styles.activate}`}
+                                    onClick={() => handleToggleActive(currentQuestion.questionId, currentQuestion.isActive)}
+                                >
+                                    {currentQuestion.isActive ? 'Deactivate' : 'Activate'}
+                                </button>
+                                <Link
+                                    href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`}
+                                    className={styles.editButton}
+                                >
+                                    Edit
                                 </Link>
                                 <button
                                     type="button"
-                                    onClick={handleSeedQuestions}
-                                    className={styles.seedButton}
+                                    className={styles.deleteButton}
+                                    onClick={() => handleDelete(currentQuestion.questionId, currentQuestion.questionText)}
                                 >
-                                    Seed Default Questions
+                                    Delete
                                 </button>
                             </div>
                         </div>
-                    ) : (
-                        <ul className={styles.list}>
-                            {questions.map((question) => (
-                                <li key={question._id} className={styles.questionCard}>
-                                    <div className={styles.questionHeader}>
-                                        <span className={styles.orderBadge}>{question.order}</span>
-                                        <div className={styles.questionMeta}>
-                                            <span className={`${styles.typeBadge} ${styles[question.questionType]}`}>
-                                                {getQuestionTypeLabel(question.questionType)}
-                                            </span>
-                                            <span className={`${styles.statusBadge} ${question.isActive ? styles.active : styles.inactive}`}>
-                                                {question.isActive ? 'Active' : 'Inactive'}
-                                            </span>
-                                            {question.isRequired && (
-                                                <span className={styles.requiredBadge}>Required</span>
-                                            )}
-                                        </div>
-                                    </div>
+                    </div>
 
-                                    <div className={styles.questionContent}>
-                                        <h3 className={styles.questionText}>{question.questionText}</h3>
-                                        <code className={styles.questionKey}>{question.questionKey}</code>
+                    {/* Navigation arrows - right */}
+                    <button
+                        type="button"
+                        className={`${styles.navButton} ${styles.navNext}`}
+                        onClick={goToNext}
+                        disabled={currentIndex === questions.length - 1 || isAnimating}
+                        aria-label="Next question"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
 
-                                        {question.options && question.options.length > 0 && (
-                                            <div className={styles.optionsPreview}>
-                                                <span className={styles.optionsLabel}>Options:</span>
-                                                <ul className={styles.optionsList}>
-                                                    {question.options.slice(0, 4).map((opt) => (
-                                                        <li key={opt.id} className={styles.optionItem}>
-                                                            {opt.label}
-                                                        </li>
-                                                    ))}
-                                                    {question.options.length > 4 && (
-                                                        <li className={styles.optionMore}>
-                                                            +{question.options.length - 4} more
-                                                        </li>
-                                                    )}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </div>
+                    {/* Dot indicators */}
+                    <div className={styles.dotIndicators}>
+                        {questions.map((q, index) => (
+                            <button
+                                key={q._id}
+                                type="button"
+                                className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ''}`}
+                                onClick={() => goToIndex(index)}
+                                aria-label={`Go to question ${index + 1}`}
+                            />
+                        ))}
+                    </div>
 
-                                    <div className={styles.questionActions}>
-                                        <button
-                                            type="button"
-                                            className={`${styles.toggleButton} ${question.isActive ? styles.deactivate : styles.activate}`}
-                                            onClick={() => handleToggleActive(question._id, question.isActive)}
-                                        >
-                                            {question.isActive ? 'Deactivate' : 'Activate'}
-                                        </button>
-                                        <Link
-                                            href={`/admin/sleep-assessment/edit/${question._id}`}
-                                            className={styles.editButton}
-                                        >
-                                            Edit
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            className={styles.deleteButton}
-                                            onClick={() => handleDelete(question._id, question.questionText)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    {/* Keyboard hint */}
+                    <p className={styles.keyboardHint}>
+                        Use <kbd>←</kbd> <kbd>→</kbd> arrow keys to navigate
+                    </p>
                 </div>
             )}
         </div>

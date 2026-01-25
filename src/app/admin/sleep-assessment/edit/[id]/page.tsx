@@ -3,7 +3,8 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import styles from '../../add/styles.module.css';
+import Loader from '@/components/common/Loader';
+import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
 export default function EditQuestionPage({ params }: { params: Promise<{ id: string }> }) {
@@ -139,8 +140,8 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     if (isLoading) {
         return (
             <div className={styles.container}>
-                <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
-                    Loading question...
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px 20px' }}>
+                    <Loader size="lg" text="Loading question..." />
                 </div>
             </div>
         );
@@ -345,7 +346,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                     >
                         {isSubmitting ? (
                             <>
-                                <span className={styles.loadingSpinner} />
+                                <Loader size="sm" color="white" />
                                 Saving...
                             </>
                         ) : (

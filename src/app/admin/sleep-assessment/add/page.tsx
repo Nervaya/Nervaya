@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -298,7 +299,7 @@ export default function AddQuestionPage() {
                     >
                         {isSubmitting ? (
                             <>
-                                <span className={styles.loadingSpinner} />
+                                <Loader size="sm" color="white" />
                                 Creating...
                             </>
                         ) : (

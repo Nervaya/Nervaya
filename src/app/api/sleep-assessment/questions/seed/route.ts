@@ -14,12 +14,20 @@ export async function POST(req: NextRequest) {
             return authResult;
         }
 
-        const existingQuestions = await getAllQuestions();
-        if (existingQuestions.length > 0) {
-            return NextResponse.json(
-                errorResponse('Questions already exist. Delete existing questions first or add individual questions.', null, 400),
-                { status: 400 },
-            );
+        const { searchParams } = new URL(req.url);
+        const shouldReset = searchParams.get('reset') === 'true';
+
+        if (shouldReset) {
+            const { deleteAllQuestions } = await import('@/lib/services/sleepAssessmentQuestion.service');
+            await deleteAllQuestions();
+        } else {
+            const existingQuestions = await getAllQuestions();
+            if (existingQuestions.length > 0) {
+                return NextResponse.json(
+                    errorResponse('Questions already exist. Use ?reset=true to wipe and re-seed.', null, 400),
+                    { status: 400 },
+                );
+            }
         }
 
         const createdQuestions = [];

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import SlotManager from '@/components/Admin/SlotManager';
+import Loader from '@/components/common/Loader';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
@@ -41,7 +42,9 @@ export default function TherapistSlotsPage() {
     if (loading) {
         return (
             <div className={styles.container}>
-                <div className={styles.loading}>Loading therapist information...</div>
+                <div className={styles.loading}>
+                    <Loader size="lg" text="Loading therapist information..." />
+                </div>
             </div>
         );
     }

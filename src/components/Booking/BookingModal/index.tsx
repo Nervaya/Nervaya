@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 
 interface TimeSlot {
@@ -248,8 +249,7 @@ export default function BookingModal({
                         <h3 className={styles.sectionTitle}>Available Time Slots</h3>
                         {loading ? (
                             <div className={styles.loading}>
-                                <div className={styles.spinner}></div>
-                                <p>Loading available slots...</p>
+                                <Loader size="md" text="Loading available slots..." />
                             </div>
                         ) : error && !loading ? (
                             <div className={styles.errorMessage}>

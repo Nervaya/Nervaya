@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
+import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
 
 export default function MySessions() {
@@ -49,7 +50,7 @@ export default function MySessions() {
         return `${baseClass} ${styles[`status${status.charAt(0).toUpperCase()}${status.slice(1)}`]}`;
     };
 
-    if (loading) return <div className={styles.loading}>Loading sessions...</div>;
+    if (loading) return <div className={styles.loading}><Loader size="lg" text="Loading sessions..." /></div>;
     if (error) return <div className={styles.error}>{error}</div>;
 
     return (
