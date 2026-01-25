@@ -66,6 +66,12 @@ export const sidebarBottomNavItems: SidebarNavItem[] = [
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
+    title: 'General',
+    items: [
+      { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
+    ],
+  },
+  {
     title: 'Sleep',
     items: [
       { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
@@ -87,6 +93,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
     title: 'Admin',
     items: [
       { title: 'Therapists', path: '/admin/therapists', icon: 'FaUserDoctor' },
+      { title: 'Sleep Assessment', path: '/admin/sleep-assessment', icon: 'FaClipboardList' },
     ],
   },
 ];
