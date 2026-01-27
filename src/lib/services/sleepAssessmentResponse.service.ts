@@ -1,18 +1,18 @@
 import SleepAssessmentResponse, {
   ISleepAssessmentResponse,
-} from "@/lib/models/sleepAssessmentResponse.model";
-import SleepAssessmentQuestion from "@/lib/models/sleepAssessmentQuestion.model";
-import connectDB from "@/lib/db/mongodb";
+} from '@/lib/models/sleepAssessmentResponse.model';
+import SleepAssessmentQuestion from '@/lib/models/sleepAssessmentQuestion.model';
+import connectDB from '@/lib/db/mongodb';
 import {
   handleError,
   ValidationError,
   NotFoundError,
-} from "@/lib/utils/error.util";
-import { Types } from "mongoose";
+} from '@/lib/utils/error.util';
+import { Types } from 'mongoose';
 import type {
   SubmitAssessmentInput,
   IQuestionAnswer,
-} from "@/types/sleepAssessment.types";
+} from '@/types/sleepAssessment.types';
 
 export async function submitAssessment(
   userId: string,
@@ -22,11 +22,11 @@ export async function submitAssessment(
 
   try {
     if (!Types.ObjectId.isValid(userId)) {
-      throw new ValidationError("Invalid User ID");
+      throw new ValidationError('Invalid User ID');
     }
 
     if (!input.answers || input.answers.length === 0) {
-      throw new ValidationError("At least one answer is required");
+      throw new ValidationError('At least one answer is required');
     }
 
     const questionIds = input.answers.map((a) => a.questionId);
@@ -53,10 +53,10 @@ export async function submitAssessment(
       }
 
       if (
-        question.questionType === "single_choice" ||
-        question.questionType === "scale"
+        question.questionType === 'single_choice' ||
+        question.questionType === 'scale'
       ) {
-        if (typeof answer.answer !== "string") {
+        if (typeof answer.answer !== 'string') {
           throw new ValidationError(
             `Single choice answer must be a string for: ${question.questionKey}`,
           );
@@ -72,7 +72,7 @@ export async function submitAssessment(
         }
       }
 
-      if (question.questionType === "multiple_choice") {
+      if (question.questionType === 'multiple_choice') {
         if (!Array.isArray(answer.answer)) {
           throw new ValidationError(
             `Multiple choice answer must be an array for: ${question.questionKey}`,
@@ -117,7 +117,7 @@ export async function getUserAssessments(
 
   try {
     if (!Types.ObjectId.isValid(userId)) {
-      throw new ValidationError("Invalid User ID");
+      throw new ValidationError('Invalid User ID');
     }
 
     const assessments = await SleepAssessmentResponse.find({ userId })
@@ -137,7 +137,7 @@ export async function getLatestUserAssessment(
 
   try {
     if (!Types.ObjectId.isValid(userId)) {
-      throw new ValidationError("Invalid User ID");
+      throw new ValidationError('Invalid User ID');
     }
 
     const assessment = await SleepAssessmentResponse.findOne({ userId })
@@ -157,14 +157,14 @@ export async function getAssessmentById(
 
   try {
     if (!Types.ObjectId.isValid(assessmentId)) {
-      throw new ValidationError("Invalid Assessment ID");
+      throw new ValidationError('Invalid Assessment ID');
     }
 
     const assessment =
       await SleepAssessmentResponse.findById(assessmentId).lean();
 
     if (!assessment) {
-      throw new NotFoundError("Assessment not found");
+      throw new NotFoundError('Assessment not found');
     }
 
     return assessment as ISleepAssessmentResponse;
@@ -178,7 +178,7 @@ export async function getAllAssessments(): Promise<ISleepAssessmentResponse[]> {
 
   try {
     const assessments = await SleepAssessmentResponse.find()
-      .populate("userId", "firstName lastName email")
+      .populate('userId', 'firstName lastName email')
       .sort({ createdAt: -1 })
       .lean();
 
@@ -193,14 +193,14 @@ export async function deleteAssessment(assessmentId: string): Promise<void> {
 
   try {
     if (!Types.ObjectId.isValid(assessmentId)) {
-      throw new ValidationError("Invalid Assessment ID");
+      throw new ValidationError('Invalid Assessment ID');
     }
 
     const assessment =
       await SleepAssessmentResponse.findByIdAndDelete(assessmentId);
 
     if (!assessment) {
-      throw new NotFoundError("Assessment not found");
+      throw new NotFoundError('Assessment not found');
     }
   } catch (error) {
     throw handleError(error);

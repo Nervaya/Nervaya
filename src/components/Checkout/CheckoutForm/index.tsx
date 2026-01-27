@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { ShippingAddress } from "@/types/supplement.types";
-import Input from "@/components/common/Input";
-import Button from "@/components/common/Button";
-import styles from "./styles.module.css";
+import React, { useState } from 'react';
+import { ShippingAddress } from '@/types/supplement.types';
+import Input from '@/components/common/Input';
+import Button from '@/components/common/Button';
+import styles from './styles.module.css';
 
 interface CheckoutFormProps {
   onSubmit: (
@@ -22,18 +22,18 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   initialAddress,
 }) => {
   const [formData, setFormData] = useState<ShippingAddress>({
-    name: initialAddress?.name || "",
-    phone: initialAddress?.phone || "",
-    addressLine1: initialAddress?.addressLine1 || "",
-    addressLine2: initialAddress?.addressLine2 || "",
-    city: initialAddress?.city || "",
-    state: initialAddress?.state || "",
-    zipCode: initialAddress?.zipCode || "",
-    country: initialAddress?.country || "India",
+    name: initialAddress?.name || '',
+    phone: initialAddress?.phone || '',
+    addressLine1: initialAddress?.addressLine1 || '',
+    addressLine2: initialAddress?.addressLine2 || '',
+    city: initialAddress?.city || '',
+    state: initialAddress?.state || '',
+    zipCode: initialAddress?.zipCode || '',
+    country: initialAddress?.country || 'India',
   });
 
   const [saveAddress, setSaveAddress] = useState(false);
-  const [label, setLabel] = useState("Home");
+  const [label, setLabel] = useState('Home');
   const [errors, setErrors] = useState<
     Partial<Record<keyof ShippingAddress, string>>
   >({});
@@ -42,35 +42,35 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     const newErrors: Partial<Record<keyof ShippingAddress, string>> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = 'Name is required';
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone is required";
-    } else if (!/^[0-9]{10}$/.test(formData.phone.replace(/\D/g, ""))) {
-      newErrors.phone = "Please enter a valid 10-digit phone number";
+      newErrors.phone = 'Phone is required';
+    } else if (!/^[0-9]{10}$/.test(formData.phone.replace(/\D/g, ''))) {
+      newErrors.phone = 'Please enter a valid 10-digit phone number';
     }
 
     if (!formData.addressLine1.trim()) {
-      newErrors.addressLine1 = "Address line 1 is required";
+      newErrors.addressLine1 = 'Address line 1 is required';
     }
 
     if (!formData.city.trim()) {
-      newErrors.city = "City is required";
+      newErrors.city = 'City is required';
     }
 
     if (!formData.state.trim()) {
-      newErrors.state = "State is required";
+      newErrors.state = 'State is required';
     }
 
     if (!formData.zipCode.trim()) {
-      newErrors.zipCode = "Zip code is required";
+      newErrors.zipCode = 'Zip code is required';
     } else if (!/^[0-9]{6}$/.test(formData.zipCode)) {
-      newErrors.zipCode = "Please enter a valid 6-digit zip code";
+      newErrors.zipCode = 'Please enter a valid 6-digit zip code';
     }
 
     if (!formData.country.trim()) {
-      newErrors.country = "Country is required";
+      newErrors.country = 'Country is required';
     }
 
     setErrors(newErrors);
@@ -98,7 +98,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="Full Name"
           value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
+          onChange={(e) => handleChange('name', e.target.value)}
           error={errors.name}
           required
           variant="light"
@@ -107,7 +107,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           label="Phone Number"
           type="tel"
           value={formData.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
+          onChange={(e) => handleChange('phone', e.target.value)}
           error={errors.phone}
           required
           variant="light"
@@ -115,7 +115,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="Address Line 1"
           value={formData.addressLine1}
-          onChange={(e) => handleChange("addressLine1", e.target.value)}
+          onChange={(e) => handleChange('addressLine1', e.target.value)}
           error={errors.addressLine1}
           required
           containerClassName={styles.fullWidth}
@@ -124,7 +124,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="Address Line 2 (Optional)"
           value={formData.addressLine2}
-          onChange={(e) => handleChange("addressLine2", e.target.value)}
+          onChange={(e) => handleChange('addressLine2', e.target.value)}
           error={errors.addressLine2}
           containerClassName={styles.fullWidth}
           variant="light"
@@ -132,7 +132,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="City"
           value={formData.city}
-          onChange={(e) => handleChange("city", e.target.value)}
+          onChange={(e) => handleChange('city', e.target.value)}
           error={errors.city}
           required
           variant="light"
@@ -140,7 +140,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="State"
           value={formData.state}
-          onChange={(e) => handleChange("state", e.target.value)}
+          onChange={(e) => handleChange('state', e.target.value)}
           error={errors.state}
           required
           variant="light"
@@ -148,7 +148,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="Zip Code"
           value={formData.zipCode}
-          onChange={(e) => handleChange("zipCode", e.target.value)}
+          onChange={(e) => handleChange('zipCode', e.target.value)}
           error={errors.zipCode}
           required
           variant="light"
@@ -156,7 +156,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         <Input
           label="Country"
           value={formData.country}
-          onChange={(e) => handleChange("country", e.target.value)}
+          onChange={(e) => handleChange('country', e.target.value)}
           error={errors.country}
           required
           variant="light"
@@ -178,7 +178,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           <div className={styles.labelSelection}>
             <span className={styles.labelText}>Save as:</span>
             <div className={styles.radioGroup}>
-              {["Home", "Work", "Other"].map((l) => (
+              {['Home', 'Work', 'Other'].map((l) => (
                 <label key={l} className={styles.radioLabel}>
                   <input
                     type="radio"

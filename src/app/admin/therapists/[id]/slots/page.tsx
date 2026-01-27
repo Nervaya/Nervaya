@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import SlotManager from "@/components/Admin/SlotManager";
-import { Therapist } from "@/types/therapist.types";
-import styles from "./styles.module.css";
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import SlotManager from '@/components/Admin/SlotManager';
+import { Therapist } from '@/types/therapist.types';
+import styles from './styles.module.css';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -18,17 +18,17 @@ export default function TherapistSlotsPage() {
     try {
       const response = await fetch(`/api/therapists/${therapistId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch therapist");
+        throw new Error('Failed to fetch therapist');
       }
 
       const result = await response.json();
       if (result.success) {
         setTherapist(result.data);
       } else {
-        throw new Error("Therapist not found");
+        throw new Error('Therapist not found');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -51,9 +51,9 @@ export default function TherapistSlotsPage() {
     return (
       <div className={styles.container}>
         <div className={styles.error}>
-          <p>{error || "Therapist not found"}</p>
+          <p>{error || 'Therapist not found'}</p>
           <button
-            onClick={() => router.push("/admin/therapists")}
+            onClick={() => router.push('/admin/therapists')}
             className={styles.backButton}
           >
             Back to Therapists
@@ -73,12 +73,12 @@ export default function TherapistSlotsPage() {
           </p>
           {therapist.qualifications && therapist.qualifications.length > 0 && (
             <p className={styles.qualifications}>
-              {therapist.qualifications.join(", ")}
+              {therapist.qualifications.join(', ')}
             </p>
           )}
         </div>
         <button
-          onClick={() => router.push("/admin/therapists")}
+          onClick={() => router.push('/admin/therapists')}
           className={styles.backButton}
         >
           ← Back to Therapists

@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useState, FormEvent } from "react";
-import Image from "next/image";
-import { LazyMotion, m, AnimatePresence } from "framer-motion";
-import Input from "@/components/common/Input/Input";
-import Button from "@/components/common/Button/Button";
-import { useAuth } from "@/hooks/useAuth";
-import styles from "./AnimatedAuthForm.module.css";
+import { useState, FormEvent } from 'react';
+import Image from 'next/image';
+import { LazyMotion, m, AnimatePresence } from 'framer-motion';
+import Input from '@/components/common/Input/Input';
+import Button from '@/components/common/Button/Button';
+import { useAuth } from '@/hooks/useAuth';
+import styles from './AnimatedAuthForm.module.css';
 
 interface AnimatedAuthFormProps {
-  initialMode?: "login" | "signup";
+  initialMode?: 'login' | 'signup';
 }
 
 export default function AnimatedAuthForm({
-  initialMode = "login",
+  initialMode = 'login',
 }: AnimatedAuthFormProps) {
-  const [isLogin, setIsLogin] = useState(initialMode === "login");
+  const [isLogin, setIsLogin] = useState(initialMode === 'login');
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { login, signup, loading, error } = useAuth();
@@ -29,22 +29,22 @@ export default function AnimatedAuthForm({
 
     if (!isLogin) {
       if (!formData.name.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = 'Name is required';
       } else if (formData.name.trim().length < 2) {
-        newErrors.name = "Name must be at least 2 characters";
+        newErrors.name = 'Name must be at least 2 characters';
       }
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
+      newErrors.email = 'Invalid email format';
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (!isLogin && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -65,14 +65,14 @@ export default function AnimatedAuthForm({
         await signup(formData.email, formData.password, formData.name);
       }
     } catch (err) {
-      console.error("Auth error:", err);
+      console.error('Auth error:', err);
     }
   };
 
   const switchMode = () => {
     setIsLogin(!isLogin);
     setErrors({});
-    setFormData({ name: "", email: "", password: "" });
+    setFormData({ name: '', email: '', password: '' });
   };
 
   return (
@@ -206,13 +206,13 @@ export default function AnimatedAuthForm({
               <p className={styles.switchText}>
                 {isLogin
                   ? "Don't have an account? "
-                  : "Already have an account? "}
+                  : 'Already have an account? '}
                 <button
                   type="button"
                   onClick={switchMode}
                   className={styles.switchLink}
                 >
-                  {isLogin ? "Sign up" : "Sign in"}
+                  {isLogin ? 'Sign up' : 'Sign in'}
                 </button>
               </p>
             </div>
@@ -222,31 +222,31 @@ export default function AnimatedAuthForm({
         <div className={styles.illustrationSection}>
           <LazyMotion
             features={() =>
-              import("framer-motion").then((mod) => mod.domAnimation)
+              import('framer-motion').then((mod) => mod.domAnimation)
             }
           >
             <AnimatePresence mode="wait">
               <m.div
-                key={isLogin ? "login-img" : "signup-img"}
+                key={isLogin ? 'login-img' : 'signup-img'}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 0.5 }}
                 className={styles.illustrationContent}
-                style={{ position: "relative", width: "100%", height: "100%" }}
+                style={{ position: 'relative', width: '100%', height: '100%' }}
               >
                 <Image
                   src={
                     isLogin
-                      ? "/assets/auth/login-illustration.jpg"
-                      : "/assets/auth/signup-illustration.png"
+                      ? '/assets/auth/login-illustration.jpg'
+                      : '/assets/auth/signup-illustration.png'
                   }
-                  alt={isLogin ? "Login Illustration" : "Signup Illustration"}
+                  alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
                   fill
                   className={styles.illustrationImage}
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: "cover", objectPosition: "center" }}
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
               </m.div>
             </AnimatePresence>

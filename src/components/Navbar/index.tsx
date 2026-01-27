@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { FaCircleUser } from "react-icons/fa6";
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { FaCircleUser } from 'react-icons/fa6';
 import {
   NAVBAR_PRODUCTS_LINKS,
   NAVBAR_ACCOUNT_LINKS,
-} from "@/utils/navbarConstants";
-import { useAuth } from "@/hooks/useAuth";
-import styles from "./styles.module.css";
+} from '@/utils/navbarConstants';
+import { useAuth } from '@/hooks/useAuth';
+import styles from './styles.module.css';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -46,23 +46,23 @@ const Navbar = () => {
     };
 
     if (isProductsDropdownOpen || isAccountDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isProductsDropdownOpen, isAccountDropdownOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isMobileMenuOpen]);
 
@@ -100,13 +100,13 @@ const Navbar = () => {
           aria-expanded={isMobileMenuOpen}
         >
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
           ></span>
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
           ></span>
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
           ></span>
         </button>
 
@@ -115,7 +115,7 @@ const Navbar = () => {
         )}
 
         <ul
-          className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ""}`}
+          className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}
         >
           <li>
             <Link href="/" onClick={closeMobileMenu}>
@@ -131,7 +131,7 @@ const Navbar = () => {
             >
               Products
               <span
-                className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ""}`}
+                className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}
               >
                 ▼
               </span>
@@ -165,11 +165,11 @@ const Navbar = () => {
                 className={styles.accountButton}
               >
                 <FaCircleUser size={24} />
-                <span>{user?.name?.split(" ")[0] || "Account"}</span>
+                <span>{user?.name?.split(' ')[0] || 'Account'}</span>
                 <span
-                  className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ""}`}
+                  className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}
                 >
-                  {" "}
+                  {' '}
                 </span>
               </button>
               {isAccountDropdownOpen && (

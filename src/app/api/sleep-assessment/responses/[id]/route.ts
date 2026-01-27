@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getAssessmentById,
   deleteAssessment,
-} from "@/lib/services/sleepAssessmentResponse.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/sleepAssessmentResponse.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(
   req: NextRequest,
@@ -23,7 +23,7 @@ export async function GET(
     const assessment = await getAssessmentById(id);
 
     return NextResponse.json(
-      successResponse("Assessment fetched successfully", assessment),
+      successResponse('Assessment fetched successfully', assessment),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -48,7 +48,7 @@ export async function DELETE(
     await deleteAssessment(id);
 
     return NextResponse.json(
-      successResponse("Assessment deleted successfully"),
+      successResponse('Assessment deleted successfully'),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

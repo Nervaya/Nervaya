@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { TherapistSlot } from "@/types/session.types";
-import styles from "./styles.module.css";
+import { TherapistSlot } from '@/types/session.types';
+import styles from './styles.module.css';
 
 interface TimeSlotGridProps {
   slots: TherapistSlot[];
@@ -9,7 +9,7 @@ interface TimeSlotGridProps {
   onSlotSelect: (slotId: string, startTime?: string) => void;
 }
 
-type TimePeriod = "Morning" | "Afternoon" | "Evening";
+type TimePeriod = 'Morning' | 'Afternoon' | 'Evening';
 
 interface GroupedSlots {
   period: TimePeriod;
@@ -17,18 +17,18 @@ interface GroupedSlots {
 }
 
 function getTimePeriod(time: string): TimePeriod {
-  const hour = parseInt(time.split(":")[0]);
-  const isPM = time.includes("PM");
+  const hour = parseInt(time.split(':')[0]);
+  const isPM = time.includes('PM');
   const hour24 =
     isPM && hour !== 12 ? hour + 12 : !isPM && hour === 12 ? 0 : hour;
 
   if (hour24 < 12) {
-    return "Morning";
+    return 'Morning';
   }
   if (hour24 < 17) {
-    return "Afternoon";
+    return 'Afternoon';
   }
-  return "Evening";
+  return 'Evening';
 }
 
 function groupSlotsByPeriod(slots: TherapistSlot[]): GroupedSlots[] {
@@ -43,7 +43,7 @@ function groupSlotsByPeriod(slots: TherapistSlot[]): GroupedSlots[] {
     grouped[period].push(slot);
   });
 
-  const periods: TimePeriod[] = ["Morning", "Afternoon", "Evening"];
+  const periods: TimePeriod[] = ['Morning', 'Afternoon', 'Evening'];
   const result: GroupedSlots[] = periods
     .map((period) => ({
       period,
@@ -81,9 +81,9 @@ export default function TimeSlotGrid({
           <div key={group.period} className={styles.periodGroup}>
             <h4 className={styles.periodTitle}>
               <span className={styles.periodIcon}>
-                {group.period === "Morning" && "🌅"}
-                {group.period === "Afternoon" && "☀️"}
-                {group.period === "Evening" && "🌆"}
+                {group.period === 'Morning' && '🌅'}
+                {group.period === 'Afternoon' && '☀️'}
+                {group.period === 'Evening' && '🌆'}
               </span>
               {group.period}
               <span className={styles.periodCount}>

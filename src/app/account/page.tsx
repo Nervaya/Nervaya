@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import MySessions from "@/components/Account/MySessions";
-import MyOrders from "@/components/Account/MyOrders";
-import styles from "./styles.module.css";
-import { FaUser, FaEnvelope, FaSave } from "react-icons/fa";
+import { useState } from 'react';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import MySessions from '@/components/Account/MySessions';
+import MyOrders from '@/components/Account/MyOrders';
+import styles from './styles.module.css';
+import { FaUser, FaEnvelope, FaSave } from 'react-icons/fa';
 
-type TabType = "settings" | "orders" | "sessions";
+type TabType = 'settings' | 'orders' | 'sessions';
 
 export default function AccountPage() {
-  const [activeTab, setActiveTab] = useState<TabType>("settings");
+  const [activeTab, setActiveTab] = useState<TabType>('settings');
   const [formData, setFormData] = useState({
-    name: "Test Customer",
-    email: "customer@example.com",
-    phone: "+91 9876543210",
+    name: 'Test Customer',
+    email: 'customer@example.com',
+    phone: '+91 9876543210',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +24,7 @@ export default function AccountPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // eslint-disable-next-line no-alert
-    alert("Profile updated! (Simulation)");
+    alert('Profile updated! (Simulation)');
   };
 
   return (
@@ -34,26 +34,26 @@ export default function AccountPage() {
 
         <div className={styles.tabs}>
           <button
-            className={`${styles.tab} ${activeTab === "settings" ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab("settings")}
+            className={`${styles.tab} ${activeTab === 'settings' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('settings')}
           >
             Settings
           </button>
           <button
-            className={`${styles.tab} ${activeTab === "orders" ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab("orders")}
+            className={`${styles.tab} ${activeTab === 'orders' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('orders')}
           >
             My Orders
           </button>
           <button
-            className={`${styles.tab} ${activeTab === "sessions" ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab("sessions")}
+            className={`${styles.tab} ${activeTab === 'sessions' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('sessions')}
           >
             My Sessions
           </button>
         </div>
 
-        {activeTab === "settings" && (
+        {activeTab === 'settings' && (
           <div className={styles.card}>
             <form onSubmit={handleSubmit}>
               <div className={styles.inputGroup}>
@@ -91,8 +91,8 @@ export default function AccountPage() {
           </div>
         )}
 
-        {activeTab === "orders" && <MyOrders />}
-        {activeTab === "sessions" && <MySessions />}
+        {activeTab === 'orders' && <MyOrders />}
+        {activeTab === 'sessions' && <MySessions />}
       </div>
     </Sidebar>
   );

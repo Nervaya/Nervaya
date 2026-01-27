@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createRazorpayOrder } from "@/lib/services/payment.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+import { NextRequest, NextResponse } from 'next/server';
+import { createRazorpayOrder } from '@/lib/services/payment.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
 
     if (!orderId || amount === undefined) {
       return NextResponse.json(
-        errorResponse("Order ID and amount are required", null, 400),
+        errorResponse('Order ID and amount are required', null, 400),
         { status: 400 },
       );
     }
 
-    if (typeof amount !== "number" || amount <= 0) {
-      return NextResponse.json(errorResponse("Invalid amount", null, 400), {
+    if (typeof amount !== 'number' || amount <= 0) {
+      return NextResponse.json(errorResponse('Invalid amount', null, 400), {
         status: 400,
       });
     }
@@ -37,11 +37,11 @@ export async function POST(request: NextRequest) {
     // Return order details with key_id for frontend
     const responseData = {
       ...razorpayOrder,
-      key_id: process.env.RAZORPAY_KEY_ID || "",
+      key_id: process.env.RAZORPAY_KEY_ID || '',
     };
 
     return NextResponse.json(
-      successResponse("Razorpay order created successfully", responseData),
+      successResponse('Razorpay order created successfully', responseData),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

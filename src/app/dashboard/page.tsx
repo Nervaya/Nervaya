@@ -1,6 +1,6 @@
-import { FaBed, FaHeartPulse, FaCalendarCheck } from "react-icons/fa6";
-import Sidebar from "@/components/Sidebar/LazySidebar";
-import styles from "./styles.module.css";
+import { FaBed, FaHeartPulse, FaCalendarCheck } from 'react-icons/fa6';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import styles from './styles.module.css';
 
 export default function DashboardPage() {
   return (

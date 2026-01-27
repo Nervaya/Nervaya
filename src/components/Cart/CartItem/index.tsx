@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { CartItem as CartItemType, Supplement } from "@/types/supplement.types";
-import QuantitySelector from "@/components/common/QuantitySelector";
-import { formatPrice } from "@/utils/cart.util";
-import styles from "./styles.module.css";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { CartItem as CartItemType, Supplement } from '@/types/supplement.types';
+import QuantitySelector from '@/components/common/QuantitySelector';
+import { formatPrice } from '@/utils/cart.util';
+import styles from './styles.module.css';
 
 interface CartItemProps {
   item: CartItemType;
@@ -23,14 +23,14 @@ const CartItem: React.FC<CartItemProps> = ({
 }) => {
   const supplement =
     item.supplementId &&
-    typeof item.supplementId === "object" &&
-    "name" in item.supplementId
+    typeof item.supplementId === 'object' &&
+    'name' in item.supplementId
       ? (item.supplementId as Supplement)
       : null;
   const supplementId =
-    typeof item.supplementId === "object" ? supplement?._id : item.supplementId;
-  const supplementName = supplement?.name || "Unknown Product";
-  const supplementImage = supplement?.image || "/default-supplement.png";
+    typeof item.supplementId === 'object' ? supplement?._id : item.supplementId;
+  const supplementName = supplement?.name || 'Unknown Product';
+  const supplementImage = supplement?.image || '/default-supplement.png';
   const maxStock = supplement?.stock || item.quantity;
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -50,7 +50,7 @@ const CartItem: React.FC<CartItemProps> = ({
   return (
     <div className={styles.cartItem}>
       <Link
-        href={supplement ? `/supplements/${supplement._id}` : "#"}
+        href={supplement ? `/supplements/${supplement._id}` : '#'}
         className={styles.imageLink}
       >
         <div className={styles.imageWrapper}>
@@ -61,14 +61,14 @@ const CartItem: React.FC<CartItemProps> = ({
             height={100}
             className={styles.image}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/default-supplement.png";
+              (e.target as HTMLImageElement).src = '/default-supplement.png';
             }}
           />
         </div>
       </Link>
       <div className={styles.details}>
         <Link
-          href={supplement ? `/supplements/${supplement._id}` : "#"}
+          href={supplement ? `/supplements/${supplement._id}` : '#'}
           className={styles.nameLink}
         >
           <h3 className={styles.name}>{supplementName}</h3>

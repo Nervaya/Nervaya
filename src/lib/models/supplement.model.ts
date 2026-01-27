@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface ISupplement extends Document {
   name: string;
@@ -18,34 +18,34 @@ const supplementSchema = new Schema<ISupplement>(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
       trim: true,
-      minlength: [2, "Name must be at least 2 characters"],
+      minlength: [2, 'Name must be at least 2 characters'],
     },
     description: {
       type: String,
-      required: [true, "Description is required"],
+      required: [true, 'Description is required'],
       trim: true,
-      minlength: [10, "Description must be at least 10 characters"],
+      minlength: [10, 'Description must be at least 10 characters'],
     },
     price: {
       type: Number,
-      required: [true, "Price is required"],
-      min: [0, "Price must be non-negative"],
+      required: [true, 'Price is required'],
+      min: [0, 'Price must be non-negative'],
     },
     image: {
       type: String,
-      default: "",
+      default: '',
     },
     stock: {
       type: Number,
-      required: [true, "Stock is required"],
-      min: [0, "Stock must be non-negative"],
+      required: [true, 'Stock is required'],
+      min: [0, 'Stock must be non-negative'],
       default: 0,
     },
     category: {
       type: String,
-      required: [true, "Category is required"],
+      required: [true, 'Category is required'],
       trim: true,
       index: true,
     },
@@ -70,6 +70,6 @@ const supplementSchema = new Schema<ISupplement>(
 
 const Supplement: Model<ISupplement> =
   mongoose.models.Supplement ||
-  mongoose.model<ISupplement>("Supplement", supplementSchema);
+  mongoose.model<ISupplement>('Supplement', supplementSchema);
 
 export default Supplement;

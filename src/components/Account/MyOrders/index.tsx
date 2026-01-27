@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Order } from "@/types/supplement.types";
-import { formatPrice } from "@/utils/cart.util";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
-import { FaShoppingBag } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Order } from '@/types/supplement.types';
+import { formatPrice } from '@/utils/cart.util';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
+import { FaShoppingBag } from 'react-icons/fa';
 
 export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -18,7 +18,7 @@ export default function MyOrders() {
       try {
         setLoading(true);
         setError(null);
-        const response = (await api.get("/orders")) as {
+        const response = (await api.get('/orders')) as {
           success: boolean;
           data: Order[];
         };
@@ -26,7 +26,7 @@ export default function MyOrders() {
           setOrders(response.data);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load orders");
+        setError(err instanceof Error ? err.message : 'Failed to load orders');
       } finally {
         setLoading(false);
       }

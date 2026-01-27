@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Supplement, SupplementFormData } from "@/types/supplement.types";
-import SupplementList from "@/components/Admin/SupplementList";
-import SupplementModal from "@/components/Admin/SupplementModal";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import { Supplement, SupplementFormData } from '@/types/supplement.types';
+import SupplementList from '@/components/Admin/SupplementList';
+import SupplementModal from '@/components/Admin/SupplementModal';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function AdminSupplementsPage() {
   const [supplements, setSupplements] = useState<Supplement[]>([]);
@@ -21,7 +21,7 @@ export default function AdminSupplementsPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = (await api.get("/supplements?admin=true")) as {
+      const response = (await api.get('/supplements?admin=true')) as {
         success: boolean;
         data: Supplement[];
       };
@@ -30,7 +30,7 @@ export default function AdminSupplementsPage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load supplements",
+        err instanceof Error ? err.message : 'Failed to load supplements',
       );
     } finally {
       setLoading(false);
@@ -45,11 +45,11 @@ export default function AdminSupplementsPage() {
       if (response.success) {
         fetchSupplements();
       } else {
-        setError("Failed to delete supplement");
+        setError('Failed to delete supplement');
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to delete supplement",
+        err instanceof Error ? err.message : 'Failed to delete supplement',
       );
     }
   };
@@ -81,24 +81,24 @@ export default function AdminSupplementsPage() {
           fetchSupplements();
           handleModalClose();
         } else {
-          setError("Failed to update supplement");
-          throw new Error("Failed to update supplement");
+          setError('Failed to update supplement');
+          throw new Error('Failed to update supplement');
         }
       } else {
-        const response = (await api.post("/supplements", data)) as {
+        const response = (await api.post('/supplements', data)) as {
           success: boolean;
         };
         if (response.success) {
           fetchSupplements();
           handleModalClose();
         } else {
-          setError("Failed to create supplement");
-          throw new Error("Failed to create supplement");
+          setError('Failed to create supplement');
+          throw new Error('Failed to create supplement');
         }
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to save supplement",
+        err instanceof Error ? err.message : 'Failed to save supplement',
       );
       throw err;
     } finally {
@@ -134,9 +134,9 @@ export default function AdminSupplementsPage() {
         onSubmit={handleSubmit}
         initialData={editingSupplement || undefined}
         loading={submitting}
-        title={editingSupplement ? "Edit Supplement" : "Add New Supplement"}
+        title={editingSupplement ? 'Edit Supplement' : 'Add New Supplement'}
         submitLabel={
-          editingSupplement ? "Update Supplement" : "Create Supplement"
+          editingSupplement ? 'Update Supplement' : 'Create Supplement'
         }
       />
     </>

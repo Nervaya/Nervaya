@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import styles from "./styles.module.css";
+import { useState, useEffect } from 'react';
+import styles from './styles.module.css';
 
 interface DatePickerProps {
   selectedDate: Date;
@@ -116,21 +116,21 @@ export default function DatePicker({
   };
 
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const daysInMonth = getDaysInMonth(currentMonth);
   const firstDay = getFirstDayOfMonth(currentMonth);
@@ -218,9 +218,9 @@ export default function DatePicker({
                 key={day}
                 type="button"
                 className={`${styles.day} ${
-                  isSelectedDate ? styles.daySelected : ""
-                } ${isTodayDate ? styles.dayToday : ""} ${
-                  disabled ? styles.dayDisabled : ""
+                  isSelectedDate ? styles.daySelected : ''
+                } ${isTodayDate ? styles.dayToday : ''} ${
+                  disabled ? styles.dayDisabled : ''
                 }`}
                 onClick={() => handleDateClick(day)}
                 disabled={disabled}

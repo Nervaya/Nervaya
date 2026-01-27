@@ -1,18 +1,18 @@
 import SleepAssessmentQuestion, {
   ISleepAssessmentQuestion,
-} from "@/lib/models/sleepAssessmentQuestion.model";
-import connectDB from "@/lib/db/mongodb";
-import { ValidationError, NotFoundError } from "@/lib/utils/error.util";
-import { Types } from "mongoose";
-import { validate as validateUUID } from "uuid";
+} from '@/lib/models/sleepAssessmentQuestion.model';
+import connectDB from '@/lib/db/mongodb';
+import { ValidationError, NotFoundError } from '@/lib/utils/error.util';
+import { Types } from 'mongoose';
+import { validate as validateUUID } from 'uuid';
 import type {
   CreateQuestionInput,
   UpdateQuestionInput,
-} from "@/types/sleepAssessment.types";
+} from '@/types/sleepAssessment.types';
 
 export async function getAllActiveQuestions(): Promise<
   ISleepAssessmentQuestion[]
-> {
+  > {
   await connectDB();
 
   try {
@@ -61,7 +61,7 @@ export async function getQuestionById(
     const question = await findQuestion(identifier);
 
     if (!question) {
-      throw new NotFoundError("Question not found");
+      throw new NotFoundError('Question not found');
     }
 
     return question.toObject() as ISleepAssessmentQuestion;
@@ -87,7 +87,7 @@ export async function createQuestion(
     });
 
     if (existingQuestion) {
-      throw new ValidationError("Question with this key already exists");
+      throw new ValidationError('Question with this key already exists');
     }
 
     const question = await SleepAssessmentQuestion.create({
@@ -95,7 +95,7 @@ export async function createQuestion(
       questionKey: input.questionKey.toLowerCase(),
       isRequired: input.isRequired ?? true,
       isActive: input.isActive ?? true,
-      category: input.category ?? "general",
+      category: input.category ?? 'general',
     });
 
     return question.toObject() as ISleepAssessmentQuestion;
@@ -122,7 +122,7 @@ export async function updateQuestion(
     );
 
     if (!question) {
-      throw new NotFoundError("Question not found");
+      throw new NotFoundError('Question not found');
     }
 
     return question.toObject() as ISleepAssessmentQuestion;
@@ -142,7 +142,7 @@ export async function deleteQuestion(identifier: string): Promise<void> {
     const question = await SleepAssessmentQuestion.findOneAndDelete(query);
 
     if (!question) {
-      throw new NotFoundError("Question not found");
+      throw new NotFoundError('Question not found');
     }
   } catch (error) {
     throw error;
@@ -192,7 +192,7 @@ export async function toggleQuestionActive(
     );
 
     if (!question) {
-      throw new NotFoundError("Question not found");
+      throw new NotFoundError('Question not found');
     }
 
     return question.toObject() as ISleepAssessmentQuestion;

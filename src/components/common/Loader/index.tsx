@@ -1,21 +1,21 @@
-import styles from "./Loader.module.css";
+import styles from './Loader.module.css';
 
 interface LoaderProps {
-  size?: "sm" | "md" | "lg";
-  color?: "primary" | "white" | "inherit";
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'primary' | 'white' | 'inherit';
   text?: string;
   className?: string;
 }
 
 export default function Loader({
-  size = "md",
-  color = "primary",
+  size = 'md',
+  color = 'primary',
   text,
   className,
 }: LoaderProps) {
   const loaderClasses = [styles.loader, styles[size], styles[color], className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   if (text) {
     return (

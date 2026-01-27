@@ -1,5 +1,5 @@
-import mongoose, { Schema, Model, Document } from "mongoose";
-import { v4 } from "uuid";
+import mongoose, { Schema, Model, Document } from 'mongoose';
+import { v4 } from 'uuid';
 
 export interface IQuestionOption {
   id: string;
@@ -11,7 +11,7 @@ export interface ISleepAssessmentQuestion extends Document {
   questionId: string;
   questionKey: string;
   questionText: string;
-  questionType: "single_choice" | "multiple_choice" | "text" | "scale";
+  questionType: 'single_choice' | 'multiple_choice' | 'text' | 'scale';
   options: IQuestionOption[];
   order: number;
   isRequired: boolean;
@@ -25,16 +25,16 @@ const questionOptionSchema = new Schema<IQuestionOption>(
   {
     id: {
       type: String,
-      required: [true, "Option ID is required"],
+      required: [true, 'Option ID is required'],
     },
     label: {
       type: String,
-      required: [true, "Option label is required"],
+      required: [true, 'Option label is required'],
       trim: true,
     },
     value: {
       type: String,
-      required: [true, "Option value is required"],
+      required: [true, 'Option value is required'],
       trim: true,
     },
   },
@@ -52,28 +52,28 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
     },
     questionKey: {
       type: String,
-      required: [true, "Question key is required"],
+      required: [true, 'Question key is required'],
       unique: true,
       trim: true,
       lowercase: true,
       match: [
         /^[a-z_]+$/,
-        "Question key must contain only lowercase letters and underscores",
+        'Question key must contain only lowercase letters and underscores',
       ],
     },
     questionText: {
       type: String,
-      required: [true, "Question text is required"],
+      required: [true, 'Question text is required'],
       trim: true,
-      maxlength: [500, "Question text cannot exceed 500 characters"],
+      maxlength: [500, 'Question text cannot exceed 500 characters'],
     },
     questionType: {
       type: String,
       enum: {
-        values: ["single_choice", "multiple_choice", "text", "scale"],
-        message: "Invalid question type",
+        values: ['single_choice', 'multiple_choice', 'text', 'scale'],
+        message: 'Invalid question type',
       },
-      required: [true, "Question type is required"],
+      required: [true, 'Question type is required'],
     },
     options: {
       type: [questionOptionSchema],
@@ -81,18 +81,18 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       validate: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         validator: function (this: any, options: IQuestionOption[]) {
-          if (this.questionType === "text") {
+          if (this.questionType === 'text') {
             return true;
           }
           return options.length >= 2;
         },
-        message: "Non-text questions must have at least 2 options",
+        message: 'Non-text questions must have at least 2 options',
       },
     },
     order: {
       type: Number,
-      required: [true, "Question order is required"],
-      min: [1, "Order must be at least 1"],
+      required: [true, 'Question order is required'],
+      min: [1, 'Order must be at least 1'],
     },
     isRequired: {
       type: Boolean,
@@ -105,7 +105,7 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
     },
     category: {
       type: String,
-      default: "general",
+      default: 'general',
       trim: true,
       lowercase: true,
     },
@@ -121,7 +121,7 @@ sleepAssessmentQuestionSchema.index({ category: 1, order: 1 });
 const SleepAssessmentQuestion: Model<ISleepAssessmentQuestion> =
   mongoose.models.SleepAssessmentQuestion ||
   mongoose.model<ISleepAssessmentQuestion>(
-    "SleepAssessmentQuestion",
+    'SleepAssessmentQuestion',
     sleepAssessmentQuestionSchema,
   );
 

@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import PrivacyPolicyHeader from "@/components/PrivacyPolicy/PrivacyPolicyHeader";
-import PrivacyPolicyTOC from "@/components/PrivacyPolicy/PrivacyPolicyTOC";
-import PrivacyPolicySection from "@/components/PrivacyPolicy/PrivacyPolicySection";
-import SectionContent from "@/components/PrivacyPolicy/PrivacyPolicySections/SectionContent";
-import PrivacyPolicyDisclaimer from "@/components/PrivacyPolicy/PrivacyPolicyDisclaimer";
-import { privacySections } from "@/utils/privacyPolicyData";
-import { usePrivacyPolicyScroll } from "@/hooks/usePrivacyPolicyScroll";
-import styles from "./privacy-policy.module.css";
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import PrivacyPolicyHeader from '@/components/PrivacyPolicy/PrivacyPolicyHeader';
+import PrivacyPolicyTOC from '@/components/PrivacyPolicy/PrivacyPolicyTOC';
+import PrivacyPolicySection from '@/components/PrivacyPolicy/PrivacyPolicySection';
+import SectionContent from '@/components/PrivacyPolicy/PrivacyPolicySections/SectionContent';
+import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicy/PrivacyPolicyDisclaimer';
+import { privacySections } from '@/utils/privacyPolicyData';
+import { usePrivacyPolicyScroll } from '@/hooks/usePrivacyPolicyScroll';
+import styles from './privacy-policy.module.css';
 
 const PrivacyPolicy = () => {
   const [openSections, setOpenSections] = useState<Set<string>>(
-    new Set(["introduction"]),
+    new Set(['introduction']),
   );
   const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       return window.innerWidth <= 768;
     }
     return false;
@@ -31,8 +31,8 @@ const PrivacyPolicy = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const isSectionActive = useCallback(
@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
         if (newSet.has(sectionId)) {
           newSet.delete(sectionId);
           if (isMobile) {
-            setActiveSection("");
+            setActiveSection('');
           }
         } else {
           newSet.add(sectionId);
@@ -74,7 +74,7 @@ const PrivacyPolicy = () => {
       const element = document.getElementById(sectionId);
       if (element) {
         scrollLockRef.current.current = true;
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         if (!openSections.has(sectionId)) {
           toggleSection(sectionId);
         } else {

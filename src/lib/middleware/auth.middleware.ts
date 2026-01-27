@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "@/lib/utils/jwt.util";
-import { COOKIE_NAMES } from "@/utils/cookieConstants";
-import { Role } from "@/lib/constants/roles";
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/utils/jwt.util';
+import { COOKIE_NAMES } from '@/utils/cookieConstants';
+import { Role } from '@/lib/constants/roles';
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -17,7 +17,7 @@ export async function authenticateRequest(
 
   if (!token) {
     return NextResponse.json(
-      { success: false, message: "Authentication required", data: null },
+      { success: false, message: 'Authentication required', data: null },
       { status: 401 },
     );
   }
@@ -25,7 +25,7 @@ export async function authenticateRequest(
   const decoded = await verifyToken(token);
   if (!decoded) {
     const response = NextResponse.json(
-      { success: false, message: "Invalid or expired token", data: null },
+      { success: false, message: 'Invalid or expired token', data: null },
       { status: 401 },
     );
     response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
@@ -47,7 +47,7 @@ export async function requireAuth(
 
   if (allowedRoles && !allowedRoles.includes(authResult.user.role)) {
     return NextResponse.json(
-      { success: false, message: "Insufficient permissions", data: null },
+      { success: false, message: 'Insufficient permissions', data: null },
       { status: 403 },
     );
   }

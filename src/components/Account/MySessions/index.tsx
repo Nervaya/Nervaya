@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Session } from "@/types/session.types";
-import { Therapist } from "@/types/therapist.types";
-import styles from "./styles.module.css";
+import { useState, useEffect } from 'react';
+import { Session } from '@/types/session.types';
+import { Therapist } from '@/types/therapist.types';
+import styles from './styles.module.css';
 
 export default function MySessions() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchSessions();
@@ -16,15 +16,15 @@ export default function MySessions() {
 
   const fetchSessions = async () => {
     try {
-      const response = await fetch("/api/sessions");
+      const response = await fetch('/api/sessions');
       if (!response.ok) {
-        throw new Error("Failed to fetch sessions");
+        throw new Error('Failed to fetch sessions');
       }
 
       const result = await response.json();
       setSessions(result.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error loading sessions");
+      setError(err instanceof Error ? err.message : 'Error loading sessions');
     } finally {
       setLoading(false);
     }
@@ -32,24 +32,24 @@ export default function MySessions() {
 
   const handleCancelSession = async (sessionId: string) => {
     // eslint-disable-next-line no-alert
-    if (!window.confirm("Are you sure you want to cancel this session?")) {
+    if (!window.confirm('Are you sure you want to cancel this session?')) {
       return;
     }
 
     try {
       const response = await fetch(`/api/sessions/${sessionId}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error("Failed to cancel session");
+        throw new Error('Failed to cancel session');
       }
 
       fetchSessions();
     } catch (err) {
       // eslint-disable-next-line no-alert
       window.alert(
-        err instanceof Error ? err.message : "Error cancelling session",
+        err instanceof Error ? err.message : 'Error cancelling session',
       );
     }
   };
@@ -85,10 +85,10 @@ export default function MySessions() {
                 <div className={styles.cardHeader}>
                   <div className={styles.therapistInfo}>
                     <h3 className={styles.therapistName}>
-                      {therapist?.name || "Unknown Therapist"}
+                      {therapist?.name || 'Unknown Therapist'}
                     </h3>
                     <p className={styles.qualifications}>
-                      {therapist?.qualifications?.join(", ")}
+                      {therapist?.qualifications?.join(', ')}
                     </p>
                   </div>
                   <span className={getStatusBadgeClass(session.status)}>
@@ -103,7 +103,7 @@ export default function MySessions() {
                   </p>
                 </div>
 
-                {session.status === "pending" && (
+                {session.status === 'pending' && (
                   <button
                     className={styles.cancelBtn}
                     onClick={() => handleCancelSession(session._id)}

@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getAllActiveQuestions,
   getAllQuestions,
   createQuestion,
-} from "@/lib/services/sleepAssessmentQuestion.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/sleepAssessmentQuestion.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const includeInactive = searchParams.get("includeInactive") === "true";
+    const includeInactive = searchParams.get('includeInactive') === 'true';
 
     const isAdmin = authResult.user.role === ROLES.ADMIN;
     const questions =
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
         : await getAllActiveQuestions();
 
     return NextResponse.json(
-      successResponse("Questions fetched successfully", questions),
+      successResponse('Questions fetched successfully', questions),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -47,9 +47,9 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    if (!body || typeof body !== "object") {
+    if (!body || typeof body !== 'object') {
       return NextResponse.json(
-        errorResponse("Invalid request body", null, 400),
+        errorResponse('Invalid request body', null, 400),
         { status: 400 },
       );
     }
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     if (!questionKey || !questionText || !questionType || !order) {
       return NextResponse.json(
         errorResponse(
-          "Missing required fields: questionKey, questionText, questionType, order",
+          'Missing required fields: questionKey, questionText, questionType, order',
           null,
           400,
         ),
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      successResponse("Question created successfully", question, 201),
+      successResponse('Question created successfully', question, 201),
       { status: 201 },
     );
   } catch (error) {

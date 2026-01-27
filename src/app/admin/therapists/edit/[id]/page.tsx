@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import styles from "../../add/styles.module.css"; // Reusing styles from Add page
-import ImageUpload from "@/components/ImageUpload/ImageUpload";
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import styles from '../../add/styles.module.css'; // Reusing styles from Add page
+import ImageUpload from '@/components/ImageUpload/ImageUpload';
 
 export default function EditTherapistPage() {
   const router = useRouter();
@@ -11,13 +11,13 @@ export default function EditTherapistPage() {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    qualifications: "", // Comma separated
-    experience: "",
-    languages: "", // Comma separated
-    specializations: "", // Comma separated
-    image: "",
+    name: '',
+    email: '',
+    qualifications: '', // Comma separated
+    experience: '',
+    languages: '', // Comma separated
+    specializations: '', // Comma separated
+    image: '',
   });
 
   useEffect(() => {
@@ -29,24 +29,24 @@ export default function EditTherapistPage() {
           const data = result.data;
           setFormData({
             name: data.name,
-            email: data.email || "",
-            qualifications: data.qualifications?.join(", ") || "",
-            experience: data.experience || "",
-            languages: data.languages?.join(", ") || "",
-            specializations: data.specializations?.join(", ") || "",
-            image: data.image || "",
+            email: data.email || '',
+            qualifications: data.qualifications?.join(', ') || '',
+            experience: data.experience || '',
+            languages: data.languages?.join(', ') || '',
+            specializations: data.specializations?.join(', ') || '',
+            image: data.image || '',
           });
         } else {
           // eslint-disable-next-line no-alert
-          alert("Failed to fetch therapist details");
-          router.push("/admin/therapists");
+          alert('Failed to fetch therapist details');
+          router.push('/admin/therapists');
         }
       } catch (error) {
         if (error instanceof Error) {
-          console.error("Error fetching therapist:", error);
+          console.error('Error fetching therapist:', error);
         }
         // eslint-disable-next-line no-alert
-        alert("Error fetching therapist details");
+        alert('Error fetching therapist details');
       } finally {
         setInitialLoading(false);
       }
@@ -74,39 +74,39 @@ export default function EditTherapistPage() {
       const payload = {
         ...formData,
         qualifications: formData.qualifications
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .filter(Boolean),
         languages: formData.languages
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .filter(Boolean),
         specializations: formData.specializations
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .filter(Boolean),
       };
 
       const response = await fetch(`/api/therapists/${params.id}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        router.push("/admin/therapists");
+        router.push('/admin/therapists');
       } else {
         // eslint-disable-next-line no-alert
-        alert("Failed to update therapist");
+        alert('Failed to update therapist');
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Error updating therapist", error);
+        console.error('Error updating therapist', error);
       }
       // eslint-disable-next-line no-alert
-      alert("An error occurred");
+      alert('An error occurred');
     } finally {
       setLoading(false);
     }
@@ -205,7 +205,7 @@ export default function EditTherapistPage() {
           disabled={loading}
           className={styles.submitButton}
         >
-          {loading ? "Updating..." : "Update Therapist"}
+          {loading ? 'Updating...' : 'Update Therapist'}
         </button>
       </form>
     </div>

@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyPayment } from "@/lib/services/payment.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyPayment } from '@/lib/services/payment.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     if (!orderId || !paymentId || !razorpaySignature) {
       return NextResponse.json(
         errorResponse(
-          "Order ID, payment ID, and signature are required",
+          'Order ID, payment ID, and signature are required',
           null,
           400,
         ),
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     const result = await verifyPayment(orderId, paymentId, razorpaySignature);
     return NextResponse.json(
-      successResponse("Payment verified successfully", result),
+      successResponse('Payment verified successfully', result),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
-import styles from "./styles.module.css";
+import { useCallback } from 'react';
+import styles from './styles.module.css';
 import type {
   IQuestionOption,
   QuestionType,
-} from "@/types/sleepAssessment.types";
+} from '@/types/sleepAssessment.types';
 
 interface QuestionCardProps {
   questionText: string;
@@ -65,11 +65,11 @@ const QuestionCard = ({
   );
 
   const renderOptions = () => {
-    if (questionType === "text") {
+    if (questionType === 'text') {
       return (
         <textarea
           className={styles.textInput}
-          value={typeof selectedAnswer === "string" ? selectedAnswer : ""}
+          value={typeof selectedAnswer === 'string' ? selectedAnswer : ''}
           onChange={handleTextInput}
           placeholder="Type your answer here..."
           rows={4}
@@ -78,7 +78,7 @@ const QuestionCard = ({
       );
     }
 
-    if (questionType === "scale") {
+    if (questionType === 'scale') {
       return (
         <div className={styles.scaleContainer}>
           <ul className={styles.scaleList}>
@@ -86,7 +86,7 @@ const QuestionCard = ({
               <li key={option.id}>
                 <button
                   type="button"
-                  className={`${styles.scaleOption} ${isOptionSelected(option.value) ? styles.selected : ""}`}
+                  className={`${styles.scaleOption} ${isOptionSelected(option.value) ? styles.selected : ''}`}
                   onClick={() => handleSingleChoice(option.value)}
                   aria-pressed={isOptionSelected(option.value)}
                 >
@@ -105,17 +105,17 @@ const QuestionCard = ({
           <li key={option.id}>
             <button
               type="button"
-              className={`${styles.optionCard} ${isOptionSelected(option.value) ? styles.selected : ""}`}
+              className={`${styles.optionCard} ${isOptionSelected(option.value) ? styles.selected : ''}`}
               onClick={() =>
-                questionType === "single_choice"
+                questionType === 'single_choice'
                   ? handleSingleChoice(option.value)
                   : handleMultipleChoice(option.value)
               }
-              role={questionType === "single_choice" ? "radio" : "checkbox"}
+              role={questionType === 'single_choice' ? 'radio' : 'checkbox'}
               aria-checked={isOptionSelected(option.value)}
             >
               <span className={styles.optionIndicator}>
-                {questionType === "multiple_choice" && (
+                {questionType === 'multiple_choice' && (
                   <span className={styles.checkbox}>
                     {isOptionSelected(option.value) && (
                       <svg
@@ -134,7 +134,7 @@ const QuestionCard = ({
                     )}
                   </span>
                 )}
-                {questionType === "single_choice" && (
+                {questionType === 'single_choice' && (
                   <span className={styles.radio}>
                     {isOptionSelected(option.value) && (
                       <span className={styles.radioDot} />

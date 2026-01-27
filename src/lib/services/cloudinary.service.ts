@@ -1,5 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
-import { CLOUDINARY_FOLDERS } from "../constants/app.constants";
+import { v2 as cloudinary } from 'cloudinary';
+import { CLOUDINARY_FOLDERS } from '../constants/app.constants';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -17,7 +17,7 @@ export const uploadImage = async (fileBuffer: Buffer): Promise<string> => {
         } else if (result) {
           resolve(result.secure_url);
         } else {
-          reject(new Error("Upload failed"));
+          reject(new Error('Upload failed'));
         }
       },
     );

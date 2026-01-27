@@ -1,9 +1,9 @@
-import mongoose, { Schema, Model, Document } from "mongoose";
+import mongoose, { Schema, Model, Document } from 'mongoose';
 import {
   SESSION_STATUS,
   SESSION_STATUS_VALUES,
   SessionStatus,
-} from "@/lib/constants/enums";
+} from '@/lib/constants/enums';
 
 export interface ISession extends Document {
   userId: string;
@@ -20,27 +20,27 @@ const sessionSchema = new Schema<ISession>(
   {
     userId: {
       type: String,
-      required: [true, "User ID is required"],
+      required: [true, 'User ID is required'],
       index: true,
     },
     therapistId: {
       type: Schema.Types.ObjectId,
-      ref: "Therapist",
-      required: [true, "Therapist ID is required"],
+      ref: 'Therapist',
+      required: [true, 'Therapist ID is required'],
       index: true,
     },
     date: {
       type: String,
-      required: [true, "Date is required"],
-      match: [/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"],
+      required: [true, 'Date is required'],
+      match: [/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'],
     },
     startTime: {
       type: String,
-      required: [true, "Start time is required"],
+      required: [true, 'Start time is required'],
     },
     endTime: {
       type: String,
-      required: [true, "End time is required"],
+      required: [true, 'End time is required'],
     },
     status: {
       type: String,
@@ -57,6 +57,6 @@ const sessionSchema = new Schema<ISession>(
 sessionSchema.index({ therapistId: 1, date: 1, startTime: 1 });
 
 const Session: Model<ISession> =
-  mongoose.models.Session || mongoose.model<ISession>("Session", sessionSchema);
+  mongoose.models.Session || mongoose.model<ISession>('Session', sessionSchema);
 
 export default Session;

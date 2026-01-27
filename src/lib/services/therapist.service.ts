@@ -1,11 +1,11 @@
 import Therapist, {
   ITherapist,
   IConsultingHour,
-} from "@/lib/models/therapist.model";
-import { generateSlotsFromConsultingHours } from "@/lib/services/therapistSchedule.service";
-import connectDB from "@/lib/db/mongodb";
-import { handleError, ValidationError } from "@/lib/utils/error.util";
-import { Types } from "mongoose";
+} from '@/lib/models/therapist.model';
+import { generateSlotsFromConsultingHours } from '@/lib/services/therapistSchedule.service';
+import connectDB from '@/lib/db/mongodb';
+import { handleError, ValidationError } from '@/lib/utils/error.util';
+import { Types } from 'mongoose';
 
 export async function createTherapist(data: Partial<ITherapist>) {
   await connectDB();
@@ -13,44 +13,44 @@ export async function createTherapist(data: Partial<ITherapist>) {
     const defaultConsultingHours: IConsultingHour[] = [
       {
         dayOfWeek: 0,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: false,
       },
       {
         dayOfWeek: 1,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: true,
       },
       {
         dayOfWeek: 2,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: true,
       },
       {
         dayOfWeek: 3,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: true,
       },
       {
         dayOfWeek: 4,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: true,
       },
       {
         dayOfWeek: 5,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: true,
       },
       {
         dayOfWeek: 6,
-        startTime: "09:00 AM",
-        endTime: "05:00 PM",
+        startTime: '09:00 AM',
+        endTime: '05:00 PM',
         isEnabled: false,
       },
     ];
@@ -88,11 +88,11 @@ export async function getTherapistById(id: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
     const therapist = await Therapist.findById(id);
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
     return therapist;
   } catch (error) {
@@ -104,7 +104,7 @@ export async function updateTherapist(id: string, data: Partial<ITherapist>) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const therapist = await Therapist.findByIdAndUpdate(id, data, {
@@ -113,7 +113,7 @@ export async function updateTherapist(id: string, data: Partial<ITherapist>) {
     });
 
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
     return therapist;
   } catch (error) {
@@ -125,13 +125,13 @@ export async function deleteTherapist(id: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
     const therapist = await Therapist.findByIdAndDelete(id);
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
-    return { message: "Therapist deleted successfully" };
+    return { message: 'Therapist deleted successfully' };
   } catch (error) {
     throw handleError(error);
   }
@@ -141,11 +141,11 @@ export async function getConsultingHours(therapistId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
     const therapist = await Therapist.findById(therapistId);
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
     return therapist.consultingHours || [];
   } catch (error) {
@@ -160,18 +160,18 @@ export async function updateConsultingHours(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const therapist = await Therapist.findById(therapistId);
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
 
     for (const hour of consultingHours) {
       if (hour.dayOfWeek < 0 || hour.dayOfWeek > 6) {
         throw new ValidationError(
-          "Invalid day of week. Must be 0-6 (Sunday-Saturday)",
+          'Invalid day of week. Must be 0-6 (Sunday-Saturday)',
         );
       }
       if (hour.isEnabled) {
@@ -194,12 +194,12 @@ export async function updateConsultingHours(
       isEnabled: h.isEnabled,
     }));
 
-    therapist.markModified("consultingHours");
+    therapist.markModified('consultingHours');
     await therapist.save();
 
     const saved = await Therapist.findById(therapistId);
     if (!saved) {
-      throw new ValidationError("Failed to verify save");
+      throw new ValidationError('Failed to verify save');
     }
 
     return saved.consultingHours || [];

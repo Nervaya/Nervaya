@@ -1,10 +1,10 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo } from 'react';
 import {
   SectionContent as SectionContentType,
   GridItem,
   Subsection,
-} from "@/utils/privacyPolicyData";
-import styles from "./styles.module.css";
+} from '@/utils/privacyPolicyData';
+import styles from './styles.module.css';
 
 interface SectionContentProps {
   content: SectionContentType;
@@ -16,7 +16,7 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const paragraphs = useMemo(() => {
     return content.paragraphs?.map((paragraph, index) => {
       // Use first 50 chars of paragraph as key since these are static
-      const keyBase = paragraph.substring(0, 50).replace(/\s+/g, "-");
+      const keyBase = paragraph.substring(0, 50).replace(/\s+/g, '-');
       return (
         // eslint-disable-next-line react/no-array-index-key
         <p key={`paragraph-${keyBase}-${index}`} className={styles.paragraph}>
@@ -137,6 +137,6 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   );
 });
 
-SectionContent.displayName = "SectionContent";
+SectionContent.displayName = 'SectionContent';
 
 export default SectionContent;

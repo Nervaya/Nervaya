@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Loader from "@/components/common/Loader";
-import { Therapist } from "@/types/therapist.types";
-import styles from "./styles.module.css";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import Loader from '@/components/common/Loader';
+import { Therapist } from '@/types/therapist.types';
+import styles from './styles.module.css';
 
 export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
@@ -13,7 +13,7 @@ export default function AdminTherapistsPage() {
 
   const fetchTherapists = async () => {
     try {
-      const response = await fetch("/api/therapists");
+      const response = await fetch('/api/therapists');
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
@@ -25,7 +25,7 @@ export default function AdminTherapistsPage() {
     } catch (error) {
       // Error handling - could be improved with proper error logging service
       if (error instanceof Error) {
-        console.error("Failed to fetch therapists", error);
+        console.error('Failed to fetch therapists', error);
       }
     } finally {
       setLoading(false);
@@ -45,17 +45,17 @@ export default function AdminTherapistsPage() {
 
     try {
       const response = await fetch(`/api/therapists/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
       if (response.ok) {
         fetchTherapists(); // Refresh list
       } else {
         // eslint-disable-next-line no-alert
-        alert("Failed to delete therapist");
+        alert('Failed to delete therapist');
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Error deleting therapist", error);
+        console.error('Error deleting therapist', error);
       }
     }
   };
@@ -72,9 +72,9 @@ export default function AdminTherapistsPage() {
       {loading ? (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "60px 20px",
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '60px 20px',
           }}
         >
           <Loader size="lg" text="Loading therapists..." />
@@ -85,7 +85,7 @@ export default function AdminTherapistsPage() {
             <div key={therapist._id} className={styles.card}>
               <div className={styles.therapistInfo}>
                 <Image
-                  src={therapist.image || "/default-therapist.png"}
+                  src={therapist.image || '/default-therapist.png'}
                   alt={therapist.name}
                   width={100}
                   height={100}
@@ -98,7 +98,7 @@ export default function AdminTherapistsPage() {
                 <div className={styles.details}>
                   <h3>{therapist.name}</h3>
                   <p className={styles.qualifications}>
-                    {therapist.qualifications?.join(", ")}
+                    {therapist.qualifications?.join(', ')}
                   </p>
 
                   <div className={styles.infoRow}>
@@ -106,7 +106,7 @@ export default function AdminTherapistsPage() {
                       <strong>Exp:</strong> {therapist.experience}
                     </span>
                     <span className={styles.infoItem}>
-                      <strong>Lang:</strong> {therapist.languages?.join(", ")}
+                      <strong>Lang:</strong> {therapist.languages?.join(', ')}
                     </span>
                   </div>
 

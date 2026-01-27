@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar/LazySidebar";
-import AssessmentContainer from "@/components/SleepAssessment/AssessmentContainer";
-import Loader from "@/components/common/Loader";
-import styles from "./styles.module.css";
-import axiosInstance from "@/lib/axios";
-import type { ISleepAssessmentQuestion } from "@/types/sleepAssessment.types";
-import type { ApiResponse } from "@/lib/utils/response.util";
+import { useState, useEffect } from 'react';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
+import Loader from '@/components/common/Loader';
+import styles from './styles.module.css';
+import axiosInstance from '@/lib/axios';
+import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
+import type { ApiResponse } from '@/lib/utils/response.util';
 
 export default function SleepAssessmentPage() {
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
@@ -20,16 +20,16 @@ export default function SleepAssessmentPage() {
         const response = await axiosInstance.get<
           unknown,
           ApiResponse<ISleepAssessmentQuestion[]>
-        >("/sleep-assessment/questions");
+        >('/sleep-assessment/questions');
         if (response.success) {
           setQuestions(response.data || []);
         } else {
-          setError("Failed to load questions");
+          setError('Failed to load questions');
         }
       } catch (err) {
-        console.error("Error fetching questions:", err);
+        console.error('Error fetching questions:', err);
         setError(
-          "Failed to load assessment questions. Please try again later.",
+          'Failed to load assessment questions. Please try again later.',
         );
       } finally {
         setIsLoading(false);

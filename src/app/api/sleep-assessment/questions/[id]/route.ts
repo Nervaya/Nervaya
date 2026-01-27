@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getQuestionById,
   updateQuestion,
   deleteQuestion,
   toggleQuestionActive,
-} from "@/lib/services/sleepAssessmentQuestion.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/sleepAssessmentQuestion.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(
   req: NextRequest,
@@ -25,7 +25,7 @@ export async function GET(
     const question = await getQuestionById(id);
 
     return NextResponse.json(
-      successResponse("Question fetched successfully", question),
+      successResponse('Question fetched successfully', question),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -49,9 +49,9 @@ export async function PUT(
     const { id } = await params;
     const body = await req.json();
 
-    if (!body || typeof body !== "object") {
+    if (!body || typeof body !== 'object') {
       return NextResponse.json(
-        errorResponse("Invalid request body", null, 400),
+        errorResponse('Invalid request body', null, 400),
         { status: 400 },
       );
     }
@@ -77,7 +77,7 @@ export async function PUT(
     });
 
     return NextResponse.json(
-      successResponse("Question updated successfully", question),
+      successResponse('Question updated successfully', question),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -101,9 +101,9 @@ export async function PATCH(
     const { id } = await params;
     const body = await req.json();
 
-    if (typeof body.isActive !== "boolean") {
+    if (typeof body.isActive !== 'boolean') {
       return NextResponse.json(
-        errorResponse("isActive must be a boolean", null, 400),
+        errorResponse('isActive must be a boolean', null, 400),
         { status: 400 },
       );
     }
@@ -111,7 +111,7 @@ export async function PATCH(
     const question = await toggleQuestionActive(id, body.isActive);
 
     return NextResponse.json(
-      successResponse("Question status updated successfully", question),
+      successResponse('Question status updated successfully', question),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -135,7 +135,7 @@ export async function DELETE(
     const { id } = await params;
     await deleteQuestion(id);
 
-    return NextResponse.json(successResponse("Question deleted successfully"));
+    return NextResponse.json(successResponse('Question deleted successfully'));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

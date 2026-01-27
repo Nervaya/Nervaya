@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
-import bcrypt from "bcryptjs";
+import mongoose, { Schema, Document, Model } from 'mongoose';
+import bcrypt from 'bcryptjs';
 
-import { ROLES, Role } from "../constants/roles";
+import { ROLES, Role } from '../constants/roles';
 
 export interface IAddress {
   name: string;
@@ -12,7 +12,7 @@ export interface IAddress {
   state: string;
   zipCode: string;
   country: string;
-  label: "Home" | "Work" | "Other";
+  label: 'Home' | 'Work' | 'Other';
   isDefault: boolean;
   _id?: string;
 }
@@ -31,11 +31,11 @@ const userSchema = new Schema<IUser>(
   {
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
     },
     role: {
       type: String,
@@ -45,13 +45,13 @@ const userSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
-      minlength: [8, "Password must be at least 8 characters"],
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters'],
       select: false, // Don't return password by default in queries
     },
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
       trim: true,
     },
     addresses: [
@@ -63,11 +63,11 @@ const userSchema = new Schema<IUser>(
         city: { type: String, required: true },
         state: { type: String, required: true },
         zipCode: { type: String, required: true },
-        country: { type: String, required: true, default: "India" },
+        country: { type: String, required: true, default: 'India' },
         label: {
           type: String,
-          enum: ["Home", "Work", "Other"],
-          default: "Home",
+          enum: ['Home', 'Work', 'Other'],
+          default: 'Home',
         },
         isDefault: { type: Boolean, default: false },
       },
@@ -78,8 +78,8 @@ const userSchema = new Schema<IUser>(
   },
 );
 
-userSchema.pre("save", async function (this: IUser) {
-  if (!this.isModified("password")) {
+userSchema.pre('save', async function (this: IUser) {
+  if (!this.isModified('password')) {
     return;
   }
 
@@ -88,6 +88,6 @@ userSchema.pre("save", async function (this: IUser) {
 });
 
 const User: Model<IUser> =
-  mongoose.models.User || mongoose.model<IUser>("User", userSchema);
+  mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
 export default User;

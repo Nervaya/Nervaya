@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   submitAssessment,
   getUserAssessments,
   getLatestUserAssessment,
   getAllAssessments,
-} from "@/lib/services/sleepAssessmentResponse.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/sleepAssessmentResponse.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,27 +19,27 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const latestOnly = searchParams.get("latest") === "true";
-    const allUsers = searchParams.get("allUsers") === "true";
+    const latestOnly = searchParams.get('latest') === 'true';
+    const allUsers = searchParams.get('allUsers') === 'true';
 
     if (allUsers && authResult.user.role === ROLES.ADMIN) {
       const assessments = await getAllAssessments();
       return NextResponse.json(
-        successResponse("All assessments fetched successfully", assessments),
+        successResponse('All assessments fetched successfully', assessments),
       );
     }
 
     if (latestOnly) {
       const assessment = await getLatestUserAssessment(authResult.user.userId);
       return NextResponse.json(
-        successResponse("Latest assessment fetched successfully", assessment),
+        successResponse('Latest assessment fetched successfully', assessment),
       );
     }
 
     const assessments = await getUserAssessments(authResult.user.userId);
 
     return NextResponse.json(
-      successResponse("Assessments fetched successfully", assessments),
+      successResponse('Assessments fetched successfully', assessments),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -59,9 +59,9 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    if (!body || typeof body !== "object") {
+    if (!body || typeof body !== 'object') {
       return NextResponse.json(
-        errorResponse("Invalid request body", null, 400),
+        errorResponse('Invalid request body', null, 400),
         { status: 400 },
       );
     }
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
 
     if (!answers || !Array.isArray(answers) || answers.length === 0) {
       return NextResponse.json(
-        errorResponse("Answers array is required", null, 400),
+        errorResponse('Answers array is required', null, 400),
         { status: 400 },
       );
     }
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      successResponse("Assessment submitted successfully", response, 201),
+      successResponse('Assessment submitted successfully', response, 201),
       { status: 201 },
     );
   } catch (error) {

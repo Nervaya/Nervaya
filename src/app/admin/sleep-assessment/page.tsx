@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
-import Loader from "@/components/common/Loader";
-import styles from "./styles.module.css";
-import type { ISleepAssessmentQuestion } from "@/types/sleepAssessment.types";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import Link from 'next/link';
+import Loader from '@/components/common/Loader';
+import styles from './styles.module.css';
+import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
 export default function AdminSleepAssessmentPage() {
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState<"next" | "prev" | null>(null);
+  const [direction, setDirection] = useState<'next' | 'prev' | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const fetchQuestions = useCallback(async () => {
     try {
       const response = await fetch(
-        "/api/sleep-assessment/questions?includeInactive=true",
+        '/api/sleep-assessment/questions?includeInactive=true',
       );
       if (response.ok) {
         const result = await response.json();
@@ -26,7 +26,7 @@ export default function AdminSleepAssessmentPage() {
         }
       }
     } catch (error) {
-      console.error("Failed to fetch questions", error);
+      console.error('Failed to fetch questions', error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,7 @@ export default function AdminSleepAssessmentPage() {
 
   const goToNext = useCallback(() => {
     if (currentIndex < questions.length - 1 && !isAnimating) {
-      setDirection("next");
+      setDirection('next');
       setIsAnimating(true);
       setTimeout(() => {
         setCurrentIndex((prev) => prev + 1);
@@ -56,7 +56,7 @@ export default function AdminSleepAssessmentPage() {
 
   const goToPrev = useCallback(() => {
     if (currentIndex > 0 && !isAnimating) {
-      setDirection("prev");
+      setDirection('prev');
       setIsAnimating(true);
       setTimeout(() => {
         setCurrentIndex((prev) => prev - 1);
@@ -68,7 +68,7 @@ export default function AdminSleepAssessmentPage() {
   const goToIndex = useCallback(
     (index: number) => {
       if (index !== currentIndex && !isAnimating) {
-        setDirection(index > currentIndex ? "next" : "prev");
+        setDirection(index > currentIndex ? 'next' : 'prev');
         setIsAnimating(true);
         setTimeout(() => {
           setCurrentIndex(index);
@@ -86,24 +86,24 @@ export default function AdminSleepAssessmentPage() {
         return;
       }
 
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
         goToNext();
-      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault();
         goToPrev();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAnimating, questions.length, goToNext, goToPrev]);
 
   const handleDelete = async (id: string, questionText: string) => {
     const questionPreview = questionText.substring(0, 50);
     const message =
       `WARNING: Are you sure you want to delete this question?\n\n"${questionPreview}..."\n\n` +
-      "This action cannot be undone.";
+      'This action cannot be undone.';
     // eslint-disable-next-line no-alert
     if (!window.confirm(message)) {
       return;
@@ -111,16 +111,16 @@ export default function AdminSleepAssessmentPage() {
 
     try {
       const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
       if (response.ok) {
         fetchQuestions();
       } else {
         // eslint-disable-next-line no-alert
-        window.alert("Failed to delete question");
+        window.alert('Failed to delete question');
       }
     } catch (error) {
-      console.error("Error deleting question", error);
+      console.error('Error deleting question', error);
     }
   };
 
@@ -128,49 +128,49 @@ export default function AdminSleepAssessmentPage() {
     if (
       // eslint-disable-next-line no-alert
       !window.confirm(
-        "This will seed the database with default sleep assessment questions. Continue?",
+        'This will seed the database with default sleep assessment questions. Continue?',
       )
     ) {
       return;
     }
 
     try {
-      const response = await fetch("/api/sleep-assessment/questions/seed", {
-        method: "POST",
+      const response = await fetch('/api/sleep-assessment/questions/seed', {
+        method: 'POST',
       });
       if (response.ok) {
         fetchQuestions();
       } else {
         const result = await response.json();
         // eslint-disable-next-line no-alert
-        window.alert(result.message || "Failed to seed questions");
+        window.alert(result.message || 'Failed to seed questions');
       }
     } catch (error) {
-      console.error("Error seeding questions", error);
+      console.error('Error seeding questions', error);
     }
   };
 
   const handleToggleActive = async (id: string, currentStatus: boolean) => {
     try {
       const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus }),
       });
       if (response.ok) {
         fetchQuestions();
       }
     } catch (error) {
-      console.error("Error toggling question status", error);
+      console.error('Error toggling question status', error);
     }
   };
 
   const getQuestionTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      single_choice: "Single Choice",
-      multiple_choice: "Multiple Choice",
-      text: "Text Input",
-      scale: "Scale",
+      single_choice: 'Single Choice',
+      multiple_choice: 'Multiple Choice',
+      text: 'Text Input',
+      scale: 'Scale',
     };
     return labels[type] || type;
   };
@@ -247,25 +247,25 @@ export default function AdminSleepAssessmentPage() {
                 if (
                   // eslint-disable-next-line no-alert
                   window.confirm(
-                    "This will wipe all existing questions and seed default ones. Are you sure?",
+                    'This will wipe all existing questions and seed default ones. Are you sure?',
                   )
                 ) {
                   setLoading(true);
                   try {
                     const response = await fetch(
-                      "/api/sleep-assessment/questions/seed?reset=true",
-                      { method: "POST" },
+                      '/api/sleep-assessment/questions/seed?reset=true',
+                      { method: 'POST' },
                     );
                     if (response.ok) {
                       fetchQuestions();
                     } else {
                       // eslint-disable-next-line no-alert
-                      window.alert("Failed to seed questions");
+                      window.alert('Failed to seed questions');
                     }
                   } catch (error) {
                     console.error(error);
                     // eslint-disable-next-line no-alert
-                    window.alert("Error seeding questions");
+                    window.alert('Error seeding questions');
                   } finally {
                     setLoading(false);
                   }
@@ -331,7 +331,7 @@ export default function AdminSleepAssessmentPage() {
             <div
               className={`${styles.questionCard} ${styles.cardAnimated} ${
                 isAnimating
-                  ? direction === "next"
+                  ? direction === 'next'
                     ? styles.slideOutLeft
                     : styles.slideOutRight
                   : styles.slideIn
@@ -351,7 +351,7 @@ export default function AdminSleepAssessmentPage() {
                   <span
                     className={`${styles.statusBadge} ${currentQuestion.isActive ? styles.active : styles.inactive}`}
                   >
-                    {currentQuestion.isActive ? "Active" : "Inactive"}
+                    {currentQuestion.isActive ? 'Active' : 'Inactive'}
                   </span>
                   {currentQuestion.isRequired && (
                     <span className={styles.requiredBadge}>Required</span>
@@ -369,17 +369,17 @@ export default function AdminSleepAssessmentPage() {
 
                 {currentQuestion.options &&
                   currentQuestion.options.length > 0 && (
-                    <div className={styles.optionsPreview}>
-                      <span className={styles.optionsLabel}>Options:</span>
-                      <ul className={styles.optionsList}>
-                        {currentQuestion.options.map((opt) => (
-                          <li key={opt.id} className={styles.optionItem}>
-                            {opt.label}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <div className={styles.optionsPreview}>
+                    <span className={styles.optionsLabel}>Options:</span>
+                    <ul className={styles.optionsList}>
+                      {currentQuestion.options.map((opt) => (
+                        <li key={opt.id} className={styles.optionItem}>
+                          {opt.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               <div className={styles.questionActions}>
@@ -393,7 +393,7 @@ export default function AdminSleepAssessmentPage() {
                     )
                   }
                 >
-                  {currentQuestion.isActive ? "Deactivate" : "Activate"}
+                  {currentQuestion.isActive ? 'Deactivate' : 'Activate'}
                 </button>
                 <Link
                   href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`}
@@ -446,7 +446,7 @@ export default function AdminSleepAssessmentPage() {
               <button
                 key={q._id}
                 type="button"
-                className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ""}`}
+                className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ''}`}
                 onClick={() => goToIndex(index)}
                 aria-label={`Go to question ${index + 1}`}
               />

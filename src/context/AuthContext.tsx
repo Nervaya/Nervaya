@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   createContext,
@@ -6,12 +6,12 @@ import {
   useState,
   useEffect,
   ReactNode,
-} from "react";
-import { useRouter } from "next/navigation";
-import api from "@/lib/axios";
-import { ApiResponse } from "@/lib/utils/response.util";
-import { ROLES, Role } from "@/lib/constants/roles";
-import { ROUTES } from "@/utils/routesConstants";
+} from 'react';
+import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
+import { ApiResponse } from '@/lib/utils/response.util';
+import { ROLES, Role } from '@/lib/constants/roles';
+import { ROUTES } from '@/utils/routesConstants';
 
 interface User {
   _id: string;
@@ -49,10 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const handleAuthSuccess = (data: AuthData) => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("isLoggedIn", "true");
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedIn', 'true');
       // Dispatch custom event to notify CartContext/components
-      window.dispatchEvent(new CustomEvent("auth-state-changed"));
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
     setUser(data.user);
     setIsAuthenticated(true);
@@ -65,8 +65,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const checkAuth = async () => {
-    if (typeof window !== "undefined") {
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (typeof window !== 'undefined') {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
       setIsAuthenticated(isLoggedIn);
     }
     setLoading(false);
@@ -77,12 +77,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listen for auth events (e.g. from axios 401 interceptor)
     const handleAuthEvent = () => checkAuth();
-    if (typeof window !== "undefined") {
-      window.addEventListener("auth-state-changed", handleAuthEvent);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('auth-state-changed', handleAuthEvent);
     }
     return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("auth-state-changed", handleAuthEvent);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('auth-state-changed', handleAuthEvent);
       }
     };
   }, []);
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = (await api.post("/auth/signup", {
+      const response = (await api.post('/auth/signup', {
         email,
         password,
         name,
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return response;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Signup failed";
+      const message = err instanceof Error ? err.message : 'Signup failed';
       setError(message);
       throw new Error(message);
     } finally {
@@ -116,7 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = (await api.post("/auth/login", {
+      const response = (await api.post('/auth/login', {
         email,
         password,
       })) as ApiResponse<AuthData>;
@@ -126,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return response;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Login failed";
+      const message = err instanceof Error ? err.message : 'Login failed';
       setError(message);
       throw new Error(message);
     } finally {
@@ -137,16 +137,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setLoading(true);
     try {
-      await api.post("/auth/logout");
+      await api.post('/auth/logout');
     } catch (error) {
-      console.error("Logout API call failed:", error);
+      console.error('Logout API call failed:', error);
     } finally {
       setLoading(false);
     }
 
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("isLoggedIn");
-      window.dispatchEvent(new CustomEvent("auth-state-changed"));
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('isLoggedIn');
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
     setUser(null);
     setIsAuthenticated(false);
@@ -173,7 +173,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuthContext() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    throw new Error('useAuthContext must be used within an AuthProvider');
   }
   return context;
 }

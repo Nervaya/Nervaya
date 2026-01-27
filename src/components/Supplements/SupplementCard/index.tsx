@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Supplement } from "@/types/supplement.types";
-import QuantitySelector from "@/components/common/QuantitySelector";
-import Button from "@/components/common/Button";
-import { formatPrice } from "@/utils/cart.util";
-import styles from "./styles.module.css";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Supplement } from '@/types/supplement.types';
+import QuantitySelector from '@/components/common/QuantitySelector';
+import Button from '@/components/common/Button';
+import { formatPrice } from '@/utils/cart.util';
+import styles from './styles.module.css';
 
 interface SupplementCardProps {
   supplement: Supplement;
@@ -30,7 +30,7 @@ const SupplementCard: React.FC<SupplementCardProps> = ({
       await onAddToCart(supplement._id, quantity);
       setQuantity(1);
     } catch (error) {
-      console.error("Failed to add to cart:", error);
+      console.error('Failed to add to cart:', error);
     } finally {
       setAdding(false);
     }
@@ -47,13 +47,13 @@ const SupplementCard: React.FC<SupplementCardProps> = ({
       >
         <div className={styles.imageWrapper}>
           <Image
-            src={supplement.image || "/default-supplement.png"}
+            src={supplement.image || '/default-supplement.png'}
             alt={supplement.name}
             width={300}
             height={300}
             className={styles.image}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/default-supplement.png";
+              (e.target as HTMLImageElement).src = '/default-supplement.png';
             }}
           />
           {isOutOfStock && (

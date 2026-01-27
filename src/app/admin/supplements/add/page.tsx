@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { SupplementFormData } from "@/types/supplement.types";
-import SupplementForm from "@/components/Admin/SupplementForm";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { SupplementFormData } from '@/types/supplement.types';
+import SupplementForm from '@/components/Admin/SupplementForm';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function AddSupplementPage() {
   const router = useRouter();
@@ -14,17 +14,17 @@ export default function AddSupplementPage() {
   const handleSubmit = async (data: SupplementFormData) => {
     try {
       setError(null);
-      const response = (await api.post("/supplements", data)) as {
+      const response = (await api.post('/supplements', data)) as {
         success: boolean;
       };
       if (response.success) {
-        router.push("/admin/supplements");
+        router.push('/admin/supplements');
       } else {
-        setError("Failed to create supplement");
+        setError('Failed to create supplement');
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to create supplement",
+        err instanceof Error ? err.message : 'Failed to create supplement',
       );
       throw err;
     }

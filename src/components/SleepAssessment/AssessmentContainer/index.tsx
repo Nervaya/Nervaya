@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { LazyMotion, m, AnimatePresence } from "framer-motion";
-import ProgressBar from "../ProgressBar";
-import QuestionCard from "../QuestionCard";
-import Loader from "@/components/common/Loader";
-import styles from "./styles.module.css";
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { LazyMotion, m, AnimatePresence } from 'framer-motion';
+import ProgressBar from '../ProgressBar';
+import QuestionCard from '../QuestionCard';
+import Loader from '@/components/common/Loader';
+import styles from './styles.module.css';
 import type {
   ISleepAssessmentQuestion,
   IQuestionAnswer,
-} from "@/types/sleepAssessment.types";
-import axiosInstance from "@/lib/axios";
+} from '@/types/sleepAssessment.types';
+import axiosInstance from '@/lib/axios';
 
 interface AssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
@@ -132,14 +132,14 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
         }
       });
 
-      await axiosInstance.post("/sleep-assessment/responses", {
+      await axiosInstance.post('/sleep-assessment/responses', {
         answers: formattedAnswers,
       });
 
       setIsComplete(true);
     } catch (error) {
-      console.error("Failed to submit assessment:", error);
-      setSubmitError("Failed to submit assessment. Please try again.");
+      console.error('Failed to submit assessment:', error);
+      setSubmitError('Failed to submit assessment. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -147,7 +147,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Enter" && canProceed && !isSubmitting) {
+      if (e.key === 'Enter' && canProceed && !isSubmitting) {
         e.preventDefault();
         handleNext();
       }
@@ -156,8 +156,8 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
   if (isComplete) {
@@ -193,7 +193,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
         <button
           type="button"
           className={styles.completionButton}
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push('/dashboard')}
         >
           Go to Dashboard
         </button>
@@ -221,7 +221,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
       />
 
       <LazyMotion
-        features={() => import("framer-motion").then((mod) => mod.domAnimation)}
+        features={() => import('framer-motion').then((mod) => mod.domAnimation)}
       >
         <div className={styles.questionWrapper}>
           <AnimatePresence mode="wait" custom={direction}>
@@ -233,7 +233,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
+                x: { type: 'spring', stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 },
               }}
             >
@@ -271,14 +271,14 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
           className={`${styles.navButton} ${styles.nextButton}`}
           onClick={handleNext}
           disabled={!canProceed || isSubmitting}
-          aria-label={isLastQuestion ? "Submit assessment" : "Next question"}
+          aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
         >
           {isSubmitting ? (
             <Loader size="sm" color="white" />
           ) : isLastQuestion ? (
-            "Submit"
+            'Submit'
           ) : (
-            "Next Question"
+            'Next Question'
           )}
         </button>
       </footer>

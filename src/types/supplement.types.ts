@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import { PaymentStatus, OrderStatus } from "@/lib/constants/enums";
+import { Types } from 'mongoose';
+import { PaymentStatus, OrderStatus } from '@/lib/constants/enums';
 
 export interface Supplement {
   _id: string;
@@ -64,7 +64,7 @@ export interface ShippingAddress {
 
 export interface SavedAddress extends ShippingAddress {
   _id: string;
-  label: "Home" | "Work" | "Other";
+  label: 'Home' | 'Work' | 'Other';
   isDefault: boolean;
 }
 

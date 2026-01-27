@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Loader from "@/components/common/Loader";
-import styles from "./styles.module.css";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Loader from '@/components/common/Loader';
+import styles from './styles.module.css';
 import type {
   IQuestionOption,
   QuestionType,
-} from "@/types/sleepAssessment.types";
+} from '@/types/sleepAssessment.types';
 
 export default function AddQuestionPage() {
   const router = useRouter();
@@ -16,18 +16,18 @@ export default function AddQuestionPage() {
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    questionKey: "",
-    questionText: "",
-    questionType: "single_choice" as QuestionType,
+    questionKey: '',
+    questionText: '',
+    questionType: 'single_choice' as QuestionType,
     order: 1,
     isRequired: true,
     isActive: true,
-    category: "general",
+    category: 'general',
   });
 
   const [options, setOptions] = useState<IQuestionOption[]>([
-    { id: "1", label: "", value: "" },
-    { id: "2", label: "", value: "" },
+    { id: '1', label: '', value: '' },
+    { id: '2', label: '', value: '' },
   ]);
 
   const handleInputChange = (
@@ -39,20 +39,20 @@ export default function AddQuestionPage() {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+        type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   const handleOptionChange = (
     index: number,
-    field: "label" | "value",
+    field: 'label' | 'value',
     value: string,
   ) => {
     setOptions((prev) => {
       const newOptions = [...prev];
       newOptions[index] = { ...newOptions[index], [field]: value };
-      if (field === "label" && !newOptions[index].value) {
-        newOptions[index].value = value.toLowerCase().replace(/\s+/g, "_");
+      if (field === 'label' && !newOptions[index].value) {
+        newOptions[index].value = value.toLowerCase().replace(/\s+/g, '_');
       }
       return newOptions;
     });
@@ -61,7 +61,7 @@ export default function AddQuestionPage() {
   const addOption = () => {
     setOptions((prev) => [
       ...prev,
-      { id: String(prev.length + 1), label: "", value: "" },
+      { id: String(prev.length + 1), label: '', value: '' },
     ]);
   };
 
@@ -82,40 +82,40 @@ export default function AddQuestionPage() {
         (opt) => opt.label.trim() && opt.value.trim(),
       );
 
-      if (formData.questionType !== "text" && validOptions.length < 2) {
-        throw new Error("Please add at least 2 options for this question type");
+      if (formData.questionType !== 'text' && validOptions.length < 2) {
+        throw new Error('Please add at least 2 options for this question type');
       }
 
-      const response = await fetch("/api/sleep-assessment/questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/sleep-assessment/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           options:
-            formData.questionType === "text"
+            formData.questionType === 'text'
               ? []
               : validOptions.map((opt, i) => ({
-                  ...opt,
-                  id: String(i + 1),
-                })),
+                ...opt,
+                id: String(i + 1),
+              })),
         }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Failed to create question");
+        throw new Error(result.message || 'Failed to create question');
       }
 
-      router.push("/admin/sleep-assessment");
+      router.push('/admin/sleep-assessment');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const showOptions = formData.questionType !== "text";
+  const showOptions = formData.questionType !== 'text';
 
   return (
     <div className={styles.container}>
@@ -302,7 +302,7 @@ export default function AddQuestionPage() {
                       type="text"
                       value={option.label}
                       onChange={(e) =>
-                        handleOptionChange(index, "label", e.target.value)
+                        handleOptionChange(index, 'label', e.target.value)
                       }
                       className={styles.input}
                       placeholder="Option label"
@@ -312,7 +312,7 @@ export default function AddQuestionPage() {
                       type="text"
                       value={option.value}
                       onChange={(e) =>
-                        handleOptionChange(index, "value", e.target.value)
+                        handleOptionChange(index, 'value', e.target.value)
                       }
                       className={styles.input}
                       placeholder="Option value"
@@ -361,7 +361,7 @@ export default function AddQuestionPage() {
                 Creating...
               </>
             ) : (
-              "Create Question"
+              'Create Question'
             )}
           </button>
         </div>

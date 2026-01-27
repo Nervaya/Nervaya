@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   createQuestion,
   getAllQuestions,
-} from "@/lib/services/sleepAssessmentQuestion.service";
-import { defaultSleepAssessmentQuestions } from "@/utils/sleepAssessmentQuestions";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/sleepAssessmentQuestion.service';
+import { defaultSleepAssessmentQuestions } from '@/utils/sleepAssessmentQuestions';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,18 +18,18 @@ export async function POST(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const shouldReset = searchParams.get("reset") === "true";
+    const shouldReset = searchParams.get('reset') === 'true';
 
     if (shouldReset) {
       const { deleteAllQuestions } =
-        await import("@/lib/services/sleepAssessmentQuestion.service");
+        await import('@/lib/services/sleepAssessmentQuestion.service');
       await deleteAllQuestions();
     } else {
       const existingQuestions = await getAllQuestions();
       if (existingQuestions.length > 0) {
         return NextResponse.json(
           errorResponse(
-            "Questions already exist. Use ?reset=true to wipe and re-seed.",
+            'Questions already exist. Use ?reset=true to wipe and re-seed.',
             null,
             400,
           ),

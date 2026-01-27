@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import styles from "./styles.module.css";
+import styles from './styles.module.css';
 
 interface ProgressBarProps {
   currentStep: number;
