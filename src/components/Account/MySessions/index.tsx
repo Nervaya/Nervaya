@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Session } from "@/types/session.types";
 import { Therapist } from "@/types/therapist.types";
+import Loader from "@/components/common/Loader";
 import styles from "./styles.module.css";
 
 export default function MySessions() {

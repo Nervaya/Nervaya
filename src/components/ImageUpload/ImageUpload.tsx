@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import Loader from "@/components/common/Loader";
 import styles from "./styles.module.css";
 import { FaCloudArrowUp, FaXmark } from "react-icons/fa6";
 
@@ -92,7 +93,7 @@ const ImageUpload = ({
       />
 
       {loading ? (
-        <p>Uploading...</p>
+        <Loader size="md" text="Uploading..." />
       ) : preview ? (
         <>
           <Image

@@ -1,0 +1,33 @@
+"use client";
+
+import styles from "./styles.module.css";
+
+interface ProgressBarProps {
+  currentStep: number;
+  totalSteps: number;
+}
+
+const ProgressBar = ({ currentStep, totalSteps }: ProgressBarProps) => {
+  const progressPercentage = (currentStep / totalSteps) * 100;
+
+  return (
+    <div className={styles.progressContainer}>
+      <span className={styles.stepCounter}>
+        {currentStep}/{totalSteps}
+      </span>
+      <div className={styles.progressTrack}>
+        <div
+          className={styles.progressFill}
+          style={{ width: `${progressPercentage}%` }}
+          role="progressbar"
+          aria-valuenow={currentStep}
+          aria-valuemin={1}
+          aria-valuemax={totalSteps}
+          aria-label={`Question ${currentStep} of ${totalSteps}`}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default ProgressBar;

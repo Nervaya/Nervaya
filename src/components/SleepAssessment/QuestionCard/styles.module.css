@@ -1,0 +1,321 @@
+.questionCard {
+  width: 100%;
+}
+
+.questionText {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #f8fafc;
+  line-height: 1.4;
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .questionText {
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .questionText {
+    font-size: 1.125rem;
+    margin-bottom: 20px;
+  }
+}
+
+.requiredIndicator {
+  color: #ef4444;
+  font-weight: 400;
+}
+
+.optionsContainer {
+  width: 100%;
+}
+
+.optionsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .optionsList {
+    gap: 10px;
+  }
+}
+
+.optionCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .optionCard {
+    padding: 16px 18px;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .optionCard {
+    padding: 14px 16px;
+    gap: 12px;
+    font-size: 0.9375rem;
+  }
+}
+
+.optionCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.optionCard.selected {
+  background: rgba(124, 58, 237, 0.12);
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
+.optionCard.selected:hover {
+  background: rgba(124, 58, 237, 0.16);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+.optionIndicator {
+  flex-shrink: 0;
+}
+
+.radio {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .radio {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .radio {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.optionCard.selected .radio {
+  border-color: #7c3aed;
+}
+
+.radioDot {
+  width: 10px;
+  height: 10px;
+  background: #7c3aed;
+  border-radius: 50%;
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .radioDot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .radioDot {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .checkbox {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+  }
+}
+
+.optionCard.selected .checkbox {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.checkbox svg {
+  width: 12px;
+  height: 10px;
+  color: white;
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 480px) {
+  .checkbox svg {
+    width: 10px;
+    height: 8px;
+  }
+}
+
+.optionLabel {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.scaleContainer {
+  width: 100%;
+}
+
+.scaleList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .scaleList {
+    gap: 8px;
+  }
+}
+
+.scaleOption {
+  min-width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  .scaleOption {
+    min-width: 44px;
+    height: 44px;
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scaleOption {
+    min-width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+    padding: 0 12px;
+    border-radius: 10px;
+  }
+}
+
+.scaleOption:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.scaleOption.selected {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+}
+
+.textInput {
+  width: 100%;
+  min-height: 120px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #f8fafc;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .textInput {
+    padding: 14px 16px;
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .textInput {
+    padding: 12px 14px;
+    font-size: 0.9375rem;
+  }
+}
+
+.textInput::placeholder {
+  color: #64748b;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}

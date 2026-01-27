@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Loader from "@/components/common/Loader";
 import { Therapist } from "@/types/therapist.types";
 import styles from "./styles.module.css";
 
@@ -69,7 +70,15 @@ export default function AdminTherapistsPage() {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "60px 20px",
+          }}
+        >
+          <Loader size="lg" text="Loading therapists..." />
+        </div>
       ) : (
         <div className={styles.list}>
           {therapists.map((therapist) => (
