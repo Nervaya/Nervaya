@@ -1,5 +1,5 @@
-import { IoShieldOutline, IoTimeOutline } from "react-icons/io5";
-import styles from "./styles.module.css";
+import { IoShieldOutline, IoTimeOutline } from 'react-icons/io5';
+import styles from './styles.module.css';
 
 const PrivacyPolicyHeader = () => {
   return (

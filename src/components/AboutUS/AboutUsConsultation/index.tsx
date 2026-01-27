@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import styles from "./styles.module.css";
-import { FaRegComment, FaRegUser, FaRegEnvelope } from "react-icons/fa6";
-import { IoVideocamOutline } from "react-icons/io5";
-import { CiCalendar } from "react-icons/ci";
-import Button from "@/components/common/Button/Button";
-import Input from "@/components/common/Input/Input";
+import { useState } from 'react';
+import styles from './styles.module.css';
+import { FaRegComment, FaRegUser, FaRegEnvelope } from 'react-icons/fa6';
+import { IoVideocamOutline } from 'react-icons/io5';
+import { CiCalendar } from 'react-icons/ci';
+import Button from '@/components/common/Button/Button';
+import Input from '@/components/common/Input/Input';
 
 const AboutUsConsultation = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    connectionType: "Google Meet",
-    email: "",
+    firstName: '',
+    lastName: '',
+    connectionType: 'Google Meet',
+    email: '',
   });
 
   const handleChange = (
@@ -30,7 +30,7 @@ const AboutUsConsultation = () => {
     // Handle form submission
     // TODO: Implement form submission logic
     // eslint-disable-next-line no-console
-    console.log("Form submitted:", formData);
+    console.log('Form submitted:', formData);
   };
 
   return (

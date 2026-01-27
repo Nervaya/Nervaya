@@ -1,9 +1,9 @@
 // Payment Status Enums
 export const PAYMENT_STATUS = {
-  PENDING: "pending",
-  PAID: "paid",
-  FAILED: "failed",
-  REFUNDED: "refunded",
+  PENDING: 'pending',
+  PAID: 'paid',
+  FAILED: 'failed',
+  REFUNDED: 'refunded',
 } as const;
 
 export type PaymentStatus =
@@ -11,21 +11,21 @@ export type PaymentStatus =
 
 // Order Status Enums
 export const ORDER_STATUS = {
-  PENDING: "pending",
-  CONFIRMED: "confirmed",
-  SHIPPED: "shipped",
-  DELIVERED: "delivered",
-  CANCELLED: "cancelled",
+  PENDING: 'pending',
+  CONFIRMED: 'confirmed',
+  SHIPPED: 'shipped',
+  DELIVERED: 'delivered',
+  CANCELLED: 'cancelled',
 } as const;
 
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
 // Session Status Enums
 export const SESSION_STATUS = {
-  PENDING: "pending",
-  CONFIRMED: "confirmed",
-  COMPLETED: "completed",
-  CANCELLED: "cancelled",
+  PENDING: 'pending',
+  CONFIRMED: 'confirmed',
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
 } as const;
 
 export type SessionStatus =

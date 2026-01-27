@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useCart } from "@/context/CartContext";
+import { useState, useEffect } from 'react';
+import { useCart } from '@/context/CartContext';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AnimatePresence, LazyMotion, m } from "framer-motion";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import {
   FaBars,
   FaChevronLeft,
   FaChevronRight,
   FaXmark,
-} from "react-icons/fa6";
+} from 'react-icons/fa6';
 import {
   adminMenuGroups,
   iconMap,
   sidebarMenuGroups,
   sidebarBottomNavItems,
-} from "@/utils/sidebarConstants";
-import styles from "./styles.module.css";
+} from '@/utils/sidebarConstants';
+import styles from './styles.module.css';
 
 const Sidebar = ({
   children,
@@ -30,18 +30,18 @@ const Sidebar = ({
   const { cartCount } = useCart();
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return false;
     }
     try {
-      return window.localStorage.getItem("sidebar-collapsed") === "true";
+      return window.localStorage.getItem('sidebar-collapsed') === 'true';
     } catch {
       return false;
     }
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const isAdminRoute = pathname.startsWith("/admin");
+  const isAdminRoute = pathname.startsWith('/admin');
   const menuGroups = isAdminRoute ? adminMenuGroups : sidebarMenuGroups;
   const expandedWidth = 280;
   const collapsedWidth = 88;
@@ -61,9 +61,9 @@ const Sidebar = ({
         return;
       }
       try {
-        const stored = window.localStorage.getItem("sidebar-collapsed");
+        const stored = window.localStorage.getItem('sidebar-collapsed');
         if (stored !== null) {
-          setIsCollapsed(stored === "true");
+          setIsCollapsed(stored === 'true');
         }
       } catch {
         // ignore
@@ -71,9 +71,9 @@ const Sidebar = ({
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const Sidebar = ({
       return;
     }
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = previousOverflow;
     };
@@ -95,7 +95,7 @@ const Sidebar = ({
       <button
         className={styles.mobileToggle}
         onClick={() => setIsMobileOpen((v) => !v)}
-        aria-label={isMobileOpen ? "Close sidebar" : "Open sidebar"}
+        aria-label={isMobileOpen ? 'Close sidebar' : 'Open sidebar'}
         aria-expanded={isMobileOpen}
         aria-controls="app-sidebar"
       >
@@ -103,22 +103,22 @@ const Sidebar = ({
       </button>
 
       <LazyMotion
-        features={() => import("framer-motion").then((mod) => mod.domAnimation)}
+        features={() => import('framer-motion').then((mod) => mod.domAnimation)}
       >
         <AnimatePresence mode="wait">
           {(isMobileOpen || isDesktop) && (
             <m.aside
-              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""} ${isMobileOpen ? styles.mobileOpen : ""}`}
+              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
               id="app-sidebar"
               initial={false}
               animate={{ x: 0, width: sidebarWidth }}
               transition={{
-                type: "spring",
+                type: 'spring',
                 stiffness: 300,
                 damping: 30,
                 mass: 0.8,
               }}
-              style={{ willChange: "width, transform" }}
+              style={{ willChange: 'width, transform' }}
             >
               <button
                 type="button"
@@ -128,7 +128,7 @@ const Sidebar = ({
                     const next = !v;
                     try {
                       window.localStorage.setItem(
-                        "sidebar-collapsed",
+                        'sidebar-collapsed',
                         String(next),
                       );
                     } catch {
@@ -137,7 +137,7 @@ const Sidebar = ({
                     return next;
                   })
                 }
-                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 aria-pressed={isCollapsed}
               >
                 {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
@@ -154,18 +154,18 @@ const Sidebar = ({
                           <li key={itemIndex}>
                             <Link
                               href={item.path}
-                              className={`${styles.navItem} ${pathname === item.path ? styles.active : ""}`}
+                              className={`${styles.navItem} ${pathname === item.path ? styles.active : ''}`}
                               onClick={closeMobileSidebar}
                             >
                               <span className={styles.icon}>
-                                {iconMap[item.icon] || iconMap["FaHouse"]}
-                                {(item.path === "/supplements/cart" ||
-                                  item.title === "Cart") &&
+                                {iconMap[item.icon] || iconMap['FaHouse']}
+                                {(item.path === '/supplements/cart' ||
+                                  item.title === 'Cart') &&
                                   cartCount > 0 && (
-                                    <span className={styles.badge}>
-                                      {cartCount}
-                                    </span>
-                                  )}
+                                  <span className={styles.badge}>
+                                    {cartCount}
+                                  </span>
+                                )}
                               </span>
                               <span
                                 className={styles.title}
@@ -187,18 +187,18 @@ const Sidebar = ({
                       <li key={index}>
                         <Link
                           href={item.path}
-                          className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ""}`}
+                          className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ''}`}
                           onClick={closeMobileSidebar}
                         >
                           <span className={styles.icon}>
-                            {iconMap[item.icon] || iconMap["FaHouse"]}
-                            {(item.path === "/supplements/cart" ||
-                              item.title === "Cart") &&
+                            {iconMap[item.icon] || iconMap['FaHouse']}
+                            {(item.path === '/supplements/cart' ||
+                              item.title === 'Cart') &&
                               cartCount > 0 && (
-                                <span className={styles.badge}>
-                                  {cartCount}
-                                </span>
-                              )}
+                              <span className={styles.badge}>
+                                {cartCount}
+                              </span>
+                            )}
                           </span>
                           <span
                             className={styles.title}
@@ -222,7 +222,7 @@ const Sidebar = ({
       )}
 
       <main
-        className={`${styles.mainContent} ${className || ""}`}
+        className={`${styles.mainContent} ${className || ''}`}
         style={{ marginLeft: `${mainMarginLeft}px` }}
       >
         {children}

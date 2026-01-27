@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Supplement } from "@/types/supplement.types";
-import { formatPrice } from "@/utils/cart.util";
-import styles from "./styles.module.css";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Supplement } from '@/types/supplement.types';
+import { formatPrice } from '@/utils/cart.util';
+import styles from './styles.module.css';
 
 interface SupplementListProps {
   supplements: Supplement[];
@@ -20,17 +20,17 @@ const SupplementList: React.FC<SupplementListProps> = ({
   onEdit,
   loading = false,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
 
-  const categories = ["all", ...new Set(supplements.map((s) => s.category))];
+  const categories = ['all', ...new Set(supplements.map((s) => s.category))];
 
   const filteredSupplements = supplements.filter((supplement) => {
     const matchesSearch =
       supplement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       supplement.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
-      filterCategory === "all" || supplement.category === filterCategory;
+      filterCategory === 'all' || supplement.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -85,14 +85,14 @@ const SupplementList: React.FC<SupplementListProps> = ({
             <div key={supplement._id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image
-                  src={supplement.image || "/default-supplement.png"}
+                  src={supplement.image || '/default-supplement.png'}
                   alt={supplement.name}
                   width={120}
                   height={120}
                   className={styles.image}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
-                      "/default-supplement.png";
+                      '/default-supplement.png';
                   }}
                 />
                 {!supplement.isActive && (

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model, Document } from "mongoose";
+import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface ITimeSlot {
   startTime: string;
@@ -20,11 +20,11 @@ const timeSlotSchema = new Schema<ITimeSlot>(
   {
     startTime: {
       type: String,
-      required: [true, "Start time is required"],
+      required: [true, 'Start time is required'],
     },
     endTime: {
       type: String,
-      required: [true, "End time is required"],
+      required: [true, 'End time is required'],
     },
     isAvailable: {
       type: Boolean,
@@ -38,7 +38,7 @@ const timeSlotSchema = new Schema<ITimeSlot>(
     },
     sessionId: {
       type: Schema.Types.ObjectId,
-      ref: "Session",
+      ref: 'Session',
       default: null,
     },
   },
@@ -49,14 +49,14 @@ const therapistScheduleSchema = new Schema<ITherapistSchedule>(
   {
     therapistId: {
       type: Schema.Types.ObjectId,
-      ref: "Therapist",
-      required: [true, "Therapist ID is required"],
+      ref: 'Therapist',
+      required: [true, 'Therapist ID is required'],
       index: true,
     },
     date: {
       type: String,
-      required: [true, "Date is required"],
-      match: [/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"],
+      required: [true, 'Date is required'],
+      match: [/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'],
       index: true,
     },
     slots: {
@@ -70,12 +70,11 @@ const therapistScheduleSchema = new Schema<ITherapistSchedule>(
 );
 
 therapistScheduleSchema.index({ therapistId: 1, date: 1 }, { unique: true });
-therapistScheduleSchema.index({ therapistId: 1, date: 1 });
 
 const TherapistSchedule: Model<ITherapistSchedule> =
   mongoose.models.TherapistSchedule ||
   mongoose.model<ITherapistSchedule>(
-    "TherapistSchedule",
+    'TherapistSchedule',
     therapistScheduleSchema,
   );
 

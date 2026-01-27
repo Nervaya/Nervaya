@@ -1,7 +1,7 @@
-import styles from "./page.module.css";
+import styles from './page.module.css';
 
-import Cards from "@/components/LandingPageCards";
-import Footer from "@/components/Footer";
+import Cards from '@/components/LandingPageCards';
+import Footer from '@/components/Footer';
 
 const HomePage = () => {
   return (

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar/LazySidebar";
-import { Supplement } from "@/types/supplement.types";
-import SupplementGrid from "@/components/Supplements/SupplementGrid";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import { Supplement } from '@/types/supplement.types';
+import SupplementGrid from '@/components/Supplements/SupplementGrid';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function SupplementsPage() {
   const [supplements, setSupplements] = useState<Supplement[]>([]);
@@ -16,7 +16,7 @@ export default function SupplementsPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = (await api.get("/supplements")) as {
+      const response = (await api.get('/supplements')) as {
         success: boolean;
         data: Supplement[];
       };
@@ -25,7 +25,7 @@ export default function SupplementsPage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load supplements",
+        err instanceof Error ? err.message : 'Failed to load supplements',
       );
     } finally {
       setLoading(false);
@@ -34,16 +34,16 @@ export default function SupplementsPage() {
 
   const handleAddToCart = async (supplementId: string, quantity: number) => {
     try {
-      const response = (await api.post("/cart", {
+      const response = (await api.post('/cart', {
         supplementId,
         quantity,
       })) as { success: boolean };
       if (response.success) {
-        alert("Added to cart successfully!");
+        alert('Added to cart successfully!');
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to add to cart";
+        err instanceof Error ? err.message : 'Failed to add to cart';
       alert(message);
       throw err;
     }

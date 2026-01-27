@@ -1,30 +1,30 @@
-import Order, { IOrder, IOrderItem } from "@/lib/models/order.model";
-import Cart from "@/lib/models/cart.model";
-import Supplement from "@/lib/models/supplement.model";
-import connectDB from "@/lib/db/mongodb";
-import { handleError, ValidationError } from "@/lib/utils/error.util";
-import { Types } from "mongoose";
+import Order, { IOrder, IOrderItem } from '@/lib/models/order.model';
+import Cart from '@/lib/models/cart.model';
+import Supplement from '@/lib/models/supplement.model';
+import connectDB from '@/lib/db/mongodb';
+import { handleError, ValidationError } from '@/lib/utils/error.util';
+import { Types } from 'mongoose';
 import {
   PAYMENT_STATUS,
   ORDER_STATUS,
   ORDER_STATUS_VALUES,
   PAYMENT_STATUS_VALUES,
   OrderStatus,
-} from "@/lib/constants/enums";
+} from '@/lib/constants/enums';
 
 export async function createOrder(
   userId: string,
-  shippingAddress: IOrder["shippingAddress"],
+  shippingAddress: IOrder['shippingAddress'],
 ) {
   await connectDB();
   try {
-    if (!userId || typeof userId !== "string") {
-      throw new ValidationError("Invalid User ID");
+    if (!userId || typeof userId !== 'string') {
+      throw new ValidationError('Invalid User ID');
     }
 
-    const cart = await Cart.findOne({ userId }).populate("items.supplementId");
+    const cart = await Cart.findOne({ userId }).populate('items.supplementId');
     if (!cart || cart.items.length === 0) {
-      throw new ValidationError("Cart is empty");
+      throw new ValidationError('Cart is empty');
     }
 
     const orderItems: IOrderItem[] = [];
@@ -72,7 +72,7 @@ export async function createOrder(
 
     await clearCart(userId);
 
-    return await Order.findById(order._id).populate("items.supplementId");
+    return await Order.findById(order._id).populate('items.supplementId');
   } catch (error) {
     throw handleError(error);
   }
@@ -91,11 +91,11 @@ export async function getOrderById(orderId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
-      throw new ValidationError("Invalid Order ID");
+      throw new ValidationError('Invalid Order ID');
     }
-    const order = await Order.findById(orderId).populate("items.supplementId");
+    const order = await Order.findById(orderId).populate('items.supplementId');
     if (!order) {
-      throw new ValidationError("Order not found");
+      throw new ValidationError('Order not found');
     }
     return order;
   } catch (error) {
@@ -106,11 +106,11 @@ export async function getOrderById(orderId: string) {
 export async function getUserOrders(userId: string) {
   await connectDB();
   try {
-    if (!userId || typeof userId !== "string") {
-      throw new ValidationError("Invalid User ID");
+    if (!userId || typeof userId !== 'string') {
+      throw new ValidationError('Invalid User ID');
     }
     const orders = await Order.find({ userId })
-      .populate("items.supplementId")
+      .populate('items.supplementId')
       .sort({ createdAt: -1 });
     return orders;
   } catch (error) {
@@ -122,11 +122,11 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
-      throw new ValidationError("Invalid Order ID");
+      throw new ValidationError('Invalid Order ID');
     }
 
     if (!ORDER_STATUS_VALUES.includes(status)) {
-      throw new ValidationError("Invalid order status");
+      throw new ValidationError('Invalid order status');
     }
 
     const order = await Order.findByIdAndUpdate(
@@ -136,7 +136,7 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus) {
     );
 
     if (!order) {
-      throw new ValidationError("Order not found");
+      throw new ValidationError('Order not found');
     }
     return order;
   } catch (error) {
@@ -146,18 +146,18 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus) {
 
 export async function updatePaymentStatus(
   orderId: string,
-  paymentStatus: IOrder["paymentStatus"],
+  paymentStatus: IOrder['paymentStatus'],
   paymentId?: string,
   razorpayOrderId?: string,
 ) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
-      throw new ValidationError("Invalid Order ID");
+      throw new ValidationError('Invalid Order ID');
     }
 
     if (!PAYMENT_STATUS_VALUES.includes(paymentStatus)) {
-      throw new ValidationError("Invalid payment status");
+      throw new ValidationError('Invalid payment status');
     }
 
     const updateData: Partial<IOrder> = { paymentStatus };
@@ -174,7 +174,7 @@ export async function updatePaymentStatus(
     });
 
     if (!order) {
-      throw new ValidationError("Order not found");
+      throw new ValidationError('Order not found');
     }
 
     if (paymentStatus === PAYMENT_STATUS.PAID) {

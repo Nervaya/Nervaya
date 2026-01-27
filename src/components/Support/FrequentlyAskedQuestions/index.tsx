@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useReducer } from "react";
-import styles from "./styles.module.css";
-import { IoAdd, IoRemove } from "react-icons/io5";
-import { faqData } from "@/utils/faqData";
+import { useReducer } from 'react';
+import styles from './styles.module.css';
+import { IoAdd, IoRemove } from 'react-icons/io5';
+import { faqData } from '@/utils/faqData';
 
 type FAQState = {
   expandedId: number | null;
 };
 
 type FAQAction = {
-  type: "TOGGLE";
+  type: 'TOGGLE';
   id: number;
 };
 
 const faqReducer = (state: FAQState, action: FAQAction): FAQState => {
   switch (action.type) {
-    case "TOGGLE":
+    case 'TOGGLE':
       if (state.expandedId === action.id) {
         return { expandedId: null };
       }
@@ -30,7 +30,7 @@ const FrequentlyAskedQuestions = () => {
   const [state, dispatch] = useReducer(faqReducer, { expandedId: 1 });
 
   const handleToggle = (id: number) => {
-    dispatch({ type: "TOGGLE", id });
+    dispatch({ type: 'TOGGLE', id });
   };
 
   return (
@@ -63,7 +63,7 @@ const FrequentlyAskedQuestions = () => {
                     handleToggle(item.id);
                   }}
                   aria-expanded={isExpanded}
-                  aria-label={isExpanded ? "Collapse answer" : "Expand answer"}
+                  aria-label={isExpanded ? 'Collapse answer' : 'Expand answer'}
                   data-button-id={item.id}
                 >
                   {isExpanded ? (

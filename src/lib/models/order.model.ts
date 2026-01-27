@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 import {
   PAYMENT_STATUS,
   ORDER_STATUS,
@@ -6,7 +6,7 @@ import {
   ORDER_STATUS_VALUES,
   PaymentStatus,
   OrderStatus,
-} from "@/lib/constants/enums";
+} from '@/lib/constants/enums';
 
 export interface IOrderItem {
   supplementId: Types.ObjectId;
@@ -44,7 +44,7 @@ const orderItemSchema = new Schema<IOrderItem>(
   {
     supplementId: {
       type: Schema.Types.ObjectId,
-      ref: "Supplement",
+      ref: 'Supplement',
       required: true,
     },
     name: {
@@ -63,7 +63,7 @@ const orderItemSchema = new Schema<IOrderItem>(
     },
     image: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   { _id: false },
@@ -73,17 +73,17 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
       trim: true,
     },
     phone: {
       type: String,
-      required: [true, "Phone is required"],
+      required: [true, 'Phone is required'],
       trim: true,
     },
     addressLine1: {
       type: String,
-      required: [true, "Address line 1 is required"],
+      required: [true, 'Address line 1 is required'],
       trim: true,
     },
     addressLine2: {
@@ -92,24 +92,24 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
     },
     city: {
       type: String,
-      required: [true, "City is required"],
+      required: [true, 'City is required'],
       trim: true,
     },
     state: {
       type: String,
-      required: [true, "State is required"],
+      required: [true, 'State is required'],
       trim: true,
     },
     zipCode: {
       type: String,
-      required: [true, "Zip code is required"],
+      required: [true, 'Zip code is required'],
       trim: true,
     },
     country: {
       type: String,
-      required: [true, "Country is required"],
+      required: [true, 'Country is required'],
       trim: true,
-      default: "India",
+      default: 'India',
     },
   },
   { _id: false },
@@ -119,17 +119,17 @@ const orderSchema = new Schema<IOrder>(
   {
     userId: {
       type: String,
-      required: [true, "User ID is required"],
+      required: [true, 'User ID is required'],
       index: true,
     },
     items: {
       type: [orderItemSchema],
-      required: [true, "Items are required"],
+      required: [true, 'Items are required'],
     },
     totalAmount: {
       type: Number,
-      required: [true, "Total amount is required"],
-      min: [0, "Total amount must be non-negative"],
+      required: [true, 'Total amount is required'],
+      min: [0, 'Total amount must be non-negative'],
     },
     paymentId: {
       type: String,
@@ -152,7 +152,7 @@ const orderSchema = new Schema<IOrder>(
     },
     shippingAddress: {
       type: shippingAddressSchema,
-      required: [true, "Shipping address is required"],
+      required: [true, 'Shipping address is required'],
     },
   },
   {
@@ -161,6 +161,6 @@ const orderSchema = new Schema<IOrder>(
 );
 
 const Order: Model<IOrder> =
-  mongoose.models.Order || mongoose.model<IOrder>("Order", orderSchema);
+  mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema);
 
 export default Order;

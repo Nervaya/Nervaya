@@ -23,8 +23,8 @@ import {
   FaStethoscope,
   FaPills,
   FaCapsules,
-} from "react-icons/fa6";
-import type { NavigationMenuGroup } from "@/types/navigation.types";
+} from 'react-icons/fa6';
+import type { NavigationMenuGroup } from '@/types/navigation.types';
 
 export const iconMap: { [key: string]: React.ReactElement } = {
   FaHouse: <FaHouse />,
@@ -62,47 +62,47 @@ export interface SidebarNavItem {
 
 export const sidebarBottomNavItems: SidebarNavItem[] = [
   {
-    title: "Feedback",
-    path: "/feedback",
-    icon: "FaRegCommentDots",
+    title: 'Feedback',
+    path: '/feedback',
+    icon: 'FaRegCommentDots',
   },
 ];
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
-    title: "Sleep",
+    title: 'Sleep',
     items: [
-      { title: "Drift Off", path: "/drift-off", icon: "FaBed" },
-      { title: "Sleep Elixir", path: "/sleep-elixir", icon: "FaHeartPulse" },
+      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaHeartPulse' },
     ],
   },
   {
-    title: "Shop",
+    title: 'Shop',
     items: [
-      { title: "Supplements", path: "/supplements", icon: "FaPills" },
-      { title: "Cart", path: "/supplements/cart", icon: "FaCartShopping" },
+      { title: 'Supplements', path: '/supplements', icon: 'FaPills' },
+      { title: 'Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
     ],
   },
   {
-    title: "Support",
+    title: 'Support',
     items: [
       {
-        title: "Therapy Corner",
-        path: "/therapy-corner",
-        icon: "FaUserDoctor",
+        title: 'Therapy Corner',
+        path: '/therapy-corner',
+        icon: 'FaUserDoctor',
       },
-      { title: "Support", path: "/support", icon: "FaHeadset" },
-      { title: "Account", path: "/account", icon: "FaUsers" },
+      { title: 'Support', path: '/support', icon: 'FaHeadset' },
+      { title: 'Account', path: '/account', icon: 'FaUsers' },
     ],
   },
 ];
 
 export const adminMenuGroups: NavigationMenuGroup[] = [
   {
-    title: "Admin",
+    title: 'Admin',
     items: [
-      { title: "Therapists", path: "/admin/therapists", icon: "FaUserDoctor" },
-      { title: "Supplements", path: "/admin/supplements", icon: "FaPills" },
+      { title: 'Therapists', path: '/admin/therapists', icon: 'FaUserDoctor' },
+      { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
     ],
   },
 ];

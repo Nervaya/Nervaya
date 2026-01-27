@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { Order } from "@/types/supplement.types";
-import { formatPrice } from "@/utils/cart.util";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { Order } from '@/types/supplement.types';
+import { formatPrice } from '@/utils/cart.util';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function OrderSuccessPage() {
   const params = useParams();
@@ -20,17 +20,17 @@ export default function OrderSuccessPage() {
       setLoading(true);
       setError(null);
       type OrderResponse = { success: boolean; data: Order[] };
-      const response = (await api.get("/orders")) as OrderResponse;
+      const response = (await api.get('/orders')) as OrderResponse;
       if (response.success && response.data) {
         const foundOrder = response.data.find((o) => o._id === params.orderId);
         if (foundOrder) {
           setOrder(foundOrder);
         } else {
-          setError("Order not found");
+          setError('Order not found');
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load order");
+      setError(err instanceof Error ? err.message : 'Failed to load order');
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export default function OrderSuccessPage() {
   if (error || !order) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>{error || "Order not found"}</div>
+        <div className={styles.error}>{error || 'Order not found'}</div>
         <Link href="/supplements" className={styles.link}>
           Continue Shopping
         </Link>
@@ -85,7 +85,7 @@ export default function OrderSuccessPage() {
             <span>Payment Status:</span>
             <span
               className={`${styles.status} ${
-                order.paymentStatus === "paid" ? styles.paid : styles.pending
+                order.paymentStatus === 'paid' ? styles.paid : styles.pending
               }`}
             >
               {order.paymentStatus.toUpperCase()}

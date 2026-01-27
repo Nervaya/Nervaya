@@ -1,7 +1,7 @@
-import { memo, useMemo } from "react";
-import { IoChevronDownOutline } from "react-icons/io5";
-import { PrivacySection } from "@/utils/privacyPolicyData";
-import styles from "./styles.module.css";
+import { memo, useMemo } from 'react';
+import { IoChevronDownOutline } from 'react-icons/io5';
+import { PrivacySection } from '@/utils/privacyPolicyData';
+import styles from './styles.module.css';
 
 interface PrivacyPolicySectionProps {
   section: PrivacySection;
@@ -13,7 +13,7 @@ interface PrivacyPolicySectionProps {
 const PrivacyPolicySection = memo(
   ({ section, isOpen, onToggle, children }: PrivacyPolicySectionProps) => {
     const iconClassName = useMemo(() => {
-      return `${styles.accordionIcon} ${isOpen ? styles.accordionIconOpen : ""}`;
+      return `${styles.accordionIcon} ${isOpen ? styles.accordionIconOpen : ''}`;
     }, [isOpen]);
 
     return (
@@ -33,6 +33,6 @@ const PrivacyPolicySection = memo(
   },
 );
 
-PrivacyPolicySection.displayName = "PrivacyPolicySection";
+PrivacyPolicySection.displayName = 'PrivacyPolicySection';
 
 export default PrivacyPolicySection;

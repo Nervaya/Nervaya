@@ -1,14 +1,14 @@
-import React, { ButtonHTMLAttributes } from "react";
-import styles from "./Button.module.css";
+import React, { ButtonHTMLAttributes } from 'react';
+import styles from './Button.module.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary";
+  variant?: 'primary' | 'secondary';
   loading?: boolean;
   children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  variant = "primary",
+  variant = 'primary',
   loading = false,
   children,
   disabled,
@@ -17,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${styles.button} ${styles[variant]} ${className || ""}`}
+      className={`${styles.button} ${styles[variant]} ${className || ''}`}
       disabled={disabled || loading}
       {...props}
     >

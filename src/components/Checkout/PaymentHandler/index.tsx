@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
-import Script from "next/script";
-import { useRouter } from "next/navigation";
-import { RazorpayPaymentResponse } from "@/types/payment.types";
-import styles from "./styles.module.css";
+import React, { useEffect } from 'react';
+import Script from 'next/script';
+import { useRouter } from 'next/navigation';
+import { RazorpayPaymentResponse } from '@/types/payment.types';
+import styles from './styles.module.css';
 
 interface PaymentHandlerProps {
   orderId: string;
@@ -40,22 +40,22 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 
   const handlePayment = React.useCallback(async () => {
     if (!window.Razorpay) {
-      onError?.("Razorpay SDK not loaded");
+      onError?.('Razorpay SDK not loaded');
       return;
     }
 
     const options = {
       key: razorpayKeyId,
       amount: Math.round(amount * 100),
-      currency: "INR",
-      name: "Nervaya",
+      currency: 'INR',
+      name: 'Nervaya',
       description: `Order #${orderId}`,
       order_id: razorpayOrderId,
       handler: async (response: RazorpayPaymentResponse) => {
         try {
-          const verifyResponse = await fetch("/api/payments/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+          const verifyResponse = await fetch('/api/payments/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               orderId,
               paymentId: response.razorpay_payment_id,
@@ -69,23 +69,23 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
             onSuccess?.(response.razorpay_payment_id);
             router.push(`/supplements/order-success/${orderId}`);
           } else {
-            onError?.(result.message || "Payment verification failed");
+            onError?.(result.message || 'Payment verification failed');
           }
         } catch (_error) {
-          onError?.("Failed to verify payment");
+          onError?.('Failed to verify payment');
         }
       },
       prefill: {
-        name: userName || "",
-        email: userEmail || "",
-        contact: userPhone || "",
+        name: userName || '',
+        email: userEmail || '',
+        contact: userPhone || '',
       },
       theme: {
-        color: "#7c3aed",
+        color: '#7c3aed',
       },
       modal: {
         ondismiss: () => {
-          onError?.("Payment cancelled");
+          onError?.('Payment cancelled');
         },
       },
     };

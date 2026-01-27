@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { SupplementFormData } from "@/types/supplement.types";
-import Input from "@/components/common/Input";
-import Button from "@/components/common/Button";
-import ImageUpload from "@/components/ImageUpload/ImageUpload";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import { SupplementFormData } from '@/types/supplement.types';
+import Input from '@/components/common/Input';
+import Button from '@/components/common/Button';
+import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import styles from './styles.module.css';
 
 interface SupplementFormProps {
   onSubmit: (data: SupplementFormData) => Promise<void>;
@@ -18,25 +18,25 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   onSubmit,
   initialData,
   loading = false,
-  submitLabel = "Create Supplement",
+  submitLabel = 'Create Supplement',
 }) => {
   const [formData, setFormData] = useState<SupplementFormData>({
-    name: initialData?.name || "",
-    description: initialData?.description || "",
+    name: initialData?.name || '',
+    description: initialData?.description || '',
     price: initialData?.price || 0,
-    image: initialData?.image || "",
+    image: initialData?.image || '',
     stock: initialData?.stock || 0,
-    category: initialData?.category || "",
+    category: initialData?.category || '',
     ingredients: initialData?.ingredients || [],
     benefits: initialData?.benefits || [],
     isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
   });
 
   const [ingredientsText, setIngredientsText] = useState(
-    initialData?.ingredients?.join(", ") || "",
+    initialData?.ingredients?.join(', ') || '',
   );
   const [benefitsText, setBenefitsText] = useState(
-    initialData?.benefits?.join(", ") || "",
+    initialData?.benefits?.join(', ') || '',
   );
   const [errors, setErrors] = useState<
     Partial<Record<keyof SupplementFormData, string>>
@@ -46,19 +46,19 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     if (initialData) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
-        name: initialData.name || "",
-        description: initialData.description || "",
+        name: initialData.name || '',
+        description: initialData.description || '',
         price: initialData.price || 0,
-        image: initialData.image || "",
+        image: initialData.image || '',
         stock: initialData.stock || 0,
-        category: initialData.category || "",
+        category: initialData.category || '',
         ingredients: initialData.ingredients || [],
         benefits: initialData.benefits || [],
         isActive:
           initialData.isActive !== undefined ? initialData.isActive : true,
       });
-      setIngredientsText(initialData.ingredients?.join(", ") || "");
-      setBenefitsText(initialData.benefits?.join(", ") || "");
+      setIngredientsText(initialData.ingredients?.join(', ') || '');
+      setBenefitsText(initialData.benefits?.join(', ') || '');
     }
   }, [initialData]);
 
@@ -66,25 +66,25 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = 'Name is required';
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
+      newErrors.description = 'Description is required';
     } else if (formData.description.length < 10) {
-      newErrors.description = "Description must be at least 10 characters";
+      newErrors.description = 'Description must be at least 10 characters';
     }
 
     if (formData.price <= 0) {
-      newErrors.price = "Price must be greater than 0";
+      newErrors.price = 'Price must be greater than 0';
     }
 
     if (formData.stock < 0) {
-      newErrors.stock = "Stock cannot be negative";
+      newErrors.stock = 'Stock cannot be negative';
     }
 
     if (!formData.category.trim()) {
-      newErrors.category = "Category is required";
+      newErrors.category = 'Category is required';
     }
 
     setErrors(newErrors);
@@ -100,11 +100,11 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     const submitData: SupplementFormData = {
       ...formData,
       ingredients: ingredientsText
-        .split(",")
+        .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
       benefits: benefitsText
-        .split(",")
+        .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
     };
@@ -128,22 +128,22 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         <Input
           label="Name"
           value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
+          onChange={(e) => handleChange('name', e.target.value)}
           error={errors.name}
           required
           containerClassName={styles.fullWidth}
         />
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.label}>
-            Description{" "}
+            Description{' '}
             {errors.description && (
               <span className={styles.errorText}>{errors.description}</span>
             )}
           </label>
           <textarea
-            className={`${styles.textarea} ${errors.description ? styles.textareaError : ""}`}
+            className={`${styles.textarea} ${errors.description ? styles.textareaError : ''}`}
             value={formData.description}
-            onChange={(e) => handleChange("description", e.target.value)}
+            onChange={(e) => handleChange('description', e.target.value)}
             required
             rows={4}
           />
@@ -153,7 +153,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           type="number"
           value={formData.price.toString()}
           onChange={(e) =>
-            handleChange("price", parseFloat(e.target.value) || 0)
+            handleChange('price', parseFloat(e.target.value) || 0)
           }
           error={errors.price}
           required
@@ -165,7 +165,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           type="number"
           value={formData.stock.toString()}
           onChange={(e) =>
-            handleChange("stock", parseInt(e.target.value, 10) || 0)
+            handleChange('stock', parseInt(e.target.value, 10) || 0)
           }
           error={errors.stock}
           required
@@ -174,7 +174,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         <Input
           label="Category"
           value={formData.category}
-          onChange={(e) => handleChange("category", e.target.value)}
+          onChange={(e) => handleChange('category', e.target.value)}
           error={errors.category}
           required
           containerClassName={styles.fullWidth}
@@ -198,7 +198,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             <input
               type="checkbox"
               checked={formData.isActive}
-              onChange={(e) => handleChange("isActive", e.target.checked)}
+              onChange={(e) => handleChange('isActive', e.target.checked)}
               className={styles.checkbox}
             />
             <span>Active (visible to customers)</span>
@@ -207,7 +207,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.label}>Product Image</label>
           <ImageUpload
-            onUpload={(url) => handleChange("image", url)}
+            onUpload={(url) => handleChange('image', url)}
             initialUrl={formData.image}
             label="Upload Product Image"
           />

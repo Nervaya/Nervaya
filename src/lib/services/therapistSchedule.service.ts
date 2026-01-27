@@ -1,15 +1,15 @@
 import TherapistSchedule, {
   ITimeSlot,
-} from "@/lib/models/therapistSchedule.model";
-import Therapist from "@/lib/models/therapist.model";
-import connectDB from "@/lib/db/mongodb";
-import { handleError, ValidationError } from "@/lib/utils/error.util";
-import { Types } from "mongoose";
+} from '@/lib/models/therapistSchedule.model';
+import Therapist from '@/lib/models/therapist.model';
+import connectDB from '@/lib/db/mongodb';
+import { handleError, ValidationError } from '@/lib/utils/error.util';
+import { Types } from 'mongoose';
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 
@@ -23,10 +23,10 @@ function timeToMinutes(time12: string): number {
   const minutes = parseInt(match[2], 10);
   const ampm = match[3].toUpperCase();
 
-  if (ampm === "PM" && hour !== 12) {
+  if (ampm === 'PM' && hour !== 12) {
     hour += 12;
   }
-  if (ampm === "AM" && hour === 12) {
+  if (ampm === 'AM' && hour === 12) {
     hour = 0;
   }
 
@@ -36,9 +36,9 @@ function timeToMinutes(time12: string): number {
 function minutesToTime(minutes: number): string {
   const hour = Math.floor(minutes / 60);
   const min = minutes % 60;
-  const period = hour >= 12 ? "PM" : "AM";
+  const period = hour >= 12 ? 'PM' : 'AM';
   const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-  return `${displayHour}:${String(min).padStart(2, "0")} ${period}`;
+  return `${displayHour}:${String(min).padStart(2, '0')} ${period}`;
 }
 
 function generateTimeSlotsBetween(
@@ -48,8 +48,8 @@ function generateTimeSlotsBetween(
   const slots: string[] = [];
   const startMinutes = timeToMinutes(startTime);
   const endMinutes = timeToMinutes(endTime);
-  const lunchStart = timeToMinutes("12:00 PM");
-  const lunchEnd = timeToMinutes("02:00 PM");
+  const lunchStart = timeToMinutes('12:00 PM');
+  const lunchEnd = timeToMinutes('02:00 PM');
   const slotDuration = 60;
 
   let minutes = startMinutes;
@@ -78,12 +78,12 @@ export async function generateSlotsFromConsultingHours(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const therapist = await Therapist.findById(therapistId);
     if (!therapist) {
-      throw new ValidationError("Therapist not found");
+      throw new ValidationError('Therapist not found');
     }
 
     const consultingHours = therapist.consultingHours || [];
@@ -182,7 +182,7 @@ export async function getScheduleByDate(therapistId: string, date: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -209,7 +209,7 @@ export async function getSchedulesByDateRange(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const filter: Record<string, unknown> = {
@@ -246,7 +246,7 @@ export async function bookSlot(
       !Types.ObjectId.isValid(therapistId) ||
       !Types.ObjectId.isValid(sessionId)
     ) {
-      throw new ValidationError("Invalid Therapist ID or Session ID");
+      throw new ValidationError('Invalid Therapist ID or Session ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -255,21 +255,21 @@ export async function bookSlot(
     });
 
     if (!schedule) {
-      throw new ValidationError("Schedule not found for this date");
+      throw new ValidationError('Schedule not found for this date');
     }
 
     const slot = schedule.slots.find((s) => s.startTime === startTime);
     if (!slot) {
-      throw new ValidationError("Slot not found");
+      throw new ValidationError('Slot not found');
     }
 
     if (!slot.isAvailable) {
-      throw new ValidationError("Slot is already booked");
+      throw new ValidationError('Slot is already booked');
     }
 
     slot.isAvailable = false;
     slot.sessionId = new Types.ObjectId(sessionId);
-    schedule.markModified("slots");
+    schedule.markModified('slots');
     await schedule.save();
 
     return slot;
@@ -286,7 +286,7 @@ export async function releaseSlot(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -295,17 +295,17 @@ export async function releaseSlot(
     });
 
     if (!schedule) {
-      throw new ValidationError("Schedule not found for this date");
+      throw new ValidationError('Schedule not found for this date');
     }
 
     const slot = schedule.slots.find((s) => s.startTime === startTime);
     if (!slot) {
-      throw new ValidationError("Slot not found");
+      throw new ValidationError('Slot not found');
     }
 
     slot.isAvailable = true;
     slot.sessionId = undefined;
-    schedule.markModified("slots");
+    schedule.markModified('slots');
     await schedule.save();
 
     return slot;
@@ -323,7 +323,7 @@ export async function updateSlot(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -332,16 +332,16 @@ export async function updateSlot(
     });
 
     if (!schedule) {
-      throw new ValidationError("Schedule not found for this date");
+      throw new ValidationError('Schedule not found for this date');
     }
 
     const slot = schedule.slots.find((s) => s.startTime === startTime);
     if (!slot) {
-      throw new ValidationError("Slot not found");
+      throw new ValidationError('Slot not found');
     }
 
     Object.assign(slot, updates, { isCustomized: true });
-    schedule.markModified("slots");
+    schedule.markModified('slots');
     await schedule.save();
 
     return slot;
@@ -360,7 +360,7 @@ export async function createCustomSlot(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -380,10 +380,10 @@ export async function createCustomSlot(
         (s) => s.startTime === startTime,
       );
       if (existingSlot) {
-        throw new ValidationError("Slot already exists for this date and time");
+        throw new ValidationError('Slot already exists for this date and time');
       }
       schedule.slots.push(newSlot);
-      schedule.markModified("slots");
+      schedule.markModified('slots');
       await schedule.save();
       return newSlot;
     } else {
@@ -407,7 +407,7 @@ export async function deleteSlot(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
-      throw new ValidationError("Invalid Therapist ID");
+      throw new ValidationError('Invalid Therapist ID');
     }
 
     const schedule = await TherapistSchedule.findOne({
@@ -416,20 +416,20 @@ export async function deleteSlot(
     });
 
     if (!schedule) {
-      throw new ValidationError("Schedule not found for this date");
+      throw new ValidationError('Schedule not found for this date');
     }
 
     const slotIndex = schedule.slots.findIndex(
       (s) => s.startTime === startTime,
     );
     if (slotIndex === -1) {
-      throw new ValidationError("Slot not found");
+      throw new ValidationError('Slot not found');
     }
 
     schedule.slots.splice(slotIndex, 1);
-    schedule.markModified("slots");
+    schedule.markModified('slots');
     await schedule.save();
-    return { message: "Slot deleted successfully" };
+    return { message: 'Slot deleted successfully' };
   } catch (error) {
     throw handleError(error);
   }

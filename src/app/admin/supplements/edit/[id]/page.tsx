@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Supplement, SupplementFormData } from "@/types/supplement.types";
-import SupplementForm from "@/components/Admin/SupplementForm";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Supplement, SupplementFormData } from '@/types/supplement.types';
+import SupplementForm from '@/components/Admin/SupplementForm';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function EditSupplementPage() {
   const params = useParams();
@@ -27,7 +27,7 @@ export default function EditSupplementPage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load supplement",
+        err instanceof Error ? err.message : 'Failed to load supplement',
       );
     } finally {
       setLoading(false);
@@ -40,12 +40,12 @@ export default function EditSupplementPage() {
         success: boolean;
       };
       if (response.success) {
-        router.push("/admin/supplements");
+        router.push('/admin/supplements');
       } else {
-        alert("Failed to update supplement");
+        alert('Failed to update supplement');
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to update supplement");
+      alert(err instanceof Error ? err.message : 'Failed to update supplement');
       throw err;
     }
   };
@@ -67,7 +67,7 @@ export default function EditSupplementPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>{error || "Supplement not found"}</div>
+        <div className={styles.error}>{error || 'Supplement not found'}</div>
       </div>
     );
   }

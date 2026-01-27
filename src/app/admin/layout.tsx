@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Sidebar from "@/components/Sidebar/LazySidebar";
-import styles from "./styles.module.css";
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import styles from './styles.module.css';
 
 export default function AdminLayout({
   children,

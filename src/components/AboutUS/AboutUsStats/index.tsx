@@ -1,5 +1,5 @@
-import styles from "./styles.module.css";
-import { aboutUsStatsData } from "@/utils/aboutUsStatsData";
+import styles from './styles.module.css';
+import { aboutUsStatsData } from '@/utils/aboutUsStatsData';
 
 const AboutUsStats = () => {
   return (

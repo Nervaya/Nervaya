@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getCartByUserId,
   addToCart,
   updateCartItem,
   removeFromCart,
   clearCart,
-} from "@/lib/services/cart.service";
-import { successResponse, errorResponse } from "@/lib/utils/response.util";
-import { handleError } from "@/lib/utils/error.util";
-import { requireAuth } from "@/lib/middleware/auth.middleware";
-import { ROLES } from "@/lib/constants/roles";
+} from '@/lib/services/cart.service';
+import { successResponse, errorResponse } from '@/lib/utils/response.util';
+import { handleError } from '@/lib/utils/error.util';
+import { requireAuth } from '@/lib/middleware/auth.middleware';
+import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     const cart = await getCartByUserId(authResult.user.userId);
     return NextResponse.json(
-      successResponse("Cart fetched successfully", cart),
+      successResponse('Cart fetched successfully', cart),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     if (!supplementId || !quantity) {
       return NextResponse.json(
-        errorResponse("Supplement ID and quantity are required", null, 400),
+        errorResponse('Supplement ID and quantity are required', null, 400),
         { status: 400 },
       );
     }
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       supplementId,
       quantity,
     );
-    return NextResponse.json(successResponse("Item added to cart", cart, 201), {
+    return NextResponse.json(successResponse('Item added to cart', cart, 201), {
       status: 201,
     });
   } catch (error) {
@@ -87,7 +87,7 @@ export async function PUT(request: NextRequest) {
 
     if (!supplementId || quantity === undefined) {
       return NextResponse.json(
-        errorResponse("Supplement ID and quantity are required", null, 400),
+        errorResponse('Supplement ID and quantity are required', null, 400),
         { status: 400 },
       );
     }
@@ -97,7 +97,7 @@ export async function PUT(request: NextRequest) {
       supplementId,
       quantity,
     );
-    return NextResponse.json(successResponse("Cart item updated", cart));
+    return NextResponse.json(successResponse('Cart item updated', cart));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -118,18 +118,18 @@ export async function DELETE(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const supplementId = searchParams.get("supplementId");
-    const clearAll = searchParams.get("clearAll") === "true";
+    const supplementId = searchParams.get('supplementId');
+    const clearAll = searchParams.get('clearAll') === 'true';
 
     if (clearAll) {
       const cart = await clearCart(authResult.user.userId);
-      return NextResponse.json(successResponse("Cart cleared", cart));
+      return NextResponse.json(successResponse('Cart cleared', cart));
     }
 
     if (!supplementId) {
       return NextResponse.json(
         errorResponse(
-          "Supplement ID is required or use clearAll=true",
+          'Supplement ID is required or use clearAll=true',
           null,
           400,
         ),
@@ -138,7 +138,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const cart = await removeFromCart(authResult.user.userId, supplementId);
-    return NextResponse.json(successResponse("Item removed from cart", cart));
+    return NextResponse.json(successResponse('Item removed from cart', cart));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Sidebar from "@/components/Sidebar/LazySidebar";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar/LazySidebar';
 import {
   Cart,
   ShippingAddress,
   Order,
   SavedAddress,
-} from "@/types/supplement.types";
-import CheckoutForm from "@/components/Checkout/CheckoutForm";
-import PaymentHandler from "@/components/Checkout/PaymentHandler";
-import { formatPrice } from "@/utils/cart.util";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+} from '@/types/supplement.types';
+import CheckoutForm from '@/components/Checkout/CheckoutForm';
+import PaymentHandler from '@/components/Checkout/PaymentHandler';
+import { formatPrice } from '@/utils/cart.util';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -34,18 +34,18 @@ export default function CheckoutPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = (await api.get("/cart")) as {
+      const response = (await api.get('/cart')) as {
         success: boolean;
         data: Cart;
       };
       if (response.success && response.data) {
         setCart(response.data);
         if (response.data.items.length === 0) {
-          router.push("/supplements/cart");
+          router.push('/supplements/cart');
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load cart");
+      setError(err instanceof Error ? err.message : 'Failed to load cart');
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
 
   const fetchSavedAddresses = async () => {
     try {
-      const response = (await api.get("/users/address")) as {
+      const response = (await api.get('/users/address')) as {
         success: boolean;
         data: SavedAddress[];
       };
@@ -72,7 +72,7 @@ export default function CheckoutPage() {
         }
       }
     } catch (err) {
-      console.error("Failed to fetch saved addresses", err);
+      console.error('Failed to fetch saved addresses', err);
     }
   };
 
@@ -92,25 +92,25 @@ export default function CheckoutPage() {
       // Save address if requested
       if (saveAddress) {
         try {
-          (await api.post("/users/address", {
+          (await api.post('/users/address', {
             ...address,
             label,
             isDefault: false,
           })) as { success: boolean; data: unknown };
         } catch (err) {
-          console.error("Failed to save address", err);
+          console.error('Failed to save address', err);
           // Don't block order creation if address save fails
         }
       }
 
-      const orderResponse = (await api.post("/orders", {
+      const orderResponse = (await api.post('/orders', {
         shippingAddress: address,
       })) as { success: boolean; data: Order };
 
       if (orderResponse.success && orderResponse.data) {
         setOrder(orderResponse.data);
 
-        const paymentResponse = (await api.post("/payments/create-order", {
+        const paymentResponse = (await api.post('/payments/create-order', {
           orderId: orderResponse.data._id,
           amount: orderResponse.data.totalAmount,
         })) as { success: boolean; data: { id: string; key_id: string } };
@@ -121,13 +121,13 @@ export default function CheckoutPage() {
             setRazorpayKeyId(paymentResponse.data.key_id);
           }
         } else {
-          setError("Failed to initialize payment");
+          setError('Failed to initialize payment');
         }
       } else {
-        setError("Failed to create order");
+        setError('Failed to create order');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to process order");
+      setError(err instanceof Error ? err.message : 'Failed to process order');
     } finally {
       setCreatingOrder(false);
     }
@@ -259,7 +259,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className={styles.summaryRow}>
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
+                  <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
                 </div>
                 {cart.totalAmount < 500 && (
                   <div className={styles.freeShipping}>

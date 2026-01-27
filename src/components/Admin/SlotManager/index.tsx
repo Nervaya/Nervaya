@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import DatePicker from "@/components/Booking/DatePicker";
-import styles from "./styles.module.css";
+import { useState, useEffect } from 'react';
+import DatePicker from '@/components/Booking/DatePicker';
+import styles from './styles.module.css';
 
 interface Schedule {
   date: string;
@@ -34,12 +34,12 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
     setLoading(true);
     setError(null);
     try {
-      const dateStr = selectedDate.toISOString().split("T")[0];
+      const dateStr = selectedDate.toISOString().split('T')[0];
       const response = await fetch(
         `/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`,
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch schedule");
+        throw new Error('Failed to fetch schedule');
       }
 
       const result = await response.json();
@@ -49,9 +49,9 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
         setSchedule({ date: dateStr, slots: [] });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load schedule");
+      setError(err instanceof Error ? err.message : 'Failed to load schedule');
       setSchedule({
-        date: selectedDate.toISOString().split("T")[0],
+        date: selectedDate.toISOString().split('T')[0],
         slots: [],
       });
     } finally {
@@ -66,14 +66,14 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
       const endDate = new Date(startDate);
       endDate.setDate(endDate.getDate() + 6);
 
-      const startDateStr = startDate.toISOString().split("T")[0];
-      const endDateStr = endDate.toISOString().split("T")[0];
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
 
       const response = await fetch(
         `/api/therapists/${therapistId}/schedule?startDate=${startDateStr}&endDate=${endDateStr}&includeBooked=true`,
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch week schedules");
+        throw new Error('Failed to fetch week schedules');
       }
 
       const result = await response.json();
@@ -83,13 +83,13 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
     }
   };
 
-  const getSlotsForDate = (date: Date): Schedule["slots"] => {
-    const dateStr = date.toISOString().split("T")[0];
+  const getSlotsForDate = (date: Date): Schedule['slots'] => {
+    const dateStr = date.toISOString().split('T')[0];
     const scheduleForDate = weekSchedules.find((s) => s.date === dateStr);
     return scheduleForDate?.slots || [];
   };
 
-  const getSlotsForDay = (dayOfWeek: number): Schedule["slots"] => {
+  const getSlotsForDay = (dayOfWeek: number): Schedule['slots'] => {
     const weekStart = new Date(selectedDate);
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
     const targetDate = new Date(weekStart);
@@ -127,11 +127,11 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
 
           <div className={styles.slotsRight}>
             <h3 className={styles.sectionTitle}>
-              {selectedDate.toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
+              {selectedDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
               })}
             </h3>
 
@@ -161,7 +161,7 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
         <div className={styles.weekView}>
           <h3 className={styles.sectionTitle}>Week Overview</h3>
           <div className={styles.weekGrid}>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
               (day, index) => {
                 const daySlots = getSlotsForDay(index);
                 const bookedCount = daySlots.filter(

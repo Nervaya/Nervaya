@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Sidebar from "@/components/Sidebar/LazySidebar";
-import { Cart } from "@/types/supplement.types";
-import CartItem from "@/components/Cart/CartItem";
-import CartSummary from "@/components/Cart/CartSummary";
-import api from "@/lib/axios";
-import styles from "./styles.module.css";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import { Cart } from '@/types/supplement.types';
+import CartItem from '@/components/Cart/CartItem';
+import CartSummary from '@/components/Cart/CartSummary';
+import api from '@/lib/axios';
+import styles from './styles.module.css';
 
 export default function CartPage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function CartPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = (await api.get("/cart")) as {
+      const response = (await api.get('/cart')) as {
         success: boolean;
         data: Cart;
       };
@@ -28,7 +28,7 @@ export default function CartPage() {
         setCart(response.data);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load cart");
+      setError(err instanceof Error ? err.message : 'Failed to load cart');
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ export default function CartPage() {
   ) => {
     setUpdating(true);
     try {
-      const response = (await api.put("/cart", {
+      const response = (await api.put('/cart', {
         supplementId,
         quantity,
       })) as { success: boolean; data: Cart };
@@ -49,7 +49,7 @@ export default function CartPage() {
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to update cart";
+        err instanceof Error ? err.message : 'Failed to update cart';
       alert(message);
     } finally {
       setUpdating(false);
@@ -67,7 +67,7 @@ export default function CartPage() {
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to remove item";
+        err instanceof Error ? err.message : 'Failed to remove item';
       alert(message);
     } finally {
       setUpdating(false);
@@ -75,7 +75,7 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    router.push("/supplements/checkout");
+    router.push('/supplements/checkout');
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function CartPage() {
             <h2>Your cart is empty</h2>
             <p>Add some supplements to get started!</p>
             <button
-              onClick={() => router.push("/supplements")}
+              onClick={() => router.push('/supplements')}
               className={styles.shopButton}
             >
               Continue Shopping
