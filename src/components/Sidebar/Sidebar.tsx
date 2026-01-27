@@ -144,14 +144,17 @@ const Sidebar = ({
               </button>
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
-                  {menuGroups.map((group, groupIndex) => (
-                    <li key={groupIndex} className={styles.menuGroup}>
+                  {menuGroups.map((group) => (
+                    <li
+                      key={group.title || "default"}
+                      className={styles.menuGroup}
+                    >
                       {group.title && !isCollapsed && (
                         <div className={styles.groupTitle}>{group.title}</div>
                       )}
                       <ul className={styles.navList}>
-                        {group.items.map((item, itemIndex) => (
-                          <li key={itemIndex}>
+                        {group.items.map((item) => (
+                          <li key={item.path}>
                             <Link
                               href={item.path}
                               className={`${styles.navItem} ${pathname === item.path ? styles.active : ""}`}
@@ -183,8 +186,8 @@ const Sidebar = ({
 
                 <div className={styles.bottomMenu}>
                   <ul className={styles.navList}>
-                    {sidebarBottomNavItems.map((item, index) => (
-                      <li key={index}>
+                    {sidebarBottomNavItems.map((item) => (
+                      <li key={item.path}>
                         <Link
                           href={item.path}
                           className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ""}`}

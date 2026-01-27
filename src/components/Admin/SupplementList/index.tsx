@@ -22,6 +22,10 @@ const SupplementList: React.FC<SupplementListProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [confirmDelete, setConfirmDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const categories = ["all", ...new Set(supplements.map((s) => s.category))];
 
@@ -34,14 +38,22 @@ const SupplementList: React.FC<SupplementListProps> = ({
     return matchesSearch && matchesCategory;
   });
 
-  const handleDelete = async (id: string, name: string) => {
+  const handleDeleteClick = (id: string, name: string) => {
     if (!onDelete) {
       return;
     }
-    const message = `Are you sure you want to delete "${name}"? This action cannot be undone.`;
-    if (window.confirm(message)) {
-      onDelete(id);
+    setConfirmDelete({ id, name });
+  };
+
+  const handleConfirmDelete = () => {
+    if (confirmDelete && onDelete) {
+      onDelete(confirmDelete.id);
+      setConfirmDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDelete(null);
   };
 
   if (loading) {
@@ -54,6 +66,31 @@ const SupplementList: React.FC<SupplementListProps> = ({
 
   return (
     <div className={styles.container}>
+      {confirmDelete && (
+        <div className={styles.confirmOverlay}>
+          <div className={styles.confirmDialog}>
+            <h3>Confirm Delete</h3>
+            <p>
+              Are you sure you want to delete &quot;{confirmDelete.name}&quot;?
+              This action cannot be undone.
+            </p>
+            <div className={styles.confirmActions}>
+              <button
+                onClick={handleConfirmDelete}
+                className={styles.confirmButton}
+              >
+                Delete
+              </button>
+              <button
+                onClick={handleCancelDelete}
+                className={styles.cancelButton}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className={styles.filters}>
         <input
           type="text"
@@ -131,7 +168,9 @@ const SupplementList: React.FC<SupplementListProps> = ({
                   </Link>
                 )}
                 <button
-                  onClick={() => handleDelete(supplement._id, supplement.name)}
+                  onClick={() =>
+                    handleDeleteClick(supplement._id, supplement.name)
+                  }
                   className={styles.deleteButton}
                 >
                   Delete

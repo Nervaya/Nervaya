@@ -41,7 +41,9 @@ export default function EditQuestionPage({
     const fetchQuestion = async () => {
       try {
         const response = await fetch(`/api/sleep-assessment/questions/${id}`);
-        if (!response.ok) throw new Error("Failed to fetch question");
+        if (!response.ok) {
+          throw new Error("Failed to fetch question");
+        }
 
         const result = await response.json();
         if (result.success && result.data) {
@@ -107,7 +109,9 @@ export default function EditQuestionPage({
   };
 
   const removeOption = (index: number) => {
-    if (options.length <= 2) return;
+    if (options.length <= 2) {
+      return;
+    }
     setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -349,7 +353,10 @@ export default function EditQuestionPage({
 
             <ul className={styles.optionsList}>
               {options.map((option, index) => (
-                <li key={index} className={styles.optionItem}>
+                <li
+                  key={option.id || `option-${index}`}
+                  className={styles.optionItem}
+                >
                   <span className={styles.optionNumber}>{index + 1}</span>
                   <div className={styles.optionInputs}>
                     <input

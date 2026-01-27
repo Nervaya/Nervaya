@@ -40,6 +40,7 @@ export default function OrderSuccessPage() {
     if (params.orderId) {
       fetchOrder();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.orderId]);
 
   if (loading) {

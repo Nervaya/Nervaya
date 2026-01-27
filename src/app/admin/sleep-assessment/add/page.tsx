@@ -66,7 +66,9 @@ export default function AddQuestionPage() {
   };
 
   const removeOption = (index: number) => {
-    if (options.length <= 2) return;
+    if (options.length <= 2) {
+      return;
+    }
     setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -290,7 +292,10 @@ export default function AddQuestionPage() {
 
             <ul className={styles.optionsList}>
               {options.map((option, index) => (
-                <li key={index} className={styles.optionItem}>
+                <li
+                  key={option.id || `option-${index}`}
+                  className={styles.optionItem}
+                >
                   <span className={styles.optionNumber}>{index + 1}</span>
                   <div className={styles.optionInputs}>
                     <input

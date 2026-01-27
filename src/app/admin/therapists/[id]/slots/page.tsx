@@ -14,10 +14,6 @@ export default function TherapistSlotsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchTherapist();
-  }, [therapistId]);
-
   const fetchTherapist = async () => {
     try {
       const response = await fetch(`/api/therapists/${therapistId}`);
@@ -37,6 +33,11 @@ export default function TherapistSlotsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchTherapist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [therapistId]);
 
   if (loading) {
     return (

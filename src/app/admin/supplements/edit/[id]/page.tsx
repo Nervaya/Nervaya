@@ -14,43 +14,46 @@ export default function EditSupplementPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchSupplement = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = (await api.get(`/supplements/${params.id}`)) as {
-        success: boolean;
-        data: Supplement;
-      };
-      if (response.success && response.data) {
-        setSupplement(response.data);
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to load supplement",
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSubmit = async (data: SupplementFormData) => {
     try {
+      setError(null);
       const response = (await api.put(`/supplements/${params.id}`, data)) as {
         success: boolean;
       };
       if (response.success) {
         router.push("/admin/supplements");
       } else {
-        alert("Failed to update supplement");
+        setError("Failed to update supplement");
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to update supplement");
+      setError(
+        err instanceof Error ? err.message : "Failed to update supplement",
+      );
       throw err;
     }
   };
 
   useEffect(() => {
+    const fetchSupplement = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = (await api.get(`/supplements/${params.id}`)) as {
+          success: boolean;
+          data: Supplement;
+        };
+        if (response.success && response.data) {
+          setSupplement(response.data);
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load supplement",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (params.id) {
       fetchSupplement();
     }
@@ -75,6 +78,7 @@ export default function EditSupplementPage() {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Edit Supplement</h2>
+      {error && <div className={styles.error}>{error}</div>}
       <SupplementForm
         onSubmit={handleSubmit}
         initialData={supplement}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DatePicker from "@/components/Booking/DatePicker";
 import styles from "./styles.module.css";
 
@@ -25,12 +25,7 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  useEffect(() => {
-    fetchSchedule();
-    fetchWeekSchedules();
-  }, [selectedDate, therapistId]);
-
-  const fetchSchedule = async () => {
+  const fetchSchedule = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -57,9 +52,9 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDate, therapistId]);
 
-  const fetchWeekSchedules = async () => {
+  const fetchWeekSchedules = useCallback(async () => {
     try {
       const startDate = new Date(selectedDate);
       startDate.setDate(startDate.getDate() - startDate.getDay());
@@ -81,7 +76,12 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
     } catch (_err) {
       setWeekSchedules([]);
     }
-  };
+  }, [selectedDate, therapistId]);
+
+  useEffect(() => {
+    fetchSchedule();
+    fetchWeekSchedules();
+  }, [fetchSchedule, fetchWeekSchedules]);
 
   const getSlotsForDate = (date: Date): Schedule["slots"] => {
     const dateStr = date.toISOString().split("T")[0];

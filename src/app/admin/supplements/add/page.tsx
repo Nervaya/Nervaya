@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SupplementFormData } from "@/types/supplement.types";
 import SupplementForm from "@/components/Admin/SupplementForm";
@@ -9,19 +9,23 @@ import styles from "./styles.module.css";
 
 export default function AddSupplementPage() {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (data: SupplementFormData) => {
     try {
+      setError(null);
       const response = (await api.post("/supplements", data)) as {
         success: boolean;
       };
       if (response.success) {
         router.push("/admin/supplements");
       } else {
-        alert("Failed to create supplement");
+        setError("Failed to create supplement");
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to create supplement");
+      setError(
+        err instanceof Error ? err.message : "Failed to create supplement",
+      );
       throw err;
     }
   };
@@ -29,6 +33,7 @@ export default function AddSupplementPage() {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Add New Supplement</h2>
+      {error && <div className={styles.error}>{error}</div>}
       <SupplementForm onSubmit={handleSubmit} submitLabel="Create Supplement" />
     </div>
   );

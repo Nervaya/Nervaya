@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ConsultingHour } from "@/types/therapist.types";
 import styles from "./styles.module.css";
 
@@ -68,11 +68,7 @@ export default function ConsultingHoursManager({
   const [success, setSuccess] = useState<string | null>(null);
   const [generationStatus, setGenerationStatus] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchConsultingHours();
-  }, [therapistId]);
-
-  const fetchConsultingHours = async () => {
+  const fetchConsultingHours = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -123,7 +119,11 @@ export default function ConsultingHoursManager({
     } finally {
       setLoading(false);
     }
-  };
+  }, [therapistId]);
+
+  useEffect(() => {
+    fetchConsultingHours();
+  }, [fetchConsultingHours]);
 
   const handleUpdate = async () => {
     setSaving(true);
@@ -245,7 +245,10 @@ export default function ConsultingHoursManager({
   };
 
   const clearAll = () => {
-    if (confirm("Are you sure you want to clear all consulting hours?")) {
+    // eslint-disable-next-line no-alert
+    if (
+      window.confirm("Are you sure you want to clear all consulting hours?")
+    ) {
       DAYS_OF_WEEK.forEach((day) => {
         updateDayHours(day.value, {
           isEnabled: false,
@@ -282,7 +285,13 @@ export default function ConsultingHoursManager({
         </div>
         <div className={styles.stepConnector} />
         <div
-          className={`${styles.step} ${isSaved ? styles.stepCompleted : hasEnabledDays ? styles.stepActive : styles.stepPending}`}
+          className={`${styles.step} ${
+            isSaved
+              ? styles.stepCompleted
+              : hasEnabledDays
+                ? styles.stepActive
+                : styles.stepPending
+          }`}
         >
           <div className={styles.stepNumber}>2</div>
           <div className={styles.stepContent}>

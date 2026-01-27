@@ -19,9 +19,8 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
 
     const { id: therapistId } = await params;
     const { searchParams } = new URL(req.url);
-    const numberOfDays = searchParams.get("days")
-      ? parseInt(searchParams.get("days")!, 10)
-      : 30;
+    const daysParam = searchParams.get("days");
+    const numberOfDays = daysParam ? parseInt(daysParam, 10) : 30;
 
     const result = await generateSlotsFromConsultingHours(
       therapistId,

@@ -45,10 +45,12 @@ export default function AdminSupplementsPage() {
       if (response.success) {
         fetchSupplements();
       } else {
-        alert("Failed to delete supplement");
+        setError("Failed to delete supplement");
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to delete supplement");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete supplement",
+      );
     }
   };
 
@@ -79,7 +81,7 @@ export default function AdminSupplementsPage() {
           fetchSupplements();
           handleModalClose();
         } else {
-          alert("Failed to update supplement");
+          setError("Failed to update supplement");
           throw new Error("Failed to update supplement");
         }
       } else {
@@ -90,12 +92,14 @@ export default function AdminSupplementsPage() {
           fetchSupplements();
           handleModalClose();
         } else {
-          alert("Failed to create supplement");
+          setError("Failed to create supplement");
           throw new Error("Failed to create supplement");
         }
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to save supplement");
+      setError(
+        err instanceof Error ? err.message : "Failed to save supplement",
+      );
       throw err;
     } finally {
       setSubmitting(false);

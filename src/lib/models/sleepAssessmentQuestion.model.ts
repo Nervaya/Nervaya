@@ -79,8 +79,11 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       type: [questionOptionSchema],
       default: [],
       validate: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         validator: function (this: any, options: IQuestionOption[]) {
-          if (this.questionType === "text") return true;
+          if (this.questionType === "text") {
+            return true;
+          }
           return options.length >= 2;
         },
         message: "Non-text questions must have at least 2 options",

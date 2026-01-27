@@ -155,6 +155,7 @@ export default function BookingModal({
     }
 
     const confirmMessage = `Confirm booking for ${therapistName} on ${schedule.date} at ${slot.startTime}?`;
+    // eslint-disable-next-line no-alert
     if (!window.confirm(confirmMessage)) {
       return;
     }
@@ -179,7 +180,8 @@ export default function BookingModal({
         throw new Error(result.message || "Failed to book session");
       }
 
-      alert("Session booked successfully!");
+      // eslint-disable-next-line no-alert
+      window.alert("Session booked successfully!");
       onSuccess?.(); // Call onSuccess callback
       onClose(); // Close the modal
     } catch (error) {

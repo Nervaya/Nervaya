@@ -27,7 +27,6 @@ export default function SleepAssessmentPage() {
           setError("Failed to load questions");
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.error("Error fetching questions:", err);
         setError(
           "Failed to load assessment questions. Please try again later.",

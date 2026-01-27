@@ -26,7 +26,6 @@ export default function AdminSleepAssessmentPage() {
         }
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to fetch questions", error);
     } finally {
       setLoading(false);
@@ -83,7 +82,9 @@ export default function AdminSleepAssessmentPage() {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isAnimating || questions.length === 0) return;
+      if (isAnimating || questions.length === 0) {
+        return;
+      }
 
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
@@ -99,9 +100,12 @@ export default function AdminSleepAssessmentPage() {
   }, [isAnimating, questions.length, goToNext, goToPrev]);
 
   const handleDelete = async (id: string, questionText: string) => {
-    const message = `WARNING: Are you sure you want to delete this question?\n\n"${questionText.substring(0, 50)}..."\n\nThis action cannot be undone.`;
+    const questionPreview = questionText.substring(0, 50);
+    const message =
+      `WARNING: Are you sure you want to delete this question?\n\n"${questionPreview}..."\n\n` +
+      "This action cannot be undone.";
     // eslint-disable-next-line no-alert
-    if (!confirm(message)) {
+    if (!window.confirm(message)) {
       return;
     }
 
@@ -113,18 +117,17 @@ export default function AdminSleepAssessmentPage() {
         fetchQuestions();
       } else {
         // eslint-disable-next-line no-alert
-        alert("Failed to delete question");
+        window.alert("Failed to delete question");
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Error deleting question", error);
     }
   };
 
   const handleSeedQuestions = async () => {
-    // eslint-disable-next-line no-alert
     if (
-      !confirm(
+      // eslint-disable-next-line no-alert
+      !window.confirm(
         "This will seed the database with default sleep assessment questions. Continue?",
       )
     ) {
@@ -140,10 +143,9 @@ export default function AdminSleepAssessmentPage() {
       } else {
         const result = await response.json();
         // eslint-disable-next-line no-alert
-        alert(result.message || "Failed to seed questions");
+        window.alert(result.message || "Failed to seed questions");
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Error seeding questions", error);
     }
   };
@@ -159,7 +161,6 @@ export default function AdminSleepAssessmentPage() {
         fetchQuestions();
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Error toggling question status", error);
     }
   };
@@ -244,7 +245,8 @@ export default function AdminSleepAssessmentPage() {
             <button
               onClick={async () => {
                 if (
-                  confirm(
+                  // eslint-disable-next-line no-alert
+                  window.confirm(
                     "This will wipe all existing questions and seed default ones. Are you sure?",
                   )
                 ) {
@@ -257,11 +259,13 @@ export default function AdminSleepAssessmentPage() {
                     if (response.ok) {
                       fetchQuestions();
                     } else {
-                      alert("Failed to seed questions");
+                      // eslint-disable-next-line no-alert
+                      window.alert("Failed to seed questions");
                     }
                   } catch (error) {
                     console.error(error);
-                    alert("Error seeding questions");
+                    // eslint-disable-next-line no-alert
+                    window.alert("Error seeding questions");
                   } finally {
                     setLoading(false);
                   }

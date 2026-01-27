@@ -2,11 +2,7 @@ import SleepAssessmentQuestion, {
   ISleepAssessmentQuestion,
 } from "@/lib/models/sleepAssessmentQuestion.model";
 import connectDB from "@/lib/db/mongodb";
-import {
-  handleError,
-  ValidationError,
-  NotFoundError,
-} from "@/lib/utils/error.util";
+import { ValidationError, NotFoundError } from "@/lib/utils/error.util";
 import { Types } from "mongoose";
 import { validate as validateUUID } from "uuid";
 import type {

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Session } from "@/types/session.types";
 import { Therapist } from "@/types/therapist.types";
-import Loader from "@/components/common/Loader";
 import styles from "./styles.module.css";
 
 export default function MySessions() {
@@ -32,7 +31,8 @@ export default function MySessions() {
   };
 
   const handleCancelSession = async (sessionId: string) => {
-    if (!confirm("Are you sure you want to cancel this session?")) {
+    // eslint-disable-next-line no-alert
+    if (!window.confirm("Are you sure you want to cancel this session?")) {
       return;
     }
 
@@ -47,7 +47,10 @@ export default function MySessions() {
 
       fetchSessions();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Error cancelling session");
+      // eslint-disable-next-line no-alert
+      window.alert(
+        err instanceof Error ? err.message : "Error cancelling session",
+      );
     }
   };
 

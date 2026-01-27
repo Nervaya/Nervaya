@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
         const question = await createQuestion(questionData);
         createdQuestions.push(question);
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(
           `Failed to create question: ${questionData.questionKey}`,
           error,

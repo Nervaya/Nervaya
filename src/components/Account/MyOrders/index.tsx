@@ -100,17 +100,22 @@ export default function MyOrders() {
               </div>
             </div>
             <div className={styles.orderItems}>
-              {order.items.map((item, index) => (
-                <div key={index} className={styles.orderItem}>
-                  <div className={styles.itemInfo}>
-                    <h4>{item.name}</h4>
-                    <p>Quantity: {item.quantity}</p>
+              {order.items.map((item) => {
+                return (
+                  <div
+                    key={`${order._id}-${item.name}-${item.quantity}`}
+                    className={styles.orderItem}
+                  >
+                    <div className={styles.itemInfo}>
+                      <h4>{item.name}</h4>
+                      <p>Quantity: {item.quantity}</p>
+                    </div>
+                    <div className={styles.itemPrice}>
+                      {formatPrice(item.price * item.quantity)}
+                    </div>
                   </div>
-                  <div className={styles.itemPrice}>
-                    {formatPrice(item.price * item.quantity)}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className={styles.orderFooter}>
               <div className={styles.orderTotal}>

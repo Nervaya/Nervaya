@@ -200,7 +200,8 @@ export default function DatePicker({
         <div className={styles.days}>
           {days.map((day, index) => {
             if (day === null) {
-              return <div key={`empty-${index}`} className={styles.dayEmpty} />;
+              const emptyKey = `empty-${currentMonth.getFullYear()}-${currentMonth.getMonth()}-${firstDay + index}`;
+              return <div key={emptyKey} className={styles.dayEmpty} />;
             }
 
             const date = new Date(

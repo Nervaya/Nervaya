@@ -34,17 +34,18 @@ export default function SupplementsPage() {
 
   const handleAddToCart = async (supplementId: string, quantity: number) => {
     try {
+      setError(null);
       const response = (await api.post("/cart", {
         supplementId,
         quantity,
       })) as { success: boolean };
-      if (response.success) {
-        alert("Added to cart successfully!");
+      if (!response.success) {
+        setError("Failed to add to cart");
       }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to add to cart";
-      alert(message);
+      setError(message);
       throw err;
     }
   };

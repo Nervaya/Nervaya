@@ -418,3 +418,28 @@
     opacity: 1;
   }
 }
+
+.accountButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+
+.accountDropdownMenu {
+  min-width: 150px;
+  right: 0;
+  left: auto;
+}
+
+@media (max-width: 768px) {
+  .accountDropdownMenu {
+    width: 100%;
+    position: static;
+  }
+}

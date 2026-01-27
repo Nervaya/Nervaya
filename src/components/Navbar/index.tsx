@@ -3,55 +3,30 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FaCircleUser } from "react-icons/fa6";
 import {
   NAVBAR_PRODUCTS_LINKS,
   NAVBAR_ACCOUNT_LINKS,
 } from "@/utils/navbarConstants";
-import { ROUTES } from "@/utils/routesConstants";
+import { useAuth } from "@/hooks/useAuth";
 import styles from "./styles.module.css";
 
 const Navbar = () => {
-  const router = useRouter();
+  const { isAuthenticated, user, logout } = useAuth();
   const pathname = usePathname();
 
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const productsDropdownRef = useRef<HTMLLIElement>(null);
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
-  const checkAuth = () => {
-    if (typeof window !== "undefined") {
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-      setIsUserLoggedIn(isLoggedIn);
-    }
-  };
-
-  useEffect(() => {
-    // Initial check
-    checkAuth();
-
-    const handleAuthChange = () => checkAuth();
-    window.addEventListener("auth-state-changed", handleAuthChange);
-
-    return () =>
-      window.removeEventListener("auth-state-changed", handleAuthChange);
-  }, [pathname]);
-
   const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-    setIsUserLoggedIn(false);
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("auth-state-changed"));
-    }
-    router.push(ROUTES.LOGIN);
+    await logout();
+    setIsProductsDropdownOpen(false);
+    setIsAccountDropdownOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -90,6 +65,14 @@ const Navbar = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobileMenuOpen(false);
+    setIsProductsDropdownOpen(false);
+    setIsAccountDropdownOpen(false);
+  }, [pathname]);
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -155,8 +138,8 @@ const Navbar = () => {
             </button>
             {isProductsDropdownOpen && (
               <ul className={styles.dropdownMenu}>
-                {NAVBAR_PRODUCTS_LINKS.map((link, index) => (
-                  <li key={index}>
+                {NAVBAR_PRODUCTS_LINKS.map((link) => (
+                  <li key={link.href}>
                     <Link
                       href={link.href}
                       className={styles.dropdownItem}
@@ -175,23 +158,14 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {isUserLoggedIn ? (
+          {isAuthenticated ? (
             <li className={styles.navbarDropdown} ref={accountDropdownRef}>
               <button
                 onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "inherit",
-                  fontSize: "inherit",
-                }}
+                className={styles.accountButton}
               >
                 <FaCircleUser size={24} />
-                <span>Account</span>
+                <span>{user?.name?.split(" ")[0] || "Account"}</span>
                 <span
                   className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ""}`}
                 >
@@ -200,11 +174,10 @@ const Navbar = () => {
               </button>
               {isAccountDropdownOpen && (
                 <ul
-                  className={styles.dropdownMenu}
-                  style={{ minWidth: "150px", right: 0, left: "auto" }}
+                  className={`${styles.dropdownMenu} ${styles.accountDropdownMenu}`}
                 >
-                  {NAVBAR_ACCOUNT_LINKS.map((link, index) => (
-                    <li key={index}>
+                  {NAVBAR_ACCOUNT_LINKS.map((link) => (
+                    <li key={link.href}>
                       <Link
                         href={link.href}
                         className={styles.dropdownItem}
@@ -233,7 +206,7 @@ const Navbar = () => {
             </li>
           )}
 
-          {!isUserLoggedIn && (
+          {!isAuthenticated && (
             <li>
               <button className={styles.navbarCta} onClick={closeMobileMenu}>
                 Call Us

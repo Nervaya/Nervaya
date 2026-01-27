@@ -40,17 +40,20 @@ export default function CartPage() {
   ) => {
     setUpdating(true);
     try {
+      setError(null);
       const response = (await api.put("/cart", {
         supplementId,
         quantity,
       })) as { success: boolean; data: Cart };
       if (response.success && response.data) {
         setCart(response.data);
+      } else {
+        setError("Failed to update cart");
       }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to update cart";
-      alert(message);
+      setError(message);
     } finally {
       setUpdating(false);
     }
@@ -59,16 +62,19 @@ export default function CartPage() {
   const handleRemove = async (supplementId: string) => {
     setUpdating(true);
     try {
+      setError(null);
       const response = (await api.delete(
         `/cart?supplementId=${supplementId}`,
       )) as { success: boolean; data: Cart };
       if (response.success && response.data) {
         setCart(response.data);
+      } else {
+        setError("Failed to remove item");
       }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to remove item";
-      alert(message);
+      setError(message);
     } finally {
       setUpdating(false);
     }
@@ -127,12 +133,13 @@ export default function CartPage() {
         <header className={styles.header}>
           <h1 className={styles.title}>Shopping Cart</h1>
         </header>
+        {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           <div className={styles.itemsSection}>
-            {cart.items.map((item, index) => {
+            {cart.items.map((item) => {
               return (
                 <CartItem
-                  key={index}
+                  key={item.supplement._id}
                   item={item}
                   onQuantityChange={handleQuantityChange}
                   onRemove={handleRemove}

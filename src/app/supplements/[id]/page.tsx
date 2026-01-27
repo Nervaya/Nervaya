@@ -19,6 +19,7 @@ export default function SupplementDetailPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const fetchSupplement = async () => {
     try {
@@ -45,19 +46,25 @@ export default function SupplementDetailPage() {
       return;
     }
     setAdding(true);
+    setError(null);
+    setSuccessMessage(null);
     try {
       const response = (await api.post("/cart", {
         supplementId: supplement._id,
         quantity,
       })) as { success: boolean };
       if (response.success) {
-        alert("Added to cart successfully!");
-        router.push("/supplements/cart");
+        setSuccessMessage("Added to cart successfully!");
+        setTimeout(() => {
+          router.push("/supplements/cart");
+        }, 1000);
+      } else {
+        setError("Failed to add to cart");
       }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to add to cart";
-      alert(message);
+      setError(message);
     } finally {
       setAdding(false);
     }
@@ -67,6 +74,7 @@ export default function SupplementDetailPage() {
     if (params.id) {
       fetchSupplement();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   if (loading) {
@@ -91,6 +99,10 @@ export default function SupplementDetailPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
+        {error && <div className={styles.error}>{error}</div>}
+        {successMessage && (
+          <div className={styles.success}>{successMessage}</div>
+        )}
         <div className={styles.content}>
           <div className={styles.imageSection}>
             <Image
@@ -113,8 +125,8 @@ export default function SupplementDetailPage() {
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Ingredients</h3>
                 <ul className={styles.list}>
-                  {supplement.ingredients.map((ingredient, index) => (
-                    <li key={index}>{ingredient}</li>
+                  {supplement.ingredients.map((ingredient) => (
+                    <li key={ingredient}>{ingredient}</li>
                   ))}
                 </ul>
               </div>
@@ -123,8 +135,8 @@ export default function SupplementDetailPage() {
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Benefits</h3>
                 <ul className={styles.list}>
-                  {supplement.benefits.map((benefit, index) => (
-                    <li key={index}>{benefit}</li>
+                  {supplement.benefits.map((benefit) => (
+                    <li key={benefit}>{benefit}</li>
                   ))}
                 </ul>
               </div>

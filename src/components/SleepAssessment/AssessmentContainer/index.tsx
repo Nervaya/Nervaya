@@ -52,16 +52,24 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
   const isFirstQuestion = currentQuestionIndex === 0;
 
   const currentAnswer = useMemo(() => {
-    if (!currentQuestion) return null;
+    if (!currentQuestion) {
+      return null;
+    }
     return answers.get(currentQuestion._id) ?? null;
   }, [currentQuestion, answers]);
 
   const canProceed = useMemo(() => {
-    if (!currentQuestion) return false;
-    if (!currentQuestion.isRequired) return true;
+    if (!currentQuestion) {
+      return false;
+    }
+    if (!currentQuestion.isRequired) {
+      return true;
+    }
 
     const answer = answers.get(currentQuestion._id);
-    if (!answer) return false;
+    if (!answer) {
+      return false;
+    }
 
     if (Array.isArray(answer)) {
       return answer.length > 0;
@@ -71,7 +79,9 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
 
   const handleAnswerChange = useCallback(
     (answer: string | string[]) => {
-      if (!currentQuestion) return;
+      if (!currentQuestion) {
+        return;
+      }
 
       setAnswers((prev) => {
         const newAnswers = new Map(prev);
@@ -83,7 +93,9 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
   );
 
   const handleNext = useCallback(() => {
-    if (!canProceed) return;
+    if (!canProceed) {
+      return;
+    }
 
     setDirection(1);
     if (isLastQuestion) {
@@ -91,10 +103,12 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
     } else {
       setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
     }
-  }, [canProceed, isLastQuestion, totalQuestions]);
+  }, [canProceed, isLastQuestion, totalQuestions, handleSubmit]);
 
   const handlePrevious = useCallback(() => {
-    if (isFirstQuestion) return;
+    if (isFirstQuestion) {
+      return;
+    }
 
     setDirection(-1);
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
@@ -124,7 +138,6 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
 
       setIsComplete(true);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to submit assessment:", error);
       setSubmitError("Failed to submit assessment. Please try again.");
     } finally {

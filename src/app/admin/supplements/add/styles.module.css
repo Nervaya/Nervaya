@@ -11,6 +11,14 @@
   color: #1a1a1a;
 }
 
+.error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
