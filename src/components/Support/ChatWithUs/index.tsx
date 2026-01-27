@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import styles from './styles.module.css';
-import { FaWhatsapp } from 'react-icons/fa6';
-import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
-import Button from '@/components/common/Button/Button';
+import styles from "./styles.module.css";
+import { FaWhatsapp } from "react-icons/fa6";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import Button from "@/components/common/Button/Button";
 
 const ChatWithUs = () => {
   const handleWhatsAppClick = () => {
-    const phoneNumber = '1234567890';
-    const message = encodeURIComponent('Hello! I need support with your product.');
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    const phoneNumber = "1234567890";
+    const message = encodeURIComponent(
+      "Hello! I need support with your product.",
+    );
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
   };
 
   return (
@@ -21,10 +23,10 @@ const ChatWithUs = () => {
         <div className={styles.bannerText}>
           <h2 className={styles.bannerTitle}>Chat with Us</h2>
           <p className={styles.bannerSubtitle}>
-                        Have questions about the product? Let us support your journey to restful sleep.
+            Have questions about the product? Let us support your journey to
+            restful sleep.
           </p>
         </div>
-
       </div>
       <div className={styles.supportCard}>
         <div className={styles.cardHeader}>
@@ -34,8 +36,9 @@ const ChatWithUs = () => {
           <h3 className={styles.cardTitle}>Get Instant Support</h3>
         </div>
         <p className={styles.cardDescription}>
-                    Connect with our sleep wellness experts directly on WhatsApp. Get personalized guidance,
-                    product recommendations, and answers to all your questions about achieving better sleep.
+          Connect with our sleep wellness experts directly on WhatsApp. Get
+          personalized guidance, product recommendations, and answers to all
+          your questions about achieving better sleep.
         </p>
       </div>
       <div className={styles.buttonContainer}>
@@ -45,10 +48,11 @@ const ChatWithUs = () => {
           onClick={handleWhatsAppClick}
         >
           <IoChatbubbleEllipsesOutline className={styles.buttonIcon} />
-                    Chat with Us on WhatsApp
+          Chat with Us on WhatsApp
         </Button>
         <p className={styles.disclaimer}>
-                    We typically respond within 2 hours. Your information is kept confidential.
+          We typically respond within 2 hours. Your information is kept
+          confidential.
         </p>
       </div>
 
@@ -58,7 +62,7 @@ const ChatWithUs = () => {
           <div className={styles.featureLabel}>Available</div>
         </div>
         <div className={styles.featureCard}>
-          <div className={styles.featureValue}>{'<2 hr'}</div>
+          <div className={styles.featureValue}>{"<2 hr"}</div>
           <div className={styles.featureLabel}>Response Time</div>
         </div>
         <div className={styles.featureCard}>
@@ -66,7 +70,6 @@ const ChatWithUs = () => {
           <div className={styles.featureLabel}>Confidential</div>
         </div>
       </div>
-          
     </section>
   );
 };

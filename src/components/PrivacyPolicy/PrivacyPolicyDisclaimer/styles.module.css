@@ -1,60 +1,64 @@
 .disclaimer {
-    background: linear-gradient(135deg, #FAF5FF 0%, #F3F8FF 100%);
-    padding: 40px;
-    border-radius: 16px;
-    border: 1px solid rgba(120, 40, 200, 0.1);
-    margin-top: 40px;
-    position: relative;
+  background: linear-gradient(135deg, #faf5ff 0%, #f3f8ff 100%);
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid rgba(120, 40, 200, 0.1);
+  margin-top: 40px;
+  position: relative;
 }
 
 .disclaimer::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(135deg, #7828C8 0%, #9333EA 100%);
-    border-radius: 16px 0 0 16px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
+  border-radius: 16px 0 0 16px;
 }
 
 @media (max-width: 768px) {
-    .disclaimer {
-        padding: 32px;
-        margin-top: 32px;
-    }
+  .disclaimer {
+    padding: 32px;
+    margin-top: 32px;
+  }
 }
 
 @media (max-width: 480px) {
-    .disclaimer {
-        padding: 24px;
-        margin-top: 28px;
-        border-radius: 20px;
-        background: linear-gradient(135deg, rgba(250, 245, 255, 0.95) 0%, rgba(243, 248, 255, 0.9) 100%);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 24px rgba(120, 40, 200, 0.15);
-        border: 2px solid rgba(120, 40, 200, 0.1);
-    }
+  .disclaimer {
+    padding: 24px;
+    margin-top: 28px;
+    border-radius: 20px;
+    background: linear-gradient(
+      135deg,
+      rgba(250, 245, 255, 0.95) 0%,
+      rgba(243, 248, 255, 0.9) 100%
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(120, 40, 200, 0.15);
+    border: 2px solid rgba(120, 40, 200, 0.1);
+  }
 }
 
 .disclaimerText {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    color: #86868b;
-    margin: 0;
-    font-style: normal;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #86868b;
+  margin: 0;
+  font-style: normal;
 }
 
 @media (max-width: 768px) {
-    .disclaimerText {
-        font-size: 0.875rem;
-    }
+  .disclaimerText {
+    font-size: 0.875rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .disclaimerText {
-        font-size: 0.875rem;
-        line-height: 1.7;
-        color: #1d1d1f;
-    }
+  .disclaimerText {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: #1d1d1f;
+  }
 }

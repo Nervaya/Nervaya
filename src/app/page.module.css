@@ -1,5 +1,5 @@
 .container {
-  background-image: url('/background.png');
+  background-image: url("/background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -129,7 +129,6 @@
 }
 
 @media (max-width: 768px) {
-
   .primaryButton,
   .secondaryButton {
     width: 100%;
@@ -139,7 +138,6 @@
 }
 
 @media (max-width: 480px) {
-
   .primaryButton,
   .secondaryButton {
     padding: 12px 28px;
@@ -148,7 +146,7 @@
 }
 
 .primaryButton {
-  background: #7828C8;
+  background: #7828c8;
   color: #ffffff;
   box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }

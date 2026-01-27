@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Sidebar from '@/components/Sidebar/LazySidebar';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import styles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import Sidebar from "@/components/Sidebar/LazySidebar";
+import PageHeader from "@/components/PageHeader/PageHeader";
+import styles from "@/app/dashboard/styles.module.css"; // Reusing dashboard styles for consistency
 
 export default function SleepElixirPage() {
   return (

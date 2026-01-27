@@ -1,514 +1,514 @@
 .container {
-    background: #1a1a1a;
-    border-radius: 12px;
-    padding: 24px;
-    margin-top: 24px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
 }
 
 /* Workflow Steps */
 .workflowSteps {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 32px;
-    padding: 20px;
-    background: #2a2a2a;
-    border-radius: 12px;
-    border: 1px solid #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #2a2a2a;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
 }
 
 .step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
 }
 
 .stepNumber {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 18px;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
 .stepActive .stepNumber {
-    background: #8b5cf6;
-    color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+  background: #8b5cf6;
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
 }
 
 .stepCompleted .stepNumber {
-    background: #22c55e;
-    color: #ffffff;
+  background: #22c55e;
+  color: #ffffff;
 }
 
 .stepPending .stepNumber {
-    background: #3a3a3a;
-    color: #6b7280;
+  background: #3a3a3a;
+  color: #6b7280;
 }
 
 .stepContent {
-    flex: 1;
+  flex: 1;
 }
 
 .stepTitle {
-    font-size: 14px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 4px 0;
 }
 
 .stepDescription {
-    font-size: 12px;
-    color: #a0a0a0;
-    margin: 0;
+  font-size: 12px;
+  color: #a0a0a0;
+  margin: 0;
 }
 
 .stepActive .stepTitle {
-    color: #8b5cf6;
+  color: #8b5cf6;
 }
 
 .stepCompleted .stepTitle {
-    color: #22c55e;
+  color: #22c55e;
 }
 
 .stepPending .stepTitle {
-    color: #6b7280;
+  color: #6b7280;
 }
 
 .stepConnector {
-    width: 40px;
-    height: 2px;
-    background: #3a3a3a;
-    margin: 0 8px;
-    flex-shrink: 0;
+  width: 40px;
+  height: 2px;
+  background: #3a3a3a;
+  margin: 0 8px;
+  flex-shrink: 0;
 }
 
 .stepCompleted + .stepConnector {
-    background: #22c55e;
+  background: #22c55e;
 }
 
 /* Sections */
 .section {
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .sectionTitle {
-    font-size: 18px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .unsavedBadge {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .savedBadge {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .saveSection,
 .generateSection {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .saveDescription,
 .generateDescription {
-    color: #a0a0a0;
-    font-size: 14px;
-    margin: 0;
-    line-height: 1.6;
+  color: #a0a0a0;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .generateButtons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .header {
-    margin-bottom: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    flex-wrap: wrap;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .quickActions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .quickActionButton {
-    padding: 8px 16px;
-    background: #2a2a2a;
-    color: #ffffff;
-    border: 1px solid #3a3a3a;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 8px 16px;
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .quickActionButton:hover {
-    background: #3a3a3a;
-    border-color: #8b5cf6;
-    color: #8b5cf6;
+  background: #3a3a3a;
+  border-color: #8b5cf6;
+  color: #8b5cf6;
 }
 
 .title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
 }
 
 .subtitle {
-    font-size: 14px;
-    color: #a0a0a0;
-    margin: 0;
+  font-size: 14px;
+  color: #a0a0a0;
+  margin: 0;
 }
 
 .errorBanner,
 .successBanner {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 
 .errorBanner {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .successBanner {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .loading {
-    text-align: center;
-    padding: 40px;
-    color: #a0a0a0;
+  text-align: center;
+  padding: 40px;
+  color: #a0a0a0;
 }
 
 .hoursList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .dayCard {
-    background: #1a1a1a;
-    border: 1px solid #3a3a3a;
-    border-radius: 8px;
-    padding: 16px;
-    transition: all 0.2s;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s;
 }
 
 .dayCard.enabled {
-    border-color: #8b5cf6;
-    background: #2a1a3a;
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+  border-color: #8b5cf6;
+  background: #2a1a3a;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
 }
 
 .dayHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .copyButton {
-    padding: 4px 12px;
-    background: #1a1a1a;
-    color: #8b5cf6;
-    border: 1px solid #3a3a3a;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 4px 12px;
+  background: #1a1a1a;
+  color: #8b5cf6;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .copyButton:hover {
-    background: #2a2a2a;
-    border-color: #8b5cf6;
+  background: #2a2a2a;
+  border-color: #8b5cf6;
 }
 
 .dayToggle {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .dayToggle input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #8b5cf6;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #8b5cf6;
 }
 
 .dayLabel {
-    font-size: 16px;
-    font-weight: 500;
-    color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
 }
 
 .timeInputs {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 32px;
 }
 
 .timeLabel {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 14px;
-    color: #a0a0a0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #a0a0a0;
 }
 
 .timeInput {
-    padding: 8px 12px;
-    background: #1a1a1a;
-    border: 1px solid #3a3a3a;
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 14px;
-    width: 140px;
-    transition: border-color 0.2s;
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  width: 140px;
+  transition: border-color 0.2s;
 }
 
 .timeInput:focus {
-    outline: none;
-    border-color: #8b5cf6;
+  outline: none;
+  border-color: #8b5cf6;
 }
 
 .timeSeparator {
-    color: #a0a0a0;
-    font-size: 14px;
-    margin-top: 20px;
+  color: #a0a0a0;
+  font-size: 14px;
+  margin-top: 20px;
 }
 
 .weekSummary {
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
 }
 
 .summaryTitle {
-    font-size: 16px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 12px 0;
 }
 
 .summaryGrid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
 .summaryDay {
-    text-align: center;
-    padding: 8px;
-    border-radius: 6px;
-    background: #1a1a1a;
-    border: 1px solid #3a3a3a;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
 }
 
 .summaryDayEnabled {
-    background: #2a1a3a;
-    border-color: #8b5cf6;
+  background: #2a1a3a;
+  border-color: #8b5cf6;
 }
 
 .summaryDayName {
-    font-size: 12px;
-    font-weight: 600;
-    color: #a0a0a0;
-    margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a0a0a0;
+  margin-bottom: 4px;
 }
 
 .summaryDayEnabled .summaryDayName {
-    color: #8b5cf6;
+  color: #8b5cf6;
 }
 
 .summaryTime {
-    font-size: 11px;
-    color: #ffffff;
-    font-weight: 500;
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: 500;
 }
 
 .summaryTimeDisabled {
-    font-size: 11px;
-    color: #6b7280;
-    font-style: italic;
+  font-size: 11px;
+  color: #6b7280;
+  font-style: italic;
 }
 
 .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid #3a3a3a;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #3a3a3a;
 }
 
 .actionGroup {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .generateButton {
-    padding: 12px 20px;
-    background: #2a2a2a;
-    color: #ffffff;
-    border: 1px solid #3a3a3a;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 12px 20px;
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .generateButton:hover:not(:disabled) {
-    background: #3a3a3a;
-    border-color: #8b5cf6;
-    color: #8b5cf6;
+  background: #3a3a3a;
+  border-color: #8b5cf6;
+  color: #8b5cf6;
 }
 
 .generateButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .saveButton {
-    padding: 12px 24px;
-    background: #8b5cf6;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 12px 24px;
+  background: #8b5cf6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .saveButton:hover:not(:disabled) {
-    background: #7c3aed;
-    transform: translateY(-1px);
+  background: #7c3aed;
+  transform: translateY(-1px);
 }
 
 .saveButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-    .workflowSteps {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .workflowSteps {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .step {
-        width: 100%;
-    }
+  .step {
+    width: 100%;
+  }
 
-    .stepConnector {
-        width: 2px;
-        height: 20px;
-        margin: 8px 0 8px 19px;
-    }
+  .stepConnector {
+    width: 2px;
+    height: 20px;
+    margin: 8px 0 8px 19px;
+  }
 
-    .header {
-        flex-direction: column;
-    }
+  .header {
+    flex-direction: column;
+  }
 
-    .sectionHeader {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .quickActions {
-        width: 100%;
-    }
+  .quickActions {
+    width: 100%;
+  }
 
-    .quickActionButton {
-        flex: 1;
-    }
+  .quickActionButton {
+    flex: 1;
+  }
 
-    .summaryGrid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 
-    .timeInputs {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 32px;
-    }
+  .timeInputs {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 32px;
+  }
 
-    .timeSeparator {
-        display: none;
-    }
+  .timeSeparator {
+    display: none;
+  }
 
-    .generateButtons {
-        flex-direction: column;
-    }
+  .generateButtons {
+    flex-direction: column;
+  }
 
-    .generateButton,
-    .saveButton {
-        width: 100%;
-    }
+  .generateButton,
+  .saveButton {
+    width: 100%;
+  }
 }

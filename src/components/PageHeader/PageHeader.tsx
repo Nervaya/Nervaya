@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 interface PageHeaderProps {
-    title: string;
-    subtitle?: string;
-    description?: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
 }
 
 const PageHeader = ({ title, subtitle, description }: PageHeaderProps) => {

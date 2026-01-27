@@ -1,282 +1,284 @@
 .teamSection {
-    padding: 30px;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 95%;
-    background: #FFFFFF;
-    border-radius: 16px;
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 95%;
+  background: #ffffff;
+  border-radius: 16px;
 }
 
 @media (max-width: 1200px) {
-    .teamSection {
-        padding: 50px 40px;
-    }
+  .teamSection {
+    padding: 50px 40px;
+  }
 }
 
 @media (max-width: 768px) {
-    .teamSection {
-        padding: 40px 30px;
-    }
+  .teamSection {
+    padding: 40px 30px;
+  }
 }
 
 @media (max-width: 480px) {
-    .teamSection {
-        padding: 30px 20px;
-    }
+  .teamSection {
+    padding: 30px 20px;
+  }
 }
 
 .teamHeader {
-    text-align: center;
-    margin-bottom: 60px;
+  text-align: center;
+  margin-bottom: 60px;
 }
 
 @media (max-width: 768px) {
-    .teamHeader {
-        margin-bottom: 40px;
-    }
+  .teamHeader {
+    margin-bottom: 40px;
+  }
 }
 
 @media (max-width: 480px) {
-    .teamHeader {
-        margin-bottom: 30px;
-    }
+  .teamHeader {
+    margin-bottom: 30px;
+  }
 }
 
 .teamTitle {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    font-weight: 700;
-    color: #7828C8;
-    margin-bottom: 20px;
-    letter-spacing: -0.02em;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #7828c8;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 1024px) {
-    .teamTitle {
-        font-size: clamp(1.75rem, 4vw, 2.25rem);
-        margin-bottom: 18px;
-    }
+  .teamTitle {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    margin-bottom: 18px;
+  }
 }
 
 @media (max-width: 768px) {
-    .teamTitle {
-        font-size: clamp(1.5rem, 4vw, 2rem);
-        margin-bottom: 16px;
-    }
+  .teamTitle {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-    .teamTitle {
-        font-size: clamp(1.375rem, 5vw, 1.75rem);
-        margin-bottom: 14px;
-    }
+  .teamTitle {
+    font-size: clamp(1.375rem, 5vw, 1.75rem);
+    margin-bottom: 14px;
+  }
 }
 
 .teamSubtitle {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
-    line-height: 1.6;
-    color: #4a4a4a;
-    max-width: 800px;
-    margin: 0 auto;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.6;
+  color: #4a4a4a;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 @media (max-width: 1024px) {
-    .teamSubtitle {
-        font-size: clamp(0.95rem, 1.5vw, 1rem);
-    }
+  .teamSubtitle {
+    font-size: clamp(0.95rem, 1.5vw, 1rem);
+  }
 }
 
 @media (max-width: 768px) {
-    .teamSubtitle {
-        font-size: clamp(0.9rem, 2vw, 0.95rem);
-        line-height: 1.5;
-    }
+  .teamSubtitle {
+    font-size: clamp(0.9rem, 2vw, 0.95rem);
+    line-height: 1.5;
+  }
 }
 
 @media (max-width: 480px) {
-    .teamSubtitle {
-        font-size: 0.875rem;
-    }
+  .teamSubtitle {
+    font-size: 0.875rem;
+  }
 }
 
 .teamContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
-    .teamContainer {
-        gap: 24px;
-    }
+  .teamContainer {
+    gap: 24px;
+  }
 }
 
 @media (max-width: 768px) {
-    .teamContainer {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        max-width: 600px;
-        margin: 0 auto;
-    }
+  .teamContainer {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
 
 .teamCard {
-    background: linear-gradient(to bottom, #FAF5FF 0%, #FFFFFF 100%);
-    border-radius: 16px;
-    border-top: 2px solid #F3E8FF;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 24px;
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 20px;
-    align-items: flex-start;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    overflow: hidden;
+  background: linear-gradient(to bottom, #faf5ff 0%, #ffffff 100%);
+  border-radius: 16px;
+  border-top: 2px solid #f3e8ff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .teamCard:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 30px rgba(120, 40, 200, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(120, 40, 200, 0.2);
 }
 
 @media (max-width: 1024px) {
-    .teamCard {
-        padding: 20px;
-        gap: 16px;
-    }
+  .teamCard {
+    padding: 20px;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 768px) {
-    .teamCard {
-        grid-template-columns: 80px 1fr;
-        padding: 20px;
-        gap: 16px;
-    }
+  .teamCard {
+    grid-template-columns: 80px 1fr;
+    padding: 20px;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-    .teamCard {
-        grid-template-columns: 1fr;
-        padding: 24px;
-        gap: 20px;
-    }
+  .teamCard {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 20px;
+  }
 }
 
 .cardImagePlaceholder {
-    background: #f5f3ff;
-    border-radius: 12px;
-    width: 100px;
-    height: 100px;
-    min-width: 100px;
-    flex-shrink: 0;
+  background: #f5f3ff;
+  border-radius: 12px;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-    .cardImagePlaceholder {
-        width: 80px;
-        height: 80px;
-        min-width: 80px;
-    }
+  .cardImagePlaceholder {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+  }
 }
 
 @media (max-width: 480px) {
-    .cardImagePlaceholder {
-        width: 100%;
-        height: 200px;
-        min-width: 100%;
-    }
+  .cardImagePlaceholder {
+    width: 100%;
+    height: 200px;
+    min-width: 100%;
+  }
 }
 
 .cardContent {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 @media (max-width: 480px) {
-    .cardContent {
-        gap: 8px;
-    }
+  .cardContent {
+    gap: 8px;
+  }
 }
 
 .memberName {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0;
-    line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.3;
 }
 
 @media (max-width: 1024px) {
-    .memberName {
-        font-size: 1.125rem;
-    }
+  .memberName {
+    font-size: 1.125rem;
+  }
 }
 
 @media (max-width: 768px) {
-    .memberName {
-        font-size: 1.0625rem;
-    }
+  .memberName {
+    font-size: 1.0625rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .memberName {
-        font-size: 1rem;
-    }
+  .memberName {
+    font-size: 1rem;
+  }
 }
 
 .memberTitle {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #7828C8;
-    margin: 0;
-    line-height: 1.4;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #7828c8;
+  margin: 0;
+  line-height: 1.4;
 }
 
 @media (max-width: 1024px) {
-    .memberTitle {
-        font-size: 0.875rem;
-    }
+  .memberTitle {
+    font-size: 0.875rem;
+  }
 }
 
 @media (max-width: 768px) {
-    .memberTitle {
-        font-size: 0.8125rem;
-    }
+  .memberTitle {
+    font-size: 0.8125rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .memberTitle {
-        font-size: 0.8125rem;
-    }
+  .memberTitle {
+    font-size: 0.8125rem;
+  }
 }
 
 .memberDescription {
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    color: #4a4a4a;
-    margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #4a4a4a;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
-    .memberDescription {
-        font-size: 0.875rem;
-    }
+  .memberDescription {
+    font-size: 0.875rem;
+  }
 }
 
 @media (max-width: 768px) {
-    .memberDescription {
-        font-size: 0.8125rem;
-        line-height: 1.4;
-    }
+  .memberDescription {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
 }
 
 @media (max-width: 480px) {
-    .memberDescription {
-        font-size: 0.8125rem;
-    }
+  .memberDescription {
+    font-size: 0.8125rem;
+  }
 }

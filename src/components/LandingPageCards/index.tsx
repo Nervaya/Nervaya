@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import styles from './styles.module.css';
-import { landingPageCardsData } from '@/utils/landingPageCardsData';
+import Image from "next/image";
+import styles from "./styles.module.css";
+import { landingPageCardsData } from "@/utils/landingPageCardsData";
 
 const Cards = () => {
   return (
@@ -9,9 +9,7 @@ const Cards = () => {
         {landingPageCardsData.map((card) => (
           <li key={card.id} className={styles.card}>
             <div className={styles.cardImageWrapper}>
-              {card.badge && (
-                <span className={styles.badge}>{card.badge}</span>
-              )}
+              {card.badge && <span className={styles.badge}>{card.badge}</span>}
               <Image
                 src={card.image}
                 alt={card.title}

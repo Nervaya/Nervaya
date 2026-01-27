@@ -1,42 +1,42 @@
 .container {
-    color: #fff;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 80vh;
-    /* Fill generic height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 80vh;
+  /* Fill generic height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .comingSoon {
-    text-align: center;
-    background: #171717;
-    padding: 4rem;
-    border-radius: 12px;
-    border: 1px solid #333;
-    max-width: 600px;
+  text-align: center;
+  background: #171717;
+  padding: 4rem;
+  border-radius: 12px;
+  border: 1px solid #333;
+  max-width: 600px;
 }
 
 .icon {
-    font-size: 4rem;
-    color: #7c3aed;
-    margin-bottom: 2rem;
+  font-size: 4rem;
+  color: #7c3aed;
+  margin-bottom: 2rem;
 }
 
 .title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(90deg, #fff, #a78bfa);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    /* Fallback */
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #fff, #a78bfa);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /* Fallback */
 }
 
 .subtitle {
-    color: #9ca3af;
-    font-size: 1.1rem;
-    line-height: 1.6;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }

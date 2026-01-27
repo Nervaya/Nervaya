@@ -1,41 +1,42 @@
-import { Therapist } from './therapist.types';
+import { Therapist } from "./therapist.types";
+import { SessionStatus } from "@/lib/constants/enums";
 
 export interface Session {
-    _id: string;
-    userId: string;
-    therapistId: string | Therapist;
-    therapist?: Therapist;
-    date: string;
-    startTime: string;
-    endTime: string;
-    status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-    createdAt: string;
-    updatedAt: string;
+  _id: string;
+  userId: string;
+  therapistId: string | Therapist;
+  therapist?: Therapist;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: SessionStatus;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TherapistSlot {
-    _id: string;
-    therapistId: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-    isAvailable: boolean;
-    isCustomized: boolean;
-    sessionId?: string;
-    createdAt: string;
-    updatedAt: string;
+  _id: string;
+  therapistId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  isAvailable: boolean;
+  isCustomized: boolean;
+  sessionId?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type SessionStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
+// SessionStatus is now imported from @/lib/constants/enums
 
 export interface CreateSessionDTO {
-    therapistId: string;
-    date: string;
-    startTime: string;
+  therapistId: string;
+  date: string;
+  startTime: string;
 }
 
 export interface UpdateSessionDTO {
-    status?: SessionStatus;
-    date?: string;
-    startTime?: string;
+  status?: SessionStatus;
+  date?: string;
+  startTime?: string;
 }
