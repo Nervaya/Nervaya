@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaCircleUser } from "react-icons/fa6";
 import {
   NAVBAR_PRODUCTS_LINKS,
@@ -14,6 +14,7 @@ import styles from "./styles.module.css";
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -31,14 +32,14 @@ const Navbar = () => {
 
   useEffect(() => {
     // Initial check
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     checkAuth();
 
     const handleAuthChange = () => checkAuth();
     window.addEventListener("auth-state-changed", handleAuthChange);
+
     return () =>
       window.removeEventListener("auth-state-changed", handleAuthChange);
-  }, []);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
