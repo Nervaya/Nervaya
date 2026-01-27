@@ -1,9 +1,5 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
-import {
-  SESSION_STATUS,
-  SESSION_STATUS_VALUES,
-  SessionStatus,
-} from '@/lib/constants/enums';
+import { SESSION_STATUS, SESSION_STATUS_VALUES, SessionStatus } from '@/lib/constants/enums';
 
 export interface ISession extends Document {
   userId: string;
@@ -56,7 +52,6 @@ const sessionSchema = new Schema<ISession>(
 
 sessionSchema.index({ therapistId: 1, date: 1, startTime: 1 });
 
-const Session: Model<ISession> =
-  mongoose.models.Session || mongoose.model<ISession>('Session', sessionSchema);
+const Session: Model<ISession> = mongoose.models.Session || mongoose.model<ISession>('Session', sessionSchema);
 
 export default Session;

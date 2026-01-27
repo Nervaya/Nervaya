@@ -13,27 +13,19 @@ const AboutUs = () => {
         <div className={styles.card}>
           <div className={styles.cardContent}>
             <span className={styles.missionTag}>Our Mission</span>
-            <h2 className={styles.cardHeading}>
-              Helping You Find Peace & Balance
-            </h2>
+            <h2 className={styles.cardHeading}>Helping You Find Peace & Balance</h2>
             <p className={styles.cardParagraph}>
-              Trouble unwinding at night? Our expert therapists gently help you
-              relax anxiety &amp; stress, release your natural sleep rhythm, and
-              wake up feeling lighter and more refreshed all day. We provide
-              personalized support to help you overcome challenges and achieve
-              your wellness goals.
+              Trouble unwinding at night? Our expert therapists gently help you relax anxiety &amp; stress, release your
+              natural sleep rhythm, and wake up feeling lighter and more refreshed all day. We provide personalized
+              support to help you overcome challenges and achieve your wellness goals.
             </p>
             <p className={styles.cardParagraph}>
-              Our approach combines evidence-based techniques with compassionate
-              care, creating a safe space where you can explore your thoughts
-              and feelings without judgment. We&apos;re here to support you
-              every step of the way on your journey to better mental health and
-              restful sleep.
+              Our approach combines evidence-based techniques with compassionate care, creating a safe space where you
+              can explore your thoughts and feelings without judgment. We&apos;re here to support you every step of the
+              way on your journey to better mental health and restful sleep.
             </p>
           </div>
-          <div className={styles.cardImagePlaceholder}>
-            {/* Placeholder for image */}
-          </div>
+          <div className={styles.cardImagePlaceholder}>{/* Placeholder for image */}</div>
         </div>
       </div>
       <AboutUsCards />

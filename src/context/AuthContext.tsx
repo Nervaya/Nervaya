@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { ApiResponse } from '@/lib/utils/response.util';
@@ -31,11 +25,7 @@ interface AuthContextType {
   error: string | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<ApiResponse<AuthData>>;
-  signup: (
-    email: string,
-    password: string,
-    name: string,
-  ) => Promise<ApiResponse<AuthData>>;
+  signup: (email: string, password: string, name: string) => Promise<ApiResponse<AuthData>>;
   logout: () => Promise<void>;
 }
 

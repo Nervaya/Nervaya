@@ -7,8 +7,8 @@ const AboutUsTeam = () => {
       <div className={styles.teamHeader}>
         <h2 className={styles.teamTitle}>Meet Our Founding Team</h2>
         <p className={styles.teamSubtitle}>
-          Visionary leaders committed to transforming mental health and sleep
-          wellness through innovation and compassionate care.
+          Visionary leaders committed to transforming mental health and sleep wellness through innovation and
+          compassionate care.
         </p>
       </div>
       <ul className={styles.teamContainer}>

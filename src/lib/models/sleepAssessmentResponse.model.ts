@@ -66,9 +66,6 @@ sleepAssessmentResponseSchema.index({ userId: 1, createdAt: -1 });
 
 const SleepAssessmentResponse: Model<ISleepAssessmentResponse> =
   mongoose.models.SleepAssessmentResponse ||
-  mongoose.model<ISleepAssessmentResponse>(
-    'SleepAssessmentResponse',
-    sleepAssessmentResponseSchema,
-  );
+  mongoose.model<ISleepAssessmentResponse>('SleepAssessmentResponse', sleepAssessmentResponseSchema);
 
 export default SleepAssessmentResponse;

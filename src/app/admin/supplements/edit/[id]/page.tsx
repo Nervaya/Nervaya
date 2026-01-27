@@ -26,9 +26,7 @@ export default function EditSupplementPage() {
         setError('Failed to update supplement');
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to update supplement',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to update supplement');
       throw err;
     }
   };
@@ -46,9 +44,7 @@ export default function EditSupplementPage() {
           setSupplement(response.data);
         }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : 'Failed to load supplement',
-        );
+        setError(err instanceof Error ? err.message : 'Failed to load supplement');
       } finally {
         setLoading(false);
       }
@@ -79,11 +75,7 @@ export default function EditSupplementPage() {
     <div className={styles.container}>
       <h2 className={styles.title}>Edit Supplement</h2>
       {error && <div className={styles.error}>{error}</div>}
-      <SupplementForm
-        onSubmit={handleSubmit}
-        initialData={supplement}
-        submitLabel="Update Supplement"
-      />
+      <SupplementForm onSubmit={handleSubmit} initialData={supplement} submitLabel="Update Supplement" />
     </div>
   );
 }

@@ -93,27 +93,14 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
   };
 
   return (
-    <div
-      ref={overlayRef}
-      className={styles.overlay}
-      onClick={handleOverlayClick}
-    >
-      <div
-        ref={modalRef}
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div ref={overlayRef} className={styles.overlay} onClick={handleOverlayClick}>
+      <div ref={modalRef} className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <div className={styles.headerText}>
             <div className={styles.title}>{title}</div>
             <p className={styles.subtitle}>Fill in the details below</p>
           </div>
-          <button
-            className={styles.closeBtn}
-            onClick={handleClose}
-            aria-label="Close modal"
-            type="button"
-          >
+          <button className={styles.closeBtn} onClick={handleClose} aria-label="Close modal" type="button">
             ✕
           </button>
         </div>

@@ -9,18 +9,15 @@ cloudinary.config({
 
 export const uploadImage = async (fileBuffer: Buffer): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: CLOUDINARY_FOLDERS.ROOT },
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else if (result) {
-          resolve(result.secure_url);
-        } else {
-          reject(new Error('Upload failed'));
-        }
-      },
-    );
+    const uploadStream = cloudinary.uploader.upload_stream({ folder: CLOUDINARY_FOLDERS.ROOT }, (error, result) => {
+      if (error) {
+        reject(error);
+      } else if (result) {
+        resolve(result.secure_url);
+      } else {
+        reject(new Error('Upload failed'));
+      }
+    });
     uploadStream.end(fileBuffer);
   });
 };

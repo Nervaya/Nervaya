@@ -1,7 +1,4 @@
-import Therapist, {
-  ITherapist,
-  IConsultingHour,
-} from '@/lib/models/therapist.model';
+import Therapist, { ITherapist, IConsultingHour } from '@/lib/models/therapist.model';
 import { generateSlotsFromConsultingHours } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
@@ -62,11 +59,7 @@ export async function createTherapist(data: Partial<ITherapist>) {
 
     const therapist = await Therapist.create(therapistData);
 
-    await generateSlotsFromConsultingHours(
-      therapist._id.toString(),
-      new Date(),
-      90,
-    );
+    await generateSlotsFromConsultingHours(therapist._id.toString(), new Date(), 90);
 
     return therapist;
   } catch (error) {
@@ -153,10 +146,7 @@ export async function getConsultingHours(therapistId: string) {
   }
 }
 
-export async function updateConsultingHours(
-  therapistId: string,
-  consultingHours: IConsultingHour[],
-) {
+export async function updateConsultingHours(therapistId: string, consultingHours: IConsultingHour[]) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
@@ -170,15 +160,11 @@ export async function updateConsultingHours(
 
     for (const hour of consultingHours) {
       if (hour.dayOfWeek < 0 || hour.dayOfWeek > 6) {
-        throw new ValidationError(
-          'Invalid day of week. Must be 0-6 (Sunday-Saturday)',
-        );
+        throw new ValidationError('Invalid day of week. Must be 0-6 (Sunday-Saturday)');
       }
       if (hour.isEnabled) {
         if (!hour.startTime || !hour.endTime) {
-          throw new ValidationError(
-            `Start time and end time are required for enabled days (Day ${hour.dayOfWeek})`,
-          );
+          throw new ValidationError(`Start time and end time are required for enabled days (Day ${hour.dayOfWeek})`);
         }
         const timeRegex = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i;
         if (!timeRegex.test(hour.startTime) || !timeRegex.test(hour.endTime)) {

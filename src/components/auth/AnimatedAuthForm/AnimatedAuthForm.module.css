@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/background.png");
+  background-image: url('/background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,7 +15,7 @@
 
 /* Dark Overlay */
 .container::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -219,7 +219,7 @@
 }
 
 .checkbox:checked::after {
-  content: "✓";
+  content: '✓';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -309,11 +309,7 @@
 /* Illustration Section */
 .illustrationSection {
   flex: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(120, 40, 200, 0.3) 0%,
-    rgba(168, 85, 247, 0.3) 100%
-  );
+  background: linear-gradient(135deg, rgba(120, 40, 200, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -326,14 +322,10 @@
 
 /* Glass effect overlay over the illustration */
 .illustrationSection::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(120, 40, 200, 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center, rgba(120, 40, 200, 0.1) 0%, transparent 70%);
   z-index: 0;
   pointer-events: none;
 }
@@ -394,11 +386,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
-    background: linear-gradient(
-      135deg,
-      rgba(120, 40, 200, 0.4) 0%,
-      rgba(168, 85, 247, 0.4) 100%
-    );
+    background: linear-gradient(135deg, rgba(120, 40, 200, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%);
   }
 
   .illustrationSection::before {
@@ -539,11 +527,7 @@
     height: 180px;
     min-height: 180px;
     max-height: 180px;
-    background: linear-gradient(
-      135deg,
-      rgba(120, 40, 200, 0.4) 0%,
-      rgba(168, 85, 247, 0.4) 100%
-    );
+    background: linear-gradient(135deg, rgba(120, 40, 200, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%);
   }
 
   .illustrationContent {

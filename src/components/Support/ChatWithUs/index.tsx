@@ -8,9 +8,7 @@ import Button from '@/components/common/Button/Button';
 const ChatWithUs = () => {
   const handleWhatsAppClick = () => {
     const phoneNumber = '1234567890';
-    const message = encodeURIComponent(
-      'Hello! I need support with your product.',
-    );
+    const message = encodeURIComponent('Hello! I need support with your product.');
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
 
@@ -23,8 +21,7 @@ const ChatWithUs = () => {
         <div className={styles.bannerText}>
           <h2 className={styles.bannerTitle}>Chat with Us</h2>
           <p className={styles.bannerSubtitle}>
-            Have questions about the product? Let us support your journey to
-            restful sleep.
+            Have questions about the product? Let us support your journey to restful sleep.
           </p>
         </div>
       </div>
@@ -36,24 +33,16 @@ const ChatWithUs = () => {
           <h3 className={styles.cardTitle}>Get Instant Support</h3>
         </div>
         <p className={styles.cardDescription}>
-          Connect with our sleep wellness experts directly on WhatsApp. Get
-          personalized guidance, product recommendations, and answers to all
-          your questions about achieving better sleep.
+          Connect with our sleep wellness experts directly on WhatsApp. Get personalized guidance, product
+          recommendations, and answers to all your questions about achieving better sleep.
         </p>
       </div>
       <div className={styles.buttonContainer}>
-        <Button
-          variant="primary"
-          className={styles.whatsappButton}
-          onClick={handleWhatsAppClick}
-        >
+        <Button variant="primary" className={styles.whatsappButton} onClick={handleWhatsAppClick}>
           <IoChatbubbleEllipsesOutline className={styles.buttonIcon} />
           Chat with Us on WhatsApp
         </Button>
-        <p className={styles.disclaimer}>
-          We typically respond within 2 hours. Your information is kept
-          confidential.
-        </p>
+        <p className={styles.disclaimer}>We typically respond within 2 hours. Your information is kept confidential.</p>
       </div>
 
       <div className={styles.featuresGrid}>

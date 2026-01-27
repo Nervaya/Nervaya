@@ -12,9 +12,7 @@ export default function TherapyCornerPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
-    null,
-  );
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
 
   useEffect(() => {
     fetchTherapists();
@@ -53,16 +51,12 @@ export default function TherapyCornerPage() {
         />
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            ✨ Your Recommended Therapists
-          </h2>
+          <h2 className={styles.sectionTitle}>✨ Your Recommended Therapists</h2>
 
           {loading && <p>Loading therapists...</p>}
           {error && <p className={styles.error}>{error}</p>}
 
-          {!loading && !error && therapists.length === 0 && (
-            <p>No therapists found at the moment.</p>
-          )}
+          {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
 
           {!loading &&
             !error &&
@@ -71,19 +65,14 @@ export default function TherapyCornerPage() {
                 <div className={styles.therapistInfo}>
                   <div
                     className={styles.avatar}
-                    style={
-                      therapist.image
-                        ? { backgroundImage: `url(${therapist.image})` }
-                        : {}
-                    }
+                    style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
                     role="img"
                     aria-label={`${therapist.name} profile picture`}
                   />
                   <div>
                     <h3>{therapist.name}</h3>
                     <p className={styles.credentials}>
-                      {therapist.qualifications?.join(', ') ||
-                        'Professional Therapist'}
+                      {therapist.qualifications?.join(', ') || 'Professional Therapist'}
                     </p>
                     <p className={styles.details}>
                       Experience: {therapist.experience || 'N/A'} | Languages:{' '}
@@ -99,10 +88,7 @@ export default function TherapyCornerPage() {
                 <div className={styles.actions}>
                   <div className={styles.buttons}>
                     <button className={styles.outlineBtn}>View Profile</button>
-                    <button
-                      className={styles.primaryBtn}
-                      onClick={() => handleBookAppointment(therapist)}
-                    >
+                    <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
                       Book Appointment
                     </button>
                   </div>

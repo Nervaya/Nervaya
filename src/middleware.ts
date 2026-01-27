@@ -1,11 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { verifyToken } from './lib/utils/jwt.util';
-import {
-  PROTECTED_ROUTES,
-  ADMIN_ROUTES,
-  AUTH_ROUTES,
-  ROUTES,
-} from '@/utils/routesConstants';
+import { PROTECTED_ROUTES, ADMIN_ROUTES, AUTH_ROUTES, ROUTES } from '@/utils/routesConstants';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
 
 export async function middleware(request: NextRequest) {
@@ -25,13 +20,8 @@ export async function middleware(request: NextRequest) {
       if (!decoded) {
         response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
         response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
-      } else if (
-        ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) &&
-        decoded.role !== 'ADMIN'
-      ) {
-        response = NextResponse.redirect(
-          new URL(ROUTES.DASHBOARD, request.url),
-        );
+      } else if (ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) && decoded.role !== 'ADMIN') {
+        response = NextResponse.redirect(new URL(ROUTES.DASHBOARD, request.url));
       } else {
         response = NextResponse.next();
       }
@@ -60,10 +50,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   if (isProduction) {
-    response.headers.set(
-      'Strict-Transport-Security',
-      'max-age=31536000; includeSubDomains',
-    );
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   }
 
   return response;

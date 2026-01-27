@@ -17,11 +17,7 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-export function validateQuantity(
-  quantity: number,
-  min: number = 1,
-  max?: number,
-): boolean {
+export function validateQuantity(quantity: number, min: number = 1, max?: number): boolean {
   if (quantity < min) {
     return false;
   }

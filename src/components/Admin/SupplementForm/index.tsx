@@ -32,15 +32,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
   });
 
-  const [ingredientsText, setIngredientsText] = useState(
-    initialData?.ingredients?.join(', ') || '',
-  );
-  const [benefitsText, setBenefitsText] = useState(
-    initialData?.benefits?.join(', ') || '',
-  );
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof SupplementFormData, string>>
-  >({});
+  const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
+  const [benefitsText, setBenefitsText] = useState(initialData?.benefits?.join(', ') || '');
+  const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
 
   useEffect(() => {
     if (initialData) {
@@ -54,8 +48,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         category: initialData.category || '',
         ingredients: initialData.ingredients || [],
         benefits: initialData.benefits || [],
-        isActive:
-          initialData.isActive !== undefined ? initialData.isActive : true,
+        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
       });
       setIngredientsText(initialData.ingredients?.join(', ') || '');
       setBenefitsText(initialData.benefits?.join(', ') || '');
@@ -112,10 +105,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     await onSubmit(submitData);
   };
 
-  const handleChange = (
-    field: keyof SupplementFormData,
-    value: string | number | boolean,
-  ) => {
+  const handleChange = (field: keyof SupplementFormData, value: string | number | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -135,10 +125,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         />
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.label}>
-            Description{' '}
-            {errors.description && (
-              <span className={styles.errorText}>{errors.description}</span>
-            )}
+            Description {errors.description && <span className={styles.errorText}>{errors.description}</span>}
           </label>
           <textarea
             className={`${styles.textarea} ${errors.description ? styles.textareaError : ''}`}
@@ -152,9 +139,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           label="Price (₹)"
           type="number"
           value={formData.price.toString()}
-          onChange={(e) =>
-            handleChange('price', parseFloat(e.target.value) || 0)
-          }
+          onChange={(e) => handleChange('price', parseFloat(e.target.value) || 0)}
           error={errors.price}
           required
           min="0"
@@ -164,9 +149,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           label="Stock"
           type="number"
           value={formData.stock.toString()}
-          onChange={(e) =>
-            handleChange('stock', parseInt(e.target.value, 10) || 0)
-          }
+          onChange={(e) => handleChange('stock', parseInt(e.target.value, 10) || 0)}
           error={errors.stock}
           required
           min="0"
@@ -213,12 +196,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           />
         </div>
       </div>
-      <Button
-        type="submit"
-        variant="primary"
-        loading={loading}
-        className={styles.submitButton}
-      >
+      <Button type="submit" variant="primary" loading={loading} className={styles.submitButton}>
         {submitLabel}
       </Button>
     </form>

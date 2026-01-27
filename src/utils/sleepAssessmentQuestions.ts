@@ -101,8 +101,7 @@ export const defaultSleepAssessmentQuestions: CreateQuestionInput[] = [
   },
   {
     questionKey: 'screen_time_before_bed',
-    questionText:
-      'Do you use electronic devices (phone, TV, computer) before bed?',
+    questionText: 'Do you use electronic devices (phone, TV, computer) before bed?',
     questionType: 'single_choice',
     order: 7,
     isRequired: true,
@@ -238,8 +237,7 @@ export const defaultSleepAssessmentQuestions: CreateQuestionInput[] = [
   },
   {
     questionKey: 'additional_info',
-    questionText:
-      'Is there anything else you would like us to know about your sleep?',
+    questionText: 'Is there anything else you would like us to know about your sleep?',
     questionType: 'text',
     order: 15,
     isRequired: false,

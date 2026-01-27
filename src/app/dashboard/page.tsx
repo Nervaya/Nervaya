@@ -8,9 +8,7 @@ export default function DashboardPage() {
       <div className={styles.container}>
         <header className={styles.header}>
           <h1 className={styles.title}>Welcome back, Test User!</h1>
-          <p className={styles.subtitle}>
-            Here is an overview of your sleep journey.
-          </p>
+          <p className={styles.subtitle}>Here is an overview of your sleep journey.</p>
         </header>
 
         <div className={styles.statsGrid}>

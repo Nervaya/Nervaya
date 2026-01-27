@@ -15,20 +15,12 @@ interface CartItemProps {
   disabled?: boolean;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
-  item,
-  onQuantityChange,
-  onRemove,
-  disabled = false,
-}) => {
+const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove, disabled = false }) => {
   const supplement =
-    item.supplementId &&
-    typeof item.supplementId === 'object' &&
-    'name' in item.supplementId
+    item.supplementId && typeof item.supplementId === 'object' && 'name' in item.supplementId
       ? (item.supplementId as Supplement)
       : null;
-  const supplementId =
-    typeof item.supplementId === 'object' ? supplement?._id : item.supplementId;
+  const supplementId = typeof item.supplementId === 'object' ? supplement?._id : item.supplementId;
   const supplementName = supplement?.name || 'Unknown Product';
   const supplementImage = supplement?.image || '/default-supplement.png';
   const maxStock = supplement?.stock || item.quantity;
@@ -49,10 +41,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
   return (
     <div className={styles.cartItem}>
-      <Link
-        href={supplement ? `/supplements/${supplement._id}` : '#'}
-        className={styles.imageLink}
-      >
+      <Link href={supplement ? `/supplements/${supplement._id}` : '#'} className={styles.imageLink}>
         <div className={styles.imageWrapper}>
           <Image
             src={supplementImage}
@@ -67,10 +56,7 @@ const CartItem: React.FC<CartItemProps> = ({
         </div>
       </Link>
       <div className={styles.details}>
-        <Link
-          href={supplement ? `/supplements/${supplement._id}` : '#'}
-          className={styles.nameLink}
-        >
+        <Link href={supplement ? `/supplements/${supplement._id}` : '#'} className={styles.nameLink}>
           <h3 className={styles.name}>{supplementName}</h3>
         </Link>
         <p className={styles.price}>{formatPrice(item.price)} each</p>
@@ -82,12 +68,7 @@ const CartItem: React.FC<CartItemProps> = ({
             max={maxStock}
             disabled={disabled}
           />
-          <button
-            className={styles.removeButton}
-            onClick={handleRemove}
-            disabled={disabled}
-            aria-label="Remove item"
-          >
+          <button className={styles.removeButton} onClick={handleRemove} disabled={disabled} aria-label="Remove item">
             Remove
           </button>
         </div>

@@ -67,11 +67,7 @@ export async function createRazorpayOrder(orderId: string, amount: number) {
   }
 }
 
-export async function verifyPayment(
-  orderId: string,
-  paymentId: string,
-  razorpaySignature: string,
-) {
+export async function verifyPayment(orderId: string, paymentId: string, razorpaySignature: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
@@ -90,10 +86,7 @@ export async function verifyPayment(
     const webhookSecret = process.env.RAZORPAY_KEY_SECRET || '';
 
     const text = `${order.razorpayOrderId}|${paymentId}`;
-    const generatedSignature = crypto
-      .createHmac('sha256', webhookSecret)
-      .update(text)
-      .digest('hex');
+    const generatedSignature = crypto.createHmac('sha256', webhookSecret).update(text).digest('hex');
 
     if (generatedSignature !== razorpaySignature) {
       throw new ValidationError('Invalid payment signature');
@@ -111,11 +104,7 @@ export async function verifyPayment(
   }
 }
 
-export async function handlePaymentWebhook(
-  razorpayOrderId: string,
-  paymentId: string,
-  event: string,
-) {
+export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: string, event: string) {
   await connectDB();
   try {
     const order = await Order.findOne({ razorpayOrderId });

@@ -16,10 +16,7 @@ export async function authenticateRequest(
   const token = request.cookies.get(COOKIE_NAMES.AUTH_TOKEN)?.value;
 
   if (!token) {
-    return NextResponse.json(
-      { success: false, message: 'Authentication required', data: null },
-      { status: 401 },
-    );
+    return NextResponse.json({ success: false, message: 'Authentication required', data: null }, { status: 401 });
   }
 
   const decoded = await verifyToken(token);
@@ -46,10 +43,7 @@ export async function requireAuth(
   }
 
   if (allowedRoles && !allowedRoles.includes(authResult.user.role)) {
-    return NextResponse.json(
-      { success: false, message: 'Insufficient permissions', data: null },
-      { status: 403 },
-    );
+    return NextResponse.json({ success: false, message: 'Insufficient permissions', data: null }, { status: 403 });
   }
 
   return authResult;

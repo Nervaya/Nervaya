@@ -1,25 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  getTherapistById,
-  updateTherapist,
-  deleteTherapist,
-} from '@/lib/services/therapist.service';
+import { getTherapistById, updateTherapist, deleteTherapist } from '@/lib/services/therapist.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // GET is public - anyone can view a therapist
     const { id } = await params;
     const therapist = await getTherapistById(id);
-    return NextResponse.json(
-      successResponse('Therapist fetched successfully', therapist),
-    );
+    return NextResponse.json(successResponse('Therapist fetched successfully', therapist));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -28,10 +19,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require authentication and ADMIN role for updating therapists
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
@@ -45,16 +33,11 @@ export async function PUT(
 
     // Input validation
     if (!body || typeof body !== 'object') {
-      return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
     const therapist = await updateTherapist(id, body);
-    return NextResponse.json(
-      successResponse('Therapist updated successfully', therapist),
-    );
+    return NextResponse.json(successResponse('Therapist updated successfully', therapist));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -63,10 +46,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require authentication and ADMIN role for deleting therapists
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
@@ -77,9 +57,7 @@ export async function DELETE(
 
     const { id } = await params;
     await deleteTherapist(id);
-    return NextResponse.json(
-      successResponse('Therapist deleted successfully', null),
-    );
+    return NextResponse.json(successResponse('Therapist deleted successfully', null));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

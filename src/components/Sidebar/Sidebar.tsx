@@ -6,27 +6,11 @@ import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
-import {
-  FaBars,
-  FaChevronLeft,
-  FaChevronRight,
-  FaXmark,
-} from 'react-icons/fa6';
-import {
-  adminMenuGroups,
-  iconMap,
-  sidebarMenuGroups,
-  sidebarBottomNavItems,
-} from '@/utils/sidebarConstants';
+import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
+import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import styles from './styles.module.css';
 
-const Sidebar = ({
-  children,
-  className,
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) => {
+const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   const { cartCount } = useCart();
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -45,11 +29,7 @@ const Sidebar = ({
   const menuGroups = isAdminRoute ? adminMenuGroups : sidebarMenuGroups;
   const expandedWidth = 280;
   const collapsedWidth = 88;
-  const sidebarWidth = isDesktop
-    ? isCollapsed
-      ? collapsedWidth
-      : expandedWidth
-    : expandedWidth;
+  const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : expandedWidth;
 
   useEffect(() => {
     const handleResize = () => {
@@ -102,9 +82,7 @@ const Sidebar = ({
         {isMobileOpen ? <FaXmark /> : <FaBars />}
       </button>
 
-      <LazyMotion
-        features={() => import('framer-motion').then((mod) => mod.domAnimation)}
-      >
+      <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <AnimatePresence mode="wait">
           {(isMobileOpen || isDesktop) && (
             <m.aside
@@ -127,10 +105,7 @@ const Sidebar = ({
                   setIsCollapsed((v) => {
                     const next = !v;
                     try {
-                      window.localStorage.setItem(
-                        'sidebar-collapsed',
-                        String(next),
-                      );
+                      window.localStorage.setItem('sidebar-collapsed', String(next));
                     } catch {
                       // ignore
                     }
@@ -145,13 +120,8 @@ const Sidebar = ({
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
                   {menuGroups.map((group) => (
-                    <li
-                      key={group.title || 'default'}
-                      className={styles.menuGroup}
-                    >
-                      {group.title && !isCollapsed && (
-                        <div className={styles.groupTitle}>{group.title}</div>
-                      )}
+                    <li key={group.title || 'default'} className={styles.menuGroup}>
+                      {group.title && !isCollapsed && <div className={styles.groupTitle}>{group.title}</div>}
                       <ul className={styles.navList}>
                         {group.items.map((item) => (
                           <li key={item.path}>
@@ -162,18 +132,11 @@ const Sidebar = ({
                             >
                               <span className={styles.icon}>
                                 {iconMap[item.icon] || iconMap['FaHouse']}
-                                {(item.path === '/supplements/cart' ||
-                                  item.title === 'Cart') &&
-                                  cartCount > 0 && (
-                                  <span className={styles.badge}>
-                                    {cartCount}
-                                  </span>
+                                {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                                  <span className={styles.badge}>{cartCount}</span>
                                 )}
                               </span>
-                              <span
-                                className={styles.title}
-                                aria-hidden={isCollapsed}
-                              >
+                              <span className={styles.title} aria-hidden={isCollapsed}>
                                 {item.title}
                               </span>
                             </Link>
@@ -195,18 +158,11 @@ const Sidebar = ({
                         >
                           <span className={styles.icon}>
                             {iconMap[item.icon] || iconMap['FaHouse']}
-                            {(item.path === '/supplements/cart' ||
-                              item.title === 'Cart') &&
-                              cartCount > 0 && (
-                              <span className={styles.badge}>
-                                {cartCount}
-                              </span>
+                            {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                              <span className={styles.badge}>{cartCount}</span>
                             )}
                           </span>
-                          <span
-                            className={styles.title}
-                            aria-hidden={isCollapsed}
-                          >
+                          <span className={styles.title} aria-hidden={isCollapsed}>
                             {item.title}
                           </span>
                         </Link>
@@ -220,14 +176,9 @@ const Sidebar = ({
         </AnimatePresence>
       </LazyMotion>
 
-      {isMobileOpen && (
-        <div className={styles.overlay} onClick={closeMobileSidebar} />
-      )}
+      {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
-      <main
-        className={`${styles.mainContent} ${className || ''}`}
-        style={{ marginLeft: `${mainMarginLeft}px` }}
-      >
+      <main className={`${styles.mainContent} ${className || ''}`} style={{ marginLeft: `${mainMarginLeft}px` }}>
         {children}
       </main>
     </>

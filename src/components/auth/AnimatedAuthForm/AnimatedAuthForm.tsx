@@ -12,9 +12,7 @@ interface AnimatedAuthFormProps {
   initialMode?: 'login' | 'signup';
 }
 
-export default function AnimatedAuthForm({
-  initialMode = 'login',
-}: AnimatedAuthFormProps) {
+export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuthFormProps) {
   const [isLogin, setIsLogin] = useState(initialMode === 'login');
   const [formData, setFormData] = useState({
     name: '',
@@ -81,25 +79,15 @@ export default function AnimatedAuthForm({
         <div className={styles.formSection}>
           <div className={styles.formContent}>
             <div className={styles.logoContainer}>
-              <Image
-                src="/icons/nervaya-logo.svg"
-                alt="Nervaya Logo"
-                width={160}
-                height={50}
-                priority
-              />
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya Logo" width={160} height={50} priority />
             </div>
 
             <div className={styles.formContainer}>
-              <div
-                className={`${styles.formWrapper} ${isLogin ? styles.showLogin : styles.showSignup}`}
-              >
+              <div className={`${styles.formWrapper} ${isLogin ? styles.showLogin : styles.showSignup}`}>
                 <div className={`${styles.formPanel} ${styles.loginPanel}`}>
                   <div className={styles.header}>
                     <h1 className={styles.title}>Welcome back</h1>
-                    <p className={styles.subtitle}>
-                      Please enter your details to continue
-                    </p>
+                    <p className={styles.subtitle}>Please enter your details to continue</p>
                   </div>
                   <form onSubmit={handleSubmit} className={styles.form}>
                     <Input
@@ -107,9 +95,7 @@ export default function AnimatedAuthForm({
                       type="email"
                       placeholder="Enter your email"
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       error={errors.email}
                       className={styles.glassInput}
                     />
@@ -119,9 +105,7 @@ export default function AnimatedAuthForm({
                       type="password"
                       placeholder="Enter your password"
                       value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       error={errors.password}
                       className={styles.glassInput}
                     />
@@ -136,9 +120,7 @@ export default function AnimatedAuthForm({
                       </a>
                     </div>
 
-                    {error && (
-                      <div className={styles.errorMessage}>{error}</div>
-                    )}
+                    {error && <div className={styles.errorMessage}>{error}</div>}
 
                     <Button type="submit" loading={loading}>
                       Sign in
@@ -149,9 +131,7 @@ export default function AnimatedAuthForm({
                 <div className={`${styles.formPanel} ${styles.signupPanel}`}>
                   <div className={styles.header}>
                     <h1 className={styles.title}>Create your account</h1>
-                    <p className={styles.subtitle}>
-                      Please enter your details to get started
-                    </p>
+                    <p className={styles.subtitle}>Please enter your details to get started</p>
                   </div>
                   <form onSubmit={handleSubmit} className={styles.form}>
                     <Input
@@ -159,9 +139,7 @@ export default function AnimatedAuthForm({
                       type="text"
                       placeholder="Enter your full name"
                       value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       error={errors.name}
                       className={styles.glassInput}
                     />
@@ -171,9 +149,7 @@ export default function AnimatedAuthForm({
                       type="email"
                       placeholder="Enter your email"
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       error={errors.email}
                       className={styles.glassInput}
                     />
@@ -183,16 +159,12 @@ export default function AnimatedAuthForm({
                       type="password"
                       placeholder="Create a password"
                       value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       error={errors.password}
                       className={styles.glassInput}
                     />
 
-                    {error && (
-                      <div className={styles.errorMessage}>{error}</div>
-                    )}
+                    {error && <div className={styles.errorMessage}>{error}</div>}
 
                     <Button type="submit" loading={loading}>
                       Create account
@@ -204,14 +176,8 @@ export default function AnimatedAuthForm({
 
             <div className={styles.switchContainer}>
               <p className={styles.switchText}>
-                {isLogin
-                  ? "Don't have an account? "
-                  : 'Already have an account? '}
-                <button
-                  type="button"
-                  onClick={switchMode}
-                  className={styles.switchLink}
-                >
+                {isLogin ? "Don't have an account? " : 'Already have an account? '}
+                <button type="button" onClick={switchMode} className={styles.switchLink}>
                   {isLogin ? 'Sign up' : 'Sign in'}
                 </button>
               </p>
@@ -220,11 +186,7 @@ export default function AnimatedAuthForm({
         </div>
 
         <div className={styles.illustrationSection}>
-          <LazyMotion
-            features={() =>
-              import('framer-motion').then((mod) => mod.domAnimation)
-            }
-          >
+          <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
             <AnimatePresence mode="wait">
               <m.div
                 key={isLogin ? 'login-img' : 'signup-img'}
@@ -236,11 +198,7 @@ export default function AnimatedAuthForm({
                 style={{ position: 'relative', width: '100%', height: '100%' }}
               >
                 <Image
-                  src={
-                    isLogin
-                      ? '/assets/auth/login-illustration.jpg'
-                      : '/assets/auth/signup-illustration.png'
-                  }
+                  src={isLogin ? '/assets/auth/login-illustration.jpg' : '/assets/auth/signup-illustration.png'}
                   alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
                   fill
                   className={styles.illustrationImage}

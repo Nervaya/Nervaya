@@ -14,17 +14,12 @@ const HomePage = () => {
         </h1>
 
         <p className={styles.heroSubtitle}>
-          Personalized solutions for lasting sleep, Take our free sleep
-          assessment to get one step closer to deep rest
+          Personalized solutions for lasting sleep, Take our free sleep assessment to get one step closer to deep rest
         </p>
 
         <div className={styles.buttonGroup}>
-          <button className={styles.primaryButton}>
-            Free Sleep Assessment
-          </button>
-          <button className={styles.secondaryButton}>
-            Get Free Assistance
-          </button>
+          <button className={styles.primaryButton}>Free Sleep Assessment</button>
+          <button className={styles.secondaryButton}>Get Free Assistance</button>
         </div>
       </section>
 

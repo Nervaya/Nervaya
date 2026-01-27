@@ -16,9 +16,7 @@ export default function AdminSleepAssessmentPage() {
 
   const fetchQuestions = useCallback(async () => {
     try {
-      const response = await fetch(
-        '/api/sleep-assessment/questions?includeInactive=true',
-      );
+      const response = await fetch('/api/sleep-assessment/questions?includeInactive=true');
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
@@ -127,9 +125,7 @@ export default function AdminSleepAssessmentPage() {
   const handleSeedQuestions = async () => {
     if (
       // eslint-disable-next-line no-alert
-      !window.confirm(
-        'This will seed the database with default sleep assessment questions. Continue?',
-      )
+      !window.confirm('This will seed the database with default sleep assessment questions. Continue?')
     ) {
       return;
     }
@@ -182,22 +178,11 @@ export default function AdminSleepAssessmentPage() {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Sleep Assessment Questions</h1>
-          <p className={styles.subtitle}>
-            Manage and configure assessment questions
-          </p>
+          <p className={styles.subtitle}>Manage and configure assessment questions</p>
         </div>
         <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 5V19M5 12H19"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
           Add Question
         </Link>
@@ -209,53 +194,25 @@ export default function AdminSleepAssessmentPage() {
         </div>
       ) : questions.length === 0 ? (
         <div className={styles.emptyState}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="3"
-              y="5"
-              width="18"
-              height="14"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M7 9H17M7 13H13"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
+            <path d="M7 9H17M7 13H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
           <h3>No Questions Yet</h3>
-          <p>
-            Create your first assessment question or seed default questions to
-            get started.
-          </p>
+          <p>Create your first assessment question or seed default questions to get started.</p>
           <div className={styles.emptyStateActions}>
-            <Link
-              href="/admin/sleep-assessment/add"
-              className={styles.emptyStateButton}
-            >
+            <Link href="/admin/sleep-assessment/add" className={styles.emptyStateButton}>
               Add Question
             </Link>
             <button
               onClick={async () => {
                 if (
                   // eslint-disable-next-line no-alert
-                  window.confirm(
-                    'This will wipe all existing questions and seed default ones. Are you sure?',
-                  )
+                  window.confirm('This will wipe all existing questions and seed default ones. Are you sure?')
                 ) {
                   setLoading(true);
                   try {
-                    const response = await fetch(
-                      '/api/sleep-assessment/questions/seed?reset=true',
-                      { method: 'POST' },
-                    );
+                    const response = await fetch('/api/sleep-assessment/questions/seed?reset=true', { method: 'POST' });
                     if (response.ok) {
                       fetchQuestions();
                     } else {
@@ -275,11 +232,7 @@ export default function AdminSleepAssessmentPage() {
             >
               Seed Default Questions
             </button>
-            <button
-              type="button"
-              onClick={handleSeedQuestions}
-              className={styles.seedButton}
-            >
+            <button type="button" onClick={handleSeedQuestions} className={styles.seedButton}>
               Seed Default Questions
             </button>
           </div>
@@ -311,11 +264,7 @@ export default function AdminSleepAssessmentPage() {
             disabled={currentIndex === 0 || isAnimating}
             aria-label="Previous question"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M15 19l-7-7 7-7"
                 stroke="currentColor"
@@ -330,22 +279,14 @@ export default function AdminSleepAssessmentPage() {
           <div className={styles.cardViewport}>
             <div
               className={`${styles.questionCard} ${styles.cardAnimated} ${
-                isAnimating
-                  ? direction === 'next'
-                    ? styles.slideOutLeft
-                    : styles.slideOutRight
-                  : styles.slideIn
+                isAnimating ? (direction === 'next' ? styles.slideOutLeft : styles.slideOutRight) : styles.slideIn
               }`}
               key={currentQuestion._id}
             >
               <div className={styles.questionHeader}>
-                <span className={styles.orderBadge}>
-                  {currentQuestion.order}
-                </span>
+                <span className={styles.orderBadge}>{currentQuestion.order}</span>
                 <div className={styles.questionMeta}>
-                  <span
-                    className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}
-                  >
+                  <span className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}>
                     {getQuestionTypeLabel(currentQuestion.questionType)}
                   </span>
                   <span
@@ -353,22 +294,15 @@ export default function AdminSleepAssessmentPage() {
                   >
                     {currentQuestion.isActive ? 'Active' : 'Inactive'}
                   </span>
-                  {currentQuestion.isRequired && (
-                    <span className={styles.requiredBadge}>Required</span>
-                  )}
+                  {currentQuestion.isRequired && <span className={styles.requiredBadge}>Required</span>}
                 </div>
               </div>
 
               <div className={styles.questionContent}>
-                <h3 className={styles.questionText}>
-                  {currentQuestion.questionText}
-                </h3>
-                <code className={styles.questionKey}>
-                  {currentQuestion.questionKey}
-                </code>
+                <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
+                <code className={styles.questionKey}>{currentQuestion.questionKey}</code>
 
-                {currentQuestion.options &&
-                  currentQuestion.options.length > 0 && (
+                {currentQuestion.options && currentQuestion.options.length > 0 && (
                   <div className={styles.optionsPreview}>
                     <span className={styles.optionsLabel}>Options:</span>
                     <ul className={styles.optionsList}>
@@ -386,30 +320,17 @@ export default function AdminSleepAssessmentPage() {
                 <button
                   type="button"
                   className={`${styles.toggleButton} ${currentQuestion.isActive ? styles.deactivate : styles.activate}`}
-                  onClick={() =>
-                    handleToggleActive(
-                      currentQuestion.questionId,
-                      currentQuestion.isActive,
-                    )
-                  }
+                  onClick={() => handleToggleActive(currentQuestion.questionId, currentQuestion.isActive)}
                 >
                   {currentQuestion.isActive ? 'Deactivate' : 'Activate'}
                 </button>
-                <Link
-                  href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`}
-                  className={styles.editButton}
-                >
+                <Link href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`} className={styles.editButton}>
                   Edit
                 </Link>
                 <button
                   type="button"
                   className={styles.deleteButton}
-                  onClick={() =>
-                    handleDelete(
-                      currentQuestion.questionId,
-                      currentQuestion.questionText,
-                    )
-                  }
+                  onClick={() => handleDelete(currentQuestion.questionId, currentQuestion.questionText)}
                 >
                   Delete
                 </button>
@@ -425,11 +346,7 @@ export default function AdminSleepAssessmentPage() {
             disabled={currentIndex === questions.length - 1 || isAnimating}
             aria-label="Next question"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M9 5l7 7-7 7"
                 stroke="currentColor"

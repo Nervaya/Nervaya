@@ -1,6 +1,4 @@
-import TherapistSchedule, {
-  ITimeSlot,
-} from '@/lib/models/therapistSchedule.model';
+import TherapistSchedule, { ITimeSlot } from '@/lib/models/therapistSchedule.model';
 import Therapist from '@/lib/models/therapist.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
@@ -41,10 +39,7 @@ function minutesToTime(minutes: number): string {
   return `${displayHour}:${String(min).padStart(2, '0')} ${period}`;
 }
 
-function generateTimeSlotsBetween(
-  startTime: string,
-  endTime: string,
-): string[] {
+function generateTimeSlotsBetween(startTime: string, endTime: string): string[] {
   const slots: string[] = [];
   const startMinutes = timeToMinutes(startTime);
   const endMinutes = timeToMinutes(endTime);
@@ -103,15 +98,10 @@ export async function generateSlotsFromConsultingHours(
       const dayOfWeek = currentDate.getDay();
       const dateString = formatDate(currentDate);
 
-      const dayHours = consultingHours.find(
-        (ch) => ch.dayOfWeek === dayOfWeek && ch.isEnabled,
-      );
+      const dayHours = consultingHours.find((ch) => ch.dayOfWeek === dayOfWeek && ch.isEnabled);
 
       if (dayHours) {
-        const timeSlots = generateTimeSlotsBetween(
-          dayHours.startTime,
-          dayHours.endTime,
-        );
+        const timeSlots = generateTimeSlotsBetween(dayHours.startTime, dayHours.endTime);
 
         const slots: ITimeSlot[] = [];
         for (let i = 0; i < timeSlots.length; i++) {
@@ -234,18 +224,10 @@ export async function getSchedulesByDateRange(
   }
 }
 
-export async function bookSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-  sessionId: string,
-) {
+export async function bookSlot(therapistId: string, date: string, startTime: string, sessionId: string) {
   await connectDB();
   try {
-    if (
-      !Types.ObjectId.isValid(therapistId) ||
-      !Types.ObjectId.isValid(sessionId)
-    ) {
+    if (!Types.ObjectId.isValid(therapistId) || !Types.ObjectId.isValid(sessionId)) {
       throw new ValidationError('Invalid Therapist ID or Session ID');
     }
 
@@ -278,11 +260,7 @@ export async function bookSlot(
   }
 }
 
-export async function releaseSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-) {
+export async function releaseSlot(therapistId: string, date: string, startTime: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
@@ -314,12 +292,7 @@ export async function releaseSlot(
   }
 }
 
-export async function updateSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-  updates: Partial<ITimeSlot>,
-) {
+export async function updateSlot(therapistId: string, date: string, startTime: string, updates: Partial<ITimeSlot>) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
@@ -376,9 +349,7 @@ export async function createCustomSlot(
     };
 
     if (schedule) {
-      const existingSlot = schedule.slots.find(
-        (s) => s.startTime === startTime,
-      );
+      const existingSlot = schedule.slots.find((s) => s.startTime === startTime);
       if (existingSlot) {
         throw new ValidationError('Slot already exists for this date and time');
       }
@@ -399,11 +370,7 @@ export async function createCustomSlot(
   }
 }
 
-export async function deleteSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-) {
+export async function deleteSlot(therapistId: string, date: string, startTime: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
@@ -419,9 +386,7 @@ export async function deleteSlot(
       throw new ValidationError('Schedule not found for this date');
     }
 
-    const slotIndex = schedule.slots.findIndex(
-      (s) => s.startTime === startTime,
-    );
+    const slotIndex = schedule.slots.findIndex((s) => s.startTime === startTime);
     if (slotIndex === -1) {
       throw new ValidationError('Slot not found');
     }

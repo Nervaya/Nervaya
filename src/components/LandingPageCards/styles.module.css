@@ -44,13 +44,7 @@
 }
 
 .card {
-  background: linear-gradient(
-    to bottom,
-    #f5f3ff 0%,
-    #f5f3ff 40%,
-    #301050 40%,
-    #301050 100%
-  );
+  background: linear-gradient(to bottom, #f5f3ff 0%, #f5f3ff 40%, #301050 40%, #301050 100%);
   border-radius: 25px;
   overflow: hidden;
   transition:

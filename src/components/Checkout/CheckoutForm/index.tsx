@@ -7,20 +7,12 @@ import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 interface CheckoutFormProps {
-  onSubmit: (
-    address: ShippingAddress,
-    saveAddress: boolean,
-    label: string,
-  ) => void;
+  onSubmit: (address: ShippingAddress, saveAddress: boolean, label: string) => void;
   loading?: boolean;
   initialAddress?: Partial<ShippingAddress>;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({
-  onSubmit,
-  loading = false,
-  initialAddress,
-}) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading = false, initialAddress }) => {
   const [formData, setFormData] = useState<ShippingAddress>({
     name: initialAddress?.name || '',
     phone: initialAddress?.phone || '',
@@ -34,9 +26,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   const [saveAddress, setSaveAddress] = useState(false);
   const [label, setLabel] = useState('Home');
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof ShippingAddress, string>>
-  >({});
+  const [errors, setErrors] = useState<Partial<Record<keyof ShippingAddress, string>>>({});
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof ShippingAddress, string>> = {};
@@ -196,12 +186,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         )}
       </div>
 
-      <Button
-        type="submit"
-        variant="primary"
-        loading={loading}
-        className={styles.submitButton}
-      >
+      <Button type="submit" variant="primary" loading={loading} className={styles.submitButton}>
         Continue to Payment
       </Button>
     </form>

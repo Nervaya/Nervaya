@@ -14,12 +14,7 @@ interface SupplementListProps {
   loading?: boolean;
 }
 
-const SupplementList: React.FC<SupplementListProps> = ({
-  supplements,
-  onDelete,
-  onEdit,
-  loading = false,
-}) => {
+const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, onEdit, loading = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [confirmDelete, setConfirmDelete] = useState<{
@@ -33,8 +28,7 @@ const SupplementList: React.FC<SupplementListProps> = ({
     const matchesSearch =
       supplement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       supplement.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      filterCategory === 'all' || supplement.category === filterCategory;
+    const matchesCategory = filterCategory === 'all' || supplement.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -70,21 +64,12 @@ const SupplementList: React.FC<SupplementListProps> = ({
         <div className={styles.confirmOverlay}>
           <div className={styles.confirmDialog}>
             <h3>Confirm Delete</h3>
-            <p>
-              Are you sure you want to delete &quot;{confirmDelete.name}&quot;?
-              This action cannot be undone.
-            </p>
+            <p>Are you sure you want to delete &quot;{confirmDelete.name}&quot;? This action cannot be undone.</p>
             <div className={styles.confirmActions}>
-              <button
-                onClick={handleConfirmDelete}
-                className={styles.confirmButton}
-              >
+              <button onClick={handleConfirmDelete} className={styles.confirmButton}>
                 Delete
               </button>
-              <button
-                onClick={handleCancelDelete}
-                className={styles.cancelButton}
-              >
+              <button onClick={handleCancelDelete} className={styles.cancelButton}>
                 Cancel
               </button>
             </div>
@@ -128,49 +113,32 @@ const SupplementList: React.FC<SupplementListProps> = ({
                   height={120}
                   className={styles.image}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      '/default-supplement.png';
+                    (e.target as HTMLImageElement).src = '/default-supplement.png';
                   }}
                 />
-                {!supplement.isActive && (
-                  <div className={styles.inactiveBadge}>Inactive</div>
-                )}
+                {!supplement.isActive && <div className={styles.inactiveBadge}>Inactive</div>}
               </div>
               <div className={styles.details}>
                 <h3 className={styles.name}>{supplement.name}</h3>
                 <p className={styles.category}>{supplement.category}</p>
-                <p className={styles.description}>
-                  {supplement.description.substring(0, 150)}...
-                </p>
+                <p className={styles.description}>{supplement.description.substring(0, 150)}...</p>
                 <div className={styles.info}>
-                  <span className={styles.price}>
-                    {formatPrice(supplement.price)}
-                  </span>
-                  <span className={styles.stock}>
-                    Stock: {supplement.stock}
-                  </span>
+                  <span className={styles.price}>{formatPrice(supplement.price)}</span>
+                  <span className={styles.stock}>Stock: {supplement.stock}</span>
                 </div>
               </div>
               <div className={styles.actions}>
                 {onEdit ? (
-                  <button
-                    onClick={() => onEdit(supplement)}
-                    className={styles.editButton}
-                  >
+                  <button onClick={() => onEdit(supplement)} className={styles.editButton}>
                     Edit
                   </button>
                 ) : (
-                  <Link
-                    href={`/admin/supplements/edit/${supplement._id}`}
-                    className={styles.editButton}
-                  >
+                  <Link href={`/admin/supplements/edit/${supplement._id}`} className={styles.editButton}>
                     Edit
                   </Link>
                 )}
                 <button
-                  onClick={() =>
-                    handleDeleteClick(supplement._id, supplement.name)
-                  }
+                  onClick={() => handleDeleteClick(supplement._id, supplement.name)}
                   className={styles.deleteButton}
                 >
                   Delete

@@ -11,13 +11,7 @@ interface QuantitySelectorProps {
   disabled?: boolean;
 }
 
-const QuantitySelector: React.FC<QuantitySelectorProps> = ({
-  value,
-  onChange,
-  min = 1,
-  max,
-  disabled = false,
-}) => {
+const QuantitySelector: React.FC<QuantitySelectorProps> = ({ value, onChange, min = 1, max, disabled = false }) => {
   const handleDecrease = () => {
     if (value > min) {
       onChange(value - 1);

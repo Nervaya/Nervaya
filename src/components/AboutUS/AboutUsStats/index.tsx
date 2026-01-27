@@ -11,9 +11,7 @@ const AboutUsStats = () => {
               <div className={styles.statValue}>{stat.value}</div>
               <div className={styles.statLabel}>{stat.label}</div>
             </div>
-            {index < aboutUsStatsData.length - 1 && (
-              <div className={styles.statDivider}></div>
-            )}
+            {index < aboutUsStatsData.length - 1 && <div className={styles.statDivider}></div>}
           </li>
         ))}
       </ul>

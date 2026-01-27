@@ -11,9 +11,7 @@ import { usePrivacyPolicyScroll } from '@/hooks/usePrivacyPolicyScroll';
 import styles from './privacy-policy.module.css';
 
 const PrivacyPolicy = () => {
-  const [openSections, setOpenSections] = useState<Set<string>>(
-    new Set(['introduction']),
-  );
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['introduction']));
   const [isMobile, setIsMobile] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth <= 768;

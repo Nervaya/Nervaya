@@ -60,13 +60,7 @@ export default function AccountPage() {
                 <label className={styles.label}>
                   <FaUser className={styles.icon} /> Full Name
                 </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={styles.input}
-                />
+                <input type="text" name="name" value={formData.name} onChange={handleChange} className={styles.input} />
               </div>
 
               <div className={styles.inputGroup}>

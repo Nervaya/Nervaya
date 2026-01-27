@@ -7,10 +7,7 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -20,10 +17,7 @@ export async function POST(request: NextRequest) {
     const { orderId, amount } = body;
 
     if (!orderId || amount === undefined) {
-      return NextResponse.json(
-        errorResponse('Order ID and amount are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Order ID and amount are required', null, 400), { status: 400 });
     }
 
     if (typeof amount !== 'number' || amount <= 0) {
@@ -40,9 +34,7 @@ export async function POST(request: NextRequest) {
       key_id: process.env.RAZORPAY_KEY_ID || '',
     };
 
-    return NextResponse.json(
-      successResponse('Razorpay order created successfully', responseData),
-    );
+    return NextResponse.json(successResponse('Razorpay order created successfully', responseData));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

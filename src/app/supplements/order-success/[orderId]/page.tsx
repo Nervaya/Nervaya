@@ -68,8 +68,7 @@ export default function OrderSuccessPage() {
         <div className={styles.icon}>✓</div>
         <h1 className={styles.title}>Order Placed Successfully!</h1>
         <p className={styles.message}>
-          Thank you for your purchase. Your order has been confirmed and will be
-          shipped soon.
+          Thank you for your purchase. Your order has been confirmed and will be shipped soon.
         </p>
         <div className={styles.orderDetails}>
           <div className={styles.detailRow}>
@@ -78,35 +77,24 @@ export default function OrderSuccessPage() {
           </div>
           <div className={styles.detailRow}>
             <span>Total Amount:</span>
-            <span className={styles.amount}>
-              {formatPrice(order.totalAmount)}
-            </span>
+            <span className={styles.amount}>{formatPrice(order.totalAmount)}</span>
           </div>
           <div className={styles.detailRow}>
             <span>Payment Status:</span>
-            <span
-              className={`${styles.status} ${
-                order.paymentStatus === 'paid' ? styles.paid : styles.pending
-              }`}
-            >
+            <span className={`${styles.status} ${order.paymentStatus === 'paid' ? styles.paid : styles.pending}`}>
               {order.paymentStatus.toUpperCase()}
             </span>
           </div>
           <div className={styles.detailRow}>
             <span>Order Status:</span>
-            <span className={styles.status}>
-              {order.orderStatus.toUpperCase()}
-            </span>
+            <span className={styles.status}>{order.orderStatus.toUpperCase()}</span>
           </div>
         </div>
         <div className={styles.actions}>
           <Link href="/supplements" className={styles.button}>
             Continue Shopping
           </Link>
-          <Link
-            href="/account"
-            className={`${styles.button} ${styles.secondary}`}
-          >
+          <Link href="/account" className={`${styles.button} ${styles.secondary}`}>
             View Orders
           </Link>
         </div>

@@ -3,12 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import {
-  Cart,
-  ShippingAddress,
-  Order,
-  SavedAddress,
-} from '@/types/supplement.types';
+import { Cart, ShippingAddress, Order, SavedAddress } from '@/types/supplement.types';
 import CheckoutForm from '@/components/Checkout/CheckoutForm';
 import PaymentHandler from '@/components/Checkout/PaymentHandler';
 import { formatPrice } from '@/utils/cart.util';
@@ -24,9 +19,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(true);
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedAddress, setSelectedAddress] = useState<
-    ShippingAddress | undefined
-  >(undefined);
+  const [selectedAddress, setSelectedAddress] = useState<ShippingAddress | undefined>(undefined);
   // Add a key to force re-render when address is selected
   const [formKey, setFormKey] = useState(0);
 
@@ -76,11 +69,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleAddressSubmit = async (
-    address: ShippingAddress,
-    saveAddress: boolean,
-    label: string,
-  ) => {
+  const handleAddressSubmit = async (address: ShippingAddress, saveAddress: boolean, label: string) => {
     if (!cart) {
       return;
     }
@@ -208,20 +197,12 @@ export default function CheckoutPage() {
                       }}
                     >
                       <div className={styles.addressHeader}>
-                        <span className={styles.addressLabel}>
-                          {addr.label}
-                        </span>
-                        {addr.isDefault && (
-                          <span className={styles.defaultBadge}>Default</span>
-                        )}
+                        <span className={styles.addressLabel}>{addr.label}</span>
+                        {addr.isDefault && <span className={styles.defaultBadge}>Default</span>}
                       </div>
                       <p className={styles.addressName}>{addr.name}</p>
                       <p className={styles.addressText}>{addr.addressLine1}</p>
-                      {addr.addressLine2 && (
-                        <p className={styles.addressText}>
-                          {addr.addressLine2}
-                        </p>
-                      )}
+                      {addr.addressLine2 && <p className={styles.addressText}>{addr.addressLine2}</p>}
                       <p className={styles.addressText}>
                         {addr.city}, {addr.state} {addr.zipCode}
                       </p>
@@ -230,8 +211,7 @@ export default function CheckoutPage() {
                         className={styles.useButton}
                         onClick={() => {
                           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                          const { _id, label, isDefault, ...shippingAddr } =
-                            addr;
+                          const { _id, label, isDefault, ...shippingAddr } = addr;
                           setSelectedAddress(shippingAddr);
                           setFormKey((prev) => prev + 1);
                         }}
@@ -264,8 +244,7 @@ export default function CheckoutPage() {
                 </div>
                 {cart.totalAmount < 500 && (
                   <div className={styles.freeShipping}>
-                    Add {formatPrice(500 - cart.totalAmount)} more for free
-                    shipping!
+                    Add {formatPrice(500 - cart.totalAmount)} more for free shipping!
                   </div>
                 )}
                 <div className={styles.divider}></div>

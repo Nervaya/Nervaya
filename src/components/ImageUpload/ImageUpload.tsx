@@ -12,11 +12,7 @@ interface ImageUploadProps {
   label?: string;
 }
 
-const ImageUpload = ({
-  onUpload,
-  initialUrl = '',
-  label = 'Upload Image',
-}: ImageUploadProps) => {
+const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: ImageUploadProps) => {
   const [preview, setPreview] = useState<string>(initialUrl);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,35 +76,15 @@ const ImageUpload = ({
   };
 
   return (
-    <div
-      className={`${styles.container} ${loading ? styles.uploading : ''}`}
-      onClick={handleClick}
-    >
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        className={styles.input}
-        accept="image/*"
-      />
+    <div className={`${styles.container} ${loading ? styles.uploading : ''}`} onClick={handleClick}>
+      <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
 
       {loading ? (
         <Loader size="md" text="Uploading..." />
       ) : preview ? (
         <>
-          <Image
-            src={preview}
-            alt="Preview"
-            width={200}
-            height={200}
-            className={styles.preview}
-            unoptimized
-          />
-          <button
-            className={styles.removeBtn}
-            onClick={handleRemove}
-            title="Remove image"
-          >
+          <Image src={preview} alt="Preview" width={200} height={200} className={styles.preview} unoptimized />
+          <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
             <FaXmark size={12} />
           </button>
         </>

@@ -48,9 +48,7 @@ export default function MySessions() {
       fetchSessions();
     } catch (err) {
       // eslint-disable-next-line no-alert
-      window.alert(
-        err instanceof Error ? err.message : 'Error cancelling session',
-      );
+      window.alert(err instanceof Error ? err.message : 'Error cancelling session');
     }
   };
 
@@ -84,16 +82,10 @@ export default function MySessions() {
               <div key={session._id} className={styles.sessionCard}>
                 <div className={styles.cardHeader}>
                   <div className={styles.therapistInfo}>
-                    <h3 className={styles.therapistName}>
-                      {therapist?.name || 'Unknown Therapist'}
-                    </h3>
-                    <p className={styles.qualifications}>
-                      {therapist?.qualifications?.join(', ')}
-                    </p>
+                    <h3 className={styles.therapistName}>{therapist?.name || 'Unknown Therapist'}</h3>
+                    <p className={styles.qualifications}>{therapist?.qualifications?.join(', ')}</p>
                   </div>
-                  <span className={getStatusBadgeClass(session.status)}>
-                    {session.status}
-                  </span>
+                  <span className={getStatusBadgeClass(session.status)}>{session.status}</span>
                 </div>
 
                 <div className={styles.sessionDetails}>
@@ -104,10 +96,7 @@ export default function MySessions() {
                 </div>
 
                 {session.status === 'pending' && (
-                  <button
-                    className={styles.cancelBtn}
-                    onClick={() => handleCancelSession(session._id)}
-                  >
+                  <button className={styles.cancelBtn} onClick={() => handleCancelSession(session._id)}>
                     Cancel Session
                   </button>
                 )}

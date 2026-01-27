@@ -69,7 +69,6 @@ const supplementSchema = new Schema<ISupplement>(
 );
 
 const Supplement: Model<ISupplement> =
-  mongoose.models.Supplement ||
-  mongoose.model<ISupplement>('Supplement', supplementSchema);
+  mongoose.models.Supplement || mongoose.model<ISupplement>('Supplement', supplementSchema);
 
 export default Supplement;

@@ -13,11 +13,7 @@ interface CartSummaryProps {
   loading?: boolean;
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({
-  cart,
-  onCheckout,
-  loading = false,
-}) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = false }) => {
   const itemCount = getCartItemCount(cart.items);
   const subtotal = cart.totalAmount;
   const shipping = subtotal > 500 ? 0 : 50;
@@ -36,9 +32,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({
           <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
         </div>
         {subtotal < 500 && (
-          <div className={styles.freeShipping}>
-            Add {formatPrice(500 - subtotal)} more for free shipping!
-          </div>
+          <div className={styles.freeShipping}>Add {formatPrice(500 - subtotal)} more for free shipping!</div>
         )}
         <div className={styles.divider}></div>
         <div className={`${styles.row} ${styles.totalRow}`}>
@@ -48,12 +42,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({
       </div>
       <div className={styles.actions}>
         {cart.items.length > 0 ? (
-          <Button
-            variant="primary"
-            onClick={onCheckout}
-            loading={loading}
-            className={styles.checkoutButton}
-          >
+          <Button variant="primary" onClick={onCheckout} loading={loading} className={styles.checkoutButton}>
             Proceed to Checkout
           </Button>
         ) : (

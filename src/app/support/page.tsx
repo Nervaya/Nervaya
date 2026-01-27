@@ -9,8 +9,7 @@ const SupportPage = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>Welcome to the Support Page</h1>
         <p className={styles.subtitle}>
-          We&apos;re here to help you with any problems you may be having with
-          our product.
+          We&apos;re here to help you with any problems you may be having with our product.
         </p>
       </div>
       <ChatWithUs />

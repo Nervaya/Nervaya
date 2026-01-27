@@ -20,14 +20,12 @@ export const aboutUsCardsData: AboutUsCard[] = [
     id: 2,
     icon: <FaRibbon />,
     title: 'Expert Therapists',
-    description:
-      'Our team of licensed professionals brings years of experience in various therapeutic approaches.',
+    description: 'Our team of licensed professionals brings years of experience in various therapeutic approaches.',
   },
   {
     id: 3,
     icon: <FaUserGroup />,
     title: 'Personalized Support',
-    description:
-      'Every person is unique, and we tailor our approach to meet your individual needs and goals.',
+    description: 'Every person is unique, and we tailor our approach to meet your individual needs and goals.',
   },
 ];

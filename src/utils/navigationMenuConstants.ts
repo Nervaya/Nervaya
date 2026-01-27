@@ -19,9 +19,7 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
   },
   {
     title: 'THERAPY',
-    items: [
-      { title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaHeartbeat' },
-    ],
+    items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaHeartbeat' }],
   },
   {
     title: 'DRIFT OFF',

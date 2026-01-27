@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  getSessionById,
-  cancelSession,
-  updateSessionStatus,
-} from '@/lib/services/session.service';
+import { getSessionById, cancelSession, updateSessionStatus } from '@/lib/services/session.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -24,9 +20,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const session = await getSessionById(id);
 
-    return NextResponse.json(
-      successResponse('Session fetched successfully', session),
-    );
+    return NextResponse.json(successResponse('Session fetched successfully', session));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -48,15 +42,11 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
     if (body.status === 'cancelled') {
       const session = await cancelSession(id, authResult.user.userId);
-      return NextResponse.json(
-        successResponse('Session cancelled successfully', session),
-      );
+      return NextResponse.json(successResponse('Session cancelled successfully', session));
     }
 
     const session = await updateSessionStatus(id, body.status);
-    return NextResponse.json(
-      successResponse('Session updated successfully', session),
-    );
+    return NextResponse.json(successResponse('Session updated successfully', session));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -76,9 +66,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const session = await cancelSession(id, authResult.user.userId);
 
-    return NextResponse.json(
-      successResponse('Session deleted successfully', session),
-    );
+    return NextResponse.json(successResponse('Session deleted successfully', session));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

@@ -161,7 +161,7 @@
 }
 
 .active::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -12px;
   height: 20px;

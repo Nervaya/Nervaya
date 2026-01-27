@@ -1,18 +1,9 @@
-import SleepAssessmentResponse, {
-  ISleepAssessmentResponse,
-} from '@/lib/models/sleepAssessmentResponse.model';
+import SleepAssessmentResponse, { ISleepAssessmentResponse } from '@/lib/models/sleepAssessmentResponse.model';
 import SleepAssessmentQuestion from '@/lib/models/sleepAssessmentQuestion.model';
 import connectDB from '@/lib/db/mongodb';
-import {
-  handleError,
-  ValidationError,
-  NotFoundError,
-} from '@/lib/utils/error.util';
+import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
-import type {
-  SubmitAssessmentInput,
-  IQuestionAnswer,
-} from '@/types/sleepAssessment.types';
+import type { SubmitAssessmentInput, IQuestionAnswer } from '@/types/sleepAssessment.types';
 
 export async function submitAssessment(
   userId: string,
@@ -47,46 +38,29 @@ export async function submitAssessment(
       }
 
       if (question.isRequired && !answer.answer) {
-        throw new ValidationError(
-          `Answer is required for: ${question.questionText}`,
-        );
+        throw new ValidationError(`Answer is required for: ${question.questionText}`);
       }
 
-      if (
-        question.questionType === 'single_choice' ||
-        question.questionType === 'scale'
-      ) {
+      if (question.questionType === 'single_choice' || question.questionType === 'scale') {
         if (typeof answer.answer !== 'string') {
-          throw new ValidationError(
-            `Single choice answer must be a string for: ${question.questionKey}`,
-          );
+          throw new ValidationError(`Single choice answer must be a string for: ${question.questionKey}`);
         }
 
-        const validOption = question.options.some(
-          (opt) => opt.value === answer.answer,
-        );
+        const validOption = question.options.some((opt) => opt.value === answer.answer);
         if (!validOption && answer.answer) {
-          throw new ValidationError(
-            `Invalid option selected for: ${question.questionKey}`,
-          );
+          throw new ValidationError(`Invalid option selected for: ${question.questionKey}`);
         }
       }
 
       if (question.questionType === 'multiple_choice') {
         if (!Array.isArray(answer.answer)) {
-          throw new ValidationError(
-            `Multiple choice answer must be an array for: ${question.questionKey}`,
-          );
+          throw new ValidationError(`Multiple choice answer must be an array for: ${question.questionKey}`);
         }
 
         for (const selectedValue of answer.answer) {
-          const validOption = question.options.some(
-            (opt) => opt.value === selectedValue,
-          );
+          const validOption = question.options.some((opt) => opt.value === selectedValue);
           if (!validOption) {
-            throw new ValidationError(
-              `Invalid option selected for: ${question.questionKey}`,
-            );
+            throw new ValidationError(`Invalid option selected for: ${question.questionKey}`);
           }
         }
       }
@@ -110,9 +84,7 @@ export async function submitAssessment(
   }
 }
 
-export async function getUserAssessments(
-  userId: string,
-): Promise<ISleepAssessmentResponse[]> {
+export async function getUserAssessments(userId: string): Promise<ISleepAssessmentResponse[]> {
   await connectDB();
 
   try {
@@ -120,9 +92,7 @@ export async function getUserAssessments(
       throw new ValidationError('Invalid User ID');
     }
 
-    const assessments = await SleepAssessmentResponse.find({ userId })
-      .sort({ createdAt: -1 })
-      .lean();
+    const assessments = await SleepAssessmentResponse.find({ userId }).sort({ createdAt: -1 }).lean();
 
     return assessments as ISleepAssessmentResponse[];
   } catch (error) {
@@ -130,9 +100,7 @@ export async function getUserAssessments(
   }
 }
 
-export async function getLatestUserAssessment(
-  userId: string,
-): Promise<ISleepAssessmentResponse | null> {
+export async function getLatestUserAssessment(userId: string): Promise<ISleepAssessmentResponse | null> {
   await connectDB();
 
   try {
@@ -140,9 +108,7 @@ export async function getLatestUserAssessment(
       throw new ValidationError('Invalid User ID');
     }
 
-    const assessment = await SleepAssessmentResponse.findOne({ userId })
-      .sort({ createdAt: -1 })
-      .lean();
+    const assessment = await SleepAssessmentResponse.findOne({ userId }).sort({ createdAt: -1 }).lean();
 
     return assessment as ISleepAssessmentResponse | null;
   } catch (error) {
@@ -150,9 +116,7 @@ export async function getLatestUserAssessment(
   }
 }
 
-export async function getAssessmentById(
-  assessmentId: string,
-): Promise<ISleepAssessmentResponse> {
+export async function getAssessmentById(assessmentId: string): Promise<ISleepAssessmentResponse> {
   await connectDB();
 
   try {
@@ -160,8 +124,7 @@ export async function getAssessmentById(
       throw new ValidationError('Invalid Assessment ID');
     }
 
-    const assessment =
-      await SleepAssessmentResponse.findById(assessmentId).lean();
+    const assessment = await SleepAssessmentResponse.findById(assessmentId).lean();
 
     if (!assessment) {
       throw new NotFoundError('Assessment not found');
@@ -196,8 +159,7 @@ export async function deleteAssessment(assessmentId: string): Promise<void> {
       throw new ValidationError('Invalid Assessment ID');
     }
 
-    const assessment =
-      await SleepAssessmentResponse.findByIdAndDelete(assessmentId);
+    const assessment = await SleepAssessmentResponse.findByIdAndDelete(assessmentId);
 
     if (!assessment) {
       throw new NotFoundError('Assessment not found');

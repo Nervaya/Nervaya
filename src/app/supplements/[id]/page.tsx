@@ -33,9 +33,7 @@ export default function SupplementDetailPage() {
         setSupplement(response.data);
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to load supplement',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to load supplement');
     } finally {
       setLoading(false);
     }
@@ -62,8 +60,7 @@ export default function SupplementDetailPage() {
         setError('Failed to add to cart');
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to add to cart';
+      const message = err instanceof Error ? err.message : 'Failed to add to cart';
       setError(message);
     } finally {
       setAdding(false);
@@ -100,9 +97,7 @@ export default function SupplementDetailPage() {
     <Sidebar>
       <div className={styles.container}>
         {error && <div className={styles.error}>{error}</div>}
-        {successMessage && (
-          <div className={styles.success}>{successMessage}</div>
-        )}
+        {successMessage && <div className={styles.success}>{successMessage}</div>}
         <div className={styles.content}>
           <div className={styles.imageSection}>
             <Image
@@ -145,20 +140,12 @@ export default function SupplementDetailPage() {
               {isOutOfStock ? (
                 <span className={styles.outOfStock}>Out of Stock</span>
               ) : (
-                <span className={styles.inStock}>
-                  In Stock ({supplement.stock} available)
-                </span>
+                <span className={styles.inStock}>In Stock ({supplement.stock} available)</span>
               )}
             </div>
             {!isOutOfStock && (
               <div className={styles.actions}>
-                <QuantitySelector
-                  value={quantity}
-                  onChange={setQuantity}
-                  min={1}
-                  max={maxQuantity}
-                  disabled={adding}
-                />
+                <QuantitySelector value={quantity} onChange={setQuantity} min={1} max={maxQuantity} disabled={adding} />
                 <Button
                   variant="primary"
                   onClick={handleAddToCart}

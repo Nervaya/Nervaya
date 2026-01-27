@@ -57,11 +57,7 @@ export default function EditTherapistPage() {
     }
   }, [params.id, router]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -126,28 +122,14 @@ export default function EditTherapistPage() {
       <form onSubmit={handleSubmit}>
         <div className={styles.fieldGroup}>
           <label className={styles.label}>Name</label>
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
+          <input name="name" value={formData.name} onChange={handleChange} required className={styles.input} />
         </div>
         <div className={styles.fieldGroup}>
           <label className={styles.label}>Email</label>
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={styles.input}
-          />
+          <input name="email" type="email" value={formData.email} onChange={handleChange} className={styles.input} />
         </div>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>
-            Qualifications (comma separated)
-          </label>
+          <label className={styles.label}>Qualifications (comma separated)</label>
           <input
             name="qualifications"
             value={formData.qualifications}
@@ -180,9 +162,7 @@ export default function EditTherapistPage() {
           />
         </div>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>
-            Specializations (comma separated)
-          </label>
+          <label className={styles.label}>Specializations (comma separated)</label>
           <input
             name="specializations"
             value={formData.specializations}
@@ -200,11 +180,7 @@ export default function EditTherapistPage() {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={styles.submitButton}
-        >
+        <button type="submit" disabled={loading} className={styles.submitButton}>
           {loading ? 'Updating...' : 'Update Therapist'}
         </button>
       </form>

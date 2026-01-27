@@ -11,19 +11,13 @@ interface SupplementGridProps {
   loading?: boolean;
 }
 
-const SupplementGrid: React.FC<SupplementGridProps> = ({
-  supplements,
-  onAddToCart,
-  loading = false,
-}) => {
+const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCart, loading = false }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const categories = ['all', ...new Set(supplements.map((s) => s.category))];
 
   const filteredSupplements =
-    selectedCategory === 'all'
-      ? supplements
-      : supplements.filter((s) => s.category === selectedCategory);
+    selectedCategory === 'all' ? supplements : supplements.filter((s) => s.category === selectedCategory);
 
   if (loading) {
     return (
@@ -48,9 +42,7 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({
           {categories.map((category) => (
             <button
               key={category}
-              className={`${styles.filterButton} ${
-                selectedCategory === category ? styles.active : ''
-              }`}
+              className={`${styles.filterButton} ${selectedCategory === category ? styles.active : ''}`}
               onClick={() => setSelectedCategory(category)}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -60,11 +52,7 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({
       )}
       <div className={styles.grid}>
         {filteredSupplements.map((supplement) => (
-          <SupplementCard
-            key={supplement._id}
-            supplement={supplement}
-            onAddToCart={onAddToCart}
-          />
+          <SupplementCard key={supplement._id} supplement={supplement} onAddToCart={onAddToCart} />
         ))}
       </div>
       {filteredSupplements.length === 0 && (

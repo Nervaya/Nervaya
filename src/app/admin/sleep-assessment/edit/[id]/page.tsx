@@ -5,17 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
-import type {
-  IQuestionOption,
-  QuestionType,
-  ISleepAssessmentQuestion,
-} from '@/types/sleepAssessment.types';
+import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
-export default function EditQuestionPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function EditQuestionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -62,9 +54,7 @@ export default function EditQuestionPage({
           }
         }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : 'Failed to load question',
-        );
+        setError(err instanceof Error ? err.message : 'Failed to load question');
       } finally {
         setIsLoading(false);
       }
@@ -73,24 +63,15 @@ export default function EditQuestionPage({
     fetchQuestion();
   }, [id]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
-  const handleOptionChange = (
-    index: number,
-    field: 'label' | 'value',
-    value: string,
-  ) => {
+  const handleOptionChange = (index: number, field: 'label' | 'value', value: string) => {
     setOptions((prev) => {
       const newOptions = [...prev];
       newOptions[index] = { ...newOptions[index], [field]: value };
@@ -102,10 +83,7 @@ export default function EditQuestionPage({
   };
 
   const addOption = () => {
-    setOptions((prev) => [
-      ...prev,
-      { id: String(prev.length + 1), label: '', value: '' },
-    ]);
+    setOptions((prev) => [...prev, { id: String(prev.length + 1), label: '', value: '' }]);
   };
 
   const removeOption = (index: number) => {
@@ -121,9 +99,7 @@ export default function EditQuestionPage({
     setError(null);
 
     try {
-      const validOptions = options.filter(
-        (opt) => opt.label.trim() && opt.value.trim(),
-      );
+      const validOptions = options.filter((opt) => opt.label.trim() && opt.value.trim());
 
       if (formData.questionType !== 'text' && validOptions.length < 2) {
         throw new Error('Please add at least 2 options for this question type');
@@ -143,9 +119,9 @@ export default function EditQuestionPage({
             formData.questionType === 'text'
               ? []
               : validOptions.map((opt, i) => ({
-                ...opt,
-                id: String(i + 1),
-              })),
+                  ...opt,
+                  id: String(i + 1),
+                })),
         }),
       });
 
@@ -186,11 +162,7 @@ export default function EditQuestionPage({
     <div className={styles.container}>
       <header className={styles.header}>
         <Link href="/admin/sleep-assessment" className={styles.backLink}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M15 18L9 12L15 6"
               stroke="currentColor"
@@ -320,9 +292,7 @@ export default function EditQuestionPage({
               onChange={handleInputChange}
               className={styles.checkbox}
             />
-            <span className={styles.checkboxText}>
-              Active (visible to users)
-            </span>
+            <span className={styles.checkboxText}>Active (visible to users)</span>
           </label>
         </div>
 
@@ -330,22 +300,9 @@ export default function EditQuestionPage({
           <div className={styles.optionsSection}>
             <div className={styles.optionsHeader}>
               <h3 className={styles.optionsTitle}>Answer Options</h3>
-              <button
-                type="button"
-                onClick={addOption}
-                className={styles.addOptionButton}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 5V19M5 12H19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
+              <button type="button" onClick={addOption} className={styles.addOptionButton}>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
                 Add Option
               </button>
@@ -353,18 +310,13 @@ export default function EditQuestionPage({
 
             <ul className={styles.optionsList}>
               {options.map((option, index) => (
-                <li
-                  key={option.id || `option-${index}`}
-                  className={styles.optionItem}
-                >
+                <li key={option.id || `option-${index}`} className={styles.optionItem}>
                   <span className={styles.optionNumber}>{index + 1}</span>
                   <div className={styles.optionInputs}>
                     <input
                       type="text"
                       value={option.label}
-                      onChange={(e) =>
-                        handleOptionChange(index, 'label', e.target.value)
-                      }
+                      onChange={(e) => handleOptionChange(index, 'label', e.target.value)}
                       className={styles.input}
                       placeholder="Option label"
                       required={showOptions}
@@ -372,9 +324,7 @@ export default function EditQuestionPage({
                     <input
                       type="text"
                       value={option.value}
-                      onChange={(e) =>
-                        handleOptionChange(index, 'value', e.target.value)
-                      }
+                      onChange={(e) => handleOptionChange(index, 'value', e.target.value)}
                       className={styles.input}
                       placeholder="Option value"
                       required={showOptions}
@@ -387,17 +337,8 @@ export default function EditQuestionPage({
                       className={styles.removeOptionButton}
                       aria-label="Remove option"
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M18 6L6 18M6 6L18 18"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     </button>
                   )}
@@ -411,11 +352,7 @@ export default function EditQuestionPage({
           <Link href="/admin/sleep-assessment" className={styles.cancelButton}>
             Cancel
           </Link>
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={isSubmitting}
-          >
+          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader size="sm" color="white" />

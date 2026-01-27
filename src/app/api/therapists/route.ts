@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  createTherapist,
-  getAllTherapists,
-} from '@/lib/services/therapist.service';
+import { createTherapist, getAllTherapists } from '@/lib/services/therapist.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -12,9 +9,7 @@ export async function GET() {
   try {
     // GET is public - anyone can view therapists
     const therapists = await getAllTherapists();
-    return NextResponse.json(
-      successResponse('Therapists fetched successfully', therapists),
-    );
+    return NextResponse.json(successResponse('Therapists fetched successfully', therapists));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -36,17 +31,11 @@ export async function POST(req: NextRequest) {
 
     // Input validation
     if (!body || typeof body !== 'object') {
-      return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
     const therapist = await createTherapist(body);
-    return NextResponse.json(
-      successResponse('Therapist created successfully', therapist, 201),
-      { status: 201 },
-    );
+    return NextResponse.json(successResponse('Therapist created successfully', therapist, 201), { status: 201 });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

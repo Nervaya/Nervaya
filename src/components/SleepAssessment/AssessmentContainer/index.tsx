@@ -7,10 +7,7 @@ import ProgressBar from '../ProgressBar';
 import QuestionCard from '../QuestionCard';
 import Loader from '@/components/common/Loader';
 import styles from './styles.module.css';
-import type {
-  ISleepAssessmentQuestion,
-  IQuestionAnswer,
-} from '@/types/sleepAssessment.types';
+import type { ISleepAssessmentQuestion, IQuestionAnswer } from '@/types/sleepAssessment.types';
 import axiosInstance from '@/lib/axios';
 
 interface AssessmentContainerProps {
@@ -35,18 +32,13 @@ const slideVariants = {
 const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Map<string, string | string[]>>(
-    new Map(),
-  );
+  const [answers, setAnswers] = useState<Map<string, string | string[]>>(new Map());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [direction, setDirection] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
-  const currentQuestion = useMemo(
-    () => questions[currentQuestionIndex],
-    [questions, currentQuestionIndex],
-  );
+  const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   const totalQuestions = questions.length;
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
   const isFirstQuestion = currentQuestionIndex === 0;
@@ -164,18 +156,8 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
     return (
       <div className={styles.completionContainer}>
         <div className={styles.completionIcon}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
             <path
               d="M8 12L11 15L16 9"
               stroke="currentColor"
@@ -187,14 +169,10 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
         </div>
         <h2 className={styles.completionTitle}>Assessment Complete!</h2>
         <p className={styles.completionText}>
-          Thank you for completing the sleep assessment. Your responses have
-          been saved and will help us personalize your sleep journey.
+          Thank you for completing the sleep assessment. Your responses have been saved and will help us personalize
+          your sleep journey.
         </p>
-        <button
-          type="button"
-          className={styles.completionButton}
-          onClick={() => router.push('/dashboard')}
-        >
+        <button type="button" className={styles.completionButton} onClick={() => router.push('/dashboard')}>
           Go to Dashboard
         </button>
       </div>
@@ -215,14 +193,9 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
         <h1 className={styles.title}>Sleep Assessment</h1>
       </header>
 
-      <ProgressBar
-        currentStep={currentQuestionIndex + 1}
-        totalSteps={totalQuestions}
-      />
+      <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} />
 
-      <LazyMotion
-        features={() => import('framer-motion').then((mod) => mod.domAnimation)}
-      >
+      <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <div className={styles.questionWrapper}>
           <AnimatePresence mode="wait" custom={direction}>
             <m.div
@@ -273,13 +246,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
           disabled={!canProceed || isSubmitting}
           aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
         >
-          {isSubmitting ? (
-            <Loader size="sm" color="white" />
-          ) : isLastQuestion ? (
-            'Submit'
-          ) : (
-            'Next Question'
-          )}
+          {isSubmitting ? <Loader size="sm" color="white" /> : isLastQuestion ? 'Submit' : 'Next Question'}
         </button>
       </footer>
     </div>

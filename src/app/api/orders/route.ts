@@ -7,19 +7,14 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
     }
 
     const orders = await getUserOrders(authResult.user.userId);
-    return NextResponse.json(
-      successResponse('Orders fetched successfully', orders),
-    );
+    return NextResponse.json(successResponse('Orders fetched successfully', orders));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -30,10 +25,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -43,37 +35,20 @@ export async function POST(request: NextRequest) {
     const { shippingAddress } = body;
 
     if (!shippingAddress || typeof shippingAddress !== 'object') {
-      return NextResponse.json(
-        errorResponse('Shipping address is required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Shipping address is required', null, 400), { status: 400 });
     }
 
-    const requiredFields = [
-      'name',
-      'phone',
-      'addressLine1',
-      'city',
-      'state',
-      'zipCode',
-      'country',
-    ];
+    const requiredFields = ['name', 'phone', 'addressLine1', 'city', 'state', 'zipCode', 'country'];
     for (const field of requiredFields) {
       if (!shippingAddress[field]) {
-        return NextResponse.json(
-          errorResponse(`Shipping address ${field} is required`, null, 400),
-          { status: 400 },
-        );
+        return NextResponse.json(errorResponse(`Shipping address ${field} is required`, null, 400), { status: 400 });
       }
     }
 
     const order = await createOrder(authResult.user.userId, shippingAddress);
-    return NextResponse.json(
-      successResponse('Order created successfully', order, 201),
-      {
-        status: 201,
-      },
-    );
+    return NextResponse.json(successResponse('Order created successfully', order, 201), {
+      status: 201,
+    });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

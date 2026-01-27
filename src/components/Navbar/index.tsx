@@ -5,10 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FaCircleUser } from 'react-icons/fa6';
-import {
-  NAVBAR_PRODUCTS_LINKS,
-  NAVBAR_ACCOUNT_LINKS,
-} from '@/utils/navbarConstants';
+import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
 import styles from './styles.module.css';
 
@@ -31,16 +28,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        productsDropdownRef.current &&
-        !productsDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (productsDropdownRef.current && !productsDropdownRef.current.contains(event.target as Node)) {
         setIsProductsDropdownOpen(false);
       }
-      if (
-        accountDropdownRef.current &&
-        !accountDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target as Node)) {
         setIsAccountDropdownOpen(false);
       }
     };
@@ -85,12 +76,7 @@ const Navbar = () => {
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLogo}>
           <Link href="/">
-            <Image
-              src="/icons/nervaya-logo.svg"
-              alt="logo"
-              width={150}
-              height={50}
-            />
+            <Image src="/icons/nervaya-logo.svg" alt="logo" width={150} height={50} />
           </Link>
         </div>
         <button
@@ -99,24 +85,14 @@ const Navbar = () => {
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
         >
-          <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
-          ></span>
-          <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
-          ></span>
-          <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
-          ></span>
+          <span className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}></span>
+          <span className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}></span>
+          <span className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}></span>
         </button>
 
-        {isMobileMenuOpen && (
-          <div className={styles.mobileOverlay} onClick={closeMobileMenu}></div>
-        )}
+        {isMobileMenuOpen && <div className={styles.mobileOverlay} onClick={closeMobileMenu}></div>}
 
-        <ul
-          className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}
-        >
+        <ul className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}>
           <li>
             <Link href="/" onClick={closeMobileMenu}>
               Home
@@ -130,21 +106,13 @@ const Navbar = () => {
               aria-haspopup="true"
             >
               Products
-              <span
-                className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}
-              >
-                ▼
-              </span>
+              <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
             </button>
             {isProductsDropdownOpen && (
               <ul className={styles.dropdownMenu}>
                 {NAVBAR_PRODUCTS_LINKS.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className={styles.dropdownItem}
-                      onClick={closeMobileMenu}
-                    >
+                    <Link href={link.href} className={styles.dropdownItem} onClick={closeMobileMenu}>
                       {link.text}
                     </Link>
                   </li>
@@ -160,38 +128,22 @@ const Navbar = () => {
 
           {isAuthenticated ? (
             <li className={styles.navbarDropdown} ref={accountDropdownRef}>
-              <button
-                onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
-                className={styles.accountButton}
-              >
+              <button onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)} className={styles.accountButton}>
                 <FaCircleUser size={24} />
                 <span>{user?.name?.split(' ')[0] || 'Account'}</span>
-                <span
-                  className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}
-                >
-                  {' '}
-                </span>
+                <span className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}> </span>
               </button>
               {isAccountDropdownOpen && (
-                <ul
-                  className={`${styles.dropdownMenu} ${styles.accountDropdownMenu}`}
-                >
+                <ul className={`${styles.dropdownMenu} ${styles.accountDropdownMenu}`}>
                   {NAVBAR_ACCOUNT_LINKS.map((link) => (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className={styles.dropdownItem}
-                        onClick={closeMobileMenu}
-                      >
+                      <Link href={link.href} className={styles.dropdownItem} onClick={closeMobileMenu}>
                         {link.text}
                       </Link>
                     </li>
                   ))}
                   <li>
-                    <button
-                      onClick={handleLogout}
-                      className={styles.dropdownItem}
-                    >
+                    <button onClick={handleLogout} className={styles.dropdownItem}>
                       Logout
                     </button>
                   </li>

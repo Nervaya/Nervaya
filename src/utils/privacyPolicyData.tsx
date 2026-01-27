@@ -99,8 +99,7 @@ export const privacySections: PrivacySection[] = [
       subsections: [
         {
           title: 'Personal Information',
-          paragraph:
-            'When you use our services, we may collect the following types of personal information:',
+          paragraph: 'When you use our services, we may collect the following types of personal information:',
           listItems: [
             {
               label: 'Name and Contact Information:',
@@ -126,8 +125,7 @@ export const privacySections: PrivacySection[] = [
         },
         {
           title: 'Automatically Collected Information',
-          paragraph:
-            'We automatically collect certain information when you visit our website or use our services:',
+          paragraph: 'We automatically collect certain information when you visit our website or use our services:',
           listItems: [
             {
               label: 'IP Address:',
@@ -159,9 +157,7 @@ export const privacySections: PrivacySection[] = [
     number: '03',
     title: 'How We Use Your Data',
     content: {
-      paragraphs: [
-        'We use the information we collect for the following purposes:',
-      ],
+      paragraphs: ['We use the information we collect for the following purposes:'],
       gridItems: [
         {
           icon: <FaHandshake />,

@@ -12,10 +12,7 @@ import {
   OrderStatus,
 } from '@/lib/constants/enums';
 
-export async function createOrder(
-  userId: string,
-  shippingAddress: IOrder['shippingAddress'],
-) {
+export async function createOrder(userId: string, shippingAddress: IOrder['shippingAddress']) {
   await connectDB();
   try {
     if (!userId || typeof userId !== 'string') {
@@ -31,15 +28,11 @@ export async function createOrder(
     for (const cartItem of cart.items) {
       const supplement = await Supplement.findById(cartItem.supplementId);
       if (!supplement) {
-        throw new ValidationError(
-          `Supplement ${cartItem.supplementId} not found`,
-        );
+        throw new ValidationError(`Supplement ${cartItem.supplementId} not found`);
       }
 
       if (!supplement.isActive) {
-        throw new ValidationError(
-          `Supplement ${supplement.name} is not available`,
-        );
+        throw new ValidationError(`Supplement ${supplement.name} is not available`);
       }
 
       if (supplement.stock < cartItem.quantity) {
@@ -58,8 +51,7 @@ export async function createOrder(
       await supplement.save();
     }
 
-    const totalAmount =
-      cart.totalAmount < 500 ? cart.totalAmount + 50 : cart.totalAmount;
+    const totalAmount = cart.totalAmount < 500 ? cart.totalAmount + 50 : cart.totalAmount;
 
     const order = await Order.create({
       userId: userId,
@@ -109,9 +101,7 @@ export async function getUserOrders(userId: string) {
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
-    const orders = await Order.find({ userId })
-      .populate('items.supplementId')
-      .sort({ createdAt: -1 });
+    const orders = await Order.find({ userId }).populate('items.supplementId').sort({ createdAt: -1 });
     return orders;
   } catch (error) {
     throw handleError(error);
@@ -129,11 +119,7 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus) {
       throw new ValidationError('Invalid order status');
     }
 
-    const order = await Order.findByIdAndUpdate(
-      orderId,
-      { orderStatus: status },
-      { new: true, runValidators: true },
-    );
+    const order = await Order.findByIdAndUpdate(orderId, { orderStatus: status }, { new: true, runValidators: true });
 
     if (!order) {
       throw new ValidationError('Order not found');

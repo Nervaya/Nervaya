@@ -364,7 +364,7 @@
 }
 
 .expectTitle::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 50%;
@@ -393,7 +393,7 @@
 }
 
 .expectItem::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 50%;

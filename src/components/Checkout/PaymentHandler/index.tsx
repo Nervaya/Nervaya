@@ -92,18 +92,7 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 
     const razorpay = new window.Razorpay(options);
     razorpay.open();
-  }, [
-    razorpayKeyId,
-    amount,
-    orderId,
-    razorpayOrderId,
-    userName,
-    userEmail,
-    userPhone,
-    onSuccess,
-    onError,
-    router,
-  ]);
+  }, [razorpayKeyId, amount, orderId, razorpayOrderId, userName, userEmail, userPhone, onSuccess, onError, router]);
 
   useEffect(() => {
     if (window.Razorpay && razorpayOrderId) {

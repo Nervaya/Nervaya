@@ -10,50 +10,32 @@ export async function POST(request: NextRequest) {
     const { event, payload } = body;
 
     if (!event || !payload) {
-      return NextResponse.json(
-        errorResponse('Event and payload are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Event and payload are required', null, 400), { status: 400 });
     }
 
-    const webhookSecret =
-      process.env.RAZORPAY_WEBHOOK_SECRET ||
-      process.env.RAZORPAY_KEY_SECRET ||
-      '';
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET || process.env.RAZORPAY_KEY_SECRET || '';
     const razorpaySignature = request.headers.get('x-razorpay-signature');
 
     if (razorpaySignature && webhookSecret) {
       const text = JSON.stringify(body);
-      const generatedSignature = crypto
-        .createHmac('sha256', webhookSecret)
-        .update(text)
-        .digest('hex');
+      const generatedSignature = crypto.createHmac('sha256', webhookSecret).update(text).digest('hex');
 
       if (generatedSignature !== razorpaySignature) {
-        return NextResponse.json(
-          errorResponse('Invalid webhook signature', null, 401),
-          {
-            status: 401,
-          },
-        );
+        return NextResponse.json(errorResponse('Invalid webhook signature', null, 401), {
+          status: 401,
+        });
       }
     }
 
-    const razorpayOrderId =
-      payload.order?.entity?.id || payload.payment?.entity?.order_id;
+    const razorpayOrderId = payload.order?.entity?.id || payload.payment?.entity?.order_id;
     const paymentId = payload.payment?.entity?.id;
 
     if (!razorpayOrderId || !paymentId) {
-      return NextResponse.json(
-        errorResponse('Order ID and payment ID are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Order ID and payment ID are required', null, 400), { status: 400 });
     }
 
     await handlePaymentWebhook(razorpayOrderId, paymentId, event);
-    return NextResponse.json(
-      successResponse('Webhook processed successfully', null),
-    );
+    return NextResponse.json(successResponse('Webhook processed successfully', null));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

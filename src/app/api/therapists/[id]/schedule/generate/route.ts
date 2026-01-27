@@ -22,11 +22,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     const daysParam = searchParams.get('days');
     const numberOfDays = daysParam ? parseInt(daysParam, 10) : 30;
 
-    const result = await generateSlotsFromConsultingHours(
-      therapistId,
-      new Date(),
-      numberOfDays,
-    );
+    const result = await generateSlotsFromConsultingHours(therapistId, new Date(), numberOfDays);
 
     return NextResponse.json(
       successResponse('Generated schedules successfully', {

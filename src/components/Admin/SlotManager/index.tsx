@@ -30,9 +30,7 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
     setError(null);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      const response = await fetch(
-        `/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`,
-      );
+      const response = await fetch(`/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`);
       if (!response.ok) {
         throw new Error('Failed to fetch schedule');
       }
@@ -118,11 +116,7 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
         <div className={styles.topRow}>
           <div className={styles.calendarSection}>
             <h3 className={styles.sectionTitle}>Select Date</h3>
-            <DatePicker
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
-              minDate={new Date()}
-            />
+            <DatePicker selectedDate={selectedDate} onDateSelect={setSelectedDate} minDate={new Date()} />
           </div>
 
           <div className={styles.slotsRight}>
@@ -148,9 +142,7 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
                   <div className={styles.statLabel}>Booked</div>
                 </div>
                 <div className={styles.statCard}>
-                  <div className={styles.statValue}>
-                    {totalSlots - bookedCount}
-                  </div>
+                  <div className={styles.statValue}>{totalSlots - bookedCount}</div>
                   <div className={styles.statLabel}>Available</div>
                 </div>
               </div>
@@ -161,29 +153,21 @@ export default function SlotManager({ therapistId }: SlotManagerProps) {
         <div className={styles.weekView}>
           <h3 className={styles.sectionTitle}>Week Overview</h3>
           <div className={styles.weekGrid}>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
-              (day, index) => {
-                const daySlots = getSlotsForDay(index);
-                const bookedCount = daySlots.filter(
-                  (s) => !s.isAvailable,
-                ).length;
-                const totalCount = daySlots.length;
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => {
+              const daySlots = getSlotsForDay(index);
+              const bookedCount = daySlots.filter((s) => !s.isAvailable).length;
+              const totalCount = daySlots.length;
 
-                return (
-                  <div key={day} className={styles.weekDay}>
-                    <div className={styles.weekDayName}>{day}</div>
-                    <div className={styles.weekDayStats}>
-                      <span className={styles.totalSlots}>
-                        {totalCount} slots
-                      </span>
-                      <span className={styles.bookedSlots}>
-                        {bookedCount} booked
-                      </span>
-                    </div>
+              return (
+                <div key={day} className={styles.weekDay}>
+                  <div className={styles.weekDayName}>{day}</div>
+                  <div className={styles.weekDayStats}>
+                    <span className={styles.totalSlots}>{totalCount} slots</span>
+                    <span className={styles.bookedSlots}>{bookedCount} booked</span>
                   </div>
-                );
-              },
-            )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

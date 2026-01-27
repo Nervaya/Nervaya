@@ -62,9 +62,7 @@ export default function MyOrders() {
             <FaShoppingBag className={styles.icon} />
           </div>
           <h3 className={styles.emptyTitle}>No orders yet</h3>
-          <p className={styles.emptyText}>
-            Your product purchases will appear here
-          </p>
+          <p className={styles.emptyText}>Your product purchases will appear here</p>
           <Link href="/supplements" className={styles.shopLink}>
             Browse Supplements
           </Link>
@@ -82,19 +80,13 @@ export default function MyOrders() {
             <div className={styles.orderHeader}>
               <div>
                 <h3 className={styles.orderId}>Order #{order._id.slice(-8)}</h3>
-                <p className={styles.orderDate}>
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </p>
+                <p className={styles.orderDate}>{new Date(order.createdAt).toLocaleDateString()}</p>
               </div>
               <div className={styles.orderStatus}>
-                <span
-                  className={`${styles.statusBadge} ${styles[order.orderStatus]}`}
-                >
+                <span className={`${styles.statusBadge} ${styles[order.orderStatus]}`}>
                   {order.orderStatus.toUpperCase()}
                 </span>
-                <span
-                  className={`${styles.paymentBadge} ${styles[order.paymentStatus]}`}
-                >
+                <span className={`${styles.paymentBadge} ${styles[order.paymentStatus]}`}>
                   {order.paymentStatus.toUpperCase()}
                 </span>
               </div>
@@ -102,17 +94,12 @@ export default function MyOrders() {
             <div className={styles.orderItems}>
               {order.items.map((item) => {
                 return (
-                  <div
-                    key={`${order._id}-${item.name}-${item.quantity}`}
-                    className={styles.orderItem}
-                  >
+                  <div key={`${order._id}-${item.name}-${item.quantity}`} className={styles.orderItem}>
                     <div className={styles.itemInfo}>
                       <h4>{item.name}</h4>
                       <p>Quantity: {item.quantity}</p>
                     </div>
-                    <div className={styles.itemPrice}>
-                      {formatPrice(item.price * item.quantity)}
-                    </div>
+                    <div className={styles.itemPrice}>{formatPrice(item.price * item.quantity)}</div>
                   </div>
                 );
               })}
@@ -121,10 +108,7 @@ export default function MyOrders() {
               <div className={styles.orderTotal}>
                 <strong>Total: {formatPrice(order.totalAmount)}</strong>
               </div>
-              <Link
-                href={`/supplements/order-success/${order._id}`}
-                className={styles.viewOrderLink}
-              >
+              <Link href={`/supplements/order-success/${order._id}`} className={styles.viewOrderLink}>
                 View Details
               </Link>
             </div>

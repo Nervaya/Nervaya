@@ -34,10 +34,7 @@ export default function CartPage() {
     }
   };
 
-  const handleQuantityChange = async (
-    supplementId: string,
-    quantity: number,
-  ) => {
+  const handleQuantityChange = async (supplementId: string, quantity: number) => {
     setUpdating(true);
     try {
       setError(null);
@@ -51,8 +48,7 @@ export default function CartPage() {
         setError('Failed to update cart');
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to update cart';
+      const message = err instanceof Error ? err.message : 'Failed to update cart';
       setError(message);
     } finally {
       setUpdating(false);
@@ -63,17 +59,14 @@ export default function CartPage() {
     setUpdating(true);
     try {
       setError(null);
-      const response = (await api.delete(
-        `/cart?supplementId=${supplementId}`,
-      )) as { success: boolean; data: Cart };
+      const response = (await api.delete(`/cart?supplementId=${supplementId}`)) as { success: boolean; data: Cart };
       if (response.success && response.data) {
         setCart(response.data);
       } else {
         setError('Failed to remove item');
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to remove item';
+      const message = err instanceof Error ? err.message : 'Failed to remove item';
       setError(message);
     } finally {
       setUpdating(false);
@@ -115,10 +108,7 @@ export default function CartPage() {
           <div className={styles.empty}>
             <h2>Your cart is empty</h2>
             <p>Add some supplements to get started!</p>
-            <button
-              onClick={() => router.push('/supplements')}
-              className={styles.shopButton}
-            >
+            <button onClick={() => router.push('/supplements')} className={styles.shopButton}>
               Continue Shopping
             </button>
           </div>
@@ -149,11 +139,7 @@ export default function CartPage() {
             })}
           </div>
           <div className={styles.summarySection}>
-            <CartSummary
-              cart={cart}
-              onCheckout={handleCheckout}
-              loading={updating}
-            />
+            <CartSummary cart={cart} onCheckout={handleCheckout} loading={updating} />
           </div>
         </div>
       </div>

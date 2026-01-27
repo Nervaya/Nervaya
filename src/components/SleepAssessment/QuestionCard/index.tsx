@@ -2,10 +2,7 @@
 
 import { useCallback } from 'react';
 import styles from './styles.module.css';
-import type {
-  IQuestionOption,
-  QuestionType,
-} from '@/types/sleepAssessment.types';
+import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
 interface QuestionCardProps {
   questionText: string;
@@ -33,9 +30,7 @@ const QuestionCard = ({
 
   const handleMultipleChoice = useCallback(
     (value: string) => {
-      const currentAnswers = Array.isArray(selectedAnswer)
-        ? selectedAnswer
-        : [];
+      const currentAnswers = Array.isArray(selectedAnswer) ? selectedAnswer : [];
       const isSelected = currentAnswers.includes(value);
 
       if (isSelected) {
@@ -107,9 +102,7 @@ const QuestionCard = ({
               type="button"
               className={`${styles.optionCard} ${isOptionSelected(option.value) ? styles.selected : ''}`}
               onClick={() =>
-                questionType === 'single_choice'
-                  ? handleSingleChoice(option.value)
-                  : handleMultipleChoice(option.value)
+                questionType === 'single_choice' ? handleSingleChoice(option.value) : handleMultipleChoice(option.value)
               }
               role={questionType === 'single_choice' ? 'radio' : 'checkbox'}
               aria-checked={isOptionSelected(option.value)}
@@ -118,11 +111,7 @@ const QuestionCard = ({
                 {questionType === 'multiple_choice' && (
                   <span className={styles.checkbox}>
                     {isOptionSelected(option.value) && (
-                      <svg
-                        viewBox="0 0 12 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                      <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M1 5L4.5 8.5L11 1"
                           stroke="currentColor"
@@ -136,9 +125,7 @@ const QuestionCard = ({
                 )}
                 {questionType === 'single_choice' && (
                   <span className={styles.radio}>
-                    {isOptionSelected(option.value) && (
-                      <span className={styles.radioDot} />
-                    )}
+                    {isOptionSelected(option.value) && <span className={styles.radioDot} />}
                   </span>
                 )}
               </span>

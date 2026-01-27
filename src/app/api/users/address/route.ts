@@ -8,19 +8,14 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
     }
 
     await connectDB();
-    const user = await User.findById(authResult.user.userId).select(
-      'addresses',
-    );
+    const user = await User.findById(authResult.user.userId).select('addresses');
 
     if (!user) {
       return NextResponse.json(errorResponse('User not found', null, 404), {
@@ -28,9 +23,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json(
-      successResponse('Addresses fetched successfully', user.addresses),
-    );
+    return NextResponse.json(successResponse('Addresses fetched successfully', user.addresses));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -41,44 +34,18 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
     }
 
     const body = await request.json();
-    const {
-      name,
-      phone,
-      addressLine1,
-      addressLine2,
-      city,
-      state,
-      zipCode,
-      country,
-      label,
-      isDefault,
-    } = body;
+    const { name, phone, addressLine1, addressLine2, city, state, zipCode, country, label, isDefault } = body;
 
     // Basic validation
-    if (
-      !name ||
-      !phone ||
-      !addressLine1 ||
-      !city ||
-      !state ||
-      !zipCode ||
-      !country ||
-      !label
-    ) {
-      return NextResponse.json(
-        errorResponse('Missing required fields', null, 400),
-        { status: 400 },
-      );
+    if (!name || !phone || !addressLine1 || !city || !state || !zipCode || !country || !label) {
+      return NextResponse.json(errorResponse('Missing required fields', null, 400), { status: 400 });
     }
 
     await connectDB();
@@ -110,10 +77,7 @@ export async function POST(request: NextRequest) {
 
     await user.save();
 
-    return NextResponse.json(
-      successResponse('Address saved successfully', user.addresses, 201),
-      { status: 201 },
-    );
+    return NextResponse.json(successResponse('Address saved successfully', user.addresses, 201), { status: 201 });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

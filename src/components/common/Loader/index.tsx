@@ -7,15 +7,8 @@ interface LoaderProps {
   className?: string;
 }
 
-export default function Loader({
-  size = 'md',
-  color = 'primary',
-  text,
-  className,
-}: LoaderProps) {
-  const loaderClasses = [styles.loader, styles[size], styles[color], className]
-    .filter(Boolean)
-    .join(' ');
+export default function Loader({ size = 'md', color = 'primary', text, className }: LoaderProps) {
+  const loaderClasses = [styles.loader, styles[size], styles[color], className].filter(Boolean).join(' ');
 
   if (text) {
     return (

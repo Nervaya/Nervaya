@@ -59,13 +59,9 @@ const cartSchema = new Schema<ICart>(
 );
 
 cartSchema.pre('save', function () {
-  this.totalAmount = this.items.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
+  this.totalAmount = this.items.reduce((total, item) => total + item.price * item.quantity, 0);
 });
 
-const Cart: Model<ICart> =
-  mongoose.models.Cart || mongoose.model<ICart>('Cart', cartSchema);
+const Cart: Model<ICart> = mongoose.models.Cart || mongoose.model<ICart>('Cart', cartSchema);
 
 export default Cart;

@@ -1,8 +1,5 @@
 import { useState, useEffect, RefObject } from 'react';
-import {
-  PRIVACY_POLICY_SECTIONS,
-  DEFAULT_PRIVACY_POLICY_SECTION,
-} from '@/utils/privacyPolicyConstants';
+import { PRIVACY_POLICY_SECTIONS, DEFAULT_PRIVACY_POLICY_SECTION } from '@/utils/privacyPolicyConstants';
 
 interface UsePrivacyPolicyScrollProps {
   isMobile: boolean;
@@ -13,10 +10,7 @@ export interface ScrollLockRef {
   current: boolean;
 }
 
-export const usePrivacyPolicyScroll = ({
-  isMobile,
-  scrollLockRef,
-}: UsePrivacyPolicyScrollProps) => {
+export const usePrivacyPolicyScroll = ({ isMobile, scrollLockRef }: UsePrivacyPolicyScrollProps) => {
   const [activeSection, setActiveSection] = useState<string>(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       return ''; // No active section on mobile by default
@@ -52,8 +46,7 @@ export const usePrivacyPolicyScroll = ({
           return;
         }
 
-        const viewportTop =
-          window.scrollY || document.documentElement.scrollTop;
+        const viewportTop = window.scrollY || document.documentElement.scrollTop;
         const viewportHeight = window.innerHeight;
         const triggerPoint = viewportTop + viewportHeight * 0.25; // 25% from top for better accuracy
 
@@ -79,21 +72,16 @@ export const usePrivacyPolicyScroll = ({
           const headerTop = viewportTop + headerRect.top;
 
           // Check if section header is visible in viewport
-          const headerVisible =
-            headerRect.top >= -100 && headerRect.top <= viewportHeight * 0.6;
+          const headerVisible = headerRect.top >= -100 && headerRect.top <= viewportHeight * 0.6;
 
           // Calculate visible portion of section
           const visibleTop = Math.max(viewportTop, elementTop);
-          const visibleBottom = Math.min(
-            viewportTop + viewportHeight,
-            elementBottom,
-          );
+          const visibleBottom = Math.min(viewportTop + viewportHeight, elementBottom);
           const visibleHeight = Math.max(0, visibleBottom - visibleTop);
 
           // Calculate how much of section is visible (percentage)
           const sectionHeight = elementBottom - elementTop;
-          const visibilityRatio =
-            sectionHeight > 0 ? visibleHeight / sectionHeight : 0;
+          const visibilityRatio = sectionHeight > 0 ? visibleHeight / sectionHeight : 0;
 
           // Check if we're near the bottom of the page (for last section)
           const documentHeight = document.documentElement.scrollHeight;
@@ -123,10 +111,7 @@ export const usePrivacyPolicyScroll = ({
           // Special handling for last section when near bottom
           if (isLastSection(index) && isNearBottom) {
             // If we're near the bottom and this is the last section, give it priority
-            if (
-              rect.top <= viewportHeight &&
-              rect.bottom > viewportHeight * 0.3
-            ) {
+            if (rect.top <= viewportHeight && rect.bottom > viewportHeight * 0.3) {
               score += 3000;
             }
           }

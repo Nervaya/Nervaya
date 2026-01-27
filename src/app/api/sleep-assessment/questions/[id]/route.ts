@@ -10,10 +10,7 @@ import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authResult = await requireAuth(req, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
@@ -24,9 +21,7 @@ export async function GET(
     const { id } = await params;
     const question = await getQuestionById(id);
 
-    return NextResponse.json(
-      successResponse('Question fetched successfully', question),
-    );
+    return NextResponse.json(successResponse('Question fetched successfully', question));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -35,10 +30,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
@@ -50,21 +42,10 @@ export async function PUT(
     const body = await req.json();
 
     if (!body || typeof body !== 'object') {
-      return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
-    const {
-      questionText,
-      questionType,
-      options,
-      order,
-      isRequired,
-      isActive,
-      category,
-    } = body;
+    const { questionText, questionType, options, order, isRequired, isActive, category } = body;
 
     const question = await updateQuestion(id, {
       questionText,
@@ -76,9 +57,7 @@ export async function PUT(
       category,
     });
 
-    return NextResponse.json(
-      successResponse('Question updated successfully', question),
-    );
+    return NextResponse.json(successResponse('Question updated successfully', question));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -87,10 +66,7 @@ export async function PUT(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
@@ -102,17 +78,12 @@ export async function PATCH(
     const body = await req.json();
 
     if (typeof body.isActive !== 'boolean') {
-      return NextResponse.json(
-        errorResponse('isActive must be a boolean', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('isActive must be a boolean', null, 400), { status: 400 });
     }
 
     const question = await toggleQuestionActive(id, body.isActive);
 
-    return NextResponse.json(
-      successResponse('Question status updated successfully', question),
-    );
+    return NextResponse.json(successResponse('Question status updated successfully', question));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -121,10 +92,7 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 

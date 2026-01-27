@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Session from '@/lib/models/session.model';
-import {
-  createCustomSlot,
-  updateSlot,
-  deleteSlot,
-} from '@/lib/services/therapistSchedule.service';
+import { createCustomSlot, updateSlot, deleteSlot } from '@/lib/services/therapistSchedule.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -37,10 +33,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
         }),
       );
     } else {
-      return NextResponse.json(
-        errorResponse('Date parameter is required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Date parameter is required', null, 400), { status: 400 });
     }
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -64,14 +57,9 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     const { date, startTime, endTime, isAvailable } = body;
 
     if (!date || !startTime || !endTime) {
-      return NextResponse.json(
-        errorResponse(
-          'Missing required fields: date, startTime, endTime',
-          null,
-          400,
-        ),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Missing required fields: date, startTime, endTime', null, 400), {
+        status: 400,
+      });
     }
 
     const slot = await createCustomSlot(
@@ -82,10 +70,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
       isAvailable !== undefined ? isAvailable : true,
     );
 
-    return NextResponse.json(
-      successResponse('Slot created successfully', slot, 201),
-      { status: 201 },
-    );
+    return NextResponse.json(successResponse('Slot created successfully', slot, 201), { status: 201 });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -108,21 +93,14 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     const { date, startTime, updates } = body;
 
     if (!date || !startTime || !updates) {
-      return NextResponse.json(
-        errorResponse(
-          'Missing required fields: date, startTime, updates',
-          null,
-          400,
-        ),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Missing required fields: date, startTime, updates', null, 400), {
+        status: 400,
+      });
     }
 
     const slot = await updateSlot(therapistId, date, startTime, updates);
 
-    return NextResponse.json(
-      successResponse('Slot updated successfully', slot),
-    );
+    return NextResponse.json(successResponse('Slot updated successfully', slot));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -145,14 +123,9 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     const startTime = searchParams.get('startTime');
 
     if (!date || !startTime) {
-      return NextResponse.json(
-        errorResponse(
-          'Missing required parameters: date, startTime',
-          null,
-          400,
-        ),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Missing required parameters: date, startTime', null, 400), {
+        status: 400,
+      });
     }
 
     await deleteSlot(therapistId, date, startTime);

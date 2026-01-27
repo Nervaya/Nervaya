@@ -8,9 +8,6 @@ const Sidebar = dynamic(() => import('./Sidebar'), {
   loading: () => null,
 });
 
-export default function LazySidebar(props: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
+export default function LazySidebar(props: { children?: React.ReactNode; className?: string }) {
   return <Sidebar {...props} />;
 }

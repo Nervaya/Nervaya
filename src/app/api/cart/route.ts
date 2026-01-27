@@ -1,11 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  getCartByUserId,
-  addToCart,
-  updateCartItem,
-  removeFromCart,
-  clearCart,
-} from '@/lib/services/cart.service';
+import { getCartByUserId, addToCart, updateCartItem, removeFromCart, clearCart } from '@/lib/services/cart.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -13,19 +7,14 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
     }
 
     const cart = await getCartByUserId(authResult.user.userId);
-    return NextResponse.json(
-      successResponse('Cart fetched successfully', cart),
-    );
+    return NextResponse.json(successResponse('Cart fetched successfully', cart));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
@@ -36,10 +25,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -49,17 +35,10 @@ export async function POST(request: NextRequest) {
     const { supplementId, quantity } = body;
 
     if (!supplementId || !quantity) {
-      return NextResponse.json(
-        errorResponse('Supplement ID and quantity are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Supplement ID and quantity are required', null, 400), { status: 400 });
     }
 
-    const cart = await addToCart(
-      authResult.user.userId,
-      supplementId,
-      quantity,
-    );
+    const cart = await addToCart(authResult.user.userId, supplementId, quantity);
     return NextResponse.json(successResponse('Item added to cart', cart, 201), {
       status: 201,
     });
@@ -73,10 +52,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -86,17 +62,10 @@ export async function PUT(request: NextRequest) {
     const { supplementId, quantity } = body;
 
     if (!supplementId || quantity === undefined) {
-      return NextResponse.json(
-        errorResponse('Supplement ID and quantity are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Supplement ID and quantity are required', null, 400), { status: 400 });
     }
 
-    const cart = await updateCartItem(
-      authResult.user.userId,
-      supplementId,
-      quantity,
-    );
+    const cart = await updateCartItem(authResult.user.userId, supplementId, quantity);
     return NextResponse.json(successResponse('Cart item updated', cart));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -108,10 +77,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -127,14 +93,9 @@ export async function DELETE(request: NextRequest) {
     }
 
     if (!supplementId) {
-      return NextResponse.json(
-        errorResponse(
-          'Supplement ID is required or use clearAll=true',
-          null,
-          400,
-        ),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Supplement ID is required or use clearAll=true', null, 400), {
+        status: 400,
+      });
     }
 
     const cart = await removeFromCart(authResult.user.userId, supplementId);

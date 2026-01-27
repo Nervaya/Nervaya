@@ -72,10 +72,6 @@ const therapistScheduleSchema = new Schema<ITherapistSchedule>(
 therapistScheduleSchema.index({ therapistId: 1, date: 1 }, { unique: true });
 
 const TherapistSchedule: Model<ITherapistSchedule> =
-  mongoose.models.TherapistSchedule ||
-  mongoose.model<ITherapistSchedule>(
-    'TherapistSchedule',
-    therapistScheduleSchema,
-  );
+  mongoose.models.TherapistSchedule || mongoose.model<ITherapistSchedule>('TherapistSchedule', therapistScheduleSchema);
 
 export default TherapistSchedule;

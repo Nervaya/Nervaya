@@ -52,10 +52,7 @@ export default function TherapistSlotsPage() {
       <div className={styles.container}>
         <div className={styles.error}>
           <p>{error || 'Therapist not found'}</p>
-          <button
-            onClick={() => router.push('/admin/therapists')}
-            className={styles.backButton}
-          >
+          <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
             Back to Therapists
           </button>
         </div>
@@ -72,15 +69,10 @@ export default function TherapistSlotsPage() {
             Therapist: <strong>{therapist.name}</strong>
           </p>
           {therapist.qualifications && therapist.qualifications.length > 0 && (
-            <p className={styles.qualifications}>
-              {therapist.qualifications.join(', ')}
-            </p>
+            <p className={styles.qualifications}>{therapist.qualifications.join(', ')}</p>
           )}
         </div>
-        <button
-          onClick={() => router.push('/admin/therapists')}
-          className={styles.backButton}
-        >
+        <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
           ← Back to Therapists
         </button>
       </div>

@@ -24,9 +24,7 @@ export default function SupplementsPage() {
         setSupplements(response.data);
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to load supplements',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to load supplements');
     } finally {
       setLoading(false);
     }
@@ -43,8 +41,7 @@ export default function SupplementsPage() {
         setError('Failed to add to cart');
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to add to cart';
+      const message = err instanceof Error ? err.message : 'Failed to add to cart';
       setError(message);
       throw err;
     }
@@ -59,16 +56,10 @@ export default function SupplementsPage() {
       <div className={styles.container}>
         <header className={styles.header}>
           <h1 className={styles.title}>Supplements</h1>
-          <p className={styles.subtitle}>
-            Discover our range of health supplements
-          </p>
+          <p className={styles.subtitle}>Discover our range of health supplements</p>
         </header>
         {error && <div className={styles.error}>{error}</div>}
-        <SupplementGrid
-          supplements={supplements}
-          onAddToCart={handleAddToCart}
-          loading={loading}
-        />
+        <SupplementGrid supplements={supplements} onAddToCart={handleAddToCart} loading={loading} />
       </div>
     </Sidebar>
   );

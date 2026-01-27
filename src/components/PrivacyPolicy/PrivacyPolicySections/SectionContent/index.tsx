@@ -1,9 +1,5 @@
 import { memo, useMemo } from 'react';
-import {
-  SectionContent as SectionContentType,
-  GridItem,
-  Subsection,
-} from '@/utils/privacyPolicyData';
+import { SectionContent as SectionContentType, GridItem, Subsection } from '@/utils/privacyPolicyData';
 import styles from './styles.module.css';
 
 interface SectionContentProps {
@@ -29,14 +25,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const subsections = useMemo(() => {
     return content.subsections?.map((subsection: Subsection) => {
       return (
-        <div
-          key={`subsection-${subsection.title}`}
-          className={styles.subsection}
-        >
+        <div key={`subsection-${subsection.title}`} className={styles.subsection}>
           <h3 className={styles.subsectionTitle}>{subsection.title}</h3>
-          {subsection.paragraph && (
-            <p className={styles.paragraph}>{subsection.paragraph}</p>
-          )}
+          {subsection.paragraph && <p className={styles.paragraph}>{subsection.paragraph}</p>}
           {subsection.listItems && (
             <ul className={styles.list}>
               {subsection.listItems.map((item, itemIndex) => (
@@ -50,10 +41,7 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
           {subsection.cookieCards && (
             <div className={styles.cookieGrid}>
               {subsection.cookieCards.map((card: GridItem) => (
-                <div
-                  key={`${subsection.title}-cookie-${card.title}`}
-                  className={styles.cookieCard}
-                >
+                <div key={`${subsection.title}-cookie-${card.title}`} className={styles.cookieCard}>
                   <div className={styles.cookieIcon}>{card.icon}</div>
                   <h4 className={styles.cookieTitle}>{card.title}</h4>
                   <p className={styles.cookieText}>{card.text}</p>
@@ -126,9 +114,7 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
 
       {gridItems && <div className={styles.grid}>{gridItems}</div>}
 
-      {securityCards && (
-        <div className={styles.securityGrid}>{securityCards}</div>
-      )}
+      {securityCards && <div className={styles.securityGrid}>{securityCards}</div>}
 
       {rightsCards && <div className={styles.rightsGrid}>{rightsCards}</div>}
 

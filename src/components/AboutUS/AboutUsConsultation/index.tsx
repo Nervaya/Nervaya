@@ -16,9 +16,7 @@ const AboutUsConsultation = () => {
     email: '',
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -43,8 +41,7 @@ const AboutUsConsultation = () => {
               <h2 className={styles.formTitle}>Free 1 on 1 Assistance</h2>
             </div>
             <p className={styles.formSubtitle}>
-              Connect with our sleep experts for personalized guidance on your
-              journey to better rest.
+              Connect with our sleep experts for personalized guidance on your journey to better rest.
             </p>
           </div>
           <div className={styles.freeSessionBadge}>
@@ -113,38 +110,26 @@ const AboutUsConsultation = () => {
                   containerClassName={styles.customInputContainer}
                   className={styles.customInput}
                 />
-                <p className={styles.inputHint}>
-                  We&apos;ll send the Google Meet link here
-                </p>
+                <p className={styles.inputHint}>We&apos;ll send the Google Meet link here</p>
               </div>
 
               <div className={styles.expectSection}>
                 <h3 className={styles.expectTitle}>What to expect</h3>
                 <ul className={styles.expectList}>
-                  <li className={styles.expectItem}>
-                    Personalized sleep assessment
-                  </li>
+                  <li className={styles.expectItem}>Personalized sleep assessment</li>
                   <li className={styles.expectItem}>Custom recommendations</li>
-                  <li className={styles.expectItem}>
-                    Answer all your questions
-                  </li>
+                  <li className={styles.expectItem}>Answer all your questions</li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div className={styles.formFooter}>
-            <Button
-              type="submit"
-              variant="primary"
-              className={styles.submitButton}
-            >
+            <Button type="submit" variant="primary" className={styles.submitButton}>
               <CiCalendar className={styles.buttonIcon} />
               Schedule Free Consultation
             </Button>
-            <p className={styles.footerText}>
-              We&apos;ll respond within 24 hours to confirm your appointment
-            </p>
+            <p className={styles.footerText}>We&apos;ll respond within 24 hours to confirm your appointment</p>
           </div>
         </form>
       </div>

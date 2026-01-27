@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  createQuestion,
-  getAllQuestions,
-} from '@/lib/services/sleepAssessmentQuestion.service';
+import { createQuestion, getAllQuestions } from '@/lib/services/sleepAssessmentQuestion.service';
 import { defaultSleepAssessmentQuestions } from '@/utils/sleepAssessmentQuestions';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
@@ -21,18 +18,13 @@ export async function POST(req: NextRequest) {
     const shouldReset = searchParams.get('reset') === 'true';
 
     if (shouldReset) {
-      const { deleteAllQuestions } =
-        await import('@/lib/services/sleepAssessmentQuestion.service');
+      const { deleteAllQuestions } = await import('@/lib/services/sleepAssessmentQuestion.service');
       await deleteAllQuestions();
     } else {
       const existingQuestions = await getAllQuestions();
       if (existingQuestions.length > 0) {
         return NextResponse.json(
-          errorResponse(
-            'Questions already exist. Use ?reset=true to wipe and re-seed.',
-            null,
-            400,
-          ),
+          errorResponse('Questions already exist. Use ?reset=true to wipe and re-seed.', null, 400),
           { status: 400 },
         );
       }
@@ -45,10 +37,7 @@ export async function POST(req: NextRequest) {
         const question = await createQuestion(questionData);
         createdQuestions.push(question);
       } catch (error) {
-        console.error(
-          `Failed to create question: ${questionData.questionKey}`,
-          error,
-        );
+        console.error(`Failed to create question: ${questionData.questionKey}`, error);
       }
     }
 

@@ -7,10 +7,7 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [
-      ROLES.CUSTOMER,
-      ROLES.ADMIN,
-    ]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -20,20 +17,13 @@ export async function POST(request: NextRequest) {
     const { orderId, paymentId, razorpaySignature } = body;
 
     if (!orderId || !paymentId || !razorpaySignature) {
-      return NextResponse.json(
-        errorResponse(
-          'Order ID, payment ID, and signature are required',
-          null,
-          400,
-        ),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Order ID, payment ID, and signature are required', null, 400), {
+        status: 400,
+      });
     }
 
     const result = await verifyPayment(orderId, paymentId, razorpaySignature);
-    return NextResponse.json(
-      successResponse('Payment verified successfully', result),
-    );
+    return NextResponse.json(successResponse('Payment verified successfully', result));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

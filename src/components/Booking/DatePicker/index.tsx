@@ -10,24 +10,15 @@ interface DatePickerProps {
   maxDate?: Date;
 }
 
-export default function DatePicker({
-  selectedDate,
-  onDateSelect,
-  minDate = new Date(),
-  maxDate,
-}: DatePickerProps) {
-  const [currentMonth, setCurrentMonth] = useState(
-    new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-  );
+export default function DatePicker({ selectedDate, onDateSelect, minDate = new Date(), maxDate }: DatePickerProps) {
+  const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   // Sync currentMonth when selectedDate changes
   useEffect(() => {
-    setCurrentMonth(
-      new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-    );
+    setCurrentMonth(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
   }, [selectedDate]);
 
   const isDateDisabled = (date: Date): boolean => {
@@ -70,11 +61,7 @@ export default function DatePicker({
   };
 
   const navigateMonth = (direction: number) => {
-    const newMonth = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + direction,
-      1,
-    );
+    const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + direction, 1);
 
     // Check if the new date would be disabled due to minDate
     if (minDate && newMonth < minDate) {
@@ -104,11 +91,7 @@ export default function DatePicker({
   };
 
   const handleDateClick = (day: number) => {
-    const newDate = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day,
-    );
+    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
 
     if (!isDateDisabled(newDate)) {
       onDateSelect(newDate);
@@ -155,11 +138,7 @@ export default function DatePicker({
             className={styles.navButton}
             onClick={() => navigateMonth(-1)}
             aria-label="Previous month"
-            disabled={
-              minDate &&
-              currentMonth <=
-                new Date(minDate.getFullYear(), minDate.getMonth(), 1)
-            }
+            disabled={minDate && currentMonth <= new Date(minDate.getFullYear(), minDate.getMonth(), 1)}
           >
             ‹
           </button>
@@ -177,11 +156,7 @@ export default function DatePicker({
             className={styles.navButton}
             onClick={() => navigateMonth(1)}
             aria-label="Next month"
-            disabled={
-              maxDate &&
-              currentMonth >=
-                new Date(maxDate.getFullYear(), maxDate.getMonth(), 1)
-            }
+            disabled={maxDate && currentMonth >= new Date(maxDate.getFullYear(), maxDate.getMonth(), 1)}
           >
             ›
           </button>
@@ -204,11 +179,7 @@ export default function DatePicker({
               return <div key={emptyKey} className={styles.dayEmpty} />;
             }
 
-            const date = new Date(
-              currentMonth.getFullYear(),
-              currentMonth.getMonth(),
-              day,
-            );
+            const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
             const disabled = isDateDisabled(date);
             const isSelectedDate = isSelected(date);
             const isTodayDate = isToday(date);
@@ -219,9 +190,7 @@ export default function DatePicker({
                 type="button"
                 className={`${styles.day} ${
                   isSelectedDate ? styles.daySelected : ''
-                } ${isTodayDate ? styles.dayToday : ''} ${
-                  disabled ? styles.dayDisabled : ''
-                }`}
+                } ${isTodayDate ? styles.dayToday : ''} ${disabled ? styles.dayDisabled : ''}`}
                 onClick={() => handleDateClick(day)}
                 disabled={disabled}
                 aria-label={`Select ${date.toLocaleDateString()}`}

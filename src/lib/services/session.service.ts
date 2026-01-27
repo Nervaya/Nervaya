@@ -5,19 +5,11 @@ import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { SESSION_STATUS, SessionStatus } from '@/lib/constants/enums';
 
-export async function createSession(
-  userId: string,
-  therapistId: string,
-  date: string,
-  startTime: string,
-) {
+export async function createSession(userId: string, therapistId: string, date: string, startTime: string) {
   await connectDB();
 
   try {
-    if (
-      !Types.ObjectId.isValid(userId) ||
-      !Types.ObjectId.isValid(therapistId)
-    ) {
+    if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(therapistId)) {
       throw new ValidationError('Invalid User ID or Therapist ID');
     }
 
@@ -25,23 +17,11 @@ export async function createSession(
     // Note: startTime is expected in "HH:MM AM/PM" format
     const startHour = parseInt(startTime.split(':')[0]);
     const isPM = startTime.includes('PM');
-    const hour24 =
-      isPM && startHour !== 12
-        ? startHour + 12
-        : !isPM && startHour === 12
-          ? 0
-          : startHour;
+    const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
 
     const endHour = hour24 + 1;
     const endPeriod = endHour >= 12 ? 'PM' : 'AM';
-    const displayEndHour =
-      endHour > 12
-        ? endHour - 12
-        : endHour === 0
-          ? 12
-          : endHour === 12
-            ? 12
-            : endHour; // Handle noon/midnight correctly
+    const displayEndHour = endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour === 12 ? 12 : endHour; // Handle noon/midnight correctly
     // Simple logic for single-hour slots.
     // If hour is 23 (11 PM), end is 0 (12 AM).
 
@@ -86,9 +66,7 @@ export async function getUserSessions(userId: string, statusFilter?: string) {
       filter.status = statusFilter;
     }
 
-    const sessions = await Session.find(filter)
-      .populate('therapistId')
-      .sort({ date: -1, startTime: -1 });
+    const sessions = await Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 });
 
     return sessions;
   } catch (error) {
@@ -140,11 +118,7 @@ export async function cancelSession(sessionId: string, userId: string) {
     await session.save();
 
     // Release the slot using schedule service
-    await releaseSlot(
-      session.therapistId.toString(),
-      session.date,
-      session.startTime,
-    );
+    await releaseSlot(session.therapistId.toString(), session.date, session.startTime);
 
     return session;
   } catch (error) {
@@ -152,21 +126,14 @@ export async function cancelSession(sessionId: string, userId: string) {
   }
 }
 
-export async function updateSessionStatus(
-  sessionId: string,
-  status: SessionStatus,
-) {
+export async function updateSessionStatus(sessionId: string, status: SessionStatus) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(sessionId)) {
       throw new ValidationError('Invalid Session ID');
     }
 
-    const session = await Session.findByIdAndUpdate(
-      sessionId,
-      { status },
-      { new: true, runValidators: true },
-    );
+    const session = await Session.findByIdAndUpdate(sessionId, { status }, { new: true, runValidators: true });
 
     if (!session) {
       throw new ValidationError('Session not found');

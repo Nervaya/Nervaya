@@ -12,9 +12,7 @@ export default function AdminSupplementsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSupplement, setEditingSupplement] = useState<Supplement | null>(
-    null,
-  );
+  const [editingSupplement, setEditingSupplement] = useState<Supplement | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const fetchSupplements = async () => {
@@ -29,9 +27,7 @@ export default function AdminSupplementsPage() {
         setSupplements(response.data);
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to load supplements',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to load supplements');
     } finally {
       setLoading(false);
     }
@@ -48,9 +44,7 @@ export default function AdminSupplementsPage() {
         setError('Failed to delete supplement');
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to delete supplement',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to delete supplement');
     }
   };
 
@@ -73,10 +67,7 @@ export default function AdminSupplementsPage() {
     setSubmitting(true);
     try {
       if (editingSupplement) {
-        const response = (await api.put(
-          `/supplements/${editingSupplement._id}`,
-          data,
-        )) as { success: boolean };
+        const response = (await api.put(`/supplements/${editingSupplement._id}`, data)) as { success: boolean };
         if (response.success) {
           fetchSupplements();
           handleModalClose();
@@ -97,9 +88,7 @@ export default function AdminSupplementsPage() {
         }
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to save supplement',
-      );
+      setError(err instanceof Error ? err.message : 'Failed to save supplement');
       throw err;
     } finally {
       setSubmitting(false);
@@ -120,12 +109,7 @@ export default function AdminSupplementsPage() {
           </button>
         </div>
         {error && <div className={styles.error}>{error}</div>}
-        <SupplementList
-          supplements={supplements}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-          loading={loading}
-        />
+        <SupplementList supplements={supplements} onDelete={handleDelete} onEdit={handleEdit} loading={loading} />
       </div>
 
       <SupplementModal
@@ -135,9 +119,7 @@ export default function AdminSupplementsPage() {
         initialData={editingSupplement || undefined}
         loading={submitting}
         title={editingSupplement ? 'Edit Supplement' : 'Add New Supplement'}
-        submitLabel={
-          editingSupplement ? 'Update Supplement' : 'Create Supplement'
-        }
+        submitLabel={editingSupplement ? 'Update Supplement' : 'Create Supplement'}
       />
     </>
   );

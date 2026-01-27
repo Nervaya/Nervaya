@@ -97,9 +97,7 @@ export default function AdminTherapistsPage() {
                 />
                 <div className={styles.details}>
                   <h3>{therapist.name}</h3>
-                  <p className={styles.qualifications}>
-                    {therapist.qualifications?.join(', ')}
-                  </p>
+                  <p className={styles.qualifications}>{therapist.qualifications?.join(', ')}</p>
 
                   <div className={styles.infoRow}>
                     <span className={styles.infoItem}>
@@ -120,22 +118,13 @@ export default function AdminTherapistsPage() {
                 </div>
               </div>
               <div className={styles.actions}>
-                <Link
-                  href={`/admin/therapists/${therapist._id}/slots`}
-                  className={styles.slotsButton}
-                >
+                <Link href={`/admin/therapists/${therapist._id}/slots`} className={styles.slotsButton}>
                   Manage Slots
                 </Link>
-                <Link
-                  href={`/admin/therapists/edit/${therapist._id}`}
-                  className={styles.editButton}
-                >
+                <Link href={`/admin/therapists/edit/${therapist._id}`} className={styles.editButton}>
                   Edit
                 </Link>
-                <button
-                  onClick={() => handleDelete(therapist._id, therapist.name)}
-                  className={styles.deleteButton}
-                >
+                <button onClick={() => handleDelete(therapist._id, therapist.name)} className={styles.deleteButton}>
                   Delete
                 </button>
               </div>

@@ -6,9 +6,7 @@ import { LazyMotion, m } from 'framer-motion';
 
 export default function NotFound() {
   return (
-    <LazyMotion
-      features={() => import('framer-motion').then((mod) => mod.domAnimation)}
-    >
+    <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
       <div className={styles.container}>
         <m.div
           className={styles.glow}
@@ -59,8 +57,7 @@ export default function NotFound() {
             <h2 className={styles.subtitle}>Page Not Found</h2>
 
             <p className={styles.description}>
-              This page is currently dreaming. Let&apos;s get you back to
-              wakefulness.
+              This page is currently dreaming. Let&apos;s get you back to wakefulness.
             </p>
           </m.div>
 

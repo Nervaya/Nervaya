@@ -25,12 +25,7 @@ interface BookingModalProps {
   onSuccess: () => void;
 }
 
-export default function BookingModal({
-  therapistId,
-  therapistName,
-  onClose,
-  onSuccess,
-}: BookingModalProps) {
+export default function BookingModal({ therapistId, therapistName, onClose, onSuccess }: BookingModalProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -52,9 +47,7 @@ export default function BookingModal({
 
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      const response = await fetch(
-        `/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`,
-      );
+      const response = await fetch(`/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -78,8 +71,7 @@ export default function BookingModal({
         // Calculate end time
         const endH = i + 1;
         const endPeriod = endH >= 12 && endH < 24 ? 'PM' : 'AM'; // 24 is 12 AM next day
-        const displayEndHour =
-          endH > 12 ? endH - 12 : endH === 12 || endH === 24 ? 12 : endH;
+        const displayEndHour = endH > 12 ? endH - 12 : endH === 12 || endH === 24 ? 12 : endH;
         const endTime = `${displayEndHour}:00 ${endPeriod}`;
 
         generatedSlots.push({
@@ -93,11 +85,7 @@ export default function BookingModal({
       setSchedule({ date: dateStr, slots: generatedSlots });
     } catch (error) {
       console.error('Error fetching slots:', error);
-      setError(
-        error instanceof Error
-          ? error.message
-          : 'Failed to load available slots',
-      );
+      setError(error instanceof Error ? error.message : 'Failed to load available slots');
       setSchedule(null);
     } finally {
       setLoading(false);
@@ -185,16 +173,10 @@ export default function BookingModal({
       onSuccess?.(); // Call onSuccess callback
       onClose(); // Close the modal
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Error booking session. Please try again.';
+      const errorMessage = error instanceof Error ? error.message : 'Error booking session. Please try again.';
       setError(errorMessage);
 
-      if (
-        errorMessage.includes('not available') ||
-        errorMessage.includes('already booked')
-      ) {
+      if (errorMessage.includes('not available') || errorMessage.includes('already booked')) {
         fetchSlots();
       }
     } finally {
@@ -233,11 +215,7 @@ export default function BookingModal({
             <h2 className={styles.title}>📅 Book Your Appointment</h2>
             <p className={styles.subtitle}>with {therapistName}</p>
           </div>
-          <button
-            className={styles.closeBtn}
-            onClick={onClose}
-            aria-label="Close booking modal"
-          >
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close booking modal">
             ✕
           </button>
         </div>

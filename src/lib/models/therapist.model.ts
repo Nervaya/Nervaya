@@ -88,7 +88,6 @@ const therapistSchema = new Schema<ITherapist>(
 );
 
 const Therapist: Model<ITherapist> =
-  mongoose.models.Therapist ||
-  mongoose.model<ITherapist>('Therapist', therapistSchema);
+  mongoose.models.Therapist || mongoose.model<ITherapist>('Therapist', therapistSchema);
 
 export default Therapist;

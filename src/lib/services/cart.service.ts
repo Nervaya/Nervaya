@@ -21,11 +21,7 @@ export async function getCartByUserId(userId: string) {
   }
 }
 
-export async function addToCart(
-  userId: string,
-  supplementId: string,
-  quantity: number,
-) {
+export async function addToCart(userId: string, supplementId: string, quantity: number) {
   await connectDB();
   try {
     if (!userId || typeof userId !== 'string') {
@@ -57,9 +53,7 @@ export async function addToCart(
       cart = await Cart.create({ userId, items: [], totalAmount: 0 });
     }
 
-    const existingItemIndex = cart.items.findIndex(
-      (item) => item.supplementId.toString() === supplementId,
-    );
+    const existingItemIndex = cart.items.findIndex((item) => item.supplementId.toString() === supplementId);
 
     if (existingItemIndex > -1) {
       const newQuantity = cart.items[existingItemIndex].quantity + quantity;
@@ -82,11 +76,7 @@ export async function addToCart(
   }
 }
 
-export async function updateCartItem(
-  userId: string,
-  supplementId: string,
-  quantity: number,
-) {
+export async function updateCartItem(userId: string, supplementId: string, quantity: number) {
   await connectDB();
   try {
     if (!userId || typeof userId !== 'string') {
@@ -114,9 +104,7 @@ export async function updateCartItem(
       throw new ValidationError('Cart not found');
     }
 
-    const itemIndex = cart.items.findIndex(
-      (item) => item.supplementId.toString() === supplementId,
-    );
+    const itemIndex = cart.items.findIndex((item) => item.supplementId.toString() === supplementId);
 
     if (itemIndex === -1) {
       throw new ValidationError('Item not found in cart');
@@ -134,10 +122,7 @@ export async function updateCartItem(
 export async function removeFromCart(userId: string, supplementId: string) {
   await connectDB();
   try {
-    if (
-      !Types.ObjectId.isValid(userId) ||
-      !Types.ObjectId.isValid(supplementId)
-    ) {
+    if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(supplementId)) {
       throw new ValidationError('Invalid User ID or Supplement ID');
     }
 
@@ -146,9 +131,7 @@ export async function removeFromCart(userId: string, supplementId: string) {
       throw new ValidationError('Cart not found');
     }
 
-    cart.items = cart.items.filter(
-      (item) => item.supplementId.toString() !== supplementId,
-    );
+    cart.items = cart.items.filter((item) => item.supplementId.toString() !== supplementId);
 
     await cart.save();
     return await Cart.findById(cart._id).populate('items.supplementId');

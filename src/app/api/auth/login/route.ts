@@ -36,20 +36,12 @@ function checkRateLimit(identifier: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
-    const ip =
-      request.headers.get('x-forwarded-for') ||
-      request.headers.get('x-real-ip') ||
-      'unknown';
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
 
     if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        errorResponse(
-          'Too many login attempts. Please try again later.',
-          null,
-          429,
-        ),
-        { status: 429 },
-      );
+      return NextResponse.json(errorResponse('Too many login attempts. Please try again later.', null, 429), {
+        status: 429,
+      });
     }
 
     const body = await request.json();
@@ -57,18 +49,12 @@ export async function POST(request: NextRequest) {
 
     // Input validation
     if (!email || !password) {
-      return NextResponse.json(
-        errorResponse('Email and password are required', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Email and password are required', null, 400), { status: 400 });
     }
 
     // Validate email format
     if (typeof email !== 'string' || typeof password !== 'string') {
-      return NextResponse.json(
-        errorResponse('Invalid input format', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Invalid input format', null, 400), { status: 400 });
     }
 
     // Sanitize input (trim whitespace)
@@ -76,33 +62,19 @@ export async function POST(request: NextRequest) {
     const sanitizedPassword = password.trim();
 
     if (!sanitizedEmail || !sanitizedPassword) {
-      return NextResponse.json(
-        errorResponse('Email and password cannot be empty', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Email and password cannot be empty', null, 400), { status: 400 });
     }
 
     const result = await loginUser(sanitizedEmail, sanitizedPassword);
 
     // Set secure HTTP-only cookie
-    const response = NextResponse.json(
-      successResponse('Login successful', result),
-      { status: 200 },
-    );
+    const response = NextResponse.json(successResponse('Login successful', result), { status: 200 });
 
-    response.cookies.set(
-      COOKIE_NAMES.AUTH_TOKEN,
-      result.token,
-      getSecureCookieOptions(),
-    );
+    response.cookies.set(COOKIE_NAMES.AUTH_TOKEN, result.token, getSecureCookieOptions());
 
     return response;
   } catch (error) {
-    const {
-      message,
-      statusCode,
-      error: errData,
-    } = handleError(error as ApiError);
+    const { message, statusCode, error: errData } = handleError(error as ApiError);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
       status: statusCode,
     });

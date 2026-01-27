@@ -1,21 +1,12 @@
 import bcrypt from 'bcryptjs';
 import User from '@/lib/models/user.model';
 import { generateToken } from '@/lib/utils/jwt.util';
-import {
-  validateEmail,
-  validatePassword,
-  validateName,
-} from '@/lib/utils/validation.util';
+import { validateEmail, validatePassword, validateName } from '@/lib/utils/validation.util';
 import { ValidationError, AuthenticationError } from '@/lib/utils/error.util';
 import connectDB from '@/lib/db/mongodb';
 import { ROLES, Role } from '@/lib/constants/roles';
 
-export async function registerUser(
-  email: string,
-  password: string,
-  name: string,
-  role: Role = ROLES.CUSTOMER,
-) {
+export async function registerUser(email: string, password: string, name: string, role: Role = ROLES.CUSTOMER) {
   await connectDB();
 
   if (!validateEmail(email)) {
@@ -75,9 +66,7 @@ export async function loginUser(email: string, password: string) {
   }
 
   // Use select to explicitly include password field for comparison
-  const user = await User.findOne({ email: email.toLowerCase() }).select(
-    '+password',
-  );
+  const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
   if (!user) {
     // Use generic error message to prevent user enumeration
     throw new AuthenticationError('Invalid email or password');

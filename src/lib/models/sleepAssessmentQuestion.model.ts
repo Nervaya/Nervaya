@@ -56,10 +56,7 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       unique: true,
       trim: true,
       lowercase: true,
-      match: [
-        /^[a-z_]+$/,
-        'Question key must contain only lowercase letters and underscores',
-      ],
+      match: [/^[a-z_]+$/, 'Question key must contain only lowercase letters and underscores'],
     },
     questionText: {
       type: String,
@@ -120,9 +117,6 @@ sleepAssessmentQuestionSchema.index({ category: 1, order: 1 });
 
 const SleepAssessmentQuestion: Model<ISleepAssessmentQuestion> =
   mongoose.models.SleepAssessmentQuestion ||
-  mongoose.model<ISleepAssessmentQuestion>(
-    'SleepAssessmentQuestion',
-    sleepAssessmentQuestionSchema,
-  );
+  mongoose.model<ISleepAssessmentQuestion>('SleepAssessmentQuestion', sleepAssessmentQuestionSchema);
 
 export default SleepAssessmentQuestion;

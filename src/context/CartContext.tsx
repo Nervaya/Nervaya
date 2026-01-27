@@ -44,15 +44,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     // Listen for auth changes to refresh cart
     const handleAuthChange = () => refreshCart();
     window.addEventListener('auth-state-changed', handleAuthChange);
-    return () =>
-      window.removeEventListener('auth-state-changed', handleAuthChange);
+    return () => window.removeEventListener('auth-state-changed', handleAuthChange);
   }, []);
 
-  return (
-    <CartContext.Provider value={{ cartCount, refreshCart }}>
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={{ cartCount, refreshCart }}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => useContext(CartContext);

@@ -1,8 +1,4 @@
-export type QuestionType =
-  | 'single_choice'
-  | 'multiple_choice'
-  | 'text'
-  | 'scale';
+export type QuestionType = 'single_choice' | 'multiple_choice' | 'text' | 'scale';
 
 export interface IQuestionOption {
   id: string;
