@@ -1,54 +1,84 @@
 .inputContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: inherit;
-    /* Allow parent to control color */
-    opacity: 0.9;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .labelIcon {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .input {
-    padding: 0.75rem 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    outline: none;
-    color: inherit;
+  padding: 0.75rem 1rem;
+  border: 1px solid #6b7280;
+  background: #1f2937;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+  color: #ffffff !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #a0a0a0;
+  opacity: 1;
 }
 
 .input:focus {
-    border-color: #7828C8;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(120, 40, 200, 0.1);
+  border-color: #8b5cf6;
+  background: #333340;
+  box-shadow: none;
+  outline: none;
 }
 
 .inputError {
-    border-color: #ef4444;
+  border-color: #ef4444;
 }
 
 .inputError:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  box-shadow: none;
+  outline: none;
 }
 
 .errorText {
-    font-size: 0.875rem;
-    color: #ef4444;
-    margin-top: -0.25rem;
+  font-size: 0.875rem;
+  color: #ef4444;
+  margin-top: -0.25rem;
+}
+
+/* Light Theme Styles */
+.lightContainer .label {
+  color: #1a1a1a;
+}
+
+.lightInput {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #1a1a1a !important;
+}
+
+.lightInput:focus {
+  background: #ffffff;
+  border-color: #7c3aed;
+}
+
+.lightInput::placeholder {
+  color: #6b7280;
 }

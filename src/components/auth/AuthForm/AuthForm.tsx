@@ -1,10 +1,10 @@
-import React from 'react';
-import styles from './AuthForm.module.css';
+import React from "react";
+import styles from "./AuthForm.module.css";
 
 interface AuthFormProps {
-    title: string;
-    subtitle: string;
-    children: React.ReactNode;
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ title, subtitle, children }) => {

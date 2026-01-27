@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/utils/jwt.util';
-import { COOKIE_NAMES } from '@/utils/cookieConstants';
-import { ROLES, Role } from '@/lib/constants/roles';
+import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "@/lib/utils/jwt.util";
+import { COOKIE_NAMES } from "@/utils/cookieConstants";
+import { Role } from "@/lib/constants/roles";
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -11,22 +11,22 @@ export interface AuthenticatedRequest extends NextRequest {
 }
 
 export async function authenticateRequest(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<{ user: { userId: string; role: Role } } | NextResponse> {
   const token = request.cookies.get(COOKIE_NAMES.AUTH_TOKEN)?.value;
 
   if (!token) {
     return NextResponse.json(
-      { success: false, message: 'Authentication required', data: null },
-      { status: 401 }
+      { success: false, message: "Authentication required", data: null },
+      { status: 401 },
     );
   }
 
   const decoded = await verifyToken(token);
   if (!decoded) {
     const response = NextResponse.json(
-      { success: false, message: 'Invalid or expired token', data: null },
-      { status: 401 }
+      { success: false, message: "Invalid or expired token", data: null },
+      { status: 401 },
     );
     response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
     return response;
@@ -37,7 +37,7 @@ export async function authenticateRequest(
 
 export async function requireAuth(
   request: NextRequest,
-  allowedRoles?: Role[]
+  allowedRoles?: Role[],
 ): Promise<{ user: { userId: string; role: Role } } | NextResponse> {
   const authResult = await authenticateRequest(request);
 
@@ -47,8 +47,8 @@ export async function requireAuth(
 
   if (allowedRoles && !allowedRoles.includes(authResult.user.role)) {
     return NextResponse.json(
-      { success: false, message: 'Insufficient permissions', data: null },
-      { status: 403 }
+      { success: false, message: "Insufficient permissions", data: null },
+      { status: 403 },
     );
   }
 

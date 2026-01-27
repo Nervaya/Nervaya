@@ -1,66 +1,77 @@
 .container {
-    border: 2px dashed #444;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: #2a2a35;
-    position: relative;
-    min-height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  border: 2px dashed #2a2a2a;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #2a2a2a;
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+}
+
+.container p {
+  color: #ffffff;
+  margin: 0.5rem 0 0 0;
 }
 
 .container:hover {
-    border-color: #7c3aed;
-    background: #333340;
+  border-color: #8b5cf6;
+  background: #333340;
 }
 
 .input {
-    display: none;
+  display: none;
 }
 
 .preview {
-    max-width: 100%;
-    max-height: 200px;
-    margin-top: 1rem;
-    border-radius: 4px;
-    object-fit: cover;
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 1rem;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
 .label {
-    color: #ccc;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
 }
 
 .uploading {
-    opacity: 0.7;
-    cursor: wait;
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.uploading p {
+  color: #ffffff;
 }
 
 .error {
-    color: #ef4444;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
 }
 
 .removeBtn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
 }

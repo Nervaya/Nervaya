@@ -21,8 +21,10 @@ import {
   FaBell,
   FaShieldHalved,
   FaStethoscope,
-} from 'react-icons/fa6';
-import type { NavigationMenuGroup } from '@/types/navigation.types';
+  FaPills,
+  FaCapsules,
+} from "react-icons/fa6";
+import type { NavigationMenuGroup } from "@/types/navigation.types";
 
 export const iconMap: { [key: string]: React.ReactElement } = {
   FaHouse: <FaHouse />,
@@ -47,6 +49,8 @@ export const iconMap: { [key: string]: React.ReactElement } = {
   FaBell: <FaBell />,
   FaShieldHalved: <FaShieldHalved />,
   FaStethoscope: <FaStethoscope />,
+  FaPills: <FaPills />,
+  FaCapsules: <FaCapsules />,
 };
 
 export interface SidebarNavItem {
@@ -58,35 +62,47 @@ export interface SidebarNavItem {
 
 export const sidebarBottomNavItems: SidebarNavItem[] = [
   {
-    title: 'Feedback',
-    path: '/feedback',
-    icon: 'FaRegCommentDots',
+    title: "Feedback",
+    path: "/feedback",
+    icon: "FaRegCommentDots",
   },
 ];
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
-    title: 'Sleep',
+    title: "Sleep",
     items: [
-      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
-      { title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaHeartPulse' },
+      { title: "Drift Off", path: "/drift-off", icon: "FaBed" },
+      { title: "Sleep Elixir", path: "/sleep-elixir", icon: "FaHeartPulse" },
     ],
   },
   {
-    title: 'Support',
+    title: "Shop",
     items: [
-      { title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUserDoctor' },
-      { title: 'Support', path: '/support', icon: 'FaHeadset' },
-      { title: 'Account', path: '/account', icon: 'FaUsers' },
+      { title: "Supplements", path: "/supplements", icon: "FaPills" },
+      { title: "Cart", path: "/supplements/cart", icon: "FaCartShopping" },
+    ],
+  },
+  {
+    title: "Support",
+    items: [
+      {
+        title: "Therapy Corner",
+        path: "/therapy-corner",
+        icon: "FaUserDoctor",
+      },
+      { title: "Support", path: "/support", icon: "FaHeadset" },
+      { title: "Account", path: "/account", icon: "FaUsers" },
     ],
   },
 ];
 
 export const adminMenuGroups: NavigationMenuGroup[] = [
   {
-    title: 'Admin',
+    title: "Admin",
     items: [
-      { title: 'Therapists', path: '/admin/therapists', icon: 'FaUserDoctor' },
+      { title: "Therapists", path: "/admin/therapists", icon: "FaUserDoctor" },
+      { title: "Supplements", path: "/admin/supplements", icon: "FaPills" },
     ],
   },
 ];

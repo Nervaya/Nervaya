@@ -1,9 +1,13 @@
-import { memo, useMemo } from 'react';
-import { SectionContent as SectionContentType, GridItem, Subsection } from '@/utils/privacyPolicyData';
-import styles from './styles.module.css';
+import { memo, useMemo } from "react";
+import {
+  SectionContent as SectionContentType,
+  GridItem,
+  Subsection,
+} from "@/utils/privacyPolicyData";
+import styles from "./styles.module.css";
 
 interface SectionContentProps {
-    content: SectionContentType;
+  content: SectionContentType;
 }
 
 const SectionContent = memo(({ content }: SectionContentProps) => {
@@ -86,7 +90,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
         <div className={styles.contactContent}>
           <strong className={styles.contactLabel}>{item.label}</strong>
           {item.href ? (
-            <a href={item.href} className={styles.link}>{item.text}</a>
+            <a href={item.href} className={styles.link}>
+              {item.text}
+            </a>
           ) : (
             <span className={styles.contactText}>{item.text}</span>
           )}
@@ -99,39 +105,21 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
     <>
       {paragraphs}
 
-      {subsections && (
-        <>
-          {subsections}
-        </>
-      )}
+      {subsections && <>{subsections}</>}
 
-      {gridItems && (
-        <div className={styles.grid}>
-          {gridItems}
-        </div>
-      )}
+      {gridItems && <div className={styles.grid}>{gridItems}</div>}
 
       {securityCards && (
-        <div className={styles.securityGrid}>
-          {securityCards}
-        </div>
+        <div className={styles.securityGrid}>{securityCards}</div>
       )}
 
-      {rightsCards && (
-        <div className={styles.rightsGrid}>
-          {rightsCards}
-        </div>
-      )}
+      {rightsCards && <div className={styles.rightsGrid}>{rightsCards}</div>}
 
-      {contactItems && (
-        <div className={styles.contactInfo}>
-          {contactItems}
-        </div>
-      )}
+      {contactItems && <div className={styles.contactInfo}>{contactItems}</div>}
     </>
   );
 });
 
-SectionContent.displayName = 'SectionContent';
+SectionContent.displayName = "SectionContent";
 
 export default SectionContent;

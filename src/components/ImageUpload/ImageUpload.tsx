@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import styles from './styles.module.css';
-import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import styles from "./styles.module.css";
+import { FaCloudArrowUp, FaXmark } from "react-icons/fa6";
 
 interface ImageUploadProps {
-    onUpload: (url: string) => void;
-    initialUrl?: string;
-    label?: string;
+  onUpload: (url: string) => void;
+  initialUrl?: string;
+  label?: string;
 }
 
-const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: ImageUploadProps) => {
+const ImageUpload = ({
+  onUpload,
+  initialUrl = "",
+  label = "Upload Image",
+}: ImageUploadProps) => {
   const [preview, setPreview] = useState<string>(initialUrl);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,17 +30,19 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) {return;}
+    if (!file) {
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
+      const response = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -47,12 +53,11 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
         setPreview(imageUrl);
         onUpload(imageUrl);
       } else {
-        setError(data.message || data.error || 'Upload failed');
+        setError(data.message || data.error || "Upload failed");
       }
     } catch (err) {
-      setError('Upload failed. Please try again.');
+      setError("Upload failed. Please try again.");
       if (err instanceof Error) {
-         
         console.error(err);
       }
     } finally {
@@ -62,10 +67,10 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
 
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setPreview('');
-    onUpload('');
+    setPreview("");
+    onUpload("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -74,7 +79,10 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
   };
 
   return (
-    <div className={`${styles.container} ${loading ? styles.uploading : ''}`} onClick={handleClick}>
+    <div
+      className={`${styles.container} ${loading ? styles.uploading : ""}`}
+      onClick={handleClick}
+    >
       <input
         type="file"
         ref={fileInputRef}
@@ -95,7 +103,11 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
             className={styles.preview}
             unoptimized
           />
-          <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
+          <button
+            className={styles.removeBtn}
+            onClick={handleRemove}
+            title="Remove image"
+          >
             <FaXmark size={12} />
           </button>
         </>

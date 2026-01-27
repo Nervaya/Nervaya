@@ -1,0 +1,206 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+}
+
+.formSection {
+  background: white;
+}
+
+.summarySection {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.summary {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summaryTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: #1a1a1a;
+}
+
+.summaryDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Saved Addresses Styles */
+.savedAddresses {
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.addressGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.addressCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.addressCard:hover {
+  border-color: #8b5cf6;
+  background: #f8fafc;
+}
+
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.addressLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #8b5cf6;
+  background: #f3e8ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.defaultBadge {
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.addressName {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
+}
+
+.addressText {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.useButton {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.useButton:hover {
+  background: #f1f5f9;
+  color: #1a1a1a;
+  border-color: #94a3b8;
+}
+
+.totalRow {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 0.5rem;
+}
+
+.freeShipping {
+  background: #f0fdf4;
+  color: #22c55e;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 0.5rem 0;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #ef4444;
+  background: #fee2e2;
+  border-radius: 8px;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .summarySection {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}

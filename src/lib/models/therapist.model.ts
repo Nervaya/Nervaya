@@ -1,56 +1,56 @@
-import mongoose, { Schema, Model, Document } from 'mongoose';
+import mongoose, { Schema, Model, Document } from "mongoose";
 
 export interface IConsultingHour {
-    dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-    startTime: string; // Format: "09:00 AM"
-    endTime: string; // Format: "05:00 PM"
-    isEnabled: boolean;
+  dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime: string; // Format: "09:00 AM"
+  endTime: string; // Format: "05:00 PM"
+  isEnabled: boolean;
 }
 
 export interface ITherapist extends Document {
-    name: string;
-    qualifications: string[];
-    experience: string;
-    languages: string[];
-    specializations: string[];
-    image?: string;
-    bio?: string;
-    isAvailable: boolean;
-    consultingHours?: IConsultingHour[];
-    createdAt: Date;
-    updatedAt: Date;
+  name: string;
+  qualifications: string[];
+  experience: string;
+  languages: string[];
+  specializations: string[];
+  image?: string;
+  bio?: string;
+  isAvailable: boolean;
+  consultingHours?: IConsultingHour[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const therapistSchema = new Schema<ITherapist>(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
     },
     qualifications: {
       type: [String],
-      required: [true, 'Qualifications are required'],
+      required: [true, "Qualifications are required"],
     },
     experience: {
       type: String,
-      required: [true, 'Experience is required'],
+      required: [true, "Experience is required"],
     },
     languages: {
       type: [String],
-      required: [true, 'Languages are required'],
+      required: [true, "Languages are required"],
     },
     specializations: {
       type: [String],
-      required: [true, 'Specializations are required'],
+      required: [true, "Specializations are required"],
     },
     image: {
       type: String,
-      default: '',
+      default: "",
     },
     bio: {
       type: String,
-      default: '',
+      default: "",
     },
     isAvailable: {
       type: Boolean,
@@ -87,6 +87,8 @@ const therapistSchema = new Schema<ITherapist>(
   },
 );
 
-const Therapist: Model<ITherapist> = mongoose.models.Therapist || mongoose.model<ITherapist>('Therapist', therapistSchema);
+const Therapist: Model<ITherapist> =
+  mongoose.models.Therapist ||
+  mongoose.model<ITherapist>("Therapist", therapistSchema);
 
 export default Therapist;

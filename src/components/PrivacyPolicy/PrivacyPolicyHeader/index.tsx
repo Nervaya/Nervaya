@@ -1,5 +1,5 @@
-import { IoShieldOutline, IoTimeOutline } from 'react-icons/io5';
-import styles from './styles.module.css';
+import { IoShieldOutline, IoTimeOutline } from "react-icons/io5";
+import styles from "./styles.module.css";
 
 const PrivacyPolicyHeader = () => {
   return (
@@ -11,7 +11,8 @@ const PrivacyPolicyHeader = () => {
         </div>
         <h1 className={styles.headerTitle}>Privacy Policy</h1>
         <p className={styles.headerSubtitle}>
-                    Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.
+          Your privacy is important to us. This policy explains how we collect,
+          use, and protect your personal information.
         </p>
         <div className={styles.lastUpdated}>
           <IoTimeOutline />
