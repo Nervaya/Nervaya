@@ -4,6 +4,7 @@ export const PROTECTED_ROUTES = [
   "/account",
   "/supplements/cart",
   "/supplements/checkout",
+  "/sleep-assessment",
 ] as const;
 
 export const ADMIN_ROUTES = [
@@ -13,6 +14,7 @@ export const ADMIN_ROUTES = [
   "/admin/users",
   "/admin/billing",
   "/admin/supplements",
+  "/admin/sleep-assessment",
 ] as const;
 
 export const AUTH_ROUTES = ["/login", "/signup"] as const;
