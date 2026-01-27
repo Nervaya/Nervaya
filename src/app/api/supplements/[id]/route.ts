@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import {
   getSupplementById,
   updateSupplement,
   deleteSupplement,
-} from '@/lib/services/supplement.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { requireAuth } from '@/lib/middleware/auth.middleware';
-import { ROLES } from '@/lib/constants/roles';
+} from "@/lib/services/supplement.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { requireAuth } from "@/lib/middleware/auth.middleware";
+import { ROLES } from "@/lib/constants/roles";
 
 export async function GET(
   request: NextRequest,
@@ -17,7 +17,7 @@ export async function GET(
     const { id } = await params;
     const supplement = await getSupplementById(id);
     return NextResponse.json(
-      successResponse('Supplement fetched successfully', supplement),
+      successResponse("Supplement fetched successfully", supplement),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -41,16 +41,16 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
-    if (!body || typeof body !== 'object') {
+    if (!body || typeof body !== "object") {
       return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
+        errorResponse("Invalid request body", null, 400),
         { status: 400 },
       );
     }
 
     const supplement = await updateSupplement(id, body);
     return NextResponse.json(
-      successResponse('Supplement updated successfully', supplement),
+      successResponse("Supplement updated successfully", supplement),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

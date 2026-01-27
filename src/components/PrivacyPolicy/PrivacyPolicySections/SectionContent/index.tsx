@@ -1,10 +1,10 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo } from "react";
 import {
   SectionContent as SectionContentType,
   GridItem,
   Subsection,
-} from '@/utils/privacyPolicyData';
-import styles from './styles.module.css';
+} from "@/utils/privacyPolicyData";
+import styles from "./styles.module.css";
 
 interface SectionContentProps {
   content: SectionContentType;
@@ -120,6 +120,6 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   );
 });
 
-SectionContent.displayName = 'SectionContent';
+SectionContent.displayName = "SectionContent";
 
 export default SectionContent;

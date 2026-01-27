@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import {
   getTherapistById,
   updateTherapist,
   deleteTherapist,
-} from '@/lib/services/therapist.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { requireAuth } from '@/lib/middleware/auth.middleware';
-import { ROLES } from '@/lib/constants/roles';
+} from "@/lib/services/therapist.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { requireAuth } from "@/lib/middleware/auth.middleware";
+import { ROLES } from "@/lib/constants/roles";
 
 export async function GET(
   req: NextRequest,
@@ -18,7 +18,7 @@ export async function GET(
     const { id } = await params;
     const therapist = await getTherapistById(id);
     return NextResponse.json(
-      successResponse('Therapist fetched successfully', therapist),
+      successResponse("Therapist fetched successfully", therapist),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -44,16 +44,16 @@ export async function PUT(
     const body = await req.json();
 
     // Input validation
-    if (!body || typeof body !== 'object') {
+    if (!body || typeof body !== "object") {
       return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
+        errorResponse("Invalid request body", null, 400),
         { status: 400 },
       );
     }
 
     const therapist = await updateTherapist(id, body);
     return NextResponse.json(
-      successResponse('Therapist updated successfully', therapist),
+      successResponse("Therapist updated successfully", therapist),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -78,7 +78,7 @@ export async function DELETE(
     const { id } = await params;
     await deleteTherapist(id);
     return NextResponse.json(
-      successResponse('Therapist deleted successfully', null),
+      successResponse("Therapist deleted successfully", null),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

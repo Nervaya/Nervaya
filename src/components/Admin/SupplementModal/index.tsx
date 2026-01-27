@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { SupplementFormData } from '@/types/supplement.types';
-import SupplementForm from '../SupplementForm';
-import styles from './styles.module.css';
+import React, { useEffect, useRef } from "react";
+import { SupplementFormData } from "@/types/supplement.types";
+import SupplementForm from "../SupplementForm";
+import styles from "./styles.module.css";
 
 interface SupplementModalProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
   initialData,
   loading = false,
   title,
-  submitLabel = 'Create Supplement',
+  submitLabel = "Create Supplement",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -33,7 +33,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
     }
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         // Prevent auto-close on Escape - require explicit close button click
         // Uncomment below if you want Escape to work with confirmation
         // const confirmed = window.confirm('Are you sure you want to close? Unsaved changes will be lost.');
@@ -44,13 +44,13 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
     };
 
     // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
-    document.addEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 

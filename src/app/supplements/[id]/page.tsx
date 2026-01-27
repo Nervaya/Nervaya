@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Sidebar from '@/components/Sidebar/LazySidebar';
-import { Supplement } from '@/types/supplement.types';
-import QuantitySelector from '@/components/common/QuantitySelector';
-import Button from '@/components/common/Button';
-import { formatPrice } from '@/utils/cart.util';
-import api from '@/lib/axios';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import Sidebar from "@/components/Sidebar/LazySidebar";
+import { Supplement } from "@/types/supplement.types";
+import QuantitySelector from "@/components/common/QuantitySelector";
+import Button from "@/components/common/Button";
+import { formatPrice } from "@/utils/cart.util";
+import api from "@/lib/axios";
+import styles from "./styles.module.css";
 
 export default function SupplementDetailPage() {
   const params = useParams();
@@ -33,7 +33,7 @@ export default function SupplementDetailPage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to load supplement',
+        err instanceof Error ? err.message : "Failed to load supplement",
       );
     } finally {
       setLoading(false);
@@ -46,17 +46,17 @@ export default function SupplementDetailPage() {
     }
     setAdding(true);
     try {
-      const response = (await api.post('/cart', {
+      const response = (await api.post("/cart", {
         supplementId: supplement._id,
         quantity,
       })) as { success: boolean };
       if (response.success) {
-        alert('Added to cart successfully!');
-        router.push('/supplements/cart');
+        alert("Added to cart successfully!");
+        router.push("/supplements/cart");
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'Failed to add to cart';
+        err instanceof Error ? err.message : "Failed to add to cart";
       alert(message);
     } finally {
       setAdding(false);
@@ -80,7 +80,7 @@ export default function SupplementDetailPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>{error || 'Supplement not found'}</div>
+        <div className={styles.error}>{error || "Supplement not found"}</div>
       </div>
     );
   }
@@ -94,13 +94,13 @@ export default function SupplementDetailPage() {
         <div className={styles.content}>
           <div className={styles.imageSection}>
             <Image
-              src={supplement.image || '/default-supplement.png'}
+              src={supplement.image || "/default-supplement.png"}
               alt={supplement.name}
               width={500}
               height={500}
               className={styles.image}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/default-supplement.png';
+                (e.target as HTMLImageElement).src = "/default-supplement.png";
               }}
             />
           </div>

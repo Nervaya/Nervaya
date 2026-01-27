@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import {
   getSessionById,
   cancelSession,
   updateSessionStatus,
-} from '@/lib/services/session.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { requireAuth } from '@/lib/middleware/auth.middleware';
-import { ROLES } from '@/lib/constants/roles';
+} from "@/lib/services/session.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { requireAuth } from "@/lib/middleware/auth.middleware";
+import { ROLES } from "@/lib/constants/roles";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     const session = await getSessionById(id);
 
     return NextResponse.json(
-      successResponse('Session fetched successfully', session),
+      successResponse("Session fetched successfully", session),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -46,16 +46,16 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const body = await req.json();
 
-    if (body.status === 'cancelled') {
+    if (body.status === "cancelled") {
       const session = await cancelSession(id, authResult.user.userId);
       return NextResponse.json(
-        successResponse('Session cancelled successfully', session),
+        successResponse("Session cancelled successfully", session),
       );
     }
 
     const session = await updateSessionStatus(id, body.status);
     return NextResponse.json(
-      successResponse('Session updated successfully', session),
+      successResponse("Session updated successfully", session),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -77,7 +77,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
     const session = await cancelSession(id, authResult.user.userId);
 
     return NextResponse.json(
-      successResponse('Session deleted successfully', session),
+      successResponse("Session deleted successfully", session),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

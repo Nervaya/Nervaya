@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './AuthForm.module.css';
+import React from "react";
+import styles from "./AuthForm.module.css";
 
 interface AuthFormProps {
   title: string;

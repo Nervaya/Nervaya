@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { FaCircleUser } from 'react-icons/fa6';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { FaCircleUser } from "react-icons/fa6";
 import {
   NAVBAR_PRODUCTS_LINKS,
   NAVBAR_ACCOUNT_LINKS,
-} from '@/utils/navbarConstants';
-import { ROUTES } from '@/utils/routesConstants';
-import styles from './styles.module.css';
+} from "@/utils/navbarConstants";
+import { ROUTES } from "@/utils/routesConstants";
+import styles from "./styles.module.css";
 
 const Navbar = () => {
   const router = useRouter();
@@ -23,8 +23,8 @@ const Navbar = () => {
   const accountDropdownRef = useRef<HTMLLIElement>(null);
 
   const checkAuth = () => {
-    if (typeof window !== 'undefined') {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (typeof window !== "undefined") {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       setIsUserLoggedIn(isLoggedIn);
     }
   };
@@ -35,20 +35,20 @@ const Navbar = () => {
     checkAuth();
 
     const handleAuthChange = () => checkAuth();
-    window.addEventListener('auth-state-changed', handleAuthChange);
+    window.addEventListener("auth-state-changed", handleAuthChange);
     return () =>
-      window.removeEventListener('auth-state-changed', handleAuthChange);
+      window.removeEventListener("auth-state-changed", handleAuthChange);
   }, []);
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch("/api/auth/logout", { method: "POST" });
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
     setIsUserLoggedIn(false);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("auth-state-changed"));
     }
     router.push(ROUTES.LOGIN);
   };
@@ -70,23 +70,23 @@ const Navbar = () => {
     };
 
     if (isProductsDropdownOpen || isAccountDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isProductsDropdownOpen, isAccountDropdownOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
@@ -116,13 +116,13 @@ const Navbar = () => {
           aria-expanded={isMobileMenuOpen}
         >
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
           ></span>
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
           ></span>
           <span
-            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ''}`}
+            className={`${styles.hamburgerBar} ${isMobileMenuOpen ? styles.hamburgerBarOpen : ""}`}
           ></span>
         </button>
 
@@ -131,7 +131,7 @@ const Navbar = () => {
         )}
 
         <ul
-          className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}
+          className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ""}`}
         >
           <li>
             <Link href="/" onClick={closeMobileMenu}>
@@ -147,7 +147,7 @@ const Navbar = () => {
             >
               Products
               <span
-                className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}
+                className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ""}`}
               >
                 ▼
               </span>
@@ -179,28 +179,28 @@ const Navbar = () => {
               <button
                 onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'inherit',
-                  fontSize: 'inherit',
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                  fontSize: "inherit",
                 }}
               >
                 <FaCircleUser size={24} />
                 <span>Account</span>
                 <span
-                  className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}
+                  className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ""}`}
                 >
-                  {' '}
+                  {" "}
                 </span>
               </button>
               {isAccountDropdownOpen && (
                 <ul
                   className={styles.dropdownMenu}
-                  style={{ minWidth: '150px', right: 0, left: 'auto' }}
+                  style={{ minWidth: "150px", right: 0, left: "auto" }}
                 >
                   {NAVBAR_ACCOUNT_LINKS.map((link, index) => (
                     <li key={index}>

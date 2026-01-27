@@ -22,7 +22,7 @@ export interface AuthResponse {
   success: boolean;
   message: string;
   data?: {
-    user: Omit<User, 'password'>;
+    user: Omit<User, "password">;
     token: string;
   };
   error?: string;

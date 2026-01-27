@@ -1,9 +1,9 @@
-import Session from '@/lib/models/session.model';
-import { releaseSlot } from '@/lib/services/therapistSchedule.service';
-import connectDB from '@/lib/db/mongodb';
-import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
-import { SESSION_STATUS, SessionStatus } from '@/lib/constants/enums';
+import Session from "@/lib/models/session.model";
+import { releaseSlot } from "@/lib/services/therapistSchedule.service";
+import connectDB from "@/lib/db/mongodb";
+import { handleError, ValidationError } from "@/lib/utils/error.util";
+import { Types } from "mongoose";
+import { SESSION_STATUS, SessionStatus } from "@/lib/constants/enums";
 
 export async function createSession(
   userId: string,
@@ -18,13 +18,13 @@ export async function createSession(
       !Types.ObjectId.isValid(userId) ||
       !Types.ObjectId.isValid(therapistId)
     ) {
-      throw new ValidationError('Invalid User ID or Therapist ID');
+      throw new ValidationError("Invalid User ID or Therapist ID");
     }
 
     // Calculate endTime (1 hour duration)
     // Note: startTime is expected in "HH:MM AM/PM" format
-    const startHour = parseInt(startTime.split(':')[0]);
-    const isPM = startTime.includes('PM');
+    const startHour = parseInt(startTime.split(":")[0]);
+    const isPM = startTime.includes("PM");
     const hour24 =
       isPM && startHour !== 12
         ? startHour + 12
@@ -33,7 +33,7 @@ export async function createSession(
           : startHour;
 
     const endHour = hour24 + 1;
-    const endPeriod = endHour >= 12 ? 'PM' : 'AM';
+    const endPeriod = endHour >= 12 ? "PM" : "AM";
     const displayEndHour =
       endHour > 12
         ? endHour - 12
@@ -56,7 +56,7 @@ export async function createSession(
     });
 
     if (existingSession) {
-      throw new ValidationError('Slot is already booked');
+      throw new ValidationError("Slot is already booked");
     }
 
     const session = await Session.create({
@@ -78,7 +78,7 @@ export async function getUserSessions(userId: string, statusFilter?: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(userId)) {
-      throw new ValidationError('Invalid User ID');
+      throw new ValidationError("Invalid User ID");
     }
 
     const filter: Record<string, unknown> = { userId };
@@ -87,7 +87,7 @@ export async function getUserSessions(userId: string, statusFilter?: string) {
     }
 
     const sessions = await Session.find(filter)
-      .populate('therapistId')
+      .populate("therapistId")
       .sort({ date: -1, startTime: -1 });
 
     return sessions;
@@ -100,13 +100,13 @@ export async function getSessionById(sessionId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(sessionId)) {
-      throw new ValidationError('Invalid Session ID');
+      throw new ValidationError("Invalid Session ID");
     }
 
-    const session = await Session.findById(sessionId).populate('therapistId');
+    const session = await Session.findById(sessionId).populate("therapistId");
 
     if (!session) {
-      throw new ValidationError('Session not found');
+      throw new ValidationError("Session not found");
     }
 
     return session;
@@ -119,21 +119,21 @@ export async function cancelSession(sessionId: string, userId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(sessionId) || !Types.ObjectId.isValid(userId)) {
-      throw new ValidationError('Invalid Session ID or User ID');
+      throw new ValidationError("Invalid Session ID or User ID");
     }
 
     const session = await Session.findById(sessionId);
 
     if (!session) {
-      throw new ValidationError('Session not found');
+      throw new ValidationError("Session not found");
     }
 
     if (session.userId.toString() !== userId) {
-      throw new ValidationError('Unauthorized to cancel this session');
+      throw new ValidationError("Unauthorized to cancel this session");
     }
 
     if (session.status !== SESSION_STATUS.PENDING) {
-      throw new ValidationError('Only pending sessions can be cancelled');
+      throw new ValidationError("Only pending sessions can be cancelled");
     }
 
     session.status = SESSION_STATUS.CANCELLED;
@@ -159,7 +159,7 @@ export async function updateSessionStatus(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(sessionId)) {
-      throw new ValidationError('Invalid Session ID');
+      throw new ValidationError("Invalid Session ID");
     }
 
     const session = await Session.findByIdAndUpdate(
@@ -169,7 +169,7 @@ export async function updateSessionStatus(
     );
 
     if (!session) {
-      throw new ValidationError('Session not found');
+      throw new ValidationError("Session not found");
     }
 
     return session;

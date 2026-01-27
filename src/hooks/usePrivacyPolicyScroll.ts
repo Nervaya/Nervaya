@@ -1,8 +1,8 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, RefObject } from "react";
 import {
   PRIVACY_POLICY_SECTIONS,
   DEFAULT_PRIVACY_POLICY_SECTION,
-} from '@/utils/privacyPolicyConstants';
+} from "@/utils/privacyPolicyConstants";
 
 interface UsePrivacyPolicyScrollProps {
   isMobile: boolean;
@@ -18,8 +18,8 @@ export const usePrivacyPolicyScroll = ({
   scrollLockRef,
 }: UsePrivacyPolicyScrollProps) => {
   const [activeSection, setActiveSection] = useState<string>(() => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-      return ''; // No active section on mobile by default
+    if (typeof window !== "undefined" && window.innerWidth <= 768) {
+      return ""; // No active section on mobile by default
     }
     return DEFAULT_PRIVACY_POLICY_SECTION;
   });
@@ -74,7 +74,7 @@ export const usePrivacyPolicyScroll = ({
           const elementBottom = elementTop + rect.height;
 
           // Get section header position
-          const sectionHeader = element.querySelector('button') || element;
+          const sectionHeader = element.querySelector("button") || element;
           const headerRect = sectionHeader.getBoundingClientRect();
           const headerTop = viewportTop + headerRect.top;
 
@@ -168,11 +168,11 @@ export const usePrivacyPolicyScroll = ({
     }, 200);
 
     // Listen to scroll events for desktop/laptop
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       clearTimeout(initialCheck);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [isMobile, scrollLockRef]);
 

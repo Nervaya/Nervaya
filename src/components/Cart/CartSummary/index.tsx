@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { Cart } from '@/types/supplement.types';
-import Button from '@/components/common/Button';
-import { formatPrice, getCartItemCount } from '@/utils/cart.util';
-import styles from './styles.module.css';
+import React from "react";
+import Link from "next/link";
+import { Cart } from "@/types/supplement.types";
+import Button from "@/components/common/Button";
+import { formatPrice, getCartItemCount } from "@/utils/cart.util";
+import styles from "./styles.module.css";
 
 interface CartSummaryProps {
   cart: Cart;
@@ -33,7 +33,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({
         </div>
         <div className={styles.row}>
           <span>Shipping</span>
-          <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+          <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
         </div>
         {subtotal < 500 && (
           <div className={styles.freeShipping}>

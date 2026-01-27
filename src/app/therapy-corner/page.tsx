@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import Sidebar from '@/components/Sidebar/LazySidebar';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import BookingModal from '@/components/Booking/BookingModal';
-import { Therapist } from '@/types/therapist.types';
-import styles from './styles.module.css';
+import Sidebar from "@/components/Sidebar/LazySidebar";
+import PageHeader from "@/components/PageHeader/PageHeader";
+import BookingModal from "@/components/Booking/BookingModal";
+import { Therapist } from "@/types/therapist.types";
+import styles from "./styles.module.css";
 
 export default function TherapyCornerPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
     null,
   );
@@ -22,15 +22,15 @@ export default function TherapyCornerPage() {
 
   const fetchTherapists = async () => {
     try {
-      const response = await fetch('/api/therapists');
+      const response = await fetch("/api/therapists");
       if (!response.ok) {
-        throw new Error('Failed to fetch therapists');
+        throw new Error("Failed to fetch therapists");
       }
 
       const result = await response.json();
       setTherapists(result.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -82,12 +82,12 @@ export default function TherapyCornerPage() {
                   <div>
                     <h3>{therapist.name}</h3>
                     <p className={styles.credentials}>
-                      {therapist.qualifications?.join(', ') ||
-                        'Professional Therapist'}
+                      {therapist.qualifications?.join(", ") ||
+                        "Professional Therapist"}
                     </p>
                     <p className={styles.details}>
-                      Experience: {therapist.experience || 'N/A'} | Languages:{' '}
-                      {therapist.languages?.join(', ') || 'N/A'}
+                      Experience: {therapist.experience || "N/A"} | Languages:{" "}
+                      {therapist.languages?.join(", ") || "N/A"}
                     </p>
                     <div className={styles.tags}>
                       {therapist.specializations?.map((spec) => (

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model, Document } from 'mongoose';
+import mongoose, { Schema, Model, Document } from "mongoose";
 
 export interface IConsultingHour {
   dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
@@ -25,32 +25,32 @@ const therapistSchema = new Schema<ITherapist>(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
     },
     qualifications: {
       type: [String],
-      required: [true, 'Qualifications are required'],
+      required: [true, "Qualifications are required"],
     },
     experience: {
       type: String,
-      required: [true, 'Experience is required'],
+      required: [true, "Experience is required"],
     },
     languages: {
       type: [String],
-      required: [true, 'Languages are required'],
+      required: [true, "Languages are required"],
     },
     specializations: {
       type: [String],
-      required: [true, 'Specializations are required'],
+      required: [true, "Specializations are required"],
     },
     image: {
       type: String,
-      default: '',
+      default: "",
     },
     bio: {
       type: String,
-      default: '',
+      default: "",
     },
     isAvailable: {
       type: Boolean,
@@ -89,6 +89,6 @@ const therapistSchema = new Schema<ITherapist>(
 
 const Therapist: Model<ITherapist> =
   mongoose.models.Therapist ||
-  mongoose.model<ITherapist>('Therapist', therapistSchema);
+  mongoose.model<ITherapist>("Therapist", therapistSchema);
 
 export default Therapist;

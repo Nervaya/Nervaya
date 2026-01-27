@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { handlePaymentWebhook } from '@/lib/services/payment.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import crypto from 'crypto';
+import { NextRequest, NextResponse } from "next/server";
+import { handlePaymentWebhook } from "@/lib/services/payment.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     if (!event || !payload) {
       return NextResponse.json(
-        errorResponse('Event and payload are required', null, 400),
+        errorResponse("Event and payload are required", null, 400),
         { status: 400 },
       );
     }
@@ -19,19 +19,19 @@ export async function POST(request: NextRequest) {
     const webhookSecret =
       process.env.RAZORPAY_WEBHOOK_SECRET ||
       process.env.RAZORPAY_KEY_SECRET ||
-      '';
-    const razorpaySignature = request.headers.get('x-razorpay-signature');
+      "";
+    const razorpaySignature = request.headers.get("x-razorpay-signature");
 
     if (razorpaySignature && webhookSecret) {
       const text = JSON.stringify(body);
       const generatedSignature = crypto
-        .createHmac('sha256', webhookSecret)
+        .createHmac("sha256", webhookSecret)
         .update(text)
-        .digest('hex');
+        .digest("hex");
 
       if (generatedSignature !== razorpaySignature) {
         return NextResponse.json(
-          errorResponse('Invalid webhook signature', null, 401),
+          errorResponse("Invalid webhook signature", null, 401),
           {
             status: 401,
           },
@@ -45,14 +45,14 @@ export async function POST(request: NextRequest) {
 
     if (!razorpayOrderId || !paymentId) {
       return NextResponse.json(
-        errorResponse('Order ID and payment ID are required', null, 400),
+        errorResponse("Order ID and payment ID are required", null, 400),
         { status: 400 },
       );
     }
 
     await handlePaymentWebhook(razorpayOrderId, paymentId, event);
     return NextResponse.json(
-      successResponse('Webhook processed successfully', null),
+      successResponse("Webhook processed successfully", null),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

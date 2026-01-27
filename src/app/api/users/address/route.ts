@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/db/mongodb';
-import User from '@/lib/models/user.model';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { requireAuth } from '@/lib/middleware/auth.middleware';
-import { ROLES } from '@/lib/constants/roles';
+import { NextRequest, NextResponse } from "next/server";
+import connectDB from "@/lib/db/mongodb";
+import User from "@/lib/models/user.model";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { requireAuth } from "@/lib/middleware/auth.middleware";
+import { ROLES } from "@/lib/constants/roles";
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,17 +19,17 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
     const user = await User.findById(authResult.user.userId).select(
-      'addresses',
+      "addresses",
     );
 
     if (!user) {
-      return NextResponse.json(errorResponse('User not found', null, 404), {
+      return NextResponse.json(errorResponse("User not found", null, 404), {
         status: 404,
       });
     }
 
     return NextResponse.json(
-      successResponse('Addresses fetched successfully', user.addresses),
+      successResponse("Addresses fetched successfully", user.addresses),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       !label
     ) {
       return NextResponse.json(
-        errorResponse('Missing required fields', null, 400),
+        errorResponse("Missing required fields", null, 400),
         { status: 400 },
       );
     }
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 
     const user = await User.findById(authResult.user.userId);
     if (!user) {
-      return NextResponse.json(errorResponse('User not found', null, 404), {
+      return NextResponse.json(errorResponse("User not found", null, 404), {
         status: 404,
       });
     }
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
     await user.save();
 
     return NextResponse.json(
-      successResponse('Address saved successfully', user.addresses, 201),
+      successResponse("Address saved successfully", user.addresses, 201),
       { status: 201 },
     );
   } catch (error) {

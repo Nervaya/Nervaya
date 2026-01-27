@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { registerUser } from '@/lib/services/auth.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { ApiError } from '@/types/error.types';
-import { COOKIE_NAMES, getSecureCookieOptions } from '@/utils/cookieConstants';
+import { NextRequest, NextResponse } from "next/server";
+import { registerUser } from "@/lib/services/auth.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { ApiError } from "@/types/error.types";
+import { COOKIE_NAMES, getSecureCookieOptions } from "@/utils/cookieConstants";
 
 // In-memory rate limiting - optimized for Vercel serverless functions
 // Each function instance maintains its own rate limit state
@@ -37,14 +37,14 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
     const ip =
-      request.headers.get('x-forwarded-for') ||
-      request.headers.get('x-real-ip') ||
-      'unknown';
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
 
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         errorResponse(
-          'Too many signup attempts. Please try again later.',
+          "Too many signup attempts. Please try again later.",
           null,
           429,
         ),
@@ -58,19 +58,19 @@ export async function POST(request: NextRequest) {
     // Controller level validation (Basic required fields)
     if (!email || !password || !name) {
       return NextResponse.json(
-        errorResponse('Email, password, and name are required', null, 400),
+        errorResponse("Email, password, and name are required", null, 400),
         { status: 400 },
       );
     }
 
     // Input type validation
     if (
-      typeof email !== 'string' ||
-      typeof password !== 'string' ||
-      typeof name !== 'string'
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof name !== "string"
     ) {
       return NextResponse.json(
-        errorResponse('Invalid input format', null, 400),
+        errorResponse("Invalid input format", null, 400),
         { status: 400 },
       );
     }
@@ -82,13 +82,13 @@ export async function POST(request: NextRequest) {
 
     if (!sanitizedEmail || !sanitizedPassword || !sanitizedName) {
       return NextResponse.json(
-        errorResponse('Email, password, and name cannot be empty', null, 400),
+        errorResponse("Email, password, and name cannot be empty", null, 400),
         { status: 400 },
       );
     }
 
     // Prevent role manipulation - only allow CUSTOMER role for signup
-    const sanitizedRole = role === 'ADMIN' ? undefined : role;
+    const sanitizedRole = role === "ADMIN" ? undefined : role;
 
     const result = await registerUser(
       sanitizedEmail,
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
     // Set secure HTTP-only cookie
     const response = NextResponse.json(
-      successResponse('User registered successfully', result, 201),
+      successResponse("User registered successfully", result, 201),
       { status: 201 },
     );
 

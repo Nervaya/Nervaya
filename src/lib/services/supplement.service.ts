@@ -1,21 +1,21 @@
-import Supplement, { ISupplement } from '@/lib/models/supplement.model';
-import connectDB from '@/lib/db/mongodb';
-import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
+import Supplement, { ISupplement } from "@/lib/models/supplement.model";
+import connectDB from "@/lib/db/mongodb";
+import { handleError, ValidationError } from "@/lib/utils/error.util";
+import { Types } from "mongoose";
 
 export async function createSupplement(data: Partial<ISupplement>) {
   await connectDB();
   try {
     if (!data.name || !data.description || data.price === undefined) {
-      throw new ValidationError('Name, description, and price are required');
+      throw new ValidationError("Name, description, and price are required");
     }
 
     if (data.price < 0) {
-      throw new ValidationError('Price must be non-negative');
+      throw new ValidationError("Price must be non-negative");
     }
 
     if (data.stock !== undefined && data.stock < 0) {
-      throw new ValidationError('Stock must be non-negative');
+      throw new ValidationError("Stock must be non-negative");
     }
 
     const supplement = await Supplement.create(data);
@@ -53,11 +53,11 @@ export async function getSupplementById(id: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError('Invalid Supplement ID');
+      throw new ValidationError("Invalid Supplement ID");
     }
     const supplement = await Supplement.findById(id);
     if (!supplement) {
-      throw new ValidationError('Supplement not found');
+      throw new ValidationError("Supplement not found");
     }
     return supplement;
   } catch (error) {
@@ -69,15 +69,15 @@ export async function updateSupplement(id: string, data: Partial<ISupplement>) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError('Invalid Supplement ID');
+      throw new ValidationError("Invalid Supplement ID");
     }
 
     if (data.price !== undefined && data.price < 0) {
-      throw new ValidationError('Price must be non-negative');
+      throw new ValidationError("Price must be non-negative");
     }
 
     if (data.stock !== undefined && data.stock < 0) {
-      throw new ValidationError('Stock must be non-negative');
+      throw new ValidationError("Stock must be non-negative");
     }
 
     const supplement = await Supplement.findByIdAndUpdate(id, data, {
@@ -86,7 +86,7 @@ export async function updateSupplement(id: string, data: Partial<ISupplement>) {
     });
 
     if (!supplement) {
-      throw new ValidationError('Supplement not found');
+      throw new ValidationError("Supplement not found");
     }
     return supplement;
   } catch (error) {
@@ -98,13 +98,13 @@ export async function deleteSupplement(id: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(id)) {
-      throw new ValidationError('Invalid Supplement ID');
+      throw new ValidationError("Invalid Supplement ID");
     }
     const supplement = await Supplement.findByIdAndDelete(id);
     if (!supplement) {
-      throw new ValidationError('Supplement not found');
+      throw new ValidationError("Supplement not found");
     }
-    return { message: 'Supplement deleted successfully' };
+    return { message: "Supplement deleted successfully" };
   } catch (error) {
     throw handleError(error);
   }

@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createSession, getUserSessions } from '@/lib/services/session.service';
-import { successResponse, errorResponse } from '@/lib/utils/response.util';
-import { handleError } from '@/lib/utils/error.util';
-import { requireAuth } from '@/lib/middleware/auth.middleware';
-import { ROLES } from '@/lib/constants/roles';
+import { NextRequest, NextResponse } from "next/server";
+import { createSession, getUserSessions } from "@/lib/services/session.service";
+import { successResponse, errorResponse } from "@/lib/utils/response.util";
+import { handleError } from "@/lib/utils/error.util";
+import { requireAuth } from "@/lib/middleware/auth.middleware";
+import { ROLES } from "@/lib/constants/roles";
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const statusFilter = searchParams.get('status') || undefined;
+    const statusFilter = searchParams.get("status") || undefined;
 
     const sessions = await getUserSessions(
       authResult.user.userId,
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     );
 
     return NextResponse.json(
-      successResponse('Sessions fetched successfully', sessions),
+      successResponse("Sessions fetched successfully", sessions),
     );
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
@@ -42,9 +42,9 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    if (!body || typeof body !== 'object') {
+    if (!body || typeof body !== "object") {
       return NextResponse.json(
-        errorResponse('Invalid request body', null, 400),
+        errorResponse("Invalid request body", null, 400),
         { status: 400 },
       );
     }
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     if (!therapistId || !date || !startTime) {
       return NextResponse.json(
         errorResponse(
-          'Missing required fields: therapistId, date, startTime',
+          "Missing required fields: therapistId, date, startTime",
           null,
           400,
         ),
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(
-      successResponse('Session booked successfully', session, 201),
+      successResponse("Session booked successfully", session, 201),
       { status: 201 },
     );
   } catch (error) {

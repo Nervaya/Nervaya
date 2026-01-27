@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import styles from './styles.module.css';
-import { landingPageCardsData } from '@/utils/landingPageCardsData';
+import Image from "next/image";
+import styles from "./styles.module.css";
+import { landingPageCardsData } from "@/utils/landingPageCardsData";
 
 const Cards = () => {
   return (

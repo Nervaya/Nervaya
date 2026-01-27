@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './styles.module.css';
-import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./styles.module.css";
+import ImageUpload from "@/components/ImageUpload/ImageUpload";
 
 export default function AddTherapistPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    qualifications: '',
-    experience: '',
-    languages: '',
-    specializations: '',
-    image: '',
+    name: "",
+    email: "",
+    qualifications: "",
+    experience: "",
+    languages: "",
+    specializations: "",
+    image: "",
   });
 
   const handleChange = (
@@ -35,39 +35,39 @@ export default function AddTherapistPage() {
       const payload = {
         ...formData,
         qualifications: formData.qualifications
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
           .filter(Boolean),
         languages: formData.languages
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
           .filter(Boolean),
         specializations: formData.specializations
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
           .filter(Boolean),
       };
 
-      const response = await fetch('/api/therapists', {
-        method: 'POST',
+      const response = await fetch("/api/therapists", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        router.push('/admin/therapists');
+        router.push("/admin/therapists");
       } else {
         // eslint-disable-next-line no-alert
-        alert('Failed to create therapist');
+        alert("Failed to create therapist");
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error('Error creating therapist', error);
+        console.error("Error creating therapist", error);
       }
       // eslint-disable-next-line no-alert
-      alert('An error occurred');
+      alert("An error occurred");
     } finally {
       setLoading(false);
     }
@@ -158,7 +158,7 @@ export default function AddTherapistPage() {
           disabled={loading}
           className={styles.submitButton}
         >
-          {loading ? 'Creating...' : 'Create Therapist'}
+          {loading ? "Creating..." : "Create Therapist"}
         </button>
       </form>
     </div>

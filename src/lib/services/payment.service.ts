@@ -1,14 +1,14 @@
-import Razorpay from 'razorpay';
-import crypto from 'crypto';
-import Order from '@/lib/models/order.model';
-import connectDB from '@/lib/db/mongodb';
-import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
-import { PAYMENT_STATUS, ORDER_STATUS } from '@/lib/constants/enums';
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import Order from "@/lib/models/order.model";
+import connectDB from "@/lib/db/mongodb";
+import { handleError, ValidationError } from "@/lib/utils/error.util";
+import { Types } from "mongoose";
+import { PAYMENT_STATUS, ORDER_STATUS } from "@/lib/constants/enums";
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+  key_id: process.env.RAZORPAY_KEY_ID || "",
+  key_secret: process.env.RAZORPAY_KEY_SECRET || "",
 });
 
 export interface RazorpayOrderResponse {
@@ -28,27 +28,27 @@ export async function createRazorpayOrder(orderId: string, amount: number) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
-      throw new ValidationError('Invalid Order ID');
+      throw new ValidationError("Invalid Order ID");
     }
 
     const order = await Order.findById(orderId);
     if (!order) {
-      throw new ValidationError('Order not found');
+      throw new ValidationError("Order not found");
     }
 
     if (amount !== order.totalAmount) {
-      throw new ValidationError('Amount mismatch');
+      throw new ValidationError("Amount mismatch");
     }
 
     if (order.paymentStatus === PAYMENT_STATUS.PAID) {
-      throw new ValidationError('Order already paid');
+      throw new ValidationError("Order already paid");
     }
 
     const amountInPaisa = Math.round(amount * 100);
 
     const options = {
       amount: amountInPaisa,
-      currency: 'INR',
+      currency: "INR",
       receipt: `${orderId}_${Date.now()}`,
       notes: {
         orderId: orderId.toString(),
@@ -75,28 +75,28 @@ export async function verifyPayment(
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
-      throw new ValidationError('Invalid Order ID');
+      throw new ValidationError("Invalid Order ID");
     }
 
     const order = await Order.findById(orderId);
     if (!order) {
-      throw new ValidationError('Order not found');
+      throw new ValidationError("Order not found");
     }
 
     if (!order.razorpayOrderId) {
-      throw new ValidationError('Razorpay order ID not found');
+      throw new ValidationError("Razorpay order ID not found");
     }
 
-    const webhookSecret = process.env.RAZORPAY_KEY_SECRET || '';
+    const webhookSecret = process.env.RAZORPAY_KEY_SECRET || "";
 
     const text = `${order.razorpayOrderId}|${paymentId}`;
     const generatedSignature = crypto
-      .createHmac('sha256', webhookSecret)
+      .createHmac("sha256", webhookSecret)
       .update(text)
-      .digest('hex');
+      .digest("hex");
 
     if (generatedSignature !== razorpaySignature) {
-      throw new ValidationError('Invalid payment signature');
+      throw new ValidationError("Invalid payment signature");
     }
 
     await Order.findByIdAndUpdate(orderId, {
@@ -120,16 +120,16 @@ export async function handlePaymentWebhook(
   try {
     const order = await Order.findOne({ razorpayOrderId });
     if (!order) {
-      throw new ValidationError('Order not found');
+      throw new ValidationError("Order not found");
     }
 
-    if (event === 'payment.captured' || event === 'payment.authorized') {
+    if (event === "payment.captured" || event === "payment.authorized") {
       await Order.findByIdAndUpdate(order._id, {
         paymentId,
         paymentStatus: PAYMENT_STATUS.PAID,
         orderStatus: ORDER_STATUS.CONFIRMED,
       });
-    } else if (event === 'payment.failed') {
+    } else if (event === "payment.failed") {
       await Order.findByIdAndUpdate(order._id, {
         paymentStatus: PAYMENT_STATUS.FAILED,
       });

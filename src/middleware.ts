@@ -1,12 +1,12 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { verifyToken } from './lib/utils/jwt.util';
+import { NextResponse, type NextRequest } from "next/server";
+import { verifyToken } from "./lib/utils/jwt.util";
 import {
   PROTECTED_ROUTES,
   ADMIN_ROUTES,
   AUTH_ROUTES,
   ROUTES,
-} from '@/utils/routesConstants';
-import { COOKIE_NAMES } from '@/utils/cookieConstants';
+} from "@/utils/routesConstants";
+import { COOKIE_NAMES } from "@/utils/cookieConstants";
 
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
         response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
       } else if (
         ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) &&
-        decoded.role !== 'ADMIN'
+        decoded.role !== "ADMIN"
       ) {
         response = NextResponse.redirect(
           new URL(ROUTES.DASHBOARD, request.url),
@@ -52,17 +52,17 @@ export async function middleware(request: NextRequest) {
   }
 
   // Add security headers
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = process.env.NODE_ENV === "production";
 
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('X-Frame-Options', 'DENY');
-  response.headers.set('X-XSS-Protection', '1; mode=block');
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
   if (isProduction) {
     response.headers.set(
-      'Strict-Transport-Security',
-      'max-age=31536000; includeSubDomains',
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains",
     );
   }
 
@@ -70,5 +70,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|icons/).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|icons/).*)"],
 };

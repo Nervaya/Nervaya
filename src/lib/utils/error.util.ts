@@ -22,7 +22,7 @@ export class AuthenticationError extends AppError {
 }
 
 export class ForbiddenError extends AppError {
-  constructor(message: string = 'Access denied') {
+  constructor(message: string = "Access denied") {
     super(message, 403);
   }
 }
@@ -48,14 +48,14 @@ export function handleError(error: unknown): {
 
   if (
     error &&
-    typeof error === 'object' &&
-    'name' in error &&
-    (error as { name: string }).name === 'MongoServerError' &&
-    'code' in error &&
+    typeof error === "object" &&
+    "name" in error &&
+    (error as { name: string }).name === "MongoServerError" &&
+    "code" in error &&
     (error as { code: number }).code === 11000
   ) {
     return {
-      message: 'User already exists',
+      message: "User already exists",
       statusCode: 400,
       error: null,
     };
@@ -63,17 +63,17 @@ export function handleError(error: unknown): {
 
   if (
     error &&
-    typeof error === 'object' &&
-    'name' in error &&
-    (error as { name: string }).name === 'ValidationError' &&
-    'errors' in error
+    typeof error === "object" &&
+    "name" in error &&
+    (error as { name: string }).name === "ValidationError" &&
+    "errors" in error
   ) {
     const validationError = error as {
       errors: Record<string, { message: string }>;
     };
     const message = Object.values(validationError.errors)
       .map((err) => err.message)
-      .join(', ');
+      .join(", ");
     return {
       message,
       statusCode: 400,
@@ -81,10 +81,10 @@ export function handleError(error: unknown): {
     };
   }
 
-  console.error('Unhandled error:', error);
-  const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  console.error("Unhandled error:", error);
+  const errorMessage = error instanceof Error ? error.message : "Unknown error";
   return {
-    message: 'Internal server error',
+    message: "Internal server error",
     statusCode: 500,
     error: errorMessage,
   };

@@ -1,5 +1,5 @@
-import { Therapist } from './therapist.types';
-import { SessionStatus } from '@/lib/constants/enums';
+import { Therapist } from "./therapist.types";
+import { SessionStatus } from "@/lib/constants/enums";
 
 export interface Session {
   _id: string;

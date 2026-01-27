@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Supplement } from '@/types/supplement.types';
-import SupplementCard from '../SupplementCard';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { Supplement } from "@/types/supplement.types";
+import SupplementCard from "../SupplementCard";
+import styles from "./styles.module.css";
 
 interface SupplementGridProps {
   supplements: Supplement[];
@@ -16,12 +16,12 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({
   onAddToCart,
   loading = false,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  const categories = ['all', ...new Set(supplements.map((s) => s.category))];
+  const categories = ["all", ...new Set(supplements.map((s) => s.category))];
 
   const filteredSupplements =
-    selectedCategory === 'all'
+    selectedCategory === "all"
       ? supplements
       : supplements.filter((s) => s.category === selectedCategory);
 
@@ -49,7 +49,7 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({
             <button
               key={category}
               className={`${styles.filterButton} ${
-                selectedCategory === category ? styles.active : ''
+                selectedCategory === category ? styles.active : ""
               }`}
               onClick={() => setSelectedCategory(category)}
             >

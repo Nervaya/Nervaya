@@ -11,7 +11,7 @@ export function validatePassword(password: string): {
   if (password.length < 8) {
     return {
       valid: false,
-      message: 'Password must be at least 8 characters long',
+      message: "Password must be at least 8 characters long",
     };
   }
 
@@ -19,7 +19,7 @@ export function validatePassword(password: string): {
   if (!/[A-Z]/.test(password)) {
     return {
       valid: false,
-      message: 'Password must contain at least one uppercase letter',
+      message: "Password must contain at least one uppercase letter",
     };
   }
 
@@ -27,7 +27,7 @@ export function validatePassword(password: string): {
   if (!/[a-z]/.test(password)) {
     return {
       valid: false,
-      message: 'Password must contain at least one lowercase letter',
+      message: "Password must contain at least one lowercase letter",
     };
   }
 
@@ -35,7 +35,7 @@ export function validatePassword(password: string): {
   if (!/[0-9]/.test(password)) {
     return {
       valid: false,
-      message: 'Password must contain at least one number',
+      message: "Password must contain at least one number",
     };
   }
 
@@ -43,24 +43,24 @@ export function validatePassword(password: string): {
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
     return {
       valid: false,
-      message: 'Password must contain at least one special character',
+      message: "Password must contain at least one special character",
     };
   }
 
   // Check for common weak passwords
   const commonPasswords = [
-    'password',
-    '12345678',
-    'qwerty',
-    'abc123',
-    'password123',
+    "password",
+    "12345678",
+    "qwerty",
+    "abc123",
+    "password123",
   ];
   if (
     commonPasswords.some((common) => password.toLowerCase().includes(common))
   ) {
     return {
       valid: false,
-      message: 'Password is too common. Please choose a stronger password',
+      message: "Password is too common. Please choose a stronger password",
     };
   }
 

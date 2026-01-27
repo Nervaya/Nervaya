@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import type React from 'react';
+import dynamic from "next/dynamic";
+import type React from "react";
 
-const Sidebar = dynamic(() => import('./Sidebar'), {
+const Sidebar = dynamic(() => import("./Sidebar"), {
   ssr: false,
   loading: () => null,
 });

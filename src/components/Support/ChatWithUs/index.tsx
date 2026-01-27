@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import styles from './styles.module.css';
-import { FaWhatsapp } from 'react-icons/fa6';
-import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
-import Button from '@/components/common/Button/Button';
+import styles from "./styles.module.css";
+import { FaWhatsapp } from "react-icons/fa6";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import Button from "@/components/common/Button/Button";
 
 const ChatWithUs = () => {
   const handleWhatsAppClick = () => {
-    const phoneNumber = '1234567890';
+    const phoneNumber = "1234567890";
     const message = encodeURIComponent(
-      'Hello! I need support with your product.',
+      "Hello! I need support with your product.",
     );
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
   };
 
   return (
@@ -62,7 +62,7 @@ const ChatWithUs = () => {
           <div className={styles.featureLabel}>Available</div>
         </div>
         <div className={styles.featureCard}>
-          <div className={styles.featureValue}>{'<2 hr'}</div>
+          <div className={styles.featureValue}>{"<2 hr"}</div>
           <div className={styles.featureLabel}>Response Time</div>
         </div>
         <div className={styles.featureCard}>

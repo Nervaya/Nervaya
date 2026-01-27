@@ -1,8 +1,8 @@
-import styles from './styles.module.css';
-import AboutUsCards from '@/components/AboutUS/AboutUsCards';
-import AboutUsTeam from '@/components/AboutUS/AboutUsTeam';
-import AboutUsConsultation from '@/components/AboutUS/AboutUsConsultation';
-import AboutUsStats from '@/components/AboutUS/AboutUsStats';
+import styles from "./styles.module.css";
+import AboutUsCards from "@/components/AboutUS/AboutUsCards";
+import AboutUsTeam from "@/components/AboutUS/AboutUsTeam";
+import AboutUsConsultation from "@/components/AboutUS/AboutUsConsultation";
+import AboutUsStats from "@/components/AboutUS/AboutUsStats";
 
 const AboutUs = () => {
   return (

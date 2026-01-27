@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ConsultingHour } from '@/types/therapist.types';
-import styles from './styles.module.css';
+import { useState, useEffect } from "react";
+import { ConsultingHour } from "@/types/therapist.types";
+import styles from "./styles.module.css";
 
 interface ConsultingHoursManagerProps {
   therapistId: string;
@@ -10,31 +10,31 @@ interface ConsultingHoursManagerProps {
 }
 
 const DAYS_OF_WEEK = [
-  { value: 0, label: 'Sunday', short: 'Sun' },
-  { value: 1, label: 'Monday', short: 'Mon' },
-  { value: 2, label: 'Tuesday', short: 'Tue' },
-  { value: 3, label: 'Wednesday', short: 'Wed' },
-  { value: 4, label: 'Thursday', short: 'Thu' },
-  { value: 5, label: 'Friday', short: 'Fri' },
-  { value: 6, label: 'Saturday', short: 'Sat' },
+  { value: 0, label: "Sunday", short: "Sun" },
+  { value: 1, label: "Monday", short: "Mon" },
+  { value: 2, label: "Tuesday", short: "Tue" },
+  { value: 3, label: "Wednesday", short: "Wed" },
+  { value: 4, label: "Thursday", short: "Thu" },
+  { value: 5, label: "Friday", short: "Fri" },
+  { value: 6, label: "Saturday", short: "Sat" },
 ];
 
 const WEEKDAYS = [1, 2, 3, 4, 5];
 
 function convert24To12(time24: string): string {
   if (!time24) {
-    return '';
+    return "";
   }
-  const [hours, minutes] = time24.split(':');
+  const [hours, minutes] = time24.split(":");
   const hour = parseInt(hours, 10);
-  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const ampm = hour >= 12 ? "PM" : "AM";
   const hour12 = hour % 12 || 12;
-  return `${hour12.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+  return `${hour12.toString().padStart(2, "0")}:${minutes} ${ampm}`;
 }
 
 function convert12To24(time12: string): string {
   if (!time12) {
-    return '';
+    return "";
   }
   const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
   if (!match) {
@@ -45,14 +45,14 @@ function convert12To24(time12: string): string {
   const minutes = match[2];
   const ampm = match[3].toUpperCase();
 
-  if (ampm === 'PM' && hour !== 12) {
+  if (ampm === "PM" && hour !== 12) {
     hour += 12;
   }
-  if (ampm === 'AM' && hour === 12) {
+  if (ampm === "AM" && hour === 12) {
     hour = 0;
   }
 
-  return `${hour.toString().padStart(2, '0')}:${minutes}`;
+  return `${hour.toString().padStart(2, "0")}:${minutes}`;
 }
 
 export default function ConsultingHoursManager({
@@ -80,7 +80,7 @@ export default function ConsultingHoursManager({
         `/api/therapists/${therapistId}/consulting-hours`,
       );
       if (!response.ok) {
-        throw new Error('Failed to fetch consulting hours');
+        throw new Error("Failed to fetch consulting hours");
       }
 
       const result = await response.json();
@@ -88,8 +88,8 @@ export default function ConsultingHoursManager({
         if (!result.data || result.data.length === 0) {
           const defaultHours: ConsultingHour[] = DAYS_OF_WEEK.map((day) => ({
             dayOfWeek: day.value,
-            startTime: '09:00 AM',
-            endTime: '05:00 PM',
+            startTime: "09:00 AM",
+            endTime: "05:00 PM",
             isEnabled: false,
           }));
           setConsultingHours(defaultHours);
@@ -106,8 +106,8 @@ export default function ConsultingHoursManager({
               }
               return {
                 dayOfWeek: day.value,
-                startTime: '09:00 AM',
-                endTime: '05:00 PM',
+                startTime: "09:00 AM",
+                endTime: "05:00 PM",
                 isEnabled: false,
               };
             },
@@ -118,7 +118,7 @@ export default function ConsultingHoursManager({
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to load consulting hours',
+        err instanceof Error ? err.message : "Failed to load consulting hours",
       );
     } finally {
       setLoading(false);
@@ -134,16 +134,16 @@ export default function ConsultingHoursManager({
     try {
       const validHours = consultingHours.map((hour) => ({
         dayOfWeek: hour.dayOfWeek,
-        startTime: hour.isEnabled ? hour.startTime : '09:00 AM',
-        endTime: hour.isEnabled ? hour.endTime : '05:00 PM',
+        startTime: hour.isEnabled ? hour.startTime : "09:00 AM",
+        endTime: hour.isEnabled ? hour.endTime : "05:00 PM",
         isEnabled: hour.isEnabled,
       }));
 
       const response = await fetch(
         `/api/therapists/${therapistId}/consulting-hours`,
         {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ consultingHours: validHours }),
         },
       );
@@ -151,10 +151,10 @@ export default function ConsultingHoursManager({
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || 'Failed to update consulting hours');
+        throw new Error(result.message || "Failed to update consulting hours");
       }
 
-      setSuccess('Consulting hours saved successfully!');
+      setSuccess("Consulting hours saved successfully!");
       setSavedHours(validHours);
       await fetchConsultingHours();
       onUpdate?.();
@@ -162,7 +162,7 @@ export default function ConsultingHoursManager({
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to update consulting hours',
+          : "Failed to update consulting hours",
       );
     } finally {
       setSaving(false);
@@ -176,12 +176,12 @@ export default function ConsultingHoursManager({
       const response = await fetch(
         `/api/therapists/${therapistId}/schedule/generate?days=${days}`,
         {
-          method: 'POST',
+          method: "POST",
         },
       );
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.message || 'Failed to generate slots');
+        throw new Error(result.message || "Failed to generate slots");
       }
       const inserted = result.data?.insertedCount || 0;
       const modified = result.data?.modifiedCount || 0;
@@ -193,7 +193,7 @@ export default function ConsultingHoursManager({
       }, 500);
     } catch (err) {
       setGenerationStatus(
-        `Warning: ${err instanceof Error ? err.message : 'Failed to generate slots'}`,
+        `Warning: ${err instanceof Error ? err.message : "Failed to generate slots"}`,
       );
     } finally {
       setGenerating(false);
@@ -245,12 +245,12 @@ export default function ConsultingHoursManager({
   };
 
   const clearAll = () => {
-    if (confirm('Are you sure you want to clear all consulting hours?')) {
+    if (confirm("Are you sure you want to clear all consulting hours?")) {
       DAYS_OF_WEEK.forEach((day) => {
         updateDayHours(day.value, {
           isEnabled: false,
-          startTime: '09:00 AM',
-          endTime: '05:00 PM',
+          startTime: "09:00 AM",
+          endTime: "05:00 PM",
         });
       });
     }
@@ -333,17 +333,17 @@ export default function ConsultingHoursManager({
       {generationStatus && (
         <div
           className={
-            generationStatus.includes('Warning') ||
-            generationStatus.includes('Failed')
+            generationStatus.includes("Warning") ||
+            generationStatus.includes("Failed")
               ? styles.errorBanner
               : styles.successBanner
           }
         >
           <span>
-            {generationStatus.includes('Warning') ||
-            generationStatus.includes('Failed')
-              ? '⚠️'
-              : '✓'}
+            {generationStatus.includes("Warning") ||
+            generationStatus.includes("Failed")
+              ? "⚠️"
+              : "✓"}
           </span>
           <span>{generationStatus}</span>
         </div>
@@ -394,7 +394,7 @@ export default function ConsultingHoursManager({
                   <div
                     key={day.value}
                     className={`${styles.summaryDay} ${
-                      dayHours?.isEnabled ? styles.summaryDayEnabled : ''
+                      dayHours?.isEnabled ? styles.summaryDayEnabled : ""
                     }`}
                   >
                     <div className={styles.summaryDayName}>{day.short}</div>
@@ -425,7 +425,7 @@ export default function ConsultingHoursManager({
               <div
                 key={day.value}
                 className={`${styles.dayCard} ${
-                  dayHours.isEnabled ? styles.enabled : ''
+                  dayHours.isEnabled ? styles.enabled : ""
                 }`}
               >
                 <div className={styles.dayHeader}>
@@ -489,10 +489,10 @@ export default function ConsultingHoursManager({
         <div className={styles.saveSection}>
           <p className={styles.saveDescription}>
             {hasUnsavedChanges
-              ? 'You have unsaved changes. Click the button below to save your consulting hours to the database.'
+              ? "You have unsaved changes. Click the button below to save your consulting hours to the database."
               : isSaved
-                ? 'Your consulting hours are saved. You can now generate time slots for patient bookings.'
-                : 'Set at least one day with consulting hours, then save to continue.'}
+                ? "Your consulting hours are saved. You can now generate time slots for patient bookings."
+                : "Set at least one day with consulting hours, then save to continue."}
           </p>
           <button
             onClick={handleUpdate}
@@ -500,10 +500,10 @@ export default function ConsultingHoursManager({
             className={styles.saveButton}
           >
             {saving
-              ? 'Saving...'
+              ? "Saving..."
               : hasUnsavedChanges
-                ? '💾 Save Changes'
-                : '💾 Save Consulting Hours'}
+                ? "💾 Save Changes"
+                : "💾 Save Consulting Hours"}
           </button>
         </div>
       </div>
@@ -524,14 +524,14 @@ export default function ConsultingHoursManager({
                 disabled={saving || generating}
                 className={styles.generateButton}
               >
-                {generating ? '⏳ Generating...' : '📅 Generate for 1 Week'}
+                {generating ? "⏳ Generating..." : "📅 Generate for 1 Week"}
               </button>
               <button
                 onClick={() => generateSlots(30)}
                 disabled={saving || generating}
                 className={styles.generateButton}
               >
-                {generating ? '⏳ Generating...' : '📅 Generate for 1 Month'}
+                {generating ? "⏳ Generating..." : "📅 Generate for 1 Month"}
               </button>
             </div>
           </div>

@@ -1,14 +1,14 @@
-import bcrypt from 'bcryptjs';
-import User from '@/lib/models/user.model';
-import { generateToken } from '@/lib/utils/jwt.util';
+import bcrypt from "bcryptjs";
+import User from "@/lib/models/user.model";
+import { generateToken } from "@/lib/utils/jwt.util";
 import {
   validateEmail,
   validatePassword,
   validateName,
-} from '@/lib/utils/validation.util';
-import { ValidationError, AuthenticationError } from '@/lib/utils/error.util';
-import connectDB from '@/lib/db/mongodb';
-import { ROLES, Role } from '@/lib/constants/roles';
+} from "@/lib/utils/validation.util";
+import { ValidationError, AuthenticationError } from "@/lib/utils/error.util";
+import connectDB from "@/lib/db/mongodb";
+import { ROLES, Role } from "@/lib/constants/roles";
 
 export async function registerUser(
   email: string,
@@ -19,26 +19,26 @@ export async function registerUser(
   await connectDB();
 
   if (!validateEmail(email)) {
-    throw new ValidationError('Invalid email format');
+    throw new ValidationError("Invalid email format");
   }
 
   const passwordValidation = validatePassword(password);
   if (!passwordValidation.valid) {
-    throw new ValidationError(passwordValidation.message || 'Invalid password');
+    throw new ValidationError(passwordValidation.message || "Invalid password");
   }
 
   if (!validateName(name)) {
-    throw new ValidationError('Name must be at least 2 characters long');
+    throw new ValidationError("Name must be at least 2 characters long");
   }
 
   const existingUser = await User.findOne({ email: email.toLowerCase() });
   if (existingUser) {
-    throw new ValidationError('User with this email already exists');
+    throw new ValidationError("User with this email already exists");
   }
 
   // Explicitly validate role if provided (though TS handles it, runtime safety matches plan)
   if (!Object.values(ROLES).includes(role)) {
-    throw new ValidationError('Invalid role');
+    throw new ValidationError("Invalid role");
   }
 
   const user = await User.create({
@@ -67,26 +67,26 @@ export async function loginUser(email: string, password: string) {
   await connectDB();
 
   if (!validateEmail(email)) {
-    throw new ValidationError('Invalid email format');
+    throw new ValidationError("Invalid email format");
   }
 
   if (!password) {
-    throw new ValidationError('Password is required');
+    throw new ValidationError("Password is required");
   }
 
   // Use select to explicitly include password field for comparison
   const user = await User.findOne({ email: email.toLowerCase() }).select(
-    '+password',
+    "+password",
   );
   if (!user) {
     // Use generic error message to prevent user enumeration
-    throw new AuthenticationError('Invalid email or password');
+    throw new AuthenticationError("Invalid email or password");
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     // Use generic error message to prevent user enumeration
-    throw new AuthenticationError('Invalid email or password');
+    throw new AuthenticationError("Invalid email or password");
   }
 
   const token = await generateToken(user._id.toString(), user.role);
