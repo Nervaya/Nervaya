@@ -1,16 +1,18 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import PrivacyPolicyHeader from '@/components/PrivacyPolicy/PrivacyPolicyHeader';
-import PrivacyPolicyTOC from '@/components/PrivacyPolicy/PrivacyPolicyTOC';
-import PrivacyPolicySection from '@/components/PrivacyPolicy/PrivacyPolicySection';
-import SectionContent from '@/components/PrivacyPolicy/PrivacyPolicySections/SectionContent';
-import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicy/PrivacyPolicyDisclaimer';
-import { privacySections } from '@/utils/privacyPolicyData';
-import { usePrivacyPolicyScroll } from '@/hooks/usePrivacyPolicyScroll';
-import styles from './privacy-policy.module.css';
+import dynamic from 'next/dynamic';
 
-const PrivacyPolicy = () => {
+// Lazy-load PrivacyPolicy component to avoid loading 20+ react-icons in main bundle
+const PrivacyPolicy = dynamic(() => import('./PrivacyPolicyContent'), {
+  ssr: true,
+  loading: () => (
+    <div style={{ minHeight: '100vh', paddingTop: 'var(--navbar-height)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <p>Loading...</p>
+    </div>
+  ),
+});
+
+export default PrivacyPolicy;
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['introduction']));
   const [isMobile, setIsMobile] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {

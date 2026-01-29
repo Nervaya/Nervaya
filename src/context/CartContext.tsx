@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '@/lib/axios';
+import { useAuth } from '@/hooks/useAuth';
 
 interface CartContextType {
   cartCount: number;
@@ -14,9 +15,14 @@ const CartContext = createContext<CartContextType>({
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
   const [cartCount, setCartCount] = useState(0);
 
-  const refreshCart = async () => {
+  const refreshCart = useCallback(async () => {
+    if (!isAuthenticated) {
+      setCartCount(0);
+      return;
+    }
     try {
       const response = (await api.get('/cart')) as {
         success: boolean;
@@ -30,22 +36,36 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         Array.isArray((response.data as { items: unknown[] }).items)
       ) {
         setCartCount((response.data as { items: unknown[] }).items.length);
+      } else {
+        setCartCount(0);
       }
-    } catch (error) {
-      console.error('Failed to fetch cart count', error);
+    } catch {
       setCartCount(0);
     }
-  };
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    refreshCart();
+    if (!isAuthenticated) {
+      setCartCount(0);
+      return;
+    }
+    // Defer cart fetch to not block initial render
+    // Use requestIdleCallback if available, otherwise setTimeout
+    const deferCartFetch = () => {
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        requestIdleCallback(() => refreshCart(), { timeout: 2000 });
+      } else {
+        setTimeout(() => refreshCart(), 100);
+      }
+    };
+    deferCartFetch();
+  }, [isAuthenticated, refreshCart]);
 
-    // Listen for auth changes to refresh cart
+  useEffect(() => {
     const handleAuthChange = () => refreshCart();
     window.addEventListener('auth-state-changed', handleAuthChange);
     return () => window.removeEventListener('auth-state-changed', handleAuthChange);
-  }, []);
+  }, [refreshCart]);
 
   return <CartContext.Provider value={{ cartCount, refreshCart }}>{children}</CartContext.Provider>;
 };

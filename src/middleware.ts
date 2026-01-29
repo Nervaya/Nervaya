@@ -1,7 +1,18 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { verifyToken } from './lib/utils/jwt.util';
 import { PROTECTED_ROUTES, ADMIN_ROUTES, AUTH_ROUTES, ROUTES } from '@/utils/routesConstants';
+import { validateReturnUrl } from '@/utils/returnUrl';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
+import { ROLES } from '@/lib/constants/roles';
+
+function loginRedirectUrl(request: NextRequest, returnPath: string): URL {
+  const url = new URL(ROUTES.LOGIN, request.url);
+  const safeReturn = validateReturnUrl(returnPath);
+  if (safeReturn) {
+    url.searchParams.set('returnUrl', safeReturn);
+  }
+  return url;
+}
 
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
@@ -14,13 +25,13 @@ export async function middleware(request: NextRequest) {
     ADMIN_ROUTES.some((route) => currentPath.startsWith(route))
   ) {
     if (!token) {
-      response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+      response = NextResponse.redirect(loginRedirectUrl(request, currentPath));
     } else {
       const decoded = await verifyToken(token);
       if (!decoded) {
-        response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+        response = NextResponse.redirect(loginRedirectUrl(request, currentPath));
         response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
-      } else if (ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) && decoded.role !== 'ADMIN') {
+      } else if (ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) && decoded.role !== ROLES.ADMIN) {
         response = NextResponse.redirect(new URL(ROUTES.DASHBOARD, request.url));
       } else {
         response = NextResponse.next();
@@ -57,5 +68,17 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|icons/).*)'],
+  // Only run middleware on routes that need auth checks
+  // Public routes like /, /about-us, /support, /privacy-policy are excluded
+  matcher: [
+    '/dashboard/:path*',
+    '/account/:path*',
+    '/profile/:path*',
+    '/supplements/cart/:path*',
+    '/supplements/checkout/:path*',
+    '/sleep-assessment/:path*',
+    '/admin/:path*',
+    '/login/:path*',
+    '/signup/:path*',
+  ],
 };

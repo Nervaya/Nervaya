@@ -1,4 +1,6 @@
 .cardsSection {
+  position: relative;
+  z-index: 1;
   padding: 60px 40px;
   display: flex;
   justify-content: center;

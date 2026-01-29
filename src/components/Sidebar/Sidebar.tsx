@@ -96,7 +96,6 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                 damping: 30,
                 mass: 0.8,
               }}
-              style={{ willChange: 'width, transform' }}
             >
               <button
                 type="button"
@@ -178,7 +177,10 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
 
       {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
-      <main className={`${styles.mainContent} ${className || ''}`} style={{ marginLeft: `${mainMarginLeft}px` }}>
+      <main
+        className={`${styles.mainContent} ${className || ''}`}
+        style={{ ['--sidebar-margin-left' as string]: `${mainMarginLeft}px` }}
+      >
         {children}
       </main>
     </>

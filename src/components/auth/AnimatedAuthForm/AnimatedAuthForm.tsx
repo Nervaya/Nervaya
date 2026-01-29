@@ -6,13 +6,15 @@ import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button/Button';
 import { useAuth } from '@/hooks/useAuth';
+import { BACKGROUND_IMAGES, AUTH_IMAGES } from '@/utils/imageConstants';
 import styles from './AnimatedAuthForm.module.css';
 
 interface AnimatedAuthFormProps {
   initialMode?: 'login' | 'signup';
+  returnUrl?: string;
 }
 
-export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuthFormProps) {
+export default function AnimatedAuthForm({ initialMode = 'login', returnUrl }: AnimatedAuthFormProps) {
   const [isLogin, setIsLogin] = useState(initialMode === 'login');
   const [formData, setFormData] = useState({
     name: '',
@@ -58,9 +60,9 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
 
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
+        await login(formData.email, formData.password, returnUrl);
       } else {
-        await signup(formData.email, formData.password, formData.name);
+        await signup(formData.email, formData.password, formData.name, returnUrl);
       }
     } catch (err) {
       console.error('Auth error:', err);
@@ -75,6 +77,17 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
 
   return (
     <div className={styles.container}>
+      <div className={styles.backgroundImageWrapper}>
+        <Image
+          src={IMAGES.BACKGROUND_MAIN}
+          alt=""
+          fill
+          priority
+          className={styles.backgroundImage}
+          sizes="100vw"
+          quality={85}
+        />
+      </div>
       <div className={styles.wrapper}>
         <div className={styles.formSection}>
           <div className={styles.formContent}>
@@ -111,18 +124,14 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
                     />
 
                     <div className={styles.formOptions}>
-                      <label className={styles.checkboxLabel}>
-                        <input type="checkbox" className={styles.checkbox} />
-                        <span>Remember for 30 days</span>
-                      </label>
-                      <a href="#" className={styles.forgotLink}>
-                        Forgot password?
-                      </a>
+                      <span className={styles.comingSoonLabel} aria-hidden="true">
+                        Remember me &bull; Forgot password (Coming soon)
+                      </span>
                     </div>
 
                     {error && <div className={styles.errorMessage}>{error}</div>}
 
-                    <Button type="submit" loading={loading}>
+                    <Button type="submit" loading={loading} className={styles.submitButton}>
                       Sign in
                     </Button>
                   </form>
@@ -166,7 +175,7 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
 
                     {error && <div className={styles.errorMessage}>{error}</div>}
 
-                    <Button type="submit" loading={loading}>
+                    <Button type="submit" loading={loading} className={styles.submitButton}>
                       Create account
                     </Button>
                   </form>
@@ -195,16 +204,14 @@ export default function AnimatedAuthForm({ initialMode = 'login' }: AnimatedAuth
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 0.5 }}
                 className={styles.illustrationContent}
-                style={{ position: 'relative', width: '100%', height: '100%' }}
               >
                 <Image
-                  src={isLogin ? '/assets/auth/login-illustration.jpg' : '/assets/auth/signup-illustration.png'}
+                  src={isLogin ? IMAGES.AUTH_LOGIN_ILLUSTRATION : IMAGES.AUTH_SIGNUP_ILLUSTRATION}
                   alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
                   fill
                   className={styles.illustrationImage}
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
               </m.div>
             </AnimatePresence>

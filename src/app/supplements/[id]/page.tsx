@@ -8,12 +8,16 @@ import { Supplement } from '@/types/supplement.types';
 import QuantitySelector from '@/components/common/QuantitySelector';
 import Button from '@/components/common/Button';
 import { formatPrice } from '@/utils/cart.util';
-import api from '@/lib/axios';
+import { supplementsApi } from '@/lib/api/supplements';
+import { cartApi } from '@/lib/api/cart';
+import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 export default function SupplementDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const [supplement, setSupplement] = useState<Supplement | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -43,14 +47,17 @@ export default function SupplementDetailPage() {
     if (!supplement) {
       return;
     }
+    if (!isAuthenticated) {
+      const currentPath = `/supplements/${params.id}`;
+      const returnUrl = encodeURIComponent(currentPath);
+      router.push(`${ROUTES.LOGIN}?returnUrl=${returnUrl}`);
+      return;
+    }
     setAdding(true);
     setError(null);
     setSuccessMessage(null);
     try {
-      const response = (await api.post('/cart', {
-        supplementId: supplement._id,
-        quantity,
-      })) as { success: boolean };
+      const response = await cartApi.add(supplement._id, quantity);
       if (response.success) {
         setSuccessMessage('Added to cart successfully!');
         setTimeout(() => {

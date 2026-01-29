@@ -244,7 +244,7 @@ export default function AdminSleepAssessmentPage() {
             <div
               className={styles.progressFill}
               style={{
-                width: `${((currentIndex + 1) / questions.length) * 100}%`,
+                ['--progress' as string]: `${((currentIndex + 1) / questions.length) * 100}%`,
               }}
             />
           </div>

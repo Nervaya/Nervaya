@@ -19,8 +19,8 @@
 }
 
 .primary {
-  background: #7c3aed;
-  color: white;
+  background: var(--accent);
+  color: var(--foreground);
   box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);
 }
 
@@ -30,14 +30,14 @@
 }
 
 .secondary {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  background: var(--background);
+  color: var(--accent);
+  border: 2px solid var(--accent);
 }
 
 .secondary:hover:not(:disabled) {
-  background: #667eea;
-  color: white;
+  background: var(--accent);
+  color: var(--foreground);
 }
 
 .loader {

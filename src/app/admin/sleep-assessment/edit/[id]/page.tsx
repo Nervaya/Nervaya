@@ -144,14 +144,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '60px 20px',
-          }}
-        >
+        <div className={styles.loaderWrapper}>
           <Loader size="lg" text="Loading question..." />
         </div>
       </div>
@@ -194,9 +187,8 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
               id="questionKey"
               name="questionKey"
               value={formData.questionKey}
-              className={styles.input}
+              className={`${styles.input} ${styles.inputDisabled}`}
               disabled
-              style={{ opacity: 0.6, cursor: 'not-allowed' }}
             />
             <span className={styles.hint}>Question key cannot be changed</span>
           </div>

@@ -19,6 +19,14 @@ export const ADMIN_ROUTES = [
 
 export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
+/** True if path requires auth (protected or admin). Used for 401 redirect behavior. */
+export function isProtectedPath(pathname: string): boolean {
+  return (
+    PROTECTED_ROUTES.some((route) => pathname.startsWith(route)) ||
+    ADMIN_ROUTES.some((route) => pathname.startsWith(route))
+  );
+}
+
 // Common redirect routes
 export const ROUTES = {
   HOME: '/',

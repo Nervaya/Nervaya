@@ -2,6 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
+import {
+  MONTH_NAMES,
+  DAY_NAMES,
+  isSameDay,
+  isDateDisabled as checkDateDisabled,
+  getDaysInMonth,
+  getFirstDayOfMonth,
+} from './datePickerUtils';
 
 interface DatePickerProps {
   selectedDate: Date;
@@ -12,53 +20,19 @@ interface DatePickerProps {
 
 export default function DatePicker({ selectedDate, onDateSelect, minDate = new Date(), maxDate }: DatePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
+  const today = (() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  })();
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // Sync currentMonth when selectedDate changes
   useEffect(() => {
     setCurrentMonth(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
   }, [selectedDate]);
 
-  const isDateDisabled = (date: Date): boolean => {
-    const dateOnly = new Date(date);
-    dateOnly.setHours(0, 0, 0, 0);
-
-    if (minDate) {
-      const minDateOnly = new Date(minDate);
-      minDateOnly.setHours(0, 0, 0, 0);
-      if (dateOnly < minDateOnly) {
-        return true;
-      }
-    }
-
-    if (maxDate) {
-      const maxDateOnly = new Date(maxDate);
-      maxDateOnly.setHours(0, 0, 0, 0);
-      if (dateOnly > maxDateOnly) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  const isSameDay = (date1: Date, date2: Date): boolean => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  };
-
-  const isToday = (date: Date): boolean => {
-    return isSameDay(date, today);
-  };
-
-  const isSelected = (date: Date): boolean => {
-    return isSameDay(date, selectedDate);
-  };
+  const isDateDisabled = (date: Date) => checkDateDisabled(date, minDate, maxDate);
+  const isSelected = (date: Date) => isSameDay(date, selectedDate);
+  const isToday = (date: Date) => isSameDay(date, today);
 
   const navigateMonth = (direction: number) => {
     const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + direction, 1);
@@ -80,14 +54,6 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
     }
 
     setCurrentMonth(newMonth);
-  };
-
-  const getDaysInMonth = (date: Date): number => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (date: Date): number => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
   const handleDateClick = (day: number) => {
@@ -146,7 +112,7 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
 
         <div className={styles.monthYear}>
           <div className={styles.monthDisplay}>
-            {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+            {MONTH_NAMES[currentMonth.getMonth()]} {currentMonth.getFullYear()}
           </div>
         </div>
 
@@ -165,7 +131,7 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
 
       <div className={styles.calendar}>
         <div className={styles.dayNames}>
-          {dayNames.map((day) => (
+          {DAY_NAMES.map((day) => (
             <div key={day} className={styles.dayName}>
               {day}
             </div>

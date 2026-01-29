@@ -44,15 +44,10 @@ export default function NotFound() {
           </m.h1>
 
           <m.div
+            className={styles.contentBlock}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '1rem',
-            }}
           >
             <h2 className={styles.subtitle}>Page Not Found</h2>
 

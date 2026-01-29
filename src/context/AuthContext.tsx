@@ -6,6 +6,8 @@ import api from '@/lib/axios';
 import { ApiResponse } from '@/lib/utils/response.util';
 import { ROLES, Role } from '@/lib/constants/roles';
 import { ROUTES } from '@/utils/routesConstants';
+import { validateReturnUrl } from '@/utils/returnUrl';
+import { AUTH_STORAGE_KEYS } from '@/utils/cookieConstants';
 
 interface User {
   _id: string;
@@ -24,49 +26,84 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<ApiResponse<AuthData>>;
-  signup: (email: string, password: string, name: string) => Promise<ApiResponse<AuthData>>;
+  login: (email: string, password: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
+  signup: (email: string, password: string, name: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function getStoredUser(): User | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEYS.AUTH_USER);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as User;
+    const expiresAt = localStorage.getItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT);
+    if (expiresAt) {
+      const exp = Number(expiresAt);
+      if (!Number.isFinite(exp) || Date.now() >= exp) {
+        localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_USER);
+        localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT);
+        localStorage.removeItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN);
+        return null;
+      }
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function clearAuthStorage() {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_USER);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Initial loading true to check auth
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleAuthSuccess = (data: AuthData) => {
+  const hydrateFromStore = () => {
+    const stored = getStoredUser();
+    if (stored) {
+      setUser(stored);
+      setIsAuthenticated(true);
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+    setLoading(false);
+  };
+
+  const handleAuthSuccess = (data: AuthData, returnUrl?: string) => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('isLoggedIn', 'true');
-      // Dispatch custom event to notify CartContext/components
+      localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_USER, JSON.stringify(data.user));
+      localStorage.setItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN, 'true');
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
     setUser(data.user);
     setIsAuthenticated(true);
 
+    const safeReturnUrl = validateReturnUrl(returnUrl);
     if (data.user.role === ROLES.ADMIN) {
       router.push(ROUTES.ADMIN_DASHBOARD);
+    } else if (safeReturnUrl) {
+      router.push(safeReturnUrl);
     } else {
       router.push(ROUTES.HOME);
     }
   };
 
-  const checkAuth = async () => {
-    if (typeof window !== 'undefined') {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      setIsAuthenticated(isLoggedIn);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    checkAuth();
+    hydrateFromStore();
 
-    // Listen for auth events (e.g. from axios 401 interceptor)
-    const handleAuthEvent = () => checkAuth();
+    const handleAuthEvent = () => hydrateFromStore();
     if (typeof window !== 'undefined') {
       window.addEventListener('auth-state-changed', handleAuthEvent);
     }
@@ -77,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, password: string, name: string, returnUrl?: string) => {
     setLoading(true);
     setError(null);
 
@@ -89,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })) as ApiResponse<AuthData>;
 
       if (response.success && response.data) {
-        handleAuthSuccess(response.data);
+        handleAuthSuccess(response.data, returnUrl);
       }
       return response;
     } catch (err) {
@@ -101,7 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, returnUrl?: string) => {
     setLoading(true);
     setError(null);
 
@@ -112,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })) as ApiResponse<AuthData>;
 
       if (response.success && response.data) {
-        handleAuthSuccess(response.data);
+        handleAuthSuccess(response.data, returnUrl);
       }
       return response;
     } catch (err) {
@@ -128,14 +165,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await api.post('/auth/logout');
-    } catch (error) {
-      console.error('Logout API call failed:', error);
+    } catch (err) {
+      console.error('Logout API call failed:', err);
     } finally {
       setLoading(false);
     }
 
+    clearAuthStorage();
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('isLoggedIn');
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
     setUser(null);

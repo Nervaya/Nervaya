@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import MySessions from '@/components/Account/MySessions';
 import MyOrders from '@/components/Account/MyOrders';
 import styles from './styles.module.css';
@@ -30,7 +31,7 @@ export default function AccountPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <h1 className={styles.title}>My Account</h1>
+        <PageHeader title="My Account" />
 
         <div className={styles.tabs}>
           <button

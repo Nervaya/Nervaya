@@ -1,7 +1,18 @@
+/*
+ * Theme variables - use these in module CSS instead of hardcoded colors.
+ * Convention: pages use styles.module.css; shared components use ComponentName.module.css.
+ * Media queries: nest inside the class (not top-level @media).
+ */
 :root {
   --background: #020617;
   --foreground: #ededed;
   --navbar-height: 100px;
+  --card-bg: #171717;
+  --border: #333;
+  --border-hover: #7c3aed;
+  --accent: #7c3aed;
+  --muted: #9ca3af;
+  --muted-dim: #6b7280;
 }
 
 @media (max-width: 768px) {

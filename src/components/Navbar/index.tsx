@@ -4,9 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { FaCircleUser } from 'react-icons/fa6';
+import UserIcon from './UserIcon';
 import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
+import { hasRole } from '@/lib/constants/rbac';
+import { ROLES } from '@/lib/constants/roles';
+import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 const Navbar = () => {
@@ -126,10 +129,18 @@ const Navbar = () => {
             </Link>
           </li>
 
+          {hasRole(user, ROLES.ADMIN) && (
+            <li>
+              <Link href={ROUTES.ADMIN_DASHBOARD} onClick={closeMobileMenu}>
+                Admin
+              </Link>
+            </li>
+          )}
+
           {isAuthenticated ? (
             <li className={styles.navbarDropdown} ref={accountDropdownRef}>
               <button onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)} className={styles.accountButton}>
-                <FaCircleUser size={24} />
+                <UserIcon size={24} />
                 <span>{user?.name?.split(' ')[0] || 'Account'}</span>
                 <span className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}> </span>
               </button>
@@ -151,19 +162,23 @@ const Navbar = () => {
               )}
             </li>
           ) : (
-            <li>
-              <Link href="/login" onClick={closeMobileMenu}>
-                SignUp/Log In
-              </Link>
-            </li>
-          )}
-
-          {!isAuthenticated && (
-            <li>
-              <button className={styles.navbarCta} onClick={closeMobileMenu}>
-                Call Us
-              </button>
-            </li>
+            <>
+              <li>
+                <Link href={ROUTES.LOGIN} onClick={closeMobileMenu}>
+                  Log in
+                </Link>
+              </li>
+              <li>
+                <Link href={ROUTES.SIGNUP} onClick={closeMobileMenu}>
+                  Sign up
+                </Link>
+              </li>
+              <li>
+                <button type="button" className={styles.navbarCta} onClick={closeMobileMenu}>
+                  Call Us
+                </button>
+              </li>
+            </>
           )}
         </ul>
       </div>

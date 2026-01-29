@@ -4,13 +4,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   padding: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.backgroundImageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Dark Overlay */
@@ -19,7 +27,8 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .wrapper {
@@ -36,7 +45,7 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   color: white;
 }
 
@@ -193,66 +202,23 @@
   margin-bottom: 0.5rem;
 }
 
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.checkbox {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
-  accent-color: #7828c8;
-  appearance: none;
-  -webkit-appearance: none;
-  position: relative;
-  cursor: pointer;
-}
-
-.checkbox:checked {
-  background-color: #7828c8;
-  border-color: #7828c8;
-}
-
-.checkbox:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-}
-
-.checkboxLabel span {
+.comingSoonLabel {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.forgotLink {
-  font-size: 0.875rem;
-  color: #c084fc;
-  font-weight: 500;
-  transition: color 0.2s;
-  text-decoration: none;
-}
-
-.forgotLink:hover {
-  color: #e9d5ff;
-  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .errorMessage {
-  padding: 0.75rem;
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+  padding: 0.75rem 1rem;
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fecaca;
   border-radius: 8px;
   font-size: 0.875rem;
+}
+
+.submitButton {
+  min-height: 44px;
+  width: 100%;
 }
 
 .switchContainer {
@@ -284,6 +250,12 @@
   text-decoration: underline;
 }
 
+.switchLink:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .glassInput {
   background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -300,10 +272,12 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-.glassInput:focus {
+.glassInput:focus,
+.glassInput:focus-visible {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: #a855f7 !important;
   box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.4) !important;
+  outline: none;
 }
 
 /* Illustration Section */

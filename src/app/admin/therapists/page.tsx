@@ -70,13 +70,7 @@ export default function AdminTherapistsPage() {
       </div>
 
       {loading ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '60px 20px',
-          }}
-        >
+        <div className={styles.loaderWrapper}>
           <Loader size="lg" text="Loading therapists..." />
         </div>
       ) : (

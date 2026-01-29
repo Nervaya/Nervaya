@@ -1,3 +1,4 @@
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import AboutUsCards from '@/components/AboutUS/AboutUsCards';
 import AboutUsTeam from '@/components/AboutUS/AboutUsTeam';
@@ -8,12 +9,12 @@ const AboutUs = () => {
   return (
     <div className={styles.container}>
       <div className={styles.aboutUsSection}>
-        <h1 className={styles.aboutUsTitle}>About Us</h1>
+        <PageHeader title="About Us" />
 
         <div className={styles.card}>
           <div className={styles.cardContent}>
             <span className={styles.missionTag}>Our Mission</span>
-            <h2 className={styles.cardHeading}>Helping You Find Peace & Balance</h2>
+            <h2 className={styles.cardHeading}>Helping You Find Peace and Balance</h2>
             <p className={styles.cardParagraph}>
               Trouble unwinding at night? Our expert therapists gently help you relax anxiety &amp; stress, release your
               natural sleep rhythm, and wake up feeling lighter and more refreshed all day. We provide personalized

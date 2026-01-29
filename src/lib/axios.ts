@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { AUTH_STORAGE_KEYS } from '@/utils/cookieConstants';
+import { isProtectedPath } from '@/utils/routesConstants';
 
 const api = axios.create({
   baseURL: '/api',
@@ -7,24 +9,28 @@ const api = axios.create({
   },
 });
 
+function clearAuthStorageOnClient() {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_USER);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN);
+  window.dispatchEvent(new CustomEvent('auth-state-changed'));
+}
+
 api.interceptors.response.use(
-  (response) => {
-    // Return only data (or the full response depending on preference, but usually consistent with ApiResponse)
-    return response.data;
-  },
+  (response) => response.data,
   (error: unknown) => {
-    // Handle global errors if needed, e.g. token expiration redirect
     if (error && typeof error === 'object' && 'response' in error) {
       const axiosError = error as {
         response?: { status?: number; data?: unknown };
       };
       if (axiosError.response?.status === 401) {
-        // Optional: Redirect to login or clear auth state
         if (typeof window !== 'undefined') {
-          localStorage.removeItem('isLoggedIn');
-          window.dispatchEvent(new CustomEvent('auth-state-changed'));
-          // Avoid infinite reload loops by checking current path
-          if (!window.location.pathname.startsWith('/login')) {
+          const pathname = window.location.pathname;
+          const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/signup');
+          clearAuthStorageOnClient();
+          if (!isAuthPage && isProtectedPath(pathname)) {
+            fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
             window.location.href = '/login';
           }
         }

@@ -18,7 +18,7 @@ const ProgressBar = ({ currentStep, totalSteps }: ProgressBarProps) => {
       <div className={styles.progressTrack}>
         <div
           className={styles.progressFill}
-          style={{ width: `${progressPercentage}%` }}
+          style={{ ['--progress' as string]: `${progressPercentage}%` }}
           role="progressbar"
           aria-valuenow={currentStep}
           aria-valuemin={1}

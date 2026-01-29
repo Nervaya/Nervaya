@@ -10,6 +10,7 @@
 }
 
 .filterButton {
+  min-height: 44px;
   padding: 0.5rem 1.25rem;
   border: 2px solid #e0e0e0;
   background: white;
@@ -47,6 +48,17 @@
 
   .filters {
     margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .filterButton {
+    flex: 1 1 auto;
   }
 }
 

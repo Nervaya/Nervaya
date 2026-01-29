@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { Cart } from '@/types/supplement.types';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import { Cart, CartItem as CartItemType, Supplement } from '@/types/supplement.types';
 import CartItem from '@/components/Cart/CartItem';
 import CartSummary from '@/components/Cart/CartSummary';
-import api from '@/lib/axios';
+import { cartApi } from '@/lib/api/cart';
 import styles from './styles.module.css';
 
 export default function CartPage() {
@@ -20,10 +21,7 @@ export default function CartPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = (await api.get('/cart')) as {
-        success: boolean;
-        data: Cart;
-      };
+      const response = await cartApi.get();
       if (response.success && response.data) {
         setCart(response.data);
       }
@@ -38,10 +36,7 @@ export default function CartPage() {
     setUpdating(true);
     try {
       setError(null);
-      const response = (await api.put('/cart', {
-        supplementId,
-        quantity,
-      })) as { success: boolean; data: Cart };
+      const response = await cartApi.update(supplementId, quantity);
       if (response.success && response.data) {
         setCart(response.data);
       } else {
@@ -59,7 +54,7 @@ export default function CartPage() {
     setUpdating(true);
     try {
       setError(null);
-      const response = (await api.delete(`/cart?supplementId=${supplementId}`)) as { success: boolean; data: Cart };
+      const response = await cartApi.remove(supplementId);
       if (response.success && response.data) {
         setCart(response.data);
       } else {
@@ -120,16 +115,20 @@ export default function CartPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Shopping Cart</h1>
-        </header>
+        <PageHeader title="Shopping Cart" />
         {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           <div className={styles.itemsSection}>
-            {cart.items.map((item) => {
+            {cart.items.map((item: CartItemType) => {
+              const key =
+                typeof item.supplementId === 'object' &&
+                item.supplementId &&
+                '_id' in item.supplementId
+                  ? (item.supplementId as Supplement)._id
+                  : String(item.supplementId);
               return (
                 <CartItem
-                  key={item.supplement._id}
+                  key={key}
                   item={item}
                   onQuantityChange={handleQuantityChange}
                   onRemove={handleRemove}

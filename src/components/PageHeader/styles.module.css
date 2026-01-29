@@ -1,9 +1,9 @@
 .header {
-  background: linear-gradient(90deg, #7c3aed, #4c1d95);
+  background: linear-gradient(90deg, var(--accent), #4c1d95);
   padding: 2rem;
   border-radius: 12px;
   margin-bottom: 2rem;
-  color: #fff;
+  color: var(--foreground);
 }
 
 .title {
@@ -19,7 +19,7 @@
 }
 
 .description {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--muted);
   font-size: 1rem;
   line-height: 1.5;
 }

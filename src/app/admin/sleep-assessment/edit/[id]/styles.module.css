@@ -4,6 +4,18 @@
   padding: 0 20px;
 }
 
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.inputDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .header {
   margin-bottom: 40px;
 }

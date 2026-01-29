@@ -1,15 +1,16 @@
 import { FaBed, FaHeartPulse, FaCalendarCheck } from 'react-icons/fa6';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 
 export default function DashboardPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Welcome back, Test User!</h1>
-          <p className={styles.subtitle}>Here is an overview of your sleep journey.</p>
-        </header>
+        <PageHeader
+          title="Welcome back, Test User!"
+          subtitle="Here is an overview of your sleep journey."
+        />
 
         <div className={styles.statsGrid}>
           <div className={styles.card}>

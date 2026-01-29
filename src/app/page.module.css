@@ -1,12 +1,23 @@
 .container {
-  background-image: url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  position: relative;
   min-height: 100vh;
 }
 
+.backgroundImageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+}
+
 .heroSection {
+  position: relative;
+  z-index: 1;
   padding-top: 140px;
   padding-left: 60px;
   padding-right: 60px;
@@ -38,7 +49,7 @@
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
-  color: #ffffff;
+  color: var(--foreground);
   margin-bottom: 24px;
   letter-spacing: -0.02em;
   max-width: 800px;
@@ -67,7 +78,7 @@
 .heroSubtitle {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
   line-height: 1.7;
-  color: #e0e0e0;
+  color: var(--muted);
   margin-bottom: 40px;
   max-width: 600px;
 }
@@ -117,6 +128,10 @@
 
 .primaryButton,
 .secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 14px 40px;
   font-size: clamp(0.875rem, 1.2vw, 0.95rem);
   font-weight: 500;
@@ -126,6 +141,8 @@
   border: none;
   white-space: nowrap;
   width: fit-content;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -146,13 +163,13 @@
 }
 
 .primaryButton {
-  background: #7828c8;
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--foreground);
   box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 .primaryButton:hover {
-  background: #8b3dd9;
+  background: var(--border-hover);
   box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
   transform: translateY(-2px);
 }
@@ -164,15 +181,15 @@
 
 .secondaryButton {
   background: transparent;
-  color: #a855f7;
-  border: 2px solid #7c3aed;
+  color: var(--accent);
+  border: 2px solid var(--accent);
   box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
 }
 
 .secondaryButton:hover {
   background: rgba(124, 58, 237, 0.1);
-  color: #c084fc;
-  border-color: #8b5cf6;
+  color: var(--border-hover);
+  border-color: var(--border-hover);
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
   transform: translateY(-2px);
 }
