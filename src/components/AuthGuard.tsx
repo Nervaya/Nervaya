@@ -29,9 +29,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (isProtectedPath(pathname) && !isAuthenticated) {
       const safeReturn = validateReturnUrl(pathname);
-      const loginUrl = safeReturn
-        ? `${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(safeReturn)}`
-        : ROUTES.LOGIN;
+      const loginUrl = safeReturn ? `${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(safeReturn)}` : ROUTES.LOGIN;
       router.replace(loginUrl);
       return;
     }

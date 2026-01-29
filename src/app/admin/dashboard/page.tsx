@@ -4,10 +4,7 @@ import styles from './styles.module.css';
 export default function AdminDashboardPage() {
   return (
     <div>
-      <PageHeader
-        title="Admin Dashboard"
-        subtitle="Welcome, Admin! Use the sidebar to manage therapists and slots."
-      />
+      <PageHeader title="Admin Dashboard" subtitle="Welcome, Admin! Use the sidebar to manage therapists and slots." />
       <div className={styles.grid}>
         <div className={styles.card}>
           <h3 className={styles.cardTitle}>Therapists</h3>

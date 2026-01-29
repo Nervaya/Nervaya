@@ -15,6 +15,7 @@ const HomePage = () => {
           alt="Background Image"
           fill
           priority
+          fetchPriority="high"
           className={styles.backgroundImage}
           sizes="100vw"
           quality={85}

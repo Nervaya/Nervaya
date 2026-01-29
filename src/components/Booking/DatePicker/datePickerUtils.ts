@@ -1,6 +1,16 @@
 export const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -13,11 +23,7 @@ export function isSameDay(date1: Date, date2: Date): boolean {
   );
 }
 
-export function isDateDisabled(
-  date: Date,
-  minDate?: Date,
-  maxDate?: Date,
-): boolean {
+export function isDateDisabled(date: Date, minDate?: Date, maxDate?: Date): boolean {
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
   if (minDate) {

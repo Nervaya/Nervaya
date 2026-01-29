@@ -45,12 +45,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setCartCount(0);
-      return;
-    }
+    if (!isAuthenticated) return;
     // Defer cart fetch to not block initial render
-    // Use requestIdleCallback if available, otherwise setTimeout
     const deferCartFetch = () => {
       if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
         requestIdleCallback(() => refreshCart(), { timeout: 2000 });
@@ -67,7 +63,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('auth-state-changed', handleAuthChange);
   }, [refreshCart]);
 
-  return <CartContext.Provider value={{ cartCount, refreshCart }}>{children}</CartContext.Provider>;
+  const displayCount = isAuthenticated ? cartCount : 0;
+  return <CartContext.Provider value={{ cartCount: displayCount, refreshCart }}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => useContext(CartContext);

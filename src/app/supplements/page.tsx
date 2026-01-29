@@ -60,10 +60,7 @@ export default function SupplementsPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <PageHeader
-          title="Supplements"
-          subtitle="Discover our range of health supplements"
-        />
+        <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
         {error && <div className={styles.error}>{error}</div>}
         <SupplementGrid supplements={supplements} onAddToCart={handleAddToCart} loading={loading} />
       </div>

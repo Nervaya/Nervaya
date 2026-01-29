@@ -101,7 +101,7 @@ export function useCheckout() {
   );
 
   const handleUseAddress = useCallback((addr: SavedAddress) => {
-    const { _id, label, isDefault, ...shippingAddr } = addr;
+    const { _id, label: _label, isDefault: _isDefault, ...shippingAddr } = addr;
     setSelectedAddress(shippingAddr as ShippingAddress);
     setFormKey((prev) => prev + 1);
   }, []);

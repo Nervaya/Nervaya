@@ -27,12 +27,15 @@ export default function SupplementDetailPage() {
 
   const fetchSupplement = async () => {
     try {
+      const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+      if (!id) {
+        setSupplement(null);
+        setError('Supplement not found');
+        return;
+      }
       setLoading(true);
       setError(null);
-      const response = (await api.get(`/supplements/${params.id}`)) as {
-        success: boolean;
-        data: Supplement;
-      };
+      const response = await supplementsApi.getById(id);
       if (response.success && response.data) {
         setSupplement(response.data);
       }
@@ -48,7 +51,8 @@ export default function SupplementDetailPage() {
       return;
     }
     if (!isAuthenticated) {
-      const currentPath = `/supplements/${params.id}`;
+      const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+      const currentPath = `/supplements/${id}`;
       const returnUrl = encodeURIComponent(currentPath);
       router.push(`${ROUTES.LOGIN}?returnUrl=${returnUrl}`);
       return;

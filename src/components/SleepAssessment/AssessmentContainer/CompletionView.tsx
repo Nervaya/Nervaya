@@ -22,8 +22,8 @@ export function CompletionView() {
       </div>
       <h2 className={styles.completionTitle}>Assessment Complete!</h2>
       <p className={styles.completionText}>
-        Thank you for completing the sleep assessment. Your responses have been saved and will help us personalize
-        your sleep journey.
+        Thank you for completing the sleep assessment. Your responses have been saved and will help us personalize your
+        sleep journey.
       </p>
       <button type="button" className={styles.completionButton} onClick={() => router.push('/dashboard')}>
         Go to Dashboard

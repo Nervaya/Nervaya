@@ -6,7 +6,7 @@ import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button/Button';
 import { useAuth } from '@/hooks/useAuth';
-import { BACKGROUND_IMAGES, AUTH_IMAGES } from '@/utils/imageConstants';
+import { IMAGES } from '@/utils/imageConstants';
 import styles from './AnimatedAuthForm.module.css';
 
 interface AnimatedAuthFormProps {

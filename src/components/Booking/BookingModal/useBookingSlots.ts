@@ -44,9 +44,7 @@ export function useBookingSlots(therapistId: string, selectedDate: Date) {
     setError(null);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      const response = await fetch(
-        `/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`,
-      );
+      const response = await fetch(`/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`);
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'Failed to fetch slots');

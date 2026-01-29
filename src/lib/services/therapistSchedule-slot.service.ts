@@ -3,12 +3,7 @@ import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 
-export async function bookSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-  sessionId: string,
-) {
+export async function bookSlot(therapistId: string, date: string, startTime: string, sessionId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId) || !Types.ObjectId.isValid(sessionId)) {
@@ -59,12 +54,7 @@ export async function releaseSlot(therapistId: string, date: string, startTime: 
   }
 }
 
-export async function updateSlot(
-  therapistId: string,
-  date: string,
-  startTime: string,
-  updates: Partial<ITimeSlot>,
-) {
+export async function updateSlot(therapistId: string, date: string, startTime: string, updates: Partial<ITimeSlot>) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {

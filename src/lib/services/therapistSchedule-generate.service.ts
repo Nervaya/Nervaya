@@ -2,12 +2,7 @@ import TherapistSchedule, { ITimeSlot } from '@/lib/models/therapistSchedule.mod
 import Therapist from '@/lib/models/therapist.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
-import {
-  formatDate,
-  timeToMinutes,
-  minutesToTime,
-  generateTimeSlotsBetween,
-} from '@/lib/utils/scheduleTime.util';
+import { formatDate, timeToMinutes, minutesToTime, generateTimeSlotsBetween } from '@/lib/utils/scheduleTime.util';
 import { Types } from 'mongoose';
 
 export async function generateSlotsFromConsultingHours(

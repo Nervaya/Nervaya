@@ -36,17 +36,17 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
         setConsultingHours(defaultHours);
         setSavedHours([]);
       } else {
-        const hoursMap = new Map<number, ConsultingHour>(
-          result.data.map((h: ConsultingHour) => [h.dayOfWeek, h]),
-        );
+        const hoursMap = new Map<number, ConsultingHour>(result.data.map((h: ConsultingHour) => [h.dayOfWeek, h]));
         const allHours: ConsultingHour[] = DAYS_OF_WEEK.map((day): ConsultingHour => {
           const existing = hoursMap.get(day.value);
-          return existing ?? {
-            dayOfWeek: day.value,
-            startTime: '09:00 AM',
-            endTime: '05:00 PM',
-            isEnabled: false,
-          };
+          return (
+            existing ?? {
+              dayOfWeek: day.value,
+              startTime: '09:00 AM',
+              endTime: '05:00 PM',
+              isEnabled: false,
+            }
+          );
         });
         setConsultingHours(allHours);
         setSavedHours(result.data);
@@ -63,9 +63,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
   }, [fetchConsultingHours]);
 
   const updateDayHours = useCallback((dayOfWeek: number, updates: Partial<ConsultingHour>) => {
-    setConsultingHours((prev) =>
-      prev.map((hour) => (hour.dayOfWeek === dayOfWeek ? { ...hour, ...updates } : hour)),
-    );
+    setConsultingHours((prev) => prev.map((hour) => (hour.dayOfWeek === dayOfWeek ? { ...hour, ...updates } : hour)));
   }, []);
 
   const handleUpdate = useCallback(async () => {
@@ -103,10 +101,9 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
       setGenerating(true);
       setGenerationStatus(`Generating slots for the next ${days} days...`);
       try {
-        const response = await fetch(
-          `/api/therapists/${therapistId}/schedule/generate?days=${days}`,
-          { method: 'POST' },
-        );
+        const response = await fetch(`/api/therapists/${therapistId}/schedule/generate?days=${days}`, {
+          method: 'POST',
+        });
         const result = await response.json();
         if (!response.ok) throw new Error(result.message || 'Failed to generate slots');
         const inserted = result.data?.insertedCount || 0;
@@ -114,9 +111,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
         setGenerationStatus(`Successfully generated schedules! (${inserted} new, ${modified} updated)`);
         setTimeout(() => onUpdate?.(), 500);
       } catch (err) {
-        setGenerationStatus(
-          `Warning: ${err instanceof Error ? err.message : 'Failed to generate slots'}`,
-        );
+        setGenerationStatus(`Warning: ${err instanceof Error ? err.message : 'Failed to generate slots'}`);
       } finally {
         setGenerating(false);
       }

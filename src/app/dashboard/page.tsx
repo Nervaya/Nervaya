@@ -7,10 +7,7 @@ export default function DashboardPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <PageHeader
-          title="Welcome back, Test User!"
-          subtitle="Here is an overview of your sleep journey."
-        />
+        <PageHeader title="Welcome back, Test User!" subtitle="Here is an overview of your sleep journey." />
 
         <div className={styles.statsGrid}>
           <div className={styles.card}>

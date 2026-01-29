@@ -25,9 +25,7 @@ export function CheckoutOrderSummary({ cart }: CheckoutOrderSummaryProps) {
           <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
         </div>
         {cart.totalAmount < 500 && (
-          <div className={styles.freeShipping}>
-            Add {formatPrice(500 - cart.totalAmount)} more for free shipping!
-          </div>
+          <div className={styles.freeShipping}>Add {formatPrice(500 - cart.totalAmount)} more for free shipping!</div>
         )}
         <div className={styles.divider} />
         <div className={`${styles.summaryRow} ${styles.totalRow}`}>

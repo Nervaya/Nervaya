@@ -26,6 +26,8 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [booking, setBooking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const { schedule, loading, error: slotsError, fetchSlots } = useBookingSlots(therapistId, selectedDate);
 
@@ -60,9 +62,15 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       setSelectedSlot(null);
       return;
     }
-    const confirmMessage = `Confirm booking for ${therapistName} on ${schedule.date} at ${slot.startTime}?`;
-    if (!window.confirm(confirmMessage)) return;
+    setShowConfirm(true);
+  };
 
+  const handleConfirmBooking = async () => {
+    if (!selectedSlot || !schedule) return;
+    const slot = schedule.slots.find((s) => s.startTime === selectedSlot);
+    if (!slot || !slot.isAvailable) return;
+
+    setShowConfirm(false);
     setBooking(true);
     setError(null);
     try {
@@ -77,9 +85,9 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Failed to book session');
-      window.alert('Session booked successfully!');
+      setSuccessMessage('Session booked successfully!');
       onSuccess?.();
-      onClose();
+      setTimeout(() => onClose(), 1200);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error booking session. Please try again.';
       setError(errorMessage);
@@ -163,6 +171,28 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           <div className={styles.errorBanner}>
             <span className={styles.errorIcon}>Warning</span>
             <span>{displayError}</span>
+          </div>
+        )}
+        {successMessage && (
+          <div className={styles.successBanner} role="status">
+            <span>{successMessage}</span>
+          </div>
+        )}
+        {showConfirm && schedule && selectedSlot && (
+          <div className={styles.confirmOverlay}>
+            <div className={styles.confirmDialog}>
+              <p>
+                Confirm booking for <strong>{therapistName}</strong> on {schedule.date} at {selectedSlot}?
+              </p>
+              <div className={styles.confirmActions}>
+                <button type="button" className={styles.confirmCancel} onClick={() => setShowConfirm(false)}>
+                  Cancel
+                </button>
+                <button type="button" className={styles.confirmOk} onClick={handleConfirmBooking}>
+                  Confirm
+                </button>
+              </div>
+            </div>
           </div>
         )}
         <BookingModalFooter

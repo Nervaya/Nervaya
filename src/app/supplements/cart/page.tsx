@@ -121,9 +121,7 @@ export default function CartPage() {
           <div className={styles.itemsSection}>
             {cart.items.map((item: CartItemType) => {
               const key =
-                typeof item.supplementId === 'object' &&
-                item.supplementId &&
-                '_id' in item.supplementId
+                typeof item.supplementId === 'object' && item.supplementId && '_id' in item.supplementId
                   ? (item.supplementId as Supplement)._id
                   : String(item.supplementId);
               return (
