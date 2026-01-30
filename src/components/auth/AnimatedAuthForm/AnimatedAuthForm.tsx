@@ -102,7 +102,7 @@ export default function AnimatedAuthForm({ initialMode = 'login', returnUrl }: A
                     <h1 className={styles.title}>Welcome back</h1>
                     <p className={styles.subtitle}>Please enter your details to continue</p>
                   </div>
-                  <form onSubmit={handleSubmit} className={styles.form}>
+                  <form onSubmit={handleSubmit} className={`${styles.form} ${styles.loginForm}`}>
                     <Input
                       label="Email address"
                       type="email"
@@ -122,12 +122,6 @@ export default function AnimatedAuthForm({ initialMode = 'login', returnUrl }: A
                       error={errors.password}
                       className={styles.glassInput}
                     />
-
-                    <div className={styles.formOptions}>
-                      <span className={styles.comingSoonLabel} aria-hidden="true">
-                        Remember me &bull; Forgot password (Coming soon)
-                      </span>
-                    </div>
 
                     {error && <div className={styles.errorMessage}>{error}</div>}
 
