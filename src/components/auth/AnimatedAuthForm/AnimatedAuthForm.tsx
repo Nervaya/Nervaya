@@ -1,217 +1,193 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import Image from 'next/image';
-import { LazyMotion, m, AnimatePresence } from 'framer-motion';
-import Input from '@/components/common/Input/Input';
-import Button from '@/components/common/Button/Button';
-import { useAuth } from '@/hooks/useAuth';
-import { IMAGES } from '@/utils/imageConstants';
+import React from 'react';
+import { FaGoogle } from 'react-icons/fa';
+import { useAuthForm } from '@/hooks/useAuthForm';
 import styles from './AnimatedAuthForm.module.css';
 
-interface AnimatedAuthFormProps {
+export interface AnimatedAuthFormProps {
   initialMode?: 'login' | 'signup';
   returnUrl?: string;
 }
 
-export default function AnimatedAuthForm({ initialMode = 'login', returnUrl }: AnimatedAuthFormProps) {
-  const [isLogin, setIsLogin] = useState(initialMode === 'login');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { login, signup, loading, error } = useAuth();
-
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!isLogin) {
-      if (!formData.name.trim()) {
-        newErrors.name = 'Name is required';
-      } else if (formData.name.trim().length < 2) {
-        newErrors.name = 'Name must be at least 2 characters';
-      }
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (!isLogin && formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    try {
-      if (isLogin) {
-        await login(formData.email, formData.password, returnUrl);
-      } else {
-        await signup(formData.email, formData.password, formData.name, returnUrl);
-      }
-    } catch (err) {
-      console.error('Auth error:', err);
-    }
-  };
-
-  const switchMode = () => {
-    setIsLogin(!isLogin);
-    setErrors({});
-    setFormData({ name: '', email: '', password: '' });
-  };
+const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({
+  initialMode = 'login',
+  returnUrl,
+}) => {
+  const {
+    isRightPanelActive,
+    email,
+    password,
+    name,
+    fieldErrors,
+    loading,
+    error,
+    handleSignupClick,
+    handleLoginClick,
+    handleLoginSubmit,
+    handleSignupSubmit,
+    handleInputChange,
+  } = useAuthForm({ initialMode, returnUrl });
 
   return (
     <div className={styles.container}>
-      <div className={styles.backgroundImageWrapper}>
-        <Image
-          src={IMAGES.BACKGROUND_MAIN}
-          alt=""
-          fill
-          priority
-          className={styles.backgroundImage}
-          sizes="100vw"
-          quality={85}
-        />
-      </div>
-      <div className={styles.wrapper}>
-        <div className={styles.formSection}>
-          <div className={styles.formContent}>
-            <div className={styles.logoContainer}>
-              <Image src="/icons/nervaya-logo.svg" alt="Nervaya Logo" width={160} height={50} priority />
+      <div className={`${styles.authCard} ${isRightPanelActive ? styles.rightPanelActive : ''}`}>
+
+        {/* Sign Up Form Container (Left Side in Code, slides to active) */}
+        <div className={`${styles.formSection} ${styles.formSignup}`} style={{
+          opacity: isRightPanelActive ? 1 : 0,
+          zIndex: isRightPanelActive ? 5 : 1,
+          transform: isRightPanelActive ? 'translateX(100%)' : 'translateX(0)',
+        }}>
+          <h1 className={styles.title}>Create Account</h1>
+          <div className={styles.socialIcons}>
+            <a href="#" className={styles.icon}><FaGoogle /></a>
+          </div>
+          <p className={styles.divider}>or use your email for registration</p>
+          {error && (
+            <div role="alert" className={styles.errorBanner} aria-live="polite">
+              {error}
             </div>
-
-            <div className={styles.formContainer}>
-              <div className={`${styles.formWrapper} ${isLogin ? styles.showLogin : styles.showSignup}`}>
-                <div className={`${styles.formPanel} ${styles.loginPanel}`}>
-                  <div className={styles.header}>
-                    <h1 className={styles.title}>Welcome back</h1>
-                    <p className={styles.subtitle}>Please enter your details to continue</p>
-                  </div>
-                  <form onSubmit={handleSubmit} className={`${styles.form} ${styles.loginForm}`}>
-                    <Input
-                      label="Email address"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      error={errors.email}
-                      className={styles.glassInput}
-                    />
-
-                    <Input
-                      label="Password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      error={errors.password}
-                      className={styles.glassInput}
-                    />
-
-                    {error && <div className={styles.errorMessage}>{error}</div>}
-
-                    <Button type="submit" loading={loading} className={styles.submitButton}>
-                      Sign in
-                    </Button>
-                  </form>
-                </div>
-
-                <div className={`${styles.formPanel} ${styles.signupPanel}`}>
-                  <div className={styles.header}>
-                    <h1 className={styles.title}>Create your account</h1>
-                    <p className={styles.subtitle}>Please enter your details to get started</p>
-                  </div>
-                  <form onSubmit={handleSubmit} className={styles.form}>
-                    <Input
-                      label="Full name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      error={errors.name}
-                      className={styles.glassInput}
-                    />
-
-                    <Input
-                      label="Email address"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      error={errors.email}
-                      className={styles.glassInput}
-                    />
-
-                    <Input
-                      label="Password"
-                      type="password"
-                      placeholder="Create a password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      error={errors.password}
-                      className={styles.glassInput}
-                    />
-
-                    {error && <div className={styles.errorMessage}>{error}</div>}
-
-                    <Button type="submit" loading={loading} className={styles.submitButton}>
-                      Create account
-                    </Button>
-                  </form>
-                </div>
-              </div>
+          )}
+          <form className={styles.form} onSubmit={handleSignupSubmit}>
+            <div className={styles.inputGroup}>
+              <input
+                type="text"
+                placeholder="Name"
+                className={`${styles.input} ${fieldErrors.name ? styles.inputError : ''}`}
+                value={name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                autoComplete="name"
+                aria-invalid={!!fieldErrors.name}
+                aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+              />
+              {fieldErrors.name && (
+                <span id="name-error" className={styles.fieldError}>{fieldErrors.name}</span>
+              )}
             </div>
+            <div className={styles.inputGroup}>
+              <input
+                type="email"
+                placeholder="Email"
+                className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
+                value={email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                autoComplete="email"
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? 'signup-email-error' : undefined}
+              />
+              {fieldErrors.email && (
+                <span id="signup-email-error" className={styles.fieldError}>{fieldErrors.email}</span>
+              )}
+            </div>
+            <div className={styles.inputGroup}>
+              <input
+                type="password"
+                placeholder="Password"
+                className={`${styles.input} ${fieldErrors.password ? styles.inputError : ''}`}
+                value={password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                autoComplete="new-password"
+                aria-invalid={!!fieldErrors.password}
+                aria-describedby={fieldErrors.password ? 'signup-password-error' : undefined}
+              />
+              {fieldErrors.password && (
+                <span id="signup-password-error" className={styles.fieldError}>{fieldErrors.password}</span>
+              )}
+            </div>
+            <button type="submit" className={styles.button} disabled={loading}>
+              {loading ? 'Signing up...' : 'Sign Up'}
+            </button>
+          </form>
+          <div className={`${styles.authToggle} md:hidden`}>
+            Already have an account? <span onClick={handleLoginClick} className={styles.authToggleLink}>Sign In</span>
+          </div>
+        </div>
 
-            <div className={styles.switchContainer}>
-              <p className={styles.switchText}>
-                {isLogin ? "Don't have an account? " : 'Already have an account? '}
-                <button type="button" onClick={switchMode} className={styles.switchLink}>
-                  {isLogin ? 'Sign up' : 'Sign in'}
-                </button>
+        {/* Sign In Form Container (Right Side in Code, default active) */}
+        <div className={`${styles.formSection} ${styles.formLogin}`} style={{
+          opacity: isRightPanelActive ? 0 : 1,
+          zIndex: isRightPanelActive ? 1 : 5,
+          transform: isRightPanelActive ? 'translateX(100%)' : 'translateX(0)',
+        }}>
+          <h1 className={styles.title}>Sign in</h1>
+          <div className={styles.socialIcons}>
+            <a href="#" className={styles.icon}><FaGoogle /></a>
+          </div>
+          <p className={styles.divider}>or use your account</p>
+          {error && (
+            <div role="alert" className={styles.errorBanner} aria-live="polite">
+              {error}
+            </div>
+          )}
+          <form className={styles.form} onSubmit={handleLoginSubmit}>
+            <div className={styles.inputGroup}>
+              <input
+                type="email"
+                placeholder="Email"
+                className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
+                value={email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                autoComplete="email"
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
+              />
+              {fieldErrors.email && (
+                <span id="login-email-error" className={styles.fieldError}>{fieldErrors.email}</span>
+              )}
+            </div>
+            <div className={styles.inputGroup}>
+              <input
+                type="password"
+                placeholder="Password"
+                className={`${styles.input} ${fieldErrors.password ? styles.inputError : ''}`}
+                value={password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                autoComplete="current-password"
+                aria-invalid={!!fieldErrors.password}
+                aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
+              />
+              {fieldErrors.password && (
+                <span id="login-password-error" className={styles.fieldError}>{fieldErrors.password}</span>
+              )}
+            </div>
+            <a href="#" className={styles.forgotPassword}>Forgot your password?</a>
+            <button type="submit" className={styles.button} disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
+          <div className={`${styles.authToggle} md:hidden`}>
+            Don&apos;t have an account? <span onClick={handleSignupClick} className={styles.authToggleLink}>Sign Up</span>
+          </div>
+        </div>
+
+        {/* Overlay Container (The Sliding Image Part) */}
+        <div className={styles.overlayContainer}>
+          <div className={styles.overlay}>
+            <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
+              <h1 className={styles.overlayTitle}>Welcome Back!</h1>
+              <p className={styles.overlayText}>
+                To keep connected with us please login with your personal info
               </p>
+              <button type="button" className={styles.ghostButton} onClick={handleLoginClick}>
+                Sign In
+              </button>
+            </div>
+            <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
+              <h1 className={styles.overlayTitle}>Hello, Friend!</h1>
+              <p className={styles.overlayText}>
+                Enter your personal details and start your journey with us
+              </p>
+              <button type="button" className={styles.ghostButton} onClick={handleSignupClick}>
+                Sign Up
+              </button>
             </div>
           </div>
         </div>
 
-        <div className={styles.illustrationSection}>
-          <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
-            <AnimatePresence mode="wait">
-              <m.div
-                key={isLogin ? 'login-img' : 'signup-img'}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{ duration: 0.5 }}
-                className={styles.illustrationContent}
-              >
-                <Image
-                  src={isLogin ? IMAGES.AUTH_LOGIN_ILLUSTRATION : IMAGES.AUTH_SIGNUP_ILLUSTRATION}
-                  alt={isLogin ? 'Login Illustration' : 'Signup Illustration'}
-                  fill
-                  className={styles.illustrationImage}
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </m.div>
-            </AnimatePresence>
-          </LazyMotion>
-        </div>
       </div>
     </div>
   );
-}
+};
+
+export default AnimatedAuthForm;

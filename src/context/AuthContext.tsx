@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { ApiResponse } from '@/lib/utils/response.util';
+import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { ROLES, Role } from '@/lib/constants/roles';
 import { ROUTES } from '@/utils/routesConstants';
 import { validateReturnUrl } from '@/utils/returnUrl';
@@ -29,6 +30,7 @@ interface AuthContextType {
   login: (email: string, password: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
   signup: (email: string, password: string, name: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
   logout: () => Promise<void>;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -130,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return response;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Signup failed';
+      const message = getApiErrorMessage(err, 'Signup failed');
       setError(message);
       throw new Error(message);
     } finally {
@@ -153,7 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return response;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Login failed';
+      const message = getApiErrorMessage(err, 'Login failed');
       setError(message);
       throw new Error(message);
     } finally {
@@ -180,6 +182,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push(ROUTES.LOGIN);
   };
 
+  const clearError = () => setError(null);
+
   return (
     <AuthContext.Provider
       value={{
@@ -190,6 +194,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         signup,
         logout,
+        clearError,
       }}
     >
       {children}
