@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { FaGoogle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { useAuthForm } from '@/hooks/useAuthForm';
 import styles from './AnimatedAuthForm.module.css';
+import { IMAGES } from '@/utils/imageConstants';
 
 export interface AnimatedAuthFormProps {
   initialMode?: 'login' | 'signup';
@@ -41,7 +42,7 @@ const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({
         }}>
           <h1 className={styles.title}>Create Account</h1>
           <div className={styles.socialIcons}>
-            <a href="#" className={styles.icon}><FaGoogle /></a>
+            <a href="#" className={styles.icon}><FcGoogle /></a>
           </div>
           <p className={styles.divider}>or use your email for registration</p>
           {error && (
@@ -112,7 +113,7 @@ const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({
         }}>
           <h1 className={styles.title}>Sign in</h1>
           <div className={styles.socialIcons}>
-            <a href="#" className={styles.icon}><FaGoogle /></a>
+            <a href="#" className={styles.icon}><FcGoogle /></a>
           </div>
           <p className={styles.divider}>or use your account</p>
           {error && (
@@ -164,6 +165,24 @@ const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({
         {/* Overlay Container (The Sliding Image Part) */}
         <div className={styles.overlayContainer}>
           <div className={styles.overlay}>
+            {/* Background Images for Overlay */}
+            <div className={styles.overlayBg} style={{ left: 0 }}>
+              <img
+                src={IMAGES.AUTH_LOGIN_ILLUSTRATION}
+                alt="Login Illustration"
+                className={styles.overlayImage}
+              />
+              <div className={styles.overlayDim}></div>
+            </div>
+            <div className={styles.overlayBg} style={{ right: 0 }}>
+              <img
+                src={IMAGES.AUTH_SIGNUP_ILLUSTRATION}
+                alt="Signup Illustration"
+                className={styles.overlayImage}
+              />
+              <div className={styles.overlayDim}></div>
+            </div>
+
             <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
               <h1 className={styles.overlayTitle}>Welcome Back!</h1>
               <p className={styles.overlayText}>
