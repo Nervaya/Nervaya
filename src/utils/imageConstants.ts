@@ -23,7 +23,8 @@ export const IMAGES = {
 
   // Auth Page Illustrations
   AUTH_LOGIN_ILLUSTRATION: 'https://res.cloudinary.com/disrq2eh8/image/upload/LoginIllustration_hk3kuy.png',
-  AUTH_SIGNUP_ILLUSTRATION: 'https://res.cloudinary.com/disrq2eh8/image/upload/Mental_Health_Illustrations_by_Muhammed_Sajid_i7fn0x.jpg',
+  AUTH_SIGNUP_ILLUSTRATION:
+    'https://res.cloudinary.com/disrq2eh8/image/upload/Mental_Health_Illustrations_by_Muhammed_Sajid_i7fn0x.jpg',
 
   // Add more images here as needed
 } as const;

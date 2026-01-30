@@ -1,16 +1,10 @@
-/* Modern Color Palette & Variables */
 .container {
   --primary: #4f46e5;
-  /* Indigo 600 */
   --primary-dark: #4338ca;
-  /* Indigo 700 */
   --secondary: #ec4899;
-  /* Pink 500 */
   --bg-gradient: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
   --text-main: #1f2937;
-  /* Gray 800 */
   --text-muted: #6b7280;
-  /* Gray 500 */
   --white: #ffffff;
   --glass-bg: rgba(255, 255, 255, 0.95);
 
@@ -64,7 +58,6 @@
   font-weight: 800;
   margin-bottom: 1.5rem;
   color: var(--white);
-  /* Light text for dark bg */
 }
 
 .socialIcons {
@@ -82,9 +75,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  /* Slightly larger for FcIcon */
   background: var(--white);
-  /* White bg for Google icon to pop */
   color: var(--text-main);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -113,7 +104,6 @@
   flex: 1;
   height: 1px;
   background: #374151;
-  /* Gray 700 */
 }
 
 .form {
@@ -132,10 +122,8 @@
   width: 100%;
   padding: 0.875rem 1rem;
   background: #374151;
-  /* Gray 700 */
   color: var(--white);
   border: 2px solid #4b5563;
-  /* Gray 600 */
   border-radius: 12px;
   font-size: 1rem;
   outline: none;
@@ -145,7 +133,6 @@
 .input:focus {
   border-color: var(--primary);
   background: #1f2937;
-  /* Gray 800 */
 }
 
 .button {
@@ -232,7 +219,6 @@
   padding-top: 1.25rem;
   font-size: 0.9375rem;
   color: #9ca3af;
-  /* Gray 400 */
   width: 100%;
 }
 
@@ -254,14 +240,15 @@
   width: 50%;
   height: 100%;
   overflow: hidden;
-  transition: transform 0.6s ease-in-out, border-radius 0.6s ease-in-out;
+  transition:
+    transform 0.6s ease-in-out,
+    border-radius 0.6s ease-in-out;
   z-index: 100;
   /* Default state (Right side): Inner edge is Left */
   border-radius: 100px 0 0 100px;
 }
 
 .overlay {
-  /* background: var(--bg-gradient); REMOVED */
   background: transparent;
   color: var(--white);
   position: relative;
@@ -296,7 +283,6 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
-  /* Dimming */
   z-index: 1;
 }
 
@@ -314,7 +300,6 @@
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
   z-index: 2;
-  /* Ensure text is above dim layer */
 }
 
 .overlayLeft {
@@ -371,7 +356,6 @@
 
 .rightPanelActive .overlayContainer {
   transform: translateX(-100%);
-  /* Active state (Left side): Inner edge is Right */
   border-radius: 0 100px 100px 0;
 }
 
@@ -389,24 +373,59 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+  .container {
+    height: 100vh;
+  }
+
   .authCard {
     flex-direction: column;
-    /* Stack vertically on mobile */
     min-height: auto;
-    max-width: 400px;
+    max-width: 90%;
+    width: 400px;
     height: auto;
+    margin-bottom: 2rem;
+    /* Reduce margin on mobile */
   }
 
   .formSection {
     width: 100%;
     position: relative;
-    padding: 2rem;
+    padding: 2rem 1.5rem;
+    height: auto;
+    transform: none !important;
+    opacity: 1 !important;
+    z-index: 1 !important;
   }
 
   .overlayContainer {
     display: none;
-    /* Hide fancy animation on mobile for simplicity */
   }
 
-  /* Fallback mobile toggles would be needed in JS for "Don't have an account?" text link switch */
+  .formSignup {
+    display: none;
+  }
+
+  .formLogin {
+    display: flex;
+  }
+
+  .rightPanelActive .formLogin {
+    display: none;
+  }
+
+  .rightPanelActive .formSignup {
+    display: flex;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .authToggle {
+    display: none;
+  }
 }

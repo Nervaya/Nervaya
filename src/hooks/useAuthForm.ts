@@ -2,11 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
-import {
-  validateEmail,
-  validatePassword,
-  validateName,
-} from '@/lib/utils/validation.util';
+import { validateEmail, validatePassword, validateName } from '@/lib/utils/validation.util';
 
 export interface AuthFormErrors {
   email?: string;
@@ -98,7 +94,7 @@ export function useAuthForm(options: UseAuthFormOptions = {}) {
       clearError();
       await login(email.trim().toLowerCase(), password.trim(), returnUrl);
     },
-    [email, password, returnUrl, validateLoginForm, login, clearError]
+    [email, password, returnUrl, validateLoginForm, login, clearError],
   );
 
   const handleSignupSubmit = useCallback(
@@ -106,14 +102,9 @@ export function useAuthForm(options: UseAuthFormOptions = {}) {
       e.preventDefault();
       if (!validateSignupForm()) return;
       clearError();
-      await signup(
-        email.trim().toLowerCase(),
-        password.trim(),
-        name.trim(),
-        returnUrl
-      );
+      await signup(email.trim().toLowerCase(), password.trim(), name.trim(), returnUrl);
     },
-    [email, password, name, returnUrl, validateSignupForm, signup, clearError]
+    [email, password, name, returnUrl, validateSignupForm, signup, clearError],
   );
 
   const clearFieldError = useCallback((field: keyof AuthFormErrors) => {
@@ -125,17 +116,14 @@ export function useAuthForm(options: UseAuthFormOptions = {}) {
   }, []);
 
   const handleInputChange = useCallback(
-    (
-      field: 'email' | 'password' | 'name',
-      value: string
-    ) => {
+    (field: 'email' | 'password' | 'name', value: string) => {
       if (error) clearError();
       clearFieldError(field);
       if (field === 'email') setEmail(value);
       else if (field === 'password') setPassword(value);
       else setName(value);
     },
-    [error, clearError, clearFieldError]
+    [error, clearError, clearFieldError],
   );
 
   return {
