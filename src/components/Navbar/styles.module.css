@@ -6,19 +6,19 @@
   z-index: 3000;
   background: transparent;
   border: none;
-  padding-top: 20px;
+  padding-top: 24px;
 }
 
 .navbar {
   width: 100%;
+  padding: 0 40px;
   display: flex;
   justify-content: center;
-  transition: all 0.2s ease;
 }
 
 .navbarMain {
   position: fixed;
-  top: 20px;
+  top: 24px;
   left: 0;
   right: 0;
   z-index: 3000;
@@ -39,25 +39,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
-  max-width: 1000px;
-  margin: 0 auto;
-  height: 64px;
-  padding: 0 24px;
-  background: rgba(12, 10, 24, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 999px;
-  border: 1px solid rgba(124, 58, 237, 0.12);
+  width: 100%;
+  max-width: 960px;
+  /* Consistently tight container like SolidRoad */
+  height: 56px;
+  /* Compact height */
+  padding: 0 8px;
+  /* Inner padding for the pill */
+
+  /* SolidRoad-esque Glass */
+  background: rgba(10, 10, 12, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Crisp subtle border */
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.15),
-    0 0 1px rgba(124, 58, 237, 0.06);
+    0 2px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* Inner highlight */
 }
 
 @media (max-width: 768px) {
   .navbarContainer {
     width: 92%;
-    padding: 0 20px;
+    padding: 0 16px;
     height: 60px;
   }
 }
@@ -66,53 +73,26 @@
   display: flex;
   align-items: center;
   height: 100%;
+  margin-left: 16px;
+  /* Spacing from pill edge */
 }
 
 .navbarLogo img {
-  height: 32px;
+  height: 24px;
+  /* Subtle, small logo */
   width: auto;
   object-fit: contain;
 }
 
+/* Menu */
 .navbarMenu {
   display: flex;
   list-style: none;
   align-items: center;
-  gap: 2rem;
+  gap: 4px;
+  /* Tight gap, pill-style links? Or standard? SolidRoad has standard links */
   margin: 0;
   padding: 0;
-}
-
-@media (max-width: 768px) {
-  .navbarMenu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 280px;
-    max-width: 80vw;
-    background: rgba(12, 10, 24, 0.98);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-left: 1px solid rgba(124, 58, 237, 0.12);
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 80px 24px 40px;
-    gap: 0;
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
-    transition: right 0.2s ease;
-    z-index: 2999;
-    overflow-y: auto;
-  }
-}
-
-.navbarMenuOpen {
-}
-
-@media (max-width: 768px) {
-  .navbarMenuOpen {
-    right: 0;
-  }
 }
 
 .navbarMenu li {
@@ -120,99 +100,66 @@
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .navbarMenu li {
-    width: 100%;
-    font-size: 1rem;
-  }
-}
-
 .navbarMenu a {
-  color: var(--muted);
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  /* Muted initial state */
+  font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
-  padding: 0.5rem 0;
-  transition: color 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: all 0.2s ease;
 }
 
 .navbarMenu a:hover {
-  color: var(--accent);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  /* Hover pill effect */
 }
 
 .navbarMenu a[aria-current='page'] {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.navbarMenu a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 4px;
+/* Remove underline */
+.navbarMenu a::after {
+  display: none;
 }
 
-@media (max-width: 768px) {
-  .navbarMenu a {
-    font-size: 1.1rem;
-    width: 100%;
-    display: block;
-  }
-}
-
+/* Dropdown specific */
 .navbarDropdown {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .navbarDropdown {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-  }
-}
-
 .navbarDropdownButton {
   background: transparent;
   border: none;
-  color: var(--muted);
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
   font-weight: 500;
-  padding: 0.5rem 0;
+  padding: 8px 16px;
+  border-radius: 999px;
   cursor: pointer;
-  font-family: inherit;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  transition: color 0.2s ease;
+  gap: 6px;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
 .navbarDropdownButton:hover {
-  color: var(--accent);
-}
-
-.navbarDropdownButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-@media (max-width: 768px) {
-  .navbarDropdownButton {
-    font-size: 1.1rem;
-    width: 100%;
-    justify-content: space-between;
-  }
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .dropdownArrow {
-  font-size: 0.7rem;
-  line-height: 1;
-  transition: transform 0.3s ease;
+  font-size: 0.65em;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
 }
 
 .arrowOpen {
@@ -221,175 +168,187 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 8px);
-  left: -10px;
-  background: rgba(12, 10, 24, 0.9);
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(14, 14, 16, 0.95);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 8px;
-  padding: 6px 0;
-  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 6px;
   list-style: none;
-  min-width: 160px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  min-width: 180px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
-  border: 1px solid rgba(124, 58, 237, 0.12);
+  animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
+@keyframes menuFadeIn {
   to {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 768px) {
-  .dropdownMenu {
-    position: static;
-    width: 100%;
-    background: rgba(30, 30, 50, 0.6);
-    margin: 8px 0;
-    padding: 4px 0;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-    border: none;
-    border-radius: 6px;
-    overflow: hidden;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
 .dropdownItem {
   display: block;
-  color: var(--foreground);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
-  font-weight: 500;
-  padding: 10px 16px;
-  margin-left: 10px;
+  font-weight: 400;
+  padding: 10px 12px;
+  border-radius: 8px;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
-  cursor: pointer;
-  width: 100%;
-  box-sizing: border-box;
-  background: transparent;
-  border: none;
-  text-align: left;
-  font-family: inherit;
+  transition: all 0.15s ease;
 }
 
 .dropdownItem:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--foreground);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
-.dropdownItem:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
-@media (max-width: 768px) {
-  .dropdownItem {
-    margin-left: 0;
-    padding: 12px 24px;
-    width: 100%;
-  }
-}
-
+/* CTA ("Call Us") */
 .navbarCta {
-  background: var(--accent);
-  color: var(--foreground);
+  background: #ffffff;
+  color: #000;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 20px;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+  border-radius: 999px;
+  /* Full pill button */
+  margin-left: 8px;
+  margin-right: 4px;
+  /* Padding from container edge */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .navbarCta:hover {
-  background: var(--border-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
 }
 
-.navbarCta:active {
-  transform: translateY(0);
+.navbarCta::before {
+  display: none;
+  /* Removing the old sweep effect */
 }
 
-.navbarCta:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+/* Account Button */
+.accountButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .navbarCta {
-    width: 100%;
-    text-align: center;
-  }
+.accountButton:hover {
+  color: #fff;
 }
 
+/* Mobile Specifics */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
+  justify-content: center;
+  gap: 5px;
+  width: 24px;
   height: 24px;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
   z-index: 3001;
+  margin-right: 8px;
+}
+
+.hamburgerBar {
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
+
+  .navbarMenu {
+    position: fixed;
+    top: 70px;
+    /* Below the floating header? Or Full screen overlay? SolidRoad uses full overlay/drawer */
+    right: 16px;
+    /* Floating drawer style */
+    width: auto;
+    min-width: 240px;
+    height: auto;
+    background: rgba(20, 20, 24, 0.95);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 4px;
+
+    transform: scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .navbarMenuOpen {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navbarMenu li {
+    width: 100%;
+  }
+
+  .navbarMenu a,
+  .navbarDropdownButton {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .navbarMenu a:hover,
+  .navbarDropdownButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .dropdownMenu {
+    position: static;
+    transform: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-left: 16px;
+    opacity: 1;
+    animation: none;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .navbarCta {
+    width: 100%;
+    margin: 12px 0 0 0;
+    text-align: center;
+  }
 }
 
-.hamburgerBar {
-  width: 100%;
-  height: 3px;
-  background: #ffffff;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.hamburgerBar:nth-child(1) {
-  transform-origin: top left;
-}
-
-.hamburgerBar:nth-child(3) {
-  transform-origin: bottom left;
-}
-
-.hamburger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-.hamburgerBar.hamburgerBarOpen:nth-child(1) {
-  transform: rotate(45deg) translate(4px, -2px);
-}
-
-.hamburgerBar.hamburgerBarOpen:nth-child(2) {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-.hamburgerBar.hamburgerBarOpen:nth-child(3) {
-  transform: rotate(-45deg) translate(4px, 2px);
-}
-
-/* Mobile Overlay */
 .mobileOverlay {
   display: none;
 }
@@ -402,62 +361,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 2998;
-    animation: fadeInOverlay 0.3s ease;
-  }
-}
-
-@keyframes fadeInOverlay {
-  from {
+    z-index: 2999;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
     opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
   }
 
-  to {
-    opacity: 1;
-  }
-}
-
-.accountButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 16px 6px 10px;
-  border-radius: 999px;
-  cursor: pointer;
-  color: var(--foreground);
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.accountButton:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.accountButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.navbarMenu .accountButton[aria-current='page'] {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.accountDropdownMenu {
-  min-width: 150px;
-  right: 0;
-  left: auto;
-}
-
-@media (max-width: 768px) {
-  .accountDropdownMenu {
-    width: 100%;
-    position: static;
-  }
+  /* Helper to toggle overlay opacity if needed, 
+     but keeping it simple since index.tsx toggles rendering */
 }
