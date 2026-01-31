@@ -19,6 +19,15 @@ export const ADMIN_ROUTES = [
 
 export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
+/** Routes that admins cannot access (customer-only). Block admin, allow customer & public. */
+export const CUSTOMER_ONLY_ROUTES = [
+  '/supplements',
+  '/drift-off',
+  '/sleep-elixir',
+  '/therapy-corner',
+  '/support',
+] as const;
+
 /** True if path requires auth (protected or admin). Used for 401 redirect behavior. */
 export function isProtectedPath(pathname: string): boolean {
   return (

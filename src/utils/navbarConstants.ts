@@ -10,4 +10,4 @@ export const NAVBAR_PRODUCTS_LINKS: NavbarLink[] = [
   { text: 'Supplements', href: '/supplements' },
 ];
 
-export const NAVBAR_ACCOUNT_LINKS: NavbarLink[] = [{ text: 'Settings', href: '/account' }];
+export const NAVBAR_ACCOUNT_LINKS: NavbarLink[] = [];

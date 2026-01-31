@@ -1,5 +1,6 @@
 import {
   FaHouse,
+  FaRightFromBracket,
   FaBed,
   FaHeartPulse,
   FaCartShopping,
@@ -51,6 +52,7 @@ export const iconMap: { [key: string]: React.ReactElement } = {
   FaStethoscope: <FaStethoscope />,
   FaPills: <FaPills />,
   FaCapsules: <FaCapsules />,
+  FaRightFromBracket: <FaRightFromBracket />,
 };
 
 export interface SidebarNavItem {
@@ -72,6 +74,7 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
     title: 'General',
     items: [
+      { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
       {
         title: 'Questionnaire',
         path: '/sleep-assessment',
@@ -111,6 +114,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
   {
     title: 'Admin',
     items: [
+      { title: 'Dashboard', path: '/admin/dashboard', icon: 'FaChartPie' },
       { title: 'Therapists', path: '/admin/therapists', icon: 'FaUserDoctor' },
       {
         title: 'Sleep Assessment',

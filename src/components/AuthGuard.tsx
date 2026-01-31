@@ -4,7 +4,14 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { ROLES } from '@/lib/constants/roles';
-import { AUTH_ROUTES, ADMIN_ROUTES, ROUTES, isProtectedPath } from '@/utils/routesConstants';
+import {
+  AUTH_ROUTES,
+  ADMIN_ROUTES,
+  PROTECTED_ROUTES,
+  CUSTOMER_ONLY_ROUTES,
+  ROUTES,
+  isProtectedPath,
+} from '@/utils/routesConstants';
 import { validateReturnUrl } from '@/utils/returnUrl';
 import LoadingScreen from '@/components/AuthGuard/LoadingScreen';
 
@@ -22,7 +29,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (isAuthRoute(pathname)) {
       if (isAuthenticated) {
-        router.replace(user?.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.HOME);
+        router.replace(user?.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD);
       }
       return;
     }
@@ -36,6 +43,16 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (ADMIN_ROUTES.some((route) => pathname.startsWith(route)) && isAuthenticated && user?.role !== ROLES.ADMIN) {
       router.replace(ROUTES.DASHBOARD);
+      return;
+    }
+
+    if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route)) && isAuthenticated && user?.role === ROLES.ADMIN) {
+      router.replace(ROUTES.ADMIN_DASHBOARD);
+      return;
+    }
+
+    if (CUSTOMER_ONLY_ROUTES.some((route) => pathname.startsWith(route)) && isAuthenticated && user?.role === ROLES.ADMIN) {
+      router.replace(ROUTES.ADMIN_DASHBOARD);
     }
   }, [loading, isAuthenticated, user?.role, pathname, router]);
 

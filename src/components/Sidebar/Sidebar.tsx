@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/hooks/useAuth';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
-import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
+import {
+  adminMenuGroups,
+  iconMap,
+  sidebarMenuGroups,
+  sidebarBottomNavItems,
+} from '@/utils/sidebarConstants';
 import styles from './styles.module.css';
 
 const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   const { cartCount } = useCart();
+  const { isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window === 'undefined') {
@@ -27,6 +34,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
   const [isDesktop, setIsDesktop] = useState(false);
   const isAdminRoute = pathname.startsWith('/admin');
   const menuGroups = isAdminRoute ? adminMenuGroups : sidebarMenuGroups;
+  const bottomNavItems = isAdminRoute ? [] : sidebarBottomNavItems;
   const expandedWidth = 280;
   const collapsedWidth = 88;
   const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : expandedWidth;
@@ -122,11 +130,15 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                     <li key={group.title || 'default'} className={styles.menuGroup}>
                       {group.title && !isCollapsed && <div className={styles.groupTitle}>{group.title}</div>}
                       <ul className={styles.navList}>
-                        {group.items.map((item) => (
+                        {group.items.map((item) => {
+                          const isActive =
+                            pathname === item.path ||
+                            (isAdminRoute && pathname.startsWith(item.path + '/'));
+                          return (
                           <li key={item.path}>
                             <Link
                               href={item.path}
-                              className={`${styles.navItem} ${pathname === item.path ? styles.active : ''}`}
+                              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
                               onClick={closeMobileSidebar}
                             >
                               <span className={styles.icon}>
@@ -140,7 +152,8 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                               </span>
                             </Link>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ul>
                     </li>
                   ))}
@@ -148,7 +161,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
 
                 <div className={styles.bottomMenu}>
                   <ul className={styles.navList}>
-                    {sidebarBottomNavItems.map((item) => (
+                    {bottomNavItems.map((item) => (
                       <li key={item.path}>
                         <Link
                           href={item.path}
@@ -167,6 +180,23 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                         </Link>
                       </li>
                     ))}
+                    {isAuthenticated && (
+                      <li>
+                        <button
+                          type="button"
+                          className={`${styles.navItem} ${styles.secondaryItem} ${styles.logoutButton}`}
+                          onClick={() => {
+                            logout();
+                            closeMobileSidebar();
+                          }}
+                        >
+                          <span className={styles.icon}>{iconMap['FaRightFromBracket']}</span>
+                          <span className={styles.title} aria-hidden={isCollapsed}>
+                            Logout
+                          </span>
+                        </button>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </nav>

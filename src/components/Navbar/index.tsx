@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import UserIcon from './UserIcon';
-import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConstants';
+import { NAVBAR_PRODUCTS_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
 import { hasRole } from '@/lib/constants/rbac';
 import { ROLES } from '@/lib/constants/roles';
@@ -13,42 +13,31 @@ import { ROUTES, AUTH_ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const isAdmin = hasRole(user, ROLES.ADMIN);
   const pathname = usePathname();
 
   const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname);
 
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
-  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const productsDropdownRef = useRef<HTMLLIElement>(null);
-  const accountDropdownRef = useRef<HTMLLIElement>(null);
-
-  const handleLogout = async () => {
-    await logout();
-    setIsProductsDropdownOpen(false);
-    setIsAccountDropdownOpen(false);
-    setIsMobileMenuOpen(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (productsDropdownRef.current && !productsDropdownRef.current.contains(event.target as Node)) {
         setIsProductsDropdownOpen(false);
       }
-      if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target as Node)) {
-        setIsAccountDropdownOpen(false);
-      }
     };
 
-    if (isProductsDropdownOpen || isAccountDropdownOpen) {
+    if (isProductsDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isProductsDropdownOpen, isAccountDropdownOpen]);
+  }, [isProductsDropdownOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -67,13 +56,11 @@ const Navbar = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false);
     setIsProductsDropdownOpen(false);
-    setIsAccountDropdownOpen(false);
   }, [pathname]);
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsProductsDropdownOpen(false);
-    setIsAccountDropdownOpen(false);
   };
 
   if (isAuthPage) {
@@ -117,65 +104,46 @@ const Navbar = () => {
               Home
             </Link>
           </li>
-          <li className={styles.navbarDropdown} ref={productsDropdownRef}>
-            <button
-              className={styles.navbarDropdownButton}
-              onClick={() => setIsProductsDropdownOpen(!isProductsDropdownOpen)}
-              aria-expanded={isProductsDropdownOpen}
-              aria-haspopup="true"
-            >
-              Products
-              <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
-            </button>
-            {isProductsDropdownOpen && (
-              <ul className={styles.dropdownMenu}>
-                {NAVBAR_PRODUCTS_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className={styles.dropdownItem} onClick={closeMobileMenu}>
-                      {link.text}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-          <li>
-            <Link href="/about-us" onClick={closeMobileMenu}>
-              About Us
-            </Link>
-          </li>
-
-          {hasRole(user, ROLES.ADMIN) && (
-            <li>
-              <Link href={ROUTES.ADMIN_DASHBOARD} onClick={closeMobileMenu}>
-                Admin
-              </Link>
-            </li>
-          )}
-
-          {isAuthenticated ? (
-            <li className={styles.navbarDropdown} ref={accountDropdownRef}>
-              <button onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)} className={styles.accountButton}>
-                <UserIcon size={24} />
-                <span>{user?.name?.split(' ')[0] || 'Account'}</span>
-                <span className={`${styles.dropdownArrow} ${isAccountDropdownOpen ? styles.arrowOpen : ''}`}> </span>
+          {!isAdmin && (
+            <li className={styles.navbarDropdown} ref={productsDropdownRef}>
+              <button
+                className={styles.navbarDropdownButton}
+                onClick={() => setIsProductsDropdownOpen(!isProductsDropdownOpen)}
+                aria-expanded={isProductsDropdownOpen}
+                aria-haspopup="true"
+              >
+                Products
+                <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
               </button>
-              {isAccountDropdownOpen && (
-                <ul className={`${styles.dropdownMenu} ${styles.accountDropdownMenu}`}>
-                  {NAVBAR_ACCOUNT_LINKS.map((link) => (
+              {isProductsDropdownOpen && (
+                <ul className={styles.dropdownMenu}>
+                  {NAVBAR_PRODUCTS_LINKS.map((link) => (
                     <li key={link.href}>
                       <Link href={link.href} className={styles.dropdownItem} onClick={closeMobileMenu}>
                         {link.text}
                       </Link>
                     </li>
                   ))}
-                  <li>
-                    <button onClick={handleLogout} className={styles.dropdownItem}>
-                      Logout
-                    </button>
-                  </li>
                 </ul>
               )}
+            </li>
+          )}
+          <li>
+            <Link href="/about-us" onClick={closeMobileMenu}>
+              About Us
+            </Link>
+          </li>
+
+          {isAuthenticated ? (
+            <li>
+              <Link
+                href={isAdmin ? ROUTES.ADMIN_DASHBOARD : '/account'}
+                onClick={closeMobileMenu}
+                className={styles.accountButton}
+              >
+                <UserIcon size={24} />
+                <span>{isAdmin ? 'Admin' : user?.name?.split(' ')[0] || 'Account'}</span>
+              </Link>
             </li>
           ) : (
             <>

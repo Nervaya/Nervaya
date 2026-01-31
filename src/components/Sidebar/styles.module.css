@@ -175,6 +175,22 @@
   color: #64748b;
 }
 
+.logoutButton {
+  display: flex;
+  width: 100%;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.collapsed .logoutButton {
+  justify-content: center;
+  padding: 12px 10px;
+}
+
 .bottomMenu {
   margin-top: auto;
   padding: 12px 0 18px;
@@ -185,6 +201,7 @@
   font-size: 1.2rem;
   min-width: 40px;
   height: 40px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,6 +243,8 @@
 .collapsed .title {
   opacity: 0;
   max-width: 0;
+  min-width: 0;
+  overflow: hidden;
   transform: translateX(-6px);
   pointer-events: none;
 }
@@ -233,6 +252,7 @@
 .collapsed .navItem {
   justify-content: center;
   padding: 12px 10px;
+  margin: 4px 4px;
 }
 
 .collapsed .icon {

@@ -98,7 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } else if (safeReturnUrl) {
       router.push(safeReturnUrl);
     } else {
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.DASHBOARD);
     }
   };
 
