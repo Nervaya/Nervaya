@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllActiveQuestions, getAllQuestions, createQuestion } from '@/lib/services/sleepAssessmentQuestion.service';
+import {
+  getAllActiveQuestions,
+  getAllQuestions,
+  getActiveOptionBasedQuestions,
+  createQuestion,
+} from '@/lib/services/sleepAssessmentQuestion.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -17,7 +22,12 @@ export async function GET(req: NextRequest) {
     const includeInactive = searchParams.get('includeInactive') === 'true';
 
     const isAdmin = authResult.user.role === ROLES.ADMIN;
-    const questions = isAdmin && includeInactive ? await getAllQuestions() : await getAllActiveQuestions();
+    const questions =
+      isAdmin && includeInactive
+        ? await getAllQuestions()
+        : isAdmin
+          ? await getAllActiveQuestions()
+          : await getActiveOptionBasedQuestions();
 
     return NextResponse.json(successResponse('Questions fetched successfully', questions));
   } catch (error) {
@@ -42,24 +52,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
-    const { questionKey, questionText, questionType, options, order, isRequired, isActive, category } = body;
+    const { questionText, questionType, options, order, isRequired, isActive } = body;
 
-    if (!questionKey || !questionText || !questionType || !order) {
+    if (!questionText || !questionType || !order) {
       return NextResponse.json(
-        errorResponse('Missing required fields: questionKey, questionText, questionType, order', null, 400),
+        errorResponse('Missing required fields: questionText, questionType, order', null, 400),
+        { status: 400 },
+      );
+    }
+
+    const optionBasedTypes = ['single_choice', 'multiple_choice', 'scale'];
+    if (questionType === 'text' || !optionBasedTypes.includes(questionType)) {
+      return NextResponse.json(
+        errorResponse(
+          'Only option-based question types are allowed: single_choice, multiple_choice, scale',
+          null,
+          400,
+        ),
+        { status: 400 },
+      );
+    }
+
+    if (!options || !Array.isArray(options) || options.length < 2) {
+      return NextResponse.json(
+        errorResponse('At least 2 options are required for option-based questions', null, 400),
         { status: 400 },
       );
     }
 
     const question = await createQuestion({
-      questionKey,
       questionText,
       questionType,
       options: options || [],
       order,
       isRequired,
       isActive,
-      category,
     });
 
     return NextResponse.json(successResponse('Question created successfully', question, 201), { status: 201 });

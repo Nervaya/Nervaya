@@ -5,11 +5,32 @@ import { Types } from 'mongoose';
 import { validate as validateUUID } from 'uuid';
 import type { CreateQuestionInput, UpdateQuestionInput } from '@/types/sleepAssessment.types';
 
+const OPTION_BASED_TYPES = ['single_choice', 'multiple_choice', 'scale'] as const;
+
 export async function getAllActiveQuestions(): Promise<ISleepAssessmentQuestion[]> {
   await connectDB();
 
   try {
     const questions = await SleepAssessmentQuestion.find({ isActive: true }).sort({ order: 1 }).lean();
+
+    return questions as ISleepAssessmentQuestion[];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/** Returns only active, option-based questions (excludes 'text' type). Used for customer-facing assessment. */
+export async function getActiveOptionBasedQuestions(): Promise<ISleepAssessmentQuestion[]> {
+  await connectDB();
+
+  try {
+    const questions = await SleepAssessmentQuestion.find({
+      isActive: true,
+      questionType: { $in: OPTION_BASED_TYPES },
+      'options.0': { $exists: true },
+    })
+      .sort({ order: 1 })
+      .lean();
 
     return questions as ISleepAssessmentQuestion[];
   } catch (error) {
@@ -30,15 +51,15 @@ export async function getAllQuestions(): Promise<ISleepAssessmentQuestion[]> {
 }
 
 async function findQuestion(identifier: string) {
-  if (validateUUID(identifier)) {
-    return await SleepAssessmentQuestion.findOne({ questionId: identifier });
-  }
-
   if (Types.ObjectId.isValid(identifier)) {
     return await SleepAssessmentQuestion.findById(identifier);
   }
 
-  return await SleepAssessmentQuestion.findOne({ questionKey: identifier });
+  if (validateUUID(identifier)) {
+    return await SleepAssessmentQuestion.findOne({ questionId: identifier });
+  }
+
+  return null;
 }
 
 export async function getQuestionById(identifier: string): Promise<ISleepAssessmentQuestion> {
@@ -57,28 +78,15 @@ export async function getQuestionById(identifier: string): Promise<ISleepAssessm
   }
 }
 
-export async function getQuestionByKey(questionKey: string): Promise<ISleepAssessmentQuestion> {
-  return getQuestionById(questionKey);
-}
 
 export async function createQuestion(input: CreateQuestionInput): Promise<ISleepAssessmentQuestion> {
   await connectDB();
 
   try {
-    const existingQuestion = await SleepAssessmentQuestion.findOne({
-      questionKey: input.questionKey.toLowerCase(),
-    });
-
-    if (existingQuestion) {
-      throw new ValidationError('Question with this key already exists');
-    }
-
     const question = await SleepAssessmentQuestion.create({
       ...input,
-      questionKey: input.questionKey.toLowerCase(),
       isRequired: input.isRequired ?? true,
       isActive: input.isActive ?? true,
-      category: input.category ?? 'general',
     });
 
     return question.toObject() as ISleepAssessmentQuestion;
@@ -94,7 +102,7 @@ export async function updateQuestion(
   await connectDB();
 
   try {
-    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionKey: identifier };
+    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
 
     const question = await SleepAssessmentQuestion.findOneAndUpdate(
       query,
@@ -116,7 +124,7 @@ export async function deleteQuestion(identifier: string): Promise<void> {
   await connectDB();
 
   try {
-    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionKey: identifier };
+    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
 
     const question = await SleepAssessmentQuestion.findOneAndDelete(query);
 
@@ -135,7 +143,7 @@ export async function reorderQuestions(questionOrders: { questionId: string; ord
     const bulkOps = questionOrders.map(({ questionId, order }) => {
       const filter = Types.ObjectId.isValid(questionId)
         ? { _id: new Types.ObjectId(questionId) }
-        : { questionKey: questionId };
+        : { questionId };
 
       return {
         updateOne: {
@@ -155,7 +163,7 @@ export async function toggleQuestionActive(identifier: string, isActive: boolean
   await connectDB();
 
   try {
-    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionKey: identifier };
+    const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
 
     const question = await SleepAssessmentQuestion.findOneAndUpdate(query, { $set: { isActive } }, { new: true });
 

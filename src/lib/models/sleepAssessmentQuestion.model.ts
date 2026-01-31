@@ -9,14 +9,12 @@ export interface IQuestionOption {
 
 export interface ISleepAssessmentQuestion extends Document {
   questionId: string;
-  questionKey: string;
   questionText: string;
   questionType: 'single_choice' | 'multiple_choice' | 'text' | 'scale';
   options: IQuestionOption[];
   order: number;
   isRequired: boolean;
   isActive: boolean;
-  category: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,14 +47,6 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       unique: true,
       default: () => v4(),
       index: true,
-    },
-    questionKey: {
-      type: String,
-      required: [true, 'Question key is required'],
-      unique: true,
-      trim: true,
-      lowercase: true,
-      match: [/^[a-z_]+$/, 'Question key must contain only lowercase letters and underscores'],
     },
     questionText: {
       type: String,
@@ -100,12 +90,6 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       default: true,
       index: true,
     },
-    category: {
-      type: String,
-      default: 'general',
-      trim: true,
-      lowercase: true,
-    },
   },
   {
     timestamps: true,
@@ -113,7 +97,6 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
 );
 
 sleepAssessmentQuestionSchema.index({ order: 1, isActive: 1 });
-sleepAssessmentQuestionSchema.index({ category: 1, order: 1 });
 
 const SleepAssessmentQuestion: Model<ISleepAssessmentQuestion> =
   mongoose.models.SleepAssessmentQuestion ||

@@ -2,7 +2,6 @@ import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface IQuestionAnswer {
   questionId: mongoose.Types.ObjectId;
-  questionKey: string;
   answer: string | string[];
 }
 
@@ -20,11 +19,6 @@ const questionAnswerSchema = new Schema<IQuestionAnswer>(
       type: Schema.Types.ObjectId,
       ref: 'SleepAssessmentQuestion',
       required: [true, 'Question ID is required'],
-    },
-    questionKey: {
-      type: String,
-      required: [true, 'Question key is required'],
-      trim: true,
     },
     answer: {
       type: Schema.Types.Mixed,

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { IoAlertCircleOutline, IoDocumentTextOutline } from 'react-icons/io5';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
@@ -48,11 +49,7 @@ export default function SleepAssessmentPage() {
         {error && !isLoading && (
           <div className={styles.errorContainer}>
             <div className={styles.errorIcon}>
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                <path d="M12 7V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="17" r="1" fill="currentColor" />
-              </svg>
+              <IoAlertCircleOutline aria-hidden />
             </div>
             <p className={styles.errorText}>{error}</p>
             <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
@@ -64,11 +61,7 @@ export default function SleepAssessmentPage() {
         {!isLoading && !error && questions.length === 0 && (
           <div className={styles.emptyContainer}>
             <div className={styles.emptyIcon}>
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
-                <path d="M7 9H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M7 13H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <IoDocumentTextOutline aria-hidden />
             </div>
             <h2 className={styles.emptyTitle}>No Questions Available</h2>
             <p className={styles.emptyText}>

@@ -62,7 +62,6 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
         if (question) {
           formattedAnswers.push({
             questionId,
-            questionKey: question.questionKey,
             answer,
           });
         }

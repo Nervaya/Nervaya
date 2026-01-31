@@ -41,33 +41,37 @@ export async function submitAssessment(
         throw new ValidationError(`Answer is required for: ${question.questionText}`);
       }
 
+      const optionBasedTypes = ['single_choice', 'multiple_choice', 'scale'];
+      if (question.questionType === 'text' || !optionBasedTypes.includes(question.questionType)) {
+        throw new ValidationError('Only option-based questions are accepted. Unsupported question type.');
+      }
+
       if (question.questionType === 'single_choice' || question.questionType === 'scale') {
         if (typeof answer.answer !== 'string') {
-          throw new ValidationError(`Single choice answer must be a string for: ${question.questionKey}`);
+          throw new ValidationError(`Single choice answer must be a string for: ${question.questionText}`);
         }
 
         const validOption = question.options.some((opt) => opt.value === answer.answer);
         if (!validOption && answer.answer) {
-          throw new ValidationError(`Invalid option selected for: ${question.questionKey}`);
+          throw new ValidationError(`Invalid option selected for: ${question.questionText}`);
         }
       }
 
       if (question.questionType === 'multiple_choice') {
         if (!Array.isArray(answer.answer)) {
-          throw new ValidationError(`Multiple choice answer must be an array for: ${question.questionKey}`);
+          throw new ValidationError(`Multiple choice answer must be an array for: ${question.questionText}`);
         }
 
         for (const selectedValue of answer.answer) {
           const validOption = question.options.some((opt) => opt.value === selectedValue);
           if (!validOption) {
-            throw new ValidationError(`Invalid option selected for: ${question.questionKey}`);
+            throw new ValidationError(`Invalid option selected for: ${question.questionText}`);
           }
         }
       }
 
       validatedAnswers.push({
         questionId: answer.questionId,
-        questionKey: question.questionKey,
         answer: answer.answer,
       });
     }
@@ -148,6 +152,16 @@ export async function getAllAssessments(): Promise<ISleepAssessmentResponse[]> {
     return assessments as ISleepAssessmentResponse[];
   } catch (error) {
     throw handleError(error);
+  }
+}
+
+export async function deleteAllResponses(): Promise<void> {
+  await connectDB();
+
+  try {
+    await SleepAssessmentResponse.deleteMany({});
+  } catch (error) {
+    throw error;
   }
 }
 

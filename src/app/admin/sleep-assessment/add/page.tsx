@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
@@ -13,13 +14,9 @@ export default function AddQuestionPage() {
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    questionKey: '',
     questionText: '',
     questionType: 'single_choice' as QuestionType,
     order: 1,
-    isRequired: true,
-    isActive: true,
-    category: 'general',
   });
 
   const [options, setOptions] = useState<IQuestionOption[]>([
@@ -35,13 +32,11 @@ export default function AddQuestionPage() {
     }));
   };
 
-  const handleOptionChange = (index: number, field: 'label' | 'value', value: string) => {
+  const handleOptionChange = (index: number, value: string) => {
     setOptions((prev) => {
       const newOptions = [...prev];
-      newOptions[index] = { ...newOptions[index], [field]: value };
-      if (field === 'label' && !newOptions[index].value) {
-        newOptions[index].value = value.toLowerCase().replace(/\s+/g, '_');
-      }
+      const slug = value.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') || `opt_${index + 1}`;
+      newOptions[index] = { ...newOptions[index], label: value, value: slug };
       return newOptions;
     });
   };
@@ -63,24 +58,25 @@ export default function AddQuestionPage() {
     setError(null);
 
     try {
-      const validOptions = options.filter((opt) => opt.label.trim() && opt.value.trim());
-
-      if (formData.questionType !== 'text' && validOptions.length < 2) {
-        throw new Error('Please add at least 2 options for this question type');
+      const validOptions = options.filter((opt) => opt.label.trim());
+      if (validOptions.length < 2) {
+        throw new Error('Please add at least 2 options');
       }
+
+      const optionsWithValue = validOptions.map((opt, i) => ({
+        id: String(i + 1),
+        label: opt.label.trim(),
+        value: opt.value || opt.label.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') || `opt_${i + 1}`,
+      }));
 
       const response = await fetch('/api/sleep-assessment/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          options:
-            formData.questionType === 'text'
-              ? []
-              : validOptions.map((opt, i) => ({
-                  ...opt,
-                  id: String(i + 1),
-                })),
+          isRequired: true,
+          isActive: true,
+          options: optionsWithValue,
         }),
       });
 
@@ -98,21 +94,11 @@ export default function AddQuestionPage() {
     }
   };
 
-  const showOptions = formData.questionType !== 'text';
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <Link href="/admin/sleep-assessment" className={styles.backLink}>
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <IoChevronBack aria-hidden />
           Back to Questions
         </Link>
         <h1 className={styles.title}>Add New Question</h1>
@@ -126,25 +112,6 @@ export default function AddQuestionPage() {
         )}
 
         <div className={styles.formGrid}>
-          <div className={styles.formGroup}>
-            <label htmlFor="questionKey" className={styles.label}>
-              Question Key
-              <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              id="questionKey"
-              name="questionKey"
-              value={formData.questionKey}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="e.g., sleep_hours, sleep_quality"
-              pattern="^[a-z_]+$"
-              required
-            />
-            <span className={styles.hint}>Lowercase letters and underscores only</span>
-          </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="order" className={styles.label}>
               Display Order
@@ -196,58 +163,16 @@ export default function AddQuestionPage() {
             >
               <option value="single_choice">Single Choice</option>
               <option value="multiple_choice">Multiple Choice</option>
-              <option value="text">Text Input</option>
               <option value="scale">Scale</option>
             </select>
           </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="category" className={styles.label}>
-              Category
-            </label>
-            <input
-              type="text"
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="e.g., general, habits, health"
-            />
-          </div>
         </div>
 
-        <div className={styles.checkboxGroup}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              name="isRequired"
-              checked={formData.isRequired}
-              onChange={handleInputChange}
-              className={styles.checkbox}
-            />
-            <span className={styles.checkboxText}>Required question</span>
-          </label>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              name="isActive"
-              checked={formData.isActive}
-              onChange={handleInputChange}
-              className={styles.checkbox}
-            />
-            <span className={styles.checkboxText}>Active (visible to users)</span>
-          </label>
-        </div>
-
-        {showOptions && (
-          <div className={styles.optionsSection}>
+        <div className={styles.optionsSection}>
             <div className={styles.optionsHeader}>
-              <h3 className={styles.optionsTitle}>Answer Options</h3>
+              <h3 className={styles.optionsTitle}>Options</h3>
               <button type="button" onClick={addOption} className={styles.addOptionButton}>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
+                <IoAdd aria-hidden />
                 Add Option
               </button>
             </div>
@@ -260,18 +185,10 @@ export default function AddQuestionPage() {
                     <input
                       type="text"
                       value={option.label}
-                      onChange={(e) => handleOptionChange(index, 'label', e.target.value)}
+                      onChange={(e) => handleOptionChange(index, e.target.value)}
                       className={styles.input}
-                      placeholder="Option label"
-                      required={showOptions}
-                    />
-                    <input
-                      type="text"
-                      value={option.value}
-                      onChange={(e) => handleOptionChange(index, 'value', e.target.value)}
-                      className={styles.input}
-                      placeholder="Option value"
-                      required={showOptions}
+                      placeholder="Option"
+                      required
                     />
                   </div>
                   {options.length > 2 && (
@@ -281,16 +198,13 @@ export default function AddQuestionPage() {
                       className={styles.removeOptionButton}
                       aria-label="Remove option"
                     >
-                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
+                      <IoClose aria-hidden />
                     </button>
                   )}
                 </li>
               ))}
             </ul>
           </div>
-        )}
 
         <div className={styles.formActions}>
           <Link href="/admin/sleep-assessment" className={styles.cancelButton}>

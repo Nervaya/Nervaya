@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { IoAdd, IoDocumentTextOutline, IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
@@ -122,45 +123,6 @@ export default function AdminSleepAssessmentPage() {
     }
   };
 
-  const handleSeedQuestions = async () => {
-    if (
-      // eslint-disable-next-line no-alert
-      !window.confirm('This will seed the database with default sleep assessment questions. Continue?')
-    ) {
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/sleep-assessment/questions/seed', {
-        method: 'POST',
-      });
-      if (response.ok) {
-        fetchQuestions();
-      } else {
-        const result = await response.json();
-        // eslint-disable-next-line no-alert
-        window.alert(result.message || 'Failed to seed questions');
-      }
-    } catch (error) {
-      console.error('Error seeding questions', error);
-    }
-  };
-
-  const handleToggleActive = async (id: string, currentStatus: boolean) => {
-    try {
-      const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive: !currentStatus }),
-      });
-      if (response.ok) {
-        fetchQuestions();
-      }
-    } catch (error) {
-      console.error('Error toggling question status', error);
-    }
-  };
-
   const getQuestionTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
       single_choice: 'Single Choice',
@@ -181,9 +143,7 @@ export default function AdminSleepAssessmentPage() {
           <p className={styles.subtitle}>Manage and configure assessment questions</p>
         </div>
         <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <IoAdd aria-hidden />
           Add Question
         </Link>
       </header>
@@ -194,48 +154,12 @@ export default function AdminSleepAssessmentPage() {
         </div>
       ) : questions.length === 0 ? (
         <div className={styles.emptyState}>
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
-            <path d="M7 9H17M7 13H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <IoDocumentTextOutline aria-hidden />
           <h3>No Questions Yet</h3>
-          <p>Create your first assessment question or seed default questions to get started.</p>
-          <div className={styles.emptyStateActions}>
-            <Link href="/admin/sleep-assessment/add" className={styles.emptyStateButton}>
-              Add Question
-            </Link>
-            <button
-              onClick={async () => {
-                if (
-                  // eslint-disable-next-line no-alert
-                  window.confirm('This will wipe all existing questions and seed default ones. Are you sure?')
-                ) {
-                  setLoading(true);
-                  try {
-                    const response = await fetch('/api/sleep-assessment/questions/seed?reset=true', { method: 'POST' });
-                    if (response.ok) {
-                      fetchQuestions();
-                    } else {
-                      // eslint-disable-next-line no-alert
-                      window.alert('Failed to seed questions');
-                    }
-                  } catch (error) {
-                    console.error(error);
-                    // eslint-disable-next-line no-alert
-                    window.alert('Error seeding questions');
-                  } finally {
-                    setLoading(false);
-                  }
-                }
-              }}
-              className={styles.seedButton}
-            >
-              Seed Default Questions
-            </button>
-            <button type="button" onClick={handleSeedQuestions} className={styles.seedButton}>
-              Seed Default Questions
-            </button>
-          </div>
+          <p>Create your first assessment question to get started.</p>
+          <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
+            Add Question
+          </Link>
         </div>
       ) : (
         <div className={styles.carouselContainer}>
@@ -264,15 +188,7 @@ export default function AdminSleepAssessmentPage() {
             disabled={currentIndex === 0 || isAnimating}
             aria-label="Previous question"
           >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M15 19l-7-7 7-7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <IoChevronBack aria-hidden />
           </button>
 
           {/* Question card with animation */}
@@ -289,18 +205,11 @@ export default function AdminSleepAssessmentPage() {
                   <span className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}>
                     {getQuestionTypeLabel(currentQuestion.questionType)}
                   </span>
-                  <span
-                    className={`${styles.statusBadge} ${currentQuestion.isActive ? styles.active : styles.inactive}`}
-                  >
-                    {currentQuestion.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                  {currentQuestion.isRequired && <span className={styles.requiredBadge}>Required</span>}
                 </div>
               </div>
 
               <div className={styles.questionContent}>
                 <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
-                <code className={styles.questionKey}>{currentQuestion.questionKey}</code>
 
                 {currentQuestion.options && currentQuestion.options.length > 0 && (
                   <div className={styles.optionsPreview}>
@@ -317,13 +226,6 @@ export default function AdminSleepAssessmentPage() {
               </div>
 
               <div className={styles.questionActions}>
-                <button
-                  type="button"
-                  className={`${styles.toggleButton} ${currentQuestion.isActive ? styles.deactivate : styles.activate}`}
-                  onClick={() => handleToggleActive(currentQuestion.questionId, currentQuestion.isActive)}
-                >
-                  {currentQuestion.isActive ? 'Deactivate' : 'Activate'}
-                </button>
                 <Link href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`} className={styles.editButton}>
                   Edit
                 </Link>
@@ -346,15 +248,7 @@ export default function AdminSleepAssessmentPage() {
             disabled={currentIndex === questions.length - 1 || isAnimating}
             aria-label="Next question"
           >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M9 5l7 7-7 7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <IoChevronForward aria-hidden />
           </button>
 
           {/* Dot indicators */}

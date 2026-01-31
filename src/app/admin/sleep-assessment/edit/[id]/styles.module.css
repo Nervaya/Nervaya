@@ -213,49 +213,6 @@
   font-weight: 500;
 }
 
-.checkboxGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 28px;
-  margin-bottom: 28px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-@media (max-width: 768px) {
-  .checkboxGroup {
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.checkboxLabel:hover {
-  transform: translateX(2px);
-}
-
-.checkbox {
-  width: 22px;
-  height: 22px;
-  accent-color: #8b5cf6;
-  cursor: pointer;
-}
-
-.checkboxText {
-  font-size: 0.9375rem;
-  color: #f1f5f9;
-  font-weight: 500;
-}
-
 .optionsSection {
   margin-top: 16px;
   padding-top: 28px;

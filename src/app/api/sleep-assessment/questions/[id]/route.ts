@@ -45,7 +45,26 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
-    const { questionText, questionType, options, order, isRequired, isActive, category } = body;
+    const { questionText, questionType, options, order, isRequired, isActive } = body;
+
+    const optionBasedTypes = ['single_choice', 'multiple_choice', 'scale'];
+    if (questionType === 'text' || (questionType && !optionBasedTypes.includes(questionType))) {
+      return NextResponse.json(
+        errorResponse(
+          'Only option-based question types are allowed: single_choice, multiple_choice, scale',
+          null,
+          400,
+        ),
+        { status: 400 },
+      );
+    }
+
+    if (options !== undefined && (!Array.isArray(options) || options.length < 2)) {
+      return NextResponse.json(
+        errorResponse('At least 2 options are required for option-based questions', null, 400),
+        { status: 400 },
+      );
+    }
 
     const question = await updateQuestion(id, {
       questionText,
@@ -54,7 +73,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       order,
       isRequired,
       isActive,
-      category,
     });
 
     return NextResponse.json(successResponse('Question updated successfully', question));
