@@ -1,0 +1,24 @@
+:root {
+  /* Global Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 64px;
+
+  /* Component Specific Spacing */
+  --navbar-height: 100px;
+  --navbar-padding-x: 40px;
+
+  /* Mobile Overrides */
+  --navbar-height-mobile: 80px;
+  --navbar-padding-x-mobile: 16px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: var(--navbar-height-mobile);
+    --navbar-padding-x: var(--navbar-padding-x-mobile);
+  }
+}

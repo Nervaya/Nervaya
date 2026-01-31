@@ -3,6 +3,9 @@
  * Convention: pages use styles.module.css; shared components use ComponentName.module.css.
  * Media queries: nest inside the class (not top-level @media).
  */
+@import '../styles/colors.css';
+@import '../styles/spacing.css';
+
 :root {
   --background: #020617;
   --foreground: #ededed;
@@ -57,8 +60,10 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
 a {
@@ -67,5 +72,31 @@ a {
 }
 
 *::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+/* Layout for Main Content Area */
+.main-content {
+  background: transparent;
+  min-height: 100vh;
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Sidebar Width (280) + Left Margin (16) + Gap (24) = 320px */
+  margin-left: 320px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 24px;
+  }
+}
+
+/* Sidebar Collapsed State Override */
+body.sidebar-collapsed .main-content {
+  /* Collapsed Width (80) + Left Margin (16) + Gap (24) = 120px */
+  margin-left: 120px;
 }

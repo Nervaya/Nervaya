@@ -1,17 +1,21 @@
 .sidebar {
   width: 280px;
-  background: rgba(17, 24, 39, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
   color: var(--foreground);
-  height: calc(100vh - var(--navbar-height));
+  /* Floating Height: Viewport - Top Offset - Bottom Margin */
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   position: fixed;
-  left: 0;
-  top: var(--navbar-height);
+  left: 16px;
+  top: 84px;
   z-index: 2200;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
+  /* Rounded corners */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: width, transform;
   overflow: visible;
@@ -19,7 +23,12 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
+    /* Push fully off screen including margin */
+    left: 16px;
+    width: calc(100% - 32px);
+    /* Full width minus margins on mobile */
+    height: calc(100vh - 90px);
   }
 }
 
@@ -68,7 +77,7 @@
 }
 
 .collapsed {
-  width: 88px;
+  width: 80px;
 }
 
 @media (max-width: 768px) {
@@ -141,7 +150,7 @@
 .navItem {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px var(--spacing-md);
   margin: 4px 12px;
   color: #e2e8f0;
   font-weight: 500;
@@ -157,7 +166,7 @@
 }
 
 .active {
-  background: rgba(120, 40, 200, 0.2);
+  background: var(--color-accent-dim);
   color: #c4b5fd !important;
 }
 
@@ -276,22 +285,5 @@
     background: rgba(2, 6, 23, 0.55);
     backdrop-filter: blur(2px);
     z-index: 900;
-  }
-}
-
-.mainContent {
-  background: transparent;
-  min-height: 100vh;
-  padding: 40px;
-  position: relative;
-  z-index: 1;
-  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: var(--sidebar-margin-left, 280px);
-}
-
-@media (max-width: 768px) {
-  .mainContent {
-    margin-left: 0;
-    padding: 24px;
   }
 }

@@ -4,15 +4,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LottieLoader from '@/components/common/LottieLoader';
+import StatusState from '@/components/common/StatusState';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
 export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const fetchTherapists = async () => {
     try {
+      setError(false);
       const response = await fetch('/api/therapists');
       if (response.ok) {
         const result = await response.json();
@@ -21,12 +24,15 @@ export default function AdminTherapistsPage() {
         } else if (Array.isArray(result)) {
           setTherapists(result);
         }
+      } else {
+        setError(true);
       }
     } catch (error) {
       // Error handling - could be improved with proper error logging service
       if (error instanceof Error) {
         console.error('Failed to fetch therapists', error);
       }
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -73,6 +79,18 @@ export default function AdminTherapistsPage() {
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
+      ) : error ? (
+        <StatusState
+          type="error"
+          message="Failed to load therapists data. Please check your connection or try again later."
+          action={
+            <button onClick={fetchTherapists} className={styles.addButton}>
+              Retry
+            </button>
+          }
+        />
+      ) : therapists.length === 0 ? (
+        <StatusState type="empty" message="No therapists found. Click above to add the first one." />
       ) : (
         <div className={styles.list}>
           {therapists.map((therapist) => (
@@ -124,7 +142,6 @@ export default function AdminTherapistsPage() {
               </div>
             </div>
           ))}
-          {therapists.length === 0 && <p>No therapists found.</p>}
         </div>
       )}
     </div>

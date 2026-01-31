@@ -70,7 +70,16 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
     };
   }, [isMobileOpen]);
 
-  const mainMarginLeft = isDesktop ? sidebarWidth : 0;
+  // Sync collapsed state with body class for global layout handling
+  useEffect(() => {
+    if (isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
+    return () => document.body.classList.remove('sidebar-collapsed');
+  }, [isCollapsed]);
+
   const closeMobileSidebar = () => setIsMobileOpen(false);
 
   return (
@@ -201,12 +210,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
 
       {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
-      <main
-        className={`${styles.mainContent} ${className || ''}`}
-        style={{ ['--sidebar-margin-left' as string]: `${mainMarginLeft}px` }}
-      >
-        {children}
-      </main>
+      <main className={`main-content ${className || ''}`}>{children}</main>
     </>
   );
 };
