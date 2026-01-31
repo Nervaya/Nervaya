@@ -6,10 +6,15 @@ import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { PAYMENT_STATUS, ORDER_STATUS } from '@/lib/constants/enums';
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-});
+const getRazorpayInstance = () => {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    throw new Error('RAZORPAY Credentials must be defined');
+  }
+  return new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+};
 
 export interface RazorpayOrderResponse {
   id: string;
@@ -55,6 +60,7 @@ export async function createRazorpayOrder(orderId: string, amount: number) {
       },
     };
 
+    const razorpay = getRazorpayInstance();
     const razorpayOrder = await razorpay.orders.create(options);
 
     await Order.findByIdAndUpdate(orderId, {
@@ -84,6 +90,9 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
     }
 
     const webhookSecret = process.env.RAZORPAY_KEY_SECRET || '';
+    if (!webhookSecret) {
+      throw new Error('RAZORPAY Secret Credential is not defined');
+    }
 
     const text = `${order.razorpayOrderId}|${paymentId}`;
     const generatedSignature = crypto.createHmac('sha256', webhookSecret).update(text).digest('hex');
