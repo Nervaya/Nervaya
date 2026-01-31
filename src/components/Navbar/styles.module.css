@@ -108,7 +108,11 @@
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 999px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   transition: all 0.2s ease;
 }
 
@@ -221,7 +225,9 @@
   margin-left: 8px;
   margin-right: 4px;
   /* Padding from container edge */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .navbarCta:hover {

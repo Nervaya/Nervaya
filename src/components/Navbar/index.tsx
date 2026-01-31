@@ -129,7 +129,11 @@ const Navbar = () => {
             </li>
           )}
           <li>
-            <Link href="/about-us" onClick={closeMobileMenu} aria-current={pathname === '/about-us' ? 'page' : undefined}>
+            <Link
+              href="/about-us"
+              onClick={closeMobileMenu}
+              aria-current={pathname === '/about-us' ? 'page' : undefined}
+            >
               About Us
             </Link>
           </li>
@@ -154,7 +158,7 @@ const Navbar = () => {
                 <Link
                   href={ROUTES.LOGIN || ROUTES.SIGNUP}
                   onClick={closeMobileMenu}
-                  aria-current={(pathname === ROUTES.LOGIN || pathname === ROUTES.SIGNUP) ? 'page' : undefined}
+                  aria-current={pathname === ROUTES.LOGIN || pathname === ROUTES.SIGNUP ? 'page' : undefined}
                 >
                   Log in / Sign up
                 </Link>
