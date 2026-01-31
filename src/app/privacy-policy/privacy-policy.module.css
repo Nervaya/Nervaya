@@ -66,8 +66,6 @@
   .mainContent {
     padding: 40px 20px;
     gap: 40px;
-    background-image: none;
-    /* Remove any override */
   }
 }
 

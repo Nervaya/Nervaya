@@ -848,10 +848,10 @@
   .rightCard {
     padding: 24px;
     border-radius: 20px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 245, 255, 0.8) 100%);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(120, 40, 200, 0.15);
-    border: 2px solid rgba(120, 40, 200, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     animation: slideInUpMobile 0.5s ease-out;
     animation-fill-mode: both;
     -webkit-tap-highlight-color: transparent;
@@ -982,10 +982,10 @@
     gap: 12px;
     padding: 20px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(120, 40, 200, 0.1);
-    border: 1px solid rgba(120, 40, 200, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
   }
@@ -1104,7 +1104,7 @@
   .contactText {
     font-size: 1rem;
     font-weight: 500;
-    color: #1d1d1f;
+    color: #fff;
   }
 }
 

@@ -1,8 +1,11 @@
 .supportSection {
   width: 94%;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   margin-bottom: 40px;
@@ -44,10 +47,10 @@
 }
 
 .chatBanner {
-  background: #7a30d0;
-  border-radius: 12px 12px 0 0;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px 16px 0 0;
   padding: 36px 40px;
-  box-shadow: none;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -67,6 +70,14 @@
     text-align: center;
     gap: 18px;
   }
+
+  .chatBanner .bannerText {
+    align-items: center;
+  }
+
+  .chatBanner .chatBadge {
+    align-self: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -79,6 +90,13 @@
   width: 72px;
   height: 72px;
   padding: 8px;
+  background: rgba(37, 211, 102, 0.12);
+  border-radius: 16px;
+  border: 1px solid rgba(37, 211, 102, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -127,14 +145,34 @@
 
 .bannerText {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chatBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #25d366;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  border-radius: 20px;
+  margin-bottom: 4px;
 }
 
 .bannerTitle {
-  font-size: 1.625rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 6px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
   line-height: 1.3;
+  letter-spacing: -0.01em;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -158,11 +196,10 @@
 }
 
 .bannerSubtitle {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: #ffffff;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #d1d5db;
   margin: 0;
-  opacity: 0.95;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -185,17 +222,16 @@
 }
 
 .supportCard {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   max-width: 800px;
   margin: 32px auto 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: calc(100% - 160px);
-  border: 1px solid #e9d4ff;
 }
 
 @media (max-width: 1200px) {
@@ -240,7 +276,7 @@
 .cardIcon {
   width: 48px;
   height: 48px;
-  background: #7a30d0;
+  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -269,7 +305,7 @@
 .cardTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #333333;
+  color: #fff;
   margin: 0;
   line-height: 1.3;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -296,7 +332,7 @@
 .cardDescription {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #555555;
+  color: #d1d5db;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   width: 100%;
@@ -320,7 +356,7 @@
 .whatsappButton {
   width: 100%;
   max-width: 100%;
-  background: #7a30d0 !important;
+  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%) !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 10px !important;
@@ -339,7 +375,7 @@
 }
 
 .whatsappButton:hover:not(:disabled) {
-  background: #6b2ab8 !important;
+  background: linear-gradient(135deg, #6b21a8 0%, #7e22ce 100%) !important;
 }
 
 .whatsappButton:active:not(:disabled) {
@@ -366,7 +402,7 @@
 
 .disclaimer {
   font-size: 0.8125rem;
-  color: #888888;
+  color: #9ca3af;
   margin: 0;
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -404,12 +440,11 @@
 }
 
 .featureCard {
-  background: #ffffff;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
   padding: 24px 20px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
-  border: 1px solid #f0f0f0;
 }
 
 @media (max-width: 768px) {
@@ -427,7 +462,7 @@
 .featureValue {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #7a30d0;
+  color: #a78bfa;
   margin: 0 0 6px 0;
   line-height: 1.2;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -454,7 +489,7 @@
 
 .featureLabel {
   font-size: 0.8125rem;
-  color: #555555;
+  color: #9ca3af;
   margin: 0;
   line-height: 1.4;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

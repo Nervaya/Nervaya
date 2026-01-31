@@ -1,33 +1,29 @@
 .header {
   background: transparent;
-  padding: 120px 40px 80px;
+  padding: 0 0 48px;
   color: #fff;
   position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@media (max-width: 1024px) {
-  .header {
-    padding: 100px 30px 60px;
-  }
+  margin-bottom: 48px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 80px 24px 50px;
+    padding: 0 0 40px;
+    margin-bottom: 40px;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 80px 20px 50px;
-    background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 0 32px;
+    margin-bottom: 32px;
   }
 }
 
 .headerContent {
-  max-width: 980px;
+  max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
@@ -39,7 +35,7 @@
   padding: 8px 16px;
   background: rgba(79, 70, 229, 0.2);
   border-radius: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   font-size: 0.875rem;
   font-weight: 500;
   color: #818cf8;
@@ -49,7 +45,7 @@
 
 @media (max-width: 768px) {
   .headerBadge {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 0.8125rem;
     padding: 6px 14px;
   }
@@ -57,12 +53,9 @@
 
 @media (max-width: 480px) {
   .headerBadge {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     font-size: 0.75rem;
     padding: 6px 14px;
-    background: rgba(79, 70, 229, 0.2);
-    color: #818cf8;
-    border: 1px solid rgba(129, 140, 248, 0.3);
   }
 }
 
@@ -84,72 +77,46 @@
 }
 
 .headerTitle {
-  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
   font-weight: 600;
-  margin: 0 0 24px;
-  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
   color: #fff;
-  line-height: 1.1;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
   .headerTitle {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 }
 
 @media (max-width: 480px) {
   .headerTitle {
-    margin-bottom: 16px;
-    font-size: clamp(2rem, 8vw, 2.5rem);
-    color: #fff;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 12px;
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
   }
 }
 
 .headerSubtitle {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-  line-height: 1.5;
-  margin: 0 0 40px;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.6;
+  margin: 0;
   color: #d1d5db;
-  max-width: 680px;
+  max-width: 560px;
   margin-left: auto;
   margin-right: auto;
-  font-weight: 400;
 }
 
 @media (max-width: 768px) {
   .headerSubtitle {
-    margin-bottom: 32px;
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: 0.9375rem;
   }
 }
 
 @media (max-width: 480px) {
   .headerSubtitle {
-    margin-bottom: 24px;
-    font-size: 0.9375rem;
-    color: #d1d5db;
+    font-size: 0.875rem;
   }
-}
-
-.lastUpdated {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: #9ca3af;
-  font-weight: 400;
-}
-
-@media (max-width: 480px) {
-  .lastUpdated {
-    font-size: 0.8125rem;
-  }
-}
-
-.lastUpdated svg {
-  width: 16px;
-  height: 16px;
 }

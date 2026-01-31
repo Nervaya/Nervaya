@@ -30,11 +30,10 @@
   .disclaimer {
     padding: 24px;
     margin-top: 28px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(250, 245, 255, 0.95) 0%, rgba(243, 248, 255, 0.9) 100%);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(120, 40, 200, 0.15);
-    border: 2px solid rgba(120, 40, 200, 0.1);
+    border-radius: 16px;
+    background: rgba(17, 24, 39, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -55,6 +54,6 @@
   .disclaimerText {
     font-size: 0.875rem;
     line-height: 1.7;
-    color: #1d1d1f;
+    color: #9ca3af;
   }
 }

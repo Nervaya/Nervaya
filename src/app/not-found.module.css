@@ -3,9 +3,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%),
+    url('/background.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #0a0a0f;
   min-height: 100vh;
   padding: 1rem;
-  background-color: var(--background);
   color: var(--foreground);
   overflow: hidden;
   position: relative;
@@ -19,6 +23,12 @@
     Arial,
     sans-serif;
   perspective: 1000px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    background-attachment: scroll;
+  }
 }
 
 .glow {
