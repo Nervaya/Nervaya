@@ -50,7 +50,7 @@ export function AssessmentQuestionStep({
   const variants = prefersReducedMotion ? reducedMotionVariants : slideVariants;
   const transition = prefersReducedMotion
     ? { opacity: { duration: 0.15 } }
-    : { x: { type: 'spring', stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } };
+    : { x: { type: 'spring' as const, stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } };
 
   return (
     <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>

@@ -13,6 +13,8 @@ export default function AdminSleepAssessmentPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev' | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const fetchQuestions = useCallback(async () => {
@@ -96,26 +98,34 @@ export default function AdminSleepAssessmentPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAnimating, questions.length, goToNext, goToPrev]);
 
-  const handleDelete = async (id: string, questionText: string) => {
-    const questionPreview = questionText.substring(0, 50);
-    const message =
-      `WARNING: Are you sure you want to delete this question?\n\n"${questionPreview}..."\n\n` +
-      'This action cannot be undone.';
-    if (!window.confirm(message)) {
-      return;
-    }
+  const handleDeleteClick = (id: string, questionText: string) => {
+    setDeleteConfirmation({ id, text: questionText });
+  };
 
+  const confirmDelete = async () => {
+    if (!deleteConfirmation) return;
+
+    setDeleting(true);
     try {
-      const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
+      const response = await fetch(`/api/sleep-assessment/questions/${deleteConfirmation.id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
         fetchQuestions();
+        setDeleteConfirmation(null);
       } else {
-        window.alert('Failed to delete question');
+        console.error('Failed to delete question');
       }
     } catch (error) {
       console.error('Error deleting question', error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    if (!deleting) {
+      setDeleteConfirmation(null);
     }
   };
 
@@ -219,13 +229,16 @@ export default function AdminSleepAssessmentPage() {
                 </div>
 
                 <div className={styles.questionActions}>
-                  <Link href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`} className={styles.editButton}>
+                  <Link
+                    href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`}
+                    className={styles.editButton}
+                  >
                     Edit
                   </Link>
                   <button
                     type="button"
                     className={styles.deleteButton}
-                    onClick={() => handleDelete(currentQuestion.questionId, currentQuestion.questionText)}
+                    onClick={() => handleDeleteClick(currentQuestion.questionId, currentQuestion.questionText)}
                   >
                     Delete
                   </button>
@@ -259,6 +272,37 @@ export default function AdminSleepAssessmentPage() {
           <p className={styles.keyboardHint}>
             Use <kbd>←</kbd> <kbd>→</kbd> arrow keys to navigate
           </p>
+        </div>
+      )}
+
+      {deleteConfirmation && (
+        <div className={styles.modalOverlay} onClick={cancelDelete}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>Delete Question</h3>
+            <p className={styles.modalMessage}>
+              Are you sure you want to delete this question?
+              <br />
+              <br />
+              &quot;{deleteConfirmation.text.substring(0, 50)}
+              {deleteConfirmation.text.length > 50 ? '...' : ''}&quot;
+              <br />
+              <br />
+              This action cannot be undone.
+            </p>
+            <div className={styles.modalActions}>
+              <button type="button" className={`${styles.modalButton} ${styles.cancelButton}`} onClick={cancelDelete}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={`${styles.modalButton} ${styles.confirmButton}`}
+                onClick={confirmDelete}
+                disabled={deleting}
+              >
+                {deleting ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

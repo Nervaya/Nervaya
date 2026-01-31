@@ -166,11 +166,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
       </header>
 
       <div className={styles.progressSection}>
-        <ProgressBar
-          currentStep={currentQuestionIndex + 1}
-          totalSteps={totalQuestions}
-          showStepCounter={false}
-        />
+        <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} showStepCounter={false} />
       </div>
 
       <section className={styles.questionSection} aria-label="Current question">

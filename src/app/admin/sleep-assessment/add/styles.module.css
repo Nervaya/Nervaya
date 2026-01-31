@@ -29,7 +29,9 @@
   text-decoration: none;
   font-size: 0.875rem;
   margin-bottom: 12px;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .backLink:hover {
@@ -166,7 +168,9 @@
   color: #ffffff;
   font-size: 0.9375rem;
   font-family: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   line-height: 1.45;
 }
 
@@ -269,7 +273,9 @@
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .addOptionButton:hover {
@@ -361,7 +367,9 @@
   border-radius: 8px;
   color: #fca5a5;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -416,7 +424,9 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
   text-decoration: none;
 }
 

@@ -49,7 +49,11 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       const slots = (schedule.slots || []).map((slot) => ({
         startTime: slot.startTime,
         endTime: slot.endTime,
-        isAvailable: includeBooked ? (bookedStartTimes.has(slot.startTime) ? false : slot.isAvailable) : slot.isAvailable,
+        isAvailable: includeBooked
+          ? bookedStartTimes.has(slot.startTime)
+            ? false
+            : slot.isAvailable
+          : slot.isAvailable,
       }));
       return NextResponse.json(
         successResponse('Schedule fetched successfully', {

@@ -20,8 +20,17 @@ interface SlotManagerProps {
 }
 
 const TIME_OPTIONS = [
-  '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-  '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM',
+  '8:00 AM',
+  '9:00 AM',
+  '10:00 AM',
+  '11:00 AM',
+  '12:00 PM',
+  '1:00 PM',
+  '2:00 PM',
+  '3:00 PM',
+  '4:00 PM',
+  '5:00 PM',
+  '6:00 PM',
 ];
 
 export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerProps) {
@@ -297,9 +306,9 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
               Time Slots
             </h3>
             <div className={styles.timeSlotsGrid}>
-              {schedule.slots.map((slot, index) => (
+              {schedule.slots.map((slot) => (
                 <div
-                  key={index}
+                  key={`${slot.startTime}-${slot.endTime}`}
                   className={`${styles.timeSlot} ${slot.isAvailable ? styles.slotAvailable : styles.slotBooked}`}
                 >
                   <span className={styles.slotTime}>
