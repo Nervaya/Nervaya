@@ -100,7 +100,7 @@ const Navbar = () => {
 
         <ul className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}>
           <li>
-            <Link href="/" onClick={closeMobileMenu}>
+            <Link href="/" onClick={closeMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
               Home
             </Link>
           </li>
@@ -129,7 +129,11 @@ const Navbar = () => {
             </li>
           )}
           <li>
-            <Link href="/about-us" onClick={closeMobileMenu}>
+            <Link
+              href="/about-us"
+              onClick={closeMobileMenu}
+              aria-current={pathname === '/about-us' ? 'page' : undefined}
+            >
               About Us
             </Link>
           </li>
@@ -140,6 +144,9 @@ const Navbar = () => {
                 href={isAdmin ? ROUTES.ADMIN_DASHBOARD : '/account'}
                 onClick={closeMobileMenu}
                 className={styles.accountButton}
+                aria-current={
+                  pathname === ROUTES.ADMIN_DASHBOARD || pathname?.startsWith('/account') ? 'page' : undefined
+                }
               >
                 <UserIcon size={24} />
                 <span>{isAdmin ? 'Admin' : user?.name?.split(' ')[0] || 'Account'}</span>
@@ -148,7 +155,11 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link href={ROUTES.LOGIN || ROUTES.SIGNUP} onClick={closeMobileMenu}>
+                <Link
+                  href={ROUTES.LOGIN || ROUTES.SIGNUP}
+                  onClick={closeMobileMenu}
+                  aria-current={pathname === ROUTES.LOGIN || pathname === ROUTES.SIGNUP ? 'page' : undefined}
+                >
                   Log in / Sign up
                 </Link>
               </li>
