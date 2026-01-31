@@ -29,5 +29,9 @@ export const IMAGES = {
   // About Us
   ABOUT_US_MAIN: 'https://res.cloudinary.com/disrq2eh8/image/upload/about_us_main_ykusxn.png',
 
+  // Error & Empty States
+  API_ERROR: 'https://res.cloudinary.com/disrq2eh8/image/upload/api_errpr_fst50b.png',
+  NO_DATA_FOUND: 'https://res.cloudinary.com/disrq2eh8/image/upload/no-data-concept_jobemv.png',
+
   // Add more images here as needed
 } as const;
