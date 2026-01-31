@@ -96,3 +96,9 @@
 .shopButton:hover {
   background: #6d28d9;
 }
+
+.lottieWrapper {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 1.5rem auto;
+}

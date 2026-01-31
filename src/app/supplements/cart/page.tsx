@@ -9,6 +9,8 @@ import CartItem from '@/components/Cart/CartItem';
 import CartSummary from '@/components/Cart/CartSummary';
 import { cartApi } from '@/lib/api/cart';
 import styles from './styles.module.css';
+import Lottie from 'lottie-react';
+import emptyBoxAnimation from '../../../../public/assets/animations/empty_box.json';
 
 export default function CartPage() {
   const router = useRouter();
@@ -101,6 +103,9 @@ export default function CartPage() {
       <Sidebar>
         <div className={styles.container}>
           <div className={styles.empty}>
+            <div className={styles.lottieWrapper}>
+              <Lottie animationData={emptyBoxAnimation} loop={false} />
+            </div>
             <h2>Your cart is empty</h2>
             <p>Add some supplements to get started!</p>
             <button onClick={() => router.push('/supplements')} className={styles.shopButton}>
