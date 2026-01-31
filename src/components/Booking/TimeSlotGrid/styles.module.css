@@ -167,6 +167,12 @@
   line-height: 1.2;
 }
 
+@media (max-width: 768px) {
+  .time {
+    font-size: 0.9375rem;
+  }
+}
+
 .slot.selected .time {
   color: white;
 }
@@ -180,6 +186,12 @@
   opacity: 0.85;
   font-weight: 400;
   line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .timeRange {
+    font-size: 0.75rem;
+  }
 }
 
 .slot.selected .timeRange {
@@ -200,14 +212,6 @@
 }
 
 @media (max-width: 768px) {
-  .time {
-    font-size: 0.9375rem;
-  }
-
-  .timeRange {
-    font-size: 0.75rem;
-  }
-
   .customizedBadge {
     font-size: 0.7rem;
     top: 4px;

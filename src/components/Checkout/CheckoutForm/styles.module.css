@@ -63,6 +63,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+@media (max-width: 768px) {
+  .form {
+    padding: 1.5rem;
+  }
+}
+
 .title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -77,6 +83,13 @@
   margin-bottom: 2rem;
 }
 
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 .fullWidth {
   grid-column: 1 / -1;
 }
@@ -86,13 +99,3 @@
   margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  .form {
-    padding: 1.5rem;
-  }
-
-  .formGrid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}

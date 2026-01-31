@@ -4,6 +4,12 @@
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
 .header {
   text-align: center;
   margin-bottom: 3rem;
@@ -14,6 +20,12 @@
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   color: var(--foreground);
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
 }
 
 .subtitle {
@@ -29,14 +41,4 @@
   border-radius: 8px;
   margin-bottom: 2rem;
   text-align: center;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
 }

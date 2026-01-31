@@ -1,3 +1,14 @@
+
+.navbarAuthPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  background: transparent;
+  border: none;
+}
+
 .navbar {
   width: 100%;
   padding: 0 40px;
@@ -78,7 +89,12 @@
     z-index: 2999;
     overflow-y: auto;
   }
+}
 
+.navbarMenuOpen {
+}
+
+@media (max-width: 768px) {
   .navbarMenuOpen {
     right: 0;
   }
@@ -274,7 +290,9 @@
     width: 100%;
     box-sizing: border-box;
   }
+}
 
+@media (max-width: 768px) {
   .dropdownItem:hover {
     background-color: rgba(120, 40, 200, 0.4);
   }

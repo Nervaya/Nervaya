@@ -25,7 +25,9 @@
     margin-bottom: 18px;
     color: #1d1d1f;
   }
+}
 
+@media (max-width: 480px) {
   .paragraph:first-of-type {
     font-size: 1rem;
     font-weight: 500;
@@ -153,30 +155,6 @@
     gap: 18px;
     margin: 28px 0;
   }
-
-  .gridItem {
-    animation: slideInUpMobile 0.5s ease-out;
-    animation-fill-mode: both;
-  }
-
-  .gridItem:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .gridItem:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .gridItem:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  .gridItem:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  .gridItem:nth-child(5) {
-    animation-delay: 0.5s;
-  }
-  .gridItem:nth-child(6) {
-    animation-delay: 0.6s;
-  }
 }
 
 @keyframes slideInUpMobile {
@@ -238,13 +216,40 @@
     box-shadow: 0 8px 24px rgba(120, 40, 200, 0.15);
     border: 2px solid rgba(120, 40, 200, 0.1);
     -webkit-tap-highlight-color: transparent;
+    animation: slideInUpMobile 0.5s ease-out;
+    animation-fill-mode: both;
   }
+}
 
+@media (max-width: 480px) {
+  .gridItem:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .gridItem:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .gridItem:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .gridItem:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .gridItem:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+  .gridItem:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+}
+
+@media (max-width: 480px) {
   .gridItem:active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 12px 32px rgba(120, 40, 200, 0.25);
   }
+}
 
+@media (max-width: 480px) {
   .gridItem:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 40px rgba(120, 40, 200, 0.2);
@@ -289,7 +294,9 @@
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(120, 40, 200, 0.35);
   }
+}
 
+@media (max-width: 480px) {
   .gridItem:active .gridIcon {
     transform: scale(1.1) rotate(5deg);
     animation: iconBounce 0.4s ease;
@@ -420,6 +427,22 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@media (max-width: 768px) {
+  .securityIcon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .securityIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
 .securityCard:hover .securityIcon {
   transform: scale(1.05) rotate(2deg);
   box-shadow: 0 6px 20px rgba(120, 40, 200, 0.35);
@@ -443,7 +466,9 @@
     animation-fill-mode: both;
     -webkit-tap-highlight-color: transparent;
   }
+}
 
+@media (max-width: 480px) {
   .securityCard:nth-child(1) {
     animation-delay: 0.1s;
   }
@@ -456,46 +481,12 @@
   .securityCard:nth-child(4) {
     animation-delay: 0.4s;
   }
-
-  .securityCard:active {
-    transform: translateY(-2px) scale(0.98);
-    box-shadow: 0 12px 32px rgba(120, 40, 200, 0.25);
-  }
-}
-
-.securityIcon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(120, 40, 200, 0.25);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.securityCard:hover .securityIcon {
-  transform: scale(1.05) rotate(2deg);
-  box-shadow: 0 6px 20px rgba(120, 40, 200, 0.35);
-}
-
-@media (max-width: 768px) {
-  .securityIcon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.125rem;
-  }
 }
 
 @media (max-width: 480px) {
-  .securityIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+  .securityCard:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 12px 32px rgba(120, 40, 200, 0.25);
   }
 }
 
@@ -639,7 +630,9 @@
     animation-fill-mode: both;
     -webkit-tap-highlight-color: transparent;
   }
+}
 
+@media (max-width: 480px) {
   .cookieCard:nth-child(1) {
     animation-delay: 0.1s;
   }
@@ -649,7 +642,9 @@
   .cookieCard:nth-child(3) {
     animation-delay: 0.3s;
   }
+}
 
+@media (max-width: 480px) {
   .cookieCard:active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 12px 32px rgba(120, 40, 200, 0.25);
@@ -810,6 +805,22 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@media (max-width: 768px) {
+  .rightIcon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rightIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
 .rightCard:hover .rightIcon {
   transform: scale(1.05) rotate(2deg);
   box-shadow: 0 6px 20px rgba(120, 40, 200, 0.35);
@@ -833,7 +844,9 @@
     animation-fill-mode: both;
     -webkit-tap-highlight-color: transparent;
   }
+}
 
+@media (max-width: 480px) {
   .rightCard:nth-child(1) {
     animation-delay: 0.1s;
   }
@@ -852,62 +865,12 @@
   .rightCard:nth-child(6) {
     animation-delay: 0.35s;
   }
+}
 
+@media (max-width: 480px) {
   .rightCard:active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 12px 32px rgba(120, 40, 200, 0.25);
-  }
-}
-
-.rightIcon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(120, 40, 200, 0.25);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 768px) {
-  .rightIcon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.125rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .rightIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-}
-
-.rightCard:hover .rightIcon {
-  transform: scale(1.05) rotate(2deg);
-  box-shadow: 0 6px 20px rgba(120, 40, 200, 0.35);
-}
-
-@media (max-width: 768px) {
-  .rightIcon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.125rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .rightIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
   }
 }
 
@@ -1007,7 +970,9 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
   }
+}
 
+@media (max-width: 480px) {
   .contactItem:active {
     transform: scale(0.98);
     box-shadow: 0 6px 20px rgba(120, 40, 200, 0.2);
@@ -1035,7 +1000,9 @@
     font-size: 1.125rem;
     box-shadow: 0 4px 16px rgba(120, 40, 200, 0.3);
   }
+}
 
+@media (max-width: 480px) {
   .contactItem:active .contactIcon {
     transform: scale(1.1) rotate(5deg);
     animation: iconBounce 0.4s ease;
@@ -1070,7 +1037,9 @@
     font-size: 1.125rem;
     box-shadow: 0 4px 16px rgba(120, 40, 200, 0.3);
   }
+}
 
+@media (max-width: 480px) {
   .contactItem:active .contactIcon {
     transform: scale(1.1) rotate(5deg);
     animation: iconBounce 0.4s ease;

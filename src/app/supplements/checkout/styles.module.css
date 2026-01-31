@@ -4,6 +4,12 @@
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
 .header {
   margin-bottom: 2rem;
 }
@@ -21,6 +27,12 @@
   gap: 2rem;
 }
 
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
+
 .formSection {
   background: white;
 }
@@ -29,6 +41,12 @@
   position: sticky;
   top: 2rem;
   height: fit-content;
+}
+
+@media (max-width: 1024px) {
+  .summarySection {
+    position: static;
+  }
 }
 
 .summary {
@@ -189,18 +207,3 @@
   border-radius: 8px;
 }
 
-@media (max-width: 1024px) {
-  .content {
-    grid-template-columns: 1fr;
-  }
-
-  .summarySection {
-    position: static;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-}

@@ -9,12 +9,14 @@ import { NAVBAR_PRODUCTS_LINKS, NAVBAR_ACCOUNT_LINKS } from '@/utils/navbarConst
 import { useAuth } from '@/hooks/useAuth';
 import { hasRole } from '@/lib/constants/rbac';
 import { ROLES } from '@/lib/constants/roles';
-import { ROUTES } from '@/utils/routesConstants';
+import { ROUTES, AUTH_ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const pathname = usePathname();
+
+  const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname);
 
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -74,12 +76,26 @@ const Navbar = () => {
     setIsAccountDropdownOpen(false);
   };
 
+  if (isAuthPage) {
+    return (
+      <nav className={`${styles.navbar} ${styles.navbarAuthPage}`} aria-label="Site navigation">
+        <div className={styles.navbarContainer}>
+          <div className={styles.navbarLogo}>
+            <Link href="/">
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={150} height={50} />
+            </Link>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav className={`${styles.navbar} ${styles.navbarMain}`}>
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLogo}>
           <Link href="/">
-            <Image src="/icons/nervaya-logo.svg" alt="logo" width={150} height={50} />
+            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={150} height={50} />
           </Link>
         </div>
         <button
@@ -164,13 +180,8 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link href={ROUTES.LOGIN} onClick={closeMobileMenu}>
-                  Log in
-                </Link>
-              </li>
-              <li>
-                <Link href={ROUTES.SIGNUP} onClick={closeMobileMenu}>
-                  Sign up
+                <Link href={ROUTES.LOGIN || ROUTES.SIGNUP} onClick={closeMobileMenu}>
+                  Log in / Sign up
                 </Link>
               </li>
               <li>

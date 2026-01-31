@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import AnimatedAuthForm from '@/components/auth/AnimatedAuthForm/AnimatedAuthForm';
+import LoginSignupForm from '@/components/LoginSignupForm';
 import { validateReturnUrl } from '@/utils/returnUrl';
 
 export default function LoginPage() {
@@ -9,5 +9,5 @@ export default function LoginPage() {
   const returnUrlParam = searchParams.get('returnUrl');
   const returnUrl = validateReturnUrl(returnUrlParam) ?? undefined;
 
-  return <AnimatedAuthForm initialMode="login" returnUrl={returnUrl} />;
+  return <LoginSignupForm initialMode="login" returnUrl={returnUrl} />;
 }

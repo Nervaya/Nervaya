@@ -4,15 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
 import { useAuthForm } from '@/hooks/useAuthForm';
-import styles from './AnimatedAuthForm.module.css';
+import styles from './styles.module.css';
 import { IMAGES } from '@/utils/imageConstants';
 
-export interface AnimatedAuthFormProps {
+export interface LoginSignupFormProps {
   initialMode?: 'login' | 'signup';
   returnUrl?: string;
 }
 
-const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({ initialMode = 'login', returnUrl }) => {
+const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = 'login', returnUrl }) => {
   const {
     isRightPanelActive,
     email,
@@ -235,4 +235,4 @@ const AnimatedAuthForm: React.FC<AnimatedAuthFormProps> = ({ initialMode = 'logi
   );
 };
 
-export default AnimatedAuthForm;
+export default LoginSignupForm;

@@ -188,13 +188,51 @@ const processItem = item => {
 const createItem = id => ({ id, created: Date.now() });
 ```
 
-## 3. Styling (SCSS Modules)
+## 3. Styling (SCSS/CSS Modules)
 
 ### File Naming
-- Always use `ComponentName.module.scss`
+- Use `ComponentName.module.scss` or `styles.module.css` (as per project convention)
 - **Never** use inline `style={{ ... }}` attributes
 
-### Nested Media Queries
+### Media Query Placement (Required)
+
+**Every media query must be placed directly under its related CSS rule.** Do not group multiple unrelated selectors in one `@media` block.
+
+```css
+/* ✅ Correct: media query under its related rule */
+.container {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
+.title {
+  font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ❌ Wrong: grouped media at end with multiple selectors */
+.container { padding: 2rem; }
+.title { font-size: 2rem; }
+
+@media (max-width: 768px) {
+  .container { padding: 1rem; }
+  .title { font-size: 1.5rem; }
+}
+```
+
+Comma-separated selectors that share the same responsive styles (e.g. `.primaryButton, .secondaryButton { ... }`) may stay grouped.
+
+### Nested Media Queries (SCSS)
 
 ```scss
 .container {

@@ -17,11 +17,24 @@
   border: 1px solid #3a3a3a;
 }
 
+@media (max-width: 768px) {
+  .workflowSteps {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .step {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
+}
+
+@media (max-width: 768px) {
+  .step {
+    width: 100%;
+  }
 }
 
 .stepNumber {
@@ -89,6 +102,14 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 768px) {
+  .stepConnector {
+    width: 2px;
+    height: 20px;
+    margin: 8px 0 8px 19px;
+  }
+}
+
 .stepCompleted + .stepConnector {
   background: #22c55e;
 }
@@ -109,6 +130,13 @@
   margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .sectionTitle {
@@ -160,6 +188,12 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .generateButtons {
+    flex-direction: column;
+  }
+}
+
 .header {
   margin-bottom: 24px;
   display: flex;
@@ -169,10 +203,22 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+}
+
 .quickActions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .quickActions {
+    width: 100%;
+  }
 }
 
 .quickActionButton {
@@ -191,6 +237,12 @@
   background: #3a3a3a;
   border-color: #8b5cf6;
   color: #8b5cf6;
+}
+
+@media (max-width: 768px) {
+  .quickActionButton {
+    flex: 1;
+  }
 }
 
 .title {
@@ -308,6 +360,14 @@
   padding-left: 32px;
 }
 
+@media (max-width: 768px) {
+  .timeInputs {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 32px;
+  }
+}
+
 .timeLabel {
   display: flex;
   flex-direction: column;
@@ -338,6 +398,12 @@
   margin-top: 20px;
 }
 
+@media (max-width: 768px) {
+  .timeSeparator {
+    display: none;
+  }
+}
+
 .weekSummary {
   background: #2a2a2a;
   border: 1px solid #3a3a3a;
@@ -357,6 +423,12 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .summaryDay {
@@ -456,6 +528,13 @@
   cursor: not-allowed;
 }
 
+@media (max-width: 768px) {
+  .generateButton,
+  .saveButton {
+    width: 100%;
+  }
+}
+
 /* Confirmation Dialog */
 .confirmOverlay {
   position: fixed;
@@ -532,65 +611,12 @@
 }
 
 @media (max-width: 768px) {
-  .workflowSteps {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .step {
-    width: 100%;
-  }
-
-  .stepConnector {
-    width: 2px;
-    height: 20px;
-    margin: 8px 0 8px 19px;
-  }
-
-  .header {
-    flex-direction: column;
-  }
-
-  .sectionHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .quickActions {
-    width: 100%;
-  }
-
-  .quickActionButton {
-    flex: 1;
-  }
-
-  .summaryGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .timeInputs {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 32px;
-  }
-
-  .timeSeparator {
-    display: none;
-  }
-
-  .generateButtons {
-    flex-direction: column;
-  }
-
-  .generateButton,
-  .saveButton {
-    width: 100%;
-  }
-
   .confirmButtons {
     flex-direction: column;
   }
+}
 
+@media (max-width: 768px) {
   .confirmButtonCancel,
   .confirmButtonConfirm {
     width: 100%;

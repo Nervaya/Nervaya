@@ -4,6 +4,12 @@
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
 .content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -12,6 +18,14 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
 }
 
 .imageSection {
@@ -102,8 +116,20 @@
   margin-top: 1rem;
 }
 
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+  }
+}
+
 .addButton {
   flex: 1;
+}
+
+@media (max-width: 768px) {
+  .addButton {
+    width: 100%;
+  }
 }
 
 .loading,
@@ -131,22 +157,3 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 1.5rem;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  .addButton {
-    width: 100%;
-  }
-}

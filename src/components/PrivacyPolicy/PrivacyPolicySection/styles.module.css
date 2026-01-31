@@ -31,7 +31,9 @@
     border: 1px solid rgba(120, 40, 200, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
 
+@media (max-width: 480px) {
   .section:active {
     transform: scale(0.98);
   }
@@ -145,7 +147,9 @@
     color: #7828c8;
     opacity: 0.8;
   }
+}
 
+@media (max-width: 768px) {
   .accordionIconOpen {
     color: #9333ea;
     transform: rotate(180deg) scale(1.1);
@@ -166,29 +170,41 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
   }
+}
 
+@media (max-width: 480px) {
   .accordionIcon svg {
     filter: drop-shadow(0 2px 4px rgba(120, 40, 200, 0.2));
     transition: all 0.3s ease;
   }
+}
 
+@media (max-width: 480px) {
   .accordionIcon:active {
     transform: scale(0.9);
   }
+}
 
+@media (max-width: 480px) {
   .accordionIcon:active svg {
     filter: drop-shadow(0 1px 2px rgba(120, 40, 200, 0.3));
   }
+}
 
+@media (max-width: 480px) {
   .accordionIconOpen {
     color: #9333ea;
     transform: rotate(180deg);
   }
+}
 
+@media (max-width: 480px) {
   .accordionIconOpen svg {
     filter: drop-shadow(0 2px 6px rgba(147, 51, 234, 0.3));
   }
+}
 
+@media (max-width: 480px) {
   .accordionIconOpen:active {
     transform: rotate(180deg) scale(0.9);
   }

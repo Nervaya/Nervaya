@@ -6,6 +6,12 @@
   color: #ffffff;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
 .header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
@@ -94,6 +100,12 @@
   margin-top: 1rem;
 }
 
+@media (max-width: 768px) {
+  .statsContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
 .statCard {
   background: #2a2a2a;
   padding: 1.5rem;
@@ -135,11 +147,23 @@
   gap: 1.5rem;
 }
 
+@media (max-width: 1024px) {
+  .topRow {
+    grid-template-columns: 1fr;
+  }
+}
+
 .calendarSection {
   background: #2a2a2a;
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #2a2a2a;
+}
+
+@media (max-width: 768px) {
+  .calendarSection {
+    padding: 1rem;
+  }
 }
 
 .sectionTitle {
@@ -157,6 +181,12 @@
   min-height: 350px;
 }
 
+@media (max-width: 768px) {
+  .slotsRight {
+    padding: 1rem;
+  }
+}
+
 .weekView {
   background: #2a2a2a;
   padding: 1.5rem;
@@ -165,11 +195,23 @@
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  .weekView {
+    padding: 1rem;
+  }
+}
+
 .weekGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.75rem;
   margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .weekGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .weekDay {
@@ -209,34 +251,4 @@
   font-size: 13px;
   color: #ef4444;
   font-weight: 600;
-}
-
-@media (max-width: 1024px) {
-  .topRow {
-    grid-template-columns: 1fr;
-  }
-
-  .statsContainer {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .statsContainer {
-    grid-template-columns: 1fr;
-  }
-
-  .weekGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .calendarSection,
-  .weekView,
-  .slotsRight {
-    padding: 1rem;
-  }
 }

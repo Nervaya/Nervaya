@@ -1,7 +1,7 @@
 'use client';
 
-import AnimatedAuthForm from '@/components/auth/AnimatedAuthForm/AnimatedAuthForm';
+import LoginSignupForm from '@/components/LoginSignupForm';
 
 export default function SignupPage() {
-  return <AnimatedAuthForm initialMode="signup" />;
+  return <LoginSignupForm initialMode="signup" />;
 }
