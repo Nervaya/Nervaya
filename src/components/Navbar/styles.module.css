@@ -95,9 +95,45 @@
   padding: 0;
 }
 
+@media (max-width: 768px) {
+  .navbarMenu {
+    position: fixed;
+    top: 70px;
+    right: 16px;
+    width: auto;
+    min-width: 240px;
+    height: auto;
+    background: rgba(20, 20, 24, 0.95);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 4px;
+    transform: scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .navbarMenuOpen {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .navbarMenu li {
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbarMenu li {
+    width: 100%;
+  }
 }
 
 .navbarMenu a {
@@ -114,6 +150,19 @@
     -apple-system,
     sans-serif;
   transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .navbarMenu a {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .navbarMenu a:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .navbarMenu a:hover {
@@ -155,6 +204,19 @@
   transition: all 0.2s ease;
 }
 
+@media (max-width: 768px) {
+  .navbarDropdownButton {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .navbarDropdownButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
 .navbarDropdownButton:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
@@ -186,6 +248,21 @@
   z-index: 1000;
   animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .dropdownMenu {
+    position: static;
+    transform: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-left: 16px;
+    opacity: 1;
+    animation: none;
+    min-width: auto;
+    width: 100%;
+  }
 }
 
 @keyframes menuFadeIn {
@@ -225,9 +302,15 @@
   margin-left: 8px;
   margin-right: 4px;
   /* Padding from container edge */
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .navbarCta {
+    width: 100%;
+    margin: 12px 0 0 0;
+    text-align: center;
+  }
 }
 
 .navbarCta:hover {
@@ -274,85 +357,18 @@
   margin-right: 8px;
 }
 
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+}
+
 .hamburgerBar {
   width: 100%;
   height: 2px;
   background: #fff;
   border-radius: 2px;
   transition: all 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
-  .navbarMenu {
-    position: fixed;
-    top: 70px;
-    /* Below the floating header? Or Full screen overlay? SolidRoad uses full overlay/drawer */
-    right: 16px;
-    /* Floating drawer style */
-    width: auto;
-    min-width: 240px;
-    height: auto;
-    background: rgba(20, 20, 24, 0.95);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 16px;
-    gap: 4px;
-
-    transform: scale(0.95);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  }
-
-  .navbarMenuOpen {
-    transform: scale(1);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .navbarMenu li {
-    width: 100%;
-  }
-
-  .navbarMenu a,
-  .navbarDropdownButton {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 12px 16px;
-    border-radius: 8px;
-  }
-
-  .navbarMenu a:hover,
-  .navbarDropdownButton:hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .dropdownMenu {
-    position: static;
-    transform: none;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding-left: 16px;
-    opacity: 1;
-    animation: none;
-    min-width: auto;
-    width: 100%;
-  }
-
-  .navbarCta {
-    width: 100%;
-    margin: 12px 0 0 0;
-    text-align: center;
-  }
 }
 
 .mobileOverlay {
