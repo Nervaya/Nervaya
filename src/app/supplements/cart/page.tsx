@@ -10,7 +10,7 @@ import CartSummary from '@/components/Cart/CartSummary';
 import { cartApi } from '@/lib/api/cart';
 import styles from './styles.module.css';
 import Lottie from 'lottie-react';
-import emptyBoxAnimation from '../../../../public/assets/animations/empty_box.json';
+import emptyBoxAnimation from './empty_box.json';
 
 export default function CartPage() {
   const router = useRouter();
