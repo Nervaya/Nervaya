@@ -1,0 +1,62 @@
+.weekSummary {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.summaryTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summaryDay {
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+}
+
+.summaryDayEnabled {
+  background: #2a1a3a;
+  border-color: #8b5cf6;
+}
+
+.summaryDayName {
+  font-size: 12px;
+  font-weight: 600;
+  color: #a0a0a0;
+  margin-bottom: 4px;
+}
+
+.summaryDayEnabled .summaryDayName {
+  color: #8b5cf6;
+}
+
+.summaryTime {
+  font-size: 11px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.summaryTimeDisabled {
+  font-size: 11px;
+  color: #6b7280;
+  font-style: italic;
+}

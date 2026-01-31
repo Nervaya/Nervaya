@@ -1,7 +1,7 @@
 'use client';
 
 import { LazyMotion, m, AnimatePresence } from 'framer-motion';
-import QuestionCard from '../QuestionCard';
+import QuestionCard from '../../QuestionCard';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 

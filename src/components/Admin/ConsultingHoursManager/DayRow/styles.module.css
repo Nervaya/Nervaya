@@ -1,0 +1,92 @@
+.dayCard {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.dayCard.enabled {
+  border-color: #8b5cf6;
+  background: #2a1a3a;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+}
+
+.dayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dayToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dayToggle input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #8b5cf6;
+}
+
+.dayLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.timeInputs {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 32px;
+}
+
+@media (max-width: 768px) {
+  .timeInputs {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 32px;
+  }
+}
+
+.timeLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #a0a0a0;
+}
+
+.timeInput {
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  width: 140px;
+  transition: border-color 0.2s;
+}
+
+.timeInput:focus {
+  outline: none;
+  border-color: #8b5cf6;
+}
+
+.timeSeparator {
+  color: #a0a0a0;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .timeSeparator {
+    display: none;
+  }
+}
