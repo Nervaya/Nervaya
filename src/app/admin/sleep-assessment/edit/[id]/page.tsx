@@ -67,7 +67,12 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   const handleOptionChange = (index: number, value: string) => {
     setOptions((prev) => {
       const newOptions = [...prev];
-      const slug = value.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') || `opt_${index + 1}`;
+      const slug =
+        value
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, '_')
+          .replace(/[^a-z0-9_]/g, '') || `opt_${index + 1}`;
       newOptions[index] = { ...newOptions[index], label: value, value: slug };
       return newOptions;
     });
@@ -99,7 +104,14 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
       const optionsWithValue = validOptions.map((opt, i) => ({
         id: String(i + 1),
         label: opt.label.trim(),
-        value: opt.value || opt.label.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') || `opt_${i + 1}`,
+        value:
+          opt.value ||
+          opt.label
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '_')
+            .replace(/[^a-z0-9_]/g, '') ||
+          `opt_${i + 1}`,
       }));
 
       const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
@@ -214,41 +226,41 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
         </div>
 
         <div className={styles.optionsSection}>
-            <div className={styles.optionsHeader}>
-              <h3 className={styles.optionsTitle}>Options</h3>
-              <button type="button" onClick={addOption} className={styles.addOptionButton}>
-                <IoAdd aria-hidden />
-                Add Option
-              </button>
-            </div>
+          <div className={styles.optionsHeader}>
+            <h3 className={styles.optionsTitle}>Options</h3>
+            <button type="button" onClick={addOption} className={styles.addOptionButton}>
+              <IoAdd aria-hidden />
+              Add Option
+            </button>
+          </div>
 
-            <ul className={styles.optionsList}>
-              {options.map((option, index) => (
-                <li key={option.id || `option-${index}`} className={styles.optionItem}>
-                  <span className={styles.optionNumber}>{index + 1}</span>
-                  <div className={styles.optionInputs}>
-                    <input
-                      type="text"
-                      value={option.label}
-                      onChange={(e) => handleOptionChange(index, e.target.value)}
-                      className={styles.input}
-                      placeholder="Option"
-                      required
-                    />
-                  </div>
-                  {options.length > 2 && (
-                    <button
-                      type="button"
-                      onClick={() => removeOption(index)}
-                      className={styles.removeOptionButton}
-                      aria-label="Remove option"
-                    >
-                      <IoClose aria-hidden />
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
+          <ul className={styles.optionsList}>
+            {options.map((option, index) => (
+              <li key={option.id || `option-${index}`} className={styles.optionItem}>
+                <span className={styles.optionNumber}>{index + 1}</span>
+                <div className={styles.optionInputs}>
+                  <input
+                    type="text"
+                    value={option.label}
+                    onChange={(e) => handleOptionChange(index, e.target.value)}
+                    className={styles.input}
+                    placeholder="Option"
+                    required
+                  />
+                </div>
+                {options.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOption(index)}
+                    className={styles.removeOptionButton}
+                    aria-label="Remove option"
+                  >
+                    <IoClose aria-hidden />
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className={styles.formActions}>

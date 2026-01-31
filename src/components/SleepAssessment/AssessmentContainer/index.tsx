@@ -6,8 +6,9 @@ import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
 import { AssessmentQuestionStep } from './AssessmentQuestionStep';
 import styles from './styles.module.css';
-import type { ISleepAssessmentQuestion, IQuestionAnswer } from '@/types/sleepAssessment.types';
+import type { ISleepAssessmentQuestion, ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import axiosInstance from '@/lib/axios';
+import type { ApiResponse } from '@/lib/utils/response.util';
 
 interface AssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
@@ -20,6 +21,7 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [direction, setDirection] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   const totalQuestions = questions.length;
@@ -52,39 +54,75 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
     [currentQuestion],
   );
 
-  const handleSubmit = useCallback(async () => {
+  const saveCurrentAnswer = useCallback(async (questionId: string, answer: string | string[]) => {
+    await axiosInstance.patch('/sleep-assessment/responses', {
+      questionId,
+      answer,
+    });
+  }, []);
+
+  const completeAssessment = useCallback(async () => {
+    await axiosInstance.post('/sleep-assessment/responses/complete');
+  }, []);
+
+  useEffect(() => {
+    if (questions.length === 0 || isHydrated) return;
+
+    const loadInProgress = async () => {
+      try {
+        const response = await axiosInstance.get<unknown, ApiResponse<ISleepAssessmentResponse | null>>(
+          '/sleep-assessment/responses?inProgress=true',
+        );
+        const inProgress = response.data;
+        if (inProgress?.answers?.length) {
+          const hydrated = new Map<string, string | string[]>();
+          inProgress.answers.forEach((a) => {
+            const qid = typeof a.questionId === 'string' ? a.questionId : String(a.questionId);
+            if (qid) hydrated.set(qid, a.answer);
+          });
+          setAnswers(hydrated);
+          const firstUnansweredIndex = questions.findIndex((q) => !hydrated.has(q._id));
+          if (firstUnansweredIndex >= 0) {
+            setCurrentQuestionIndex(firstUnansweredIndex);
+          }
+        }
+      } catch {
+        // No in-progress or error: start fresh
+      } finally {
+        setIsHydrated(true);
+      }
+    };
+
+    loadInProgress();
+  }, [questions, isHydrated]);
+
+  const handleNext = useCallback(async () => {
+    if (!canProceed || !currentQuestion) return;
+
+    const answerToSave = answers.get(currentQuestion._id);
+    if (answerToSave === undefined && currentQuestion.isRequired) return;
+
+    setDirection(1);
     setIsSubmitting(true);
     setSubmitError(null);
+
     try {
-      const formattedAnswers: IQuestionAnswer[] = [];
-      answers.forEach((answer, questionId) => {
-        const question = questions.find((q) => q._id === questionId);
-        if (question) {
-          formattedAnswers.push({
-            questionId,
-            answer,
-          });
-        }
-      });
-      await axiosInstance.post('/sleep-assessment/responses', { answers: formattedAnswers });
-      setIsComplete(true);
+      if (answerToSave !== undefined) {
+        await saveCurrentAnswer(currentQuestion._id, answerToSave);
+      }
+      if (isLastQuestion) {
+        await completeAssessment();
+        setIsComplete(true);
+      } else {
+        setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
+      }
     } catch (error) {
-      console.error('Failed to submit assessment:', error);
-      setSubmitError('Failed to submit assessment. Please try again.');
+      console.error('Failed to save answer:', error);
+      setSubmitError('Failed to save your answer. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
-  }, [answers, questions]);
-
-  const handleNext = useCallback(() => {
-    if (!canProceed) return;
-    setDirection(1);
-    if (isLastQuestion) {
-      handleSubmit();
-    } else {
-      setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
-    }
-  }, [canProceed, isLastQuestion, totalQuestions, handleSubmit]);
+  }, [canProceed, currentQuestion, answers, isLastQuestion, totalQuestions, saveCurrentAnswer, completeAssessment]);
 
   const handlePrevious = useCallback(() => {
     if (isFirstQuestion) return;

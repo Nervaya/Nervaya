@@ -8,7 +8,7 @@ export interface IQuestionAnswer {
 export interface ISleepAssessmentResponse extends Document {
   userId: mongoose.Types.ObjectId;
   answers: IQuestionAnswer[];
-  completedAt: Date;
+  completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -38,17 +38,11 @@ const sleepAssessmentResponseSchema = new Schema<ISleepAssessmentResponse>(
     },
     answers: {
       type: [questionAnswerSchema],
-      required: [true, 'Answers are required'],
-      validate: {
-        validator: function (answers: IQuestionAnswer[]) {
-          return answers.length > 0;
-        },
-        message: 'At least one answer is required',
-      },
+      default: [],
     },
     completedAt: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
   },
   {
@@ -56,6 +50,13 @@ const sleepAssessmentResponseSchema = new Schema<ISleepAssessmentResponse>(
   },
 );
 
+sleepAssessmentResponseSchema.pre('save', function (this: ISleepAssessmentResponse) {
+  if (this.completedAt != null && (!this.answers || this.answers.length === 0)) {
+    throw new Error('At least one answer is required when completing an assessment');
+  }
+});
+
+sleepAssessmentResponseSchema.index({ userId: 1, completedAt: 1 });
 sleepAssessmentResponseSchema.index({ userId: 1, createdAt: -1 });
 
 const SleepAssessmentResponse: Model<ISleepAssessmentResponse> =

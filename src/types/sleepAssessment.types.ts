@@ -28,7 +28,7 @@ export interface ISleepAssessmentResponse {
   _id: string;
   userId: string;
   answers: IQuestionAnswer[];
-  completedAt: Date;
+  completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -54,4 +54,9 @@ export interface UpdateQuestionInput {
 
 export interface SubmitAssessmentInput {
   answers: IQuestionAnswer[];
+}
+
+export interface SaveAnswerInput {
+  questionId: string;
+  answer: string | string[];
 }

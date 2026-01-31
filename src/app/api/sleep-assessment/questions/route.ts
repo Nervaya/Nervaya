@@ -55,29 +55,23 @@ export async function POST(req: NextRequest) {
     const { questionText, questionType, options, order, isRequired, isActive } = body;
 
     if (!questionText || !questionType || !order) {
-      return NextResponse.json(
-        errorResponse('Missing required fields: questionText, questionType, order', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('Missing required fields: questionText, questionType, order', null, 400), {
+        status: 400,
+      });
     }
 
     const optionBasedTypes = ['single_choice', 'multiple_choice', 'scale'];
     if (questionType === 'text' || !optionBasedTypes.includes(questionType)) {
       return NextResponse.json(
-        errorResponse(
-          'Only option-based question types are allowed: single_choice, multiple_choice, scale',
-          null,
-          400,
-        ),
+        errorResponse('Only option-based question types are allowed: single_choice, multiple_choice, scale', null, 400),
         { status: 400 },
       );
     }
 
     if (!options || !Array.isArray(options) || options.length < 2) {
-      return NextResponse.json(
-        errorResponse('At least 2 options are required for option-based questions', null, 400),
-        { status: 400 },
-      );
+      return NextResponse.json(errorResponse('At least 2 options are required for option-based questions', null, 400), {
+        status: 400,
+      });
     }
 
     const question = await createQuestion({

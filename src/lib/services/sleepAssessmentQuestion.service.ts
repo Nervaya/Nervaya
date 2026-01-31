@@ -1,6 +1,6 @@
 import SleepAssessmentQuestion, { ISleepAssessmentQuestion } from '@/lib/models/sleepAssessmentQuestion.model';
 import connectDB from '@/lib/db/mongodb';
-import { ValidationError, NotFoundError } from '@/lib/utils/error.util';
+import { NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { validate as validateUUID } from 'uuid';
 import type { CreateQuestionInput, UpdateQuestionInput } from '@/types/sleepAssessment.types';
@@ -78,7 +78,6 @@ export async function getQuestionById(identifier: string): Promise<ISleepAssessm
   }
 }
 
-
 export async function createQuestion(input: CreateQuestionInput): Promise<ISleepAssessmentQuestion> {
   await connectDB();
 
@@ -141,9 +140,7 @@ export async function reorderQuestions(questionOrders: { questionId: string; ord
 
   try {
     const bulkOps = questionOrders.map(({ questionId, order }) => {
-      const filter = Types.ObjectId.isValid(questionId)
-        ? { _id: new Types.ObjectId(questionId) }
-        : { questionId };
+      const filter = Types.ObjectId.isValid(questionId) ? { _id: new Types.ObjectId(questionId) } : { questionId };
 
       return {
         updateOne: {
