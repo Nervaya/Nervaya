@@ -12,6 +12,7 @@ interface SupplementFormProps {
   initialData?: Partial<SupplementFormData>;
   loading?: boolean;
   submitLabel?: string;
+  compact?: boolean;
 }
 
 const SupplementForm: React.FC<SupplementFormProps> = ({
@@ -19,6 +20,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   initialData,
   loading = false,
   submitLabel = 'Create Supplement',
+  compact = false,
 }) => {
   const [formData, setFormData] = useState<SupplementFormData>({
     name: initialData?.name || '',
@@ -113,7 +115,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form} noValidate>
       <div className={styles.formGrid}>
         <Input
           label="Name"
@@ -121,18 +123,28 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           onChange={(e) => handleChange('name', e.target.value)}
           error={errors.name}
           required
-          containerClassName={styles.fullWidth}
+          compact={compact}
+        />
+        <Input
+          label="Category"
+          value={formData.category}
+          onChange={(e) => handleChange('category', e.target.value)}
+          error={errors.category}
+          required
+          compact={compact}
         />
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
-          <label className={styles.label}>
-            Description {errors.description && <span className={styles.errorText}>{errors.description}</span>}
+          <label className={styles.label} htmlFor="supplement-description">
+            Description
+            {errors.description && <span className={styles.errorText}>{errors.description}</span>}
           </label>
           <textarea
+            id="supplement-description"
             className={`${styles.textarea} ${errors.description ? styles.textareaError : ''}`}
             value={formData.description}
             onChange={(e) => handleChange('description', e.target.value)}
             required
-            rows={4}
+            rows={2}
           />
         </div>
         <Input
@@ -144,6 +156,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           required
           min="0"
           step="0.01"
+          compact={compact}
         />
         <Input
           label="Stock"
@@ -153,28 +166,21 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           error={errors.stock}
           required
           min="0"
-        />
-        <Input
-          label="Category"
-          value={formData.category}
-          onChange={(e) => handleChange('category', e.target.value)}
-          error={errors.category}
-          required
-          containerClassName={styles.fullWidth}
+          compact={compact}
         />
         <Input
           label="Ingredients (comma separated)"
           value={ingredientsText}
           onChange={(e) => setIngredientsText(e.target.value)}
-          containerClassName={styles.fullWidth}
           placeholder="Vitamin D, Calcium, Magnesium"
+          compact={compact}
         />
         <Input
           label="Benefits (comma separated)"
           value={benefitsText}
           onChange={(e) => setBenefitsText(e.target.value)}
-          containerClassName={styles.fullWidth}
           placeholder="Better sleep, Reduced anxiety, Improved mood"
+          compact={compact}
         />
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.checkboxLabel}>
@@ -193,6 +199,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             onUpload={(url) => handleChange('image', url)}
             initialUrl={formData.image}
             label="Upload Product Image"
+            compact={compact}
           />
         </div>
       </div>

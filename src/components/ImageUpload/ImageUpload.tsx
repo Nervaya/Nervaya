@@ -10,9 +10,10 @@ interface ImageUploadProps {
   onUpload: (url: string) => void;
   initialUrl?: string;
   label?: string;
+  compact?: boolean;
 }
 
-const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: ImageUploadProps) => {
+const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compact = false }: ImageUploadProps) => {
   const [preview, setPreview] = useState<string>(initialUrl);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,14 +77,24 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
   };
 
   return (
-    <div className={`${styles.container} ${loading ? styles.uploading : ''}`} onClick={handleClick}>
+    <div
+      className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''}`}
+      onClick={handleClick}
+    >
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
 
       {loading ? (
         <LottieLoader width={50} height={50} />
       ) : preview ? (
         <>
-          <Image src={preview} alt="Preview" width={200} height={200} className={styles.preview} unoptimized />
+          <Image
+            src={preview}
+            alt="Preview"
+            width={200}
+            height={200}
+            className={compact ? styles.previewCompact : styles.preview}
+            unoptimized
+          />
           <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
             <FaXmark size={12} />
           </button>

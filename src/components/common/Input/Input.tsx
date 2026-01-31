@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   labelIcon?: ReactNode;
   containerClassName?: string;
   variant?: 'dark' | 'light';
+  compact?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -16,18 +17,23 @@ const Input: React.FC<InputProps> = ({
   containerClassName,
   className,
   variant = 'dark',
+  compact = false,
   ...props
 }) => {
   return (
     <div
-      className={`${styles.inputContainer} ${variant === 'light' ? styles.lightContainer : ''} ${containerClassName || ''}`}
+      className={`${styles.inputContainer} ${variant === 'light' ? styles.lightContainer : ''} ${
+        compact ? styles.compactContainer : ''
+      } ${containerClassName || ''}`}
     >
       <label className={styles.label}>
         {labelIcon && <span className={styles.labelIcon}>{labelIcon}</span>}
         {label}
       </label>
       <input
-        className={`${styles.input} ${variant === 'light' ? styles.lightInput : ''} ${error ? styles.inputError : ''} ${className || ''}`}
+        className={`${styles.input} ${variant === 'light' ? styles.lightInput : ''} ${
+          error ? styles.inputError : ''
+        } ${compact ? styles.compactInput : ''} ${className || ''}`}
         {...props}
       />
       {error && <span className={styles.errorText}>{error}</span>}

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { FaXmark } from 'react-icons/fa6';
 import { SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '../SupplementForm';
 import styles from './styles.module.css';
@@ -92,7 +94,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
     onClose();
   };
 
-  return (
+  const modalContent = (
     <div ref={overlayRef} className={styles.overlay} onClick={handleOverlayClick}>
       <div ref={modalRef} className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
@@ -100,8 +102,14 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
             <div className={styles.title}>{title}</div>
             <p className={styles.subtitle}>Fill in the details below</p>
           </div>
-          <button className={styles.closeBtn} onClick={handleClose} aria-label="Close modal" type="button">
-            ✕
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={handleClose}
+            aria-label="Close modal"
+            title="Close"
+          >
+            <FaXmark className={styles.closeIcon} />
           </button>
         </div>
 
@@ -111,11 +119,17 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
             initialData={initialData}
             loading={loading}
             submitLabel={submitLabel}
+            compact
           />
         </div>
       </div>
     </div>
   );
+
+  if (typeof document === 'undefined') {
+    return null;
+  }
+  return createPortal(modalContent, document.body);
 };
 
 export default SupplementModal;

@@ -7,6 +7,16 @@
   box-sizing: border-box;
 }
 
+.compactContainer {
+  gap: 0.3rem;
+  margin-bottom: 0.35rem;
+}
+
+.compactContainer .label {
+  font-size: 0.8125rem;
+  margin-bottom: 0.25rem;
+}
+
 .label {
   font-size: 0.875rem;
   font-weight: 600;
@@ -33,6 +43,11 @@
   color: #ffffff !important;
   width: 100%;
   box-sizing: border-box;
+}
+
+.compactInput {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
 }
 
 .input::placeholder {
