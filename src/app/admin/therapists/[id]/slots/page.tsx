@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import SlotManager from '@/components/Admin/SlotManager';
+import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
+import { FaArrowLeft } from 'react-icons/fa6';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -13,6 +16,7 @@ export default function TherapistSlotsPage() {
   const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const handleSlotUpdate = useCallback(() => {}, []);
 
   const fetchTherapist = async () => {
     try {
@@ -42,7 +46,10 @@ export default function TherapistSlotsPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Loading therapist information...</div>
+        <div className={styles.loading}>
+          <LottieLoader width={60} height={60} />
+          <span>Loading therapist information...</span>
+        </div>
       </div>
     );
   }
@@ -53,6 +60,7 @@ export default function TherapistSlotsPage() {
         <div className={styles.error}>
           <p>{error || 'Therapist not found'}</p>
           <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
+            <FaArrowLeft />
             Back to Therapists
           </button>
         </div>
@@ -62,7 +70,7 @@ export default function TherapistSlotsPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <header className={styles.header}>
         <div>
           <h1 className={styles.title}>Manage Slots</h1>
           <p className={styles.subtitle}>
@@ -73,11 +81,14 @@ export default function TherapistSlotsPage() {
           )}
         </div>
         <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-          ← Back to Therapists
+          <FaArrowLeft />
+          Back to Therapists
         </button>
-      </div>
+      </header>
 
-      <SlotManager therapistId={therapistId} />
+      <ConsultingHoursManager therapistId={therapistId} onUpdate={handleSlotUpdate} />
+
+      <SlotManager therapistId={therapistId} onSlotUpdate={handleSlotUpdate} />
     </div>
   );
 }

@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import styles from './styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import { FaArrowLeft, FaUserPlus } from 'react-icons/fa6';
 
 export default function AddTherapistPage() {
   const router = useRouter();
@@ -71,71 +73,152 @@ export default function AddTherapistPage() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Add New Therapist</h2>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Name</label>
-          <input name="name" value={formData.name} onChange={handleChange} required className={styles.input} />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Email</label>
-          <input name="email" type="email" value={formData.email} onChange={handleChange} className={styles.input} />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Qualifications (comma separated)</label>
-          <input
-            name="qualifications"
-            value={formData.qualifications}
-            onChange={handleChange}
-            required
-            className={styles.input}
-            placeholder="M.A. Psychology, Licensed Therapist"
-          />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Experience</label>
-          <input
-            name="experience"
-            value={formData.experience}
-            onChange={handleChange}
-            required
-            className={styles.input}
-            placeholder="10+ years"
-          />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Languages (comma separated)</label>
-          <input
-            name="languages"
-            value={formData.languages}
-            onChange={handleChange}
-            required
-            className={styles.input}
-            placeholder="English, Hindi"
-          />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Specializations (comma separated)</label>
-          <input
-            name="specializations"
-            value={formData.specializations}
-            onChange={handleChange}
-            required
-            className={styles.input}
-            placeholder="Anxiety, Depression, Sleep Disorders"
-          />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Image</label>
-          <ImageUpload
-            onUpload={(url) => setFormData((prev) => ({ ...prev, image: url }))}
-            initialUrl={formData.image}
-          />
+      <header className={styles.header}>
+        <Link href="/admin/therapists" className={styles.backLink}>
+          <FaArrowLeft />
+          <span>Back to Therapists</span>
+        </Link>
+        <h1 className={styles.title}>Add New Therapist</h1>
+        <p className={styles.subtitle}>Create a new therapist profile for your platform</p>
+      </header>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formLayout}>
+          <div className={styles.formMain}>
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Basic Information</h2>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="name">
+                    Full Name <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                    placeholder="Dr. John Smith"
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="email">
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="john.smith@example.com"
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Professional Details</h2>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="qualifications">
+                    Qualifications <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="qualifications"
+                    name="qualifications"
+                    value={formData.qualifications}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                    placeholder="M.A. Psychology, Licensed Therapist"
+                  />
+                  <span className={styles.hint}>Comma separated</span>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="specializations">
+                    Specializations <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="specializations"
+                    name="specializations"
+                    value={formData.specializations}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                    placeholder="Anxiety, Depression, Sleep Disorders"
+                  />
+                  <span className={styles.hint}>Comma separated</span>
+                </div>
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="experience">
+                    Experience <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="experience"
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                    placeholder="10+ years"
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label} htmlFor="languages">
+                    Languages <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    id="languages"
+                    name="languages"
+                    value={formData.languages}
+                    onChange={handleChange}
+                    required
+                    className={styles.input}
+                    placeholder="English, Hindi"
+                  />
+                  <span className={styles.hint}>Comma separated</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside className={styles.formSidebar}>
+            <h2 className={styles.sectionTitle}>Profile Image</h2>
+            <div className={styles.imageUploadWrapper}>
+              <ImageUpload
+                onUpload={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+                initialUrl={formData.image}
+                label="Upload photo"
+              />
+            </div>
+            <span className={styles.hint}>Square, 400x400px min</span>
+          </aside>
         </div>
 
-        <button type="submit" disabled={loading} className={styles.submitButton}>
-          {loading ? 'Creating...' : 'Create Therapist'}
-        </button>
+        <div className={styles.formActions}>
+          <Link href="/admin/therapists" className={styles.cancelButton}>
+            Cancel
+          </Link>
+          <button type="submit" disabled={loading} className={styles.submitButton}>
+            {loading ? (
+              <span className={styles.buttonContent}>
+                <span className={styles.spinner} />
+                <span>Creating...</span>
+              </span>
+            ) : (
+              <span className={styles.buttonContent}>
+                <FaUserPlus />
+                <span>Create Therapist</span>
+              </span>
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Session from '@/lib/models/session.model';
-import { createCustomSlot, updateSlot, deleteSlot } from '@/lib/services/therapistSchedule.service';
+import {
+  createCustomSlot,
+  updateSlot,
+  deleteSlot,
+  getScheduleByDate,
+  getSchedulesByDateRange,
+} from '@/lib/services/therapistSchedule.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
@@ -15,26 +21,45 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     const { id: therapistId } = await params;
     const { searchParams } = new URL(req.url);
     const date = searchParams.get('date');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    const includeBooked = searchParams.get('includeBooked') !== 'false';
+
+    if (startDate && endDate) {
+      const schedules = await getSchedulesByDateRange(therapistId, startDate, endDate, includeBooked);
+      const data = schedules.map((s) => ({
+        date: s.date,
+        slots: s.slots.map((slot) => ({
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          isAvailable: slot.isAvailable,
+        })),
+      }));
+      return NextResponse.json(successResponse('Schedules fetched successfully', data));
+    }
 
     if (date) {
-      // Fetch booked sessions for this date
+      const schedule = await getScheduleByDate(therapistId, date);
       const bookedSessions = await Session.find({
         therapistId,
         date,
         status: { $ne: 'cancelled' },
       }).select('startTime');
-
-      const bookedSlots = bookedSessions.map((s) => s.startTime);
-
+      const bookedStartTimes = new Set(bookedSessions.map((s) => s.startTime));
+      const slots = (schedule.slots || []).map((slot) => ({
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        isAvailable: includeBooked ? (bookedStartTimes.has(slot.startTime) ? false : slot.isAvailable) : slot.isAvailable,
+      }));
       return NextResponse.json(
         successResponse('Schedule fetched successfully', {
-          date,
-          bookedSlots,
+          date: schedule.date || date,
+          slots,
         }),
       );
-    } else {
-      return NextResponse.json(errorResponse('Date parameter is required', null, 400), { status: 400 });
     }
+
+    return NextResponse.json(errorResponse('Date or startDate/endDate is required', null, 400), { status: 400 });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
