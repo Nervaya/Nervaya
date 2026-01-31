@@ -5,16 +5,19 @@ import styles from './styles.module.css';
 interface ProgressBarProps {
   currentStep: number;
   totalSteps: number;
+  showStepCounter?: boolean;
 }
 
-const ProgressBar = ({ currentStep, totalSteps }: ProgressBarProps) => {
+const ProgressBar = ({ currentStep, totalSteps, showStepCounter = true }: ProgressBarProps) => {
   const progressPercentage = (currentStep / totalSteps) * 100;
 
   return (
     <div className={styles.progressContainer}>
-      <span className={styles.stepCounter}>
-        {currentStep}/{totalSteps}
-      </span>
+      {showStepCounter && (
+        <span className={styles.stepCounter}>
+          {currentStep}/{totalSteps}
+        </span>
+      )}
       <div className={styles.progressTrack}>
         <div
           className={styles.progressFill}

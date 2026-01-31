@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  gap: 16px;
+  margin-top: 36px;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -18,8 +19,8 @@
 
 @media (max-width: 480px) {
   .footer {
-    margin-top: 24px;
-    padding-top: 16px;
+    margin-top: 28px;
+    padding-top: 20px;
   }
 }
 
@@ -29,37 +30,53 @@
   justify-content: center;
   min-width: 140px;
   height: 48px;
-  padding: 0 24px;
+  padding: 0 28px;
   border-radius: 12px;
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   border: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navButton {
+    transition: none;
+  }
 }
 
 @media (max-width: 768px) {
   .navButton {
     width: 100%;
     min-width: unset;
+    height: 50px;
   }
 }
 
 @media (max-width: 480px) {
   .navButton {
-    height: 44px;
+    height: 48px;
     font-size: 0.875rem;
   }
 }
 
+.navButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.35);
+}
+
 .prevButton {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.04);
   color: #94a3b8;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .prevButton:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   color: #e2e8f0;
   border-color: rgba(255, 255, 255, 0.15);
 }
@@ -72,17 +89,40 @@
 .nextButton {
   background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
   color: white;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
 }
 
 .nextButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
 }
 
 .nextButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+}
+
+.submitButton {
+  min-width: 180px;
+  padding: 0 32px;
+}
+
+@media (max-width: 768px) {
+  .submitButton {
+    min-width: unset;
+  }
+}
+
+.buttonContent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loadingText {
+  font-size: inherit;
+  font-weight: inherit;
 }

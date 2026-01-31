@@ -123,7 +123,7 @@ export default function AddQuestionPage() {
           </div>
         )}
 
-        <div className={styles.formGrid}>
+        <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="order" className={styles.label}>
               Display Order
@@ -140,26 +140,6 @@ export default function AddQuestionPage() {
               required
             />
           </div>
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="questionText" className={styles.label}>
-            Question Text
-            <span className={styles.required}>*</span>
-          </label>
-          <textarea
-            id="questionText"
-            name="questionText"
-            value={formData.questionText}
-            onChange={handleInputChange}
-            className={styles.textarea}
-            placeholder="Enter the question text..."
-            rows={3}
-            required
-          />
-        </div>
-
-        <div className={styles.formGrid}>
           <div className={styles.formGroup}>
             <label htmlFor="questionType" className={styles.label}>
               Question Type
@@ -178,6 +158,23 @@ export default function AddQuestionPage() {
               <option value="scale">Scale</option>
             </select>
           </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="questionText" className={styles.label}>
+            Question Text
+            <span className={styles.required}>*</span>
+          </label>
+          <textarea
+            id="questionText"
+            name="questionText"
+            value={formData.questionText}
+            onChange={handleInputChange}
+            className={styles.textarea}
+            placeholder="Enter the question text..."
+            rows={2}
+            required
+          />
         </div>
 
         <div className={styles.optionsSection}>

@@ -87,7 +87,6 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
           }
         }
       } catch {
-        // No in-progress or error: start fresh
       } finally {
         setIsHydrated(true);
       }
@@ -161,16 +160,27 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Sleep Assessment</h1>
+        <span className={styles.stepCounter} aria-hidden="true">
+          {currentQuestionIndex + 1}/{totalQuestions}
+        </span>
       </header>
 
-      <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} />
+      <div className={styles.progressSection}>
+        <ProgressBar
+          currentStep={currentQuestionIndex + 1}
+          totalSteps={totalQuestions}
+          showStepCounter={false}
+        />
+      </div>
 
-      <AssessmentQuestionStep
-        question={currentQuestion}
-        direction={direction}
-        currentAnswer={currentAnswer}
-        onAnswerChange={handleAnswerChange}
-      />
+      <section className={styles.questionSection} aria-label="Current question">
+        <AssessmentQuestionStep
+          question={currentQuestion}
+          direction={direction}
+          currentAnswer={currentAnswer}
+          onAnswerChange={handleAnswerChange}
+        />
+      </section>
 
       {submitError && (
         <div className={styles.errorMessage} role="alert">

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import QuestionCard from '../../QuestionCard';
 import styles from './styles.module.css';
@@ -10,14 +11,17 @@ const slideVariants = {
     x: direction > 0 ? 100 : -100,
     opacity: 0,
   }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
+  center: { x: 0, opacity: 1 },
   exit: (direction: number) => ({
     x: direction < 0 ? 100 : -100,
     opacity: 0,
   }),
+};
+
+const reducedMotionVariants = {
+  enter: { opacity: 0 },
+  center: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 interface AssessmentQuestionStepProps {
@@ -33,6 +37,21 @@ export function AssessmentQuestionStep({
   currentAnswer,
   onAnswerChange,
 }: AssessmentQuestionStepProps) {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const listener = () => setPrefersReducedMotion(mq.matches);
+    mq.addEventListener('change', listener);
+    return () => mq.removeEventListener('change', listener);
+  }, []);
+
+  const variants = prefersReducedMotion ? reducedMotionVariants : slideVariants;
+  const transition = prefersReducedMotion
+    ? { opacity: { duration: 0.15 } }
+    : { x: { type: 'spring', stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } };
+
   return (
     <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
       <div className={styles.questionWrapper}>
@@ -40,14 +59,11 @@ export function AssessmentQuestionStep({
           <m.div
             key={question._id}
             custom={direction}
-            variants={slideVariants}
+            variants={variants}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              x: { type: 'spring', stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 },
-            }}
+            transition={transition}
           >
             <QuestionCard
               questionText={question.questionText}

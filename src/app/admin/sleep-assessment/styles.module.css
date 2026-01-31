@@ -1,21 +1,36 @@
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   gap: 24px;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
     gap: 16px;
+    margin-bottom: 24px;
   }
 }
 
@@ -24,11 +39,11 @@
 }
 
 .title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 12px;
-  letter-spacing: -0.03em;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 768px) {
@@ -54,17 +69,16 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #7c3aed;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
   color: white;
-  padding: 14px 24px;
+  padding: 12px 24px;
   border-radius: 12px;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9375rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.2);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
   flex-shrink: 0;
-  letter-spacing: 0.01em;
 }
 
 @media (max-width: 768px) {
@@ -81,16 +95,21 @@
 
 .addButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
-  background: #8b5cf6;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+}
+
+.addButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4);
 }
 
 .loadingContainer {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   padding: 60px 20px;
   color: #94a3b8;
 }
@@ -101,16 +120,29 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 40px;
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  padding: 64px 40px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.15),
+    0 10px 40px -10px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 480px) {
+  .emptyState {
+    padding: 48px 24px;
+    border-radius: 16px;
+  }
 }
 
 .emptyState svg {
   width: 64px;
   height: 64px;
-  color: #475569;
+  color: #64748b;
   margin-bottom: 20px;
 }
 
@@ -122,8 +154,9 @@
 }
 
 .emptyState p {
-  color: #64748b;
+  color: #94a3b8;
   margin: 0 0 24px;
+  line-height: 1.5;
 }
 
 .list {
@@ -136,33 +169,39 @@
 }
 
 .questionCard {
-  background: rgba(20, 28, 48, 0.7);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
   padding: 36px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.15),
+    0 10px 40px -10px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 @media (max-width: 768px) {
   .questionCard {
-    padding: 20px;
+    padding: 28px 20px;
+    border-radius: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .questionCard {
-    padding: 16px;
+    padding: 24px 16px;
+    border-radius: 14px;
   }
 }
 
 .questionCard:hover {
-  border-color: rgba(139, 92, 246, 0.5);
+  border-color: rgba(124, 58, 237, 0.25);
   box-shadow:
-    0 16px 56px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(139, 92, 246, 0.15);
-  transform: translateY(-4px);
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(124, 58, 237, 0.1);
+  transform: translateY(-2px);
 }
 
 .questionHeader {
@@ -320,12 +359,12 @@
 
 .editButton,
 .deleteButton {
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   border: 1px solid;
 }
 
@@ -342,7 +381,7 @@
 @media (max-width: 480px) {
   .editButton,
   .deleteButton {
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-size: 0.75rem;
   }
 }
@@ -350,32 +389,40 @@
 .editButton {
   background: rgba(124, 58, 237, 0.1);
   color: #a78bfa;
-  border-color: rgba(124, 58, 237, 0.3);
+  border-color: rgba(124, 58, 237, 0.35);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
 }
 
 .editButton:hover {
-  background: #7c3aed;
-  color: white;
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.5);
+  color: #c4b5fd;
+  transform: translateY(-1px);
+}
+
+.editButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
 }
 
 .deleteButton {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
   color: #f87171;
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
 .deleteButton:hover {
-  background: #ef4444;
-  color: white;
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
 }
 
-/* ========================================
-   Carousel / Pagination Styles
-   Inspired by Apple's design philosophy
-   ======================================== */
+.deleteButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
 
 .carouselContainer {
   position: relative;
@@ -392,26 +439,25 @@
     min-height: 450px;
     display: grid;
     grid-template-areas:
-      'progress progress progress'
-      'counter counter counter'
-      'prev card next'
-      'dots dots dots'
-      'hint hint hint';
-    grid-template-columns: auto 1fr auto;
-    gap: 16px;
+      'progress'
+      'counter'
+      'carousel'
+      'dots'
+      'hint';
+    grid-template-columns: 1fr;
+    gap: 24px 0;
     align-items: center;
   }
 }
 
-/* Progress bar - thin, elegant line at top */
 .progressBar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
   overflow: hidden;
 }
 
@@ -419,61 +465,93 @@
   .progressBar {
     grid-area: progress;
     position: relative;
+    height: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .progressBar {
+    height: 6px;
   }
 }
 
 .progressFill {
   height: 100%;
   width: var(--progress, 0%);
-  background: linear-gradient(90deg, var(--accent) 0%, #a78bfa 100%);
-  border-radius: 3px;
+  background: linear-gradient(90deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+  border-radius: 100px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
 }
 
-/* Question counter */
 .questionCounter {
-  display: flex;
-  align-items: baseline;
+  display: inline-flex;
+  align-items: center;
   gap: 4px;
-  margin: 24px 0 32px;
-  font-family:
-    'SF Pro Display',
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+  margin: 20px 0 28px;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  width: fit-content;
 }
 
 @media (max-width: 768px) {
   .questionCounter {
     grid-area: counter;
     justify-self: center;
-    margin: 8px 0 16px;
+    margin: 12px 0 20px;
+    padding: 5px 12px;
+    font-size: 0.8125rem;
   }
 }
 
 .currentNum {
-  font-size: 2.25rem;
+  font-size: inherit;
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.03em;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
 }
 
 .separator {
-  font-size: 1.25rem;
-  color: #475569;
-  margin: 0 2px;
+  font-size: inherit;
+  color: #64748b;
+  margin: 0 1px;
 }
 
 .totalNum {
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: #64748b;
+  font-size: inherit;
+  font-weight: 500;
+  color: #94a3b8;
 }
 
-/* Card viewport - contains the animated card */
-.cardViewport {
+.carouselRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
   width: 100%;
-  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .carouselRow {
+    display: grid;
+    grid-area: carousel;
+    grid-template-areas: 'prev card next';
+    grid-template-columns: auto 1fr auto;
+    gap: 0 28px;
+    width: 100%;
+  }
+}
+
+.cardViewport {
+  flex: 1;
+  min-width: 0;
   position: relative;
   overflow: hidden;
 }
@@ -484,7 +562,6 @@
   }
 }
 
-/* Animated card styles */
 .cardAnimated {
   animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -539,11 +616,8 @@
   }
 }
 
-/* Navigation buttons */
 .navButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -554,18 +628,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   backdrop-filter: blur(16px);
-  z-index: 10;
 }
 
 @media (max-width: 768px) {
   .navButton {
     width: 40px;
     height: 40px;
-    position: static;
-    transform: none;
   }
+}
+
+.navPrev {
+  grid-area: prev;
+}
+
+.navNext {
+  grid-area: next;
 }
 
 .navButton svg {
@@ -574,56 +653,26 @@
 }
 
 .navButton:hover:not(:disabled) {
-  background: rgba(124, 58, 237, 0.15);
-  border-color: rgba(124, 58, 237, 0.3);
-  transform: translateY(-50%) scale(1.1);
-  box-shadow:
-    0 8px 32px rgba(124, 58, 237, 0.3),
-    0 0 0 4px rgba(124, 58, 237, 0.05);
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.35);
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
 }
 
-@media (max-width: 768px) {
-  .navButton:hover:not(:disabled) {
-    transform: scale(1.08);
-  }
+.navButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.35);
 }
 
 .navButton:active:not(:disabled) {
-  transform: translateY(-50%) scale(0.95);
-}
-
-@media (max-width: 768px) {
-  .navButton:active:not(:disabled) {
-    transform: scale(0.95);
-  }
+  transform: scale(0.98);
 }
 
 .navButton:disabled {
-  opacity: 0.25;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
-.navPrev {
-  left: 0;
-}
-
-@media (max-width: 768px) {
-  .navPrev {
-    grid-area: prev;
-  }
-}
-
-.navNext {
-  right: 0;
-}
-
-@media (max-width: 768px) {
-  .navNext {
-    grid-area: next;
-  }
-}
-
-/* Dot indicators */
 .dotIndicators {
   display: flex;
   gap: 10px;
@@ -653,23 +702,25 @@
 
 .dot:hover {
   background: rgba(124, 58, 237, 0.5);
-  transform: scale(1.3);
+  transform: scale(1.25);
+}
+
+.dot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.4);
 }
 
 .dotActive {
   background: #8b5cf6;
-  transform: scale(1.5);
-  box-shadow:
-    0 0 16px rgba(124, 58, 237, 0.6),
-    0 0 0 3px rgba(124, 58, 237, 0.15);
+  transform: scale(1.4);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
 }
 
 .dotActive:hover {
   background: #8b5cf6;
-  transform: scale(1.5);
+  transform: scale(1.4);
 }
 
-/* Keyboard hint */
 .keyboardHint {
   margin-top: 24px;
   font-size: 0.8125rem;
@@ -703,22 +754,17 @@
   }
 }
 
-/* Enhanced card styles for carousel view */
 .carouselContainer .questionCard {
   margin: 0 auto;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .carouselContainer .questionCard:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(124, 58, 237, 0.2);
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(124, 58, 237, 0.15);
 }
 
-/* Show all options in carousel view (no truncation) */
 .carouselContainer .optionsList {
   max-height: none;
 }

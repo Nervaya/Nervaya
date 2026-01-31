@@ -33,12 +33,22 @@ export function AssessmentNav({
       </button>
       <button
         type="button"
-        className={`${styles.navButton} ${styles.nextButton}`}
+        className={`${styles.navButton} ${styles.nextButton} ${isLastQuestion ? styles.submitButton : ''}`}
         onClick={onNext}
         disabled={!canProceed || isSubmitting}
         aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
+        aria-busy={isSubmitting}
       >
-        {isSubmitting ? <LottieLoader width={50} height={50} /> : isLastQuestion ? 'Submit' : 'Next Question'}
+        {isSubmitting ? (
+          <span className={styles.buttonContent}>
+            <LottieLoader width={36} height={36} />
+            <span className={styles.loadingText}>Submitting…</span>
+          </span>
+        ) : isLastQuestion ? (
+          'Submit assessment'
+        ) : (
+          'Next question'
+        )}
       </button>
     </footer>
   );

@@ -35,7 +35,6 @@ export default function AdminSleepAssessmentPage() {
     fetchQuestions();
   }, [fetchQuestions]);
 
-  // Keep currentIndex in bounds when questions change
   useEffect(() => {
     if (questions.length > 0 && currentIndex >= questions.length) {
       setCurrentIndex(questions.length - 1);
@@ -78,7 +77,6 @@ export default function AdminSleepAssessmentPage() {
     [currentIndex, isAnimating],
   );
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isAnimating || questions.length === 0) {
@@ -103,7 +101,6 @@ export default function AdminSleepAssessmentPage() {
     const message =
       `WARNING: Are you sure you want to delete this question?\n\n"${questionPreview}..."\n\n` +
       'This action cannot be undone.';
-    // eslint-disable-next-line no-alert
     if (!window.confirm(message)) {
       return;
     }
@@ -115,7 +112,6 @@ export default function AdminSleepAssessmentPage() {
       if (response.ok) {
         fetchQuestions();
       } else {
-        // eslint-disable-next-line no-alert
         window.alert('Failed to delete question');
       }
     } catch (error) {
@@ -163,7 +159,6 @@ export default function AdminSleepAssessmentPage() {
         </div>
       ) : (
         <div className={styles.carouselContainer}>
-          {/* Progress indicator */}
           <div className={styles.progressBar}>
             <div
               className={styles.progressFill}
@@ -173,85 +168,82 @@ export default function AdminSleepAssessmentPage() {
             />
           </div>
 
-          {/* Question counter */}
           <div className={styles.questionCounter}>
             <span className={styles.currentNum}>{currentIndex + 1}</span>
             <span className={styles.separator}>/</span>
             <span className={styles.totalNum}>{questions.length}</span>
           </div>
 
-          {/* Navigation arrows - left */}
-          <button
-            type="button"
-            className={`${styles.navButton} ${styles.navPrev}`}
-            onClick={goToPrev}
-            disabled={currentIndex === 0 || isAnimating}
-            aria-label="Previous question"
-          >
-            <IoChevronBack aria-hidden />
-          </button>
-
-          {/* Question card with animation */}
-          <div className={styles.cardViewport}>
-            <div
-              className={`${styles.questionCard} ${styles.cardAnimated} ${
-                isAnimating ? (direction === 'next' ? styles.slideOutLeft : styles.slideOutRight) : styles.slideIn
-              }`}
-              key={currentQuestion._id}
+          <div className={styles.carouselRow}>
+            <button
+              type="button"
+              className={`${styles.navButton} ${styles.navPrev}`}
+              onClick={goToPrev}
+              disabled={currentIndex === 0 || isAnimating}
+              aria-label="Previous question"
             >
-              <div className={styles.questionHeader}>
-                <span className={styles.orderBadge}>{currentQuestion.order}</span>
-                <div className={styles.questionMeta}>
-                  <span className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}>
-                    {getQuestionTypeLabel(currentQuestion.questionType)}
-                  </span>
+              <IoChevronBack aria-hidden />
+            </button>
+
+            <div className={styles.cardViewport}>
+              <div
+                className={`${styles.questionCard} ${styles.cardAnimated} ${
+                  isAnimating ? (direction === 'next' ? styles.slideOutLeft : styles.slideOutRight) : styles.slideIn
+                }`}
+                key={currentQuestion._id}
+              >
+                <div className={styles.questionHeader}>
+                  <span className={styles.orderBadge}>{currentQuestion.order}</span>
+                  <div className={styles.questionMeta}>
+                    <span className={`${styles.typeBadge} ${styles[currentQuestion.questionType]}`}>
+                      {getQuestionTypeLabel(currentQuestion.questionType)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className={styles.questionContent}>
+                  <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
+
+                  {currentQuestion.options && currentQuestion.options.length > 0 && (
+                    <div className={styles.optionsPreview}>
+                      <span className={styles.optionsLabel}>Options:</span>
+                      <ul className={styles.optionsList}>
+                        {currentQuestion.options.map((opt) => (
+                          <li key={opt.id} className={styles.optionItem}>
+                            {opt.label}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.questionActions}>
+                  <Link href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`} className={styles.editButton}>
+                    Edit
+                  </Link>
+                  <button
+                    type="button"
+                    className={styles.deleteButton}
+                    onClick={() => handleDelete(currentQuestion.questionId, currentQuestion.questionText)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
-
-              <div className={styles.questionContent}>
-                <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
-
-                {currentQuestion.options && currentQuestion.options.length > 0 && (
-                  <div className={styles.optionsPreview}>
-                    <span className={styles.optionsLabel}>Options:</span>
-                    <ul className={styles.optionsList}>
-                      {currentQuestion.options.map((opt) => (
-                        <li key={opt.id} className={styles.optionItem}>
-                          {opt.label}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.questionActions}>
-                <Link href={`/admin/sleep-assessment/edit/${currentQuestion.questionId}`} className={styles.editButton}>
-                  Edit
-                </Link>
-                <button
-                  type="button"
-                  className={styles.deleteButton}
-                  onClick={() => handleDelete(currentQuestion.questionId, currentQuestion.questionText)}
-                >
-                  Delete
-                </button>
-              </div>
             </div>
+
+            <button
+              type="button"
+              className={`${styles.navButton} ${styles.navNext}`}
+              onClick={goToNext}
+              disabled={currentIndex === questions.length - 1 || isAnimating}
+              aria-label="Next question"
+            >
+              <IoChevronForward aria-hidden />
+            </button>
           </div>
 
-          {/* Navigation arrows - right */}
-          <button
-            type="button"
-            className={`${styles.navButton} ${styles.navNext}`}
-            onClick={goToNext}
-            disabled={currentIndex === questions.length - 1 || isAnimating}
-            aria-label="Next question"
-          >
-            <IoChevronForward aria-hidden />
-          </button>
-
-          {/* Dot indicators */}
           <div className={styles.dotIndicators}>
             {questions.map((q, index) => (
               <button
@@ -264,7 +256,6 @@ export default function AdminSleepAssessmentPage() {
             ))}
           </div>
 
-          {/* Keyboard hint */}
           <p className={styles.keyboardHint}>
             Use <kbd>←</kbd> <kbd>→</kbd> arrow keys to navigate
           </p>

@@ -130,6 +130,9 @@ const QuestionCard = ({
 
   return (
     <article className={styles.questionCard}>
+      <span className={styles.questionLabel} aria-hidden="true">
+        Your answer
+      </span>
       <h2 className={styles.questionText}>
         {questionText}
         {isRequired && <span className={styles.requiredIndicator}> *</span>}
