@@ -3,7 +3,11 @@ import { Role } from '../constants/roles';
 
 // Validate JWT_SECRET is set in production
 if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === 'production') {
+  // Check if we are running in a CI environment (GitHub Actions, etc.)
+  // We want to allow the build to pass even if secrets aren't set in the build environment
+  const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+
+  if (process.env.NODE_ENV === 'production' && !isCI) {
     throw new Error('JWT_SECRET environment variable is required in production');
   }
   // Only allow fallback in development
