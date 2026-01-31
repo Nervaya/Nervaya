@@ -15,8 +15,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: url('/background.png') no-repeat center center fixed;
-  background-size: cover;
+  background: transparent;
   color: #fff;
   font-family: 'Inter', sans-serif;
 }

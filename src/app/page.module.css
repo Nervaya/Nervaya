@@ -1,18 +1,7 @@
 .container {
   position: relative;
   min-height: 100vh;
-}
-
-.backgroundImageWrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.backgroundImage {
-  object-fit: cover;
-  object-position: center;
+  background: transparent;
 }
 
 .heroSection {

@@ -4,8 +4,16 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: var(--background);
+  background: url('/background.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #020617;
   color: var(--foreground);
+}
+
+@media (max-width: 768px) {
+  .loadingContainer {
+    background-attachment: scroll;
+  }
 }
 
 .spinner {

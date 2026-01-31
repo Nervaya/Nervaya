@@ -13,19 +13,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: url('/background.png') no-repeat center center fixed;
-  background-size: cover;
+  background: transparent;
   color: #fff;
   font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-}
-
-@media (max-width: 480px) {
-  .container {
-    background: url('/background.png') no-repeat center center fixed;
-    background-size: cover;
-  }
 }
 
 .mainContent {
