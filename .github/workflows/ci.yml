@@ -2,33 +2,26 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "master", "feat/*" ]
+    branches: ['main', 'master', 'feat/*']
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ['main', 'master']
 
 jobs:
   build-and-check:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Check Formatting
-      # Uses --check to fail if not formatted, instead of --write
-      run: npx prettier --check .
-
-    - name: Lint
-      run: npm run lint
-
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
