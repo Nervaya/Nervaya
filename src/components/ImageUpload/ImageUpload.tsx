@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
 
@@ -80,7 +80,7 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image' }: Imag
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
 
       {loading ? (
-        <Loader size="md" text="Uploading..." />
+        <LottieLoader width={50} height={50} />
       ) : preview ? (
         <>
           <Image src={preview} alt="Preview" width={200} height={200} className={styles.preview} unoptimized />

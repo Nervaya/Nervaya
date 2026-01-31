@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -145,7 +145,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     return (
       <div className={styles.container}>
         <div className={styles.loaderWrapper}>
-          <Loader size="lg" text="Loading question..." />
+          <LottieLoader width={200} height={200} />
         </div>
       </div>
     );
@@ -347,7 +347,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
           <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <Loader size="sm" color="white" />
+                <LottieLoader width={50} height={50} />
                 Saving...
               </>
             ) : (

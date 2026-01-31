@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -299,7 +299,7 @@ export default function AddQuestionPage() {
           <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <Loader size="sm" color="white" />
+                <LottieLoader width={50} height={50} />
                 Creating...
               </>
             ) : (

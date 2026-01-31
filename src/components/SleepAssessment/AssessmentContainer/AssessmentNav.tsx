@@ -1,6 +1,6 @@
 'use client';
 
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 
 interface AssessmentNavProps {
@@ -38,7 +38,7 @@ export function AssessmentNav({
         disabled={!canProceed || isSubmitting}
         aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
       >
-        {isSubmitting ? <Loader size="sm" color="white" /> : isLastQuestion ? 'Submit' : 'Next Question'}
+        {isSubmitting ? <LottieLoader width={50} height={50} /> : isLastQuestion ? 'Submit' : 'Next Question'}
       </button>
     </footer>
   );

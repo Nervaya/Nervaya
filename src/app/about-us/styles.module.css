@@ -1,8 +1,24 @@
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .container {
-  background: #faf5ff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: url('/background.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 .aboutUsSection {
@@ -11,6 +27,7 @@
   margin: 0 auto;
   width: 100%;
   flex: 1;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 @media (max-width: 1200px) {
@@ -34,10 +51,11 @@
 .aboutUsTitle {
   font-size: 40px;
   font-weight: 700;
-  color: #7828c8;
+  color: #fff;
   text-align: center;
   margin-bottom: 60px;
   letter-spacing: -0.02em;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 1024px) {
@@ -62,14 +80,26 @@
 }
 
 .card {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: rgba(17, 24, 39, 0.75);
+  /* Dark semi-transparent */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   padding: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 1024px) {
@@ -114,13 +144,16 @@
 
 .missionTag {
   display: inline-block;
-  background: #f3f8ff;
-  color: #7828c8;
+  background: rgba(79, 70, 229, 0.2);
+  /* Indigo tint */
+  color: #818cf8;
+  /* Light indigo */
   padding: 8px 16px;
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
   width: fit-content;
+  border: 1px solid rgba(129, 140, 248, 0.3);
 }
 
 @media (max-width: 480px) {
@@ -133,7 +166,7 @@
 .cardHeading {
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 700;
-  color: #1a1a1a;
+  color: #fff;
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin: 0;
@@ -160,7 +193,8 @@
 .cardParagraph {
   font-size: clamp(0.95rem, 1.2vw, 1rem);
   line-height: 1.7;
-  color: #4a4a4a;
+  color: #d1d5db;
+  /* Gray 300 */
   margin: 0;
 }
 
@@ -183,30 +217,57 @@
   }
 }
 
-.cardImagePlaceholder {
-  background: #f5f3ff;
-  border-radius: 12px;
+.cardImageWrapper {
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.cardImage {
+  object-fit: cover;
 }
 
 @media (max-width: 1024px) {
-  .cardImagePlaceholder {
+  .cardImageWrapper {
     min-height: 280px;
   }
 }
 
 @media (max-width: 768px) {
-  .cardImagePlaceholder {
+  .cardImageWrapper {
     min-height: 250px;
     order: -1;
   }
 }
 
 @media (max-width: 480px) {
-  .cardImagePlaceholder {
+  .cardImageWrapper {
     min-height: 220px;
+  }
+}
+
+.aboutUsTitleInside {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  margin-bottom: 2rem;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .aboutUsTitleInside {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    margin-bottom: 1.5rem;
+    text-align: center;
   }
 }

@@ -26,5 +26,8 @@ export const IMAGES = {
   AUTH_SIGNUP_ILLUSTRATION:
     'https://res.cloudinary.com/disrq2eh8/image/upload/Mental_Health_Illustrations_by_Muhammed_Sajid_i7fn0x.jpg',
 
+  // About Us
+  ABOUT_US_MAIN: 'https://res.cloudinary.com/disrq2eh8/image/upload/about_us_main_ykusxn.png',
+
   // Add more images here as needed
 } as const;

@@ -24,8 +24,9 @@
 }
 
 .statsContainer {
-  background: linear-gradient(to left, #ffffff, #e9d4ff);
-  border: 1px solid #7828c8;
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
   padding: 48px 60px;
   display: flex;
@@ -97,7 +98,7 @@
 .statValue {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: #301050;
+  color: #fff;
   line-height: 1.2;
 }
 
@@ -122,7 +123,7 @@
 .statLabel {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
   font-weight: 500;
-  color: #4a4a4a;
+  color: #d1d5db;
   line-height: 1.4;
 }
 

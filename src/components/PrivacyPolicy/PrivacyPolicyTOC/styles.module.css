@@ -40,7 +40,8 @@
 .tocTitle {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #86868b;
+  color: #9ca3af;
+  /* Gray 400 */
   margin: 0 0 24px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -86,7 +87,8 @@
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 0.9375rem;
-  color: #86868b;
+  color: #d1d5db;
+  /* Gray 300 */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
@@ -135,8 +137,8 @@
 }
 
 .tocLink:hover {
-  color: #7828c8;
-  background: rgba(120, 40, 200, 0.05);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .tocLink:hover::before {
@@ -156,8 +158,9 @@
 }
 
 .tocLinkActive {
-  color: #7828c8;
-  background: linear-gradient(135deg, rgba(120, 40, 200, 0.08) 0%, rgba(147, 51, 234, 0.05) 100%);
+  color: #fff;
+  background: rgba(129, 140, 248, 0.2);
+  /* Indigo tint */
   font-weight: 500;
 }
 
@@ -211,7 +214,7 @@
 .tocNumber {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #86868b;
+  color: #9ca3af;
   min-width: 24px;
   transition: color 0.2s ease;
 }
@@ -226,7 +229,7 @@
 }
 
 .tocLink:hover .tocNumber {
-  color: #7828c8;
+  color: #fff;
 }
 
 .tocText {
@@ -243,7 +246,7 @@
 }
 
 .tocLink:hover .tocText {
-  color: #7828c8;
+  color: #fff;
 }
 
 @media (max-width: 480px) {

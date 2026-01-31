@@ -1,8 +1,9 @@
 .disclaimer {
-  background: linear-gradient(135deg, #faf5ff 0%, #f3f8ff 100%);
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(8px);
   padding: 40px;
   border-radius: 16px;
-  border: 1px solid rgba(120, 40, 200, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 40px;
   position: relative;
 }
@@ -40,9 +41,8 @@
 .disclaimerText {
   font-size: 0.9375rem;
   line-height: 1.7;
-  color: #86868b;
+  color: #9ca3af;
   margin: 0;
-  font-style: normal;
 }
 
 @media (max-width: 768px) {

@@ -51,7 +51,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    if (CUSTOMER_ONLY_ROUTES.some((route) => pathname.startsWith(route)) && isAuthenticated && user?.role === ROLES.ADMIN) {
+    if (
+      CUSTOMER_ONLY_ROUTES.some((route) => pathname.startsWith(route)) &&
+      isAuthenticated &&
+      user?.role === ROLES.ADMIN
+    ) {
       router.replace(ROUTES.ADMIN_DASHBOARD);
     }
   }, [loading, isAuthenticated, user?.role, pathname, router]);

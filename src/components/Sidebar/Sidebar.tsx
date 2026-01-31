@@ -8,12 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
-import {
-  adminMenuGroups,
-  iconMap,
-  sidebarMenuGroups,
-  sidebarBottomNavItems,
-} from '@/utils/sidebarConstants';
+import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import styles from './styles.module.css';
 
 const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
@@ -132,26 +127,25 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
                           const isActive =
-                            pathname === item.path ||
-                            (isAdminRoute && pathname.startsWith(item.path + '/'));
+                            pathname === item.path || (isAdminRoute && pathname.startsWith(`${item.path}/`));
                           return (
-                          <li key={item.path}>
-                            <Link
-                              href={item.path}
-                              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                              onClick={closeMobileSidebar}
-                            >
-                              <span className={styles.icon}>
-                                {iconMap[item.icon] || iconMap['FaHouse']}
-                                {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
-                                  <span className={styles.badge}>{cartCount}</span>
-                                )}
-                              </span>
-                              <span className={styles.title} aria-hidden={isCollapsed}>
-                                {item.title}
-                              </span>
-                            </Link>
-                          </li>
+                            <li key={item.path}>
+                              <Link
+                                href={item.path}
+                                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                                onClick={closeMobileSidebar}
+                              >
+                                <span className={styles.icon}>
+                                  {iconMap[item.icon] || iconMap['FaHouse']}
+                                  {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                                    <span className={styles.badge}>{cartCount}</span>
+                                  )}
+                                </span>
+                                <span className={styles.title} aria-hidden={isCollapsed}>
+                                  {item.title}
+                                </span>
+                              </Link>
+                            </li>
                           );
                         })}
                       </ul>

@@ -24,9 +24,11 @@
 }
 
 .formCard {
-  background: linear-gradient(to right, #ffffff, #f3e8ff);
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(12px);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   padding: 48px;
   max-width: 1200px;
   margin: 0 auto;
@@ -100,7 +102,7 @@
 .formTitle {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #fff;
   margin: 0;
   line-height: 1.2;
 }
@@ -126,7 +128,7 @@
 .formSubtitle {
   font-size: 1rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: #d1d5db;
   margin: 0;
   max-width: 600px;
 }
@@ -144,7 +146,7 @@
 }
 
 .freeSessionBadge {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   padding: 12px 20px;
   display: flex;
@@ -166,12 +168,12 @@
 .badgeText {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #7828c8;
+  color: #818cf8;
 }
 
 .badgeDuration {
   font-size: 0.75rem;
-  color: #7828c8;
+  color: #a5b4fc;
 }
 
 .form {
@@ -214,7 +216,7 @@
 .customInputContainer label {
   font-size: 0.875rem !important;
   font-weight: 600 !important;
-  color: #301050 !important;
+  color: #d1d5db !important;
   opacity: 1 !important;
 }
 
@@ -223,12 +225,12 @@
 .customInput {
   width: 100% !important;
   padding: 12px 16px !important;
-  border: 1px solid #e0e0e0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   border-radius: 8px !important;
   font-size: 1rem !important;
   font-family: inherit !important;
-  color: #000000 !important;
-  background: #ffffff !important;
+  color: #fff !important;
+  background: rgba(0, 0, 0, 0.2) !important;
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease !important;
@@ -238,10 +240,10 @@
 .customInputContainer :global(input):focus,
 .customInput:focus {
   outline: none !important;
-  border-color: #7828c8 !important;
-  box-shadow: 0 0 0 3px rgba(120, 40, 200, 0.1) !important;
-  color: #000000 !important;
-  background: #ffffff !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
+  color: #fff !important;
+  background: rgba(0, 0, 0, 0.3) !important;
 }
 
 .customInputContainer input::placeholder,
@@ -273,7 +275,7 @@
   gap: 8px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #d1d5db;
 }
 
 .labelIcon {
@@ -285,12 +287,12 @@
 .select {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  color: #1a1a1a;
-  background: #ffffff;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.2);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
@@ -299,8 +301,8 @@
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #7828c8;
-  box-shadow: 0 0 0 3px rgba(120, 40, 200, 0.1);
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
 }
 
 .input::placeholder {
@@ -333,7 +335,7 @@
   padding-left: 52px;
   padding-right: 40px;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237828C8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23818cf8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 12px;
@@ -348,8 +350,8 @@
 
 .expectSection {
   margin-top: 8px;
-  background: #ffffff;
-  border: 1px solid #f3e8ff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
 }
@@ -357,7 +359,7 @@
 .expectTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #7828c8;
+  color: #fff;
   margin: 0 0 16px 0;
   padding-left: 24px;
   position: relative;
@@ -372,7 +374,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #f3e8ff;
+  background: rgba(129, 140, 248, 0.3);
 }
 
 .expectList {
@@ -386,7 +388,7 @@
 
 .expectItem {
   font-size: 0.9375rem;
-  color: #4a4a4a;
+  color: #d1d5db;
   line-height: 1.5;
   padding-left: 20px;
   position: relative;
@@ -401,7 +403,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #7828c8;
+  background: #818cf8;
 }
 
 .formFooter {

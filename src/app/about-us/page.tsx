@@ -1,18 +1,19 @@
-import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import AboutUsCards from '@/components/AboutUS/AboutUsCards';
 import AboutUsTeam from '@/components/AboutUS/AboutUsTeam';
 import AboutUsConsultation from '@/components/AboutUS/AboutUsConsultation';
 import AboutUsStats from '@/components/AboutUS/AboutUsStats';
 
+import Image from 'next/image';
+import { IMAGES } from '@/utils/imageConstants';
+
 const AboutUs = () => {
   return (
     <div className={styles.container}>
       <div className={styles.aboutUsSection}>
-        <PageHeader title="About Us" />
-
         <div className={styles.card}>
           <div className={styles.cardContent}>
+            <h1 className={styles.aboutUsTitleInside}>About Us</h1>
             <span className={styles.missionTag}>Our Mission</span>
             <h2 className={styles.cardHeading}>Helping You Find Peace and Balance</h2>
             <p className={styles.cardParagraph}>
@@ -26,7 +27,17 @@ const AboutUs = () => {
               way on your journey to better mental health and restful sleep.
             </p>
           </div>
-          <div className={styles.cardImagePlaceholder}>{/* Placeholder for image */}</div>
+          <div className={styles.cardImageWrapper}>
+            {IMAGES.ABOUT_US_MAIN && (
+              <Image
+                src={IMAGES.ABOUT_US_MAIN}
+                alt="About Us"
+                fill
+                className={styles.cardImage}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            )}
+          </div>
         </div>
       </div>
       <AboutUsCards />

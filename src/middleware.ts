@@ -1,12 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { verifyToken } from './lib/utils/jwt.util';
-import {
-  PROTECTED_ROUTES,
-  ADMIN_ROUTES,
-  AUTH_ROUTES,
-  CUSTOMER_ONLY_ROUTES,
-  ROUTES,
-} from '@/utils/routesConstants';
+import { PROTECTED_ROUTES, ADMIN_ROUTES, AUTH_ROUTES, CUSTOMER_ONLY_ROUTES, ROUTES } from '@/utils/routesConstants';
 import { validateReturnUrl } from '@/utils/returnUrl';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { ROLES } from '@/lib/constants/roles';
@@ -60,8 +54,7 @@ export async function middleware(request: NextRequest) {
     if (token) {
       const decoded = await verifyToken(token);
       if (decoded) {
-        const redirectUrl =
-          decoded.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD;
+        const redirectUrl = decoded.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD;
         response = NextResponse.redirect(new URL(redirectUrl, request.url));
       } else {
         response = NextResponse.next();

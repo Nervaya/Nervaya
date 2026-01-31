@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -190,7 +190,7 @@ export default function AdminSleepAssessmentPage() {
 
       {loading ? (
         <div className={styles.loadingContainer}>
-          <Loader size="lg" text="Loading questions..." />
+          <LottieLoader width={200} height={200} />
         </div>
       ) : questions.length === 0 ? (
         <div className={styles.emptyState}>

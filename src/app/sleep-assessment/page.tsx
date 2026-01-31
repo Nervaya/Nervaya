@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
@@ -41,7 +41,7 @@ export default function SleepAssessmentPage() {
       <div className={styles.pageContainer}>
         {isLoading && (
           <div className={styles.loadingContainer}>
-            <Loader size="lg" text="Loading assessment..." />
+            <LottieLoader width={200} height={200} />
           </div>
         )}
 

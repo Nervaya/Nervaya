@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Loader from '@/components/common/Loader';
+import LottieLoader from '@/components/common/LottieLoader';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
@@ -71,7 +71,7 @@ export default function AdminTherapistsPage() {
 
       {loading ? (
         <div className={styles.loaderWrapper}>
-          <Loader size="lg" text="Loading therapists..." />
+          <LottieLoader width={200} height={200} />
         </div>
       ) : (
         <div className={styles.list}>
