@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SupplementFormData } from '@/types/supplement.types';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -13,20 +13,6 @@ interface SupplementFormProps {
   loading?: boolean;
   submitLabel?: string;
   compact?: boolean;
-}
-
-function getInitialFormData(initialData?: Partial<SupplementFormData>): SupplementFormData {
-  return {
-    name: initialData?.name ?? '',
-    description: initialData?.description ?? '',
-    price: initialData?.price ?? 0,
-    image: initialData?.image ?? '',
-    stock: initialData?.stock ?? 0,
-    category: initialData?.category ?? '',
-    ingredients: initialData?.ingredients ?? [],
-    benefits: initialData?.benefits ?? [],
-    isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
-  };
 }
 
 const SupplementForm: React.FC<SupplementFormProps> = ({
