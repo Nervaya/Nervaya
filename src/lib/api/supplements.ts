@@ -8,9 +8,8 @@ interface ApiResponse<T> {
 }
 
 export const supplementsApi = {
-  getAll: (category?: string): Promise<ApiResponse<Supplement[]>> => {
-    const params = category ? { category } : undefined;
-    return api.get('/supplements', { params }) as Promise<ApiResponse<Supplement[]>>;
+  getAll: (): Promise<ApiResponse<Supplement[]>> => {
+    return api.get('/supplements') as Promise<ApiResponse<Supplement[]>>;
   },
 
   getById: (id: string): Promise<ApiResponse<Supplement>> => {

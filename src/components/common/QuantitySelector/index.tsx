@@ -41,7 +41,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({ value, onChange, mi
     <div className={styles.quantitySelector}>
       <button
         type="button"
-        className={styles.button}
+        className={`${styles.button} ${styles.decrease}`}
         onClick={handleDecrease}
         disabled={disabled || value <= min}
         aria-label="Decrease quantity"
@@ -60,7 +60,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({ value, onChange, mi
       />
       <button
         type="button"
-        className={styles.button}
+        className={`${styles.button} ${styles.increase}`}
         onClick={handleIncrease}
         disabled={disabled || (max !== undefined && value >= max)}
         aria-label="Increase quantity"

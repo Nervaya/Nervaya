@@ -1,0 +1,15 @@
+.catalog {
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.main {
+  width: 100%;
+  min-width: 0;
+}

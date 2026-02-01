@@ -1,6 +1,14 @@
 import { Types } from 'mongoose';
 import { PaymentStatus, OrderStatus } from '@/lib/constants/enums';
 
+export interface StarDistribution {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
+
 export interface Supplement {
   _id: string;
   name: string;
@@ -8,12 +16,41 @@ export interface Supplement {
   price: number;
   image: string;
   stock: number;
-  category: string;
   ingredients: string[];
   benefits: string[];
   isActive: boolean;
+  originalPrice?: number;
+  shortDescription?: string;
+  suggestedUse?: string;
+  images?: string[];
+  capsuleCount?: number;
+  unitLabel?: string;
+  averageRating?: number;
+  reviewCount?: number;
+  starDistribution?: StarDistribution;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Review {
+  _id: string;
+  productId: string;
+  userId: string;
+  userDisplayName?: string;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReviewsResponse {
+  data: Review[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }
 
 export interface SupplementFormData {
@@ -22,10 +59,15 @@ export interface SupplementFormData {
   price: number;
   image: string;
   stock: number;
-  category: string;
   ingredients: string[];
   benefits: string[];
   isActive: boolean;
+  originalPrice?: number;
+  shortDescription?: string;
+  suggestedUse?: string;
+  images?: string[];
+  capsuleCount?: number;
+  unitLabel?: string;
 }
 
 export interface CartItem {

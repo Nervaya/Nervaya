@@ -1,15 +1,31 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
+export interface IStarDistribution {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
+
 export interface ISupplement extends Document {
   name: string;
   description: string;
   price: number;
   image: string;
   stock: number;
-  category: string;
   ingredients: string[];
   benefits: string[];
   isActive: boolean;
+  originalPrice?: number;
+  shortDescription?: string;
+  suggestedUse?: string;
+  images?: string[];
+  capsuleCount?: number;
+  unitLabel?: string;
+  averageRating?: number;
+  reviewCount: number;
+  starDistribution?: IStarDistribution;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,12 +59,6 @@ const supplementSchema = new Schema<ISupplement>(
       min: [0, 'Stock must be non-negative'],
       default: 0,
     },
-    category: {
-      type: String,
-      required: [true, 'Category is required'],
-      trim: true,
-      index: true,
-    },
     ingredients: {
       type: [String],
       default: [],
@@ -61,6 +71,18 @@ const supplementSchema = new Schema<ISupplement>(
       type: Boolean,
       default: true,
       index: true,
+    },
+    originalPrice: { type: Number, min: 0 },
+    shortDescription: { type: String, trim: true },
+    suggestedUse: { type: String, trim: true },
+    images: { type: [String], default: undefined },
+    capsuleCount: { type: Number, min: 0 },
+    unitLabel: { type: String, trim: true },
+    averageRating: { type: Number, min: 0, max: 5 },
+    reviewCount: { type: Number, default: 0, min: 0 },
+    starDistribution: {
+      type: Schema.Types.Mixed,
+      default: undefined,
     },
   },
   {

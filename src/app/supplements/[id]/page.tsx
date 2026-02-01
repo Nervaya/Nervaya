@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import Breadcrumbs from '@/components/common/Breadcrumbs';
+import StatusState from '@/components/common/StatusState';
+import LottieLoader from '@/components/common/LottieLoader';
+import { ProductImageGallery, ProductInfo, ProductTabs } from '@/components/Supplements/ProductDetail';
 import { Supplement } from '@/types/supplement.types';
-import QuantitySelector from '@/components/common/QuantitySelector';
-import Button from '@/components/common/Button';
-import { formatPrice } from '@/utils/cart.util';
 import { supplementsApi } from '@/lib/api/supplements';
 import { cartApi } from '@/lib/api/cart';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,32 +26,40 @@ export default function SupplementDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
-
   const fetchSupplement = useCallback(async () => {
+    const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+    if (!id) {
+      setSupplement(null);
+      setError('Supplement not found');
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
     try {
-      if (!id) {
-        setSupplement(null);
-        setError('Supplement not found');
-        return;
-      }
-      setLoading(true);
-      setError(null);
       const response = await supplementsApi.getById(id);
       if (response.success && response.data) {
         setSupplement(response.data);
+      } else {
+        setSupplement(null);
+        setError('Supplement not found');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load supplement');
+      setSupplement(null);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [params.id]);
+
+  useEffect(() => {
+    if (params.id) {
+      fetchSupplement();
+    }
+  }, [params.id, fetchSupplement]);
 
   const handleAddToCart = async () => {
-    if (!supplement) {
-      return;
-    }
+    if (!supplement) return;
     if (!isAuthenticated) {
       const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
       const currentPath = `/supplements/${id}`;
@@ -72,104 +81,128 @@ export default function SupplementDetailPage() {
         setError('Failed to add to cart');
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to add to cart';
-      setError(message);
+      setError(err instanceof Error ? err.message : 'Failed to add to cart');
     } finally {
       setAdding(false);
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      fetchSupplement();
-    }
-  }, [id, fetchSupplement]);
-
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Loading...</div>
-      </div>
+      <Sidebar>
+        <div className={styles.container}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: ROUTES.HOME },
+              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
+              { label: '...' },
+            ]}
+          />
+          <div className={styles.loading}>
+            <LottieLoader width={200} height={200} />
+          </div>
+        </div>
+      </Sidebar>
     );
   }
 
-  if (error || !supplement) {
+  if (error && !supplement) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>{error || 'Supplement not found'}</div>
-      </div>
+      <Sidebar>
+        <div className={styles.container}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: ROUTES.HOME },
+              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
+            ]}
+          />
+          <StatusState
+            type="error"
+            title="Failed to load product"
+            message={error}
+            action={
+              <div className={styles.actions}>
+                <button type="button" onClick={fetchSupplement} className={styles.retryButton}>
+                  Try again
+                </button>
+                <Link href="/supplements" className={styles.backLink}>
+                  Back to supplements
+                </Link>
+              </div>
+            }
+          />
+        </div>
+      </Sidebar>
+    );
+  }
+
+  if (!supplement) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: ROUTES.HOME },
+              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
+            ]}
+          />
+          <StatusState
+            type="empty"
+            title="Product not found"
+            message="The product you're looking for doesn't exist or has been removed."
+            action={
+              <Link href="/supplements" className={styles.backLink}>
+                Back to supplements
+              </Link>
+            }
+          />
+        </div>
+      </Sidebar>
     );
   }
 
   const isOutOfStock = supplement.stock === 0;
   const maxQuantity = Math.min(supplement.stock, 10);
+  const discountPercent =
+    supplement.originalPrice && supplement.originalPrice > supplement.price
+      ? Math.round(((supplement.originalPrice - supplement.price) / supplement.originalPrice) * 100)
+      : undefined;
+  const mainImage = supplement.images?.length ? supplement.images[0] : supplement.image;
 
   return (
     <Sidebar>
       <div className={styles.container}>
-        {error && <div className={styles.error}>{error}</div>}
-        {successMessage && <div className={styles.success}>{successMessage}</div>}
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: ROUTES.HOME },
+            { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
+            { label: supplement.name },
+          ]}
+        />
         <div className={styles.content}>
           <div className={styles.imageSection}>
-            <Image
-              src={supplement.image || '/default-supplement.png'}
+            <ProductImageGallery
+              mainImage={mainImage || supplement.image}
+              images={supplement.images}
+              discountPercent={discountPercent}
               alt={supplement.name}
-              width={500}
-              height={500}
-              className={styles.image}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/default-supplement.png';
-              }}
             />
           </div>
           <div className={styles.detailsSection}>
-            <h1 className={styles.title}>{supplement.name}</h1>
-            <p className={styles.category}>{supplement.category}</p>
-            <div className={styles.price}>{formatPrice(supplement.price)}</div>
-            <p className={styles.description}>{supplement.description}</p>
-            {supplement.ingredients.length > 0 && (
-              <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Ingredients</h3>
-                <ul className={styles.list}>
-                  {supplement.ingredients.map((ingredient) => (
-                    <li key={ingredient}>{ingredient}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {supplement.benefits.length > 0 && (
-              <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>Benefits</h3>
-                <ul className={styles.list}>
-                  {supplement.benefits.map((benefit) => (
-                    <li key={benefit}>{benefit}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className={styles.stockInfo}>
-              {isOutOfStock ? (
-                <span className={styles.outOfStock}>Out of Stock</span>
-              ) : (
-                <span className={styles.inStock}>In Stock ({supplement.stock} available)</span>
-              )}
-            </div>
-            {!isOutOfStock && (
-              <div className={styles.actions}>
-                <QuantitySelector value={quantity} onChange={setQuantity} min={1} max={maxQuantity} disabled={adding} />
-                <Button
-                  variant="primary"
-                  onClick={handleAddToCart}
-                  loading={adding}
-                  disabled={adding || isOutOfStock}
-                  className={styles.addButton}
-                >
-                  Add to Cart
-                </Button>
-              </div>
-            )}
+            <ProductInfo
+              supplement={supplement}
+              quantity={quantity}
+              onQuantityChange={setQuantity}
+              onAddToCart={handleAddToCart}
+              adding={adding}
+              isOutOfStock={isOutOfStock}
+              maxQuantity={maxQuantity}
+              successMessage={successMessage}
+              error={error}
+            />
           </div>
         </div>
+        <ProductTabs supplement={supplement} />
       </div>
     </Sidebar>
   );

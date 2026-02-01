@@ -1,0 +1,202 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.categoryTag {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-indigo-400, #818cf8);
+  font-weight: 500;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-foreground, #ededed);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.tagline {
+  font-size: 1rem;
+  color: var(--color-text-slate-300, #cbd5e1);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+}
+
+.stars {
+  flex-shrink: 0;
+}
+
+.reviewCount {
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* Price Section */
+.priceRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-md, 16px) 0;
+  border-top: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+}
+
+.pricePair {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-lg, 24px);
+  flex-wrap: nowrap;
+}
+
+.originalPrice {
+  font-size: 1.25rem;
+  color: var(--color-text-muted, #9ca3af);
+  text-decoration: line-through;
+}
+
+.price {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-emerald-400, #34d399);
+}
+
+@media (max-width: 768px) {
+  .price {
+    font-size: 1.75rem;
+  }
+}
+
+.savings {
+  font-size: 0.875rem;
+  color: var(--color-emerald-400, #34d399);
+  font-weight: 600;
+  background: rgba(52, 211, 153, 0.15);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-slate-300, #cbd5e1);
+  margin: 0;
+}
+
+/* Quantity + Actions Row (side by side) */
+.quantityActionsRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg, 24px);
+  flex-wrap: wrap;
+}
+
+.quantityRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 4px);
+}
+
+.unitLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  gap: var(--spacing-md, 16px);
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .quantityActionsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
+
+.addButton {
+  flex: 1;
+}
+
+.buyNowLink {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .addButton,
+  .buyNowLink {
+    width: 100%;
+  }
+}
+
+.buyNowButton {
+  min-width: 120px;
+  width: 100%;
+}
+
+/* Messages */
+.error {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+.success {
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: var(--color-emerald-400, #34d399);
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+/* Trust Badges */
+.trustBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg, 24px);
+  margin-top: var(--spacing-md, 16px);
+  padding-top: var(--spacing-md, 16px);
+  border-top: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
+  font-size: 0.875rem;
+  color: var(--color-text-slate-300, #cbd5e1);
+}
+
+.badgeIcon {
+  color: var(--color-emerald-400, #34d399);
+  font-weight: 600;
+}

@@ -36,10 +36,52 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   submitLabel = 'Create Supplement',
   compact = false,
 }) => {
-  const [formData, setFormData] = useState<SupplementFormData>(() => getInitialFormData(initialData));
-  const [ingredientsText, setIngredientsText] = useState(() => initialData?.ingredients?.join(', ') ?? '');
-  const [benefitsText, setBenefitsText] = useState(() => initialData?.benefits?.join(', ') ?? '');
+  const [formData, setFormData] = useState<SupplementFormData>({
+    name: initialData?.name || '',
+    description: initialData?.description || '',
+    price: initialData?.price ?? 0,
+    image: initialData?.image || '',
+    stock: initialData?.stock ?? 0,
+    ingredients: initialData?.ingredients || [],
+    benefits: initialData?.benefits || [],
+    isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
+    originalPrice: initialData?.originalPrice,
+    shortDescription: initialData?.shortDescription || '',
+    suggestedUse: initialData?.suggestedUse || '',
+    images: initialData?.images || [],
+    capsuleCount: initialData?.capsuleCount,
+    unitLabel: initialData?.unitLabel || '',
+  });
+
+  const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
+  const [benefitsText, setBenefitsText] = useState(initialData?.benefits?.join(', ') || '');
+  const [imagesText, setImagesText] = useState(initialData?.images?.join(', ') || '');
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
+
+  useEffect(() => {
+    if (initialData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData({
+        name: initialData.name || '',
+        description: initialData.description || '',
+        price: initialData.price ?? 0,
+        image: initialData.image || '',
+        stock: initialData.stock ?? 0,
+        ingredients: initialData.ingredients || [],
+        benefits: initialData.benefits || [],
+        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
+        originalPrice: initialData.originalPrice,
+        shortDescription: initialData.shortDescription || '',
+        suggestedUse: initialData.suggestedUse || '',
+        images: initialData.images || [],
+        capsuleCount: initialData.capsuleCount,
+        unitLabel: initialData.unitLabel || '',
+      });
+      setIngredientsText(initialData.ingredients?.join(', ') || '');
+      setBenefitsText(initialData.benefits?.join(', ') || '');
+      setImagesText(initialData.images?.join(', ') || '');
+    }
+  }, [initialData]);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};
@@ -62,8 +104,8 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
       newErrors.stock = 'Stock cannot be negative';
     }
 
-    if (!formData.category.trim()) {
-      newErrors.category = 'Category is required';
+    if (formData.originalPrice != null && formData.originalPrice > 0 && formData.originalPrice < formData.price) {
+      newErrors.originalPrice = 'Original price must be greater than or equal to price';
     }
 
     setErrors(newErrors);
@@ -76,6 +118,11 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
       return;
     }
 
+    const galleryUrls = imagesText
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
     const submitData: SupplementFormData = {
       ...formData,
       ingredients: ingredientsText
@@ -86,12 +133,18 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
+      images: galleryUrls.length > 0 ? galleryUrls : undefined,
+      originalPrice: formData.originalPrice != null && formData.originalPrice > 0 ? formData.originalPrice : undefined,
+      capsuleCount: formData.capsuleCount != null && formData.capsuleCount > 0 ? formData.capsuleCount : undefined,
+      unitLabel: formData.unitLabel?.trim() || undefined,
+      shortDescription: formData.shortDescription?.trim() || undefined,
+      suggestedUse: formData.suggestedUse?.trim() || undefined,
     };
 
     await onSubmit(submitData);
   };
 
-  const handleChange = (field: keyof SupplementFormData, value: string | number | boolean) => {
+  const handleChange = (field: keyof SupplementFormData, value: string | number | boolean | undefined) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -109,14 +162,19 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           required
           compact={compact}
         />
-        <Input
-          label="Category"
-          value={formData.category}
-          onChange={(e) => handleChange('category', e.target.value)}
-          error={errors.category}
-          required
-          compact={compact}
-        />
+        <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
+          <label className={styles.label} htmlFor="supplement-shortDescription">
+            Short description (optional)
+          </label>
+          <input
+            id="supplement-shortDescription"
+            type="text"
+            className={styles.input}
+            value={formData.shortDescription || ''}
+            onChange={(e) => handleChange('shortDescription', e.target.value)}
+            placeholder="One-line tagline for product page"
+          />
+        </div>
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.label} htmlFor="supplement-description">
             Description
@@ -143,6 +201,16 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           compact={compact}
         />
         <Input
+          label="Original price (₹) optional"
+          type="number"
+          value={formData.originalPrice != null ? formData.originalPrice.toString() : ''}
+          onChange={(e) => handleChange('originalPrice', e.target.value ? parseFloat(e.target.value) : undefined)}
+          error={errors.originalPrice}
+          min="0"
+          step="0.01"
+          compact={compact}
+        />
+        <Input
           label="Stock"
           type="number"
           value={formData.stock.toString()}
@@ -150,6 +218,21 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           error={errors.stock}
           required
           min="0"
+          compact={compact}
+        />
+        <Input
+          label="Capsule count (optional)"
+          type="number"
+          value={formData.capsuleCount != null ? formData.capsuleCount.toString() : ''}
+          onChange={(e) => handleChange('capsuleCount', e.target.value ? parseInt(e.target.value, 10) : undefined)}
+          min="0"
+          compact={compact}
+        />
+        <Input
+          label="Unit label (optional)"
+          value={formData.unitLabel || ''}
+          onChange={(e) => handleChange('unitLabel', e.target.value)}
+          placeholder="e.g. 60 capsules total"
           compact={compact}
         />
         <Input
@@ -166,6 +249,19 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           placeholder="Better sleep, Reduced anxiety, Improved mood"
           compact={compact}
         />
+        <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
+          <label className={styles.label} htmlFor="supplement-suggestedUse">
+            Suggested use (optional)
+          </label>
+          <textarea
+            id="supplement-suggestedUse"
+            className={styles.textarea}
+            value={formData.suggestedUse || ''}
+            onChange={(e) => handleChange('suggestedUse', e.target.value)}
+            placeholder="e.g. Take one capsule before bed"
+            rows={2}
+          />
+        </div>
         <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
           <label className={styles.checkboxLabel}>
             <input
@@ -184,6 +280,19 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             initialUrl={formData.image}
             label="Upload Product Image"
             compact={compact}
+          />
+        </div>
+        <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
+          <label className={styles.label} htmlFor="supplement-galleryUrls">
+            Gallery image URLs (optional, comma separated)
+          </label>
+          <input
+            id="supplement-galleryUrls"
+            type="text"
+            className={styles.input}
+            value={imagesText}
+            onChange={(e) => setImagesText(e.target.value)}
+            placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
           />
         </div>
       </div>

@@ -42,6 +42,18 @@
   object-fit: cover;
 }
 
+.discountBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--accent, #7c3aed);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .outOfStockBadge {
   position: absolute;
   top: 12px;
@@ -52,6 +64,34 @@
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.categoryTag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted, #6b7280);
+  margin-bottom: 0.25rem;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.reviewCount {
+  font-size: 0.75rem;
+  color: var(--muted, #6b7280);
+}
+
+.originalPrice {
+  font-size: 0.875rem;
+  color: var(--muted, #6b7280);
+  text-decoration: line-through;
+  margin-right: 0.5rem;
 }
 
 .content {

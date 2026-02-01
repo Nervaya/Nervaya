@@ -35,14 +35,12 @@ export async function getAllSupplements(filter: Record<string, unknown> = {}) {
   }
 }
 
-export async function getActiveSupplements(category?: string) {
+export async function getActiveSupplements() {
   await connectDB();
   try {
-    const filter: Record<string, unknown> = { isActive: true };
-    if (category) {
-      filter.category = category;
-    }
-    const supplements = await Supplement.find(filter).sort({ createdAt: -1 });
+    const supplements = await Supplement.find({ isActive: true }).sort({
+      createdAt: -1,
+    });
     return supplements;
   } catch (error) {
     throw handleError(error);
@@ -105,19 +103,6 @@ export async function deleteSupplement(id: string) {
       throw new ValidationError('Supplement not found');
     }
     return { message: 'Supplement deleted successfully' };
-  } catch (error) {
-    throw handleError(error);
-  }
-}
-
-export async function getSupplementsByCategory(category: string) {
-  await connectDB();
-  try {
-    const supplements = await Supplement.find({
-      category,
-      isActive: true,
-    }).sort({ createdAt: -1 });
-    return supplements;
   } catch (error) {
     throw handleError(error);
   }
