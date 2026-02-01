@@ -1,0 +1,52 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  color: var(--color-amber-400, #fbbf24);
+}
+
+.star.full {
+  opacity: 1;
+}
+
+.star.half {
+  opacity: 0.6;
+}
+
+.star.empty {
+  color: var(--muted, #9ca3af);
+  opacity: 0.5;
+}
+
+.sm .star {
+  font-size: 0.875rem;
+}
+
+.sm .value {
+  font-size: 0.75rem;
+}
+
+.md .star {
+  font-size: 1rem;
+}
+
+.md .value {
+  font-size: 0.875rem;
+}
+
+.lg .star {
+  font-size: 1.25rem;
+}
+
+.lg .value {
+  font-size: 1rem;
+}
+
+.value {
+  margin-left: 4px;
+  color: var(--foreground, #1a1a1a);
+  font-weight: 500;
+}

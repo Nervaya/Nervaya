@@ -1,90 +1,143 @@
 .loaderWrapper {
   display: flex;
   justify-content: center;
-  padding: 60px 20px;
+  align-items: center;
+  min-height: 400px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--margin-xl);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+}
+
+.header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-foreground);
 }
 
 .addButton {
-  background: #7c3aed;
+  background: var(--color-accent);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 10px;
   text-decoration: none;
-  transition: background 0.3s;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
 .addButton:hover {
-  background: #6d28d9;
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+}
+
+@media (max-width: 768px) {
+  .addButton {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .list {
   display: grid;
-  gap: 1rem;
+  gap: var(--margin-lg);
 }
 
-/* Therapist Card Styling */
+/* Therapist Card - Glassmorphism */
 .card {
-  background: linear-gradient(145deg, #1e1e24, #23232a);
-  padding: 1.5rem;
-  border-radius: 20px;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  padding: var(--spacing-lg);
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2rem;
-  border: 1px solid #2d2d35;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: var(--spacing-xl);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  border-color: #7c3aed;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--color-border-light-hover);
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
 }
 
 .therapistInfo {
   display: flex;
-  gap: 2rem;
+  gap: var(--spacing-lg);
   flex: 1;
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .therapistInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
 .therapistImage {
-  width: 120px;
-  height: 120px;
-  border-radius: 24px;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
   object-fit: cover;
-  background: #333;
-  border: 3px solid #7c3aed;
+  background: rgba(124, 58, 237, 0.1);
+  border: 2px solid rgba(124, 58, 237, 0.5);
   flex-shrink: 0;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .therapistImage {
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .details {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex: 1;
 }
 
 .details h3 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-foreground);
   letter-spacing: -0.02em;
 }
 
 .qualifications {
-  color: #a78bfa;
-  font-size: 1rem;
+  color: var(--color-indigo-400);
+  font-size: 0.95rem;
   font-weight: 500;
   margin: 0;
 }
@@ -92,9 +145,9 @@
 .infoRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
-  color: #cbd5e1;
-  font-size: 0.95rem;
+  gap: 1.5rem;
+  color: var(--color-text-slate-300);
+  font-size: 0.9rem;
   margin-top: 0.25rem;
   align-items: center;
 }
@@ -106,23 +159,23 @@
 }
 
 .infoItem strong {
-  color: #94a3b8;
+  color: var(--color-text-muted);
   font-weight: 600;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .chip {
-  background: rgba(124, 58, 237, 0.15);
+  background: var(--color-accent-dim);
   color: #d8b4fe;
-  padding: 0.35rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-weight: 500;
   border: 1px solid rgba(124, 58, 237, 0.3);
   transition: all 0.2s;
@@ -131,61 +184,71 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
-.deleteButton {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 600;
-  font-size: 0.9rem;
+@media (max-width: 768px) {
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 
-.deleteButton:hover {
-  background: #ef4444;
+.editButton {
+  background: var(--color-accent);
   color: white;
-}
-
-.slotsButton {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  padding: 0.6rem 1.2rem;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   text-decoration: none;
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.editButton:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+
+.slotsButton {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
 .slotsButton:hover {
   background: #3b82f6;
   color: white;
+  border-color: #3b82f6;
   transform: translateY(-1px);
 }
 
-.editButton {
-  background: #7c3aed;
-  color: white;
-  border: 1px solid #7c3aed;
-  padding: 0.6rem 1.2rem;
+.deleteButton {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.9rem;
   font-weight: 600;
+  font-size: 0.875rem;
 }
 
-.editButton:hover {
-  background: #6d28d9;
-  transform: translateY(-1px);
+.deleteButton:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
 }

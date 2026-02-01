@@ -1,0 +1,85 @@
+.container {
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--margin-lg, 24px);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    margin-bottom: var(--margin-md, 16px);
+  }
+}
+
+.filterButton {
+  min-height: 40px;
+  padding: var(--spacing-sm, 8px) var(--spacing-lg, 24px);
+  border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+  background: var(--color-glass-bg, rgba(10, 10, 12, 0.75));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.filterButton:hover {
+  border-color: var(--color-accent, #7c3aed);
+  color: var(--color-accent, #7c3aed);
+}
+
+.filterButton.active {
+  background: var(--color-accent, #7c3aed);
+  border-color: var(--color-accent, #7c3aed);
+  color: white;
+}
+
+/* Product Grid - Amazon style */
+.chipList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--margin-lg, 24px);
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .chipList {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--margin-md, 16px);
+  }
+}
+
+@media (max-width: 640px) {
+  .chipList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md, 16px);
+  }
+}
+
+@media (max-width: 400px) {
+  .chipList {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md, 16px);
+  }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.empty {
+  text-align: center;
+  padding: var(--spacing-2xl, 64px) var(--spacing-xl, 40px);
+  color: var(--color-text-muted, #9ca3af);
+  font-size: 1rem;
+}

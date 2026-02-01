@@ -1,0 +1,49 @@
+.content {
+  padding: var(--spacing-md, 16px) 0;
+}
+
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-md, 16px) 0;
+  color: var(--color-foreground, #ededed);
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-slate-300, #cbd5e1);
+  margin: 0 0 var(--margin-lg, 24px) 0;
+}
+
+.overview {
+  margin-bottom: var(--margin-lg, 24px);
+}
+
+.benefits,
+.suggestedUse,
+.ingredients {
+  margin-bottom: var(--margin-lg, 24px);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-sm, 8px);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-slate-300, #cbd5e1);
+}
+
+.check {
+  color: var(--color-emerald-400, #34d399);
+  font-weight: 600;
+  flex-shrink: 0;
+}

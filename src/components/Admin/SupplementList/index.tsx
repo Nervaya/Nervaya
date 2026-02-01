@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
+import LottieLoader from '@/components/common/LottieLoader';
+import StatusState from '@/components/common/StatusState';
 import styles from './styles.module.css';
 
 interface SupplementListProps {
@@ -16,21 +18,16 @@ interface SupplementListProps {
 
 const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, onEdit, loading = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState<string>('all');
   const [confirmDelete, setConfirmDelete] = useState<{
     id: string;
     name: string;
   } | null>(null);
 
-  const categories = ['all', ...new Set(supplements.map((s) => s.category))];
-
-  const filteredSupplements = supplements.filter((supplement) => {
-    const matchesSearch =
+  const filteredSupplements = supplements.filter(
+    (supplement) =>
       supplement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplement.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = filterCategory === 'all' || supplement.category === filterCategory;
-    return matchesSearch && matchesCategory;
-  });
+      supplement.description.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   const handleDeleteClick = (id: string, name: string) => {
     if (!onDelete) {
@@ -53,7 +50,7 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
   if (loading) {
     return (
       <div className={styles.loading}>
-        <p>Loading supplements...</p>
+        <LottieLoader width={200} height={200} />
       </div>
     );
   }
@@ -84,23 +81,14 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
           onChange={(e) => setSearchTerm(e.target.value)}
           className={styles.searchInput}
         />
-        <select
-          value={filterCategory}
-          onChange={(e) => setFilterCategory(e.target.value)}
-          className={styles.categorySelect}
-        >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </option>
-          ))}
-        </select>
       </div>
 
       {filteredSupplements.length === 0 ? (
-        <div className={styles.empty}>
-          <p>No supplements found</p>
-        </div>
+        <StatusState
+          type="empty"
+          message="No supplements found. Try adjusting your search or add a new supplement."
+          variant="minimal"
+        />
       ) : (
         <div className={styles.list}>
           {filteredSupplements.map((supplement) => (
@@ -120,7 +108,6 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
               </div>
               <div className={styles.details}>
                 <h3 className={styles.name}>{supplement.name}</h3>
-                <p className={styles.category}>{supplement.category}</p>
                 <p className={styles.description}>{supplement.description.substring(0, 150)}...</p>
                 <div className={styles.info}>
                   <span className={styles.price}>{formatPrice(supplement.price)}</span>

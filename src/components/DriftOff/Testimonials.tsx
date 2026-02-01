@@ -28,8 +28,8 @@ const Testimonials = () => {
             <div className={styles.userInfo}>
               <h4>{review.name}</h4>
               <div className={styles.stars}>
-                {[...Array(review.stars)].map((_, i) => (
-                  <FaStar key={`${review.id}-star-${i}`} size={14} />
+                {['s1', 's2', 's3', 's4', 's5'].slice(0, review.stars).map((starKey) => (
+                  <FaStar key={`${review.id}-${starKey}`} size={14} />
                 ))}
               </div>
             </div>

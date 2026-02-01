@@ -201,7 +201,6 @@
   outline: none;
   border-color: rgba(124, 58, 237, 0.5);
   background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 .input:focus-visible,
@@ -209,7 +208,6 @@
 .textarea:focus-visible {
   outline: none;
   border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 .select {

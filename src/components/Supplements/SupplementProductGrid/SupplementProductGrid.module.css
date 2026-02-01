@@ -1,0 +1,42 @@
+.grid {
+  width: 100%;
+}
+
+.gridView {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--margin-lg);
+}
+
+@media (max-width: 1024px) {
+  .gridView {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--margin-md);
+  }
+}
+
+@media (max-width: 640px) {
+  .gridView {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 400px) {
+  .gridView {
+    grid-template-columns: 1fr;
+  }
+}
+
+.listView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-lg);
+}
+
+.empty {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}

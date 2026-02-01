@@ -8,7 +8,6 @@ import { ROLES } from '@/lib/constants/roles';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
     const adminView = searchParams.get('admin') === 'true';
 
     let supplements;
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
       }
       supplements = await getAllSupplements();
     } else {
-      supplements = await getActiveSupplements(category || undefined);
+      supplements = await getActiveSupplements();
     }
 
     return NextResponse.json(successResponse('Supplements fetched successfully', supplements));

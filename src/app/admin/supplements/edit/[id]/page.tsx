@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
+import LottieLoader from '@/components/common/LottieLoader';
+import StatusState from '@/components/common/StatusState';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
 
@@ -58,7 +60,9 @@ export default function EditSupplementPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Loading supplement...</div>
+        <div className={styles.loaderWrapper}>
+          <LottieLoader width={200} height={200} />
+        </div>
       </div>
     );
   }
@@ -66,7 +70,16 @@ export default function EditSupplementPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>{error || 'Supplement not found'}</div>
+        <StatusState
+          type="error"
+          title={error ? 'Error' : 'Not Found'}
+          message={error || 'Supplement not found'}
+          action={
+            <button onClick={() => router.push('/admin/supplements')} className={styles.backButton}>
+              Back to Supplements
+            </button>
+          }
+        />
       </div>
     );
   }

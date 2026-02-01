@@ -9,6 +9,8 @@ interface StatusStateProps {
   message?: string;
   action?: React.ReactNode;
   className?: string;
+  /** 'card' = wrapped in a card; 'minimal' = no card, larger image */
+  variant?: 'card' | 'minimal';
 }
 
 const CONFIG = {
@@ -24,17 +26,25 @@ const CONFIG = {
   },
 };
 
-const StatusState: React.FC<StatusStateProps> = ({ type, title, message, action, className = '' }) => {
+const StatusState: React.FC<StatusStateProps> = ({
+  type,
+  title,
+  message,
+  action,
+  className = '',
+  variant = 'card',
+}) => {
   const config = CONFIG[type];
+  const isMinimal = variant === 'minimal';
 
   return (
-    <div className={`${styles.container} ${className}`}>
-      <div className={styles.imageWrapper}>
+    <div className={`${styles.container} ${isMinimal ? styles.minimal : ''} ${className}`}>
+      <div className={`${styles.imageWrapper} ${isMinimal ? styles.imageWrapperLarge : ''}`}>
         <Image
           src={config.image}
           alt={title || config.defaultTitle}
-          width={250}
-          height={250}
+          width={isMinimal ? 400 : 250}
+          height={isMinimal ? 400 : 250}
           className={styles.image}
           priority
         />

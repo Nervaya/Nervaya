@@ -257,13 +257,11 @@
   outline: none;
   border-color: rgba(139, 92, 246, 0.6);
   background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
 .input:focus-visible {
   outline: none;
   border-color: rgba(139, 92, 246, 0.6);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
 @media (max-width: 480px) {

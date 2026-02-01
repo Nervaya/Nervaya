@@ -241,7 +241,6 @@
 .customInput:focus {
   outline: none !important;
   border-color: #818cf8 !important;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2) !important;
   color: #fff !important;
   background: rgba(0, 0, 0, 0.3) !important;
 }
@@ -302,7 +301,6 @@
 .select:focus {
   outline: none;
   border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
 }
 
 .input::placeholder {
