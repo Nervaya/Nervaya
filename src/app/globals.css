@@ -16,6 +16,14 @@
   --accent: #7c3aed;
   --muted: #9ca3af;
   --muted-dim: #6b7280;
+
+  /* Margin scale (alias spacing where appropriate) */
+  --margin-xs: var(--spacing-xs);
+  --margin-sm: var(--spacing-sm);
+  --margin-md: var(--spacing-md);
+  --margin-lg: var(--spacing-lg);
+  --margin-xl: var(--spacing-xl);
+  --margin-2xl: var(--spacing-2xl);
 }
 
 @media (max-width: 768px) {

@@ -1,17 +1,20 @@
-'use client';
-
-import PageHeader from '@/components/PageHeader/PageHeader';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import styles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import DriftOffHero from '@/components/DriftOff/DriftOffHero';
+import HowItWorks from '@/components/DriftOff/HowItWorks';
+import PlaylistSection from '@/components/DriftOff/PlaylistSection';
+import SupportCards from '@/components/DriftOff/SupportCards';
+import Testimonials from '@/components/DriftOff/Testimonials';
+import styles from './styles.module.css';
 
 export default function DriftOffPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <PageHeader
-          title="Deep Rest Sessions"
-          subtitle="Curated audio sessions to help you drift off are coming soon."
-        />
+        <DriftOffHero />
+        <HowItWorks />
+        <PlaylistSection />
+        <SupportCards />
+        <Testimonials />
       </div>
     </Sidebar>
   );

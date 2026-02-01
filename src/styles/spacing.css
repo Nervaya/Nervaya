@@ -7,6 +7,20 @@
   --spacing-xl: 40px;
   --spacing-2xl: 64px;
 
+  /* Font Size Scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.8rem;
+  --font-size-base: 0.875rem;
+  --font-size-md: 0.9rem;
+  --font-size-lg: 1rem;
+  --font-size-xl: 1.1rem;
+  --font-size-2xl: 1.2rem;
+  --font-size-3xl: 1.25rem;
+  --font-size-4xl: 1.5rem;
+  --font-size-5xl: 1.75rem;
+  --font-size-6xl: 2rem;
+  --font-size-hero: 3rem;
+
   /* Component Specific Spacing */
   --navbar-height: 100px;
   --navbar-padding-x: 40px;
