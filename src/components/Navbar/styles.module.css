@@ -41,24 +41,18 @@
   align-items: center;
   width: 100%;
   max-width: 960px;
-  /* Consistently tight container like SolidRoad */
   height: 56px;
-  /* Compact height */
   padding: 0 8px;
-  /* Inner padding for the pill */
 
-  /* SolidRoad-esque Glass */
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));
   -webkit-backdrop-filter: blur(var(--color-glass-blur));
   border-radius: 9999px;
   border: 1px solid var(--color-glass-border);
-  /* Crisp subtle border */
   box-shadow:
     0 2px 40px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  /* Inner highlight */
 }
 
 @media (max-width: 768px) {
@@ -74,23 +68,19 @@
   align-items: center;
   height: 100%;
   margin-left: 16px;
-  /* Spacing from pill edge */
 }
 
 .navbarLogo img {
   height: 24px;
-  /* Subtle, small logo */
   width: auto;
   object-fit: contain;
 }
 
-/* Menu */
 .navbarMenu {
   display: flex;
   list-style: none;
   align-items: center;
   gap: 4px;
-  /* Tight gap, pill-style links? Or standard? SolidRoad has standard links */
   margin: 0;
   padding: 0;
 }
@@ -138,7 +128,6 @@
 
 .navbarMenu a {
   color: rgba(255, 255, 255, 0.7);
-  /* Muted initial state */
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
@@ -168,7 +157,6 @@
 .navbarMenu a:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
-  /* Hover pill effect */
 }
 
 .navbarMenu a[aria-current='page'] {
@@ -176,12 +164,10 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Remove underline */
 .navbarMenu a::after {
   display: none;
 }
 
-/* Dropdown specific */
 .navbarDropdown {
   position: relative;
   display: flex;
@@ -288,7 +274,6 @@
   color: #fff;
 }
 
-/* CTA ("Call Us") */
 .navbarCta {
   background: #ffffff;
   color: #000;
@@ -298,10 +283,8 @@
   font-weight: 600;
   cursor: pointer;
   border-radius: 999px;
-  /* Full pill button */
   margin-left: 8px;
   margin-right: 4px;
-  /* Padding from container edge */
   transition: box-shadow 0.2s ease;
 }
 
@@ -320,10 +303,8 @@
 
 .navbarCta::before {
   display: none;
-  /* Removing the old sweep effect */
 }
 
-/* Account Button */
 .accountButton {
   display: flex;
   align-items: center;
@@ -341,7 +322,6 @@
   color: #fff;
 }
 
-/* Mobile Specifics */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -390,7 +370,4 @@
     pointer-events: none;
     transition: opacity 0.3s;
   }
-
-  /* Helper to toggle overlay opacity if needed, 
-     but keeping it simple since index.tsx toggles rendering */
 }

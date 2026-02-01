@@ -88,7 +88,12 @@ export default function EditSupplementPage() {
     <div className={styles.container}>
       <h2 className={styles.title}>Edit Supplement</h2>
       {error && <div className={styles.error}>{error}</div>}
-      <SupplementForm onSubmit={handleSubmit} initialData={supplement} submitLabel="Update Supplement" />
+      <SupplementForm
+        key={supplement._id}
+        onSubmit={handleSubmit}
+        initialData={supplement}
+        submitLabel="Update Supplement"
+      />
     </div>
   );
 }

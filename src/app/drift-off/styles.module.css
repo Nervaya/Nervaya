@@ -1,11 +1,8 @@
 .container {
   width: 100%;
   min-height: 100vh;
-  /* Remove background-color to let global dark theme/stars show through 
-     or set a dark fallback if the global theme isn't dark everywhere */
   background: transparent;
   padding: 40px;
-  /* Add some padding around the main content area */
   color: #fff;
   font-family: 'Inter', sans-serif;
   animation: fadeIn 0.8s ease-out;

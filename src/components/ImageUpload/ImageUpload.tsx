@@ -19,7 +19,6 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compac
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Update preview when initialUrl changes
   useEffect(() => {
     if (initialUrl) {
       setPreview(initialUrl);

@@ -22,14 +22,14 @@ const HowItWorks = () => {
   return (
     <div className={styles.howItWorksSection}>
       <h2 className={styles.sectionTitle}>How It Works</h2>
-      <div className={styles.stepsGrid}>
+      <ul className={styles.stepsGrid} aria-label="How it works steps">
         {steps.map((step) => (
-          <div key={step.id} className={styles.stepCard}>
+          <li key={step.id} className={styles.stepCard}>
             <div className={styles.stepNumber}>{step.id}</div>
             <p className={styles.stepDescription}>{step.description}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

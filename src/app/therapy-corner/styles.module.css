@@ -32,6 +32,12 @@
   gap: 0.5rem;
 }
 
+.therapistList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .therapistCard {
   background: #171717;
   border-radius: 12px;

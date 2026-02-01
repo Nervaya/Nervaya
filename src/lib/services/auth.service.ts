@@ -27,7 +27,6 @@ export async function registerUser(email: string, password: string, name: string
     throw new ValidationError('User with this email already exists');
   }
 
-  // Explicitly validate role if provided (though TS handles it, runtime safety matches plan)
   if (!Object.values(ROLES).includes(role)) {
     throw new ValidationError('Invalid role');
   }
@@ -65,16 +64,13 @@ export async function loginUser(email: string, password: string) {
     throw new ValidationError('Password is required');
   }
 
-  // Use select to explicitly include password field for comparison
   const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
   if (!user) {
-    // Use generic error message to prevent user enumeration
     throw new AuthenticationError('Invalid email or password');
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    // Use generic error message to prevent user enumeration
     throw new AuthenticationError('Invalid email or password');
   }
 

@@ -18,10 +18,22 @@ interface PaymentHandlerProps {
   onError?: (error: string) => void;
 }
 
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name?: string;
+  description?: string;
+  order_id: string;
+  prefill?: { name?: string; email?: string; contact?: string };
+  handler?: (response: RazorpayPaymentResponse) => void;
+  theme?: { color?: string };
+  modal?: { ondismiss?: () => void };
+}
+
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Razorpay: any;
+    Razorpay: new (options: RazorpayOptions) => { open: () => void };
   }
 }
 

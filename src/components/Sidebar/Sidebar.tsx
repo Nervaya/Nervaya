@@ -48,9 +48,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
         if (stored !== null) {
           setIsCollapsed(stored === 'true');
         }
-      } catch {
-        // ignore
-      }
+      } catch {}
     };
 
     handleResize();
@@ -70,7 +68,6 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
     };
   }, [isMobileOpen]);
 
-  // Sync collapsed state with body class for global layout handling
   useEffect(() => {
     if (isCollapsed) {
       document.body.classList.add('sidebar-collapsed');
@@ -117,9 +114,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                     const next = !v;
                     try {
                       window.localStorage.setItem('sidebar-collapsed', String(next));
-                    } catch {
-                      // ignore
-                    }
+                    } catch {}
                     return next;
                   })
                 }

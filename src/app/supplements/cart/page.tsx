@@ -123,23 +123,24 @@ export default function CartPage() {
         <PageHeader title="Shopping Cart" />
         {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
-          <div className={styles.itemsSection}>
+          <ul className={styles.itemsSection} aria-label="Cart items">
             {cart.items.map((item: CartItemType) => {
               const key =
                 typeof item.supplementId === 'object' && item.supplementId && '_id' in item.supplementId
                   ? (item.supplementId as Supplement)._id
                   : String(item.supplementId);
               return (
-                <CartItem
-                  key={key}
-                  item={item}
-                  onQuantityChange={handleQuantityChange}
-                  onRemove={handleRemove}
-                  disabled={updating}
-                />
+                <li key={key}>
+                  <CartItem
+                    item={item}
+                    onQuantityChange={handleQuantityChange}
+                    onRemove={handleRemove}
+                    disabled={updating}
+                  />
+                </li>
               );
             })}
-          </div>
+          </ul>
           <div className={styles.summarySection}>
             <CartSummary cart={cart} onCheckout={handleCheckout} loading={updating} />
           </div>

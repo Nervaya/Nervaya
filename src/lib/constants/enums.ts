@@ -1,4 +1,3 @@
-// Payment Status Enums
 export const PAYMENT_STATUS = {
   PENDING: 'pending',
   PAID: 'paid',
@@ -8,7 +7,6 @@ export const PAYMENT_STATUS = {
 
 export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
 
-// Order Status Enums
 export const ORDER_STATUS = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -19,7 +17,6 @@ export const ORDER_STATUS = {
 
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
-// Session Status Enums
 export const SESSION_STATUS = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -29,7 +26,6 @@ export const SESSION_STATUS = {
 
 export type SessionStatus = (typeof SESSION_STATUS)[keyof typeof SESSION_STATUS];
 
-// Get all enum values as arrays (useful for Mongoose schemas)
 export const PAYMENT_STATUS_VALUES = Object.values(PAYMENT_STATUS);
 export const ORDER_STATUS_VALUES = Object.values(ORDER_STATUS);
 export const SESSION_STATUS_VALUES = Object.values(SESSION_STATUS);

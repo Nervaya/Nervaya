@@ -28,9 +28,9 @@ const PlaylistSection = () => {
         </div>
       </div>
 
-      <div className={styles.playlistGrid}>
+      <ul className={styles.playlistGrid} aria-label="Playlist videos">
         {DRIFT_OFF_PLAYLIST_VIDEOS.map((video) => (
-          <div key={video.id} className={styles.videoCard}>
+          <li key={video.id} className={styles.videoCard}>
             <div className={styles.playlistVideoWrapper}>
               {hasMounted ? (
                 <VideoPlayerDynamic
@@ -65,9 +65,9 @@ const PlaylistSection = () => {
                 </>
               )}
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

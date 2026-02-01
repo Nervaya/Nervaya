@@ -74,9 +74,9 @@ export default function MyOrders() {
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>My Orders</h2>
-      <div className={styles.ordersList}>
+      <ul className={styles.ordersList} aria-label="Order history">
         {orders.map((order) => (
-          <div key={order._id} className={styles.orderCard}>
+          <li key={order._id} className={styles.orderCard}>
             <div className={styles.orderHeader}>
               <div>
                 <h3 className={styles.orderId}>Order #{order._id.slice(-8)}</h3>
@@ -91,19 +91,17 @@ export default function MyOrders() {
                 </span>
               </div>
             </div>
-            <div className={styles.orderItems}>
-              {order.items.map((item) => {
-                return (
-                  <div key={`${order._id}-${item.name}-${item.quantity}`} className={styles.orderItem}>
-                    <div className={styles.itemInfo}>
-                      <h4>{item.name}</h4>
-                      <p>Quantity: {item.quantity}</p>
-                    </div>
-                    <div className={styles.itemPrice}>{formatPrice(item.price * item.quantity)}</div>
+            <ul className={styles.orderItems} aria-label="Order items">
+              {order.items.map((item) => (
+                <li key={`${order._id}-${item.name}-${item.quantity}`} className={styles.orderItem}>
+                  <div className={styles.itemInfo}>
+                    <h4>{item.name}</h4>
+                    <p>Quantity: {item.quantity}</p>
                   </div>
-                );
-              })}
-            </div>
+                  <div className={styles.itemPrice}>{formatPrice(item.price * item.quantity)}</div>
+                </li>
+              ))}
+            </ul>
             <div className={styles.orderFooter}>
               <div className={styles.orderTotal}>
                 <strong>Total: {formatPrice(order.totalAmount)}</strong>
@@ -112,9 +110,9 @@ export default function MyOrders() {
                 View Details
               </Link>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

@@ -36,16 +36,9 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        // Prevent auto-close on Escape - require explicit close button click
-        // Uncomment below if you want Escape to work with confirmation
-        // const confirmed = window.confirm('Are you sure you want to close? Unsaved changes will be lost.');
-        // if (confirmed) {
-        //   onClose();
-        // }
       }
     };
 
-    // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
 
     document.addEventListener('keydown', handleEscape);
@@ -56,10 +49,8 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  // Ensure modal is visible when opened
   useEffect(() => {
     if (isOpen && overlayRef.current) {
-      // Scroll overlay to top to ensure header is visible
       overlayRef.current.scrollTop = 0;
     }
   }, [isOpen]);
@@ -69,23 +60,11 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
   }
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only close if clicking directly on overlay, not on modal content
     if (e.target === overlayRef.current) {
-      // Prevent auto-close - require explicit close button click
-      // Uncomment below if you want outside click to work with confirmation
-      // const confirmed = window.confirm('Are you sure you want to close? Unsaved changes will be lost.');
-      // if (confirmed) {
-      //   onClose();
-      // }
     }
   };
 
   const handleClose = () => {
-    // Optional: Add confirmation dialog
-    // const confirmed = window.confirm('Are you sure you want to close? Unsaved changes will be lost.');
-    // if (confirmed) {
-    //   onClose();
-    // }
     onClose();
   };
 
@@ -115,6 +94,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
 
         <div className={styles.content}>
           <SupplementForm
+            key={(initialData as { _id?: string })?._id ?? (isOpen ? 'new' : 'closed')}
             onSubmit={handleSubmit}
             initialData={initialData}
             loading={loading}

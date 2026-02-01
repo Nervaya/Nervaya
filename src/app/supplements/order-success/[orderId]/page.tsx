@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Order } from '@/types/supplement.types';
@@ -15,7 +15,7 @@ export default function OrderSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -34,14 +34,13 @@ export default function OrderSuccessPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.orderId]);
 
   useEffect(() => {
     if (params.orderId) {
       fetchOrder();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.orderId]);
+  }, [params.orderId, fetchOrder]);
 
   if (loading) {
     return (

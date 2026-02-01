@@ -90,9 +90,9 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
           variant="minimal"
         />
       ) : (
-        <div className={styles.list}>
+        <ul className={styles.list} aria-label="Supplement list">
           {filteredSupplements.map((supplement) => (
-            <div key={supplement._id} className={styles.card}>
+            <li key={supplement._id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image
                   src={supplement.image || '/default-supplement.png'}
@@ -131,9 +131,9 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
                   Delete
                 </button>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

@@ -51,11 +51,13 @@ const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on route change
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMobileMenuOpen(false);
-    setIsProductsDropdownOpen(false);
+    const closeMenus = () => {
+      setIsMobileMenuOpen(false);
+      setIsProductsDropdownOpen(false);
+    };
+    const id = requestAnimationFrame(closeMenus);
+    return () => cancelAnimationFrame(id);
   }, [pathname]);
 
   const closeMobileMenu = () => {
@@ -128,6 +130,15 @@ const Navbar = () => {
               )}
             </li>
           )}
+          <li>
+            <Link
+              href="/blog"
+              onClick={closeMobileMenu}
+              aria-current={pathname === '/blog' || pathname?.startsWith('/blog/') ? 'page' : undefined}
+            >
+              Blog
+            </Link>
+          </li>
           <li>
             <Link
               href="/about-us"

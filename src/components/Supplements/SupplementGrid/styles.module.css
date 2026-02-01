@@ -50,6 +50,9 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
   width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 768px) {

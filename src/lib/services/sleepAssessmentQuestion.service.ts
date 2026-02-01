@@ -19,7 +19,6 @@ export async function getAllActiveQuestions(): Promise<ISleepAssessmentQuestion[
   }
 }
 
-/** Returns only active, option-based questions (excludes 'text' type). Used for customer-facing assessment. */
 export async function getActiveOptionBasedQuestions(): Promise<ISleepAssessmentQuestion[]> {
   await connectDB();
 

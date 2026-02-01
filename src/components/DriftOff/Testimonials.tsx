@@ -20,9 +20,9 @@ const Testimonials = () => {
   ];
 
   return (
-    <div className={styles.testimonialsSection}>
+    <ul className={styles.testimonialsSection} aria-label="Testimonials">
       {reviews.map((review) => (
-        <div key={review.id} className={styles.testimonialCard}>
+        <li key={review.id} className={styles.testimonialCard}>
           <div className={styles.userProfile}>
             <div className={styles.userAvatar}>{review.initials}</div>
             <div className={styles.userInfo}>
@@ -35,9 +35,9 @@ const Testimonials = () => {
             </div>
           </div>
           <p className={styles.testimonialText}>{review.text}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

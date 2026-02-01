@@ -21,6 +21,15 @@
   margin-bottom: 24px;
 }
 
+.errorMessage {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #fca5a5;
+  margin-bottom: 20px;
+}
+
 .backLink {
   display: inline-flex;
   align-items: center;

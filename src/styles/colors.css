@@ -1,28 +1,21 @@
 :root {
-  /* Glass Effect */
   --color-glass-bg: rgba(10, 10, 12, 0.75);
   --color-glass-border: rgba(255, 255, 255, 0.08);
-  /* Matches Navbar border */
   --color-glass-blur: 20px;
 
-  /* Theme Colors */
   --color-background: #020617;
   --color-foreground: #ededed;
 
-  /* Text Colors */
   --color-text-primary: #ededed;
   --color-text-muted: #9ca3af;
   --color-text-dim: #6b7280;
 
-  /* Accent Colors */
   --color-accent: #7c3aed;
   --color-accent-hover: #6d28d9;
   --color-accent-dim: rgba(124, 58, 237, 0.2);
 
-  /* Overlay */
   --color-overlay: rgba(0, 0, 0, 0.4);
 
-  /* DriftOff / UI */
   --color-indigo-500: #4f46e5;
   --color-indigo-600: #4338ca;
   --color-indigo-700: #3730a3;
