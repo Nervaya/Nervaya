@@ -37,7 +37,6 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
   const navigateMonth = (direction: number) => {
     const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + direction, 1);
 
-    // Check if the new date would be disabled due to minDate
     if (minDate && newMonth < minDate) {
       const minDateYear = minDate.getFullYear();
       const minDateMonth = minDate.getMonth();
@@ -45,7 +44,6 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
       return;
     }
 
-    // Check if the new date would be disabled due to maxDate
     if (maxDate && newMonth > maxDate) {
       const maxDateYear = maxDate.getFullYear();
       const maxDateMonth = maxDate.getMonth();
@@ -68,12 +66,10 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
   const firstDay = getFirstDayOfMonth(currentMonth);
   const days: (number | null)[] = [];
 
-  // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
     days.push(null);
   }
 
-  // Add all days of the month
   for (let day = 1; day <= daysInMonth; day++) {
     days.push(day);
   }

@@ -3,7 +3,6 @@
 import LottieLoader from '@/components/common/LottieLoader';
 import dynamic from 'next/dynamic';
 
-// Lazy-load PrivacyPolicy component to avoid loading 20+ react-icons in main bundle
 const PrivacyPolicy = dynamic(() => import('./PrivacyPolicyContent'), {
   ssr: true,
   loading: () => (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { SupplementFormData } from '@/types/supplement.types';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -15,6 +15,20 @@ interface SupplementFormProps {
   compact?: boolean;
 }
 
+function getInitialFormData(initialData?: Partial<SupplementFormData>): SupplementFormData {
+  return {
+    name: initialData?.name ?? '',
+    description: initialData?.description ?? '',
+    price: initialData?.price ?? 0,
+    image: initialData?.image ?? '',
+    stock: initialData?.stock ?? 0,
+    category: initialData?.category ?? '',
+    ingredients: initialData?.ingredients ?? [],
+    benefits: initialData?.benefits ?? [],
+    isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
+  };
+}
+
 const SupplementForm: React.FC<SupplementFormProps> = ({
   onSubmit,
   initialData,
@@ -22,40 +36,10 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   submitLabel = 'Create Supplement',
   compact = false,
 }) => {
-  const [formData, setFormData] = useState<SupplementFormData>({
-    name: initialData?.name || '',
-    description: initialData?.description || '',
-    price: initialData?.price || 0,
-    image: initialData?.image || '',
-    stock: initialData?.stock || 0,
-    category: initialData?.category || '',
-    ingredients: initialData?.ingredients || [],
-    benefits: initialData?.benefits || [],
-    isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
-  });
-
-  const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
-  const [benefitsText, setBenefitsText] = useState(initialData?.benefits?.join(', ') || '');
+  const [formData, setFormData] = useState<SupplementFormData>(() => getInitialFormData(initialData));
+  const [ingredientsText, setIngredientsText] = useState(() => initialData?.ingredients?.join(', ') ?? '');
+  const [benefitsText, setBenefitsText] = useState(() => initialData?.benefits?.join(', ') ?? '');
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
-
-  useEffect(() => {
-    if (initialData) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFormData({
-        name: initialData.name || '',
-        description: initialData.description || '',
-        price: initialData.price || 0,
-        image: initialData.image || '',
-        stock: initialData.stock || 0,
-        category: initialData.category || '',
-        ingredients: initialData.ingredients || [],
-        benefits: initialData.benefits || [],
-        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
-      });
-      setIngredientsText(initialData.ingredients?.join(', ') || '');
-      setBenefitsText(initialData.benefits?.join(', ') || '');
-    }
-  }, [initialData]);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};

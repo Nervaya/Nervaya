@@ -46,7 +46,6 @@
   }
 }
 
-/* Forms Section */
 .formSection {
   width: 50%;
   padding: 3rem;
@@ -76,7 +75,6 @@
 }
 
 .formSignup {
-  /* extends .formSection */
 }
 
 @media (max-width: 768px) {
@@ -86,7 +84,6 @@
 }
 
 .formLogin {
-  /* extends .formSection */
 }
 
 @media (max-width: 768px) {
@@ -216,7 +213,6 @@
   color: var(--primary);
 }
 
-/* Error states */
 .errorBanner {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -256,7 +252,6 @@
   transform: none;
 }
 
-/* Auth toggle (Don't have an account? / Already have an account?) */
 .input::placeholder {
   color: #9ca3af;
 }
@@ -285,7 +280,6 @@
   text-decoration: underline;
 }
 
-/* Overlay & Panel Transitions */
 .overlayContainer {
   position: absolute;
   top: 0;
@@ -297,7 +291,6 @@
     transform 0.6s ease-in-out,
     border-radius 0.6s ease-in-out;
   z-index: 100;
-  /* Default state (Right side): Inner edge is Left */
   border-radius: 100px 0 0 100px;
 }
 
@@ -400,7 +393,6 @@
   color: var(--primary);
 }
 
-/* Logic Classes for switching */
 .rightPanelActive .formLogin {
   transform: translateX(100%);
   opacity: 0;

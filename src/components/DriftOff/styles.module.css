@@ -1,4 +1,3 @@
-/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -25,7 +24,6 @@
   width: 100%;
 }
 
-/* Glassmorphism Card Style */
 .card {
   background: var(--color-card-bg);
   backdrop-filter: blur(12px);
@@ -68,7 +66,6 @@
   margin: 0 0 var(--margin-lg) 0;
 }
 
-/* --- Hero Section --- */
 .heroSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -240,7 +237,6 @@
   margin-left: var(--spacing-sm);
 }
 
-/* --- How It Works --- */
 .howItWorksSection {
   margin-bottom: var(--margin-2xl);
 }
@@ -264,6 +260,9 @@
   display: flex;
   justify-content: center;
   gap: var(--margin-2xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
   flex-wrap: wrap;
 }
 
@@ -360,7 +359,6 @@
   color: var(--color-text-slate-300);
 }
 
-/* --- Playlist Section --- */
 .playlistHeader {
   display: flex;
   justify-content: space-between;
@@ -407,6 +405,9 @@
   display: flex;
   gap: var(--margin-2xl);
   flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .videoCard {
@@ -505,7 +506,6 @@
   color: var(--color-text-slate-300);
 }
 
-/* --- Support Section --- */
 .supportSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -577,10 +577,12 @@
   color: var(--color-foreground);
 }
 
-/* --- Testimonials --- */
 .testimonialsSection {
   display: flex;
   gap: var(--margin-2xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 768px) {

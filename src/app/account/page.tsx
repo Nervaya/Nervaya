@@ -12,6 +12,7 @@ type TabType = 'settings' | 'orders' | 'sessions';
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<TabType>('settings');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: 'Test Customer',
     email: 'customer@example.com',
@@ -24,8 +25,7 @@ export default function AccountPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // eslint-disable-next-line no-alert
-    alert('Profile updated! (Simulation)');
+    setSuccessMessage('Profile updated! (Simulation)');
   };
 
   return (
@@ -79,6 +79,11 @@ export default function AccountPage() {
                 <span className={styles.hint}>Email cannot be changed</span>
               </div>
 
+              {successMessage && (
+                <p className={styles.successMessage} role="status">
+                  {successMessage}
+                </p>
+              )}
               <button type="submit" className={styles.saveBtn}>
                 <FaSave /> Save Changes
               </button>

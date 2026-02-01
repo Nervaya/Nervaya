@@ -39,8 +39,7 @@ async function connectDB(): Promise<typeof mongoose> {
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      // eslint-disable-next-line no-console
-      console.log('MongoDB connected successfully');
+      console.warn('MongoDB connected successfully');
       return mongoose;
     });
   }

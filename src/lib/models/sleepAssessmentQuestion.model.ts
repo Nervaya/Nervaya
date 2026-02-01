@@ -66,7 +66,7 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       type: [questionOptionSchema],
       default: [],
       validate: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Mongoose validator this is Document | Query
         validator: function (this: any, options: IQuestionOption[]) {
           if (this.questionType === 'text') {
             return true;

@@ -135,7 +135,6 @@
   font-weight: 600;
 }
 
-/* Grid Layouts */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -364,7 +363,6 @@
   }
 }
 
-/* Security Grid */
 .securityGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -541,7 +539,6 @@
   }
 }
 
-/* Cookie Grid */
 .cookieGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -740,7 +737,6 @@
   }
 }
 
-/* Rights Grid */
 .rightsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -932,7 +928,6 @@
   }
 }
 
-/* Contact Info */
 .contactInfo {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);

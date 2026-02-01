@@ -13,6 +13,7 @@ export default function EditTherapistPage() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,16 +41,11 @@ export default function EditTherapistPage() {
             image: data.image || '',
           });
         } else {
-          // eslint-disable-next-line no-alert
-          alert('Failed to fetch therapist details');
+          setError('Failed to fetch therapist details');
           router.push('/admin/therapists');
         }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error('Error fetching therapist:', error);
-        }
-        // eslint-disable-next-line no-alert
-        alert('Error fetching therapist details');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error fetching therapist details');
       } finally {
         setInitialLoading(false);
       }
@@ -97,15 +93,10 @@ export default function EditTherapistPage() {
       if (response.ok) {
         router.push('/admin/therapists');
       } else {
-        // eslint-disable-next-line no-alert
-        alert('Failed to update therapist');
+        setError('Failed to update therapist');
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error updating therapist', error);
-      }
-      // eslint-disable-next-line no-alert
-      alert('An error occurred');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -140,6 +131,11 @@ export default function EditTherapistPage() {
       </header>
 
       <form onSubmit={handleSubmit} className={styles.form}>
+        {error && (
+          <div className={styles.errorMessage} role="alert">
+            {error}
+          </div>
+        )}
         <div className={styles.formLayout}>
           <div className={styles.formMain}>
             <section className={styles.section}>

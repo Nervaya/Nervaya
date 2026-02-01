@@ -20,24 +20,25 @@ const Testimonials = () => {
   ];
 
   return (
-    <div className={styles.testimonialsSection}>
+    <ul className={styles.testimonialsSection} aria-label="Testimonials">
       {reviews.map((review) => (
-        <div key={review.id} className={styles.testimonialCard}>
+        <li key={review.id} className={styles.testimonialCard}>
           <div className={styles.userProfile}>
             <div className={styles.userAvatar}>{review.initials}</div>
             <div className={styles.userInfo}>
               <h4>{review.name}</h4>
               <div className={styles.stars}>
                 {[...Array(review.stars)].map((_, i) => (
+                  // eslint-disable-next-line react/no-array-index-key -- static star count, order never changes
                   <FaStar key={`${review.id}-star-${i}`} size={14} />
                 ))}
               </div>
             </div>
           </div>
           <p className={styles.testimonialText}>{review.text}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

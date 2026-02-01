@@ -12,6 +12,8 @@ export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
 
   const fetchTherapists = async () => {
     try {
@@ -28,7 +30,6 @@ export default function AdminTherapistsPage() {
         setError(true);
       }
     } catch (error) {
-      // Error handling - could be improved with proper error logging service
       if (error instanceof Error) {
         console.error('Failed to fetch therapists', error);
       }
@@ -42,32 +43,49 @@ export default function AdminTherapistsPage() {
     fetchTherapists();
   }, []);
 
-  const handleDelete = async (id: string, name: string) => {
-    const message = `WARNING: Are you sure you want to delete ${name}? This action cannot be undone.`;
-    // eslint-disable-next-line no-alert
-    if (!confirm(message)) {
-      return;
-    }
+  const handleDeleteClick = (id: string, name: string) => {
+    setConfirmDelete({ id, name });
+    setDeleteError(null);
+  };
 
+  const handleDeleteConfirm = async () => {
+    if (!confirmDelete) return;
+    const { id } = confirmDelete;
+    setConfirmDelete(null);
     try {
       const response = await fetch(`/api/therapists/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        fetchTherapists(); // Refresh list
+        fetchTherapists();
       } else {
-        // eslint-disable-next-line no-alert
-        alert('Failed to delete therapist');
+        setDeleteError('Failed to delete therapist');
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error deleting therapist', error);
-      }
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : 'Failed to delete therapist');
     }
   };
 
   return (
     <div>
+      {confirmDelete && (
+        <div className={styles.confirmOverlay}>
+          <div className={styles.confirmDialog}>
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete {confirmDelete.name}? This action cannot be undone.</p>
+            {deleteError && <p className={styles.confirmError}>{deleteError}</p>}
+            <div className={styles.confirmActions}>
+              <button onClick={handleDeleteConfirm} className={styles.confirmButton}>
+                Delete
+              </button>
+              <button onClick={() => setConfirmDelete(null)} className={styles.cancelButton}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.header}>
         <h2>Manage Therapists</h2>
         <Link href="/admin/therapists/add" className={styles.addButton}>
@@ -92,9 +110,9 @@ export default function AdminTherapistsPage() {
       ) : therapists.length === 0 ? (
         <StatusState type="empty" message="No therapists found. Click above to add the first one." />
       ) : (
-        <div className={styles.list}>
+        <ul className={styles.list} aria-label="Therapist list">
           {therapists.map((therapist) => (
-            <div key={therapist._id} className={styles.card}>
+            <li key={therapist._id} className={styles.card}>
               <div className={styles.therapistInfo}>
                 <Image
                   src={therapist.image || '/default-therapist.png'}
@@ -136,13 +154,16 @@ export default function AdminTherapistsPage() {
                 <Link href={`/admin/therapists/edit/${therapist._id}`} className={styles.editButton}>
                   Edit
                 </Link>
-                <button onClick={() => handleDelete(therapist._id, therapist.name)} className={styles.deleteButton}>
+                <button
+                  onClick={() => handleDeleteClick(therapist._id, therapist.name)}
+                  className={styles.deleteButton}
+                >
                   Delete
                 </button>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

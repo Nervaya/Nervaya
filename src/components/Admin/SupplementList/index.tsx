@@ -22,7 +22,7 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
     name: string;
   } | null>(null);
 
-  const categories = ['all', ...new Set(supplements.map((s) => s.category))];
+  const categories = ['all', ...new Set(supplements.map((s) => s.category).filter(Boolean))];
 
   const filteredSupplements = supplements.filter((supplement) => {
     const matchesSearch =
@@ -91,7 +91,7 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
         >
           {categories.map((category) => (
             <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
+              {typeof category === 'string' ? category.charAt(0).toUpperCase() + category.slice(1) : category}
             </option>
           ))}
         </select>
@@ -102,9 +102,9 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
           <p>No supplements found</p>
         </div>
       ) : (
-        <div className={styles.list}>
+        <ul className={styles.list} aria-label="Supplement list">
           {filteredSupplements.map((supplement) => (
-            <div key={supplement._id} className={styles.card}>
+            <li key={supplement._id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image
                   src={supplement.image || '/default-supplement.png'}
@@ -144,9 +144,9 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
                   Delete
                 </button>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

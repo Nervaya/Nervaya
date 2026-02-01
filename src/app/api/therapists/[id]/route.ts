@@ -7,7 +7,6 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // GET is public - anyone can view a therapist
     const { id } = await params;
     const therapist = await getTherapistById(id);
     return NextResponse.json(successResponse('Therapist fetched successfully', therapist));
@@ -21,7 +20,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // Require authentication and ADMIN role for updating therapists
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
@@ -31,7 +29,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const body = await req.json();
 
-    // Input validation
     if (!body || typeof body !== 'object') {
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
@@ -48,7 +45,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    // Require authentication and ADMIN role for deleting therapists
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {

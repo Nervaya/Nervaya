@@ -7,7 +7,6 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET() {
   try {
-    // GET is public - anyone can view therapists
     const therapists = await getAllTherapists();
     return NextResponse.json(successResponse('Therapists fetched successfully', therapists));
   } catch (error) {
@@ -20,7 +19,6 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    // Require authentication and ADMIN role for creating therapists
     const authResult = await requireAuth(req, [ROLES.ADMIN]);
 
     if (authResult instanceof NextResponse) {
@@ -29,7 +27,6 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    // Input validation
     if (!body || typeof body !== 'object') {
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }

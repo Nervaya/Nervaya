@@ -7,7 +7,6 @@ export function validatePassword(password: string): {
   valid: boolean;
   message?: string;
 } {
-  // Minimum length
   if (password.length < 8) {
     return {
       valid: false,
@@ -15,7 +14,6 @@ export function validatePassword(password: string): {
     };
   }
 
-  // Check for at least one uppercase letter
   if (!/[A-Z]/.test(password)) {
     return {
       valid: false,
@@ -23,7 +21,6 @@ export function validatePassword(password: string): {
     };
   }
 
-  // Check for at least one lowercase letter
   if (!/[a-z]/.test(password)) {
     return {
       valid: false,
@@ -31,7 +28,6 @@ export function validatePassword(password: string): {
     };
   }
 
-  // Check for at least one number
   if (!/[0-9]/.test(password)) {
     return {
       valid: false,
@@ -39,7 +35,6 @@ export function validatePassword(password: string): {
     };
   }
 
-  // Check for at least one special character
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
     return {
       valid: false,
@@ -47,7 +42,6 @@ export function validatePassword(password: string): {
     };
   }
 
-  // Check for common weak passwords
   const commonPasswords = ['password', '12345678', 'qwerty', 'abc123', 'password123'];
   if (commonPasswords.some((common) => password.toLowerCase().includes(common))) {
     return {

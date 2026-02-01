@@ -7,15 +7,11 @@ interface SectionContentProps {
 }
 
 const SectionContent = memo(({ content }: SectionContentProps) => {
-  // Memoize paragraphs
-  // Memoize paragraphs
   const paragraphs = useMemo(() => {
-    return content.paragraphs?.map((paragraph, index) => {
-      // Use first 50 chars of paragraph as key since these are static
+    return content.paragraphs?.map((paragraph) => {
       const keyBase = paragraph.substring(0, 50).replace(/\s+/g, '-');
       return (
-        // eslint-disable-next-line react/no-array-index-key
-        <p key={`paragraph-${keyBase}-${index}`} className={styles.paragraph}>
+        <p key={`paragraph-${keyBase}-${paragraph.length}`} className={styles.paragraph}>
           {paragraph}
         </p>
       );
@@ -30,9 +26,8 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
           {subsection.paragraph && <p className={styles.paragraph}>{subsection.paragraph}</p>}
           {subsection.listItems && (
             <ul className={styles.list}>
-              {subsection.listItems.map((item, itemIndex) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={`${subsection.title}-${item.label}-${itemIndex}`}>
+              {subsection.listItems.map((item) => (
+                <li key={`${subsection.title}-${item.label}-${item.text}`}>
                   <strong>{item.label}</strong> {item.text}
                 </li>
               ))}
@@ -54,11 +49,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
     });
   }, [content.subsections]);
 
-  // Memoize grid items
   const gridItems = useMemo(() => {
-    return content.gridItems?.map((item: GridItem, index: number) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <div key={`grid-${item.title}-${index}`} className={styles.gridItem}>
+    return content.gridItems?.map((item: GridItem) => (
+      <div key={`grid-${item.title}-${item.text}`} className={styles.gridItem}>
         <div className={styles.gridIcon}>{item.icon}</div>
         <h4 className={styles.gridTitle}>{item.title}</h4>
         <p className={styles.gridText}>{item.text}</p>
@@ -76,11 +69,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
     ));
   }, [content.securityCards]);
 
-  // Memoize rights cards
   const rightsCards = useMemo(() => {
-    return content.rightsCards?.map((card: GridItem, index: number) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <div key={`rights-${card.title}-${index}`} className={styles.rightCard}>
+    return content.rightsCards?.map((card: GridItem) => (
+      <div key={`rights-${card.title}-${card.text}`} className={styles.rightCard}>
         <div className={styles.rightIcon}>{card.icon}</div>
         <h4 className={styles.rightTitle}>{card.title}</h4>
         <p className={styles.rightText}>{card.text}</p>

@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, phone, addressLine1, addressLine2, city, state, zipCode, country, label, isDefault } = body;
 
-    // Basic validation
     if (!name || !phone || !addressLine1 || !city || !state || !zipCode || !country || !label) {
       return NextResponse.json(errorResponse('Missing required fields', null, 400), { status: 400 });
     }
@@ -57,7 +56,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // If setting as default, unset other defaults
     if (isDefault) {
       user.addresses.forEach((addr) => (addr.isDefault = false));
     }

@@ -9,6 +9,8 @@ export default function MySessions() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [confirmCancel, setConfirmCancel] = useState<{ sessionId: string } | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSessions();
@@ -30,12 +32,15 @@ export default function MySessions() {
     }
   };
 
-  const handleCancelSession = async (sessionId: string) => {
-    // eslint-disable-next-line no-alert
-    if (!window.confirm('Are you sure you want to cancel this session?')) {
-      return;
-    }
+  const handleCancelClick = (sessionId: string) => {
+    setConfirmCancel({ sessionId });
+    setActionError(null);
+  };
 
+  const handleCancelConfirm = async () => {
+    if (!confirmCancel) return;
+    const { sessionId } = confirmCancel;
+    setConfirmCancel(null);
     try {
       const response = await fetch(`/api/sessions/${sessionId}`, {
         method: 'DELETE',
@@ -47,8 +52,7 @@ export default function MySessions() {
 
       fetchSessions();
     } catch (err) {
-      // eslint-disable-next-line no-alert
-      window.alert(err instanceof Error ? err.message : 'Error cancelling session');
+      setActionError(err instanceof Error ? err.message : 'Error cancelling session');
     }
   };
 
@@ -66,6 +70,24 @@ export default function MySessions() {
 
   return (
     <div className={styles.container}>
+      {confirmCancel && (
+        <div className={styles.confirmOverlay}>
+          <div className={styles.confirmDialog}>
+            <h3>Cancel Session</h3>
+            <p>Are you sure you want to cancel this session?</p>
+            {actionError && <p className={styles.confirmError}>{actionError}</p>}
+            <div className={styles.confirmActions}>
+              <button onClick={handleCancelConfirm} className={styles.confirmButton}>
+                Cancel Session
+              </button>
+              <button onClick={() => setConfirmCancel(null)} className={styles.cancelButton}>
+                Keep Session
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <h2 className={styles.heading}>My Sessions</h2>
 
       {sessions.length === 0 ? (
@@ -73,13 +95,12 @@ export default function MySessions() {
           <p>No sessions booked yet</p>
         </div>
       ) : (
-        <div className={styles.sessionsList}>
+        <ul className={styles.sessionsList} aria-label="My sessions">
           {sessions.map((session) => {
-            // The user's JSON shows 'therapistId' is the populated object
             const therapist = session.therapistId as unknown as Therapist;
 
             return (
-              <div key={session._id} className={styles.sessionCard}>
+              <li key={session._id} className={styles.sessionCard}>
                 <div className={styles.cardHeader}>
                   <div className={styles.therapistInfo}>
                     <h3 className={styles.therapistName}>{therapist?.name || 'Unknown Therapist'}</h3>
@@ -96,14 +117,14 @@ export default function MySessions() {
                 </div>
 
                 {session.status === 'pending' && (
-                  <button className={styles.cancelBtn} onClick={() => handleCancelSession(session._id)}>
+                  <button className={styles.cancelBtn} onClick={() => handleCancelClick(session._id)}>
                     Cancel Session
                   </button>
                 )}
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );

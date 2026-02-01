@@ -4,13 +4,11 @@ import { errorResponse, successResponse } from '@/lib/utils/response.util';
 import { ApiError } from '@/types/error.types';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 
-// Allowed file types
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
   try {
-    // Require authentication - only authenticated users can upload
     const authResult = await requireAuth(req);
 
     if (authResult instanceof NextResponse) {
@@ -26,7 +24,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Validate file type
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       return NextResponse.json(
         errorResponse('Invalid file type. Only images (JPEG, PNG, WebP, GIF) are allowed', null, 400),
@@ -34,12 +31,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(errorResponse('File size exceeds maximum limit of 5MB', null, 400), { status: 400 });
     }
 
-    // Additional validation: check file extension
     const fileName = file.name.toLowerCase();
     const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
     const hasValidExtension = validExtensions.some((ext) => fileName.endsWith(ext));

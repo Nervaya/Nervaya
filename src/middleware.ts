@@ -66,7 +66,6 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.next();
   }
 
-  // Add security headers
   const isProduction = process.env.NODE_ENV === 'production';
 
   response.headers.set('X-Content-Type-Options', 'nosniff');
@@ -82,8 +81,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Only run middleware on routes that need auth checks
-  // Public routes like /, /about-us, /support, /privacy-policy are excluded
   matcher: [
     '/dashboard/:path*',
     '/account/:path*',

@@ -46,7 +46,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    // Defer cart fetch to not block initial render
     const deferCartFetch = () => {
       if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
         requestIdleCallback(() => refreshCart(), { timeout: 2000 });

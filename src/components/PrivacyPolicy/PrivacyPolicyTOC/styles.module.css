@@ -38,7 +38,6 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #9ca3af;
-  /* Gray 400 */
   margin: 0 0 24px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -85,7 +84,6 @@
   border-radius: 8px;
   font-size: 0.9375rem;
   color: #d1d5db;
-  /* Gray 300 */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
@@ -157,7 +155,6 @@
 .tocLinkActive {
   color: #fff;
   background: rgba(129, 140, 248, 0.2);
-  /* Indigo tint */
   font-weight: 500;
 }
 

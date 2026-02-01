@@ -14,9 +14,9 @@ export function CheckoutSavedAddresses({ addresses, onUseAddress }: CheckoutSave
   return (
     <div className={styles.savedAddresses}>
       <h3 className={styles.sectionTitle}>Saved Addresses</h3>
-      <div className={styles.addressGrid}>
+      <ul className={styles.addressGrid} aria-label="Saved addresses">
         {addresses.map((addr) => (
-          <div key={addr._id} className={styles.addressCard}>
+          <li key={addr._id} className={styles.addressCard}>
             <div className={styles.addressHeader}>
               <span className={styles.addressLabel}>{addr.label}</span>
               {addr.isDefault && <span className={styles.defaultBadge}>Default</span>}
@@ -31,9 +31,9 @@ export function CheckoutSavedAddresses({ addresses, onUseAddress }: CheckoutSave
             <button type="button" className={styles.useButton} onClick={() => onUseAddress(addr)}>
               Use this address
             </button>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

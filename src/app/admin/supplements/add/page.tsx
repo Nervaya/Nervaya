@@ -32,7 +32,7 @@ export default function AddSupplementPage() {
     <div className={styles.container}>
       <h2 className={styles.title}>Add New Supplement</h2>
       {error && <div className={styles.error}>{error}</div>}
-      <SupplementForm onSubmit={handleSubmit} submitLabel="Create Supplement" />
+      <SupplementForm key="create" onSubmit={handleSubmit} submitLabel="Create Supplement" />
     </div>
   );
 }

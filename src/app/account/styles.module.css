@@ -99,6 +99,12 @@
   display: block;
 }
 
+.successMessage {
+  color: #4ade80;
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+
 .saveBtn {
   background: #7c3aed;
   color: white;

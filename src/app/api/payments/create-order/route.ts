@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
 
     const razorpayOrder = await createRazorpayOrder(orderId, amount);
 
-    // Return order details with key_id for frontend
     const responseData = {
       ...razorpayOrder,
       key_id: process.env.RAZORPAY_KEY_ID || '',

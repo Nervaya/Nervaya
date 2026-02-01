@@ -25,10 +25,6 @@ const AboutUsConsultation = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    // TODO: Implement form submission logic
-    // eslint-disable-next-line no-console
-    console.log('Form submitted:', formData);
   };
 
   return (

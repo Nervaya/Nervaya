@@ -60,7 +60,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     }
   }, [loading, isAuthenticated, user?.role, pathname, router]);
 
-  // Show loading screen while auth is initializing
   if (loading) {
     return <LoadingScreen />;
   }

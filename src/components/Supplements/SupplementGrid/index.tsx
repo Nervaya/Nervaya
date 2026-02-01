@@ -50,11 +50,13 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCar
           ))}
         </div>
       )}
-      <div className={styles.grid}>
+      <ul className={styles.grid} aria-label="Supplement products">
         {filteredSupplements.map((supplement) => (
-          <SupplementCard key={supplement._id} supplement={supplement} onAddToCart={onAddToCart} />
+          <li key={supplement._id}>
+            <SupplementCard supplement={supplement} onAddToCart={onAddToCart} />
+          </li>
         ))}
-      </div>
+      </ul>
       {filteredSupplements.length === 0 && (
         <div className={styles.empty}>
           <p>No supplements found in this category</p>

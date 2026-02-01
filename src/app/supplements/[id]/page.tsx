@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Sidebar from '@/components/Sidebar/LazySidebar';
@@ -25,9 +25,10 @@ export default function SupplementDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const fetchSupplement = async () => {
+  const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+
+  const fetchSupplement = useCallback(async () => {
     try {
-      const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
       if (!id) {
         setSupplement(null);
         setError('Supplement not found');
@@ -44,7 +45,7 @@ export default function SupplementDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   const handleAddToCart = async () => {
     if (!supplement) {
@@ -79,11 +80,10 @@ export default function SupplementDetailPage() {
   };
 
   useEffect(() => {
-    if (params.id) {
+    if (id) {
       fetchSupplement();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id]);
+  }, [id, fetchSupplement]);
 
   if (loading) {
     return (

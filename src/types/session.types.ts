@@ -27,8 +27,6 @@ export interface TherapistSlot {
   updatedAt: string;
 }
 
-// SessionStatus is now imported from @/lib/constants/enums
-
 export interface CreateSessionDTO {
   therapistId: string;
   date: string;

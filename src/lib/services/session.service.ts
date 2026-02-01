@@ -13,21 +13,16 @@ export async function createSession(userId: string, therapistId: string, date: s
       throw new ValidationError('Invalid User ID or Therapist ID');
     }
 
-    // Calculate endTime (1 hour duration)
-    // Note: startTime is expected in "HH:MM AM/PM" format
     const startHour = parseInt(startTime.split(':')[0]);
     const isPM = startTime.includes('PM');
     const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
 
     const endHour = hour24 + 1;
     const endPeriod = endHour >= 12 ? 'PM' : 'AM';
-    const displayEndHour = endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour === 12 ? 12 : endHour; // Handle noon/midnight correctly
-    // Simple logic for single-hour slots.
-    // If hour is 23 (11 PM), end is 0 (12 AM).
+    const displayEndHour = endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour === 12 ? 12 : endHour;
 
     const endTime = `${displayEndHour}:00 ${endPeriod}`;
 
-    // Check for existing session
     const existingSession = await Session.findOne({
       therapistId,
       date,
@@ -117,7 +112,6 @@ export async function cancelSession(sessionId: string, userId: string) {
     session.status = SESSION_STATUS.CANCELLED;
     await session.save();
 
-    // Release the slot using schedule service
     await releaseSlot(session.therapistId.toString(), session.date, session.startTime);
 
     return session;

@@ -31,7 +31,6 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = 'login'
   return (
     <div className={styles.container}>
       <div className={`${styles.authCard} ${isRightPanelActive ? styles.rightPanelActive : ''}`}>
-        {/* Sign Up Form Container (Left Side in Code, slides to active) */}
         <div
           className={`${styles.formSection} ${styles.formSignup}`}
           style={{
@@ -116,7 +115,6 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = 'login'
           </div>
         </div>
 
-        {/* Sign In Form Container (Right Side in Code, default active) */}
         <div
           className={`${styles.formSection} ${styles.formLogin}`}
           style={{
@@ -187,10 +185,8 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = 'login'
           </div>
         </div>
 
-        {/* Overlay Container (The Sliding Image Part) */}
         <div className={styles.overlayContainer}>
           <div className={styles.overlay}>
-            {/* Background Images for Overlay */}
             <div className={styles.overlayBg} style={{ left: 0 }}>
               <Image
                 src={IMAGES.AUTH_LOGIN_ILLUSTRATION}

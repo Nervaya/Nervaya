@@ -24,6 +24,7 @@ import {
   FaStethoscope,
   FaPills,
   FaCapsules,
+  FaNewspaper,
 } from 'react-icons/fa6';
 import type { NavigationMenuGroup } from '@/types/navigation.types';
 
@@ -52,6 +53,7 @@ export const iconMap: { [key: string]: React.ReactElement } = {
   FaStethoscope: <FaStethoscope />,
   FaPills: <FaPills />,
   FaCapsules: <FaCapsules />,
+  FaNewspaper: <FaNewspaper />,
   FaRightFromBracket: <FaRightFromBracket />,
 };
 
@@ -122,6 +124,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         icon: 'FaClipboardList',
       },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
+      { title: 'Blogs', path: '/admin/blogs', icon: 'FaNewspaper' },
     ],
   },
 ];
