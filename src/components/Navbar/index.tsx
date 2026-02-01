@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import UserIcon from './UserIcon';
+import { FaCircleUser } from 'react-icons/fa6';
 import { NAVBAR_PRODUCTS_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
 import { hasRole } from '@/lib/constants/rbac';
@@ -148,7 +148,7 @@ const Navbar = () => {
                   pathname === ROUTES.ADMIN_DASHBOARD || pathname?.startsWith('/account') ? 'page' : undefined
                 }
               >
-                <UserIcon size={24} />
+                <FaCircleUser size={24} />
                 <span>{isAdmin ? 'Admin' : user?.name?.split(' ')[0] || 'Account'}</span>
               </Link>
             </li>
