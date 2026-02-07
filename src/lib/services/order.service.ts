@@ -11,10 +11,20 @@ import {
   PAYMENT_STATUS_VALUES,
   OrderStatus,
 } from '@/lib/constants/enums';
+import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
+import { getShippingCost } from '@/utils/shipping.util';
 
-export async function createOrder(userId: string, shippingAddress: IOrder['shippingAddress']) {
+export interface CreateOrderParams {
+  shippingAddress: IOrder['shippingAddress'];
+  promoCode?: string;
+  promoDiscount?: number;
+  deliveryMethod?: 'standard' | 'express';
+}
+
+export async function createOrder(userId: string, params: CreateOrderParams) {
   await connectDB();
   try {
+    const { shippingAddress, promoCode, promoDiscount = 0, deliveryMethod } = params;
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
@@ -51,16 +61,25 @@ export async function createOrder(userId: string, shippingAddress: IOrder['shipp
       await supplement.save();
     }
 
-    const totalAmount = cart.totalAmount < 500 ? cart.totalAmount + 50 : cart.totalAmount;
+    const subtotal = cart.totalAmount;
+    const shipping = getShippingCost(deliveryMethod, subtotal);
+    const totalAmount = Math.max(0, subtotal + shipping - promoDiscount);
 
     const order = await Order.create({
-      userId: userId,
+      userId,
       items: orderItems,
-      totalAmount: totalAmount,
+      totalAmount,
       paymentStatus: PAYMENT_STATUS.PENDING,
       orderStatus: ORDER_STATUS.PENDING,
       shippingAddress,
+      ...(promoCode && { promoCode, promoDiscount }),
+      ...(deliveryMethod && { deliveryMethod }),
     });
+
+    if (promoCode) {
+      const promo = await getPromoCodeByCode(promoCode);
+      if (promo) await incrementUsage(promo._id.toString());
+    }
 
     await clearCart(userId);
 

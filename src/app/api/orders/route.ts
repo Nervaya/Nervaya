@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { shippingAddress } = body;
+    const { shippingAddress, promoCode, promoDiscount, deliveryMethod } = body;
 
     if (!shippingAddress || typeof shippingAddress !== 'object') {
       return NextResponse.json(errorResponse('Shipping address is required', null, 400), { status: 400 });
@@ -45,7 +45,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const order = await createOrder(authResult.user.userId, shippingAddress);
+    const order = await createOrder(authResult.user.userId, {
+      shippingAddress,
+      ...(promoCode != null && { promoCode }),
+      ...(promoDiscount != null && typeof promoDiscount === 'number' && { promoDiscount }),
+      ...(deliveryMethod && { deliveryMethod }),
+    });
     return NextResponse.json(successResponse('Order created successfully', order, 201), {
       status: 201,
     });

@@ -110,6 +110,48 @@ export interface SavedAddress extends ShippingAddress {
   isDefault: boolean;
 }
 
+export type DeliveryMethod = 'standard' | 'express';
+
+export interface DeliveryOption {
+  method: DeliveryMethod;
+  label: string;
+  duration: string;
+  cost: number;
+}
+
+export interface PromoCode {
+  _id: string;
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minPurchase?: number;
+  maxDiscount?: number;
+  expiryDate: Date | string;
+  usageLimit?: number;
+  usedCount: number;
+  isActive: boolean;
+  description?: string;
+  valid?: boolean;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+}
+
+export interface CreatePromoCodeDto {
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minPurchase?: number;
+  maxDiscount?: number;
+  expiryDate: Date | string;
+  usageLimit?: number;
+  description?: string;
+  isActive?: boolean;
+}
+
+export interface UpdatePromoCodeDto extends Partial<CreatePromoCodeDto> {
+  isActive?: boolean;
+}
+
 export interface Order {
   _id: string;
   userId: Types.ObjectId | string;
@@ -120,6 +162,9 @@ export interface Order {
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
   shippingAddress: ShippingAddress;
+  promoCode?: string;
+  promoDiscount?: number;
+  deliveryMethod?: 'standard' | 'express';
   createdAt: Date;
   updatedAt: Date;
 }

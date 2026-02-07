@@ -36,6 +36,9 @@ export interface IOrder extends Document {
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
   shippingAddress: IShippingAddress;
+  promoCode?: string;
+  promoDiscount?: number;
+  deliveryMethod?: 'standard' | 'express';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -154,6 +157,9 @@ const orderSchema = new Schema<IOrder>(
       type: shippingAddressSchema,
       required: [true, 'Shipping address is required'],
     },
+    promoCode: { type: String },
+    promoDiscount: { type: Number, min: 0 },
+    deliveryMethod: { type: String, enum: ['standard', 'express'] },
   },
   {
     timestamps: true,
