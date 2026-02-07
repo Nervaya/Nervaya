@@ -9,6 +9,7 @@ import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
+import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 
 export default function TherapyCornerPage() {
@@ -52,7 +53,7 @@ export default function TherapyCornerPage() {
 
   return (
     <Sidebar>
-      <div className={styles.container}>
+      <div className={containerStyles.container}>
         <PageHeader
           title="Therapy Corner"
           subtitle="Finding the right therapist isn't easy."

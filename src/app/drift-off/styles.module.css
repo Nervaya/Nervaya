@@ -1,14 +1,3 @@
-.container {
-  color: var(--color-foreground);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
-  min-height: 100vh;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-  animation: fadeIn 0.8s ease-out;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -37,6 +26,6 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-md);
+    padding: 0;
   }
 }

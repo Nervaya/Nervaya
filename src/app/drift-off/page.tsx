@@ -8,12 +8,13 @@ import Testimonials from '@/components/DriftOff/Testimonials';
 import WhatAreSection from '@/components/DriftOff/WhatAreSection';
 import WhatMakesDifferentSection from '@/components/DriftOff/WhatMakesDifferentSection';
 import WhyChooseSection from '@/components/DriftOff/WhyChooseSection';
+import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 
 export default function DriftOffPage() {
   return (
     <Sidebar>
-      <div className={styles.container}>
+      <div className={containerStyles.container}>
         <PageHeader
           title="Drift Off"
           subtitle="No more hoping to find the right sessions."
