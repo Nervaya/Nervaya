@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSession, getUserSessions } from '@/lib/services/session.service';
+import { createSession, getUserSessions, getAllSessions } from '@/lib/services/session.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
+
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 10;
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,8 +17,34 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const statusFilter = searchParams.get('status') || undefined;
+    const isAdmin = authResult.user.role === ROLES.ADMIN;
+    const adminView = searchParams.get('admin') === 'true';
 
+    if (isAdmin && adminView) {
+      const page = Math.max(1, parseInt(searchParams.get('page') || String(DEFAULT_PAGE), 10));
+      const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || String(DEFAULT_LIMIT), 10)));
+      const status = searchParams.get('status') || undefined;
+      const therapistId = searchParams.get('therapistId') || undefined;
+      const dateFrom = searchParams.get('dateFrom') || undefined;
+      const dateTo = searchParams.get('dateTo') || undefined;
+      const userId = searchParams.get('userId') || undefined;
+      const filters = {
+        ...(status && { status }),
+        ...(therapistId && { therapistId }),
+        ...(dateFrom && { dateFrom }),
+        ...(dateTo && { dateTo }),
+        ...(userId && { userId }),
+      };
+      const result = await getAllSessions(page, limit, Object.keys(filters).length > 0 ? filters : undefined);
+      return NextResponse.json(
+        successResponse('Sessions fetched successfully', {
+          data: result.data,
+          meta: { total: result.total, page: result.page, limit: result.limit, totalPages: result.totalPages },
+        }),
+      );
+    }
+
+    const statusFilter = searchParams.get('status') || undefined;
     const sessions = await getUserSessions(authResult.user.userId, statusFilter);
 
     return NextResponse.json(successResponse('Sessions fetched successfully', sessions));

@@ -126,6 +126,8 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         icon: 'FaClipboardList',
       },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
+      { title: 'Orders', path: '/admin/orders', icon: 'FaBoxOpen' },
+      { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },
       { title: 'Promo Codes', path: '/admin/promo-codes', icon: 'FaTag' },
       { title: 'Blogs', path: '/admin/blogs', icon: 'FaNewspaper' },
     ],

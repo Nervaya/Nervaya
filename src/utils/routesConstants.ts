@@ -15,6 +15,8 @@ export const ADMIN_ROUTES = [
   '/admin/billing',
   '/admin/supplements',
   '/admin/sleep-assessment',
+  '/admin/orders',
+  '/admin/sessions',
 ] as const;
 
 export const AUTH_ROUTES = ['/login', '/signup'] as const;

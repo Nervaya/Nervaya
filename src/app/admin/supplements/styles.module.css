@@ -60,3 +60,9 @@
   margin-bottom: var(--margin-lg);
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
+
+.paginationWrap {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}

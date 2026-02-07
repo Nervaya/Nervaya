@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createOrder, getUserOrders } from '@/lib/services/order.service';
+import { createOrder, getUserOrders, getAllOrders } from '@/lib/services/order.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
+
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 10;
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,6 +14,46 @@ export async function GET(request: NextRequest) {
 
     if (authResult instanceof NextResponse) {
       return authResult;
+    }
+
+    const { searchParams } = new URL(request.url);
+    const isAdmin = authResult.user.role === ROLES.ADMIN;
+    const adminView = searchParams.get('admin') === 'true';
+
+    if (isAdmin && adminView) {
+      const page = Math.max(1, parseInt(searchParams.get('page') || String(DEFAULT_PAGE), 10));
+      const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || String(DEFAULT_LIMIT), 10)));
+      const orderStatus = searchParams.get('orderStatus') || undefined;
+      const paymentStatus = searchParams.get('paymentStatus') || undefined;
+      const dateFrom = searchParams.get('dateFrom') || undefined;
+      const dateTo = searchParams.get('dateTo') || undefined;
+      const minAmountParam = searchParams.get('minAmount');
+      const maxAmountParam = searchParams.get('maxAmount');
+      const userId = searchParams.get('userId') || undefined;
+      const filters = {
+        ...(orderStatus && { orderStatus }),
+        ...(paymentStatus && { paymentStatus }),
+        ...(dateFrom && { dateFrom }),
+        ...(dateTo && { dateTo }),
+        ...(userId && { userId }),
+        ...(minAmountParam !== null &&
+          minAmountParam !== undefined &&
+          !Number.isNaN(Number(minAmountParam)) && {
+            minAmount: Number(minAmountParam),
+          }),
+        ...(maxAmountParam !== null &&
+          maxAmountParam !== undefined &&
+          !Number.isNaN(Number(maxAmountParam)) && {
+            maxAmount: Number(maxAmountParam),
+          }),
+      };
+      const result = await getAllOrders(page, limit, Object.keys(filters).length > 0 ? filters : undefined);
+      return NextResponse.json(
+        successResponse('Orders fetched successfully', {
+          data: result.data,
+          meta: { total: result.total, page: result.page, limit: result.limit, totalPages: result.totalPages },
+        }),
+      );
     }
 
     const orders = await getUserOrders(authResult.user.userId);

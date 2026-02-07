@@ -1,0 +1,207 @@
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.header {
+  margin-bottom: var(--margin-xl);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin-lg);
+}
+
+.card {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  padding: var(--spacing-lg);
+  border-radius: 16px;
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--spacing-md);
+  }
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-glass-border);
+}
+
+@media (max-width: 768px) {
+  .orderHeader {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.orderId {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-foreground);
+}
+
+.orderDate {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0.25rem 0 0 0;
+}
+
+.orderStatus {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.statusBadge,
+.paymentBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusBadge.pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.statusBadge.confirmed {
+  background: rgba(96, 165, 250, 0.2);
+  color: #60a5fa;
+}
+
+.statusBadge.shipped {
+  background: rgba(129, 140, 248, 0.2);
+  color: #818cf8;
+}
+
+.statusBadge.delivered {
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
+}
+
+.statusBadge.cancelled {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+}
+
+.paymentBadge.pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.paymentBadge.paid {
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
+}
+
+.paymentBadge.failed {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+}
+
+.paymentBadge.refunded {
+  background: rgba(129, 140, 248, 0.2);
+  color: #818cf8;
+}
+
+.userId {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.orderItems {
+  list-style: none;
+  margin: 0 0 1rem 0;
+  padding: 0;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.9rem;
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.itemPrice {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-glass-border);
+}
+
+@media (max-width: 768px) {
+  .orderFooter {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+}
+
+.orderTotal {
+  font-size: 1rem;
+  color: var(--color-foreground);
+}
+
+.retryButton {
+  background: var(--color-accent);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+  background: var(--color-accent-hover);
+}
+
+.itemInfo h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.itemInfo p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.paginationWrap {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}

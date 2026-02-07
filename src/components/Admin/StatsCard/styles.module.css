@@ -1,0 +1,58 @@
+.card {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--color-border-light-hover, rgba(255, 255, 255, 0.12));
+}
+
+.iconWrapper {
+  font-size: 1.5rem;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: var(--color-foreground);
+}
+
+.cardHint {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.trend {
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0 0;
+  font-weight: 600;
+}
+
+.trendUp {
+  color: #34d399;
+}
+
+.trendDown {
+  color: #f87171;
+}
+
+.trendNeutral {
+  color: var(--color-text-muted);
+}

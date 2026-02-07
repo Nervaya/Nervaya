@@ -4,7 +4,7 @@ import Order from '@/lib/models/order.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
-import { PAYMENT_STATUS, ORDER_STATUS } from '@/lib/constants/enums';
+import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY } from '@/lib/constants/enums';
 
 const getRazorpayInstance = () => {
   if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
@@ -53,7 +53,7 @@ export async function createRazorpayOrder(orderId: string, amount: number) {
 
     const options = {
       amount: amountInPaisa,
-      currency: 'INR',
+      currency: CURRENCY.CODE,
       receipt: `${orderId}_${Date.now()}`,
       notes: {
         orderId: orderId.toString(),
