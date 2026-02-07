@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { IoAdd, IoDocumentTextOutline, IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -143,16 +144,16 @@ export default function AdminSleepAssessmentPage() {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <h1 className={styles.title}>Sleep Assessment Questions</h1>
-          <p className={styles.subtitle}>Manage and configure assessment questions</p>
-        </div>
-        <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
-          <IoAdd aria-hidden />
-          Add Question
-        </Link>
-      </header>
+      <PageHeader
+        title="Sleep Assessment Questions"
+        subtitle="Manage and configure assessment questions"
+        actions={
+          <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
+            <IoAdd aria-hidden />
+            Add Question
+          </Link>
+        }
+      />
 
       {loading ? (
         <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
