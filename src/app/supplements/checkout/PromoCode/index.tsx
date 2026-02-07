@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { FaTag } from 'react-icons/fa6';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
-import styles from './PromoCode.module.css';
+import styles from './styles.module.css';
 
 interface PromoCodeProps {
   code: string;

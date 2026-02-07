@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useCallback, useMemo } from 'react';
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { TherapistSlot } from '@/types/session.types';
 import styles from './styles.module.css';
 
@@ -54,6 +56,19 @@ function groupSlotsByPeriod(slots: TherapistSlot[]): GroupedSlots[] {
 }
 
 export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: TimeSlotGridProps) {
+  const [currentPeriodIndex, setCurrentPeriodIndex] = useState(0);
+
+  const groupedSlots = useMemo(() => groupSlotsByPeriod(slots), [slots]);
+  const maxPeriodIndex = groupedSlots.length > 0 ? groupedSlots.length - 1 : 0;
+
+  const goPrev = useCallback(() => {
+    setCurrentPeriodIndex((i) => Math.max(0, i - 1));
+  }, []);
+
+  const goNext = useCallback(() => {
+    setCurrentPeriodIndex((i) => Math.min(maxPeriodIndex, i + 1));
+  }, [maxPeriodIndex]);
+
   if (slots.length === 0) {
     return (
       <div className={styles.container}>
@@ -65,59 +80,83 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
     );
   }
 
-  const groupedSlots = groupSlotsByPeriod(slots);
+  const currentGroup = groupedSlots[currentPeriodIndex];
+  if (!currentGroup) {
+    return null;
+  }
+
+  const canGoPrev = currentPeriodIndex > 0;
+  const canGoNext = currentPeriodIndex < groupedSlots.length - 1;
+  const availableCount = currentGroup.slots.filter((s) => s.isAvailable).length;
 
   return (
     <div className={styles.container}>
-      <div className={styles.slotsList}>
-        {groupedSlots.map((group) => (
-          <div key={group.period} className={styles.periodGroup}>
-            <h4 className={styles.periodTitle}>
-              <span className={styles.periodIcon}>
-                {group.period === 'Morning' && '🌅'}
-                {group.period === 'Afternoon' && '☀️'}
-                {group.period === 'Evening' && '🌆'}
-              </span>
-              {group.period}
-              <span className={styles.periodCount}>({group.slots.filter((s) => s.isAvailable).length} available)</span>
-            </h4>
-            <div className={styles.grid}>
-              {group.slots.map((slot) => {
-                const isSelected = selectedSlot === slot._id;
-                const isBooked = !slot.isAvailable;
-                const isCustomized = slot.isCustomized;
+      <div className={styles.periodNav}>
+        <button
+          type="button"
+          className={styles.periodNavButton}
+          onClick={goPrev}
+          disabled={!canGoPrev}
+          aria-label="Previous time period (e.g. Morning)"
+        >
+          <IoChevronBack aria-hidden />
+        </button>
+        <div className={styles.periodNavLabel}>
+          <span className={styles.periodIcon}>
+            {currentGroup.period === 'Morning' && '🌅'}
+            {currentGroup.period === 'Afternoon' && '☀️'}
+            {currentGroup.period === 'Evening' && '🌆'}
+          </span>
+          <span>{currentGroup.period}</span>
+          <span className={styles.periodCount}>({availableCount} available)</span>
+        </div>
+        <button
+          type="button"
+          className={styles.periodNavButton}
+          onClick={goNext}
+          disabled={!canGoNext}
+          aria-label="Next time period (e.g. Evening)"
+        >
+          <IoChevronForward aria-hidden />
+        </button>
+      </div>
 
-                let slotClassName = styles.slot;
-                if (isBooked) {
-                  slotClassName += ` ${styles.booked}`;
-                } else if (isSelected) {
-                  slotClassName += ` ${styles.selected}`;
-                } else if (isCustomized) {
-                  slotClassName += ` ${styles.customized}`;
-                }
+      <div className={styles.periodGroup}>
+        <div className={styles.grid}>
+          {currentGroup.slots.map((slot) => {
+            const isSelected = selectedSlot === slot._id;
+            const isBooked = !slot.isAvailable;
+            const isCustomized = slot.isCustomized;
 
-                return (
-                  <button
-                    key={slot._id}
-                    className={slotClassName}
-                    onClick={() => onSlotSelect(slot._id)}
-                    disabled={isBooked}
-                    aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
-                    aria-pressed={isSelected}
-                  >
-                    <span className={styles.time}>{slot.startTime}</span>
-                    {slot.endTime && <span className={styles.timeRange}>{slot.endTime}</span>}
-                    {isCustomized && (
-                      <span className={styles.customizedBadge} title="Customized slot">
-                        ⭐
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+            let slotClassName = styles.slot;
+            if (isBooked) {
+              slotClassName += ` ${styles.booked}`;
+            } else if (isSelected) {
+              slotClassName += ` ${styles.selected}`;
+            } else if (isCustomized) {
+              slotClassName += ` ${styles.customized}`;
+            }
+
+            return (
+              <button
+                key={slot._id}
+                className={slotClassName}
+                onClick={() => onSlotSelect(slot._id)}
+                disabled={isBooked}
+                aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
+                aria-pressed={isSelected}
+              >
+                <span className={styles.time}>{slot.startTime}</span>
+                {slot.endTime && <span className={styles.timeRange}>{slot.endTime}</span>}
+                {isCustomized && (
+                  <span className={styles.customizedBadge} title="Customized slot">
+                    ⭐
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

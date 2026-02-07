@@ -2,7 +2,7 @@
 
 import { FaReceipt, FaShieldHalved } from 'react-icons/fa6';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
-import { getShippingCost } from './useCheckout';
+import { getShippingCost } from '../useCheckout';
 import type { Cart, DeliveryMethod } from '@/types/supplement.types';
 import Button from '@/components/common/Button';
 import styles from './styles.module.css';

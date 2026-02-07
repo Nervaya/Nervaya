@@ -2,7 +2,7 @@
 
 import type { ShippingAddress } from '@/types/supplement.types';
 import { FaHouse, FaPenToSquare } from 'react-icons/fa6';
-import styles from './AddressCard.module.css';
+import styles from './styles.module.css';
 
 interface AddressCardProps {
   address: ShippingAddress;

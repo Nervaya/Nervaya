@@ -4,7 +4,7 @@ import type { DeliveryMethod } from '@/types/supplement.types';
 import { FaBox } from 'react-icons/fa6';
 import { formatPrice } from '@/utils/cart.util';
 import { getShippingCost } from '@/utils/shipping.util';
-import styles from './DeliveryOptions.module.css';
+import styles from './styles.module.css';
 
 const DELIVERY_OPTIONS: { method: DeliveryMethod; label: string; duration: string }[] = [
   { method: 'standard', label: 'Standard Delivery', duration: '5-7 business days' },
