@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
 
@@ -30,7 +31,7 @@ export default function AddSupplementPage() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Add New Supplement</h2>
+      <PageHeader title="Add New Supplement" subtitle="Create a new supplement entry" />
       {error && <div className={styles.error}>{error}</div>}
       <SupplementForm key="create" onSubmit={handleSubmit} submitLabel="Create Supplement" />
     </div>
