@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Order } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import api from '@/lib/axios';
+import Pagination from '@/components/common/Pagination';
+import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { FaShoppingBag } from 'react-icons/fa';
 
@@ -12,6 +14,12 @@ export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+
+  const limit = PAGE_SIZE_5;
+  const total = orders.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const paginatedOrders = useMemo(() => orders.slice((page - 1) * limit, page * limit), [orders, page, limit]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -75,7 +83,7 @@ export default function MyOrders() {
     <div className={styles.container}>
       <h2 className={styles.heading}>My Orders</h2>
       <ul className={styles.ordersList} aria-label="Order history">
-        {orders.map((order) => (
+        {paginatedOrders.map((order) => (
           <li key={order._id} className={styles.orderCard}>
             <div className={styles.orderHeader}>
               <div>
@@ -113,6 +121,18 @@ export default function MyOrders() {
           </li>
         ))}
       </ul>
+      {totalPages > 0 && (
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={page}
+            limit={limit}
+            total={total}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            ariaLabel="My orders pagination"
+          />
+        </div>
+      )}
     </div>
   );
 }

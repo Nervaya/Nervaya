@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   padding: 1.5rem;
+  color: var(--color-foreground, #ededed);
 }
 
 @media (max-width: 768px) {
@@ -9,10 +10,16 @@
   }
 }
 
+.paginationWrap {
+  margin-top: var(--spacing-xl, 32px);
+  display: flex;
+  justify-content: center;
+}
+
 .heading {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--color-foreground, #ededed);
   margin-bottom: 1.5rem;
 }
 
@@ -27,7 +34,7 @@
   text-align: center;
   padding: 2rem;
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted, #9ca3af);
 }
 
 @media (max-width: 768px) {
@@ -41,7 +48,7 @@
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
-  color: #9ca3af;
+  color: var(--color-text-muted, #9ca3af);
 }
 
 @media (max-width: 768px) {
@@ -66,11 +73,16 @@
 }
 
 .sessionCard {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--color-glass-bg, rgba(10, 10, 12, 0.75));
+  backdrop-filter: blur(var(--color-glass-blur, 20px));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur, 20px));
+  border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
   border-radius: 12px;
   padding: 1.5rem;
-  transition: box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 
 @media (max-width: 768px) {
@@ -80,7 +92,8 @@
 }
 
 .sessionCard:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .cardHeader {
@@ -104,7 +117,7 @@
 .therapistName {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-foreground, #ededed);
   margin-bottom: 0.25rem;
 }
 
@@ -116,7 +129,7 @@
 
 .qualifications {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--color-text-muted, #9ca3af);
 }
 
 @media (max-width: 768px) {
@@ -141,30 +154,30 @@
 }
 
 .statusPending {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
 }
 
 .statusConfirmed {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
 }
 
 .statusCompleted {
-  background: #e0e7ff;
-  color: #3730a3;
+  background: rgba(129, 140, 248, 0.2);
+  color: #818cf8;
 }
 
 .statusCancelled {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
 }
 
 .sessionDetails {
   display: flex;
   gap: 1.5rem;
   margin-bottom: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted, #9ca3af);
   font-size: 0.9rem;
 }
 
@@ -177,14 +190,16 @@
 }
 
 .cancelBtn {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
   padding: 0.5rem 1rem;
-  border: none;
+  border: 1px solid rgba(248, 113, 113, 0.4);
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 @media (max-width: 768px) {
@@ -195,7 +210,8 @@
 }
 
 .cancelBtn:hover {
-  background: #fecaca;
+  background: rgba(248, 113, 113, 0.3);
+  border-color: rgba(248, 113, 113, 0.5);
 }
 
 .confirmOverlay {
@@ -213,28 +229,29 @@
 }
 
 .confirmDialog {
-  background: #fff;
+  background: var(--color-glass-bg, rgba(15, 15, 18, 0.95));
+  border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.1));
   padding: 24px;
   border-radius: 12px;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .confirmDialog h3 {
   margin: 0 0 12px 0;
   font-size: 1.125rem;
-  color: #1f2937;
+  color: var(--color-foreground, #ededed);
 }
 
 .confirmDialog p {
   margin: 0 0 16px 0;
-  color: #6b7280;
+  color: var(--color-text-muted, #9ca3af);
   font-size: 0.9375rem;
 }
 
 .confirmError {
-  color: #dc2626;
+  color: #f87171;
   margin: 0 0 12px 0;
   font-size: 0.875rem;
 }
@@ -247,28 +264,33 @@
 
 .confirmButton {
   padding: 8px 16px;
-  background: #dc2626;
+  background: rgba(239, 68, 68, 0.8);
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .confirmButton:hover {
-  background: #b91c1c;
+  background: #dc2626;
 }
 
 .cancelButton {
   padding: 8px 16px;
-  background: #e5e7eb;
-  color: #374151;
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-foreground, #ededed);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .cancelButton:hover {
-  background: #d1d5db;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
 }

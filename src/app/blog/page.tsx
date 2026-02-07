@@ -128,14 +128,16 @@ export default function BlogListPage() {
         ) : (
           <>
             <BlogGrid blogs={blogs} formatDate={formatDate} getExcerpt={getExcerpt} />
-            <Pagination
-              page={pagination.page}
-              limit={pagination.limit}
-              total={pagination.total}
-              totalPages={pagination.totalPages}
-              onPageChange={goToPage}
-              ariaLabel="Blog pagination"
-            />
+            {pagination.totalPages > 0 && (
+              <Pagination
+                page={pagination.page}
+                limit={pagination.limit}
+                total={pagination.total}
+                totalPages={pagination.totalPages}
+                onPageChange={goToPage}
+                ariaLabel="Blog pagination"
+              />
+            )}
           </>
         )}
       </div>

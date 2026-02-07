@@ -31,6 +31,7 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
   logout: () => Promise<void>;
   clearError: () => void;
+  updateUser: (updates: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -184,6 +185,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const clearError = () => setError(null);
 
+  const updateUser = (updates: Partial<User>) => {
+    if (!user) return;
+    const next = { ...user, ...updates };
+    setUser(next);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_USER, JSON.stringify(next));
+      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -195,6 +206,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signup,
         logout,
         clearError,
+        updateUser,
       }}
     >
       {children}

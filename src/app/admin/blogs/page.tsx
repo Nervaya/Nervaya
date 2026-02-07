@@ -152,14 +152,16 @@ export default function AdminBlogsPage() {
               />
             ))}
           </ul>
-          <Pagination
-            page={pagination.page}
-            limit={pagination.limit}
-            total={pagination.total}
-            totalPages={pagination.totalPages}
-            onPageChange={goToPage}
-            ariaLabel="Manage blogs pagination"
-          />
+          {pagination.totalPages > 0 && (
+            <Pagination
+              page={pagination.page}
+              limit={pagination.limit}
+              total={pagination.total}
+              totalPages={pagination.totalPages}
+              onPageChange={goToPage}
+              ariaLabel="Manage blogs pagination"
+            />
+          )}
         </>
       )}
     </div>

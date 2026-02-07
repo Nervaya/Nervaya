@@ -88,3 +88,52 @@ export async function loginUser(email: string, password: string) {
     token,
   };
 }
+
+export async function updateProfile(userId: string, name: string) {
+  await connectDB();
+
+  if (!validateName(name)) {
+    throw new ValidationError('Name must be at least 2 characters long');
+  }
+
+  const user = await User.findByIdAndUpdate(userId, { name: name.trim() }, { new: true, runValidators: true });
+
+  if (!user) {
+    throw new AuthenticationError('User not found');
+  }
+
+  return {
+    user: {
+      _id: user._id.toString(),
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    },
+  };
+}
+
+export async function changePassword(userId: string, currentPassword: string, newPassword: string) {
+  await connectDB();
+
+  const user = await User.findById(userId).select('+password');
+  if (!user) {
+    throw new AuthenticationError('User not found');
+  }
+
+  const isCurrentValid = await bcrypt.compare(currentPassword.trim(), user.password);
+  if (!isCurrentValid) {
+    throw new AuthenticationError('Current password is incorrect');
+  }
+
+  const passwordValidation = validatePassword(newPassword);
+  if (!passwordValidation.valid) {
+    throw new ValidationError(passwordValidation.message || 'Invalid new password');
+  }
+
+  user.password = newPassword.trim();
+  await user.save();
+
+  return { message: 'Password updated successfully' };
+}

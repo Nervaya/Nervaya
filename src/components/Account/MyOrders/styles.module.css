@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   padding: 1.5rem;
+  color: var(--color-foreground, #ededed);
 }
 
 @media (max-width: 768px) {
@@ -9,10 +10,16 @@
   }
 }
 
+.paginationWrap {
+  margin-top: var(--spacing-xl, 32px);
+  display: flex;
+  justify-content: center;
+}
+
 .heading {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--color-foreground, #ededed);
   margin-bottom: 1.5rem;
 }
 
@@ -42,7 +49,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +65,7 @@
 
 .icon {
   font-size: 2.5rem;
-  color: #9ca3af;
+  color: var(--color-text-muted, #9ca3af);
 }
 
 @media (max-width: 768px) {
@@ -70,7 +77,7 @@
 .emptyTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--color-foreground, #ededed);
   margin-bottom: 0.5rem;
 }
 
@@ -82,7 +89,7 @@
 
 .emptyText {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted, #9ca3af);
   margin-bottom: 1rem;
 }
 
@@ -95,7 +102,7 @@
 .shopLink {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background: #7c3aed;
+  background: var(--color-accent, #7c3aed);
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -104,7 +111,7 @@
 }
 
 .shopLink:hover {
-  background: #6d28d9;
+  background: var(--color-accent-hover, #6d28d9);
 }
 
 .ordersList {
@@ -117,10 +124,13 @@
 }
 
 .orderCard {
-  background: white;
+  background: var(--color-glass-bg, rgba(10, 10, 12, 0.75));
+  backdrop-filter: blur(var(--color-glass-blur, 20px));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur, 20px));
+  border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
 .orderHeader {
@@ -129,19 +139,19 @@
   align-items: flex-start;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .orderId {
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.25rem 0;
-  color: #1a1a1a;
+  color: var(--color-foreground, #ededed);
 }
 
 .orderDate {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted, #9ca3af);
   margin: 0;
 }
 
@@ -162,48 +172,48 @@
 }
 
 .statusBadge.pending {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
 }
 
 .statusBadge.confirmed {
-  background: #dbeafe;
-  color: #1e40af;
+  background: rgba(96, 165, 250, 0.2);
+  color: #60a5fa;
 }
 
 .statusBadge.shipped {
-  background: #e0e7ff;
-  color: #3730a3;
+  background: rgba(129, 140, 248, 0.2);
+  color: #818cf8;
 }
 
 .statusBadge.delivered {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
 }
 
 .statusBadge.cancelled {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
 }
 
 .paymentBadge.pending {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
 }
 
 .paymentBadge.paid {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
 }
 
 .paymentBadge.failed {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
 }
 
 .paymentBadge.refunded {
-  background: #e0e7ff;
-  color: #3730a3;
+  background: rgba(129, 140, 248, 0.2);
+  color: #818cf8;
 }
 
 .orderItems {
@@ -217,7 +227,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .orderItem:last-child {
@@ -228,19 +238,19 @@
   font-size: 1rem;
   font-weight: 500;
   margin: 0 0 0.25rem 0;
-  color: #1a1a1a;
+  color: var(--color-foreground, #ededed);
 }
 
 .itemInfo p {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted, #9ca3af);
   margin: 0;
 }
 
 .itemPrice {
   font-size: 1rem;
   font-weight: 600;
-  color: #7c3aed;
+  color: var(--color-emerald-400, #34d399);
 }
 
 .orderFooter {
@@ -248,19 +258,19 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .orderTotal {
   font-size: 1.25rem;
-  color: #1a1a1a;
+  color: var(--color-foreground, #ededed);
 }
 
 .viewOrderLink {
   padding: 0.5rem 1rem;
   background: transparent;
-  color: #7c3aed;
-  border: 1px solid #7c3aed;
+  color: var(--color-accent, #a78bfa);
+  border: 1px solid var(--color-accent, #7c3aed);
   border-radius: 6px;
   text-decoration: none;
   font-size: 0.875rem;
@@ -269,14 +279,15 @@
 }
 
 .viewOrderLink:hover {
-  background: #7c3aed;
+  background: var(--color-accent, #7c3aed);
   color: white;
 }
 
 .error {
-  color: #ef4444;
+  color: #f87171;
   padding: 1rem;
-  background: #fee2e2;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 8px;
   margin-top: 1rem;
 }

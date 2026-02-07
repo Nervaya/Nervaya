@@ -105,7 +105,7 @@ export default function TherapyCornerPage() {
                   </li>
                 ))}
               </ul>
-              {totalPages > 1 && (
+              {totalPages > 0 && (
                 <div className={styles.paginationWrap}>
                   <Pagination
                     page={page}
