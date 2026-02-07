@@ -10,6 +10,7 @@ import CartSummary from '@/components/Cart/CartSummary';
 import { cartApi } from '@/lib/api/cart';
 import styles from './styles.module.css';
 import Lottie from 'lottie-react';
+import LottieLoader from '@/components/common/LottieLoader';
 import emptyBoxAnimation from './empty_box.json';
 
 export default function CartPage() {
@@ -82,7 +83,9 @@ export default function CartPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <div className={styles.loading}>Loading cart...</div>
+          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+            <LottieLoader width={200} height={200} />
+          </div>
         </div>
       </Sidebar>
     );
