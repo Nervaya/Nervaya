@@ -1,41 +1,33 @@
 .container {
-  color: #fff;
+  color: var(--color-foreground);
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.header {
-  background: linear-gradient(90deg, #7c3aed, #4c1d95);
-  padding: 2rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-}
-
-.title {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.description {
-  color: rgba(255, 255, 255, 0.8);
+  padding: var(--spacing-lg);
 }
 
 .sectionTitle {
-  margin-bottom: 1.5rem;
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0 0 var(--spacing-md) 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
+}
+
+.section {
+  margin-bottom: var(--spacing-xl);
 }
 
 .paginationWrap {
-  margin-top: var(--spacing-xl, 32px);
+  margin-top: var(--spacing-xl);
   display: flex;
   justify-content: center;
+}
+
+.error {
+  color: var(--color-destructive);
+  margin-bottom: var(--spacing-md);
 }
 
 .therapistList {
@@ -45,58 +37,58 @@
 }
 
 .therapistCard {
-  background: #171717;
+  background: var(--color-card-bg);
   border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid #333;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--color-border-light);
 }
 
 .therapistInfo {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 .avatar {
   width: 80px;
   height: 80px;
-  background: #e9d5ff;
+  background: var(--color-indigo-dim);
   border-radius: 12px;
 }
 
 .credentials {
-  color: #a78bfa;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  color: var(--color-indigo-400);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .details {
-  color: #9ca3af;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
 }
 
 .tags {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
 
 .tags span {
-  background: #2e1065;
-  color: #c4b5fd;
-  padding: 0.25rem 0.75rem;
+  background: var(--color-indigo-700);
+  color: var(--color-indigo-200);
+  padding: var(--spacing-xs) var(--spacing-md);
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #333;
-  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--spacing-md);
 }
 
 .price {
@@ -105,33 +97,33 @@
 
 .buttons {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .outlineBtn {
   background: transparent;
-  border: 1px solid #7c3aed;
-  color: #fff;
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
+  border: 1px solid var(--color-accent);
+  color: var(--color-foreground);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .outlineBtn:hover {
-  background: rgba(124, 58, 237, 0.1);
+  background: var(--color-accent-dim);
 }
 
 .primaryBtn {
-  background: #7c3aed;
+  background: var(--color-accent);
   border: none;
-  color: #fff;
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
+  color: var(--color-foreground);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .primaryBtn:hover {
-  background: #6d28d9;
+  background: var(--color-accent-hover);
 }
