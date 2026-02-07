@@ -1,4 +1,6 @@
-export const DRIFT_OFF_HERO_VIDEO_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+import { NTHERAPY_YOUTUBE_VIDEOS } from './enums';
+
+export const DRIFT_OFF_HERO_VIDEO_URL = NTHERAPY_YOUTUBE_VIDEOS.HERO;
 
 export const DRIFT_OFF_HERO_VIDEO_TITLE = 'Sample Guided Meditation';
 export const DRIFT_OFF_HERO_VIDEO_AUTHOR = 'By Practia';
@@ -11,7 +13,7 @@ export const DRIFT_OFF_PLAYLIST_VIDEOS = [
     duration: '25 min',
     author: 'By Practia',
     isFree: true,
-    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    url: NTHERAPY_YOUTUBE_VIDEOS.POPULAR_1,
   },
   {
     id: 2,
@@ -19,6 +21,6 @@ export const DRIFT_OFF_PLAYLIST_VIDEOS = [
     duration: '20 min',
     author: 'By Dr. Sarah Mitchell',
     isFree: false,
-    url: 'https://www.youtube.com/watch?v=XsX3ATc3FbA',
+    url: NTHERAPY_YOUTUBE_VIDEOS.POPULAR_2,
   },
 ] as const;
