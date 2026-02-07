@@ -33,7 +33,15 @@ function segmentToLabel(segment: string): string {
 }
 
 function isDynamicSegment(segment: string): boolean {
-  return /^[a-f0-9-]{20,}$/i.test(segment) || (/^[\w-]+$/.test(segment) && segment.length > 20);
+  // MongoDB ObjectId is exactly 24 hex characters
+  if (/^[a-f0-9]{24}$/i.test(segment)) {
+    return true;
+  }
+  // Very long hex strings are likely IDs
+  if (/^[a-f0-9-]{20,}$/i.test(segment)) {
+    return true;
+  }
+  return false;
 }
 
 export function getBreadcrumbsForPath(pathname: string): BreadcrumbItem[] {
@@ -50,11 +58,8 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbItem[] {
     const segment = segments[i];
     href += `/${segment}`;
     const isLast = i === segments.length - 1;
-    const label = isDynamicSegment(segment)
-      ? segment.length > 24
-        ? 'Details'
-        : segmentToLabel(segment)
-      : segmentToLabel(segment);
+    const label = isDynamicSegment(segment) ? 'Details' : segmentToLabel(segment);
+
     items.push({
       label,
       href: isLast ? undefined : href,
