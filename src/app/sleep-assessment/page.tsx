@@ -41,7 +41,7 @@ export default function SleepAssessmentPage() {
     <Sidebar>
       <div className={styles.pageContainer}>
         {isLoading && (
-          <div className={styles.loadingContainer}>
+          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
             <LottieLoader width={200} height={200} />
           </div>
         )}

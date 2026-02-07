@@ -155,7 +155,7 @@ export default function AdminSleepAssessmentPage() {
       </header>
 
       {loading ? (
-        <div className={styles.loadingContainer}>
+        <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
           <LottieLoader width={200} height={200} />
         </div>
       ) : questions.length === 0 ? (

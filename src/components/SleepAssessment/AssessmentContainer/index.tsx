@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import ProgressBar from '../ProgressBar';
 import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
@@ -150,8 +151,11 @@ const AssessmentContainer = ({ questions }: AssessmentContainerProps) => {
 
   if (!currentQuestion) {
     return (
-      <div className={styles.emptyState}>
-        <p>No questions available at the moment.</p>
+      <div className={styles.emptyState} role="status">
+        <div className={styles.emptyStateIcon} aria-hidden>
+          <IoDocumentTextOutline />
+        </div>
+        <p className={styles.emptyStateText}>No questions available at the moment.</p>
       </div>
     );
   }
