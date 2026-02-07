@@ -1,19 +1,19 @@
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0;
+  padding: var(--spacing-lg);
 }
 
 .header {
   text-align: center;
-  margin-bottom: var(--margin-xl, 40px);
+  margin-bottom: var(--spacing-xl);
 }
 
 .title {
   font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 var(--spacing-sm, 8px) 0;
-  color: var(--color-foreground, #ededed);
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-foreground);
 }
 
 @media (max-width: 768px) {
@@ -24,44 +24,44 @@
 
 .subtitle {
   font-size: 1.1rem;
-  color: var(--color-text-muted, #9ca3af);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
-  padding: var(--spacing-md, 16px);
-  border-radius: 10px;
-  margin-bottom: var(--margin-lg, 24px);
+  background: transparent;
+  border: 1px solid var(--color-destructive);
+  color: var(--color-destructive);
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  margin-bottom: var(--spacing-lg);
   text-align: center;
 }
 
 .retryButton {
-  padding: var(--spacing-sm, 8px) var(--spacing-lg, 24px);
-  background: var(--color-accent, #7c3aed);
-  color: white;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-accent);
+  color: var(--color-foreground);
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .retryButton:hover {
-  background: var(--color-accent-hover, #6d28d9);
+  background: var(--color-accent-hover);
   transform: translateY(-1px);
 }
 
 .browseLink {
-  padding: var(--spacing-sm, 8px) var(--spacing-lg, 24px);
-  color: var(--color-accent, #7c3aed);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  color: var(--color-accent);
   font-weight: 500;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .browseLink:hover {
-  color: var(--color-foreground, #ededed);
+  color: var(--color-foreground);
 }
