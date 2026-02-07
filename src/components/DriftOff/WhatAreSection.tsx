@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FaHeadphones } from 'react-icons/fa';
 import styles from './styles.module.css';
 
@@ -15,6 +16,14 @@ const WhatAreSection = () => {
           fall asleep. They blend gentle hypnotic guidance with neuroplasticity-backed techniques to help your mind and
           body transition into deep, restorative rest.
         </p>
+        <div className={styles.heroButtons}>
+          <Link href="#" className={styles.buttonPrimary}>
+            Buy Custom Session &gt;
+          </Link>
+          <Link href="#" className={styles.buttonSecondary}>
+            Know More &gt;
+          </Link>
+        </div>
       </div>
     </div>
   );

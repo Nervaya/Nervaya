@@ -21,7 +21,6 @@ const HowItWorks = () => {
 
   return (
     <div className={styles.howItWorksSection}>
-      <h2 className={styles.sectionTitle}>How It Works</h2>
       <ul className={styles.stepsGrid} aria-label="How it works steps">
         {steps.map((step) => (
           <li key={step.id} className={styles.stepCard}>
