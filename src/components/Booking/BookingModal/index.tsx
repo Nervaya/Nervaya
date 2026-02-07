@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
+import LottieLoader from '@/components/common/LottieLoader';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 import { useBookingSlots } from './useBookingSlots';
@@ -144,9 +145,8 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           <div className={styles.slotsSection}>
             <h3 className={styles.sectionTitle}>Available Time Slots</h3>
             {loading ? (
-              <div className={styles.loading}>
-                <div className={styles.spinner} />
-                <p>Loading available slots...</p>
+              <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+                <LottieLoader width={160} height={160} />
               </div>
             ) : displayError && !loading ? (
               <div className={styles.errorMessage}>
