@@ -5,6 +5,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import MySessions from '@/components/Account/MySessions';
 import MyOrders from '@/components/Account/MyOrders';
+import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 import { FaUser, FaEnvelope, FaSave, FaLock } from 'react-icons/fa';
 import { useAuth } from '@/hooks/useAuth';
@@ -111,7 +112,7 @@ export default function AccountPage() {
 
   return (
     <Sidebar>
-      <div className={styles.container}>
+      <div className={containerStyles.container}>
         <PageHeader title="My Account" />
 
         <div className={styles.tabs}>

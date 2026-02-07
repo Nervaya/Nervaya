@@ -13,6 +13,7 @@ import { cartApi } from '@/lib/api/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
+import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 
 export default function SupplementsPage() {
@@ -66,7 +67,7 @@ export default function SupplementsPage() {
 
   return (
     <Sidebar>
-      <div className={styles.container}>
+      <div className={containerStyles.container}>
         <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
         {error && !showFailure && <div className={styles.error}>{error}</div>}
         {showFailure && (
