@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../../add/styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import { FaArrowLeft, FaPenToSquare } from 'react-icons/fa6';
 import LottieLoader from '@/components/common/LottieLoader';
 
@@ -105,13 +106,7 @@ export default function EditTherapistPage() {
   if (initialLoading) {
     return (
       <div className={styles.container}>
-        <header className={styles.header}>
-          <Link href="/admin/therapists" className={styles.backLink}>
-            <FaArrowLeft />
-            <span>Back to Therapists</span>
-          </Link>
-          <h1 className={styles.title}>Edit Therapist</h1>
-        </header>
+        <PageHeader title="Edit Therapist" subtitle="Update therapist profile information" />
         <div className={styles.form} style={{ alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
           <LottieLoader width={80} height={80} />
         </div>
@@ -121,14 +116,16 @@ export default function EditTherapistPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/therapists" className={styles.backLink}>
-          <FaArrowLeft />
-          <span>Back to Therapists</span>
-        </Link>
-        <h1 className={styles.title}>Edit Therapist</h1>
-        <p className={styles.subtitle}>Update therapist profile information</p>
-      </header>
+      <PageHeader
+        title="Edit Therapist"
+        subtitle="Update therapist profile information"
+        actions={
+          <Link href="/admin/therapists" className={styles.backLink}>
+            <FaArrowLeft aria-hidden />
+            <span>Back to Therapists</span>
+          </Link>
+        }
+      />
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
