@@ -9,7 +9,7 @@ interface StatusStateProps {
   message?: string;
   action?: React.ReactNode;
   className?: string;
-  /** 'card' = wrapped in a card; 'minimal' = no card, larger image */
+  /** 'card' = wrapped in a card; 'minimal' = no card, image only (default) */
   variant?: 'card' | 'minimal';
 }
 
@@ -32,7 +32,7 @@ const StatusState: React.FC<StatusStateProps> = ({
   message,
   action,
   className = '',
-  variant = 'card',
+  variant = 'minimal',
 }) => {
   const config = CONFIG[type];
   const isMinimal = variant === 'minimal';
