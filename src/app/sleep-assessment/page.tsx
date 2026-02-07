@@ -5,6 +5,7 @@ import { IoAlertCircleOutline, IoDocumentTextOutline } from 'react-icons/io5';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
+import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
@@ -39,7 +40,7 @@ export default function SleepAssessmentPage() {
 
   return (
     <Sidebar>
-      <div className={styles.pageContainer}>
+      <div className={containerStyles.container}>
         {isLoading && (
           <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
             <LottieLoader width={200} height={200} />
