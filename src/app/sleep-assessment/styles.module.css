@@ -5,18 +5,18 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 24px 24px 20px 0;
+  padding: 24px 24px 20px var(--spacing-lg);
 }
 
 @media (max-width: 768px) {
   .pageContainer {
-    padding: 22px 16px 18px 0;
+    padding: 22px 16px 18px var(--spacing-md);
   }
 }
 
 @media (max-width: 480px) {
   .pageContainer {
-    padding: 18px 12px 14px 0;
+    padding: 18px 12px 14px var(--spacing-sm);
   }
 }
 
