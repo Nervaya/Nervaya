@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -144,6 +145,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   if (isLoading) {
     return (
       <div className={styles.container}>
+        <PageHeader title="Edit Question" subtitle="Update assessment question details" />
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
@@ -153,13 +155,16 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/sleep-assessment" className={styles.backLink}>
-          <IoChevronBack aria-hidden />
-          Back to Questions
-        </Link>
-        <h1 className={styles.title}>Edit Question</h1>
-      </header>
+      <PageHeader
+        title="Edit Question"
+        subtitle="Update assessment question details"
+        actions={
+          <Link href="/admin/sleep-assessment" className={styles.backLink}>
+            <IoChevronBack aria-hidden />
+            Back to Questions
+          </Link>
+        }
+      />
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
