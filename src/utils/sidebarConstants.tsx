@@ -25,6 +25,7 @@ import {
   FaPills,
   FaCapsules,
   FaNewspaper,
+  FaTag,
 } from 'react-icons/fa6';
 import type { NavigationMenuGroup } from '@/types/navigation.types';
 
@@ -54,6 +55,7 @@ export const iconMap: { [key: string]: React.ReactElement } = {
   FaPills: <FaPills />,
   FaCapsules: <FaCapsules />,
   FaNewspaper: <FaNewspaper />,
+  FaTag: <FaTag />,
   FaRightFromBracket: <FaRightFromBracket />,
 };
 
@@ -124,6 +126,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         icon: 'FaClipboardList',
       },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
+      { title: 'Promo Codes', path: '/admin/promo-codes', icon: 'FaTag' },
       { title: 'Blogs', path: '/admin/blogs', icon: 'FaNewspaper' },
     ],
   },

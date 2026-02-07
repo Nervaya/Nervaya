@@ -19,10 +19,16 @@
 
 # production
 /build
-.cursor
+
+# Cursor IDE (rules, skills, local state)
+.cursor/
+
 # misc
 .DS_Store
 *.pem
+
+#Agent Files
+.agent/
 
 # debug
 npm-debug.log*

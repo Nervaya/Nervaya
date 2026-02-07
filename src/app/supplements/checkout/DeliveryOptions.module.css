@@ -1,0 +1,96 @@
+.wrapper {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--accent);
+  color: var(--color-foreground);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTitle {
+  margin: 0;
+  color: var(--color-foreground);
+}
+
+.body {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  border-color: var(--accent);
+  background: var(--color-card-bg);
+}
+
+.optionSelected {
+  border-color: var(--accent);
+  background: var(--color-accent-dim);
+}
+
+.radio {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.optionContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.optionLabel {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.optionDuration {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.optionCost {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.optionFree {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-emerald-400);
+}

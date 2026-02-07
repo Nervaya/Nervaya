@@ -1,30 +1,30 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
   width: 100%;
   box-sizing: border-box;
 }
 
 .compactContainer {
-  gap: 0.3rem;
-  margin-bottom: 0.35rem;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
 }
 
 .compactContainer .label {
-  font-size: 0.8125rem;
-  margin-bottom: 0.25rem;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .label {
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-foreground);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
 }
 
 .labelIcon {
@@ -33,66 +33,67 @@
 }
 
 .input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #6b7280;
-  background: #1f2937;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
+  background: var(--color-card-bg);
+  border-radius: 8px;
+  font-size: var(--font-size-base);
   transition: all 0.2s ease;
   outline: none;
-  color: #ffffff !important;
+  color: var(--color-foreground);
   width: 100%;
   box-sizing: border-box;
 }
 
 .compactInput {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9375rem;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  font-size: var(--font-size-base);
 }
 
 .input::placeholder {
-  color: #a0a0a0;
+  color: var(--color-text-muted);
   opacity: 1;
 }
 
 .input:focus {
-  border-color: #8b5cf6;
-  background: #333340;
+  border-color: var(--accent);
   box-shadow: none;
   outline: none;
 }
 
 .inputError {
-  border-color: #ef4444;
+  border-color: var(--color-destructive);
 }
 
 .inputError:focus {
-  border-color: #ef4444;
+  border-color: var(--color-destructive);
   box-shadow: none;
   outline: none;
 }
 
 .errorText {
-  font-size: 0.875rem;
-  color: #ef4444;
-  margin-top: -0.25rem;
+  font-size: var(--font-size-base);
+  color: var(--color-destructive);
+  margin-top: calc(-1 * var(--spacing-xs));
 }
 
 .lightContainer .label {
-  color: #1a1a1a;
+  color: var(--color-foreground);
 }
 
 .lightInput {
-  background: #ffffff;
-  border-color: #d1d5db;
-  color: #1a1a1a !important;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  color: var(--color-foreground);
 }
 
 .lightInput:focus {
-  background: #ffffff;
-  border-color: #7c3aed;
+  background: var(--color-glass-bg);
+  border-color: var(--accent);
 }
 
 .lightInput::placeholder {
-  color: #6b7280;
+  color: var(--color-text-muted);
 }

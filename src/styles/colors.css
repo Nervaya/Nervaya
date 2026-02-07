@@ -14,6 +14,9 @@
   --color-accent-hover: #6d28d9;
   --color-accent-dim: rgba(124, 58, 237, 0.2);
 
+  --color-destructive: #ef4444;
+  --color-destructive-hover: #dc2626;
+
   --color-overlay: rgba(0, 0, 0, 0.4);
 
   --color-indigo-500: #4f46e5;
