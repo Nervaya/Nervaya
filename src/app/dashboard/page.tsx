@@ -7,6 +7,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { StatTile } from '@/components/Dashboard/StatTile';
 import { RecentActivity, type ActivityItem } from '@/components/Dashboard/RecentActivity';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import { useAuth } from '@/hooks/useAuth';
 import { useDashboardData } from '@/components/Dashboard/useDashboardData';
@@ -51,10 +52,23 @@ export default function DashboardPage() {
 
   const welcomeName = user?.name?.trim() ? user.name : 'there';
 
+  if (loading) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
+          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+            <LottieLoader width={200} height={200} />
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
+
   return (
     <Sidebar>
       <div className={styles.container}>
-        <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here’s your personalized overview." />
+        <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
 
         {error && (
           <div className={styles.errorRow} role="alert">
@@ -69,22 +83,16 @@ export default function DashboardPage() {
           <StatTile
             title="Upcoming session"
             value={
-              loading
-                ? '—'
-                : nextSession
-                  ? `${nextSession.session.date} • ${nextSession.session.startTime}`
-                  : 'No upcoming sessions'
+              nextSession ? `${nextSession.session.date} • ${nextSession.session.startTime}` : 'No upcoming sessions'
             }
             subtitle={
-              loading
-                ? 'Loading…'
-                : nextSession
-                  ? (() => {
-                      const th = nextSession.session.therapistId;
-                      const name = typeof th === 'object' && th && 'name' in th ? (th as { name?: string }).name : null;
-                      return `With ${name || 'Therapist'}`;
-                    })()
-                  : 'Book your next appointment anytime.'
+              nextSession
+                ? (() => {
+                    const th = nextSession.session.therapistId;
+                    const name = typeof th === 'object' && th && 'name' in th ? (th as { name?: string }).name : null;
+                    return `With ${name || 'Therapist'}`;
+                  })()
+                : 'Book your next appointment anytime.'
             }
             icon={<FaCalendarCheck aria-hidden />}
             cta={{ label: 'My sessions', href: '/account' }}
@@ -92,25 +100,19 @@ export default function DashboardPage() {
 
           <StatTile
             title="Sessions summary"
-            value={loading ? '—' : `${sessionCounts.completed} completed`}
-            subtitle={
-              loading
-                ? 'Loading…'
-                : `${sessionCounts.pending} pending • ${sessionCounts.confirmed} confirmed • ${sessionCounts.cancelled} cancelled`
-            }
+            value={`${sessionCounts.completed} completed`}
+            subtitle={`${sessionCounts.pending} pending • ${sessionCounts.confirmed} confirmed • ${sessionCounts.cancelled} cancelled`}
             icon={<FaHeartPulse aria-hidden />}
             cta={{ label: 'Book therapist', href: '/therapy-corner' }}
           />
 
           <StatTile
             title="Orders"
-            value={loading ? '—' : `${orders.length}`}
+            value={`${orders.length}`}
             subtitle={
-              loading
-                ? 'Loading…'
-                : latestOrder
-                  ? `Latest: ${latestOrder.orderStatus} • ₹${Math.round(latestOrder.totalAmount)}`
-                  : 'No orders yet — browse supplements when you’re ready.'
+              latestOrder
+                ? `Latest: ${latestOrder.orderStatus} • ₹${Math.round(latestOrder.totalAmount)}`
+                : "No orders yet — browse supplements when you're ready."
             }
             icon={<FaShoppingBag aria-hidden />}
             cta={{ label: 'My orders', href: '/account' }}
@@ -118,18 +120,18 @@ export default function DashboardPage() {
 
           <StatTile
             title="Sleep assessment"
-            value={loading ? '—' : assessmentTile.value}
-            subtitle={loading ? 'Loading…' : assessmentTile.subtitle}
+            value={assessmentTile.value}
+            subtitle={assessmentTile.subtitle}
             icon={<FaBed aria-hidden />}
             cta={{ label: assessmentTile.ctaLabel, href: '/sleep-assessment' }}
           />
         </div>
 
         <div className={styles.recentActivitySection}>
-          <RecentActivity items={loading ? [] : activityItems} />
+          <RecentActivity items={activityItems} />
         </div>
 
-        {!loading && !error && sessions.length === 0 && orders.length === 0 && (
+        {!error && sessions.length === 0 && orders.length === 0 && (
           <div className={styles.emptyNote}>
             <p>
               Explore what Nervaya offers. <span className={styles.muted}>Your activity will show up here.</span>
