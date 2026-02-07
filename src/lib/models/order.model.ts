@@ -4,6 +4,7 @@ import {
   ORDER_STATUS,
   PAYMENT_STATUS_VALUES,
   ORDER_STATUS_VALUES,
+  DELIVERY_METHOD_VALUES,
   PaymentStatus,
   OrderStatus,
 } from '@/lib/constants/enums';
@@ -159,7 +160,7 @@ const orderSchema = new Schema<IOrder>(
     },
     promoCode: { type: String },
     promoDiscount: { type: Number, min: 0 },
-    deliveryMethod: { type: String, enum: ['standard', 'express'] },
+    deliveryMethod: { type: String, enum: DELIVERY_METHOD_VALUES },
   },
   {
     timestamps: true,

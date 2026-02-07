@@ -2,10 +2,11 @@ import PromoCode, { IPromoCode } from '@/lib/models/promo.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
+import { DISCOUNT_TYPE, DISCOUNT_TYPE_VALUES, type DiscountType } from '@/lib/constants/enums';
 
 export interface CreatePromoCodeDto {
   code: string;
-  discountType: 'percentage' | 'fixed';
+  discountType: DiscountType;
   discountValue: number;
   minPurchase?: number;
   maxDiscount?: number;
@@ -24,7 +25,7 @@ export async function createPromoCode(data: CreatePromoCodeDto): Promise<IPromoC
   try {
     const code = String(data.code).trim().toUpperCase();
     if (!code) throw new ValidationError('Code is required');
-    if (!data.discountType || !['percentage', 'fixed'].includes(data.discountType)) {
+    if (!data.discountType || !DISCOUNT_TYPE_VALUES.includes(data.discountType)) {
       throw new ValidationError('Invalid discount type');
     }
     if (data.discountValue == null || data.discountValue <= 0) {
@@ -34,7 +35,7 @@ export async function createPromoCode(data: CreatePromoCodeDto): Promise<IPromoC
     if (expiryDate <= new Date()) {
       throw new ValidationError('Expiry date must be in the future');
     }
-    if (data.discountType === 'percentage' && (data.maxDiscount == null || data.maxDiscount <= 0)) {
+    if (data.discountType === DISCOUNT_TYPE.PERCENTAGE && (data.maxDiscount == null || data.maxDiscount <= 0)) {
       throw new ValidationError('Max discount is required for percentage type');
     }
     if (data.usageLimit != null && data.usageLimit < 1) {
@@ -139,7 +140,7 @@ function calculateDiscount(promo: IPromoCode, cartTotal: number): number {
   if (promo.minPurchase != null && cartTotal < promo.minPurchase) {
     throw new ValidationError('Minimum purchase not met');
   }
-  if (promo.discountType === 'percentage') {
+  if (promo.discountType === DISCOUNT_TYPE.PERCENTAGE) {
     const raw = (cartTotal * promo.discountValue) / 100;
     const capped = promo.maxDiscount != null ? Math.min(raw, promo.maxDiscount) : raw;
     return Math.round(capped * 100) / 100;

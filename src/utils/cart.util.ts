@@ -1,4 +1,5 @@
 import { CartItem } from '@/types/supplement.types';
+import { CURRENCY } from '@/lib/constants/enums';
 
 export function calculateCartTotal(items: CartItem[]): number {
   return items.reduce((total, item) => {
@@ -11,7 +12,7 @@ export function calculateCartTotal(items: CartItem[]): number {
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
-    currency: 'INR',
+    currency: CURRENCY.CODE,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(price);

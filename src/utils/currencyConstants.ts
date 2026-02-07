@@ -1,8 +1,6 @@
-export const CURRENCY = {
-  SYMBOL: '₹',
-  CODE: 'INR',
-  NAME: 'Indian Rupee',
-} as const;
+import { CURRENCY } from '@/lib/constants/enums';
+
+export { CURRENCY };
 
 export const formatCurrency = (amount: number, showSymbol: boolean = true): string => {
   if (showSymbol) {

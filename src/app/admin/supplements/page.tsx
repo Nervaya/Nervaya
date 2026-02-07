@@ -1,45 +1,52 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
+import type { SupplementFiltersParams } from '@/lib/api/supplements';
 import SupplementList from '@/components/Admin/SupplementList';
 import SupplementModal from '@/components/Admin/SupplementModal';
+import SupplementFilters from '@/components/Admin/SupplementFilters';
+import Pagination from '@/components/common/Pagination';
+import { useAdminSupplements } from '@/app/queries/supplements/useSupplements';
 import api from '@/lib/axios';
+import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 
+function countActiveFilters(f: SupplementFiltersParams): number {
+  let n = 0;
+  if (f.isActive !== undefined) n++;
+  if (f.search?.trim()) n++;
+  if (f.minStock != null && !Number.isNaN(f.minStock)) n++;
+  if (f.maxStock != null && !Number.isNaN(f.maxStock)) n++;
+  return n;
+}
+
 export default function AdminSupplementsPage() {
-  const [supplements, setSupplements] = useState<Supplement[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState<SupplementFiltersParams>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSupplement, setEditingSupplement] = useState<Supplement | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchSupplements = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = (await api.get('/supplements?admin=true')) as {
-        success: boolean;
-        data: Supplement[];
-      };
-      if (response.success && response.data) {
-        setSupplements(response.data);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load supplements');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const limit = PAGE_SIZE_10;
+  const { data: supplements, meta, isLoading, error: fetchError, refetch } = useAdminSupplements(page, limit, filters);
+
+  const handleFiltersApply = useCallback((newFilters: SupplementFiltersParams) => {
+    setFilters(newFilters);
+    setPage(1);
+  }, []);
+
+  const handleFiltersReset = useCallback(() => {
+    setFilters({});
+    setPage(1);
+  }, []);
 
   const handleDelete = async (id: string) => {
     try {
-      const response = (await api.delete(`/supplements/${id}`)) as {
-        success: boolean;
-      };
+      const response = (await api.delete(`/supplements/${id}`)) as { success: boolean };
       if (response.success) {
-        fetchSupplements();
+        refetch();
       } else {
         setError('Failed to delete supplement');
       }
@@ -65,22 +72,21 @@ export default function AdminSupplementsPage() {
 
   const handleSubmit = async (data: SupplementFormData) => {
     setSubmitting(true);
+    setError(null);
     try {
       if (editingSupplement) {
         const response = (await api.put(`/supplements/${editingSupplement._id}`, data)) as { success: boolean };
         if (response.success) {
-          fetchSupplements();
+          refetch();
           handleModalClose();
         } else {
           setError('Failed to update supplement');
           throw new Error('Failed to update supplement');
         }
       } else {
-        const response = (await api.post('/supplements', data)) as {
-          success: boolean;
-        };
+        const response = (await api.post('/supplements', data)) as { success: boolean };
         if (response.success) {
-          fetchSupplements();
+          refetch();
           handleModalClose();
         } else {
           setError('Failed to create supplement');
@@ -95,28 +101,53 @@ export default function AdminSupplementsPage() {
     }
   };
 
-  useEffect(() => {
-    fetchSupplements();
-  }, []);
+  const displayError = error ?? fetchError ?? null;
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.title}>Manage Supplements</h2>
-          <button onClick={handleAdd} className={styles.addButton}>
+          <button type="button" onClick={handleAdd} className={styles.addButton}>
             Add New Supplement
           </button>
         </div>
-        {error && <div className={styles.error}>{error}</div>}
-        <SupplementList supplements={supplements} onDelete={handleDelete} onEdit={handleEdit} loading={loading} />
+        {displayError && (
+          <div className={styles.error} role="alert">
+            {displayError}
+          </div>
+        )}
+        <SupplementFilters
+          initialFilters={filters}
+          onApply={handleFiltersApply}
+          onReset={handleFiltersReset}
+          activeCount={countActiveFilters(filters)}
+        />
+        <SupplementList
+          supplements={supplements ?? []}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          loading={isLoading}
+        />
+        {meta && meta.totalPages > 1 && (
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={meta.page}
+              limit={meta.limit}
+              total={meta.total}
+              totalPages={meta.totalPages}
+              onPageChange={setPage}
+              ariaLabel="Supplements pagination"
+            />
+          </div>
+        )}
       </div>
 
       <SupplementModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onSubmit={handleSubmit}
-        initialData={editingSupplement || undefined}
+        initialData={editingSupplement ?? undefined}
         loading={submitting}
         title={editingSupplement ? 'Edit Supplement' : 'Add New Supplement'}
         submitLabel={editingSupplement ? 'Update Supplement' : 'Create Supplement'}

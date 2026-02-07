@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
+import { DISCOUNT_TYPE_VALUES, type DiscountType } from '@/lib/constants/enums';
 
 export interface IPromoCode extends Document {
   code: string;
-  discountType: 'percentage' | 'fixed';
+  discountType: DiscountType;
   discountValue: number;
   minPurchase?: number;
   maxDiscount?: number;
@@ -30,7 +31,7 @@ const promoCodeSchema = new Schema<IPromoCode>(
     },
     discountType: {
       type: String,
-      enum: ['percentage', 'fixed'],
+      enum: DISCOUNT_TYPE_VALUES,
       required: [true, 'Discount type is required'],
     },
     discountValue: {

@@ -114,6 +114,76 @@ export async function getOrderById(orderId: string) {
   }
 }
 
+export interface OrderFilters {
+  orderStatus?: string;
+  paymentStatus?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  minAmount?: number;
+  maxAmount?: number;
+  userId?: string;
+}
+
+export interface PaginatedOrdersResult {
+  data: IOrder[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function getAllOrders(
+  page: number = 1,
+  limit: number = 10,
+  filters?: OrderFilters | string,
+): Promise<PaginatedOrdersResult> {
+  await connectDB();
+  try {
+    const filter: Record<string, unknown> = {};
+    if (typeof filters === 'string') {
+      if (filters) filter.orderStatus = filters;
+    } else if (filters) {
+      if (filters.orderStatus) filter.orderStatus = filters.orderStatus;
+      if (filters.paymentStatus) filter.paymentStatus = filters.paymentStatus;
+      if (filters.userId && filters.userId.trim()) filter.userId = filters.userId.trim();
+      if (filters.dateFrom || filters.dateTo) {
+        filter.createdAt = {};
+        if (filters.dateFrom) {
+          (filter.createdAt as Record<string, Date>).$gte = new Date(filters.dateFrom);
+        }
+        if (filters.dateTo) {
+          const d = new Date(filters.dateTo);
+          d.setHours(23, 59, 59, 999);
+          (filter.createdAt as Record<string, Date>).$lte = d;
+        }
+      }
+      if (
+        (filters.minAmount !== undefined && filters.minAmount !== null) ||
+        (filters.maxAmount !== undefined && filters.maxAmount !== null)
+      ) {
+        const amt = (filter.totalAmount as Record<string, number>) ?? {};
+        if (filters.minAmount !== undefined && filters.minAmount !== null) {
+          amt.$gte = filters.minAmount;
+        }
+        if (filters.maxAmount !== undefined && filters.maxAmount !== null) {
+          amt.$lte = filters.maxAmount;
+        }
+        filter.totalAmount = amt;
+      }
+    }
+    const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
+    const safeLimit = Math.max(1, Math.min(limit, 100));
+    const [data, total] = await Promise.all([
+      Order.find(filter).populate('items.supplementId').sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Order.countDocuments(filter),
+    ]);
+    const totalPages = Math.max(1, Math.ceil(total / safeLimit));
+    return { data, total, page: Math.max(1, page), limit: safeLimit, totalPages };
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
 export async function getUserOrders(userId: string) {
   await connectDB();
   try {

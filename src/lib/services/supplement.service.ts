@@ -25,6 +25,59 @@ export async function createSupplement(data: Partial<ISupplement>) {
   }
 }
 
+export interface SupplementFilters {
+  isActive?: boolean;
+  search?: string;
+  minStock?: number;
+  maxStock?: number;
+}
+
+export interface PaginatedSupplementsResult {
+  data: ISupplement[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function getAllSupplementsPaginated(
+  page: number = 1,
+  limit: number = 10,
+  filters?: SupplementFilters,
+): Promise<PaginatedSupplementsResult> {
+  await connectDB();
+  try {
+    const filter: Record<string, unknown> = {};
+    if (filters?.isActive !== undefined) {
+      filter.isActive = filters.isActive;
+    }
+    if (filters?.search && filters.search.trim()) {
+      filter.$or = [
+        { name: { $regex: filters.search.trim(), $options: 'i' } },
+        { description: { $regex: filters.search.trim(), $options: 'i' } },
+      ];
+    }
+    if (filters?.minStock !== undefined && filters.minStock !== null) {
+      const stockCond = (filter.stock as Record<string, number>) ?? {};
+      filter.stock = { ...stockCond, $gte: filters.minStock };
+    }
+    if (filters?.maxStock !== undefined && filters.maxStock !== null) {
+      const stockCond = (filter.stock as Record<string, number>) ?? {};
+      filter.stock = { ...stockCond, $lte: filters.maxStock };
+    }
+    const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
+    const safeLimit = Math.max(1, Math.min(limit, 100));
+    const [data, total] = await Promise.all([
+      Supplement.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Supplement.countDocuments(filter),
+    ]);
+    const totalPages = Math.max(1, Math.ceil(total / safeLimit));
+    return { data, total, page: Math.max(1, page), limit: safeLimit, totalPages };
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
 export async function getAllSupplements(filter: Record<string, unknown> = {}) {
   await connectDB();
   try {

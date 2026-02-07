@@ -49,6 +49,57 @@ export async function createSession(userId: string, therapistId: string, date: s
   }
 }
 
+export interface SessionFilters {
+  status?: string;
+  therapistId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  userId?: string;
+}
+
+export interface PaginatedSessionsResult {
+  data: Awaited<ReturnType<typeof Session.find>>;
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function getAllSessions(
+  page: number = 1,
+  limit: number = 10,
+  filters?: SessionFilters | string,
+): Promise<PaginatedSessionsResult> {
+  await connectDB();
+  try {
+    const filter: Record<string, unknown> = {};
+    if (typeof filters === 'string') {
+      if (filters) filter.status = filters;
+    } else if (filters) {
+      if (filters.status) filter.status = filters.status;
+      if (filters.userId && filters.userId.trim()) filter.userId = filters.userId.trim();
+      if (filters.therapistId && Types.ObjectId.isValid(filters.therapistId)) {
+        filter.therapistId = new Types.ObjectId(filters.therapistId);
+      }
+      if (filters.dateFrom || filters.dateTo) {
+        filter.date = {};
+        if (filters.dateFrom) (filter.date as Record<string, string>).$gte = filters.dateFrom;
+        if (filters.dateTo) (filter.date as Record<string, string>).$lte = filters.dateTo;
+      }
+    }
+    const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
+    const safeLimit = Math.max(1, Math.min(limit, 100));
+    const [data, total] = await Promise.all([
+      Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).skip(skip).limit(safeLimit),
+      Session.countDocuments(filter),
+    ]);
+    const totalPages = Math.max(1, Math.ceil(total / safeLimit));
+    return { data, total, page: Math.max(1, page), limit: safeLimit, totalPages };
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
 export async function getUserSessions(userId: string, statusFilter?: string) {
   await connectDB();
   try {
