@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './styles.module.css';
 import { landingPageCardsData } from '@/utils/landingPageCardsData';
 
@@ -23,7 +24,9 @@ const Cards = () => {
             <div className={styles.cardContent}>
               <h3 className={styles.cardTitle}>{card.title}</h3>
               <p className={styles.cardDescription}>{card.description}</p>
-              <button className={styles.cardButton}>{card.buttonText}</button>
+              <Link href={card.href} className={styles.cardButton}>
+                {card.buttonText}
+              </Link>
             </div>
           </li>
         ))}

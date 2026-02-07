@@ -29,7 +29,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
             <li key={key} className={styles.item}>
               {index > 0 && (
                 <span className={styles.separator} aria-hidden>
-                  →
+                  ›
                 </span>
               )}
               {isFirst && item.href ? (

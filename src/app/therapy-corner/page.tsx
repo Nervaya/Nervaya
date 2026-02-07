@@ -96,7 +96,6 @@ export default function TherapyCornerPage() {
                     </div>
                     <div className={styles.actions}>
                       <div className={styles.buttons}>
-                        <button className={styles.outlineBtn}>View Profile</button>
                         <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
                           Book Appointment
                         </button>

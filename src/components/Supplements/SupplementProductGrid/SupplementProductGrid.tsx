@@ -22,13 +22,16 @@ const SupplementProductGrid: React.FC<SupplementProductGridProps> = ({ supplemen
   }
 
   return (
-    <div className={`${styles.grid} ${viewMode === 'list' ? styles.listView : styles.gridView}`} role="list">
+    <ul
+      className={`${styles.grid} ${viewMode === 'list' ? styles.listView : styles.gridView}`}
+      aria-label="Supplement products"
+    >
       {supplements.map((supplement) => (
-        <div key={supplement._id} className={styles.gridItem} role="listitem">
+        <li key={supplement._id} className={styles.gridItem}>
           <SupplementProductCard supplement={supplement} onAddToCart={onAddToCart} variant={viewMode} />
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

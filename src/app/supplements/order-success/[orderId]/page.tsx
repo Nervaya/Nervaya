@@ -35,6 +35,7 @@ function formatOrderNumber(orderId: string): string {
 
 export default function OrderSuccessPage() {
   const params = useParams();
+  const orderId = typeof params.orderId === 'string' ? params.orderId : (params.orderId?.[0] ?? '');
   const { user } = useAuth();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,7 @@ export default function OrderSuccessPage() {
       type OrderResponse = { success: boolean; data: Order[] };
       const response = (await api.get('/orders')) as OrderResponse;
       if (response.success && response.data) {
-        const foundOrder = response.data.find((o) => o._id === params.orderId);
+        const foundOrder = response.data.find((o) => o._id === orderId);
         if (foundOrder) {
           setOrder(foundOrder);
         } else {
@@ -60,13 +61,13 @@ export default function OrderSuccessPage() {
     } finally {
       setLoading(false);
     }
-  }, [params.orderId]);
+  }, [orderId]);
 
   useEffect(() => {
-    if (params.orderId) {
+    if (orderId) {
       fetchOrder();
     }
-  }, [params.orderId, fetchOrder]);
+  }, [orderId, fetchOrder]);
 
   useEffect(() => {
     fetch('/success confetti.json')

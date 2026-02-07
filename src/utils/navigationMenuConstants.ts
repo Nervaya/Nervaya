@@ -14,7 +14,7 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
     title: 'GENERAL',
     items: [
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaBed' },
-      { title: 'Shopping Cart', path: '/cart', icon: 'FaShoppingCart' },
+      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaShoppingCart' },
     ],
   },
   {
@@ -34,7 +34,7 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
     items: [
       {
         title: 'Free 1 on 1 Assistance',
-        path: '/assistance',
+        path: '/support',
         icon: 'FaHeadset',
       },
       { title: 'Customer Support', path: '/support', icon: 'FaHeadset' },
