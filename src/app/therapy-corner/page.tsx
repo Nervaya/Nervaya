@@ -6,6 +6,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
 import Pagination from '@/components/common/Pagination';
+import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
@@ -61,7 +62,11 @@ export default function TherapyCornerPage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>✨ Your Recommended Therapists</h2>
 
-          {loading && <p>Loading therapists...</p>}
+          {loading && (
+            <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+              <LottieLoader width={200} height={200} />
+            </div>
+          )}
           {error && <p className={styles.error}>{error}</p>}
 
           {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
