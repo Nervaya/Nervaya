@@ -54,6 +54,9 @@
 }
 
 .list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   gap: var(--margin-lg);
 }
@@ -330,4 +333,10 @@
 .cancelButton:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #f8fafc;
+}
+
+.paginationWrap {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
 }

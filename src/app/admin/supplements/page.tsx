@@ -133,7 +133,7 @@ export default function AdminSupplementsPage() {
           onEdit={handleEdit}
           loading={isLoading}
         />
-        {meta && meta.totalPages > 1 && (
+        {meta && meta.totalPages > 0 && (
           <div className={styles.paginationWrap}>
             <Pagination
               page={meta.page}

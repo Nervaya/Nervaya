@@ -122,7 +122,7 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
       </div>
 
       <div className={styles.periodGroup}>
-        <div className={styles.grid}>
+        <ul className={styles.grid} aria-label="Time slots">
           {currentGroup.slots.map((slot) => {
             const isSelected = selectedSlot === slot._id;
             const isBooked = !slot.isAvailable;
@@ -138,25 +138,27 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
             }
 
             return (
-              <button
-                key={slot._id}
-                className={slotClassName}
-                onClick={() => onSlotSelect(slot._id)}
-                disabled={isBooked}
-                aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
-                aria-pressed={isSelected}
-              >
-                <span className={styles.time}>{slot.startTime}</span>
-                {slot.endTime && <span className={styles.timeRange}>{slot.endTime}</span>}
-                {isCustomized && (
-                  <span className={styles.customizedBadge} title="Customized slot">
-                    ⭐
-                  </span>
-                )}
-              </button>
+              <li key={slot._id}>
+                <button
+                  type="button"
+                  className={slotClassName}
+                  onClick={() => onSlotSelect(slot._id)}
+                  disabled={isBooked}
+                  aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
+                  aria-pressed={isSelected}
+                >
+                  <span className={styles.time}>{slot.startTime}</span>
+                  {slot.endTime && <span className={styles.timeRange}>{slot.endTime}</span>}
+                  {isCustomized && (
+                    <span className={styles.customizedBadge} title="Customized slot">
+                      ⭐
+                    </span>
+                  )}
+                </button>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

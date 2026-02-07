@@ -24,9 +24,9 @@ const TabShippingDelivery: React.FC = () => {
     <div className={styles.content}>
       <section className={styles.section}>
         <h3 className={styles.heading}>Shipping Information</h3>
-        <div className={styles.options}>
+        <ul className={styles.options} aria-label="Shipping options">
           {SHIPPING_OPTIONS.map((opt) => (
-            <div key={opt.title} className={styles.option}>
+            <li key={opt.title} className={styles.option}>
               <span className={styles.optionIcon} aria-hidden>
                 {opt.icon}
               </span>
@@ -34,9 +34,9 @@ const TabShippingDelivery: React.FC = () => {
                 <h4 className={styles.optionTitle}>{opt.title}</h4>
                 <p className={styles.optionDesc}>{opt.description}</p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
       <section className={styles.section}>
         <h3 className={styles.heading}>Return Policy</h3>

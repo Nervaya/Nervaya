@@ -10,6 +10,9 @@
 }
 
 .list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--margin-lg);
@@ -204,4 +207,11 @@
   margin-top: var(--spacing-xl);
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.paginationSummary {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted, #94a3b8);
 }
