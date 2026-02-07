@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -108,13 +109,16 @@ export default function AddQuestionPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/sleep-assessment" className={styles.backLink}>
-          <IoChevronBack aria-hidden />
-          Back to Questions
-        </Link>
-        <h1 className={styles.title}>Add New Question</h1>
-      </header>
+      <PageHeader
+        title="Add New Question"
+        subtitle="Create a new assessment question"
+        actions={
+          <Link href="/admin/sleep-assessment" className={styles.backLink}>
+            <IoChevronBack aria-hidden />
+            Back to Questions
+          </Link>
+        }
+      />
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
