@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import type { PromoCode, CreatePromoCodeDto } from '@/types/supplement.types';
 import PromoCodeList from '@/components/Admin/PromoCodeList';
 import PromoCodeModal from '@/components/Admin/PromoCodeModal';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from '../supplements/styles.module.css';
 
@@ -114,12 +115,15 @@ export default function AdminPromoCodesPage() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Manage Promo Codes</h2>
-          <button type="button" onClick={handleAdd} className={styles.addButton}>
-            Add New Promo Code
-          </button>
-        </div>
+        <PageHeader
+          title="Promo Codes"
+          subtitle="Manage discount codes and promotions"
+          actions={
+            <button type="button" onClick={handleAdd} className={styles.addButton}>
+              Add New Promo Code
+            </button>
+          }
+        />
         {error && (
           <div className={styles.error} role="alert">
             {error}
