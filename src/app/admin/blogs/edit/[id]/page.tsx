@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { IoChevronBack } from 'react-icons/io5';
 import BlogForm from '@/components/Admin/BlogForm';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import type { Blog } from '@/types/blog.types';
 import styles from '../../add/styles.module.css';
@@ -113,6 +114,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   if (isLoading) {
     return (
       <div className={styles.container}>
+        <PageHeader title="Edit Blog" subtitle="Update blog post content and settings" />
         <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
           <LottieLoader width={100} height={100} />
         </div>
@@ -122,13 +124,16 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/blogs" className={styles.backLink}>
-          <IoChevronBack aria-hidden />
-          Back to Blogs
-        </Link>
-        <h1 className={styles.title}>Edit Blog</h1>
-      </header>
+      <PageHeader
+        title="Edit Blog"
+        subtitle="Update blog post content and settings"
+        actions={
+          <Link href="/admin/blogs" className={styles.backLink}>
+            <IoChevronBack aria-hidden />
+            Back to Blogs
+          </Link>
+        }
+      />
 
       <BlogForm
         formData={formData}
