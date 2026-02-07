@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import Breadcrumbs from '@/components/common/Breadcrumbs';
 import StatusState from '@/components/common/StatusState';
 import LottieLoader from '@/components/common/LottieLoader';
 import { ProductImageGallery, ProductInfo, ProductTabs } from '@/components/Supplements/ProductDetail';
@@ -91,13 +90,6 @@ export default function SupplementDetailPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: ROUTES.HOME },
-              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
-              { label: '...' },
-            ]}
-          />
           <div className={styles.loading}>
             <LottieLoader width={200} height={200} />
           </div>
@@ -110,12 +102,6 @@ export default function SupplementDetailPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: ROUTES.HOME },
-              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
-            ]}
-          />
           <StatusState
             type="error"
             title="Failed to load product"
@@ -140,12 +126,6 @@ export default function SupplementDetailPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: ROUTES.HOME },
-              { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
-            ]}
-          />
           <StatusState
             type="empty"
             title="Product not found"
@@ -172,13 +152,6 @@ export default function SupplementDetailPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: ROUTES.HOME },
-            { label: 'Supplements', href: ROUTES.SUPPLEMENTS },
-            { label: supplement.name },
-          ]}
-        />
         <div className={styles.content}>
           <div className={styles.imageSection}>
             <ProductImageGallery

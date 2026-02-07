@@ -24,7 +24,7 @@ const SupplementProductGrid: React.FC<SupplementProductGridProps> = ({ supplemen
   return (
     <div className={`${styles.grid} ${viewMode === 'list' ? styles.listView : styles.gridView}`} role="list">
       {supplements.map((supplement) => (
-        <div key={supplement._id} role="listitem">
+        <div key={supplement._id} className={styles.gridItem} role="listitem">
           <SupplementProductCard supplement={supplement} onAddToCart={onAddToCart} variant={viewMode} />
         </div>
       ))}

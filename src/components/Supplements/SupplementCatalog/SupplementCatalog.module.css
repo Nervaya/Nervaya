@@ -13,3 +13,9 @@
   width: 100%;
   min-width: 0;
 }
+
+.paginationWrap {
+  margin-top: var(--spacing-xl, 32px);
+  display: flex;
+  justify-content: center;
+}

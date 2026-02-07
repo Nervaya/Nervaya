@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -12,13 +12,13 @@
 
 @media (max-width: 768px) {
   .progressContainer {
-    gap: 8px;
+    gap: 5px;
   }
 }
 
 @media (max-width: 480px) {
   .progressContainer {
-    gap: 8px;
+    gap: 4px;
   }
 }
 

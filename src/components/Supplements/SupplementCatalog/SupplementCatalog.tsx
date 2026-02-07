@@ -4,7 +4,9 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementToolbar, { type ViewMode, type SortOption } from '../SupplementToolbar';
 import SupplementProductGrid from '../SupplementProductGrid';
+import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
+import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import type { PriceRange } from '../SupplementFilters';
 import styles from './SupplementCatalog.module.css';
 
@@ -19,6 +21,17 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   const [priceRange, setPriceRange] = useState<PriceRange>({ min: 0, max: undefined });
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [page, setPage] = useState(1);
+
+  const handleSearchChange = useCallback((q: string) => {
+    setSearchQuery(q);
+    setPage(1);
+  }, []);
+
+  const handleSortChange = useCallback((s: SortOption) => {
+    setSortBy(s);
+    setPage(1);
+  }, []);
 
   const priceBounds = useMemo(() => {
     if (supplements.length === 0) return { min: 0, max: 0 };
@@ -67,8 +80,21 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
     return result;
   }, [supplements, searchQuery, priceRange, sortBy]);
 
+  const limit = PAGE_SIZE_5;
+  const total = filteredAndSorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const paginatedSupplements = useMemo(
+    () => filteredAndSorted.slice((page - 1) * limit, page * limit),
+    [filteredAndSorted, page, limit],
+  );
+
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
+
   const handlePriceChange = useCallback((range: PriceRange) => {
     setPriceRange(range);
+    setPage(1);
   }, []);
 
   if (loading) {
@@ -83,18 +109,30 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
     <div className={styles.catalog}>
       <SupplementToolbar
         searchValue={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         sortBy={sortBy}
-        onSortChange={setSortBy}
+        onSortChange={handleSortChange}
         priceRange={priceRange}
         onPriceChange={handlePriceChange}
         priceBounds={priceBounds}
       />
       <div className={styles.main}>
-        <SupplementProductGrid supplements={filteredAndSorted} viewMode={viewMode} onAddToCart={onAddToCart} />
+        <SupplementProductGrid supplements={paginatedSupplements} viewMode={viewMode} onAddToCart={onAddToCart} />
       </div>
+      {totalPages > 1 && (
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={page}
+            limit={limit}
+            total={total}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            ariaLabel="Supplements pagination"
+          />
+        </div>
+      )}
     </div>
   );
 };

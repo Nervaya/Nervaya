@@ -32,6 +32,12 @@
   gap: 0.5rem;
 }
 
+.paginationWrap {
+  margin-top: var(--spacing-xl, 32px);
+  display: flex;
+  justify-content: center;
+}
+
 .therapistList {
   list-style: none;
   margin: 0;

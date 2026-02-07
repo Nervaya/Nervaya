@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import StarRating from '@/components/common/StarRating';
 import ReviewCard from '../ReviewCard';
 import StatusState from '@/components/common/StatusState';
+import { IMAGES } from '@/utils/imageConstants';
 import { reviewsApi } from '@/lib/api/reviews';
 import type { Supplement, Review, StarDistribution } from '@/types/supplement.types';
 import styles from './TabReviews.module.css';
@@ -75,7 +77,18 @@ const TabReviews: React.FC<TabReviewsProps> = ({ supplement }) => {
   if (reviewCount === 0 && reviews.length === 0) {
     return (
       <div className={styles.content}>
-        <StatusState type="empty" title="No reviews yet" message="Be the first to review this product." />
+        <div className={styles.emptyState}>
+          <Image
+            src={IMAGES.NO_DATA_FOUND}
+            alt="No reviews yet"
+            width={350}
+            height={250}
+            priority
+            className={styles.emptyImage}
+          />
+          <h3 className={styles.emptyTitle}>No reviews yet</h3>
+          <p className={styles.emptyMessage}>Be the first to review this product.</p>
+        </div>
       </div>
     );
   }

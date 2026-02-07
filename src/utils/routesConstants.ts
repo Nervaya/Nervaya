@@ -20,6 +20,7 @@ export const ADMIN_ROUTES = [
 export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
 export const CUSTOMER_ONLY_ROUTES = [
+  '/blog',
   '/supplements',
   '/drift-off',
   '/sleep-elixir',

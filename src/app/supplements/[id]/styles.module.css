@@ -28,15 +28,6 @@
 
 .imageSection {
   width: 100%;
-  position: sticky;
-  top: 120px;
-  align-self: start;
-}
-
-@media (max-width: 900px) {
-  .imageSection {
-    position: static;
-  }
 }
 
 .image {

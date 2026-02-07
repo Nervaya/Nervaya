@@ -71,7 +71,7 @@ const Navbar = () => {
         <div className={styles.navbarContainer}>
           <div className={styles.navbarLogo}>
             <Link href="/">
-              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={150} height={50} />
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={115} height={38} />
             </Link>
           </div>
         </div>
@@ -84,7 +84,7 @@ const Navbar = () => {
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLogo}>
           <Link href="/">
-            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={150} height={50} />
+            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={115} height={38} />
           </Link>
         </div>
         <button
@@ -130,15 +130,17 @@ const Navbar = () => {
               )}
             </li>
           )}
-          <li>
-            <Link
-              href="/blog"
-              onClick={closeMobileMenu}
-              aria-current={pathname === '/blog' || pathname?.startsWith('/blog/') ? 'page' : undefined}
-            >
-              Blog
-            </Link>
-          </li>
+          {!isAdmin && (
+            <li>
+              <Link
+                href="/blog"
+                onClick={closeMobileMenu}
+                aria-current={pathname === '/blog' || pathname?.startsWith('/blog/') ? 'page' : undefined}
+              >
+                Blog
+              </Link>
+            </li>
+          )}
           <li>
             <Link
               href="/about-us"

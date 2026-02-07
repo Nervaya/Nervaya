@@ -1,6 +1,6 @@
 import Blog, { IBlog } from '@/lib/models/blog.model';
 import connectDB from '@/lib/db/mongodb';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants/pagination.constants';
+import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 
@@ -93,7 +93,7 @@ export async function getAllBlogsPaginated(
 ): Promise<AdminBlogsPaginatedResult> {
   await connectDB();
   try {
-    const { page = 1, limit = DEFAULT_PAGE_SIZE, search } = options;
+    const { page = 1, limit = PAGE_SIZE_3, search } = options;
     const filter: Record<string, unknown> = {};
 
     if (search && search.trim()) {
@@ -150,7 +150,7 @@ export async function getPublishedBlogsPaginated(
 ): Promise<PaginatedBlogsResult> {
   await connectDB();
   try {
-    const { tag, search, page = 1, limit = DEFAULT_PAGE_SIZE } = options;
+    const { tag, search, page = 1, limit = PAGE_SIZE_3 } = options;
     const filter: Record<string, unknown> = { isPublished: true };
 
     if (tag) {

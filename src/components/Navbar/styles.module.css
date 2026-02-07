@@ -23,10 +23,17 @@
   right: 0;
   z-index: 3000;
   pointer-events: none;
+  isolation: isolate;
 }
 
 .navbarMain .navbarContainer {
   pointer-events: auto;
+  background: #0c0c0e;
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  box-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -43,7 +50,6 @@
   max-width: 960px;
   height: 56px;
   padding: 0 8px;
-
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));
   -webkit-backdrop-filter: blur(var(--color-glass-blur));
@@ -70,8 +76,15 @@
   margin-left: 16px;
 }
 
+.navbarLogo a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .navbarLogo img {
-  height: 24px;
+  display: block;
+  height: 20px;
   width: auto;
   object-fit: contain;
 }

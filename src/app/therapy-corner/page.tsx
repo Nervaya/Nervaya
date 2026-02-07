@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
+import Pagination from '@/components/common/Pagination';
+import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
 
@@ -13,6 +15,15 @@ export default function TherapyCornerPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
+  const [page, setPage] = useState(1);
+
+  const limit = PAGE_SIZE_5;
+  const total = therapists.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const paginatedTherapists = useMemo(
+    () => therapists.slice((page - 1) * limit, page * limit),
+    [therapists, page, limit],
+  );
 
   useEffect(() => {
     fetchTherapists();
@@ -56,43 +67,57 @@ export default function TherapyCornerPage() {
           {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
 
           {!loading && !error && (
-            <ul className={styles.therapistList} aria-label="Recommended therapists">
-              {therapists.map((therapist) => (
-                <li key={therapist._id} className={styles.therapistCard}>
-                  <div className={styles.therapistInfo}>
-                    <div
-                      className={styles.avatar}
-                      style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
-                      role="img"
-                      aria-label={`${therapist.name} profile picture`}
-                    />
-                    <div>
-                      <h3>{therapist.name}</h3>
-                      <p className={styles.credentials}>
-                        {therapist.qualifications?.join(', ') || 'Professional Therapist'}
-                      </p>
-                      <p className={styles.details}>
-                        Experience: {therapist.experience || 'N/A'} | Languages:{' '}
-                        {therapist.languages?.join(', ') || 'N/A'}
-                      </p>
-                      <div className={styles.tags}>
-                        {therapist.specializations?.map((spec) => (
-                          <span key={spec}>{spec}</span>
-                        ))}
+            <>
+              <ul className={styles.therapistList} aria-label="Recommended therapists">
+                {paginatedTherapists.map((therapist) => (
+                  <li key={therapist._id} className={styles.therapistCard}>
+                    <div className={styles.therapistInfo}>
+                      <div
+                        className={styles.avatar}
+                        style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
+                        role="img"
+                        aria-label={`${therapist.name} profile picture`}
+                      />
+                      <div>
+                        <h3>{therapist.name}</h3>
+                        <p className={styles.credentials}>
+                          {therapist.qualifications?.join(', ') || 'Professional Therapist'}
+                        </p>
+                        <p className={styles.details}>
+                          Experience: {therapist.experience || 'N/A'} | Languages:{' '}
+                          {therapist.languages?.join(', ') || 'N/A'}
+                        </p>
+                        <div className={styles.tags}>
+                          {therapist.specializations?.map((spec) => (
+                            <span key={spec}>{spec}</span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={styles.actions}>
-                    <div className={styles.buttons}>
-                      <button className={styles.outlineBtn}>View Profile</button>
-                      <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
-                        Book Appointment
-                      </button>
+                    <div className={styles.actions}>
+                      <div className={styles.buttons}>
+                        <button className={styles.outlineBtn}>View Profile</button>
+                        <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
+                          Book Appointment
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+              {totalPages > 1 && (
+                <div className={styles.paginationWrap}>
+                  <Pagination
+                    page={page}
+                    limit={limit}
+                    total={total}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    ariaLabel="Recommended therapists pagination"
+                  />
+                </div>
+              )}
+            </>
           )}
         </section>
       </div>

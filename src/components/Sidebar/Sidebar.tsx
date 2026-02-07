@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
+import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import styles from './styles.module.css';
 
 const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
@@ -205,7 +206,10 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
 
       {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
-      <main className={`main-content ${className || ''}`}>{children}</main>
+      <main className={`main-content ${className || ''}`}>
+        <RouteBreadcrumbs />
+        {children}
+      </main>
     </>
   );
 };

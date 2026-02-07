@@ -7,7 +7,7 @@ import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
 import api from '@/lib/axios';
 import type { Blog } from '@/types/blog.types';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants/pagination.constants';
+import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 
 interface PaginationInfo {
@@ -22,7 +22,7 @@ export default function BlogListPage() {
   const [allTags, setAllTags] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
-    limit: DEFAULT_PAGE_SIZE,
+    limit: PAGE_SIZE_3,
     total: 0,
     totalPages: 0,
   });
@@ -38,7 +38,7 @@ export default function BlogListPage() {
       setError(null);
       const params = new URLSearchParams();
       params.set('page', String(page));
-      params.set('limit', String(DEFAULT_PAGE_SIZE));
+      params.set('limit', String(PAGE_SIZE_3));
       if (tag) params.set('tag', tag);
       if (search.trim()) params.set('search', search.trim());
       const response = (await api.get(`/blogs?${params.toString()}`)) as {

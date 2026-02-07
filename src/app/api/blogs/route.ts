@@ -4,7 +4,7 @@ import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
-import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE_ADMIN, MAX_PAGE_SIZE_PUBLIC } from '@/lib/constants/pagination.constants';
+import { PAGE_SIZE_3, PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,8 +25,8 @@ export async function GET(request: NextRequest) {
       const adminSearch = searchParams.get('search') || undefined;
       const pageNum = adminPage ? Math.max(1, parseInt(adminPage, 10) || 1) : 1;
       const limitNum = adminLimit
-        ? Math.min(MAX_PAGE_SIZE_ADMIN, Math.max(1, parseInt(adminLimit, 10) || DEFAULT_PAGE_SIZE))
-        : DEFAULT_PAGE_SIZE;
+        ? Math.min(PAGE_SIZE_10, Math.max(1, parseInt(adminLimit, 10) || PAGE_SIZE_3))
+        : PAGE_SIZE_3;
       const result = await getAllBlogsPaginated({
         page: pageNum,
         limit: limitNum,
@@ -46,9 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     const pageNum = page ? Math.max(1, parseInt(page, 10) || 1) : 1;
-    const limitNum = limit
-      ? Math.min(MAX_PAGE_SIZE_PUBLIC, Math.max(1, parseInt(limit, 10) || DEFAULT_PAGE_SIZE))
-      : DEFAULT_PAGE_SIZE;
+    const limitNum = limit ? Math.min(PAGE_SIZE_10, Math.max(1, parseInt(limit, 10) || PAGE_SIZE_3)) : PAGE_SIZE_3;
 
     const result = await getPublishedBlogsPaginated({
       tag,

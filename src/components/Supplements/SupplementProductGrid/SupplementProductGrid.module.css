@@ -2,10 +2,21 @@
   width: 100%;
 }
 
+.gridItem {
+  display: flex;
+  min-height: 0;
+}
+
+.gridItem > * {
+  flex: 1;
+  min-width: 0;
+}
+
 .gridView {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--margin-lg);
+  align-items: stretch;
 }
 
 @media (max-width: 1024px) {
@@ -29,9 +40,16 @@
 }
 
 .listView {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--margin-lg);
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .listView {
+    grid-template-columns: 1fr;
+  }
 }
 
 .empty {

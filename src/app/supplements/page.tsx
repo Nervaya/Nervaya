@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import Breadcrumbs from '@/components/common/Breadcrumbs';
 import StatusState from '@/components/common/StatusState';
 import SupplementCatalog from '@/components/Supplements/SupplementCatalog';
 import { Supplement } from '@/types/supplement.types';
@@ -68,7 +67,6 @@ export default function SupplementsPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <Breadcrumbs items={[{ label: 'Home', href: ROUTES.HOME }, { label: 'Supplements' }]} />
         <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
         {error && !showFailure && <div className={styles.error}>{error}</div>}
         {showFailure && (
