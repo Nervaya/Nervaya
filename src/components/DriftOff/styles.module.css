@@ -17,7 +17,7 @@
   margin: 0;
   margin-bottom: var(--margin-2xl);
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff 0%, var(--color-text-slate-300) 100%);
+  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -29,7 +29,7 @@
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border-light);
   border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
   padding: var(--spacing-xl);
   transition:
     transform 0.3s ease,
@@ -46,7 +46,7 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 30px 60px -12px var(--color-overlay-dark);
   border-color: var(--color-border-light-hover);
 }
 
@@ -140,9 +140,9 @@
 }
 
 .buttonSecondary:hover {
-  background: rgba(165, 180, 252, 0.1);
+  background: var(--color-indigo-dim);
   color: var(--color-foreground);
-  border-color: rgba(165, 180, 252, 0.5);
+  border-color: var(--color-indigo-border);
 }
 
 .heroVideoCard {
@@ -186,7 +186,7 @@
 .heroVideoOverlayTitle {
   margin: 0 0 var(--spacing-xs) 0;
   font-size: var(--font-size-2xl);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px var(--color-overlay-dark);
 }
 
 .heroVideoOverlayAuthor {
@@ -208,7 +208,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px var(--color-overlay);
   z-index: 11;
 }
 
@@ -248,7 +248,7 @@
   margin: 0;
   margin-bottom: var(--margin-2xl);
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff 0%, var(--color-text-slate-300) 100%);
+  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -304,7 +304,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-indigo-border), transparent);
   pointer-events: none;
 }
 
@@ -313,7 +313,7 @@
   box-shadow:
     0 12px 24px -8px rgba(79, 70, 229, 0.35),
     0 20px 40px -12px rgba(0, 0, 0, 0.45);
-  border-color: rgba(129, 140, 248, 0.25);
+  border-color: var(--color-indigo-border);
 }
 
 @media (max-width: 768px) {
@@ -335,7 +335,7 @@
   font-weight: 700;
   margin-bottom: var(--margin-lg);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 1px var(--color-glass-border),
     0 4px 14px rgba(79, 70, 229, 0.45),
     0 6px 20px -4px rgba(79, 70, 229, 0.3);
   transition:
@@ -347,7 +347,7 @@
 .stepCard:hover .stepNumber {
   transform: scale(1.06);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 0 1px var(--color-border-light),
     0 6px 20px rgba(79, 70, 229, 0.5),
     0 8px 28px -4px rgba(79, 70, 229, 0.35);
 }
@@ -381,7 +381,7 @@
   margin: 0;
   margin-bottom: 0;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff 0%, var(--color-text-slate-300) 100%);
+  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -483,7 +483,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px var(--color-overlay);
   z-index: 2;
 }
 
@@ -525,7 +525,7 @@
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border-light);
   border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
   padding: var(--margin-2xl);
   transition:
     transform 0.3s ease,
@@ -559,11 +559,11 @@
 }
 
 .supportButton {
-  background: rgba(79, 70, 229, 0.1);
+  background: var(--color-indigo-dim);
   color: var(--color-indigo-200);
   padding: var(--spacing-sm) var(--spacing-xl);
   border-radius: var(--spacing-md);
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  border: 1px solid var(--color-indigo-border-light);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s;
@@ -573,7 +573,7 @@
 }
 
 .supportButton:hover {
-  background: rgba(79, 70, 229, 0.25);
+  background: var(--color-accent-dim);
   color: var(--color-foreground);
 }
 
@@ -597,7 +597,7 @@
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border-light);
   border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
   padding: var(--spacing-xl);
   transition:
     transform 0.3s ease,
@@ -643,4 +643,115 @@
   color: var(--color-text-slate-300);
   margin: 0 0 var(--margin-lg) 0;
   font-style: italic;
+}
+
+.whatAreCard {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+}
+
+.whatAreIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-indigo-dim);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-4xl);
+  flex-shrink: 0;
+}
+
+.whatAreContent {
+  flex: 1;
+}
+
+.whatAreText {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  line-height: 1.7;
+  color: var(--color-text-slate-300);
+}
+
+.whatMakesIntro {
+  margin-bottom: var(--spacing-lg);
+}
+
+.whyChooseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.whyChooseCard {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  transition: border-color 0.2s ease;
+}
+
+.whyChooseCard:hover {
+  border-color: var(--color-border-light-hover);
+}
+
+.whyChooseIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-indigo-dim);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.whyChooseTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.whyChooseText {
+  margin: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text-slate-300);
+}
+
+.whatMakesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.whatMakesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text-slate-300);
+}
+
+.whatMakesBullet {
+  color: var(--color-emerald-400);
+  flex-shrink: 0;
 }
