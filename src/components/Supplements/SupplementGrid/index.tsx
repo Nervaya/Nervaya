@@ -30,11 +30,13 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCar
 
   return (
     <div className={styles.container}>
-      <div className={styles.grid}>
+      <ul className={styles.grid} aria-label="Supplement products">
         {supplements.map((supplement) => (
-          <SupplementCard key={supplement._id} supplement={supplement} onAddToCart={onAddToCart} />
+          <li key={supplement._id}>
+            <SupplementCard supplement={supplement} onAddToCart={onAddToCart} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

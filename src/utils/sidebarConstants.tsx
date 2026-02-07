@@ -69,7 +69,7 @@ export interface SidebarNavItem {
 export const sidebarBottomNavItems: SidebarNavItem[] = [
   {
     title: 'Feedback',
-    path: '/feedback',
+    path: '/support',
     icon: 'FaRegCommentDots',
   },
 ];

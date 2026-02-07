@@ -30,11 +30,13 @@ const SupplementChipList: React.FC<SupplementChipListProps> = ({ supplements, lo
 
   return (
     <div className={styles.container}>
-      <div className={styles.chipList}>
+      <ul className={styles.chipList} aria-label="Supplement picks">
         {supplements.map((supplement) => (
-          <SupplementChip key={supplement._id} supplement={supplement} />
+          <li key={supplement._id}>
+            <SupplementChip supplement={supplement} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

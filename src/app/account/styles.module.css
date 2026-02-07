@@ -89,11 +89,11 @@
 }
 
 .inputGroup {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .inputGroup:last-of-type {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .label {
@@ -172,7 +172,7 @@
 .divider {
   height: 1px;
   background: var(--color-glass-border, rgba(255, 255, 255, 0.12));
-  margin: var(--spacing-xl) 0;
+  margin: var(--spacing-lg) 0;
   border: none;
 }
 
@@ -180,7 +180,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--color-foreground, #ededed);
-  margin: 0 0 var(--spacing-lg) 0;
+  margin: 0 0 var(--spacing-md) 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -194,7 +194,7 @@
   background: var(--color-accent, #7c3aed);
   color: white;
   padding: 0.875rem 2rem;
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
   border: none;
   border-radius: 8px;
   cursor: pointer;

@@ -117,11 +117,13 @@ const TabReviews: React.FC<TabReviewsProps> = ({ supplement }) => {
           })}
         </div>
       </div>
-      <div className={styles.list}>
+      <ul className={styles.list} aria-label="Reviews">
         {reviews.map((review) => (
-          <ReviewCard key={review._id} review={review} />
+          <li key={review._id}>
+            <ReviewCard review={review} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

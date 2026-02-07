@@ -159,6 +159,7 @@
 }
 
 .cardButton {
+  display: inline-block;
   padding: 14px 32px;
   background: transparent;
   color: #ffffff;
@@ -171,6 +172,8 @@
   white-space: nowrap;
   width: fit-content;
   align-self: flex-start;
+  text-decoration: none;
+  text-align: center;
 }
 
 .cardButton:hover {
