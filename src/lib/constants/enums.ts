@@ -70,3 +70,12 @@ export const DISCOUNT_TYPE = {
 export type DiscountType = (typeof DISCOUNT_TYPE)[keyof typeof DISCOUNT_TYPE];
 
 export const DISCOUNT_TYPE_VALUES = Object.values(DISCOUNT_TYPE);
+
+// NTherapy popular YouTube video links
+export const NTHERAPY_YOUTUBE_VIDEOS = {
+  HERO: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  POPULAR_1: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  POPULAR_2: 'https://www.youtube.com/watch?v=XsX3ATc3FbA',
+} as const;
+
+export type NTherapyYouTubeVideo = (typeof NTHERAPY_YOUTUBE_VIDEOS)[keyof typeof NTHERAPY_YOUTUBE_VIDEOS];

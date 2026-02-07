@@ -22,7 +22,6 @@ const PlaylistSection = () => {
   return (
     <div className={styles.card}>
       <div className={styles.playlistHeader}>
-        <h2 className={styles.playlistTitle}>Playlists Made For You</h2>
         <div className={styles.accessBadge}>
           <FaInfinity /> Unlimited Lifetime Access
         </div>
