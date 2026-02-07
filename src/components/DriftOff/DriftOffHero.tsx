@@ -57,7 +57,7 @@ const DriftOffHero = () => {
                 onClick={() => setPlaying(true)}
                 aria-label="Play video"
               >
-                <FaPlay className={styles.heroPlayButtonIcon} color="#4f46e5" size={20} />
+                <FaPlay className={styles.heroPlayButtonIcon} color="currentColor" size={20} aria-hidden />
               </button>
             </>
           )}

@@ -3,6 +3,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-lg);
+  min-height: 100vh;
+  background: transparent;
 }
 
 .sectionTitle {
@@ -37,11 +39,19 @@
 }
 
 .therapistCard {
-  background: var(--color-card-bg);
-  border-radius: var(--spacing-md);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
-  border: 1px solid var(--color-border-light);
+  transition: all 0.2s ease;
+}
+
+.therapistCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
 }
 
 .therapistInfo {
@@ -50,16 +60,26 @@
   margin-bottom: var(--spacing-lg);
 }
 
+.therapistInfo h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
 .avatar {
   width: 80px;
   height: 80px;
-  background: var(--color-indigo-dim);
+  background: var(--color-accent-dim);
   border-radius: var(--spacing-md);
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
 }
 
 .credentials {
-  color: var(--color-indigo-400);
-  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -76,23 +96,24 @@
 }
 
 .tags span {
-  background: var(--color-indigo-700);
-  color: var(--color-indigo-200);
+  background: var(--color-accent-dim);
+  color: var(--accent);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--spacing-lg);
   font-size: var(--font-size-xs);
+  font-weight: 600;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid var(--color-border-light);
+  border-top: 1px solid var(--color-glass-border);
   padding-top: var(--spacing-md);
 }
 
 .price {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .buttons {
@@ -102,28 +123,37 @@
 
 .outlineBtn {
   background: transparent;
-  border: 1px solid var(--color-accent);
-  color: var(--color-foreground);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--spacing-sm);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: 44px;
+  border-radius: var(--spacing-md);
   cursor: pointer;
-  transition: all 0.2s;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
 }
 
 .outlineBtn:hover {
   background: var(--color-accent-dim);
+  color: var(--color-foreground);
+  transform: translateY(-2px);
 }
 
 .primaryBtn {
-  background: var(--color-accent);
+  background: var(--accent);
   border: none;
   color: var(--color-foreground);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: 44px;
+  border-radius: var(--spacing-md);
   cursor: pointer;
-  transition: all 0.2s;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
 }
 
 .primaryBtn:hover {
   background: var(--color-accent-hover);
+  transform: translateY(-2px);
 }

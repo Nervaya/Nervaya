@@ -11,29 +11,23 @@
 }
 
 .titleInside {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
+  font-size: var(--font-size-hero);
+  font-weight: 600;
   color: var(--color-foreground);
   margin: 0;
   margin-bottom: var(--spacing-2xl);
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
   width: 100%;
 }
 
 .card {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-xl);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.2s ease;
   margin-bottom: var(--spacing-2xl);
   color: var(--color-foreground);
 }
@@ -45,14 +39,13 @@
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 30px 60px -12px var(--color-overlay-dark);
-  border-color: var(--color-border-light-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
 }
 
 .cardHeading {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 700;
+  font-size: var(--font-size-4xl);
+  font-weight: 600;
   color: var(--color-foreground);
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -60,9 +53,9 @@
 }
 
 .cardParagraph {
-  font-size: clamp(var(--font-size-lg), 1.2vw, var(--font-size-lg));
+  font-size: var(--font-size-lg);
   line-height: 1.7;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
   margin: 0 0 var(--spacing-lg) 0;
 }
 
@@ -90,14 +83,14 @@
 
 .neuroTag {
   display: inline-block;
-  background: var(--color-indigo-dim);
-  color: var(--color-indigo-400);
+  background: var(--color-accent-dim);
+  color: var(--accent);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--spacing-lg);
   font-size: var(--font-size-xs);
   font-weight: 600;
   width: fit-content;
-  border: 1px solid var(--color-indigo-border);
+  border: 1px solid var(--color-glass-border);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -114,60 +107,58 @@
 }
 
 .buttonPrimary {
-  background: linear-gradient(135deg, var(--color-indigo-500), var(--color-indigo-600));
+  background: var(--accent);
   color: var(--color-foreground);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  min-height: 44px;
   border-radius: var(--spacing-md);
   text-decoration: none;
   font-weight: 600;
+  font-size: var(--font-size-sm);
   border: none;
   cursor: pointer;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .buttonPrimary:hover {
-  background: linear-gradient(135deg, var(--color-indigo-600), var(--color-indigo-700));
-  transform: translateY(-1px);
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
 }
 
 .buttonSecondary {
   background: transparent;
-  color: var(--color-indigo-200);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  color: var(--accent);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  min-height: 44px;
   border-radius: var(--spacing-md);
-  border: 1px solid var(--color-indigo-border-light);
+  border: 2px solid var(--accent);
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.2s;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .buttonSecondary:hover {
-  background: var(--color-indigo-dim);
+  background: var(--color-accent-dim);
   color: var(--color-foreground);
-  border-color: var(--color-indigo-border);
+  transform: translateY(-2px);
 }
 
 .heroVideoCard {
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  border-radius: var(--spacing-md);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-glass-border);
 }
 
 .heroVideoWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: var(--spacing-md);
+  border-radius: 20px;
   overflow: hidden;
 }
 
@@ -191,14 +182,15 @@
 
 .heroVideoOverlayTitle {
   margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
   text-shadow: 0 2px 4px var(--color-overlay-dark);
 }
 
 .heroVideoOverlayAuthor {
   margin: 0;
-  font-size: var(--font-size-md);
-  opacity: 0.9;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
 }
 
 .heroPlayButton {
@@ -207,8 +199,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--color-white-bright);
-  width: 60px;
-  height: 60px;
+  color: var(--accent);
+  width: 48px;
+  height: 48px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -248,16 +243,12 @@
 }
 
 .sectionTitle {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
+  font-size: var(--font-size-4xl);
+  font-weight: 600;
   color: var(--color-foreground);
   margin: 0;
   margin-bottom: var(--spacing-2xl);
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
   width: 100%;
   text-align: center;
 }
@@ -279,19 +270,13 @@
 }
 
 .stepCard {
-  background: var(--color-card-bg-light);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.2),
-    0 10px 20px -10px rgba(79, 70, 229, 0.25),
-    0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-2xl);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  transition: all 0.2s ease;
   margin-bottom: var(--spacing-2xl);
   color: var(--color-foreground);
   flex: 1;
@@ -310,16 +295,13 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-indigo-border), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
   pointer-events: none;
 }
 
 .stepCard:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 12px 24px -8px rgba(79, 70, 229, 0.35),
-    0 20px 40px -12px rgba(0, 0, 0, 0.45);
-  border-color: var(--color-indigo-border);
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
 }
 
 @media (max-width: 768px) {
@@ -329,7 +311,7 @@
 }
 
 .stepNumber {
-  background: linear-gradient(145deg, var(--color-indigo-500), var(--color-indigo-600));
+  background: var(--accent);
   color: var(--color-foreground);
   width: 56px;
   height: 56px;
@@ -338,31 +320,22 @@
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-4xl);
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: var(--spacing-lg);
-  box-shadow:
-    0 0 0 1px var(--color-glass-border),
-    0 4px 14px rgba(79, 70, 229, 0.45),
-    0 6px 20px -4px rgba(79, 70, 229, 0.3);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  border: 1px solid var(--color-glass-border);
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .stepCard:hover .stepNumber {
   transform: scale(1.06);
-  box-shadow:
-    0 0 0 1px var(--color-border-light),
-    0 6px 20px rgba(79, 70, 229, 0.5),
-    0 8px 28px -4px rgba(79, 70, 229, 0.35);
 }
 
 .stepDescription {
   margin: 0;
-  font-size: clamp(var(--font-size-base), 1.2vw, var(--font-size-md));
+  font-size: var(--font-size-base);
   line-height: 1.65;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
 }
 
 .playlistHeader {
@@ -381,16 +354,12 @@
 }
 
 .playlistTitle {
-  font-size: var(--font-size-5xl);
-  font-weight: 800;
+  font-size: var(--font-size-4xl);
+  font-weight: 600;
   color: var(--color-foreground);
   margin: 0;
   margin-bottom: 0;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
   width: 100%;
 }
 
@@ -398,7 +367,7 @@
   background: var(--color-emerald-dim);
   color: var(--color-emerald-400);
   padding: var(--spacing-xs) var(--spacing-lg);
-  border-radius: 30px;
+  border-radius: var(--spacing-lg);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -417,20 +386,22 @@
 }
 
 .videoCard {
-  background: var(--color-card-bg-video);
-  border-radius: var(--spacing-md);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   overflow: hidden;
   position: relative;
   flex: 1;
   min-width: 300px;
   aspect-ratio: 16/9;
-  border: 1px solid var(--color-border-light);
-  transition: transform 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .videoCard:hover {
-  transform: scale(1.02);
-  border-color: var(--color-border-light-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
 }
 
 .videoCardContent {
@@ -444,8 +415,8 @@
 }
 
 .videoTitle {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
   color: var(--color-foreground);
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -465,9 +436,9 @@
 
 .playlistVideoWrapper {
   height: 100%;
-  background: linear-gradient(45deg, var(--color-indigo-700), var(--color-indigo-500));
+  background: var(--color-accent-dim);
   position: relative;
-  min-height: 200px;
+  min-height: 192px;
 }
 
 .playlistPlayerAbsolute {
@@ -482,8 +453,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--color-white-bright);
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -509,7 +482,7 @@
 .videoCardAuthor {
   margin: 0;
   font-size: var(--font-size-base);
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
 }
 
 .supportSection {
@@ -527,15 +500,13 @@
 }
 
 .supportCard {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-2xl);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.2s ease;
   margin-bottom: 0;
   color: var(--color-foreground);
   display: flex;
@@ -552,10 +523,10 @@
 }
 
 .supportIcon {
-  background: var(--color-indigo-dim);
-  color: var(--color-indigo-400);
-  width: 60px;
-  height: 60px;
+  background: var(--color-accent-dim);
+  color: var(--accent);
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -565,14 +536,16 @@
 }
 
 .supportButton {
-  background: var(--color-indigo-dim);
-  color: var(--color-indigo-200);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  background: transparent;
+  color: var(--accent);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  min-height: 44px;
   border-radius: var(--spacing-md);
-  border: 1px solid var(--color-indigo-border-light);
+  border: 2px solid var(--accent);
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.2s;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
   margin-top: auto;
   align-self: flex-start;
   cursor: pointer;
@@ -581,6 +554,7 @@
 .supportButton:hover {
   background: var(--color-accent-dim);
   color: var(--color-foreground);
+  transform: translateY(-2px);
 }
 
 .testimonialsSection {
@@ -599,18 +573,20 @@
 }
 
 .testimonialCard {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
-  box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-xl);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.2s ease;
   margin-bottom: 0;
   color: var(--color-foreground);
   flex: 1;
+}
+
+.testimonialCard:hover {
+  transform: translateY(-2px);
 }
 
 .userProfile {
@@ -621,22 +597,23 @@
 }
 
 .userAvatar {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-indigo-500), var(--color-indigo-600));
+  background: var(--accent);
   color: var(--color-foreground);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 600;
   font-size: var(--font-size-2xl);
 }
 
 .userInfo h4 {
   margin: 0 0 var(--spacing-xs) 0;
   color: var(--color-foreground);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
 }
 
 .stars {
@@ -644,19 +621,20 @@
 }
 
 .testimonialText {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   line-height: 1.7;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
   margin: 0 0 var(--spacing-lg) 0;
   font-style: italic;
 }
 
 .whatAreCard {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
-  padding: var(--spacing-xl);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
+  padding: var(--spacing-lg);
   display: flex;
   gap: var(--spacing-lg);
   align-items: flex-start;
@@ -666,8 +644,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: var(--color-indigo-dim);
-  color: var(--color-accent);
+  background: var(--color-accent-dim);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -681,9 +659,9 @@
 
 .whatAreText {
   margin: 0;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   line-height: 1.7;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
 }
 
 .whatMakesIntro {
@@ -700,24 +678,26 @@
 }
 
 .whyChooseCard {
-  background: var(--color-card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--spacing-lg);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
   padding: var(--spacing-lg);
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .whyChooseCard:hover {
-  border-color: var(--color-border-light-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
 }
 
 .whyChooseIcon {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--color-indigo-dim);
-  color: var(--color-accent);
+  background: var(--color-accent-dim);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -736,7 +716,7 @@
   margin: 0;
   font-size: var(--font-size-base);
   line-height: 1.6;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
 }
 
 .whatMakesGrid {
@@ -754,7 +734,7 @@
   gap: var(--spacing-sm);
   font-size: var(--font-size-base);
   line-height: 1.6;
-  color: var(--color-text-slate-300);
+  color: var(--color-text-muted);
 }
 
 .whatMakesBullet {
