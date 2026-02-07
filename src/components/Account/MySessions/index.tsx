@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
 import Pagination from '@/components/common/Pagination';
+import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 
@@ -70,7 +71,11 @@ export default function MySessions() {
   };
 
   if (loading) {
-    return <div className={styles.loading}>Loading sessions...</div>;
+    return (
+      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+        <LottieLoader width={200} height={200} />
+      </div>
+    );
   }
   if (error) {
     return <div className={styles.error}>{error}</div>;
