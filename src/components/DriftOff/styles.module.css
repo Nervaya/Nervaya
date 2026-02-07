@@ -15,7 +15,7 @@
   font-weight: 800;
   color: var(--color-foreground);
   margin: 0;
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
   letter-spacing: -0.03em;
   background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
   background-clip: text;
@@ -34,7 +34,7 @@
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
   color: var(--color-foreground);
 }
 
@@ -56,14 +56,14 @@
   color: var(--color-foreground);
   line-height: 1.2;
   letter-spacing: -0.02em;
-  margin: 0 0 var(--margin-md) 0;
+  margin: 0 0 var(--spacing-md) 0;
 }
 
 .cardParagraph {
   font-size: clamp(var(--font-size-lg), 1.2vw, var(--font-size-lg));
   line-height: 1.7;
   color: var(--color-text-slate-300);
-  margin: 0 0 var(--margin-lg) 0;
+  margin: 0 0 var(--spacing-lg) 0;
 }
 
 .heroSection {
@@ -98,13 +98,19 @@
   font-weight: 600;
   width: fit-content;
   border: 1px solid var(--color-indigo-border);
-  margin-bottom: var(--margin-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
 }
 
 .heroButtons {
   display: flex;
   gap: var(--spacing-md);
-  margin-top: var(--margin-2xl);
+  margin-top: var(--spacing-2xl);
 }
 
 .buttonPrimary {
@@ -218,7 +224,7 @@
 
 .heroHeading {
   font-size: var(--font-size-hero);
-  margin-bottom: var(--margin-md);
+  margin-bottom: var(--spacing-md);
 }
 
 .freeBadge {
@@ -238,7 +244,7 @@
 }
 
 .howItWorksSection {
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .sectionTitle {
@@ -246,7 +252,7 @@
   font-weight: 800;
   color: var(--color-foreground);
   margin: 0;
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
   letter-spacing: -0.03em;
   background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-text-slate-300) 100%);
   background-clip: text;
@@ -259,7 +265,7 @@
 .stepsGrid {
   display: flex;
   justify-content: center;
-  gap: var(--margin-2xl);
+  gap: var(--spacing-2xl);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -281,12 +287,12 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.2),
     0 10px 20px -10px rgba(79, 70, 229, 0.25),
     0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  padding: var(--margin-2xl);
+  padding: var(--spacing-2xl);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
   color: var(--color-foreground);
   flex: 1;
   min-width: 280px;
@@ -318,7 +324,7 @@
 
 @media (max-width: 768px) {
   .stepCard {
-    padding: var(--margin-xl);
+    padding: var(--spacing-xl);
   }
 }
 
@@ -333,7 +339,7 @@
   justify-content: center;
   font-size: var(--font-size-4xl);
   font-weight: 700;
-  margin-bottom: var(--margin-lg);
+  margin-bottom: var(--spacing-lg);
   box-shadow:
     0 0 0 1px var(--color-glass-border),
     0 4px 14px rgba(79, 70, 229, 0.45),
@@ -363,13 +369,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--margin-2xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 @media (max-width: 768px) {
   .playlistHeader {
     flex-direction: column;
-    gap: var(--margin-md);
+    gap: var(--spacing-md);
     text-align: center;
   }
 }
@@ -391,7 +397,7 @@
 .accessBadge {
   background: var(--color-emerald-dim);
   color: var(--color-emerald-400);
-  padding: var(--spacing-xs) var(--margin-lg);
+  padding: var(--spacing-xs) var(--spacing-lg);
   border-radius: 30px;
   font-weight: 600;
   display: flex;
@@ -403,7 +409,7 @@
 
 .playlistGrid {
   display: flex;
-  gap: var(--margin-2xl);
+  gap: var(--spacing-2xl);
   flex-wrap: wrap;
   list-style: none;
   margin: 0;
@@ -432,7 +438,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: var(--margin-lg);
+  padding: var(--spacing-lg);
   background: linear-gradient(to top, var(--color-overlay-dark), transparent);
   color: var(--color-foreground);
 }
@@ -452,8 +458,8 @@
   border-radius: var(--spacing-sm);
   font-size: var(--font-size-sm);
   position: absolute;
-  top: var(--margin-md);
-  right: var(--margin-md);
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   backdrop-filter: blur(4px);
 }
 
@@ -509,8 +515,8 @@
 .supportSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--margin-2xl);
-  margin-bottom: var(--margin-2xl);
+  gap: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 @media (max-width: 768px) {
@@ -526,7 +532,7 @@
   border: 1px solid var(--color-border-light);
   border-radius: var(--spacing-lg);
   box-shadow: 0 25px 50px -12px var(--color-overlay-dark);
-  padding: var(--margin-2xl);
+  padding: var(--spacing-2xl);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -536,13 +542,13 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--margin-lg);
+  gap: var(--spacing-lg);
 }
 
 .supportContent {
   display: flex;
   align-items: flex-start;
-  gap: var(--margin-lg);
+  gap: var(--spacing-lg);
 }
 
 .supportIcon {
@@ -579,7 +585,7 @@
 
 .testimonialsSection {
   display: flex;
-  gap: var(--margin-2xl);
+  gap: var(--spacing-2xl);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -610,8 +616,8 @@
 .userProfile {
   display: flex;
   align-items: center;
-  gap: var(--margin-md);
-  margin-bottom: var(--margin-lg);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .userAvatar {
@@ -641,7 +647,7 @@
   font-size: var(--font-size-lg);
   line-height: 1.7;
   color: var(--color-text-slate-300);
-  margin: 0 0 var(--margin-lg) 0;
+  margin: 0 0 var(--spacing-lg) 0;
   font-style: italic;
 }
 
