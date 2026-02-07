@@ -3,6 +3,7 @@
 import React from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementCard from '../SupplementCard';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 
 interface SupplementGridProps {
@@ -14,8 +15,8 @@ interface SupplementGridProps {
 const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCart, loading = false }) => {
   if (loading) {
     return (
-      <div className={styles.loading}>
-        <p>Loading supplements...</p>
+      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+        <LottieLoader width={200} height={200} />
       </div>
     );
   }
