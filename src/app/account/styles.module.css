@@ -70,8 +70,8 @@
   background: var(--color-glass-bg, rgba(23, 23, 23, 0.9));
   backdrop-filter: blur(var(--color-glass-blur, 12px));
   -webkit-backdrop-filter: blur(var(--color-glass-blur, 12px));
-  padding: var(--spacing-xl);
-  border-radius: 12px;
+  padding: var(--spacing-lg, 20px);
+  border-radius: 14px;
   border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
   text-align: left;
@@ -84,26 +84,71 @@
 
 @media (max-width: 768px) {
   .card {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md, 16px);
   }
 }
 
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl, 28px);
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .settingsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg, 20px);
+  }
+}
+
+.settingsCol {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileFormCol {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.profileFormCol .saveBtn {
+  margin-top: auto;
+}
+
+.sectionTitle {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-foreground, #ededed);
+  margin: var(--spacing-md, 14px) 0 var(--spacing-sm, 8px) 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.passwordForm {
+  margin-top: 0;
+}
+
 .inputGroup {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md, 14px);
 }
 
 .inputGroup:last-of-type {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm, 8px);
 }
 
 .label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs, 6px);
   color: var(--color-accent, #a78bfa);
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
 }
 
 .icon {
@@ -113,12 +158,12 @@
 
 .input {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.65rem 0.875rem;
   background: rgba(38, 38, 38, 0.8);
   border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.1));
   color: var(--color-foreground, #fff);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   transition: border-color 0.2s;
 }
 
@@ -133,25 +178,25 @@
 }
 
 .hint {
-  font-size: var(--font-size-sm, 0.8rem);
+  font-size: 0.75rem;
   color: var(--color-text-muted, #9ca3af);
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-xs, 4px);
   display: block;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .successMessage {
   color: #4ade80;
-  font-size: 0.9375rem;
-  margin-bottom: var(--spacing-lg);
-  margin-top: var(--spacing-sm);
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-xs, 4px);
 }
 
 .errorMessage {
   color: #f87171;
-  font-size: 0.9375rem;
-  margin-bottom: var(--spacing-md);
-  margin-top: var(--spacing-sm);
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-sm);
+  margin-top: var(--spacing-xs, 4px);
 }
 
 .fieldError {
@@ -169,39 +214,18 @@
   border-color: #f87171;
 }
 
-.divider {
-  height: 1px;
-  background: var(--color-glass-border, rgba(255, 255, 255, 0.12));
-  margin: var(--spacing-lg) 0;
-  border: none;
-}
-
-.sectionTitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--color-foreground, #ededed);
-  margin: 0 0 var(--spacing-md) 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.passwordForm {
-  margin-top: 0;
-}
-
 .saveBtn {
   background: var(--color-accent, #7c3aed);
   color: white;
-  padding: 0.875rem 2rem;
-  margin-top: var(--spacing-lg);
+  padding: 0.65rem 1.5rem;
+  margin-top: var(--spacing-md, 12px);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   transition: background 0.2s;
 }

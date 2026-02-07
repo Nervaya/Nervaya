@@ -4,6 +4,7 @@ import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import { SESSION_STATUS } from '@/lib/constants/enums';
 import { formatTimeAgo } from '@/lib/utils/timeAgo.util';
 import { parseSessionStartDateTime } from '@/lib/utils/sessionDateTime.util';
+import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 
 export interface SessionCounts {
   pending: number;
@@ -68,8 +69,9 @@ export function getAssessmentTileModel(
 
   const completedAt = latestAssessment?.completedAt;
   if (latestAssessment && completedAt) {
+    const scoreLabel = getSleepScoreLabel(latestAssessment);
     return {
-      value: 'Completed',
+      value: scoreLabel,
       subtitle: `Last completed ${formatTimeAgo(completedAt)}`,
       ctaLabel: 'Retake assessment',
     };

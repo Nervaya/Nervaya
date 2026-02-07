@@ -137,135 +137,136 @@ export default function AccountPage() {
 
         {activeTab === 'settings' && (
           <div className={styles.card}>
-            <form onSubmit={handleProfileSubmit}>
-              <div className={styles.inputGroup}>
-                <label className={styles.label} htmlFor="account-name">
-                  <FaUser className={styles.icon} /> Full Name
-                </label>
-                <input
-                  id="account-name"
-                  type="text"
-                  value={profileName}
-                  onChange={(e) => setProfileName(e.target.value)}
-                  className={styles.input}
-                  disabled={!user}
-                  aria-describedby={profileError ? 'profile-error' : undefined}
-                />
+            <div className={styles.settingsGrid}>
+              <div className={styles.settingsCol}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label} htmlFor="account-name">
+                    <FaUser className={styles.icon} /> Full Name
+                  </label>
+                  <input
+                    id="account-name"
+                    type="text"
+                    value={profileName}
+                    onChange={(e) => setProfileName(e.target.value)}
+                    className={styles.input}
+                    disabled={!user}
+                    aria-describedby={profileError ? 'profile-error' : undefined}
+                  />
+                </div>
+
+                <h2 className={styles.sectionTitle}>
+                  <FaLock className={styles.icon} /> Change password
+                </h2>
+                <form onSubmit={handlePasswordSubmit} className={styles.passwordForm}>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="current-password">
+                      Current password
+                    </label>
+                    <input
+                      id="current-password"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className={`${styles.input} ${passwordFieldErrors.current ? styles.inputError : ''}`}
+                      autoComplete="current-password"
+                      aria-invalid={!!passwordFieldErrors.current}
+                      aria-describedby={passwordFieldErrors.current ? 'current-pw-error' : undefined}
+                    />
+                    {passwordFieldErrors.current && (
+                      <span id="current-pw-error" className={styles.fieldError}>
+                        {passwordFieldErrors.current}
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="new-password">
+                      New password
+                    </label>
+                    <input
+                      id="new-password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className={`${styles.input} ${passwordFieldErrors.new ? styles.inputError : ''}`}
+                      autoComplete="new-password"
+                      aria-invalid={!!passwordFieldErrors.new}
+                      aria-describedby={passwordFieldErrors.new ? 'new-pw-error' : undefined}
+                    />
+                    {passwordFieldErrors.new && (
+                      <span id="new-pw-error" className={styles.fieldError}>
+                        {passwordFieldErrors.new}
+                      </span>
+                    )}
+                    <span className={styles.hint}>Min 8 chars, 1 upper, 1 lower, 1 number, 1 special.</span>
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="confirm-password">
+                      Confirm new password
+                    </label>
+                    <input
+                      id="confirm-password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className={`${styles.input} ${passwordFieldErrors.confirm ? styles.inputError : ''}`}
+                      autoComplete="new-password"
+                      aria-invalid={!!passwordFieldErrors.confirm}
+                      aria-describedby={passwordFieldErrors.confirm ? 'confirm-pw-error' : undefined}
+                    />
+                    {passwordFieldErrors.confirm && (
+                      <span id="confirm-pw-error" className={styles.fieldError}>
+                        {passwordFieldErrors.confirm}
+                      </span>
+                    )}
+                  </div>
+                  {passwordError && (
+                    <p className={styles.errorMessage} role="alert">
+                      {passwordError}
+                    </p>
+                  )}
+                  {passwordSuccess && (
+                    <p className={styles.successMessage} role="status">
+                      {passwordSuccess}
+                    </p>
+                  )}
+                  <button type="submit" className={styles.saveBtn} disabled={passwordLoading}>
+                    <FaLock /> {passwordLoading ? 'Updating…' : 'Change password'}
+                  </button>
+                </form>
               </div>
 
-              <div className={styles.inputGroup}>
-                <label className={styles.label} htmlFor="account-email">
-                  <FaEnvelope className={styles.icon} /> Email Address
-                </label>
-                <input
-                  id="account-email"
-                  type="email"
-                  value={user?.email ?? ''}
-                  readOnly
-                  className={styles.input}
-                  disabled
-                />
-                <span className={styles.hint}>Email cannot be changed.</span>
+              <div className={styles.settingsCol}>
+                <form onSubmit={handleProfileSubmit} className={styles.profileFormCol}>
+                  <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="account-email">
+                      <FaEnvelope className={styles.icon} /> Email Address
+                    </label>
+                    <input
+                      id="account-email"
+                      type="email"
+                      value={user?.email ?? ''}
+                      readOnly
+                      className={styles.input}
+                      disabled
+                    />
+                    <span className={styles.hint}>Email cannot be changed.</span>
+                  </div>
+                  {profileError && (
+                    <p id="profile-error" className={styles.errorMessage} role="alert">
+                      {profileError}
+                    </p>
+                  )}
+                  {profileSuccess && (
+                    <p className={styles.successMessage} role="status">
+                      {profileSuccess}
+                    </p>
+                  )}
+                  <button type="submit" className={styles.saveBtn} disabled={profileLoading || !user}>
+                    <FaSave /> {profileLoading ? 'Saving…' : 'Save profile'}
+                  </button>
+                </form>
               </div>
-
-              {profileError && (
-                <p id="profile-error" className={styles.errorMessage} role="alert">
-                  {profileError}
-                </p>
-              )}
-              {profileSuccess && (
-                <p className={styles.successMessage} role="status">
-                  {profileSuccess}
-                </p>
-              )}
-              <button type="submit" className={styles.saveBtn} disabled={profileLoading || !user}>
-                <FaSave /> {profileLoading ? 'Saving…' : 'Save profile'}
-              </button>
-            </form>
-
-            <div className={styles.divider} aria-hidden />
-            <h2 className={styles.sectionTitle}>
-              <FaLock className={styles.icon} /> Change password
-            </h2>
-
-            <form onSubmit={handlePasswordSubmit} className={styles.passwordForm}>
-              <div className={styles.inputGroup}>
-                <label className={styles.label} htmlFor="current-password">
-                  Current password
-                </label>
-                <input
-                  id="current-password"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className={`${styles.input} ${passwordFieldErrors.current ? styles.inputError : ''}`}
-                  autoComplete="current-password"
-                  aria-invalid={!!passwordFieldErrors.current}
-                  aria-describedby={passwordFieldErrors.current ? 'current-pw-error' : undefined}
-                />
-                {passwordFieldErrors.current && (
-                  <span id="current-pw-error" className={styles.fieldError}>
-                    {passwordFieldErrors.current}
-                  </span>
-                )}
-              </div>
-              <div className={styles.inputGroup}>
-                <label className={styles.label} htmlFor="new-password">
-                  New password
-                </label>
-                <input
-                  id="new-password"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className={`${styles.input} ${passwordFieldErrors.new ? styles.inputError : ''}`}
-                  autoComplete="new-password"
-                  aria-invalid={!!passwordFieldErrors.new}
-                  aria-describedby={passwordFieldErrors.new ? 'new-pw-error' : undefined}
-                />
-                {passwordFieldErrors.new && (
-                  <span id="new-pw-error" className={styles.fieldError}>
-                    {passwordFieldErrors.new}
-                  </span>
-                )}
-                <span className={styles.hint}>
-                  At least 8 characters, one uppercase, one lowercase, one number, one special character.
-                </span>
-              </div>
-              <div className={styles.inputGroup}>
-                <label className={styles.label} htmlFor="confirm-password">
-                  Confirm new password
-                </label>
-                <input
-                  id="confirm-password"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`${styles.input} ${passwordFieldErrors.confirm ? styles.inputError : ''}`}
-                  autoComplete="new-password"
-                  aria-invalid={!!passwordFieldErrors.confirm}
-                  aria-describedby={passwordFieldErrors.confirm ? 'confirm-pw-error' : undefined}
-                />
-                {passwordFieldErrors.confirm && (
-                  <span id="confirm-pw-error" className={styles.fieldError}>
-                    {passwordFieldErrors.confirm}
-                  </span>
-                )}
-              </div>
-              {passwordError && (
-                <p className={styles.errorMessage} role="alert">
-                  {passwordError}
-                </p>
-              )}
-              {passwordSuccess && (
-                <p className={styles.successMessage} role="status">
-                  {passwordSuccess}
-                </p>
-              )}
-              <button type="submit" className={styles.saveBtn} disabled={passwordLoading}>
-                <FaLock /> {passwordLoading ? 'Updating…' : 'Change password'}
-              </button>
-            </form>
+            </div>
           </div>
         )}
 
