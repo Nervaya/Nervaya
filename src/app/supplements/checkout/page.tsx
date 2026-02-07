@@ -13,6 +13,7 @@ import { AddressCard } from './AddressCard';
 import { DeliveryOptions } from './DeliveryOptions';
 import { PromoCode } from './PromoCode';
 import { FaChevronLeft } from 'react-icons/fa6';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 
 export default function CheckoutPage() {
@@ -49,7 +50,9 @@ export default function CheckoutPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <div className={styles.loading}>Loading checkout...</div>
+          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+            <LottieLoader width={200} height={200} />
+          </div>
         </div>
       </Sidebar>
     );
