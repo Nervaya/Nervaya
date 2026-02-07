@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import StatusState from '@/components/common/StatusState';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
@@ -86,12 +87,15 @@ export default function AdminTherapistsPage() {
         </div>
       )}
 
-      <div className={styles.header}>
-        <h2>Manage Therapists</h2>
-        <Link href="/admin/therapists/add" className={styles.addButton}>
-          Add New Therapist
-        </Link>
-      </div>
+      <PageHeader
+        title="Therapists"
+        subtitle="Manage therapist profiles and information"
+        actions={
+          <Link href="/admin/therapists/add" className={styles.addButton}>
+            Add New Therapist
+          </Link>
+        }
+      />
 
       {loading ? (
         <div className={styles.loaderWrapper}>

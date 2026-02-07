@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack } from 'react-icons/io5';
 import BlogForm from '@/components/Admin/BlogForm';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -79,13 +80,16 @@ export default function AddBlogPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/blogs" className={styles.backLink}>
-          <IoChevronBack aria-hidden />
-          Back to Blogs
-        </Link>
-        <h1 className={styles.title}>Create New Blog</h1>
-      </header>
+      <PageHeader
+        title="Create New Blog"
+        subtitle="Add a new blog post to your platform"
+        actions={
+          <Link href="/admin/blogs" className={styles.backLink}>
+            <IoChevronBack aria-hidden />
+            Back to Blogs
+          </Link>
+        }
+      />
 
       <BlogForm
         formData={formData}

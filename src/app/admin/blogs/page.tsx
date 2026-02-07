@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa6';
 import api from '@/lib/axios';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
 import { ConfirmDeleteDialog, BlogListCard } from '@/components/Admin/BlogList';
 import type { Blog } from '@/types/blog.types';
@@ -105,13 +106,16 @@ export default function AdminBlogsPage() {
         />
       )}
 
-      <div className={styles.header}>
-        <h1 className={styles.title}>Manage Blogs</h1>
-        <Link href="/admin/blogs/add" className={styles.addButton}>
-          <FaPlus />
-          New Blog
-        </Link>
-      </div>
+      <PageHeader
+        title="Blogs"
+        subtitle="Manage blog posts and content"
+        actions={
+          <Link href="/admin/blogs/add" className={styles.addButton}>
+            <FaPlus aria-hidden />
+            New Blog
+          </Link>
+        }
+      />
 
       {error && <div className={styles.error}>{error}</div>}
 

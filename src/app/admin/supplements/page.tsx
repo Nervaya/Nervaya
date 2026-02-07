@@ -6,6 +6,7 @@ import type { SupplementFiltersParams } from '@/lib/api/supplements';
 import SupplementList from '@/components/Admin/SupplementList';
 import SupplementModal from '@/components/Admin/SupplementModal';
 import SupplementFilters from '@/components/Admin/SupplementFilters';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
 import { useAdminSupplements } from '@/app/queries/supplements/useSupplements';
 import api from '@/lib/axios';
@@ -106,12 +107,15 @@ export default function AdminSupplementsPage() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Manage Supplements</h2>
-          <button type="button" onClick={handleAdd} className={styles.addButton}>
-            Add New Supplement
-          </button>
-        </div>
+        <PageHeader
+          title="Supplements"
+          subtitle="Manage supplement inventory and details"
+          actions={
+            <button type="button" onClick={handleAdd} className={styles.addButton}>
+              Add New Supplement
+            </button>
+          }
+        />
         {displayError && (
           <div className={styles.error} role="alert">
             {displayError}

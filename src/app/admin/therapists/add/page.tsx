@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import { FaArrowLeft, FaUserPlus } from 'react-icons/fa6';
 
 export default function AddTherapistPage() {
@@ -70,14 +71,16 @@ export default function AddTherapistPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/admin/therapists" className={styles.backLink}>
-          <FaArrowLeft />
-          <span>Back to Therapists</span>
-        </Link>
-        <h1 className={styles.title}>Add New Therapist</h1>
-        <p className={styles.subtitle}>Create a new therapist profile for your platform</p>
-      </header>
+      <PageHeader
+        title="Add New Therapist"
+        subtitle="Create a new therapist profile for your platform"
+        actions={
+          <Link href="/admin/therapists" className={styles.backLink}>
+            <FaArrowLeft aria-hidden />
+            <span>Back to Therapists</span>
+          </Link>
+        }
+      />
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (

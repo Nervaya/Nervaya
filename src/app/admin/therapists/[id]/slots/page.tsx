@@ -6,6 +6,7 @@ import SlotManager from '@/components/Admin/SlotManager';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import { FaArrowLeft } from 'react-icons/fa6';
 
@@ -69,21 +70,16 @@ export default function TherapistSlotsPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Manage Slots</h1>
-          <p className={styles.subtitle}>
-            Therapist: <strong>{therapist.name}</strong>
-          </p>
-          {therapist.qualifications && therapist.qualifications.length > 0 && (
-            <p className={styles.qualifications}>{therapist.qualifications.join(', ')}</p>
-          )}
-        </div>
-        <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-          <FaArrowLeft />
-          Back to Therapists
-        </button>
-      </header>
+      <PageHeader
+        title="Manage Slots"
+        subtitle={`Therapist: ${therapist.name}`}
+        actions={
+          <button type="button" onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
+            <FaArrowLeft aria-hidden />
+            Back to Therapists
+          </button>
+        }
+      />
 
       <ConsultingHoursManager therapistId={therapistId} onUpdate={handleSlotUpdate} />
 
