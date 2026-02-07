@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import StatusState from '@/components/common/StatusState';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
@@ -60,6 +61,7 @@ export default function EditSupplementPage() {
   if (loading) {
     return (
       <div className={styles.container}>
+        <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
@@ -70,6 +72,7 @@ export default function EditSupplementPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
+        <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
         <StatusState
           type="error"
           title={error ? 'Error' : 'Not Found'}
@@ -86,7 +89,7 @@ export default function EditSupplementPage() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Edit Supplement</h2>
+      <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
       {error && <div className={styles.error}>{error}</div>}
       <SupplementForm
         key={supplement._id}
