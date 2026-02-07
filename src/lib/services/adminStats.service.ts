@@ -11,11 +11,30 @@ const LOW_STOCK_THRESHOLD = 10;
 const RECENT_ORDERS_LIMIT = 5;
 const UPCOMING_DAYS = 7;
 
+export interface RecentOrderRow {
+  _id: string;
+  userId: string;
+  totalAmount: number;
+  orderStatus?: string;
+  paymentStatus?: string;
+  createdAt: string | Date;
+}
+
 export interface OrderStats {
   total: number;
   byStatus: Record<string, number>;
   totalRevenue: number;
-  recentOrders: unknown[];
+  recentOrders: RecentOrderRow[];
+}
+
+export interface UpcomingSessionRow {
+  _id: string;
+  userId: string;
+  date: string;
+  startTime: string;
+  endTime?: string;
+  status: string;
+  therapistId?: { name?: string } | string;
 }
 
 export interface SessionStats {
@@ -23,7 +42,13 @@ export interface SessionStats {
   byStatus: Record<string, number>;
   upcomingCount: number;
   completedCount: number;
-  upcomingSessions: unknown[];
+  upcomingSessions: UpcomingSessionRow[];
+}
+
+export interface LowStockItemRow {
+  _id?: string;
+  name: string;
+  stock: number;
 }
 
 export interface SupplementStats {
@@ -32,7 +57,7 @@ export interface SupplementStats {
   inactiveCount: number;
   lowStockCount: number;
   outOfStockCount: number;
-  lowStockItems: unknown[];
+  lowStockItems: LowStockItemRow[];
 }
 
 export interface UserStats {
@@ -73,7 +98,15 @@ export async function getOrderStats(): Promise<OrderStats> {
       { $group: { _id: null, total: { $sum: '$totalAmount' } } },
     ]);
     const totalRevenue = paidOrders[0]?.total ?? 0;
-    return { total, byStatus, totalRevenue, recentOrders };
+    const recentOrdersRows: RecentOrderRow[] = recentOrders.map((o) => ({
+      _id: String(o._id),
+      userId: String(o.userId),
+      totalAmount: o.totalAmount,
+      orderStatus: o.orderStatus,
+      paymentStatus: o.paymentStatus,
+      createdAt: o.createdAt,
+    }));
+    return { total, byStatus, totalRevenue, recentOrders: recentOrdersRows };
   } catch (error) {
     throw handleError(error);
   }
@@ -107,12 +140,21 @@ export async function getSessionStats(): Promise<SessionStats> {
       status: { $in: ['pending', 'confirmed'] },
       date: { $gte: today, $lte: futureDateStr },
     });
+    const upcomingSessionsRows: UpcomingSessionRow[] = upcomingSessions.map((s) => ({
+      _id: String(s._id),
+      userId: String(s.userId),
+      date: s.date,
+      startTime: s.startTime,
+      endTime: s.endTime,
+      status: s.status,
+      therapistId: s.therapistId as UpcomingSessionRow['therapistId'],
+    }));
     return {
       total,
       byStatus,
       upcomingCount,
       completedCount,
-      upcomingSessions,
+      upcomingSessions: upcomingSessionsRows,
     };
   } catch (error) {
     throw handleError(error);
@@ -136,13 +178,18 @@ export async function getSupplementStats(): Promise<SupplementStats> {
       stock: { $gt: 0, $lt: LOW_STOCK_THRESHOLD },
     });
     const outOfStockCount = await Supplement.countDocuments({ stock: 0 });
+    const lowStockItemsRows: LowStockItemRow[] = lowStockItems.map((item) => ({
+      _id: item._id != null ? String(item._id) : undefined,
+      name: item.name,
+      stock: item.stock,
+    }));
     return {
       total,
       activeCount,
       inactiveCount,
       lowStockCount,
       outOfStockCount,
-      lowStockItems,
+      lowStockItems: lowStockItemsRows,
     };
   } catch (error) {
     throw handleError(error);
