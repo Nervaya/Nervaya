@@ -11,13 +11,11 @@
 
 .title {
   font-size: var(--font-size-5xl);
-  font-weight: 700;
+  font-weight: 600;
   margin: 0 0 var(--spacing-sm) 0;
   color: var(--color-foreground);
-}
 
-@media (max-width: 768px) {
-  .title {
+  @media (max-width: 768px) {
     font-size: var(--font-size-4xl);
   }
 }
