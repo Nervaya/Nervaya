@@ -24,8 +24,8 @@
   gap: var(--spacing-sm);
 }
 
-@media (max-width: 768px) {
-  .container {
+.container {
+  @media (max-width: 768px) {
     padding: 0;
   }
 }
