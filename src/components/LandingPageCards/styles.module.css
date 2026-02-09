@@ -1,15 +1,13 @@
 .cardsSection {
   position: relative;
   z-index: 1;
-  padding: 60px 40px;
+  padding: var(--spacing-2xl) var(--spacing-xl);
   display: flex;
   justify-content: center;
   width: 100%;
-}
 
-@media (max-width: 768px) {
-  .cardsSection {
-    padding: 40px 20px;
+  @media (max-width: 768px) {
+    padding: var(--spacing-xl) var(--spacing-md);
   }
 }
 
@@ -28,50 +26,36 @@
 .cardsContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  gap: var(--spacing-lg);
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
   list-style: none;
   padding: 0;
-}
 
-@media (max-width: 1200px) {
-  .cardsContainer {
-    gap: 24px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .cardsContainer {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
   }
-}
 
-@media (max-width: 768px) {
-  .cardsContainer {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 24px;
     max-width: 500px;
   }
 }
 
 .card {
   background: linear-gradient(to bottom, #f5f3ff 0%, #f5f3ff 40%, #301050 40%, #301050 100%);
-  border-radius: 25px;
+  border-radius: 20px;
   overflow: hidden;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .cardImageWrapper {
@@ -80,32 +64,30 @@
   width: 100%;
   height: 280px;
   overflow: hidden;
-}
 
-@media (max-width: 768px) {
-  .cardImageWrapper {
+  @media (max-width: 768px) {
     height: 240px;
   }
-}
 
-.cardImageWrapper :global(img) {
-  object-fit: cover;
-  object-position: center;
+  :global(img) {
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
 .badge {
   position: absolute;
-  top: 30px;
-  left: 30px;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
   background: #f3f8ff;
   color: #1a1a1a;
-  padding: 12px 20px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 48px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   z-index: 10;
-  width: 138px;
-  height: 44px;
+  min-width: 138px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,66 +99,61 @@
 }
 
 .cardContent {
-  padding: 32px 28px;
+  padding: var(--spacing-lg) var(--spacing-lg);
   background: #301050;
   flex: 1;
   display: flex;
   flex-direction: column;
-}
 
-@media (max-width: 768px) {
-  .cardContent {
-    padding: 24px 20px;
+  @media (max-width: 768px) {
+    padding: var(--spacing-md) var(--spacing-md);
   }
 }
 
 .cardTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 16px;
+  font-size: var(--font-size-5xl);
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: var(--spacing-md);
   line-height: 1.3;
-}
 
-@media (max-width: 768px) {
-  .cardTitle {
-    font-size: 1.5rem;
+  @media (max-width: 768px) {
+    font-size: var(--font-size-4xl);
   }
 }
 
 .cardDescription {
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   line-height: 1.7;
-  color: #e0e0e0;
-  margin-bottom: 28px;
+  color: var(--color-text-slate-300);
+  margin-bottom: var(--spacing-lg);
   flex: 1;
-}
 
-@media (max-width: 768px) {
-  .cardDescription {
-    font-size: 0.95rem;
+  @media (max-width: 768px) {
+    font-size: var(--font-size-base);
   }
 }
 
 .cardButton {
   display: inline-block;
-  padding: 14px 32px;
+  padding: var(--spacing-md) var(--spacing-lg);
   background: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
+  color: var(--foreground);
+  border: 2px solid var(--foreground);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
   width: fit-content;
+  min-height: 44px;
   align-self: flex-start;
   text-decoration: none;
   text-align: center;
-}
 
-.cardButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  &:hover {
+    background: var(--color-white-dim);
+    transform: translateY(-2px);
+  }
 }
