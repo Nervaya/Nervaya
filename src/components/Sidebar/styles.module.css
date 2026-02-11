@@ -85,8 +85,9 @@
 .mobileToggle {
   display: none;
   position: fixed;
-  top: 18px;
-  left: 18px;
+  top: 84px;
+  /* Fix: Move below the main navbar (56px + ~28px margin) */
+  left: 16px;
   z-index: 1100;
   background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(10px);

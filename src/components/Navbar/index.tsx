@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FaCircleUser } from 'react-icons/fa6';
+import { HiHome, HiShoppingBag, HiDocumentText, HiInformationCircle, HiUserCircle } from 'react-icons/hi2';
 import { NAVBAR_PRODUCTS_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
 import { hasRole } from '@/lib/constants/rbac';
@@ -103,6 +104,7 @@ const Navbar = () => {
         <ul className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}>
           <li>
             <Link href="/" onClick={closeMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
+              <HiHome className={styles.menuItemIcon} />
               Home
             </Link>
           </li>
@@ -114,6 +116,7 @@ const Navbar = () => {
                 aria-expanded={isProductsDropdownOpen}
                 aria-haspopup="true"
               >
+                <HiShoppingBag className={styles.menuItemIcon} />
                 Products
                 <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
               </button>
@@ -137,6 +140,7 @@ const Navbar = () => {
                 onClick={closeMobileMenu}
                 aria-current={pathname === '/blog' || pathname?.startsWith('/blog/') ? 'page' : undefined}
               >
+                <HiDocumentText className={styles.menuItemIcon} />
                 Blog
               </Link>
             </li>
@@ -147,6 +151,7 @@ const Navbar = () => {
               onClick={closeMobileMenu}
               aria-current={pathname === '/about-us' ? 'page' : undefined}
             >
+              <HiInformationCircle className={styles.menuItemIcon} />
               About Us
             </Link>
           </li>
@@ -161,6 +166,7 @@ const Navbar = () => {
                   pathname === ROUTES.ADMIN_DASHBOARD || pathname?.startsWith('/account') ? 'page' : undefined
                 }
               >
+                <HiUserCircle className={styles.menuItemIcon} />
                 <FaCircleUser size={24} />
                 <span>{isAdmin ? 'Admin' : user?.name?.split(' ')[0] || 'Account'}</span>
               </Link>
