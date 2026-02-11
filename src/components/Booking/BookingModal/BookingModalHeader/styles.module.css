@@ -1,17 +1,17 @@
 .header {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  color: white;
-  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: #ffffff;
+  padding: var(--spacing-lg) var(--spacing-xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--spacing-md);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px 16px 0 0;
+  border-radius: 24px 24px 0 0;
   flex-shrink: 0;
   position: relative;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 0;
 }
 
@@ -22,7 +22,7 @@
 
 @media (max-width: 768px) {
   .header {
-    padding: 1rem 1.25rem;
+    padding: 1.25rem 1.5rem;
     border-radius: 12px 12px 0 0;
   }
 }

@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 10001;
   padding: 1rem;
   animation: fadeIn 0.2s ease-out;
   overflow-y: auto;
@@ -20,6 +20,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -32,16 +33,18 @@
 }
 
 .modal {
-  background: #1a1a1a;
-  border-radius: 16px;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 24px;
   width: 100%;
-  max-width: min(760px, calc(100vw - 2rem));
+  max-width: min(800px, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  border: 1px solid #2a2a2a;
   animation: slideUp 0.3s ease-out;
   position: relative;
   z-index: 10000;
@@ -54,6 +57,7 @@
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -63,36 +67,37 @@
 @media (max-width: 768px) {
   .modal {
     max-width: calc(100vw - 1rem);
-    border-radius: 12px;
+    border-radius: 20px;
     max-height: calc(100vh - 1rem);
   }
 }
 
 .content {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 1.25rem;
-  padding: 1.25rem 1.5rem;
-  flex: 0 1 auto;
-  max-height: 52vh;
-  min-width: 0;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #1a1a1a;
+  background: transparent;
 }
 
 @media (max-width: 968px) {
   .content {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding: 1.25rem 1.5rem;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
   }
 }
 
 @media (max-width: 768px) {
   .content {
-    padding: 1rem 1.25rem;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    gap: 24px;
   }
 }
 
@@ -105,13 +110,13 @@
 }
 
 .sectionTitle {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 0.35rem 0;
+  color: var(--color-foreground);
+  margin: 0 0 var(--spacing-sm) 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -127,14 +132,14 @@
 }
 
 .selectedDateText {
-  font-size: 0.8125rem;
-  color: #9ca3af;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   text-align: center;
-  padding: 0.5rem 0.75rem;
-  background: #2a2a2a;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-white-dim);
   border-radius: 8px;
-  margin-top: 0.5rem;
-  border: 1px solid #3a3a3a;
+  margin-top: var(--spacing-sm);
+  border: 1px solid var(--color-border-light);
 }
 
 .selectedDateText strong {
@@ -190,7 +195,7 @@
   padding: 0.75rem 1.5rem;
   background: rgba(239, 68, 68, 0.1);
   border-top: 1px solid rgba(239, 68, 68, 0.3);
-  color: #ef4444;
+  color: var(--color-destructive);
   font-size: 0.875rem;
   font-weight: 500;
   flex-shrink: 0;
@@ -205,9 +210,9 @@
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  background: rgba(34, 197, 94, 0.15);
-  border-top: 1px solid rgba(34, 197, 94, 0.3);
-  color: #22c55e;
+  background: var(--color-emerald-dim);
+  border-top: 1px solid var(--color-emerald-border);
+  color: var(--color-emerald-400);
   font-size: 0.9375rem;
   font-weight: 600;
   flex-shrink: 0;
@@ -216,7 +221,7 @@
 .confirmOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--color-overlay-mid);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,18 +230,20 @@
 }
 
 .confirmDialog {
-  background: #2a2a2a;
-  border: 1px solid #3a3a3a;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border-light);
   border-radius: 12px;
   padding: 1.5rem;
   max-width: 360px;
   width: 100%;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .confirmDialog p {
   margin: 0 0 1.25rem 0;
-  color: #e5e5e5;
+  color: var(--color-foreground);
   font-size: 0.9375rem;
   line-height: 1.5;
 }
@@ -258,14 +265,14 @@
   font-weight: 500;
   cursor: pointer;
   background: transparent;
-  color: #9ca3af;
-  border: 1px solid #4a4a4a;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-light);
   transition: all 0.2s;
 }
 
 .confirmCancel:hover {
-  background: #3a3a3a;
-  color: #e5e5e5;
+  background: var(--color-white-dim);
+  color: var(--color-text-primary);
 }
 
 .confirmOk {
@@ -274,13 +281,13 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   color: white;
   border: none;
   transition: all 0.2s;
 }
 
 .confirmOk:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #6d28d9 100%);
   transform: translateY(-1px);
 }

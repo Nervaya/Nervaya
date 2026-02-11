@@ -1,43 +1,45 @@
 .footer {
-  padding: 0.875rem 1.25rem;
-  border-top: 1px solid #2a2a2a;
-  background: #1a1a1a;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-top: 1px solid var(--color-border-light);
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   flex-shrink: 0;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 24px 24px;
 }
 
 @media (max-width: 768px) {
   .footer {
-    padding: 1rem 1.25rem;
-    border-radius: 0 0 12px 12px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 0 0 20px 20px;
   }
 }
 
 .helpText {
   text-align: center;
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .helpText a {
-  color: #8b5cf6;
+  color: var(--color-accent);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .helpText a:hover {
-  color: #a78bfa;
+  color: var(--color-accent-hover);
   text-decoration: underline;
 }
 
 .bookBtn {
   width: 100%;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   color: white;
   border: none;
   padding: 1rem 1.5rem;
@@ -46,7 +48,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px var(--color-accent-dim);
 }
 
 @media (max-width: 768px) {
@@ -57,9 +59,9 @@
 }
 
 .bookBtn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #6d28d9 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 6px 16px var(--color-accent-dim);
 }
 
 .bookBtn:active:not(:disabled) {
@@ -67,8 +69,8 @@
 }
 
 .bookBtn:disabled {
-  background: #2a2a2a;
-  color: #6b7280;
+  background: var(--color-white-dim);
+  color: var(--color-text-dim);
   cursor: not-allowed;
   box-shadow: none;
   opacity: 0.6;

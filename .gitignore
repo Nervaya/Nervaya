@@ -28,7 +28,7 @@
 *.pem
 
 #Agent Files
-.agent/
+.antigravity/
 
 # debug
 npm-debug.log*

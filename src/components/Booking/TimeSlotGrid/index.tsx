@@ -55,6 +55,13 @@ function groupSlotsByPeriod(slots: TherapistSlot[]): GroupedSlots[] {
   return result;
 }
 
+const formatTimeDisplay = (timeStr: string) => {
+  if (/^\d:/.test(timeStr)) {
+    return `0${timeStr}`;
+  }
+  return timeStr;
+};
+
 export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: TimeSlotGridProps) {
   const [currentPeriodIndex, setCurrentPeriodIndex] = useState(0);
 
@@ -147,8 +154,8 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
                   aria-label={`Select ${slot.startTime} to ${slot.endTime}`}
                   aria-pressed={isSelected}
                 >
-                  <span className={styles.time}>{slot.startTime}</span>
-                  {slot.endTime && <span className={styles.timeRange}>{slot.endTime}</span>}
+                  <span className={styles.time}>{formatTimeDisplay(slot.startTime)}</span>
+                  {slot.endTime && <span className={styles.timeRange}>{formatTimeDisplay(slot.endTime)}</span>}
                   {isCustomized && (
                     <span className={styles.customizedBadge} title="Customized slot">
                       ⭐

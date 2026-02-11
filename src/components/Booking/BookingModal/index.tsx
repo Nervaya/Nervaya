@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
 import LottieLoader from '@/components/common/LottieLoader';
@@ -123,7 +124,16 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       updatedAt: new Date().toISOString(),
     })) || [];
 
-  return (
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) return null;
+
+  const modalContent = (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <BookingModalHeader therapistName={therapistName} onClose={onClose} />
@@ -204,4 +214,6 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
