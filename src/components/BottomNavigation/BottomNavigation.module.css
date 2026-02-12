@@ -1,0 +1,356 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    display: block;
+    border: 1px solid var(--color-glass-border);
+    border-radius: 16px;
+    margin: 0 12px;
+    left: 0;
+    right: 0;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    width: calc(100% - 24px);
+    max-width: calc(100vw - 24px);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    box-shadow:
+      0 -4px 20px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+}
+
+.navBar {
+  border-radius: inherit;
+  overflow: visible;
+}
+
+.morePanel {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 4px 8px 24px;
+}
+
+@media (max-width: 480px) {
+  .morePanel {
+    padding: 0 2px 6px 20px;
+  }
+}
+
+.morePanel .moreList {
+  min-width: 56px;
+  background: rgba(15, 23, 42, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow:
+    0 -4px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+}
+
+@media (max-width: 480px) {
+  .morePanel .moreList {
+    padding: 6px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.moreList {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .moreList {
+    gap: 3px;
+  }
+}
+
+.moreIconItem {
+  flex: none;
+}
+
+.moreIconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  border-radius: 10px;
+  background: transparent;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.moreIconLink:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.moreIconLink:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+  .moreIconLink {
+    height: 40px;
+    min-height: 40px;
+  }
+}
+
+.moreIconLink.active {
+  color: #c4b5fd;
+  background: rgba(196, 181, 253, 0.12);
+}
+
+.moreIcon {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+@media (max-width: 480px) {
+  .moreIcon {
+    font-size: 1.1rem;
+  }
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 64px;
+  padding: 8px 4px;
+  overflow: visible;
+  gap: 2px;
+}
+
+@media (max-width: 480px) {
+  .navList {
+    padding: 6px 1px;
+    min-height: 60px;
+  }
+}
+
+.navItem {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 2px;
+  min-width: 44px;
+  min-height: 44px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  position: relative;
+  flex: 1 1 0;
+  max-width: 100px;
+}
+
+.navLink:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .navLink:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+@media (max-width: 480px) {
+  .navLink {
+    padding: 4px 1px;
+    gap: 2px;
+    min-width: 40px;
+  }
+}
+
+.navLink.active {
+  color: #c4b5fd;
+}
+
+.moreButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 2px;
+  min-width: 44px;
+  min-height: 44px;
+  color: rgba(255, 255, 255, 0.6);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  border-radius: 12px;
+  position: relative;
+  flex: 1 1 0;
+  max-width: 100px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.moreButton:active {
+  transform: scale(0.95);
+}
+
+.moreButton:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 480px) {
+  .moreButton {
+    padding: 4px 1px;
+    gap: 2px;
+    min-width: 40px;
+  }
+}
+
+.moreButton.active {
+  color: #c4b5fd;
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.iconWrapper.chevronUp .chevronIcon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 480px) {
+  .iconWrapper {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.chevronIcon {
+  font-size: 1rem;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: inherit;
+}
+
+.icon {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 480px) {
+  .icon {
+    font-size: 1rem;
+  }
+}
+
+.navLink.active .icon {
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0 4px;
+  border: 2px solid rgba(17, 24, 39, 0.8);
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+.label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 1.2;
+  color: inherit;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 480px) {
+  .label {
+    font-size: 0.6rem;
+  }
+}

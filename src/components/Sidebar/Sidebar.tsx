@@ -10,6 +10,7 @@ import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
+import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
 
 const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
@@ -82,19 +83,21 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
 
   return (
     <>
-      <button
-        className={styles.mobileToggle}
-        onClick={() => setIsMobileOpen((v) => !v)}
-        aria-label={isMobileOpen ? 'Close sidebar' : 'Open sidebar'}
-        aria-expanded={isMobileOpen}
-        aria-controls="app-sidebar"
-      >
-        {isMobileOpen ? <FaXmark /> : <FaBars />}
-      </button>
+      {isDesktop && (
+        <button
+          className={styles.mobileToggle}
+          onClick={() => setIsMobileOpen((v) => !v)}
+          aria-label={isMobileOpen ? 'Close sidebar' : 'Open sidebar'}
+          aria-expanded={isMobileOpen}
+          aria-controls="app-sidebar"
+        >
+          {isMobileOpen ? <FaXmark /> : <FaBars />}
+        </button>
+      )}
 
       <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <AnimatePresence mode="wait">
-          {(isMobileOpen || isDesktop) && (
+          {isDesktop && (
             <m.aside
               className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
               id="app-sidebar"
@@ -204,12 +207,14 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
         </AnimatePresence>
       </LazyMotion>
 
-      {isMobileOpen && <div className={styles.overlay} onClick={closeMobileSidebar} />}
+      {isMobileOpen && isDesktop && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
       <main className={`main-content ${className || ''}`}>
         <RouteBreadcrumbs />
         {children}
       </main>
+
+      <BottomNavigation />
     </>
   );
 };

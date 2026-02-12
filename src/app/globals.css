@@ -97,6 +97,7 @@ a {
     margin-left: 0;
     padding: var(--spacing-lg);
     padding-top: max(var(--spacing-lg), var(--navbar-safe-gap, 24px));
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
   }
 }
 
