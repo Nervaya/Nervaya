@@ -8,7 +8,11 @@ import { CiCalendar } from 'react-icons/ci';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
 
-const AboutUsConsultation = () => {
+interface AboutUsConsultationProps {
+  centerCard?: boolean;
+}
+
+const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -28,8 +32,8 @@ const AboutUsConsultation = () => {
   };
 
   return (
-    <section className={styles.consultationSection}>
-      <div className={styles.formCard}>
+    <section className={`${styles.consultationSection} ${centerCard ? styles.consultationSectionCentered : ''}`}>
+      <div className={`${styles.formCard} ${centerCard ? styles.formCardAligned : ''}`}>
         <div className={styles.cardHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.titleWrapper}>

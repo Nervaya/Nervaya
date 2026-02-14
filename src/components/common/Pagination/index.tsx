@@ -13,25 +13,17 @@ export interface PaginationProps {
 }
 
 function getPaginationPages(page: number, totalPages: number): (number | 'ellipsis')[] {
-  if (totalPages <= 7) {
+  if (totalPages <= 3) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
-  const pages: (number | 'ellipsis')[] = [];
-  if (page <= 4) {
-    for (let i = 1; i <= 5; i++) pages.push(i);
-    pages.push('ellipsis');
-    pages.push(totalPages);
-  } else if (page >= totalPages - 3) {
-    pages.push(1);
-    pages.push('ellipsis');
-    for (let i = totalPages - 4; i <= totalPages; i++) pages.push(i);
-  } else {
-    pages.push(1);
-    pages.push('ellipsis');
-    for (let i = page - 1; i <= page + 1; i++) pages.push(i);
-    pages.push('ellipsis');
-    pages.push(totalPages);
-  }
+  const first = 1;
+  const middle = page <= 2 ? 2 : page >= totalPages - 1 ? totalPages - 1 : page;
+  const last = totalPages;
+  const pages: (number | 'ellipsis')[] = [first];
+  if (middle - first > 1) pages.push('ellipsis');
+  pages.push(middle);
+  if (last - middle > 1) pages.push('ellipsis');
+  pages.push(last);
   return pages;
 }
 
@@ -43,13 +35,9 @@ export default function Pagination({
   onPageChange,
   ariaLabel = 'Pagination',
 }: PaginationProps) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  const start = (page - 1) * limit + 1;
+  const start = total === 0 ? 0 : (page - 1) * limit + 1;
   const end = Math.min(page * limit, total);
-  const pageItems = getPaginationPages(page, totalPages);
+  const pageItems = totalPages >= 1 ? getPaginationPages(page, totalPages) : [];
   const pageItemsWithKeys = pageItems.reduce<{ item: number | 'ellipsis'; key: string }[]>((acc, item) => {
     if (item === 'ellipsis') {
       const ellipsisCount = acc.filter((x) => x.item === 'ellipsis').length;
@@ -63,6 +51,8 @@ export default function Pagination({
     return acc;
   }, []);
 
+  const noData = total === 0;
+
   return (
     <nav className={styles.pagination} aria-label={ariaLabel}>
       <p className={styles.paginationSummary}>
@@ -71,8 +61,8 @@ export default function Pagination({
       <div className={styles.paginationControls}>
         <button
           type="button"
-          onClick={() => onPageChange(page - 1)}
-          disabled={page <= 1}
+          onClick={() => !noData && onPageChange(page - 1)}
+          disabled={page <= 1 || noData}
           className={styles.paginationButton}
           aria-label="Previous page"
         >
@@ -80,29 +70,41 @@ export default function Pagination({
           Previous
         </button>
         <div className={styles.paginationNumbers}>
-          {pageItemsWithKeys.map(({ item, key }) =>
-            item === 'ellipsis' ? (
-              <span key={key} className={styles.paginationEllipsis} aria-hidden>
-                …
-              </span>
-            ) : (
-              <button
-                key={key}
-                type="button"
-                onClick={() => onPageChange(item)}
-                className={`${styles.paginationNumber} ${page === item ? styles.paginationNumberActive : ''}`}
-                aria-label={`Page ${item}`}
-                aria-current={page === item ? 'page' : undefined}
-              >
-                {item}
-              </button>
-            ),
+          {noData ? (
+            <button
+              type="button"
+              disabled
+              className={`${styles.paginationNumber} ${styles.paginationNumberActive}`}
+              aria-label="Page 1"
+              aria-current="page"
+            >
+              1
+            </button>
+          ) : (
+            pageItemsWithKeys.map(({ item, key }) =>
+              item === 'ellipsis' ? (
+                <span key={key} className={styles.paginationEllipsis} aria-hidden>
+                  …
+                </span>
+              ) : (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => onPageChange(item)}
+                  className={`${styles.paginationNumber} ${page === item ? styles.paginationNumberActive : ''}`}
+                  aria-label={`Page ${item}`}
+                  aria-current={page === item ? 'page' : undefined}
+                >
+                  {item}
+                </button>
+              ),
+            )
           )}
         </div>
         <button
           type="button"
-          onClick={() => onPageChange(page + 1)}
-          disabled={page >= totalPages}
+          onClick={() => !noData && onPageChange(page + 1)}
+          disabled={page >= totalPages || noData}
           className={styles.paginationButton}
           aria-label="Next page"
         >

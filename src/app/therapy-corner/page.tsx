@@ -9,7 +9,7 @@ import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
-import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 
 export default function TherapyCornerPage() {
@@ -110,7 +110,7 @@ export default function TherapyCornerPage() {
                   </li>
                 ))}
               </ul>
-              {totalPages > 0 && (
+              {total >= 0 && (
                 <div className={styles.paginationWrap}>
                   <Pagination
                     page={page}

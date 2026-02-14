@@ -4,7 +4,21 @@
   align-items: flex-end;
   gap: 16px;
   margin-bottom: 40px;
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .filtersRow {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filtersRow {
+    margin-bottom: 20px;
+  }
 }
 
 .searchForm {
@@ -28,6 +42,18 @@
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
 
+@media (max-width: 768px) {
+  .searchForm {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchForm {
+    min-width: 0;
+  }
+}
+
 .searchIcon {
   flex-shrink: 0;
   width: 18px;
@@ -35,6 +61,12 @@
   color: #64748b;
   margin-left: 16px;
   pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .searchIcon {
+    margin-left: 12px;
+  }
 }
 
 .searchInput {
@@ -50,6 +82,13 @@
 
 .searchInput::placeholder {
   color: #64748b;
+}
+
+@media (max-width: 480px) {
+  .searchInput {
+    padding: 12px 10px;
+    font-size: 0.875rem;
+  }
 }
 
 .searchButton {
@@ -71,11 +110,24 @@
   color: #f8fafc;
 }
 
+@media (max-width: 480px) {
+  .searchButton {
+    padding: 12px 14px;
+    font-size: 0.8125rem;
+  }
+}
+
 .filterSelectWrapper {
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-width: 180px;
+}
+
+@media (max-width: 768px) {
+  .filterSelectWrapper {
+    min-width: 0;
+  }
 }
 
 .filterLabel {
@@ -118,19 +170,4 @@
 .filterSelect option {
   background: #1e293b;
   color: #f8fafc;
-}
-
-@media (max-width: 768px) {
-  .searchForm {
-    max-width: 100%;
-  }
-
-  .filtersRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filterSelectWrapper {
-    min-width: 0;
-  }
 }

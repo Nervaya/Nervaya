@@ -42,7 +42,7 @@ const AboutUs = () => {
       </div>
       <AboutUsCards />
       <AboutUsTeam />
-      <AboutUsConsultation />
+      <AboutUsConsultation centerCard />
       <AboutUsStats />
     </div>
   );

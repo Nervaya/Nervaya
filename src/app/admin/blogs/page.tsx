@@ -156,7 +156,7 @@ export default function AdminBlogsPage() {
               />
             ))}
           </ul>
-          {pagination.totalPages > 0 && (
+          {pagination.total > 0 && (
             <Pagination
               page={pagination.page}
               limit={pagination.limit}

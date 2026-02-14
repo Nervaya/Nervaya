@@ -1,7 +1,7 @@
 'use client';
 
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import containerStyles from '@/app/admin/styles.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

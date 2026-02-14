@@ -17,8 +17,11 @@ const Footer = () => (
     </div>
 
     <ul className={styles['nervaya-link-container']}>
-      {FOOTER_LINK_GROUPS.map((group) => (
-        <li key={group.links[0]?.href || 'group'} className={styles['link-box']}>
+      {FOOTER_LINK_GROUPS.map((group, index) => (
+        <li
+          key={group.links[0]?.href || 'group'}
+          className={`${styles['link-box']} ${index === 2 ? styles['link-box-full'] : ''}`}
+        >
           {group.links.map((link) => (
             <Link key={link.href} href={link.href} className={styles['link']}>
               {link.text}

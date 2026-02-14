@@ -141,23 +141,16 @@ export default function AdminOrdersPage() {
           </li>
         ))}
       </ul>
-      {meta && meta.totalPages > 0 && (
+      {meta && meta.total > 0 && (
         <div className={styles.paginationWrap}>
-          {meta.totalPages > 0 ? (
-            <Pagination
-              page={meta.page}
-              limit={meta.limit}
-              total={meta.total}
-              totalPages={meta.totalPages}
-              onPageChange={setPage}
-              ariaLabel="Orders pagination"
-            />
-          ) : (
-            <p className={styles.paginationSummary} aria-live="polite">
-              Showing {Math.min((meta.page - 1) * meta.limit + 1, meta.total)}–
-              {Math.min(meta.page * meta.limit, meta.total)} of {meta.total}
-            </p>
-          )}
+          <Pagination
+            page={meta.page}
+            limit={meta.limit}
+            total={meta.total}
+            totalPages={meta.totalPages}
+            onPageChange={setPage}
+            ariaLabel="Orders pagination"
+          />
         </div>
       )}
     </div>

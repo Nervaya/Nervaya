@@ -9,7 +9,17 @@
 
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    gap: 20px;
+  }
+}
+
+.grid > li {
+  min-width: 0;
 }

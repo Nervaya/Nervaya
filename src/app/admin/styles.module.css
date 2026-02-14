@@ -1,6 +1,21 @@
 .container {
   padding: 2rem 2rem 2rem 0;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
+  margin-right: auto;
   color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem 0.75rem 1rem 0;
+  }
 }

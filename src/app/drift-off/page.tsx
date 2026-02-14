@@ -14,7 +14,7 @@ import styles from './styles.module.css';
 export default function DriftOffPage() {
   return (
     <Sidebar>
-      <div className={containerStyles.container}>
+      <div className={`${containerStyles.container} ${styles.wrapper}`}>
         <PageHeader
           title="Drift Off"
           subtitle="No more hoping to find the right sessions."

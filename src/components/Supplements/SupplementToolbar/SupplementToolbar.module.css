@@ -6,6 +6,21 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+}
+
 .searchInput {
   flex: 1;
   min-width: 200px;
@@ -32,14 +47,54 @@
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
+@media (max-width: 480px) {
+  .searchInput {
+    min-width: 0;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
 .controls {
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
 }
 
+@media (max-width: 768px) {
+  .controls {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    gap: var(--spacing-xs);
+  }
+}
+
 .filterWrapper {
   position: relative;
+}
+
+.popoverBackdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .popoverBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
 }
 
 .filterButton {
@@ -70,6 +125,13 @@
   border-color: var(--color-accent);
 }
 
+@media (max-width: 480px) {
+  .filterButton {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8125rem;
+  }
+}
+
 .popover {
   position: absolute;
   top: calc(100% + var(--spacing-sm));
@@ -82,6 +144,26 @@
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   overflow: hidden;
+  min-width: 260px;
+}
+
+@media (max-width: 768px) {
+  .popover {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    width: min(400px, calc(100vw - 2 * var(--spacing-lg)));
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .popover {
+    width: calc(100vw - 2 * var(--spacing-md));
+  }
 }
 
 .viewToggle {
@@ -110,6 +192,12 @@
   background: var(--color-accent);
   color: white;
   border-color: var(--color-accent);
+}
+
+@media (max-width: 480px) {
+  .viewButton {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
 }
 
 .sortGroup {
@@ -144,13 +232,26 @@
 }
 
 @media (max-width: 768px) {
-  .toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-md);
+  .sortGroup {
+    justify-content: flex-end;
+    min-width: 0;
+    overflow: hidden;
   }
 
-  .controls {
-    justify-content: space-between;
+  .sortLabel {
+    display: none;
+  }
+
+  .sortSelect {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8125rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sortSelect {
+    font-size: 0.75rem;
   }
 }

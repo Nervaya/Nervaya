@@ -117,18 +117,20 @@ export default function BlogListPage() {
           <div className={styles.error}>
             <p>{error}</p>
           </div>
-        ) : blogs.length === 0 ? (
-          <div className={styles.empty}>
-            <p>
-              {searchQuery || selectedTag
-                ? 'No posts match your filters. Try a different search or tag.'
-                : 'No blog posts available yet.'}
-            </p>
-          </div>
         ) : (
           <>
-            <BlogGrid blogs={blogs} formatDate={formatDate} getExcerpt={getExcerpt} />
-            {pagination.totalPages > 0 && (
+            {blogs.length === 0 ? (
+              <div className={styles.empty}>
+                <p>
+                  {searchQuery || selectedTag
+                    ? 'No posts match your filters. Try a different search or tag.'
+                    : 'No blog posts available yet.'}
+                </p>
+              </div>
+            ) : (
+              <BlogGrid blogs={blogs} formatDate={formatDate} getExcerpt={getExcerpt} />
+            )}
+            {pagination.total >= 0 && (
               <Pagination
                 page={pagination.page}
                 limit={pagination.limit}

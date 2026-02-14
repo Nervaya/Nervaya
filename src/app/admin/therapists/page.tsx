@@ -180,7 +180,7 @@ export default function AdminTherapistsPage() {
               </li>
             ))}
           </ul>
-          {totalPages > 0 && (
+          {total > 0 && (
             <div className={styles.paginationWrap}>
               <Pagination
                 page={page}

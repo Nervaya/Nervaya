@@ -30,11 +30,21 @@
   transition: all 0.2s ease;
   margin-bottom: var(--spacing-2xl);
   color: var(--color-foreground);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {
   .card {
     padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    margin-bottom: var(--spacing-xl);
   }
 }
 
@@ -107,6 +117,13 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 480px) {
+  .heroButtons {
+    margin-top: var(--spacing-lg);
+    gap: var(--spacing-sm);
+  }
+}
+
 .buttonPrimary {
   background: var(--color-accent);
   color: #fff;
@@ -157,10 +174,18 @@
 .heroVideoCard {
   position: relative;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 16/9;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--color-glass-border);
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .heroVideoCard {
+    border-radius: 12px;
+  }
 }
 
 .heroVideoWrapper {
@@ -187,6 +212,13 @@
   color: var(--color-foreground);
   z-index: 10;
   pointer-events: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .heroVideoOverlay {
+    padding: var(--spacing-md);
+  }
 }
 
 .heroVideoOverlayTitle {
@@ -194,6 +226,14 @@
   font-size: var(--font-size-xl);
   font-weight: 600;
   text-shadow: 0 2px 4px var(--color-overlay-dark);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .heroVideoOverlayTitle {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .heroVideoOverlayAuthor {
@@ -249,6 +289,8 @@
 
 .howItWorksSection {
   margin-bottom: var(--spacing-2xl);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sectionTitle {
@@ -275,6 +317,13 @@
 @media (max-width: 768px) {
   .stepsGrid {
     flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .stepsGrid {
+    gap: var(--spacing-md);
   }
 }
 
@@ -290,11 +339,23 @@
   color: var(--color-foreground);
   flex: 1;
   min-width: 280px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .stepCard {
+    min-width: 0;
+    width: 100%;
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    margin-bottom: 0;
+  }
 }
 
 .stepCard::before {
@@ -345,6 +406,14 @@
   font-size: var(--font-size-base);
   line-height: 1.65;
   color: var(--color-text-muted);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .stepDescription {
+    font-size: var(--font-size-sm);
+  }
 }
 
 .playlistHeader {
@@ -392,6 +461,14 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .playlistGrid {
+    gap: var(--spacing-md);
+    flex-direction: column;
+  }
 }
 
 .videoCard {
@@ -404,8 +481,18 @@
   position: relative;
   flex: 1;
   min-width: 300px;
+  max-width: 100%;
   aspect-ratio: 16/9;
   transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .videoCard {
+    min-width: 0;
+    width: 100%;
+    border-radius: 12px;
+  }
 }
 
 .videoCard:hover {
@@ -499,12 +586,20 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-2xl);
   margin-bottom: var(--spacing-2xl);
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
   .supportSection {
     grid-template-columns: 1fr;
-    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .supportSection {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
   }
 }
 
@@ -523,6 +618,15 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--spacing-lg);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .supportCard {
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+  }
 }
 
 .supportContent {
@@ -647,6 +751,26 @@
   display: flex;
   gap: var(--spacing-lg);
   align-items: flex-start;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .whatAreCard {
+    padding: var(--spacing-md);
+    border-radius: 16px;
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .whatAreCard {
+    flex-direction: column;
+    padding: var(--spacing-sm);
+    border-radius: 12px;
+    gap: var(--spacing-sm);
+  }
 }
 
 .whatAreIcon {
@@ -662,8 +786,17 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 480px) {
+  .whatAreIcon {
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-size-3xl);
+  }
+}
+
 .whatAreContent {
   flex: 1;
+  min-width: 0;
 }
 
 .whatAreText {
@@ -671,6 +804,14 @@
   font-size: var(--font-size-base);
   line-height: 1.7;
   color: var(--color-text-muted);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .whatAreText {
+    font-size: var(--font-size-sm);
+  }
 }
 
 .whatMakesIntro {
@@ -684,6 +825,14 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .whyChooseGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
 }
 
 .whyChooseCard {
@@ -694,6 +843,15 @@
   border-radius: 20px;
   padding: var(--spacing-lg);
   transition: all 0.2s ease;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .whyChooseCard {
+    padding: var(--spacing-md);
+    border-radius: 12px;
+  }
 }
 
 .whyChooseCard:hover {
@@ -719,6 +877,14 @@
   font-weight: 600;
   color: var(--color-foreground);
   margin: 0 0 var(--spacing-sm) 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .whyChooseTitle {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .whyChooseText {
@@ -726,6 +892,14 @@
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--color-text-muted);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .whyChooseText {
+    font-size: var(--font-size-sm);
+  }
 }
 
 .whatMakesGrid {
@@ -735,6 +909,14 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .whatMakesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
 }
 
 .whatMakesItem {

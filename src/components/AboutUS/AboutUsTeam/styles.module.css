@@ -1,5 +1,5 @@
 .teamSection {
-  padding: 30px;
+  padding: 48px 30px 30px;
   max-width: 1400px;
   margin: 0 auto;
   width: 95%;
@@ -7,23 +7,25 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1200px) {
   .teamSection {
-    padding: 50px 40px;
+    padding: 48px 40px 50px;
   }
 }
 
 @media (max-width: 768px) {
   .teamSection {
-    padding: 40px 30px;
+    padding: 40px 30px 40px;
   }
 }
 
 @media (max-width: 480px) {
   .teamSection {
-    padding: 30px 20px;
+    padding: 36px 20px 30px;
   }
 }
 
@@ -108,6 +110,7 @@
   margin: 0;
   padding: 0;
   width: 100%;
+  overflow: visible;
 }
 
 @media (max-width: 1024px) {
@@ -128,7 +131,7 @@
 .teamCard {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   padding: 24px;
   display: grid;
@@ -139,7 +142,8 @@
     transform 0.3s ease,
     box-shadow 0.3s ease;
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
+  scroll-margin-top: 120px;
 }
 
 .teamCard:hover {

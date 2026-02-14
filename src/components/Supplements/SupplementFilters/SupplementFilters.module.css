@@ -1,6 +1,15 @@
 .section {
   padding: var(--spacing-md);
   min-width: 240px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .section {
+    min-width: 0;
+    width: 100%;
+    padding: var(--spacing-lg);
+  }
 }
 
 .sectionTitle {
@@ -16,4 +25,10 @@
   font-size: 0.8rem;
   color: var(--color-text-muted);
   margin-bottom: var(--spacing-xs);
+}
+
+@media (max-width: 480px) {
+  .priceDisplay {
+    font-size: 0.875rem;
+  }
 }

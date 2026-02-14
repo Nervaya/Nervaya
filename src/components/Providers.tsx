@@ -5,6 +5,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
 import { CartProvider } from '@/context/CartContext';
 import dynamic from 'next/dynamic';
+import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 
 const Navbar = dynamic(() => import('@/components/Navbar'), {
   ssr: true,
@@ -19,6 +20,7 @@ export default function Providers({ children }: ProvidersProps) {
     <AuthProvider>
       <AuthGuard>
         <CartProvider>
+          <ScrollToTop />
           <Navbar />
           {children}
         </CartProvider>

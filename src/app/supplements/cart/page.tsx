@@ -7,6 +7,8 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import { Cart, CartItem as CartItemType, Supplement } from '@/types/supplement.types';
 import CartItem from '@/components/Cart/CartItem';
 import CartSummary from '@/components/Cart/CartSummary';
+import Pagination from '@/components/common/Pagination';
+import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { cartApi } from '@/lib/api/cart';
 import styles from './styles.module.css';
 import Lottie from 'lottie-react';
@@ -19,6 +21,7 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   const fetchCart = async () => {
     try {
@@ -115,10 +118,18 @@ export default function CartPage() {
               Continue Shopping
             </button>
           </div>
+          <div className={styles.paginationWrap}>
+            <Pagination total={0} page={1} limit={PAGE_SIZE_3} totalPages={1} onPageChange={() => {}} />
+          </div>
         </div>
       </Sidebar>
     );
   }
+
+  const total = cart.items.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE_3));
+  const start = (page - 1) * PAGE_SIZE_3;
+  const paginatedItems = cart.items.slice(start, start + PAGE_SIZE_3);
 
   return (
     <Sidebar>
@@ -127,7 +138,7 @@ export default function CartPage() {
         {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           <ul className={styles.itemsSection} aria-label="Cart items">
-            {cart.items.map((item: CartItemType) => {
+            {paginatedItems.map((item: CartItemType) => {
               const key =
                 typeof item.supplementId === 'object' && item.supplementId && '_id' in item.supplementId
                   ? (item.supplementId as Supplement)._id
@@ -147,6 +158,9 @@ export default function CartPage() {
           <div className={styles.summarySection}>
             <CartSummary cart={cart} onCheckout={handleCheckout} loading={updating} />
           </div>
+        </div>
+        <div className={styles.paginationWrap}>
+          <Pagination total={total} page={page} limit={PAGE_SIZE_3} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </div>
     </Sidebar>

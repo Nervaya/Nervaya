@@ -5,7 +5,7 @@ import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
 import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
-import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 
 export default function MySessions() {
@@ -16,7 +16,7 @@ export default function MySessions() {
   const [actionError, setActionError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
 
-  const limit = PAGE_SIZE_5;
+  const limit = PAGE_SIZE_3;
   const total = sessions.length;
   const totalPages = Math.max(1, Math.ceil(total / limit));
   const paginatedSessions = useMemo(() => sessions.slice((page - 1) * limit, page * limit), [sessions, page, limit]);
@@ -108,50 +108,49 @@ export default function MySessions() {
           <p>No sessions booked yet</p>
         </div>
       ) : (
-        <>
-          <ul className={styles.sessionsList} aria-label="My sessions">
-            {paginatedSessions.map((session) => {
-              const therapist = session.therapistId as unknown as Therapist;
+        <ul className={styles.sessionsList} aria-label="My sessions">
+          {paginatedSessions.map((session) => {
+            const therapist = session.therapistId as unknown as Therapist;
 
-              return (
-                <li key={session._id} className={styles.sessionCard}>
-                  <div className={styles.cardHeader}>
-                    <div className={styles.therapistInfo}>
-                      <h3 className={styles.therapistName}>{therapist?.name || 'Unknown Therapist'}</h3>
-                      <p className={styles.qualifications}>{therapist?.qualifications?.join(', ')}</p>
-                    </div>
-                    <span className={getStatusBadgeClass(session.status)}>{session.status}</span>
+            return (
+              <li key={session._id} className={styles.sessionCard}>
+                <div className={styles.cardHeader}>
+                  <div className={styles.therapistInfo}>
+                    <h3 className={styles.therapistName}>{therapist?.name || 'Unknown Therapist'}</h3>
+                    <p className={styles.qualifications}>{therapist?.qualifications?.join(', ')}</p>
                   </div>
+                  <span className={getStatusBadgeClass(session.status)}>{session.status}</span>
+                </div>
 
-                  <div className={styles.sessionDetails}>
-                    <p>📅 {new Date(session.date).toLocaleDateString()}</p>
-                    <p>
-                      🕐 {session.startTime} - {session.endTime}
-                    </p>
-                  </div>
+                <div className={styles.sessionDetails}>
+                  <p>📅 {new Date(session.date).toLocaleDateString()}</p>
+                  <p>
+                    🕐 {session.startTime} - {session.endTime}
+                  </p>
+                </div>
 
-                  {session.status === 'pending' && (
-                    <button className={styles.cancelBtn} onClick={() => handleCancelClick(session._id)}>
-                      Cancel Session
-                    </button>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-          {totalPages > 0 && (
-            <div className={styles.paginationWrap}>
-              <Pagination
-                page={page}
-                limit={limit}
-                total={total}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                ariaLabel="My sessions pagination"
-              />
-            </div>
-          )}
-        </>
+                {session.status === 'pending' && (
+                  <button className={styles.cancelBtn} onClick={() => handleCancelClick(session._id)}>
+                    Cancel Session
+                  </button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {total >= 0 && (
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={page}
+            limit={limit}
+            total={total}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            ariaLabel="My sessions pagination"
+          />
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 .faqSection {
-  width: 94%;
+  width: 100%;
   max-width: 1200px;
   background: rgba(17, 24, 39, 0.4);
   backdrop-filter: blur(12px);
@@ -7,14 +7,37 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 60px 48px;
-  margin: 0 auto 60px;
+  margin: 0 0 60px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .faqSection {
+    padding: 48px var(--spacing-lg);
+    margin-bottom: 48px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faqSection {
+    padding: 32px 12px;
+    margin-bottom: 40px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .faqSection {
+    padding: 28px 10px;
+  }
 }
 
 .faqHeader {
-  text-align: center;
+  text-align: left;
   margin-bottom: 48px;
   width: 100%;
 }
@@ -66,7 +89,7 @@
   color: #9ca3af;
   margin: 0;
   max-width: 700px;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }

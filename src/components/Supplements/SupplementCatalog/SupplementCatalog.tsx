@@ -121,7 +121,7 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
       <div className={styles.main}>
         <SupplementProductGrid supplements={paginatedSupplements} viewMode={viewMode} onAddToCart={onAddToCart} />
       </div>
-      {totalPages > 0 && (
+      {total >= 0 && (
         <div className={styles.paginationWrap}>
           <Pagination
             page={page}

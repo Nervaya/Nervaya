@@ -13,7 +13,6 @@ import { cartApi } from '@/lib/api/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
-import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
 
 export default function SupplementsPage() {
@@ -67,38 +66,40 @@ export default function SupplementsPage() {
 
   return (
     <Sidebar>
-      <div className={containerStyles.container}>
-        <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
-        {error && !showFailure && <div className={styles.error}>{error}</div>}
-        {showFailure && (
-          <StatusState
-            type="error"
-            variant="minimal"
-            title="Failed to load supplements"
-            message={error ?? 'Something went wrong'}
-            action={
-              <button type="button" onClick={fetchSupplements} className={styles.retryButton}>
-                Try again
-              </button>
-            }
-          />
-        )}
-        {showEmpty && (
-          <StatusState
-            type="empty"
-            variant="minimal"
-            title="No supplements available"
-            message="There are no supplements to display at the moment."
-            action={
-              <Link href="/supplements" className={styles.browseLink}>
-                Browse supplements
-              </Link>
-            }
-          />
-        )}
-        {!showFailure && !showEmpty && (
-          <SupplementCatalog supplements={supplements} loading={loading} onAddToCart={handleAddToCart} />
-        )}
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
+          {error && !showFailure && <div className={styles.error}>{error}</div>}
+          {showFailure && (
+            <StatusState
+              type="error"
+              variant="minimal"
+              title="Failed to load supplements"
+              message={error ?? 'Something went wrong'}
+              action={
+                <button type="button" onClick={fetchSupplements} className={styles.retryButton}>
+                  Try again
+                </button>
+              }
+            />
+          )}
+          {showEmpty && (
+            <StatusState
+              type="empty"
+              variant="minimal"
+              title="No supplements available"
+              message="There are no supplements to display at the moment."
+              action={
+                <Link href="/supplements" className={styles.browseLink}>
+                  Browse supplements
+                </Link>
+              }
+            />
+          )}
+          {!showFailure && !showEmpty && (
+            <SupplementCatalog supplements={supplements} loading={loading} onAddToCart={handleAddToCart} />
+          )}
+        </div>
       </div>
     </Sidebar>
   );

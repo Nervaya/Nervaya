@@ -41,7 +41,8 @@ const ChatWithUs = () => {
       <div className={styles.buttonContainer}>
         <Button variant="primary" className={styles.whatsappButton} onClick={handleWhatsAppClick}>
           <IoChatbubbleEllipsesOutline className={styles.buttonIcon} />
-          Chat with Us on WhatsApp
+          <span className={styles.buttonTextDesktop}>Chat with Us on WhatsApp</span>
+          <span className={styles.buttonTextMobile}>Chat on WhatsApp</span>
         </Button>
         <p className={styles.disclaimer}>We typically respond within 2 hours. Your information is kept confidential.</p>
       </div>

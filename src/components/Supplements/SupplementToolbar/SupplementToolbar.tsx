@@ -83,9 +83,17 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             <span>Filters</span>
           </button>
           {popoverOpen && (
-            <div className={styles.popover} role="dialog" aria-label="Price filter">
-              <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
-            </div>
+            <>
+              <div
+                className={styles.popoverBackdrop}
+                onClick={() => setPopoverOpen(false)}
+                role="presentation"
+                aria-hidden
+              />
+              <div className={styles.popover} role="dialog" aria-label="Price filter">
+                <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
+              </div>
+            </>
           )}
         </div>
         <div className={styles.viewToggle} role="group" aria-label="View mode">

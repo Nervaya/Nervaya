@@ -1,5 +1,6 @@
 .grid {
   width: 100%;
+  min-width: 0;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -29,29 +30,31 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .gridView {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-md);
   }
 }
 
 @media (max-width: 400px) {
   .gridView {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-sm);
   }
 }
 
 .listView {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--margin-lg);
   align-items: stretch;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .listView {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-md);
   }
 }
 
