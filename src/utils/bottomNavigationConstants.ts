@@ -13,7 +13,6 @@ export const primaryNavItems: BottomNavItem[] = [
 
 export const moreNavItems: BottomNavItem[] = [
   { title: 'Questionnaire', path: '/sleep-assessment', icon: 'FaClipboardList' },
-  { title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaHeartPulse' },
   { title: 'Supplements', path: '/supplements', icon: 'FaPills' },
   { title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUserDoctor' },
 ];

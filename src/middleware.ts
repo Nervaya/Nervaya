@@ -89,7 +89,6 @@ export const config = {
     '/supplements/:path*',
     '/sleep-assessment/:path*',
     '/drift-off/:path*',
-    '/sleep-elixir/:path*',
     '/therapy-corner/:path*',
     '/support/:path*',
     '/admin/:path*',

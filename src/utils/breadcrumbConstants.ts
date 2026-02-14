@@ -10,7 +10,6 @@ const SEGMENT_LABELS: Record<string, string> = {
   profile: 'Profile',
   'sleep-assessment': 'Sleep Assessment',
   'drift-off': 'Drift Off',
-  'sleep-elixir': 'Sleep Elixir',
   'therapy-corner': 'Therapy Corner',
   support: 'Support',
   blog: 'Blog',

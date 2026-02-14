@@ -12,7 +12,6 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     links: [
       { text: 'Therapy', href: '/therapy' },
       { text: 'Drift Off', href: '/drift-off' },
-      { text: 'Sleep Elixir', href: '/sleep-elixir' },
       { text: 'Blog', href: '/blog' },
     ],
   },

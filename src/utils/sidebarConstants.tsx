@@ -88,10 +88,7 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'Sleep',
-    items: [
-      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
-      { title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaHeartPulse' },
-    ],
+    items: [{ title: 'Drift Off', path: '/drift-off', icon: 'FaBed' }],
   },
   {
     title: 'Shop',

@@ -26,10 +26,6 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
     items: [{ title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' }],
   },
   {
-    title: 'SUPPLEMENTS',
-    items: [{ title: 'Sleep Elixir', path: '/sleep-elixir', icon: 'FaBed' }],
-  },
-  {
     title: 'HELP',
     items: [
       {
