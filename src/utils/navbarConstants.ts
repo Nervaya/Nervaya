@@ -8,7 +8,6 @@ export const NAVBAR_PRODUCTS_LINKS: NavbarLink[] = [
   { text: 'Deep Rest Sessions', href: '/drift-off' },
   { text: 'Sleep Elixir', href: '/sleep-elixir' },
   { text: 'Supplements', href: '/supplements' },
-  { text: 'Blog', href: '/blog' },
 ];
 
 export const NAVBAR_ACCOUNT_LINKS: NavbarLink[] = [];

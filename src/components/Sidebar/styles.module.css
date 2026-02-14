@@ -21,10 +21,7 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-120%);
-    left: 16px;
-    width: calc(100% - 32px);
-    height: calc(100vh - 90px);
+    display: none;
   }
 }
 
@@ -68,7 +65,7 @@
 
 @media (max-width: 768px) {
   .mobileOpen {
-    transform: translateX(0);
+    display: none;
   }
 }
 
@@ -108,7 +105,7 @@
 
 @media (max-width: 768px) {
   .mobileToggle {
-    display: block;
+    display: none;
   }
 }
 
@@ -272,14 +269,6 @@
 
 @media (max-width: 768px) {
   .overlay {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(2, 6, 23, 0.55);
-    backdrop-filter: blur(2px);
-    z-index: 900;
+    display: none;
   }
 }
