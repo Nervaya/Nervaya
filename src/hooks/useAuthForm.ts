@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
+import { AUTH_FORM_MODE, type AuthFormMode } from '@/lib/constants/enums';
 import { validateEmail, validatePassword, validateName } from '@/lib/utils/validation.util';
 
 export interface AuthFormErrors {
@@ -11,15 +12,15 @@ export interface AuthFormErrors {
 }
 
 export interface UseAuthFormOptions {
-  initialMode?: 'login' | 'signup';
+  initialMode?: AuthFormMode;
   returnUrl?: string;
 }
 
 export function useAuthForm(options: UseAuthFormOptions = {}) {
-  const { initialMode = 'login', returnUrl } = options;
+  const { initialMode = AUTH_FORM_MODE.LOGIN, returnUrl } = options;
   const { login, signup, loading, error, clearError } = useAuthContext();
 
-  const [isRightPanelActive, setIsRightPanelActive] = useState(initialMode === 'signup');
+  const [isRightPanelActive, setIsRightPanelActive] = useState(initialMode === AUTH_FORM_MODE.SIGNUP);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -92,7 +93,8 @@ export function useAuthForm(options: UseAuthFormOptions = {}) {
       e.preventDefault();
       if (!validateLoginForm()) return;
       clearError();
-      await login(email.trim().toLowerCase(), password.trim(), returnUrl);
+      const response = await login(email.trim().toLowerCase(), password.trim(), returnUrl);
+      return response;
     },
     [email, password, returnUrl, validateLoginForm, login, clearError],
   );
@@ -102,7 +104,7 @@ export function useAuthForm(options: UseAuthFormOptions = {}) {
       e.preventDefault();
       if (!validateSignupForm()) return;
       clearError();
-      await signup(email.trim().toLowerCase(), password.trim(), name.trim(), returnUrl);
+      return signup(email.trim().toLowerCase(), password.trim(), name.trim(), returnUrl);
     },
     [email, password, name, returnUrl, validateSignupForm, signup, clearError],
   );

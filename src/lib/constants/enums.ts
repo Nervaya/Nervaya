@@ -79,3 +79,27 @@ export const NTHERAPY_YOUTUBE_VIDEOS = {
 } as const;
 
 export type NTherapyYouTubeVideo = (typeof NTHERAPY_YOUTUBE_VIDEOS)[keyof typeof NTHERAPY_YOUTUBE_VIDEOS];
+
+// OTP purpose (login vs signup verification)
+export const OTP_PURPOSE = {
+  LOGIN: 'login',
+  SIGNUP: 'signup',
+} as const;
+
+export type OtpPurpose = (typeof OTP_PURPOSE)[keyof typeof OTP_PURPOSE];
+
+// Auth form mode (login vs signup tab)
+export const AUTH_FORM_MODE = {
+  LOGIN: 'login',
+  SIGNUP: 'signup',
+} as const;
+
+export type AuthFormMode = (typeof AUTH_FORM_MODE)[keyof typeof AUTH_FORM_MODE];
+
+// Auth step (credentials form vs OTP verification)
+export const AUTH_STEP = {
+  CREDENTIALS: 'credentials',
+  OTP: 'otp',
+} as const;
+
+export type AuthStep = (typeof AUTH_STEP)[keyof typeof AUTH_STEP];

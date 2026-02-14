@@ -1,41 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { registerUser } from '@/lib/services/auth.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 import { ApiError } from '@/types/error.types';
-import { COOKIE_NAMES, getSecureCookieOptions } from '@/utils/cookieConstants';
-
-const signupAttempts = new Map<string, { count: number; resetTime: number }>();
-const MAX_ATTEMPTS = 3;
-const WINDOW_MS = 60 * 60 * 1000;
-
-function checkRateLimit(identifier: string): boolean {
-  const now = Date.now();
-  const attempt = signupAttempts.get(identifier);
-
-  if (attempt && now > attempt.resetTime) {
-    signupAttempts.delete(identifier);
-  }
-
-  if (!attempt || now > attempt.resetTime) {
-    signupAttempts.set(identifier, { count: 1, resetTime: now + WINDOW_MS });
-    return true;
-  }
-
-  if (attempt.count >= MAX_ATTEMPTS) {
-    return false;
-  }
-
-  attempt.count++;
-  return true;
-}
+import { checkSignupRateLimit } from '@/lib/utils/rate-limit.util';
+import { validateEmail, validatePassword, validateName } from '@/lib/utils/validation.util';
+import { savePendingSignup, clearPendingSignup } from '@/lib/services/auth';
+import User from '@/lib/models/user.model';
+import connectDB from '@/lib/db/mongodb';
+import { ROLES, Role } from '@/lib/constants/roles';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting check
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
 
-    if (!checkRateLimit(ip)) {
+    if (!checkSignupRateLimit(ip)) {
       return NextResponse.json(errorResponse('Too many signup attempts. Please try again later.', null, 429), {
         status: 429,
       });
@@ -60,15 +38,51 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse('Email, password, and name cannot be empty', null, 400), { status: 400 });
     }
 
-    const sanitizedRole = role === 'ADMIN' ? undefined : role;
+    // Validate inputs
+    if (!validateEmail(sanitizedEmail)) {
+      return NextResponse.json(errorResponse('Invalid email format', null, 400), { status: 400 });
+    }
 
-    const result = await registerUser(sanitizedEmail, sanitizedPassword, sanitizedName, sanitizedRole);
+    const passwordValidation = validatePassword(sanitizedPassword);
+    if (!passwordValidation.valid) {
+      return NextResponse.json(errorResponse(passwordValidation.message || 'Invalid password', null, 400), {
+        status: 400,
+      });
+    }
 
-    const response = NextResponse.json(successResponse('User registered successfully', result, 201), { status: 201 });
+    if (!validateName(sanitizedName)) {
+      return NextResponse.json(errorResponse('Name must be at least 2 characters long', null, 400), {
+        status: 400,
+      });
+    }
 
-    response.cookies.set(COOKIE_NAMES.AUTH_TOKEN, result.token, getSecureCookieOptions());
+    // Check availability
+    await connectDB();
+    const existingUser = await User.findOne({ email: sanitizedEmail });
+    if (existingUser) {
+      return NextResponse.json(errorResponse('User with this email already exists', null, 400), { status: 400 });
+    }
 
-    return response;
+    // Default to CUSTOMER role (prevent ADMIN signup)
+    const sanitizedRole: Role | undefined = role === 'ADMIN' ? ROLES.CUSTOMER : (role as Role | undefined);
+
+    // Save pending signup (overwrite existing)
+    clearPendingSignup(sanitizedEmail);
+    savePendingSignup(sanitizedEmail, sanitizedPassword, sanitizedName, sanitizedRole);
+
+    // Send OTP
+    const { sendOtp } = await import('@/lib/services/otp/otp-send.service');
+    const otpResult = await sendOtp(sanitizedEmail, 'signup', ip);
+
+    if (!otpResult.success) {
+      return NextResponse.json(errorResponse(otpResult.message || 'Failed to send OTP', null, otpResult.statusCode), {
+        status: otpResult.statusCode,
+      });
+    }
+
+    return NextResponse.json(successResponse('Verify your email', { requireOtp: true, email: sanitizedEmail }, 201), {
+      status: 201,
+    });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error as ApiError);
     return NextResponse.json(errorResponse(message, errData, statusCode), {

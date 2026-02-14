@@ -56,3 +56,9 @@ export function validatePassword(password: string): {
 export function validateName(name: string): boolean {
   return name.trim().length >= 2;
 }
+
+const OTP_CODE_REGEX = /^\d{6}$/;
+
+export function validateOtpCode(code: string): boolean {
+  return typeof code === 'string' && OTP_CODE_REGEX.test(code.trim());
+}

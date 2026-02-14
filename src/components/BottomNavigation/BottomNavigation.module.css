@@ -79,6 +79,7 @@
     opacity: 0;
     transform: translateY(4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -353,4 +354,24 @@
   .label {
     font-size: 0.6rem;
   }
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoutLabel {
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.logoutIcon {
+  color: var(--color-destructive);
 }

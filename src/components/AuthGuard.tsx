@@ -22,10 +22,10 @@ function isAuthRoute(pathname: string): boolean {
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { loading, isAuthenticated, user } = useAuth();
+  const { initializing, isAuthenticated, user } = useAuth();
 
   useEffect(() => {
-    if (loading) return;
+    if (initializing) return;
 
     if (isAuthRoute(pathname)) {
       if (isAuthenticated) {
@@ -58,9 +58,9 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     ) {
       router.replace(ROUTES.ADMIN_DASHBOARD);
     }
-  }, [loading, isAuthenticated, user?.role, pathname, router]);
+  }, [initializing, isAuthenticated, user?.role, pathname, router]);
 
-  if (loading) {
+  if (initializing) {
     return <LoadingScreen />;
   }
 

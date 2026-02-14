@@ -180,6 +180,44 @@
   background: #1f2937;
 }
 
+.passwordInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  padding-right: 48px;
+}
+
+.togglePasswordButton {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.togglePasswordButton:hover {
+  color: var(--white);
+}
+
+@media (max-width: 768px) {
+  .togglePasswordButton {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 .button {
   width: 100%;
   padding: 0.875rem;
@@ -217,20 +255,21 @@
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background: #fef2f2;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
   font-size: 0.875rem;
   border-radius: 12px;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--color-destructive);
 }
 
 .inputError {
-  border-color: #dc2626 !important;
-  background: #fef2f2 !important;
+  border-color: var(--color-destructive) !important;
+  background: rgba(239, 68, 68, 0.12) !important;
 }
 
 .inputError:focus {
-  border-color: #b91c1c !important;
+  border-color: var(--color-destructive-hover) !important;
+  background: #1f2937 !important;
 }
 
 .fieldError {

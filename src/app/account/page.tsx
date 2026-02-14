@@ -10,6 +10,7 @@ import styles from './styles.module.css';
 import { FaUser, FaEnvelope, FaSave, FaLock } from 'react-icons/fa';
 import { useAuth } from '@/hooks/useAuth';
 import api from '@/lib/axios';
+import { AUTH_API } from '@/lib/constants/api.constants';
 import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { validatePassword } from '@/lib/utils/validation.util';
 
@@ -91,7 +92,7 @@ export default function AccountPage() {
 
     setPasswordLoading(true);
     try {
-      const res = (await api.post('/auth/change-password', {
+      const res = (await api.post(AUTH_API.CHANGE_PASSWORD, {
         currentPassword: currentPassword.trim(),
         newPassword: newPassword.trim(),
       })) as { success?: boolean; message?: string };
@@ -113,7 +114,9 @@ export default function AccountPage() {
   return (
     <Sidebar>
       <div className={containerStyles.container}>
-        <PageHeader title="My Account" />
+        <div className={styles.mobileHidden}>
+          <PageHeader title="My Account" />
+        </div>
 
         <div className={styles.tabs}>
           <button
