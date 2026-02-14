@@ -17,6 +17,12 @@ export const NERVAYA_PICKS = [
     buttonText: 'Shop Now',
     href: '/therapy-corner',
   },
+  {
+    title: 'Sleep Elixir',
+    description: 'Fully herbal. Safe for daily use. Promotes deep sleep naturally without dependence.',
+    buttonText: 'Shop Now',
+    href: '/supplements',
+  },
 ] as const;
 
 export const MORE_FAVOURITES = [

@@ -29,4 +29,14 @@ export const landingPageCardsData: LandingPageCard[] = [
     buttonText: 'Explore Now',
     href: '/drift-off',
   },
+  {
+    id: 3,
+    image: IMAGES.CARD_SLEEP_SUPPLEMENTS,
+    title: 'Sleep Elixir',
+    description:
+      'Our non-habit-forming, fast-absorbing formula helps you unwind naturally and drift into deep, restorative sleep — waking refreshed, never dependent.',
+    buttonText: 'Shop Now',
+    href: '/supplements',
+    badge: 'Coming Soon',
+  },
 ];
