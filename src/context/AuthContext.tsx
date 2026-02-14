@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
+import { AUTH_API } from '@/lib/constants/api.constants';
 import { ApiResponse } from '@/lib/utils/response.util';
 import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { ROLES, Role } from '@/lib/constants/roles';
@@ -17,7 +18,7 @@ interface User {
   role: Role;
 }
 
-interface AuthData {
+export interface AuthData {
   user: User;
   token: string;
 }
@@ -25,13 +26,25 @@ interface AuthData {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  initializing: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
-  signup: (email: string, password: string, name: string, returnUrl?: string) => Promise<ApiResponse<AuthData>>;
+  login: (email: string, password: string, returnUrl?: string) => Promise<ApiResponse<AuthData | LoginWithOtpData>>;
+  signup: (
+    email: string,
+    password: string,
+    name: string,
+    returnUrl?: string,
+  ) => Promise<ApiResponse<AuthData | LoginWithOtpData>>;
   logout: () => Promise<void>;
   clearError: () => void;
   updateUser: (updates: Partial<User>) => void;
+  completeLoginWithOtp: (data: AuthData, returnUrl?: string) => void;
+}
+
+export interface LoginWithOtpData {
+  requireOtp: true;
+  email: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -68,7 +81,8 @@ function clearAuthStorage() {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -81,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
       setIsAuthenticated(false);
     }
-    setLoading(false);
+    setInitializing(false);
   };
 
   const handleAuthSuccess = (data: AuthData, returnUrl?: string) => {
@@ -122,14 +136,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = (await api.post('/auth/signup', {
+      const response = (await api.post(AUTH_API.SIGNUP, {
         email,
         password,
         name,
-      })) as ApiResponse<AuthData>;
+      })) as ApiResponse<AuthData | LoginWithOtpData>;
 
-      if (response.success && response.data) {
-        handleAuthSuccess(response.data, returnUrl);
+      if (response.success && response.data && !('requireOtp' in response.data && response.data.requireOtp)) {
+        handleAuthSuccess(response.data as AuthData, returnUrl);
       }
       return response;
     } catch (err) {
@@ -146,13 +160,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const response = (await api.post('/auth/login', {
+      const response = (await api.post(AUTH_API.LOGIN, {
         email,
         password,
-      })) as ApiResponse<AuthData>;
+      })) as ApiResponse<AuthData | LoginWithOtpData>;
 
       if (response.success && response.data) {
-        handleAuthSuccess(response.data, returnUrl);
+        const data = response.data as AuthData | LoginWithOtpData;
+        if ('requireOtp' in data && data.requireOtp) {
+          return response;
+        }
+        handleAuthSuccess(data as AuthData, returnUrl);
       }
       return response;
     } catch (err) {
@@ -164,10 +182,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const completeLoginWithOtp = (data: AuthData, returnUrl?: string) => {
+    handleAuthSuccess(data, returnUrl);
+  };
+
   const logout = async () => {
     setLoading(true);
     try {
-      await api.post('/auth/logout');
+      await api.post(AUTH_API.LOGOUT);
     } catch (err) {
       console.error('Logout API call failed:', err);
     } finally {
@@ -200,6 +222,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         loading,
+        initializing,
         error,
         isAuthenticated,
         login,
@@ -207,6 +230,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         clearError,
         updateUser,
+        completeLoginWithOtp,
       }}
     >
       {children}

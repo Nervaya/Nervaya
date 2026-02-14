@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaChevronUp } from 'react-icons/fa6';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/hooks/useAuth';
 import { primaryNavItems, moreNavItems, type BottomNavItem } from '@/utils/bottomNavigationConstants';
 import { AUTH_ROUTES } from '@/utils/routesConstants';
 import { iconMap } from '@/utils/sidebarConstants';
@@ -13,6 +14,7 @@ import styles from './BottomNavigation.module.css';
 const BottomNavigation = () => {
   const pathname = usePathname();
   const { cartCount } = useCart();
+  const { isAuthenticated, logout } = useAuth();
   const [isMoreOpen, setIsMoreOpen] = useState(false);
 
   const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname as string);
@@ -81,6 +83,21 @@ const BottomNavigation = () => {
             {moreNavItems.map((item) => (
               <MoreIconLink key={item.path} item={item} />
             ))}
+            {isAuthenticated && (
+              <li className={styles.moreIconItem}>
+                <button
+                  className={`${styles.moreIconLink} ${styles.logoutButton}`}
+                  onClick={() => {
+                    logout();
+                    setIsMoreOpen(false);
+                  }}
+                  aria-label="Logout"
+                >
+                  <span className={`${styles.moreIcon} ${styles.logoutIcon}`}>{iconMap['FaRightFromBracket']}</span>
+                  <span className={`${styles.logoutLabel}`}>Logout</span>
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       )}

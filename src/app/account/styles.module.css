@@ -13,6 +13,14 @@
   }
 }
 
+.mobileHidden {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .title {
   margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-5xl);

@@ -27,3 +27,25 @@ export interface AuthResponse {
   };
   error?: string;
 }
+
+import { OtpPurpose } from '@/lib/constants/enums';
+
+export type { OtpPurpose };
+
+export interface SendOtpRequest {
+  email: string;
+  purpose: OtpPurpose;
+}
+
+export interface VerifyOtpRequest {
+  email: string;
+  code: string;
+  purpose: OtpPurpose;
+}
+
+export interface LoginResponseData {
+  user: Omit<User, 'password'>;
+  token: string;
+  requireOtp?: boolean;
+  email?: string;
+}

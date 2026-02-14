@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { AUTH_API } from '@/lib/constants/api.constants';
 import { AUTH_STORAGE_KEYS } from '@/utils/cookieConstants';
-import { isProtectedPath } from '@/utils/routesConstants';
+import { isProtectedPath, ROUTES } from '@/utils/routesConstants';
 
 const api = axios.create({
   baseURL: '/api',
@@ -27,11 +28,11 @@ api.interceptors.response.use(
       if (axiosError.response?.status === 401) {
         if (typeof window !== 'undefined') {
           const pathname = window.location.pathname;
-          const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/signup');
+          const isAuthPage = pathname.startsWith(ROUTES.LOGIN) || pathname.startsWith(ROUTES.SIGNUP);
           clearAuthStorageOnClient();
           if (!isAuthPage && isProtectedPath(pathname)) {
-            fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
-            window.location.href = '/login';
+            fetch(`/api${AUTH_API.LOGOUT}`, { method: 'POST', credentials: 'include' }).catch(() => {});
+            window.location.href = ROUTES.LOGIN;
           }
         }
       }
