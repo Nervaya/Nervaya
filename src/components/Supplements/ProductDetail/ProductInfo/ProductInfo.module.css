@@ -50,7 +50,6 @@
   color: var(--color-text-muted, #9ca3af);
 }
 
-/* Price Section */
 .priceRow {
   display: flex;
   align-items: center;
@@ -102,7 +101,6 @@
   margin: 0;
 }
 
-/* Quantity + Actions Row (side by side) */
 .quantityActionsRow {
   display: flex;
   align-items: center;
@@ -121,7 +119,6 @@
   color: var(--color-text-muted, #9ca3af);
 }
 
-/* Action Buttons */
 .actions {
   display: flex;
   gap: var(--spacing-md, 16px);
@@ -159,7 +156,6 @@
   width: 100%;
 }
 
-/* Messages */
 .error {
   color: #f87171;
   background: rgba(239, 68, 68, 0.15);
@@ -178,7 +174,6 @@
   font-size: 0.875rem;
 }
 
-/* Trust Badges */
 .trustBadges {
   display: flex;
   flex-wrap: wrap;

@@ -41,7 +41,6 @@
   color: white;
 }
 
-/* Product Grid - Amazon style */
 .chipList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

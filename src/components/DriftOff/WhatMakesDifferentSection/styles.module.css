@@ -1,0 +1,110 @@
+.whatAreCard {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 24px;
+  padding: var(--spacing-2xl);
+  display: flex;
+  gap: var(--spacing-2xl);
+  align-items: flex-start;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .whatAreCard {
+    padding: var(--spacing-xl);
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .whatAreCard {
+    padding: var(--spacing-lg);
+    border-radius: 16px;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .whatAreCard {
+    flex-direction: column;
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    gap: var(--spacing-md);
+  }
+}
+
+.whatAreText {
+  margin: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .whatAreText {
+    font-size: var(--font-size-sm);
+  }
+}
+
+.whatMakesIntro {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .whatMakesIntro {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .whatMakesIntro {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+.whatMakesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-2xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  flex-shrink: 0;
+  align-content: start;
+}
+
+@media (max-width: 768px) {
+  .whatMakesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .whatMakesGrid {
+    gap: var(--spacing-md);
+  }
+}
+
+.whatMakesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.whatMakesBullet {
+  color: var(--color-emerald-400);
+  flex-shrink: 0;
+}

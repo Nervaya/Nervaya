@@ -1,6 +1,6 @@
 import { Role } from '@/lib/constants/roles';
 
-const PENDING_SIGNUP_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const PENDING_SIGNUP_TTL_MS = 10 * 60 * 1000;
 
 export interface PendingSignupData {
   email: string;
@@ -16,7 +16,6 @@ function keyForEmail(email: string): string {
   return email.toLowerCase().trim();
 }
 
-// Store pending signup data temporarily
 export function savePendingSignup(email: string, password: string, name: string, role?: Role): void {
   const key = keyForEmail(email);
   const expiresAt = Date.now() + PENDING_SIGNUP_TTL_MS;
@@ -30,7 +29,6 @@ export function savePendingSignup(email: string, password: string, name: string,
   });
 }
 
-// Retrieve and consume pending signup data (one-time use)
 export function consumePendingSignup(email: string): Omit<PendingSignupData, 'expiresAt'> | null {
   const key = keyForEmail(email);
   const data = pendingSignups.get(key);
@@ -52,7 +50,6 @@ export function consumePendingSignup(email: string): Omit<PendingSignupData, 'ex
   };
 }
 
-// Check if valid pending signup exists
 export function hasPendingSignup(email: string): boolean {
   const key = keyForEmail(email);
   const data = pendingSignups.get(key);
@@ -67,13 +64,11 @@ export function hasPendingSignup(email: string): boolean {
   return true;
 }
 
-// Clear pending signup
 export function clearPendingSignup(email: string): void {
   const key = keyForEmail(email);
   pendingSignups.delete(key);
 }
 
-// Cleanup expired signups
 export function cleanupExpiredSignups(): void {
   const now = Date.now();
   for (const [key, data] of pendingSignups.entries()) {

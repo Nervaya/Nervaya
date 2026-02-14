@@ -1,11 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { OtpDelivery } from './otp-delivery.interface';
 
-/**
- * Sends OTP via Gmail SMTP.
- * Requires .env: OTP_EMAIL_USER (Gmail address), OTP_EMAIL_APP_PASSWORD (Google App Password).
- * Optional: OTP_EMAIL_FROM_NAME (e.g. "Nervaya").
- */
 export function createGmailOtpDelivery(): OtpDelivery | null {
   const user = process.env.OTP_EMAIL_USER;
   const appPassword = process.env.OTP_EMAIL_APP_PASSWORD;

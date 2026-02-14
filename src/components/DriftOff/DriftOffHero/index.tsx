@@ -10,9 +10,9 @@ import {
   DRIFT_OFF_HERO_VIDEO_URL,
 } from '@/lib/constants/driftOff.constants';
 import styles from './styles.module.css';
-import { VideoPlayerProps } from './VideoPlayer';
+import { VideoPlayerProps } from '../VideoPlayer';
 
-const VideoPlayerDynamic = dynamic(() => import('./VideoPlayer'), {
+const VideoPlayerDynamic = dynamic(() => import('../VideoPlayer'), {
   ssr: false,
 }) as React.ComponentType<VideoPlayerProps>;
 

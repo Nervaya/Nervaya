@@ -114,9 +114,7 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
               sessionStorage.removeItem(COMPLETED_STORAGE_KEY);
               return;
             }
-          } catch {
-            /* ignore */
-          }
+          } catch {}
           sessionStorage.removeItem(COMPLETED_STORAGE_KEY);
         }
 

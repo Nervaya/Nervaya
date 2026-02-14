@@ -30,7 +30,6 @@ export default function RouteBreadcrumbs() {
     return getBreadcrumbsForPath(pathname);
   }, [pathname]);
 
-  // Compute synchronous label for order numbers
   const syncLabel = useMemo(() => {
     const orderMatch = pathname?.match(ORDER_SUCCESS_PATH_REGEX);
     if (orderMatch) {
@@ -44,7 +43,6 @@ export default function RouteBreadcrumbs() {
       return;
     }
 
-    // Handle supplement detail pages
     const supplementMatch = pathname.match(SUPPLEMENT_PATH_REGEX);
     if (supplementMatch) {
       const supplementId = supplementMatch[1];
@@ -63,7 +61,6 @@ export default function RouteBreadcrumbs() {
       return;
     }
 
-    // Handle therapist slots pages
     const therapistMatch = pathname.match(THERAPIST_SLOTS_PATH_REGEX);
     if (therapistMatch) {
       const therapistId = therapistMatch[1];
@@ -87,7 +84,6 @@ export default function RouteBreadcrumbs() {
     const updatedItems = [...baseItems];
     const lastItem = updatedItems[updatedItems.length - 1];
 
-    // Only use asyncLabel if current pathname matches an async pattern
     const needsAsyncLabel = pathname?.match(SUPPLEMENT_PATH_REGEX) || pathname?.match(THERAPIST_SLOTS_PATH_REGEX);
     const dynamicLabel = syncLabel || (needsAsyncLabel ? asyncLabel : null);
 

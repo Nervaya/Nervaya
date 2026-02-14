@@ -1,0 +1,113 @@
+.howItWorksSection {
+  margin-bottom: var(--spacing-2xl);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .stepsGrid {
+    gap: var(--spacing-md);
+  }
+}
+
+.stepCard {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
+  padding: var(--spacing-2xl);
+  transition: all 0.2s ease;
+  margin-bottom: 0;
+  color: var(--color-foreground);
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .stepCard {
+    padding: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .stepCard {
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+  }
+}
+
+.stepCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  pointer-events: none;
+}
+
+.stepCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
+}
+
+.stepNumber {
+  background: var(--accent);
+  color: var(--color-foreground);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-4xl);
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--color-glass-border);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.stepCard:hover .stepNumber {
+  transform: scale(1.06);
+}
+
+.stepDescription {
+  margin: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  .stepDescription {
+    font-size: var(--font-size-sm);
+  }
+}

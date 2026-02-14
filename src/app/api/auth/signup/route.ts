@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse('Email, password, and name cannot be empty', null, 400), { status: 400 });
     }
 
-    // Validate inputs
     if (!validateEmail(sanitizedEmail)) {
       return NextResponse.json(errorResponse('Invalid email format', null, 400), { status: 400 });
     }
@@ -56,21 +55,17 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Check availability
     await connectDB();
     const existingUser = await User.findOne({ email: sanitizedEmail });
     if (existingUser) {
       return NextResponse.json(errorResponse('User with this email already exists', null, 400), { status: 400 });
     }
 
-    // Default to CUSTOMER role (prevent ADMIN signup)
     const sanitizedRole: Role | undefined = role === 'ADMIN' ? ROLES.CUSTOMER : (role as Role | undefined);
 
-    // Save pending signup (overwrite existing)
     clearPendingSignup(sanitizedEmail);
     savePendingSignup(sanitizedEmail, sanitizedPassword, sanitizedName, sanitizedRole);
 
-    // Send OTP
     const { sendOtp } = await import('@/lib/services/otp/otp-send.service');
     const otpResult = await sendOtp(sanitizedEmail, 'signup', ip);
 

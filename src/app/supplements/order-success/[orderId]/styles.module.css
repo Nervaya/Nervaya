@@ -10,7 +10,6 @@
   }
 }
 
-/* Success card */
 .successCard {
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));
@@ -27,7 +26,6 @@
   }
 }
 
-/* Lottie animation replaces the static checkmark icon */
 .successAnimation {
   width: 160px;
   height: 160px;
@@ -67,7 +65,6 @@
   text-align: center;
 }
 
-/* Order summary */
 .orderSummary {
   border-radius: 12px;
   overflow: hidden;
@@ -186,7 +183,6 @@
   font-size: var(--font-size-base);
 }
 
-/* What's Next */
 .whatsNext {
   margin-bottom: var(--spacing-xl);
 }
@@ -238,7 +234,6 @@
   font-size: 1.25rem;
 }
 
-/* Actions */
 .actions {
   display: flex;
   flex-direction: column;
@@ -282,7 +277,6 @@
   text-decoration: underline;
 }
 
-/* Loading & error */
 .loading,
 .error {
   text-align: center;

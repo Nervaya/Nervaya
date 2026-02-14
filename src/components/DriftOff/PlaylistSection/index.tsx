@@ -5,9 +5,9 @@ import dynamic from 'next/dynamic';
 import { FaPlay, FaInfinity } from 'react-icons/fa';
 import { DRIFT_OFF_PLAYLIST_VIDEOS } from '@/lib/constants/driftOff.constants';
 import styles from './styles.module.css';
-import { VideoPlayerProps } from './VideoPlayer';
+import { VideoPlayerProps } from '../VideoPlayer';
 
-const VideoPlayerDynamic = dynamic(() => import('./VideoPlayer'), {
+const VideoPlayerDynamic = dynamic(() => import('../VideoPlayer'), {
   ssr: false,
 }) as React.ComponentType<VideoPlayerProps>;
 

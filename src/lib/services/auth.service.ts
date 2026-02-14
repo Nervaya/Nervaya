@@ -53,7 +53,6 @@ export async function registerUser(email: string, password: string, name: string
   };
 }
 
-// Create new user with emailVerified=true after OTP check
 export async function createUserAfterOtpVerification(
   email: string,
   password: string,

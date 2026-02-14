@@ -1,5 +1,3 @@
-/** API path constants (relative to baseURL /api). */
-
 export const AUTH_API = {
   LOGIN: '/auth/login',
   SIGNUP: '/auth/signup',

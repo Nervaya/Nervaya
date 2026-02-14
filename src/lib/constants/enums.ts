@@ -1,4 +1,3 @@
-// Roles
 export const ROLES = {
   ADMIN: 'ADMIN',
   CUSTOMER: 'CUSTOMER',
@@ -6,7 +5,6 @@ export const ROLES = {
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
-// Payment status
 export const PAYMENT_STATUS = {
   PENDING: 'pending',
   PAID: 'paid',
@@ -16,7 +14,6 @@ export const PAYMENT_STATUS = {
 
 export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
 
-// Order status
 export const ORDER_STATUS = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -27,7 +24,6 @@ export const ORDER_STATUS = {
 
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
-// Session status
 export const SESSION_STATUS = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -37,12 +33,10 @@ export const SESSION_STATUS = {
 
 export type SessionStatus = (typeof SESSION_STATUS)[keyof typeof SESSION_STATUS];
 
-// Value arrays for validation / schemas
 export const PAYMENT_STATUS_VALUES = Object.values(PAYMENT_STATUS);
 export const ORDER_STATUS_VALUES = Object.values(ORDER_STATUS);
 export const SESSION_STATUS_VALUES = Object.values(SESSION_STATUS);
 
-// Currency / money
 export const CURRENCY = {
   SYMBOL: '₹',
   CODE: 'INR',
@@ -51,7 +45,6 @@ export const CURRENCY = {
 
 export type CurrencyCode = (typeof CURRENCY)['CODE'];
 
-// Delivery method (shipping)
 export const DELIVERY_METHOD = {
   STANDARD: 'standard',
   EXPRESS: 'express',
@@ -61,7 +54,6 @@ export type DeliveryMethod = (typeof DELIVERY_METHOD)[keyof typeof DELIVERY_METH
 
 export const DELIVERY_METHOD_VALUES = Object.values(DELIVERY_METHOD);
 
-// Discount type (promo / pricing)
 export const DISCOUNT_TYPE = {
   PERCENTAGE: 'percentage',
   FIXED: 'fixed',
@@ -71,7 +63,6 @@ export type DiscountType = (typeof DISCOUNT_TYPE)[keyof typeof DISCOUNT_TYPE];
 
 export const DISCOUNT_TYPE_VALUES = Object.values(DISCOUNT_TYPE);
 
-// NTherapy popular YouTube video links
 export const NTHERAPY_YOUTUBE_VIDEOS = {
   HERO: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   POPULAR_1: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -80,7 +71,6 @@ export const NTHERAPY_YOUTUBE_VIDEOS = {
 
 export type NTherapyYouTubeVideo = (typeof NTHERAPY_YOUTUBE_VIDEOS)[keyof typeof NTHERAPY_YOUTUBE_VIDEOS];
 
-// OTP purpose (login vs signup verification)
 export const OTP_PURPOSE = {
   LOGIN: 'login',
   SIGNUP: 'signup',
@@ -88,7 +78,6 @@ export const OTP_PURPOSE = {
 
 export type OtpPurpose = (typeof OTP_PURPOSE)[keyof typeof OTP_PURPOSE];
 
-// Auth form mode (login vs signup tab)
 export const AUTH_FORM_MODE = {
   LOGIN: 'login',
   SIGNUP: 'signup',
@@ -96,7 +85,6 @@ export const AUTH_FORM_MODE = {
 
 export type AuthFormMode = (typeof AUTH_FORM_MODE)[keyof typeof AUTH_FORM_MODE];
 
-// Auth step (credentials form vs OTP verification)
 export const AUTH_STEP = {
   CREDENTIALS: 'credentials',
   OTP: 'otp',

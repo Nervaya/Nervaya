@@ -32,11 +32,9 @@ function segmentToLabel(segment: string): string {
 }
 
 function isDynamicSegment(segment: string): boolean {
-  // MongoDB ObjectId is exactly 24 hex characters
   if (/^[a-f0-9]{24}$/i.test(segment)) {
     return true;
   }
-  // Very long hex strings are likely IDs
   if (/^[a-f0-9-]{20,}$/i.test(segment)) {
     return true;
   }

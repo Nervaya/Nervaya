@@ -61,7 +61,6 @@
   gap: var(--margin-lg);
 }
 
-/* Therapist Card - Glassmorphism */
 .card {
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));

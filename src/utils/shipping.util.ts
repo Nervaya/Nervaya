@@ -2,10 +2,6 @@ import { DELIVERY_METHOD, type DeliveryMethod } from '@/lib/constants/enums';
 
 export { type DeliveryMethod };
 
-/**
- * Single source of truth for delivery/shipping costs.
- * Used at checkout (delivery options), order creation, and order success page.
- */
 export const STANDARD_SHIPPING_FREE_THRESHOLD = 500;
 export const STANDARD_SHIPPING_COST = 50;
 export const EXPRESS_SHIPPING_COST = 1299;

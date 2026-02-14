@@ -4,7 +4,6 @@
   padding: 0;
 }
 
-/* Main Product Content Card */
 .content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -140,7 +139,6 @@
   }
 }
 
-/* Loading & Error States */
 .loading {
   display: flex;
   align-items: center;

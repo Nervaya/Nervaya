@@ -53,7 +53,6 @@ export async function POST(request: NextRequest) {
     try {
       await connectDB();
 
-      // Consume pending signup data
       const { consumePendingSignup } = await import('@/lib/services/auth');
       const pendingData = consumePendingSignup(sanitizedEmail);
 
@@ -63,7 +62,6 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // Create user with verified email
       const { createUserAfterOtpVerification } = await import('@/lib/services/auth.service');
       const session = await createUserAfterOtpVerification(
         pendingData.email,

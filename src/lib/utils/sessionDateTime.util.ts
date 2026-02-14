@@ -1,5 +1,4 @@
 export function parseSessionStartDateTime(date: string, startTime: string): Date | null {
-  // date: YYYY-MM-DD, startTime: e.g. "9:00 AM"
   if (!date || !startTime) return null;
   const [yearStr, monthStr, dayStr] = date.split('-');
   const year = Number(yearStr);

@@ -55,7 +55,6 @@
   gap: var(--margin-lg);
 }
 
-/* Supplement Card - Glassmorphism */
 .card {
   display: flex;
   gap: var(--spacing-lg);
@@ -243,7 +242,6 @@
   font-size: 1.1rem;
 }
 
-/* Confirm Dialog - Glassmorphism */
 .confirmOverlay {
   position: fixed;
   top: 0;

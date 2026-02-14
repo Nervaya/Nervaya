@@ -1,0 +1,197 @@
+.card {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 24px;
+  padding: var(--spacing-2xl);
+  transition: all 0.2s ease;
+  margin-bottom: 0;
+  color: var(--color-foreground);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .card {
+    padding: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--spacing-lg);
+    border-radius: 16px;
+  }
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
+}
+
+.playlistHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 480px) {
+  .playlistHeader {
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+.accessBadge {
+  background: var(--color-emerald-dim);
+  color: var(--color-emerald-400);
+  padding: var(--spacing-xs) var(--spacing-lg);
+  border-radius: var(--spacing-lg);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--color-emerald-border);
+}
+
+.playlistGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .playlistGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .playlistGrid {
+    gap: var(--spacing-md);
+  }
+}
+
+.videoCard {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .videoCard {
+    border-radius: 12px;
+  }
+}
+
+.videoCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-glass-border);
+}
+
+.videoCardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: linear-gradient(to top, var(--color-overlay-dark), transparent);
+  color: var(--color-foreground);
+}
+
+.videoTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-foreground);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.videoDuration {
+  background: var(--color-overlay-mid);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  backdrop-filter: blur(4px);
+}
+
+.playlistVideoWrapper {
+  height: 100%;
+  background: var(--color-accent-dim);
+  position: relative;
+  min-height: 192px;
+}
+
+.playlistPlayerAbsolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.playlistPlayIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-white-bright);
+  width: 48px;
+  height: 48px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--color-overlay);
+  z-index: 2;
+}
+
+.playlistPlayIconSvg {
+  margin-left: var(--spacing-xs);
+}
+
+.videoCardOverlay {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.videoTitleDot {
+  color: var(--color-emerald-400);
+}
+
+.videoCardAuthor {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+.freeBadgeSmall {
+  background: var(--color-white-dim);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  margin-left: var(--spacing-sm);
+}
