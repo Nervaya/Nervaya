@@ -1,8 +1,7 @@
 .consultationSection {
-  padding: 24px 0 60px;
-  max-width: 1200px;
-  margin: 0;
-  margin-right: auto;
+  padding: 20px 0;
+  max-width: 1400px;
+  margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
   overflow: visible;
@@ -10,19 +9,19 @@
 
 @media (max-width: 1200px) {
   .consultationSection {
-    padding: 24px 0 50px;
+    padding: 20px 0;
   }
 }
 
 @media (max-width: 768px) {
   .consultationSection {
-    padding: 24px var(--spacing-lg) 40px;
+    padding: 20px var(--spacing-lg);
   }
 }
 
 @media (max-width: 480px) {
   .consultationSection {
-    padding: 20px 0 120px;
+    padding: 20px 0;
     width: 100%;
     max-width: 100%;
   }
@@ -30,17 +29,17 @@
 
 @media (max-width: 380px) {
   .consultationSection {
-    padding: 16px 0 100px;
+    padding: 20px 0;
   }
 }
 
 .consultationSectionCentered {
-  width: 95%;
+  width: 100%;
   max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 @media (max-width: 1200px) {
@@ -75,7 +74,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   padding: 48px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0;
   width: 100%;
   box-sizing: border-box;

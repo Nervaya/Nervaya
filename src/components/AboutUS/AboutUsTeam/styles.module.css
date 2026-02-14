@@ -1,8 +1,32 @@
 .teamSection {
-  padding: 48px 30px 30px;
+  padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  width: 95%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .teamSection {
+    padding: 20px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamSection {
+    padding: 20px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .teamSection {
+    padding: 20px 20px;
+  }
+}
+
+.teamMainCard {
+  padding: 30px 40px 30px;
+  width: 100%;
   background: rgba(17, 24, 39, 0.5);
   backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -12,19 +36,19 @@
 }
 
 @media (max-width: 1200px) {
-  .teamSection {
+  .teamMainCard {
     padding: 48px 40px 50px;
   }
 }
 
 @media (max-width: 768px) {
-  .teamSection {
+  .teamMainCard {
     padding: 40px 30px 40px;
   }
 }
 
 @media (max-width: 480px) {
-  .teamSection {
+  .teamMainCard {
     padding: 36px 20px 30px;
   }
 }
@@ -128,7 +152,7 @@
   }
 }
 
-.teamCard {
+.memberCard {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -146,20 +170,20 @@
   scroll-margin-top: 120px;
 }
 
-.teamCard:hover {
+.memberCard:hover {
   transform: translateY(-8px);
   box-shadow: 0 8px 30px rgba(120, 40, 200, 0.2);
 }
 
 @media (max-width: 1024px) {
-  .teamCard {
+  .memberCard {
     padding: 20px;
     gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
-  .teamCard {
+  .memberCard {
     grid-template-columns: 80px 1fr;
     padding: 20px;
     gap: 16px;
@@ -167,7 +191,7 @@
 }
 
 @media (max-width: 480px) {
-  .teamCard {
+  .memberCard {
     grid-template-columns: 1fr;
     padding: 24px;
     gap: 20px;
@@ -181,6 +205,12 @@
   height: 100px;
   min-width: 100px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardImage {
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {

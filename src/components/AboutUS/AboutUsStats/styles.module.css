@@ -1,5 +1,5 @@
 .statsSection {
-  padding: 60px 40px;
+  padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -7,19 +7,19 @@
 
 @media (max-width: 1200px) {
   .statsSection {
-    padding: 50px 40px;
+    padding: 20px 40px;
   }
 }
 
 @media (max-width: 768px) {
   .statsSection {
-    padding: 40px 30px;
+    padding: 20px 30px;
   }
 }
 
 @media (max-width: 480px) {
   .statsSection {
-    padding: 30px 20px;
+    padding: 20px 20px;
   }
 }
 
@@ -29,8 +29,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
   padding: 48px 60px;
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   gap: 32px;
   list-style: none;
@@ -41,14 +41,23 @@
   .statsContainer {
     padding: 40px 48px;
     gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .statsContainer {
-    flex-direction: column;
-    padding: 40px 32px;
-    gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 32px 24px;
+    gap: 24px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsContainer {
+    padding: 24px 16px;
+    gap: 20px;
   }
 }
 
@@ -62,8 +71,9 @@
 .statItem {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 32px;
-  flex: 1;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {

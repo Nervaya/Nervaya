@@ -1,5 +1,5 @@
 .cardsSection {
-  padding: 60px 40px 48px;
+  padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -8,19 +8,19 @@
 
 @media (max-width: 1200px) {
   .cardsSection {
-    padding: 50px 40px;
+    padding: 20px 40px;
   }
 }
 
 @media (max-width: 768px) {
   .cardsSection {
-    padding: 40px 30px;
+    padding: 20px 30px;
   }
 }
 
 @media (max-width: 480px) {
   .cardsSection {
-    padding: 30px 20px;
+    padding: 20px 20px;
   }
 }
 
