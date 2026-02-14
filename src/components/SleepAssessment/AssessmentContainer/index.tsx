@@ -6,6 +6,7 @@ import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
 import { AssessmentQuestionStep } from './AssessmentQuestionStep';
 import { useAssessmentState } from './useAssessmentState';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -31,10 +32,20 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     latestCompletedResponse,
     userWantsRetake,
     setUserWantsRetake,
+    isHydrated,
     handleAnswerChange,
     handleNext,
     handlePrevious,
   } = useAssessmentState(questions);
+
+  if (!isHydrated) {
+    return (
+      <div className={styles.hydratingState} aria-busy="true" aria-live="polite">
+        <LottieLoader width={160} height={160} />
+        <p className={styles.hydratingText}>Loading your assessment…</p>
+      </div>
+    );
+  }
 
   if (isComplete) {
     return <CompletionView completedResponse={completedResponse} />;

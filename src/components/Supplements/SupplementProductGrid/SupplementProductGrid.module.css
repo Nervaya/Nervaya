@@ -19,20 +19,20 @@
 .gridView {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: var(--margin-lg);
+  gap: var(--spacing-lg);
   align-items: stretch;
 }
 
 @media (max-width: 1024px) {
   .gridView {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--margin-md);
+    gap: var(--spacing-lg);
   }
 }
 
 @media (max-width: 768px) {
   .gridView {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-md);
   }
 }
@@ -47,14 +47,21 @@
 .listView {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--margin-lg);
+  gap: var(--spacing-lg);
   align-items: stretch;
 }
 
 @media (max-width: 768px) {
   .listView {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 400px) {
+  .listView {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-xs);
   }
 }
 

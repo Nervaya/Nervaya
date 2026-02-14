@@ -8,8 +8,8 @@ import styles from './support.module.css';
 const SupportPage = () => {
   return (
     <Sidebar>
-      <div className={styles.container}>
-        <div className={styles.content}>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
           <SupportHeader />
           <ChatWithUs />
           <FrequentlyAskedQuestions />

@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { FcGoogle } from 'react-icons/fc';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import {
   AUTH_FORM_MODE,
@@ -116,11 +115,6 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
           ) : (
             <>
               <h1 className={styles.title}>Create Account</h1>
-              <div className={styles.socialIcons}>
-                <a href="#" className={styles.icon}>
-                  <FcGoogle />
-                </a>
-              </div>
               <p className={styles.divider}>or use your email for registration</p>
               {error && (
                 <div role="alert" className={styles.errorBanner} aria-live="polite">
@@ -221,11 +215,6 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
           ) : (
             <>
               <h1 className={styles.title}>Sign in</h1>
-              <div className={styles.socialIcons}>
-                <a href="#" className={styles.icon}>
-                  <FcGoogle />
-                </a>
-              </div>
               <p className={styles.divider}>or use your account</p>
               {error && (
                 <div role="alert" className={styles.errorBanner} aria-live="polite">

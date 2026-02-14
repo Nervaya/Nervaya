@@ -22,6 +22,7 @@ export interface UseAssessmentStateResult {
   latestCompletedResponse: ISleepAssessmentResponse | null;
   userWantsRetake: boolean;
   setUserWantsRetake: (value: boolean) => void;
+  isHydrated: boolean;
   handleAnswerChange: (answer: string | string[]) => void;
   handleNext: () => Promise<void>;
   handlePrevious: () => void;
@@ -78,11 +79,22 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     });
   }, []);
 
+  const COMPLETED_STORAGE_KEY = 'nervaya-sleep-assessment-completed';
+  const COMPLETED_STORAGE_MAX_AGE_MS = 5000;
+
   const completeAssessment = useCallback(async (): Promise<ISleepAssessmentResponse | null> => {
     const response = await axiosInstance.post<unknown, ApiResponse<ISleepAssessmentResponse>>(
       '/sleep-assessment/responses/complete',
     );
-    return response?.data ?? null;
+    const data = response?.data ?? null;
+    if (data) {
+      try {
+        sessionStorage.setItem(COMPLETED_STORAGE_KEY, JSON.stringify(data));
+      } catch {
+        /* ignore */
+      }
+    }
+    return data;
   }, []);
 
   useEffect(() => {
@@ -90,6 +102,24 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
 
     const loadState = async () => {
       try {
+        const stored = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(COMPLETED_STORAGE_KEY) : null;
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored) as ISleepAssessmentResponse;
+            const completedAt = parsed?.completedAt ? new Date(parsed.completedAt).getTime() : 0;
+            if (completedAt && Date.now() - completedAt < COMPLETED_STORAGE_MAX_AGE_MS) {
+              setCompletedResponse(parsed);
+              setIsComplete(true);
+              setIsHydrated(true);
+              sessionStorage.removeItem(COMPLETED_STORAGE_KEY);
+              return;
+            }
+          } catch {
+            /* ignore */
+          }
+          sessionStorage.removeItem(COMPLETED_STORAGE_KEY);
+        }
+
         const [inProgressRes, latestRes] = await Promise.all([
           axiosInstance.get<unknown, ApiResponse<ISleepAssessmentResponse | null>>(
             '/sleep-assessment/responses?inProgress=true',
@@ -192,6 +222,7 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     latestCompletedResponse,
     userWantsRetake,
     setUserWantsRetake,
+    isHydrated,
     handleAnswerChange,
     handleNext,
     handlePrevious,
