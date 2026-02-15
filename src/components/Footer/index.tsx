@@ -30,6 +30,15 @@ const Footer = () => (
         </li>
       ))}
     </ul>
+
+    {/* Mobile View */}
+    <div className={styles['mobile-link-grid']}>
+      {FOOTER_LINK_GROUPS.flatMap((group) => group.links).map((link) => (
+        <Link key={link.href} href={link.href} className={styles['link']}>
+          {link.text}
+        </Link>
+      ))}
+    </div>
   </footer>
 );
 

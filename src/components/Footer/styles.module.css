@@ -16,7 +16,7 @@
   .footer-container {
     grid-template-columns: 1fr;
     height: auto;
-    padding: 24px 20px 32px;
+    padding: 24px 20px 120px;
     gap: 24px;
     max-width: 100%;
     justify-items: center;
@@ -30,11 +30,12 @@
 @media (max-width: 768px) {
   .logo-container {
     padding-left: 0;
-    text-align: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    width: 100%;
+    margin-bottom: 24px;
   }
 }
 
@@ -45,7 +46,7 @@
 
 @media (max-width: 768px) {
   .footer-logo {
-    max-width: 120px;
+    max-width: 100px;
   }
 }
 
@@ -60,7 +61,7 @@
   .social-links {
     padding: 0;
     justify-content: center;
-    gap: 20px;
+    gap: 24px;
   }
 }
 
@@ -73,15 +74,34 @@
   align-content: center;
 }
 
+.mobile-link-grid {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nervaya-link-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 10px;
-    padding: 0;
-    justify-items: start;
-    align-items: start;
+    display: none;
+  }
+
+  .mobile-link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 24px;
     width: 100%;
-    max-width: 100%;
+    text-align: left;
+    justify-items: start;
+  }
+
+  .mobile-link-grid .link {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .mobile-link-grid .link:hover {
+    color: #fff;
   }
 }
 
@@ -91,35 +111,6 @@
   gap: 15px;
   list-style-type: none;
   padding: 0;
-}
-
-@media (max-width: 768px) {
-  .link-box {
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .nervaya-link-container .link-box:first-child {
-    padding-left: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .link-box-full {
-    grid-column: 1 / -1;
-    width: 100%;
-    padding-top: 10px;
-    margin-top: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .link-box-full .link {
-    white-space: nowrap;
-  }
 }
 
 .link {
@@ -138,6 +129,6 @@
 @media (max-width: 768px) {
   .link {
     font-size: 0.875rem;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 }
