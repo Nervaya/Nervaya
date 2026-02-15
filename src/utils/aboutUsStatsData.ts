@@ -17,8 +17,8 @@ export const aboutUsStatsData: Stat[] = [
   },
   {
     id: 3,
-    value: '15 Years',
-    label: 'Of Experience',
+    value: '15',
+    label: 'Years Of Experience',
   },
   {
     id: 4,

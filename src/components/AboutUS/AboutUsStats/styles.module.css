@@ -24,10 +24,10 @@
 }
 
 .statsContainer {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 30px;
+  /* background: rgba(17, 24, 39, 0.75); */
+  /* backdrop-filter: blur(12px); */
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  /* border-radius: 30px; */
   padding: 48px 60px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -106,7 +106,7 @@
 }
 
 .statValue {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
@@ -114,19 +114,19 @@
 
 @media (max-width: 1024px) {
   .statValue {
-    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
   }
 }
 
 @media (max-width: 768px) {
   .statValue {
-    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-size: clamp(2.25rem, 5vw, 3rem);
   }
 }
 
 @media (max-width: 480px) {
   .statValue {
-    font-size: clamp(1.125rem, 4vw, 1.375rem);
+    font-size: clamp(2rem, 6vw, 2.5rem);
   }
 }
 
