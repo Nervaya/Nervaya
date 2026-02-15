@@ -6,8 +6,15 @@ import Link from 'next/link';
 import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
+
+const QUESTION_TYPE_OPTIONS: { value: QuestionType; label: string }[] = [
+  { value: 'single_choice', label: 'Single Choice' },
+  { value: 'multiple_choice', label: 'Multiple Choice' },
+  { value: 'scale', label: 'Scale' },
+];
 
 export default function AddQuestionPage() {
   const router = useRouter();
@@ -149,18 +156,14 @@ export default function AddQuestionPage() {
               Question Type
               <span className={styles.required}>*</span>
             </label>
-            <select
+            <Dropdown
               id="questionType"
-              name="questionType"
+              options={QUESTION_TYPE_OPTIONS}
               value={formData.questionType}
-              onChange={handleInputChange}
+              onChange={(value) => setFormData((prev) => ({ ...prev, questionType: value as QuestionType }))}
+              ariaLabel="Question type"
               className={styles.select}
-              required
-            >
-              <option value="single_choice">Single Choice</option>
-              <option value="multiple_choice">Multiple Choice</option>
-              <option value="scale">Scale</option>
-            </select>
+            />
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { SupplementFiltersParams } from '@/lib/api/supplements';
+import { Dropdown } from '@/components/common';
 import styles from '../FilterBar/styles.module.css';
 
 const ACTIVE_OPTIONS = [
@@ -54,18 +55,13 @@ export default function SupplementFilters({
     <div className={styles.bar} role="search" aria-label="Filter supplements">
       <div className={styles.field}>
         <label htmlFor="supplement-active">Status</label>
-        <select
+        <Dropdown
           id="supplement-active"
+          options={ACTIVE_OPTIONS}
           value={isActive}
-          onChange={(e) => setIsActive(e.target.value)}
-          aria-label="Active status"
-        >
-          {ACTIVE_OPTIONS.map((opt) => (
-            <option key={opt.value || 'all'} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+          onChange={setIsActive}
+          ariaLabel="Active status"
+        />
       </div>
       <div className={styles.field} style={{ minWidth: '180px' }}>
         <label htmlFor="supplement-search">Search name/description</label>

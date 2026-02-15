@@ -137,10 +137,6 @@
   box-sizing: border-box;
 }
 
-.popover .filterClose {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .popover {
     display: none;
@@ -153,7 +149,7 @@
 
 @media (max-width: 768px) {
   .filterInline {
-    display: block;
+    display: block !important;
     width: 100%;
     padding: var(--spacing-lg);
     background: var(--color-glass-bg);
@@ -161,11 +157,52 @@
     -webkit-backdrop-filter: blur(var(--color-glass-blur));
     border: 1px solid var(--color-glass-border);
     border-radius: 12px;
-    margin-top: var(--spacing-sm);
+    margin-top: var(--spacing-md);
     box-sizing: border-box;
   }
 
-  .filterInline .filterClose {
+  .filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  .filterTitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-foreground);
+  }
+
+  .filterClose {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+
+  .filterClose:hover {
+    color: var(--color-foreground);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .filterClose svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .filterDone {
     display: block;
     width: 100%;
     margin-top: var(--spacing-lg);
@@ -179,8 +216,41 @@
     cursor: pointer;
   }
 
-  .filterInline .filterClose:hover {
+  .filterDone:hover {
     background: var(--color-accent-hover);
+  }
+
+  .filterToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--spacing-md) 0;
+    background: transparent;
+    border: none;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .filterToggle:hover {
+    color: var(--color-accent);
+  }
+
+  .filterToggleLabel {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .filterToggleChevron {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-text-muted);
   }
 }
 
@@ -222,6 +292,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  min-width: 0;
 }
 
 .sortLabel {
@@ -232,44 +303,13 @@
   color: var(--color-text-muted);
 }
 
-.sortSelect {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
-  font-size: 0.875rem;
-  color: var(--color-foreground);
-  cursor: pointer;
-  outline: none;
-}
-
-.sortSelect:focus {
-  border-color: var(--color-accent);
-}
-
 @media (max-width: 768px) {
   .sortGroup {
     justify-content: flex-end;
     min-width: 0;
-    overflow: hidden;
   }
 
   .sortLabel {
     display: none;
-  }
-
-  .sortSelect {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.8125rem;
-    min-width: 0;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .sortSelect {
-    font-size: 0.75rem;
   }
 }

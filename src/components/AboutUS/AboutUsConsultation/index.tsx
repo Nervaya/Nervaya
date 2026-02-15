@@ -7,6 +7,7 @@ import { IoVideocamOutline } from 'react-icons/io5';
 import { CiCalendar } from 'react-icons/ci';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
+import { Dropdown } from '@/components/common';
 
 interface AboutUsConsultationProps {
   centerCard?: boolean;
@@ -26,6 +27,11 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
       [e.target.name]: e.target.value,
     });
   };
+
+  const connectionOptions = [
+    { value: 'Google Meet', label: 'Google Meet' },
+    { value: 'Zoom', label: 'Zoom' },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,16 +89,15 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
                   How would you like to connect?
                 </label>
                 <div className={styles.selectWrapper}>
-                  <IoVideocamOutline className={styles.selectIcon} />
-                  <select
-                    name="connectionType"
+                  <IoVideocamOutline className={styles.selectIcon} aria-hidden />
+                  <Dropdown
+                    id="connectionType"
+                    options={connectionOptions}
                     value={formData.connectionType}
-                    onChange={handleChange}
-                    className={styles.select}
-                  >
-                    <option value="Google Meet">Google Meet</option>
-                    <option value="Zoom">Zoom</option>
-                  </select>
+                    onChange={(value) => setFormData({ ...formData, connectionType: value })}
+                    ariaLabel="How would you like to connect?"
+                    className={styles.connectionDropdown}
+                  />
                 </div>
               </div>
             </div>

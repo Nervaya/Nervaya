@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { OrderFiltersParams } from '@/lib/api/orders';
+import { Dropdown } from '@/components/common';
 import styles from '../FilterBar/styles.module.css';
 
 const ORDER_STATUS_OPTIONS = [
@@ -66,33 +67,23 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
     <div className={styles.bar} role="search" aria-label="Filter orders">
       <div className={styles.field}>
         <label htmlFor="order-status">Order status</label>
-        <select
+        <Dropdown
           id="order-status"
+          options={ORDER_STATUS_OPTIONS}
           value={orderStatus}
-          onChange={(e) => setOrderStatus(e.target.value)}
-          aria-label="Order status"
-        >
-          {ORDER_STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value || 'all'} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+          onChange={setOrderStatus}
+          ariaLabel="Order status"
+        />
       </div>
       <div className={styles.field}>
         <label htmlFor="payment-status">Payment status</label>
-        <select
+        <Dropdown
           id="payment-status"
+          options={PAYMENT_STATUS_OPTIONS}
           value={paymentStatus}
-          onChange={(e) => setPaymentStatus(e.target.value)}
-          aria-label="Payment status"
-        >
-          {PAYMENT_STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value || 'all'} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+          onChange={setPaymentStatus}
+          ariaLabel="Payment status"
+        />
       </div>
       <div className={styles.field}>
         <label htmlFor="order-date-from">Date from</label>

@@ -72,9 +72,8 @@ export default function BlogListPage() {
     setSearchQuery(searchInput.trim());
   };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setSelectedTag(value ? value : null);
+  const handleFilterChange = (value: string | null) => {
+    setSelectedTag(value);
     setSearchQuery('');
     setSearchInput('');
   };

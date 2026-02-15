@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import DatePicker from '@/components/Booking/DatePicker';
+import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import { FaCalendarDays, FaCircleCheck, FaClock, FaCalendarXmark, FaPlus } from 'react-icons/fa6';
 
@@ -31,7 +32,7 @@ const TIME_OPTIONS = [
   '4:00 PM',
   '5:00 PM',
   '6:00 PM',
-];
+].map((t) => ({ value: t, label: t }));
 
 export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerProps) {
   const [schedule, setSchedule] = useState<Schedule | null>(null);
@@ -391,37 +392,27 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                 <label className={styles.addSlotLabel} htmlFor="startTime">
                   Start Time
                 </label>
-                <select
+                <Dropdown
                   id="startTime"
+                  options={TIME_OPTIONS}
                   value={addStartTime}
-                  onChange={(e) => setAddStartTime(e.target.value)}
+                  onChange={setAddStartTime}
+                  ariaLabel="Start time"
                   className={styles.addSlotSelect}
-                  required
-                >
-                  {TIME_OPTIONS.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className={styles.addSlotRow}>
                 <label className={styles.addSlotLabel} htmlFor="endTime">
                   End Time
                 </label>
-                <select
+                <Dropdown
                   id="endTime"
+                  options={TIME_OPTIONS}
                   value={addEndTime}
-                  onChange={(e) => setAddEndTime(e.target.value)}
+                  onChange={setAddEndTime}
+                  ariaLabel="End time"
                   className={styles.addSlotSelect}
-                  required
-                >
-                  {TIME_OPTIONS.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
               <div className={styles.modalActions}>
                 <button

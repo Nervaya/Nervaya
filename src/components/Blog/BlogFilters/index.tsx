@@ -1,6 +1,7 @@
 'use client';
 
 import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 
 interface BlogFiltersProps {
@@ -9,7 +10,7 @@ interface BlogFiltersProps {
   onSearchSubmit: (e: React.FormEvent) => void;
   allTags: string[];
   selectedTag: string | null;
-  onFilterChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onFilterChange: (value: string | null) => void;
 }
 
 export default function BlogFilters({
@@ -41,20 +42,14 @@ export default function BlogFilters({
           <label htmlFor="blog-filter" className={styles.filterLabel}>
             Filter by topic
           </label>
-          <select
+          <Dropdown
             id="blog-filter"
+            options={[{ value: '', label: 'All topics' }, ...allTags.map((tag) => ({ value: tag, label: tag }))]}
             value={selectedTag ?? ''}
-            onChange={onFilterChange}
+            onChange={(value) => onFilterChange(value || null)}
+            ariaLabel="Filter by topic"
             className={styles.filterSelect}
-            aria-label="Filter by topic"
-          >
-            <option value="">All topics</option>
-            {allTags.map((tag) => (
-              <option key={tag} value={tag}>
-                {tag}
-              </option>
-            ))}
-          </select>
+          />
         </div>
       )}
     </div>

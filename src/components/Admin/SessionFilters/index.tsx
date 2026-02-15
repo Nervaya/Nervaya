@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import type { Therapist } from '@/types/therapist.types';
+import { Dropdown } from '@/components/common';
 import styles from '../FilterBar/styles.module.css';
 
 const SESSION_STATUS_OPTIONS = [
@@ -66,34 +67,26 @@ export default function SessionFilters({
     <div className={styles.bar} role="search" aria-label="Filter sessions">
       <div className={styles.field}>
         <label htmlFor="session-status">Status</label>
-        <select
+        <Dropdown
           id="session-status"
+          options={SESSION_STATUS_OPTIONS}
           value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          aria-label="Session status"
-        >
-          {SESSION_STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value || 'all'} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+          onChange={setStatus}
+          ariaLabel="Session status"
+        />
       </div>
       <div className={styles.field} style={{ minWidth: '160px' }}>
         <label htmlFor="session-therapist">Therapist</label>
-        <select
+        <Dropdown
           id="session-therapist"
+          options={[
+            { value: '', label: 'All therapists' },
+            ...therapists.map((t) => ({ value: t._id, label: t.name })),
+          ]}
           value={therapistId}
-          onChange={(e) => setTherapistId(e.target.value)}
-          aria-label="Therapist"
-        >
-          <option value="">All therapists</option>
-          {therapists.map((t) => (
-            <option key={t._id} value={t._id}>
-              {t.name}
-            </option>
-          ))}
-        </select>
+          onChange={setTherapistId}
+          ariaLabel="Therapist"
+        />
       </div>
       <div className={styles.field}>
         <label htmlFor="session-date-from">Date from</label>

@@ -400,19 +400,23 @@
   position: relative;
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.connectionDropdown {
+  flex: 1;
+  min-width: 0;
 }
 
 .selectIcon {
-  position: absolute;
-  left: 10px;
   color: #c4b5fd;
   pointer-events: none;
-  z-index: 1;
   background: rgba(129, 140, 248, 0.2);
   border-radius: 8px;
   padding: 8px;
   width: 32px;
   height: 32px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,7 +426,6 @@
   .selectIcon {
     width: 36px;
     height: 36px;
-    left: 8px;
   }
 }
 

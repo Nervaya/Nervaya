@@ -2,18 +2,20 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { FaTableCells, FaList, FaFilter } from 'react-icons/fa6';
+import { IoClose } from 'react-icons/io5';
+import { Dropdown } from '@/components/common';
 import SupplementFilters, { type PriceRange } from '../SupplementFilters';
 import styles from './SupplementToolbar.module.css';
 
 export type ViewMode = 'grid' | 'list';
 export type SortOption = 'featured' | 'price-low' | 'price-high' | 'rating' | 'newest';
 
-const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: 'featured', label: 'Featured Items' },
-  { value: 'price-low', label: 'Price: Low to High' },
-  { value: 'price-high', label: 'Price: High to Low' },
-  { value: 'rating', label: 'Rating' },
-  { value: 'newest', label: 'Newest' },
+const SORT_OPTIONS = [
+  { value: 'featured' as SortOption, label: 'Featured Items' },
+  { value: 'price-low' as SortOption, label: 'Price: Low to High' },
+  { value: 'price-high' as SortOption, label: 'Price: High to Low' },
+  { value: 'rating' as SortOption, label: 'Rating' },
+  { value: 'newest' as SortOption, label: 'Newest' },
 ];
 
 interface SupplementToolbarProps {
@@ -42,6 +44,8 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const filterWrapperRef = useRef<HTMLDivElement>(null);
 
+  const closeFilter = () => setPopoverOpen(false);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (popoverOpen && filterWrapperRef.current && !filterWrapperRef.current.contains(e.target as Node)) {
@@ -59,20 +63,6 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
     };
   }, [popoverOpen]);
 
-  const filterContent = (
-    <>
-      <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
-      <button
-        type="button"
-        className={styles.filterClose}
-        onClick={() => setPopoverOpen(false)}
-        aria-label="Close filter"
-      >
-        Done
-      </button>
-    </>
-  );
-
   return (
     <div className={styles.toolbar} ref={filterWrapperRef}>
       <input
@@ -89,7 +79,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             type="button"
             onClick={() => setPopoverOpen((o) => !o)}
             className={`${styles.filterButton} ${popoverOpen ? styles.active : ''}`}
-            aria-label="Filters"
+            aria-label={popoverOpen ? 'Close filters' : 'Open filters'}
             aria-expanded={popoverOpen}
             aria-haspopup="dialog"
           >
@@ -98,7 +88,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
           </button>
           {popoverOpen && (
             <div className={styles.popover} role="dialog" aria-label="Price filter">
-              {filterContent}
+              <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
             </div>
           )}
         </div>
@@ -124,23 +114,26 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
         </div>
         <div className={styles.sortGroup}>
           <span className={styles.sortLabel}>SORT BY:</span>
-          <select
+          <Dropdown
+            options={SORT_OPTIONS}
             value={sortBy}
-            onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className={styles.sortSelect}
-            aria-label="Sort products"
-          >
-            {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+            onChange={(v) => onSortChange(v as SortOption)}
+            ariaLabel="Sort products"
+          />
         </div>
       </div>
       {popoverOpen && (
         <div className={styles.filterInline} role="dialog" aria-label="Price filter">
-          {filterContent}
+          <div className={styles.filterHeader}>
+            <span className={styles.filterTitle}>Shop by price</span>
+            <button type="button" className={styles.filterClose} onClick={closeFilter} aria-label="Close filter">
+              <IoClose aria-hidden />
+            </button>
+          </div>
+          <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
+          <button type="button" className={styles.filterDone} onClick={closeFilter} aria-label="Close price filter">
+            Done
+          </button>
         </div>
       )}
     </div>
