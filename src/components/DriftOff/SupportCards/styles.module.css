@@ -96,7 +96,7 @@
   font-size: var(--font-size-sm);
   transition: all 0.2s ease;
   margin-top: auto;
-  align-self: flex-start;
+  align-self: flex-end;
   cursor: pointer;
 }
 
