@@ -59,8 +59,22 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
     };
   }, [popoverOpen]);
 
+  const filterContent = (
+    <>
+      <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
+      <button
+        type="button"
+        className={styles.filterClose}
+        onClick={() => setPopoverOpen(false)}
+        aria-label="Close filter"
+      >
+        Done
+      </button>
+    </>
+  );
+
   return (
-    <div className={styles.toolbar}>
+    <div className={styles.toolbar} ref={filterWrapperRef}>
       <input
         type="text"
         value={searchValue}
@@ -70,7 +84,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
         aria-label="Filter products"
       />
       <div className={styles.controls}>
-        <div className={styles.filterWrapper} ref={filterWrapperRef}>
+        <div className={styles.filterWrapper}>
           <button
             type="button"
             onClick={() => setPopoverOpen((o) => !o)}
@@ -83,17 +97,9 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             <span>Filters</span>
           </button>
           {popoverOpen && (
-            <>
-              <div
-                className={styles.popoverBackdrop}
-                onClick={() => setPopoverOpen(false)}
-                role="presentation"
-                aria-hidden
-              />
-              <div className={styles.popover} role="dialog" aria-label="Price filter">
-                <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
-              </div>
-            </>
+            <div className={styles.popover} role="dialog" aria-label="Price filter">
+              {filterContent}
+            </div>
           )}
         </div>
         <div className={styles.viewToggle} role="group" aria-label="View mode">
@@ -132,6 +138,11 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
           </select>
         </div>
       </div>
+      {popoverOpen && (
+        <div className={styles.filterInline} role="dialog" aria-label="Price filter">
+          {filterContent}
+        </div>
+      )}
     </div>
   );
 };

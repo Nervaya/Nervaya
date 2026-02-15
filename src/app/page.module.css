@@ -8,21 +8,21 @@
   position: relative;
   z-index: 1;
   padding-top: var(--spacing-2xl);
-  padding-left: var(--spacing-2xl);
-  padding-right: var(--spacing-2xl);
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
   padding-bottom: var(--spacing-2xl);
   max-width: 1400px;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
-    padding-left: var(--spacing-xl);
-    padding-right: var(--spacing-xl);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
   }
 
   @media (max-width: 768px) {
     padding-top: var(--spacing-xl);
-    padding-left: var(--spacing-lg);
-    padding-right: var(--spacing-lg);
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
     padding-bottom: var(--spacing-xl);
   }
 }
