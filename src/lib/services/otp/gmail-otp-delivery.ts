@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { OtpDelivery } from './otp-delivery.interface';
+import { getOtpEmailContent } from '@/lib/email';
 
 export function createGmailOtpDelivery(): OtpDelivery | null {
   const user = process.env.OTP_EMAIL_USER;
@@ -23,12 +24,14 @@ export function createGmailOtpDelivery(): OtpDelivery | null {
 
   return {
     async sendOtp(email: string, code: string): Promise<void> {
+      const { html, text } = getOtpEmailContent({ code });
+
       await transporter.sendMail({
         from: `"${fromName}" <${user}>`,
         to: email,
         subject: 'Your verification code',
-        text: `Your verification code is: ${code}. It expires in 10 minutes.`,
-        html: `<p>Your verification code is: <strong>${code}</strong>.</p><p>It expires in 10 minutes.</p>`,
+        text,
+        html,
       });
     },
   };
