@@ -1,4 +1,5 @@
 import api from '@/lib/axios';
+import type { ApiResponse } from '@/lib/api/types';
 import type { Order } from '@/types/supplement.types';
 
 export interface PaginationMeta {
@@ -6,12 +7,6 @@ export interface PaginationMeta {
   page: number;
   limit: number;
   totalPages: number;
-}
-
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
 }
 
 export interface AdminOrdersResponse {
@@ -30,6 +25,10 @@ export interface OrderFiltersParams {
 }
 
 export const ordersApi = {
+  getForUser: (): Promise<ApiResponse<Order[]>> => {
+    return api.get('/orders') as Promise<ApiResponse<Order[]>>;
+  },
+
   getAllForAdmin: (
     page: number = 1,
     limit: number = 10,

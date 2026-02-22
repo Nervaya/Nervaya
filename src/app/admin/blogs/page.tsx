@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa6';
-import api from '@/lib/axios';
+import { blogsApi } from '@/lib/api/blogs';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
@@ -37,15 +37,11 @@ export default function AdminBlogsPage() {
     try {
       setLoading(true);
       setError(null);
-      const params = new URLSearchParams();
-      params.set('admin', 'true');
-      params.set('page', String(page));
-      params.set('limit', String(PAGE_SIZE_3));
-      if (search.trim()) params.set('search', search.trim());
-      const response = (await api.get(`/blogs?${params.toString()}`)) as {
-        success: boolean;
-        data: { blogs: Blog[]; pagination: PaginationInfo };
-      };
+      const response = await blogsApi.getAllForAdmin({
+        page,
+        limit: PAGE_SIZE_3,
+        search: search.trim() || undefined,
+      });
       if (response.success && response.data) {
         setBlogs(response.data.blogs);
         setPagination(response.data.pagination);
@@ -76,7 +72,7 @@ export default function AdminBlogsPage() {
   const handleDelete = async () => {
     if (!confirmDelete) return;
     try {
-      const response = (await api.delete(`/blogs/${confirmDelete.id}`)) as { success: boolean };
+      const response = await blogsApi.delete(confirmDelete.id);
       if (response.success) {
         setConfirmDelete(null);
         await fetchBlogs(pagination.page, searchQuery);

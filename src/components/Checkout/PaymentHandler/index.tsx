@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/navigation';
+import { paymentsApi } from '@/lib/api/payments';
 import { RazorpayPaymentResponse } from '@/types/payment.types';
 import { trackPaymentFailed } from '@/utils/analytics';
 import styles from './styles.module.css';
@@ -66,17 +67,11 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
       order_id: razorpayOrderId,
       handler: async (response: RazorpayPaymentResponse) => {
         try {
-          const verifyResponse = await fetch('/api/payments/verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              orderId,
-              paymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-            }),
+          const result = await paymentsApi.verify({
+            orderId,
+            paymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
           });
-
-          const result = await verifyResponse.json();
 
           if (result.success) {
             onSuccess?.(response.razorpay_payment_id);

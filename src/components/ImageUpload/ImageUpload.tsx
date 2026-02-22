@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { uploadApi } from '@/lib/api/upload';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
@@ -38,19 +39,14 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compac
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const data = await uploadApi.image(formData);
 
-      const data = await response.json();
-
-      if (response.ok && data.success && data.data?.url) {
+      if (data.success && data.data?.url) {
         const imageUrl = data.data.url;
         setPreview(imageUrl);
         onUpload(imageUrl);
       } else {
-        setError(data.message || data.error || 'Upload failed');
+        setError(data.message || 'Upload failed');
       }
     } catch (err) {
       setError('Upload failed. Please try again.');

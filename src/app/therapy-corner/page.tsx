@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-
+import { therapistsApi } from '@/lib/api/therapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
@@ -34,12 +34,7 @@ export default function TherapyCornerPage() {
 
   const fetchTherapists = async () => {
     try {
-      const response = await fetch('/api/therapists');
-      if (!response.ok) {
-        throw new Error('Failed to fetch therapists');
-      }
-
-      const result = await response.json();
+      const result = await therapistsApi.getAll();
       setTherapists(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

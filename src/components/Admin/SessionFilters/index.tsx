@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { therapistsApi } from '@/lib/api/therapists';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import type { Therapist } from '@/types/therapist.types';
 import { Dropdown } from '@/components/common';
@@ -35,11 +36,10 @@ export default function SessionFilters({
   const [therapists, setTherapists] = useState<Therapist[]>([]);
 
   useEffect(() => {
-    fetch('/api/therapists')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.data)) setTherapists(data.data);
-        else if (Array.isArray(data)) setTherapists(data);
+    therapistsApi
+      .getAll()
+      .then((res) => {
+        if (res.success && Array.isArray(res.data)) setTherapists(res.data);
       })
       .catch(() => {});
   }, []);

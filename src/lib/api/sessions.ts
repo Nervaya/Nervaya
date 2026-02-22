@@ -1,4 +1,5 @@
 import api from '@/lib/axios';
+import type { ApiResponse } from '@/lib/api/types';
 import type { Session } from '@/types/session.types';
 
 export interface PaginationMeta {
@@ -6,12 +7,6 @@ export interface PaginationMeta {
   page: number;
   limit: number;
   totalPages: number;
-}
-
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
 }
 
 export interface AdminSessionsResponse {
@@ -28,6 +23,19 @@ export interface SessionFiltersParams {
 }
 
 export const sessionsApi = {
+  getForUser: (statusFilter?: string): Promise<ApiResponse<Session[]>> => {
+    const params = statusFilter ? `?status=${encodeURIComponent(statusFilter)}` : '';
+    return api.get(`/sessions${params}`) as Promise<ApiResponse<Session[]>>;
+  },
+
+  create: (therapistId: string, date: string, startTime: string): Promise<ApiResponse<Session>> => {
+    return api.post('/sessions', { therapistId, date, startTime }) as Promise<ApiResponse<Session>>;
+  },
+
+  cancel: (sessionId: string): Promise<ApiResponse<Session>> => {
+    return api.delete(`/sessions/${sessionId}`) as Promise<ApiResponse<Session>>;
+  },
+
   getAllForAdmin: (
     page: number = 1,
     limit: number = 10,

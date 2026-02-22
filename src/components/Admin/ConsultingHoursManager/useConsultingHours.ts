@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { consultingHoursApi } from '@/lib/api/consultingHours';
 import { DAYS_OF_WEEK, WEEKDAYS } from '@/lib/constants/consultingHours.constants';
 import type { ConsultingHour } from '@/types/therapist.types';
 
@@ -22,9 +23,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/therapists/${therapistId}/consulting-hours`);
-      if (!response.ok) throw new Error('Failed to fetch consulting hours');
-      const result = await response.json();
+      const result = await consultingHoursApi.get(therapistId);
       if (!result.success) return;
       if (!result.data || result.data.length === 0) {
         const defaultHours: ConsultingHour[] = DAYS_OF_WEEK.map((day) => ({
@@ -36,7 +35,8 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
         setConsultingHours(defaultHours);
         setSavedHours([]);
       } else {
-        const hoursMap = new Map<number, ConsultingHour>(result.data.map((h: ConsultingHour) => [h.dayOfWeek, h]));
+        const hours = result.data ?? [];
+        const hoursMap = new Map<number, ConsultingHour>(hours.map((h) => [h.dayOfWeek, h]));
         const allHours: ConsultingHour[] = DAYS_OF_WEEK.map((day): ConsultingHour => {
           const existing = hoursMap.get(day.value);
           return (
@@ -49,7 +49,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
           );
         });
         setConsultingHours(allHours);
-        setSavedHours(result.data);
+        setSavedHours(hours);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load consulting hours');
@@ -78,13 +78,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
         endTime: hour.isEnabled ? hour.endTime : '05:00 PM',
         isEnabled: hour.isEnabled,
       }));
-      const response = await fetch(`/api/therapists/${therapistId}/consulting-hours`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ consultingHours: validHours }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Failed to update consulting hours');
+      await consultingHoursApi.update(therapistId, validHours);
       setSuccess('Consulting hours saved successfully!');
       setSavedHours(validHours);
       await fetchConsultingHours();
@@ -101,11 +95,7 @@ export function useConsultingHours({ therapistId, onUpdate }: UseConsultingHours
       setGenerating(true);
       setGenerationStatus(`Generating slots for the next ${days} days...`);
       try {
-        const response = await fetch(`/api/therapists/${therapistId}/schedule/generate?days=${days}`, {
-          method: 'POST',
-        });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.message || 'Failed to generate slots');
+        const result = await consultingHoursApi.generateSlots(therapistId, days);
         const inserted = result.data?.insertedCount || 0;
         const modified = result.data?.modifiedCount || 0;
         setGenerationStatus(`Successfully generated schedules! (${inserted} new, ${modified} updated)`);

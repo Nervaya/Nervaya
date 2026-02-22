@@ -1,15 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { dashboardApi } from '@/lib/api/dashboard';
 import type { Session } from '@/types/session.types';
 import type { Order } from '@/types/supplement.types';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
-
-interface DashboardApiResponse<T> {
-  success?: boolean;
-  data?: T;
-  message?: string;
-}
 
 export function useDashboardData() {
   const [loading, setLoading] = useState(true);
@@ -24,20 +19,16 @@ export function useDashboardData() {
     setError(null);
     try {
       const [sessionsRes, ordersRes, latestRes, inProgressRes] = await Promise.all([
-        fetch('/api/sessions').then((r) => r.json() as Promise<DashboardApiResponse<Session[]>>),
-        fetch('/api/orders').then((r) => r.json() as Promise<DashboardApiResponse<Order[]>>),
-        fetch('/api/sleep-assessment/responses?latest=true').then(
-          (r) => r.json() as Promise<DashboardApiResponse<ISleepAssessmentResponse | null>>,
-        ),
-        fetch('/api/sleep-assessment/responses?inProgress=true').then(
-          (r) => r.json() as Promise<DashboardApiResponse<ISleepAssessmentResponse | null>>,
-        ),
+        dashboardApi.getSessions(),
+        dashboardApi.getOrders(),
+        dashboardApi.getLatestAssessment(),
+        dashboardApi.getInProgressAssessment(),
       ]);
 
       setSessions(sessionsRes?.data || []);
       setOrders(ordersRes?.data || []);
-      setLatestAssessment(latestRes?.data || null);
-      setInProgressAssessment(inProgressRes?.data || null);
+      setLatestAssessment(latestRes?.data ?? null);
+      setInProgressAssessment(inProgressRes?.data ?? null);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load dashboard');
     } finally {

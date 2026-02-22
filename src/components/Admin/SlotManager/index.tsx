@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import DatePicker from '@/components/Booking/DatePicker';
+import { scheduleApi } from '@/lib/api/schedule';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import { FaCalendarDays, FaCircleCheck, FaClock, FaCalendarXmark, FaPlus } from 'react-icons/fa6';
@@ -51,12 +52,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
     setError(null);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      const response = await fetch(`/api/therapists/${therapistId}/schedule?date=${dateStr}&includeBooked=true`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch schedule');
-      }
-
-      const result = await response.json();
+      const result = await scheduleApi.getByDate(therapistId, dateStr);
       if (result.data && result.data.slots) {
         setSchedule(result.data);
       } else {
@@ -83,14 +79,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
       const startDateStr = startDate.toISOString().split('T')[0];
       const endDateStr = endDate.toISOString().split('T')[0];
 
-      const response = await fetch(
-        `/api/therapists/${therapistId}/schedule?startDate=${startDateStr}&endDate=${endDateStr}&includeBooked=true`,
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch week schedules');
-      }
-
-      const result = await response.json();
+      const result = await scheduleApi.getByDateRange(therapistId, startDateStr, endDateStr);
       setWeekSchedules(result.data || []);
     } catch (_err) {
       setWeekSchedules([]);
@@ -156,18 +145,12 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
     setAddSubmitting(true);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
-      const response = await fetch(`/api/therapists/${therapistId}/schedule`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          date: dateStr,
-          startTime: addStartTime,
-          endTime: addEndTime,
-          isAvailable: true,
-        }),
+      await scheduleApi.createSlot(therapistId, {
+        date: dateStr,
+        startTime: addStartTime,
+        endTime: addEndTime,
+        isAvailable: true,
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Failed to add slot');
       setAddSlotOpen(false);
       setAddStartTime('9:00 AM');
       setAddEndTime('10:00 AM');
@@ -175,7 +158,9 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
       fetchWeekSchedules();
       onSlotUpdate?.();
     } catch (err) {
-      setAddError(err instanceof Error ? err.message : 'Failed to add slot');
+      setAddError(
+        (err as { message?: string })?.message || (err instanceof Error ? err.message : 'Failed to add slot'),
+      );
     } finally {
       setAddSubmitting(false);
     }

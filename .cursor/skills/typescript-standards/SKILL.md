@@ -28,6 +28,11 @@ import * as path from 'path';
 import { Injectable, Controller, Get } from '@nestjs/common';
 import { PurchaseService, PurchaseQueryService } from './services';
 
+// ✅ Use import type when symbol is only used as a type (no runtime load)
+import type { Foo } from './foo';
+import { Bar } from './foo';  // Bar is a value
+import { type Foo, Bar } from './foo';  // Inline type import
+
 // ✅ Default imports - only when required by external code
 import Button from 'Button';
 
@@ -226,6 +231,23 @@ function isValidData(data: unknown): data is { value: number } {
 const response = await externalApi.get() as any;
 ```
 
+## TypeScript Compiler Directives
+
+### No @ts-ignore or @ts-expect-error
+
+```typescript
+// ❌ Don't suppress compiler errors
+// @ts-ignore
+const x = badCode();
+
+// ✅ Fix the underlying type issue
+// ✅ If suppression is unavoidable, document why and prefer type assertion with comment
+// payload is { userId, role } from jwtVerify - jose types are generic
+const payload = result.payload as { userId: string; role: string };
+```
+
+Prefer fixing types over suppressing. Use `@ts-expect-error` only in unit tests when testing APIs that intentionally pass invalid types, and document the reason.
+
 ## Classes
 
 ### Class Structure
@@ -341,9 +363,12 @@ function query(filters: Filters, page = 1, limit = 10) {
 ### Throw Only Errors
 
 ```typescript
-// ✅ Throw Error objects
+// ✅ Always use new Error() - never call Error() without new
 throw new Error('Purchase not found');
 throw new HttpException('Validation failed', HttpStatus.BAD_REQUEST);
+
+// ❌ Don't use Error() without new
+throw Error('Purchase not found');  // BAD - inconsistent with object instantiation
 
 // ❌ Don't throw strings or other values
 throw 'Something went wrong';  // BAD
@@ -425,10 +450,12 @@ for (const i in items) {  // BAD - gives string indices
 ## Best Practices Summary
 
 1. **Named exports**: Prefer named exports over default exports
-2. **Interfaces**: Use interfaces for object shapes, types for unions
-3. **Type inference**: Let TypeScript infer obvious types
-4. **No any**: Use `unknown` and type guards instead
-5. **Strict equality**: Always use `===` and `!==`
-6. **Readonly**: Mark immutable properties as `readonly`
-7. **Error types**: Only throw `Error` objects
-8. **Optional chaining**: Use `?.` and `??` for null safety
+2. **Import type**: Use `import type` when symbol is only used as a type
+3. **Interfaces**: Use interfaces for object shapes, types for unions
+4. **Type inference**: Let TypeScript infer obvious types
+5. **No any**: Use `unknown` and type guards instead
+6. **No @ts-ignore**: Fix types; suppress only when necessary and document
+7. **Strict equality**: Use `===` and `!==`; exception: `value == null` for null/undefined checks
+8. **Readonly**: Mark immutable properties as `readonly`
+9. **Error instantiation**: Always `throw new Error()`, never `throw Error()` or primitives
+10. **Optional chaining**: Use `?.` and `??` for null safety

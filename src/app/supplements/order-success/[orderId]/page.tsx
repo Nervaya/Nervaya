@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { FaGlobe, FaTruck, FaEnvelope, FaBox, FaCalendarDay, FaHouse } from 'react-icons/fa6';
 import { Order, OrderItem } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
-import api from '@/lib/axios';
+import { ordersApi } from '@/lib/api/orders';
 import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
 import { trackPurchase } from '@/utils/analytics';
@@ -47,8 +47,7 @@ export default function OrderSuccessPage() {
     try {
       setLoading(true);
       setError(null);
-      type OrderResponse = { success: boolean; data: Order[] };
-      const response = (await api.get('/orders')) as OrderResponse;
+      const response = await ordersApi.getForUser();
       if (response.success && response.data) {
         const foundOrder = response.data.find((o) => o._id === orderId);
         if (foundOrder) {

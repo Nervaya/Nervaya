@@ -50,7 +50,10 @@ const sessionSchema = new Schema<ISession>(
   },
 );
 
-sessionSchema.index({ therapistId: 1, date: 1, startTime: 1 });
+sessionSchema.index(
+  { therapistId: 1, date: 1, startTime: 1 },
+  { unique: true, partialFilterExpression: { status: { $ne: SESSION_STATUS.CANCELLED } } },
+);
 
 const Session: Model<ISession> = mongoose.models.Session || mongoose.model<ISession>('Session', sessionSchema);
 

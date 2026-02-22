@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { sessionsApi } from '@/lib/api/sessions';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
 import Pagination from '@/components/common/Pagination';
@@ -27,12 +28,7 @@ export default function MySessions() {
 
   const fetchSessions = async () => {
     try {
-      const response = await fetch('/api/sessions');
-      if (!response.ok) {
-        throw new Error('Failed to fetch sessions');
-      }
-
-      const result = await response.json();
+      const result = await sessionsApi.getForUser();
       setSessions(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error loading sessions');
@@ -51,14 +47,7 @@ export default function MySessions() {
     const { sessionId } = confirmCancel;
     setConfirmCancel(null);
     try {
-      const response = await fetch(`/api/sessions/${sessionId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to cancel session');
-      }
-
+      await sessionsApi.cancel(sessionId);
       fetchSessions();
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Error cancelling session');

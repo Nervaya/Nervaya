@@ -7,6 +7,7 @@ import DatePicker from '../DatePicker';
 import LottieLoader from '@/components/common/LottieLoader';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
+import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
 import { trackSelectTimeSlot, trackBookingCompleted, trackBookingAbandoned } from '@/utils/analytics';
 import styles from './styles.module.css';
@@ -19,13 +20,20 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ therapistId, therapistName, onClose, onSuccess }: BookingModalProps) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const maxBookingDate = new Date();
-  maxBookingDate.setMonth(maxBookingDate.getMonth() + 1);
-  maxBookingDate.setHours(23, 59, 59, 999);
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+  const maxBookingDate = useMemo(() => {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 1);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }, []);
 
   const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [visibleMonth, setVisibleMonth] = useState<Date>(() => new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [booking, setBooking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +41,15 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const bookingCompletedRef = useRef(false);
 
-  const { schedule, loading, error: slotsError, fetchSlots } = useBookingSlots(therapistId, selectedDate);
+  const handleMonthChange = useCallback((monthStart: Date) => setVisibleMonth(monthStart), []);
+
+  const {
+    schedule,
+    loading,
+    error: slotsError,
+    fetchSlots,
+    fullyBookedDates,
+  } = useBookingSlots(therapistId, selectedDate, visibleMonth);
 
   const slotsForGrid = useMemo(
     () =>
@@ -76,25 +92,29 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     [slotsForGrid, therapistId, therapistName],
   );
 
-  const handleDateSelect = (date: Date) => {
-    const dateOnly = new Date(date);
-    dateOnly.setHours(0, 0, 0, 0);
-    const todayOnly = new Date(today);
-    todayOnly.setHours(0, 0, 0, 0);
-    const maxDateOnly = new Date(maxBookingDate);
-    maxDateOnly.setHours(0, 0, 0, 0);
-    if (dateOnly < todayOnly) {
-      setError('Cannot book sessions in the past');
-      return;
-    }
-    if (dateOnly > maxDateOnly) {
-      setError('Bookings are only available up to 1 month in advance');
-      return;
-    }
-    setSelectedDate(date);
-    setSelectedSlot(null);
-    setError(null);
-  };
+  const handleDateSelect = useCallback(
+    (date: Date) => {
+      const dateOnly = new Date(date);
+      dateOnly.setHours(0, 0, 0, 0);
+      const todayOnly = new Date(today);
+      todayOnly.setHours(0, 0, 0, 0);
+      const maxDateOnly = new Date(maxBookingDate);
+      maxDateOnly.setHours(0, 0, 0, 0);
+      if (dateOnly < todayOnly) {
+        setError('Cannot book sessions in the past');
+        return;
+      }
+      if (dateOnly > maxDateOnly) {
+        setError('Bookings are only available up to 1 month in advance');
+        return;
+      }
+      setSelectedDate(date);
+      setVisibleMonth(new Date(date.getFullYear(), date.getMonth(), 1));
+      setSelectedSlot(null);
+      setError(null);
+    },
+    [today, maxBookingDate],
+  );
 
   const handleBookSession = async () => {
     if (!selectedSlot || !schedule) {
@@ -119,17 +139,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     setBooking(true);
     setError(null);
     try {
-      const response = await fetch('/api/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          therapistId,
-          date: schedule.date,
-          startTime: slot.startTime,
-        }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Failed to book session');
+      await sessionsApi.create(therapistId, schedule.date, slot.startTime);
       bookingCompletedRef.current = true;
       trackBookingCompleted({
         therapist_id: therapistId,
@@ -141,7 +151,9 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       onSuccess?.();
       setTimeout(() => onClose(), 1200);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Error booking session. Please try again.';
+      const errorMessage =
+        (err as { message?: string })?.message ||
+        (err instanceof Error ? err.message : 'Error booking session. Please try again.');
       setError(errorMessage);
       if (errorMessage.includes('not available') || errorMessage.includes('already booked')) {
         fetchSlots();
@@ -185,6 +197,8 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
               onDateSelect={handleDateSelect}
               minDate={today}
               maxDate={maxBookingDate}
+              fullyBookedDates={fullyBookedDates}
+              onMonthChange={handleMonthChange}
             />
             {selectedDate && (
               <p className={styles.selectedDateText}>

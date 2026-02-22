@@ -16,9 +16,18 @@ interface DatePickerProps {
   onDateSelect: (date: Date) => void;
   minDate?: Date;
   maxDate?: Date;
+  fullyBookedDates?: Set<string>;
+  onMonthChange?: (monthStart: Date) => void;
 }
 
-export default function DatePicker({ selectedDate, onDateSelect, minDate = new Date(), maxDate }: DatePickerProps) {
+export default function DatePicker({
+  selectedDate,
+  onDateSelect,
+  minDate = new Date(),
+  maxDate,
+  fullyBookedDates,
+  onMonthChange,
+}: DatePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
   const today = (() => {
     const d = new Date();
@@ -27,10 +36,12 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
   })();
 
   useEffect(() => {
-    setCurrentMonth(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
-  }, [selectedDate]);
+    const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    setCurrentMonth(monthStart);
+    onMonthChange?.(monthStart);
+  }, [selectedDate, onMonthChange]);
 
-  const isDateDisabled = (date: Date) => checkDateDisabled(date, minDate, maxDate);
+  const isDateDisabled = (date: Date) => checkDateDisabled(date, minDate, maxDate, fullyBookedDates);
   const isSelected = (date: Date) => isSameDay(date, selectedDate);
   const isToday = (date: Date) => isSameDay(date, today);
 
@@ -40,18 +51,23 @@ export default function DatePicker({ selectedDate, onDateSelect, minDate = new D
     if (minDate && newMonth < minDate) {
       const minDateYear = minDate.getFullYear();
       const minDateMonth = minDate.getMonth();
-      setCurrentMonth(new Date(minDateYear, minDateMonth, 1));
+      const target = new Date(minDateYear, minDateMonth, 1);
+      setCurrentMonth(target);
+      onMonthChange?.(target);
       return;
     }
 
     if (maxDate && newMonth > maxDate) {
       const maxDateYear = maxDate.getFullYear();
       const maxDateMonth = maxDate.getMonth();
-      setCurrentMonth(new Date(maxDateYear, maxDateMonth, 1));
+      const target = new Date(maxDateYear, maxDateMonth, 1);
+      setCurrentMonth(target);
+      onMonthChange?.(target);
       return;
     }
 
     setCurrentMonth(newMonth);
+    onMonthChange?.(newMonth);
   };
 
   const handleDateClick = (day: number) => {

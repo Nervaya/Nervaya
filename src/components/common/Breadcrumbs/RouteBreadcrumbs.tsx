@@ -2,9 +2,9 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, useMemo } from 'react';
-import api from '@/lib/axios';
 import { getBreadcrumbsForPath } from '@/utils/breadcrumbConstants';
 import { supplementsApi } from '@/lib/api/supplements';
+import { therapistsApi } from '@/lib/api/therapists';
 import Breadcrumbs from './Breadcrumbs';
 
 const HIDE_BREADCRUMB_PATHS = new Set(['/', '/login', '/signup']);
@@ -64,7 +64,8 @@ export default function RouteBreadcrumbs() {
     const therapistMatch = pathname.match(THERAPIST_SLOTS_PATH_REGEX);
     if (therapistMatch) {
       const therapistId = therapistMatch[1];
-      (api.get(`/therapists/${therapistId}`) as unknown as Promise<{ success: boolean; data?: { name: string } }>)
+      therapistsApi
+        .getById(therapistId)
         .then((response) => {
           if (response.success && response.data?.name) {
             setAsyncLabel(response.data.name);

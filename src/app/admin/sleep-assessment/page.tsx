@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { IoAdd, IoDocumentTextOutline, IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
@@ -20,12 +21,9 @@ export default function AdminSleepAssessmentPage() {
 
   const fetchQuestions = useCallback(async () => {
     try {
-      const response = await fetch('/api/sleep-assessment/questions?includeInactive=true');
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setQuestions(result.data);
-        }
+      const result = await sleepAssessmentApi.getQuestions(true);
+      if (result.success && result.data) {
+        setQuestions(result.data as ISleepAssessmentQuestion[]);
       }
     } catch (error) {
       console.error('Failed to fetch questions', error);
@@ -108,10 +106,8 @@ export default function AdminSleepAssessmentPage() {
 
     setDeleting(true);
     try {
-      const response = await fetch(`/api/sleep-assessment/questions/${deleteConfirmation.id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
+      const result = await sleepAssessmentApi.deleteQuestion(deleteConfirmation.id);
+      if (result.success) {
         fetchQuestions();
         setDeleteConfirmation(null);
       } else {

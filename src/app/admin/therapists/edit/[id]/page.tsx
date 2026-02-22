@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { therapistsApi } from '@/lib/api/therapists';
 import styles from '../../add/styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -28,9 +29,8 @@ export default function EditTherapistPage() {
   useEffect(() => {
     const fetchTherapist = async () => {
       try {
-        const response = await fetch(`/api/therapists/${params.id}`);
-        const result = await response.json();
-        if (result.success) {
+        const result = await therapistsApi.getById(params.id as string);
+        if (result.success && result.data) {
           const data = result.data;
           setFormData({
             name: data.name,
@@ -83,15 +83,9 @@ export default function EditTherapistPage() {
           .filter(Boolean),
       };
 
-      const response = await fetch(`/api/therapists/${params.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+      const result = await therapistsApi.update(params.id as string, payload);
 
-      if (response.ok) {
+      if (result.success) {
         router.push('/admin/therapists');
       } else {
         setError('Failed to update therapist');

@@ -27,12 +27,28 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
     if (startDate && endDate) {
       const schedules = await getSchedulesByDateRange(therapistId, startDate, endDate, includeBooked);
+      const bookedSessions = await Session.find({
+        therapistId,
+        date: { $gte: startDate, $lte: endDate },
+        status: { $ne: 'cancelled' },
+      }).select('date startTime');
+      const bookedByDate = new Map<string, Set<string>>();
+      for (const s of bookedSessions) {
+        const date = s.date as string;
+        if (!bookedByDate.has(date)) bookedByDate.set(date, new Set());
+        const set = bookedByDate.get(date);
+        if (set) set.add(s.startTime as string);
+      }
       const data = schedules.map((s) => ({
         date: s.date,
         slots: s.slots.map((slot) => ({
           startTime: slot.startTime,
           endTime: slot.endTime,
-          isAvailable: slot.isAvailable,
+          isAvailable: includeBooked
+            ? bookedByDate.get(s.date)?.has(slot.startTime)
+              ? false
+              : slot.isAvailable
+            : slot.isAvailable,
         })),
       }));
       return NextResponse.json(successResponse('Schedules fetched successfully', data));

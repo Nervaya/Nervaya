@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack } from 'react-icons/io5';
+import { blogsApi } from '@/lib/api/blogs';
 import BlogForm from '@/components/Admin/BlogForm';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
@@ -63,13 +64,8 @@ export default function AddBlogPage() {
       if (!content.trim() || content === '<p><br></p>') throw new Error('Content is required');
       if (!formData.author.trim()) throw new Error('Author is required');
 
-      const response = await fetch('/api/blogs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, content, tags }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Failed to create blog');
+      const result = await blogsApi.create({ ...formData, content, tags });
+      if (!result.success) throw new Error(result.message || 'Failed to create blog');
       router.push('/admin/blogs');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

@@ -7,6 +7,7 @@ import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
 import StatusState from '@/components/common/StatusState';
+import { therapistsApi } from '@/lib/api/therapists';
 import { Therapist } from '@/types/therapist.types';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
@@ -30,14 +31,9 @@ export default function AdminTherapistsPage() {
   const fetchTherapists = async () => {
     try {
       setError(false);
-      const response = await fetch('/api/therapists');
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setTherapists(result.data);
-        } else if (Array.isArray(result)) {
-          setTherapists(result);
-        }
+      const result = await therapistsApi.getAll();
+      if (result.success && result.data) {
+        setTherapists(result.data);
       } else {
         setError(true);
       }
@@ -65,10 +61,8 @@ export default function AdminTherapistsPage() {
     const { id } = confirmDelete;
     setConfirmDelete(null);
     try {
-      const response = await fetch(`/api/therapists/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
+      const result = await therapistsApi.delete(id);
+      if (result.success) {
         fetchTherapists();
       } else {
         setDeleteError('Failed to delete therapist');

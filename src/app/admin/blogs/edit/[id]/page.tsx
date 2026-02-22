@@ -7,8 +7,7 @@ import { IoChevronBack } from 'react-icons/io5';
 import BlogForm from '@/components/Admin/BlogForm';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import api from '@/lib/axios';
-import type { Blog } from '@/types/blog.types';
+import { blogsApi } from '@/lib/api/blogs';
 import styles from '../../add/styles.module.css';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -35,7 +34,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = (await api.get(`/blogs/${id}`)) as { success: boolean; data: Blog };
+        const response = await blogsApi.getById(id);
         if (response.success && response.data) {
           const blog = response.data;
           setFormData({
@@ -96,13 +95,8 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
       if (!content.trim() || content === '<p><br></p>') throw new Error('Content is required');
       if (!formData.author.trim()) throw new Error('Author is required');
 
-      const response = await fetch(`/api/blogs/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, content, tags }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Failed to update blog');
+      const result = await blogsApi.update(id, { ...formData, content, tags });
+      if (!result.success) throw new Error(result.message || 'Failed to update blog');
       router.push('/admin/blogs');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

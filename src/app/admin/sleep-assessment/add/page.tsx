@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
+import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Dropdown } from '@/components/common';
@@ -89,20 +90,14 @@ export default function AddQuestionPage() {
           `opt_${i + 1}`,
       }));
 
-      const response = await fetch('/api/sleep-assessment/questions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          isRequired: true,
-          isActive: true,
-          options: optionsWithValue,
-        }),
+      const result = await sleepAssessmentApi.createQuestion({
+        ...formData,
+        isRequired: true,
+        isActive: true,
+        options: optionsWithValue.map((o) => ({ value: o.value || o.label, label: o.label })),
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.message || 'Failed to create question');
       }
 

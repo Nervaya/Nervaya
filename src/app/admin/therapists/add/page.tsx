@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { therapistsApi } from '@/lib/api/therapists';
 import styles from './styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -49,15 +50,9 @@ export default function AddTherapistPage() {
           .filter(Boolean),
       };
 
-      const response = await fetch('/api/therapists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+      const result = await therapistsApi.create(payload);
 
-      if (response.ok) {
+      if (result.success) {
         router.push('/admin/therapists');
       } else {
         setError('Failed to create therapist');

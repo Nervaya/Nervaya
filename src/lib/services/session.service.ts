@@ -1,5 +1,5 @@
 import Session from '@/lib/models/session.model';
-import { releaseSlot } from '@/lib/services/therapistSchedule.service';
+import { bookSlot, releaseSlot } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
@@ -43,8 +43,18 @@ export async function createSession(userId: string, therapistId: string, date: s
       status: SESSION_STATUS.PENDING,
     });
 
+    try {
+      await bookSlot(therapistId, date, startTime, session._id.toString());
+    } catch {
+      // Schedule may not exist for this date; Session remains source of truth
+    }
+
     return session;
   } catch (error) {
+    const mongoError = error as { code?: number };
+    if (mongoError?.code === 11000) {
+      throw new ValidationError('Slot is already booked');
+    }
     throw handleError(error);
   }
 }

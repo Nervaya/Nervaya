@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { therapistsApi } from '@/lib/api/therapists';
 import SlotManager from '@/components/Admin/SlotManager';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
@@ -21,13 +22,8 @@ export default function TherapistSlotsPage() {
 
   const fetchTherapist = useCallback(async () => {
     try {
-      const response = await fetch(`/api/therapists/${therapistId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch therapist');
-      }
-
-      const result = await response.json();
-      if (result.success) {
+      const result = await therapistsApi.getById(therapistId);
+      if (result.success && result.data) {
         setTherapist(result.data);
       } else {
         throw new Error('Therapist not found');

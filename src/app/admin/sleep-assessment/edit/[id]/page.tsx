@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
+import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Dropdown } from '@/components/common';
@@ -37,14 +38,9 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const response = await fetch(`/api/sleep-assessment/questions/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch question');
-        }
-
-        const result = await response.json();
+        const result = await sleepAssessmentApi.getQuestionById(id);
         if (result.success && result.data) {
-          const question: ISleepAssessmentQuestion = result.data;
+          const question = result.data as ISleepAssessmentQuestion;
           setFormData({
             questionText: question.questionText,
             questionType: question.questionType,
@@ -122,22 +118,16 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
           `opt_${i + 1}`,
       }));
 
-      const response = await fetch(`/api/sleep-assessment/questions/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          questionText: formData.questionText,
-          questionType,
-          order: formData.order,
-          isRequired: true,
-          isActive: true,
-          options: optionsWithValue,
-        }),
+      const result = await sleepAssessmentApi.updateQuestion(id, {
+        questionText: formData.questionText,
+        questionType,
+        order: formData.order,
+        isRequired: true,
+        isActive: true,
+        options: optionsWithValue.map((o) => ({ value: o.value || o.label, label: o.label })),
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.message || 'Failed to update question');
       }
 

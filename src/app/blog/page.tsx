@@ -5,7 +5,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
-import api from '@/lib/axios';
+import { blogsApi } from '@/lib/api/blogs';
 import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
@@ -36,15 +36,12 @@ export default function BlogListPage() {
     try {
       setLoading(true);
       setError(null);
-      const params = new URLSearchParams();
-      params.set('page', String(page));
-      params.set('limit', String(PAGE_SIZE_3));
-      if (tag) params.set('tag', tag);
-      if (search.trim()) params.set('search', search.trim());
-      const response = (await api.get(`/blogs?${params.toString()}`)) as {
-        success: boolean;
-        data: { blogs: Blog[]; pagination: PaginationInfo; allTags: string[] };
-      };
+      const response = await blogsApi.getAll({
+        page,
+        limit: PAGE_SIZE_3,
+        tag: tag || undefined,
+        search: search.trim() || undefined,
+      });
       if (response.success && response.data) {
         setBlogs(response.data.blogs);
         setPagination(response.data.pagination);

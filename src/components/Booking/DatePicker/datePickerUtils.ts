@@ -23,7 +23,14 @@ export function isSameDay(date1: Date, date2: Date): boolean {
   );
 }
 
-export function isDateDisabled(date: Date, minDate?: Date, maxDate?: Date): boolean {
+function toDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+export function isDateDisabled(date: Date, minDate?: Date, maxDate?: Date, fullyBookedDates?: Set<string>): boolean {
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
   if (minDate) {
@@ -36,6 +43,7 @@ export function isDateDisabled(date: Date, minDate?: Date, maxDate?: Date): bool
     maxOnly.setHours(0, 0, 0, 0);
     if (dateOnly > maxOnly) return true;
   }
+  if (fullyBookedDates?.has(toDateString(dateOnly))) return true;
   return false;
 }
 

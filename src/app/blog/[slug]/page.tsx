@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { FaClock, FaUser, FaCalendar, FaChevronLeft, FaShareNodes } from 'react-icons/fa6';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
-import api from '@/lib/axios';
+import { blogsApi } from '@/lib/api/blogs';
 import type { Blog } from '@/types/blog.types';
 import styles from './styles.module.css';
 
@@ -25,7 +25,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        const response = (await api.get(`/blogs/slug/${slug}`)) as { success: boolean; data: Blog };
+        const response = await blogsApi.getBySlug(slug);
         if (response.success && response.data) {
           setBlog(response.data);
         }
