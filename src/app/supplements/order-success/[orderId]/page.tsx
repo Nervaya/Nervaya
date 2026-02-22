@@ -10,6 +10,7 @@ import { formatPrice } from '@/utils/cart.util';
 import api from '@/lib/axios';
 import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
+import { trackPurchase } from '@/utils/analytics';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import styles from './styles.module.css';
 
@@ -52,6 +53,23 @@ export default function OrderSuccessPage() {
         const foundOrder = response.data.find((o) => o._id === orderId);
         if (foundOrder) {
           setOrder(foundOrder);
+          const subtotalForShipping = foundOrder.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+          const deliveryMethod = foundOrder.deliveryMethod ?? 'standard';
+          const shippingCost = getShippingCost(deliveryMethod, subtotalForShipping);
+          trackPurchase({
+            transaction_id: foundOrder._id,
+            currency: 'INR',
+            value: foundOrder.totalAmount,
+            shipping: shippingCost,
+            ...(foundOrder.promoCode ? { coupon: foundOrder.promoCode } : {}),
+            items: foundOrder.items.map((item) => ({
+              item_id: typeof item.supplementId === 'string' ? item.supplementId : String(item.supplementId),
+              item_name: item.name,
+              item_category: 'Supplements',
+              price: item.price,
+              quantity: item.quantity,
+            })),
+          });
         } else {
           setError('Order not found');
         }

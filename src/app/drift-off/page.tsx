@@ -1,5 +1,6 @@
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import { DriftOffPageTracker } from './DriftOffPageTracker';
 import DriftOffHero from '@/components/DriftOff/DriftOffHero';
 import HowItWorks from '@/components/DriftOff/HowItWorks';
 import PlaylistSection from '@/components/DriftOff/PlaylistSection';
@@ -13,6 +14,7 @@ import styles from './styles.module.css';
 export default function DriftOffPage() {
   return (
     <Sidebar>
+      <DriftOffPageTracker />
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <PageHeader

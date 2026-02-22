@@ -2,10 +2,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { promoApi } from '@/lib/api/promo';
-import type { Cart, Order, ShippingAddress, SavedAddress } from '@/types/supplement.types';
+import type { Cart, Order, ShippingAddress, SavedAddress, Supplement } from '@/types/supplement.types';
 import { getShippingCost, type DeliveryMethod } from '@/utils/shipping.util';
+import { trackBeginCheckout, trackAddPaymentInfo, type GaItem } from '@/utils/analytics';
 
 export { getShippingCost };
+
+function cartItemsToGaItems(cart: Cart): GaItem[] {
+  return cart.items.map((item) => {
+    const isPopulated =
+      typeof item.supplementId === 'object' && item.supplementId !== null && 'name' in item.supplementId;
+    const supplement = isPopulated ? (item.supplementId as Supplement) : null;
+    return {
+      item_id: supplement ? supplement._id : String(item.supplementId),
+      item_name: supplement ? supplement.name : String(item.supplementId),
+      item_category: 'Supplements',
+      price: item.price,
+      quantity: item.quantity,
+    };
+  });
+}
 
 interface PaymentCreateResponse {
   success: boolean;
@@ -47,6 +63,12 @@ export function useCheckout() {
         setCart(response.data);
         if (response.data.items.length === 0) {
           router.push('/supplements/cart');
+        } else {
+          trackBeginCheckout({
+            currency: 'INR',
+            value: response.data.totalAmount,
+            items: cartItemsToGaItems(response.data),
+          });
         }
       }
     } catch (err) {
@@ -148,6 +170,13 @@ export function useCheckout() {
     setCreatingOrder(true);
     setError(null);
     try {
+      trackAddPaymentInfo({
+        currency: 'INR',
+        value: cart.totalAmount - promoDiscount,
+        payment_type: 'Razorpay',
+        items: cartItemsToGaItems(cart),
+        ...(appliedPromoCode ? { coupon: appliedPromoCode } : {}),
+      });
       const orderPayload = {
         shippingAddress: selectedAddress,
         ...(appliedPromoCode && { promoCode: appliedPromoCode, promoDiscount }),

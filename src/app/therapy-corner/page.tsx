@@ -9,6 +9,7 @@ import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
+import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
 import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 
@@ -48,7 +49,12 @@ export default function TherapyCornerPage() {
   };
 
   const handleBookAppointment = (therapist: Therapist) => {
+    trackStartBooking({ therapist_id: therapist._id, therapist_name: therapist.name });
     setSelectedTherapist(therapist);
+  };
+
+  const handleViewProfile = (therapist: Therapist) => {
+    trackViewTherapistProfile({ therapist_id: therapist._id, therapist_name: therapist.name });
   };
 
   return (
@@ -76,7 +82,11 @@ export default function TherapyCornerPage() {
             <>
               <ul className={styles.therapistList} aria-label="Recommended therapists">
                 {paginatedTherapists.map((therapist) => (
-                  <li key={therapist._id} className={styles.therapistCard}>
+                  <li
+                    key={therapist._id}
+                    className={styles.therapistCard}
+                    onMouseEnter={() => handleViewProfile(therapist)}
+                  >
                     <div className={styles.therapistInfo}>
                       <div
                         className={styles.avatar}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
@@ -8,6 +8,7 @@ import LottieLoader from '@/components/common/LottieLoader';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 import { useBookingSlots } from './useBookingSlots';
+import { trackSelectTimeSlot, trackBookingCompleted, trackBookingAbandoned } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 interface BookingModalProps {
@@ -30,8 +31,50 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   const [error, setError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const bookingCompletedRef = useRef(false);
 
   const { schedule, loading, error: slotsError, fetchSlots } = useBookingSlots(therapistId, selectedDate);
+
+  const slotsForGrid = useMemo(
+    () =>
+      schedule?.slots.map((slot) => ({
+        _id: slot.startTime,
+        therapistId,
+        date: schedule.date,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        isAvailable: slot.isAvailable,
+        isCustomized: slot.isCustomized,
+        sessionId: slot.sessionId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })) ?? [],
+    [schedule, therapistId],
+  );
+
+  const handleClose = useCallback(() => {
+    if (!bookingCompletedRef.current) {
+      trackBookingAbandoned({ therapist_id: therapistId, therapist_name: therapistName });
+    }
+    onClose();
+  }, [therapistId, therapistName, onClose]);
+
+  const handleSlotSelect = useCallback(
+    (id: string) => {
+      setSelectedSlot(id);
+      setError(null);
+      const slot = slotsForGrid.find((s) => s._id === id);
+      if (slot) {
+        trackSelectTimeSlot({
+          therapist_id: therapistId,
+          therapist_name: therapistName,
+          slot_time: slot.startTime,
+          slot_date: slot.date,
+        });
+      }
+    },
+    [slotsForGrid, therapistId, therapistName],
+  );
 
   const handleDateSelect = (date: Date) => {
     const dateOnly = new Date(date);
@@ -87,6 +130,13 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Failed to book session');
+      bookingCompletedRef.current = true;
+      trackBookingCompleted({
+        therapist_id: therapistId,
+        therapist_name: therapistName,
+        slot_time: slot.startTime,
+        slot_date: schedule.date,
+      });
       setSuccessMessage('Session booked successfully!');
       onSuccess?.();
       setTimeout(() => onClose(), 1200);
@@ -102,27 +152,17 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   };
 
   const displayError = error || slotsError;
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
 
-  const slotsForGrid =
-    schedule?.slots.map((slot) => ({
-      _id: slot.startTime,
-      therapistId,
-      date: schedule.date,
-      startTime: slot.startTime,
-      endTime: slot.endTime,
-      isAvailable: slot.isAvailable,
-      isCustomized: slot.isCustomized,
-      sessionId: slot.sessionId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    })) || [];
+  const formatDate = useCallback(
+    (date: Date) =>
+      date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+    [],
+  );
 
   const [mounted, setMounted] = useState(false);
 
@@ -134,9 +174,9 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   if (!mounted) return null;
 
   const modalContent = (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <BookingModalHeader therapistName={therapistName} onClose={onClose} />
+        <BookingModalHeader therapistName={therapistName} onClose={handleClose} />
         <div className={styles.content}>
           <div className={styles.dateSection}>
             <h3 className={styles.sectionTitle}>Select Date</h3>
@@ -166,14 +206,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
                 </button>
               </div>
             ) : (
-              <TimeSlotGrid
-                slots={slotsForGrid}
-                selectedSlot={selectedSlot}
-                onSlotSelect={(id) => {
-                  setSelectedSlot(id);
-                  setError(null);
-                }}
-              />
+              <TimeSlotGrid slots={slotsForGrid} selectedSlot={selectedSlot} onSlotSelect={handleSlotSelect} />
             )}
           </div>
         </div>

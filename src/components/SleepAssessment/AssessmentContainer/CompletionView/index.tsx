@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import { getSleepScoreLabel, NERVAYA_PICKS, MORE_FAVOURITES } from '@/lib/utils/sleepScore.util';
+import { trackRecommendationClicked } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 interface CompletionViewProps {
@@ -30,7 +31,16 @@ export function CompletionView({ completedResponse = null, showRetakeActions = f
             <li key={card.title} className={styles.card}>
               <h3 className={styles.cardTitle}>{card.title}</h3>
               <p className={styles.cardDescription}>{card.description}</p>
-              <Link href={card.href} className={styles.cardButton}>
+              <Link
+                href={card.href}
+                className={styles.cardButton}
+                onClick={() =>
+                  trackRecommendationClicked({
+                    recommendation_title: card.title,
+                    destination_url: card.href,
+                  })
+                }
+              >
                 {card.buttonText}
               </Link>
             </li>
@@ -47,7 +57,16 @@ export function CompletionView({ completedResponse = null, showRetakeActions = f
             <li key={card.title} className={styles.card}>
               <h3 className={styles.cardTitle}>{card.title}</h3>
               <p className={styles.cardDescription}>{card.description}</p>
-              <Link href={card.href} className={styles.cardButton}>
+              <Link
+                href={card.href}
+                className={styles.cardButton}
+                onClick={() =>
+                  trackRecommendationClicked({
+                    recommendation_title: card.title,
+                    destination_url: card.href,
+                  })
+                }
+              >
                 {card.buttonText}
               </Link>
             </li>

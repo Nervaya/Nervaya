@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/navigation';
 import { RazorpayPaymentResponse } from '@/types/payment.types';
+import { trackPaymentFailed } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 interface PaymentHandlerProps {
@@ -81,9 +82,12 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
             onSuccess?.(response.razorpay_payment_id);
             router.push(`/supplements/order-success/${orderId}`);
           } else {
-            onError?.(result.message || 'Payment verification failed');
+            const reason = result.message || 'Payment verification failed';
+            trackPaymentFailed({ order_id: orderId, reason });
+            onError?.(reason);
           }
         } catch (_error) {
+          trackPaymentFailed({ order_id: orderId, reason: 'Failed to verify payment' });
           onError?.('Failed to verify payment');
         }
       },
@@ -97,6 +101,7 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
       },
       modal: {
         ondismiss: () => {
+          trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
           onError?.('Payment cancelled');
         },
       },

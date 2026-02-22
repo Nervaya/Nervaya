@@ -4,6 +4,14 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { ISleepAssessmentQuestion, ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
+import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
+import {
+  trackQuizStarted,
+  trackQuizQuestionAnswered,
+  trackQuizCompleted,
+  trackSleepSeverity,
+  type SleepSeverityLevel,
+} from '@/utils/analytics';
 
 export interface UseAssessmentStateResult {
   currentQuestion: ISleepAssessmentQuestion | undefined;
@@ -143,6 +151,8 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
         } else if (latest?.completedAt) {
           setHasAlreadyCompleted(true);
           setLatestCompletedResponse(latest);
+        } else {
+          trackQuizStarted('Sleep Assessment');
         }
       } catch {
       } finally {
@@ -166,11 +176,32 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     try {
       if (answerToSave !== undefined) {
         await saveCurrentAnswer(currentQuestion._id, answerToSave);
+        trackQuizQuestionAnswered({
+          quiz_name: 'Sleep Assessment',
+          question_index: currentQuestionIndex,
+          question_id: currentQuestion._id,
+          total_questions: totalQuestions,
+        });
       }
       if (isLastQuestion) {
         const response = await completeAssessment();
         setCompletedResponse(response ?? null);
         setIsComplete(true);
+        const scoreLabel = getSleepScoreLabel(response ?? null);
+        const severityMap: Record<string, SleepSeverityLevel> = {
+          Poor: 'severe',
+          Fair: 'moderate',
+          Moderate: 'moderate',
+          Good: 'mild',
+          Excellent: 'mild',
+        };
+        const severity: SleepSeverityLevel = severityMap[scoreLabel] ?? 'moderate';
+        trackQuizCompleted({
+          quiz_name: 'Sleep Assessment',
+          total_questions: totalQuestions,
+          sleep_severity: severity,
+        });
+        trackSleepSeverity(severity);
       } else {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
       }
@@ -180,7 +211,16 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     } finally {
       setIsSubmitting(false);
     }
-  }, [canProceed, currentQuestion, answers, isLastQuestion, totalQuestions, saveCurrentAnswer, completeAssessment]);
+  }, [
+    canProceed,
+    currentQuestion,
+    currentQuestionIndex,
+    answers,
+    isLastQuestion,
+    totalQuestions,
+    saveCurrentAnswer,
+    completeAssessment,
+  ]);
 
   const handlePrevious = useCallback(() => {
     if (isFirstQuestion) return;

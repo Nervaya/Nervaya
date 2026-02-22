@@ -12,6 +12,7 @@ import { supplementsApi } from '@/lib/api/supplements';
 import { cartApi } from '@/lib/api/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/utils/routesConstants';
+import { trackViewItem, trackAddToCart } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 export default function SupplementDetailPage() {
@@ -39,6 +40,19 @@ export default function SupplementDetailPage() {
       const response = await supplementsApi.getById(id);
       if (response.success && response.data) {
         setSupplement(response.data);
+        trackViewItem({
+          currency: 'INR',
+          value: response.data.price,
+          items: [
+            {
+              item_id: response.data._id,
+              item_name: response.data.name,
+              item_category: 'Supplements',
+              price: response.data.price,
+              quantity: 1,
+            },
+          ],
+        });
       } else {
         setSupplement(null);
         setError('Supplement not found');
@@ -72,6 +86,19 @@ export default function SupplementDetailPage() {
     try {
       const response = await cartApi.add(supplement._id, quantity);
       if (response.success) {
+        trackAddToCart({
+          currency: 'INR',
+          value: supplement.price * quantity,
+          items: [
+            {
+              item_id: supplement._id,
+              item_name: supplement.name,
+              item_category: 'Supplements',
+              price: supplement.price,
+              quantity,
+            },
+          ],
+        });
         setSuccessMessage('Added to cart successfully!');
         setTimeout(() => {
           router.push('/supplements/cart');

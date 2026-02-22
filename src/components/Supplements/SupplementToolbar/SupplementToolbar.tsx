@@ -5,6 +5,7 @@ import { FaTableCells, FaList, FaFilter } from 'react-icons/fa6';
 import { IoClose } from 'react-icons/io5';
 import { Dropdown } from '@/components/common';
 import SupplementFilters, { type PriceRange } from '../SupplementFilters';
+import { trackSearch } from '@/utils/analytics';
 import styles from './SupplementToolbar.module.css';
 
 export type ViewMode = 'grid' | 'list';
@@ -43,6 +44,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const filterWrapperRef = useRef<HTMLDivElement>(null);
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const closeFilter = () => setPopoverOpen(false);
 
@@ -68,7 +70,16 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
       <input
         type="text"
         value={searchValue}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          onSearchChange(value);
+          if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+          if (value.trim().length > 1) {
+            searchDebounceRef.current = setTimeout(() => {
+              trackSearch(value.trim());
+            }, 800);
+          }
+        }}
         placeholder="Filter products by name, SKU, att."
         className={styles.searchInput}
         aria-label="Filter products"

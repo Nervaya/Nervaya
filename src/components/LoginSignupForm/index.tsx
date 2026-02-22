@@ -14,6 +14,7 @@ import {
 import { useAuthForm } from '@/hooks/useAuthForm';
 import { useAuthContext, type AuthData } from '@/context/AuthContext';
 import { OTPVerificationStep } from './OTPVerificationStep';
+import { trackLogin, trackSignUp } from '@/utils/analytics';
 import styles from './styles.module.css';
 import { IMAGES } from '@/utils/imageConstants';
 
@@ -85,10 +86,15 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
   const onOtpSuccess = useCallback(
     (session?: { user: unknown; token: string }) => {
       if (session?.user && session?.token) {
+        if (otpPurpose === OTP_PURPOSE.SIGNUP) {
+          trackSignUp('email');
+        } else {
+          trackLogin('email');
+        }
         completeLoginWithOtp({ user: session.user as AuthData['user'], token: session.token }, returnUrl);
       }
     },
-    [completeLoginWithOtp, returnUrl],
+    [completeLoginWithOtp, returnUrl, otpPurpose],
   );
 
   const onOtpBack = useCallback(() => setAuthStep(AUTH_STEP.CREDENTIALS), []);

@@ -1,11 +1,12 @@
 'use client';
 
-import { useSyncExternalStore, useState } from 'react';
+import { useSyncExternalStore, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { FaPlay, FaInfinity } from 'react-icons/fa';
 import { DRIFT_OFF_PLAYLIST_VIDEOS } from '@/lib/constants/driftOff.constants';
+import { trackPreviewPlay, trackAudioCompleted50, trackAudioCompleted100 } from '@/utils/analytics';
 import styles from './styles.module.css';
-import { VideoPlayerProps } from '../VideoPlayer';
+import type { VideoPlayerProps } from '../VideoPlayer';
 
 const VideoPlayerDynamic = dynamic(() => import('../VideoPlayer'), {
   ssr: false,
@@ -15,9 +16,34 @@ const emptySubscribe = () => () => {};
 const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
+type VideoMilestone = 50 | 100;
+
 const PlaylistSection = () => {
   const hasMounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
   const [playingId, setPlayingId] = useState<number | null>(null);
+  const firedMilestonesRef = useRef<Map<number, Set<VideoMilestone>>>(new Map());
+
+  const handleTimeUpdate = useCallback(
+    (videoId: number, videoTitle: string, e: React.SyntheticEvent<HTMLVideoElement>) => {
+      const video = e.currentTarget;
+      if (!video.duration) return;
+      const pct = (video.currentTime / video.duration) * 100;
+      if (!firedMilestonesRef.current.has(videoId)) {
+        firedMilestonesRef.current.set(videoId, new Set());
+      }
+      const fired = firedMilestonesRef.current.get(videoId);
+      if (!fired) return;
+      if (pct >= 50 && !fired.has(50)) {
+        fired.add(50);
+        trackAudioCompleted50({ video_id: String(videoId), video_title: videoTitle });
+      }
+      if (pct >= 99 && !fired.has(100)) {
+        fired.add(100);
+        trackAudioCompleted100({ video_id: String(videoId), video_title: videoTitle });
+      }
+    },
+    [],
+  );
 
   return (
     <div className={styles.card}>
@@ -39,7 +65,11 @@ const PlaylistSection = () => {
                   playing={playingId === video.id}
                   controls
                   className={styles.playlistPlayerAbsolute}
-                  onPlay={() => setPlayingId(video.id)}
+                  onPlay={() => {
+                    setPlayingId(video.id);
+                    trackPreviewPlay({ video_id: String(video.id), video_title: video.title });
+                  }}
+                  onTimeUpdate={(e) => handleTimeUpdate(video.id, video.title, e)}
                   light={playingId !== video.id}
                   playIcon={
                     <div className={styles.playlistPlayIcon}>
