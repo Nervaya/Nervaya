@@ -36,8 +36,8 @@ export default function RootLayout({
           <EngagementTracker />
           {children}
         </Providers>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
     </html>
   );
 }
