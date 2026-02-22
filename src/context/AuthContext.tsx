@@ -100,7 +100,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleAuthSuccess = (data: AuthData, returnUrl?: string) => {
     if (typeof window !== 'undefined') {
+      const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
       localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_USER, JSON.stringify(data.user));
+      localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT, String(expiresAt));
       localStorage.setItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN, 'true');
       window.dispatchEvent(new CustomEvent('auth-state-changed'));
     }
