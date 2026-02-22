@@ -14,7 +14,7 @@ function loginRedirectUrl(request: NextRequest, returnPath: string): URL {
   return url;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
   let response: NextResponse;
 
