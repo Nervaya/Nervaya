@@ -64,9 +64,10 @@ export type DiscountType = (typeof DISCOUNT_TYPE)[keyof typeof DISCOUNT_TYPE];
 export const DISCOUNT_TYPE_VALUES = Object.values(DISCOUNT_TYPE);
 
 export const NTHERAPY_YOUTUBE_VIDEOS = {
-  HERO: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  POPULAR_1: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  POPULAR_2: 'https://www.youtube.com/watch?v=XsX3ATc3FbA',
+  HERO: 'https://www.youtube.com/watch?v=1ZYbU82GVz4',
+  POPULAR_1: 'https://www.youtube.com/watch?v=aEqlQvczMJQ',
+  POPULAR_2: 'https://www.youtube.com/watch?v=rkZl2gsLUp4',
+  LANDING_HERO: 'https://www.youtube.com/watch?v=lTRiuFIWV54',
 } as const;
 
 export type NTherapyYouTubeVideo = (typeof NTHERAPY_YOUTUBE_VIDEOS)[keyof typeof NTHERAPY_YOUTUBE_VIDEOS];

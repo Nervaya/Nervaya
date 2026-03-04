@@ -12,6 +12,7 @@ import {
   FaMoneyBillWave,
   FaBoxOpen,
   FaHeadset,
+  FaHeadphones,
   FaCommentDots,
   FaRegCommentDots,
   FaBars,
@@ -42,6 +43,7 @@ export const iconMap: { [key: string]: React.ReactElement } = {
   FaMoneyBillWave: <FaMoneyBillWave />,
   FaBoxOpen: <FaBoxOpen />,
   FaHeadset: <FaHeadset />,
+  FaHeadphones: <FaHeadphones />,
   FaCommentDots: <FaCommentDots />,
   FaRegCommentDots: <FaRegCommentDots />,
   FaBars: <FaBars />,
@@ -88,7 +90,10 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'Sleep',
-    items: [{ title: 'Drift Off', path: '/drift-off', icon: 'FaBed' }],
+    items: [
+      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'My Session', path: '/drift-off/my-session', icon: 'FaHeadphones' },
+    ],
   },
   {
     title: 'Shop',
@@ -122,6 +127,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         path: '/admin/sleep-assessment',
         icon: 'FaClipboardList',
       },
+      { title: 'Drift Off', path: '/admin/drift-off', icon: 'FaBed' },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
       { title: 'Orders', path: '/admin/orders', icon: 'FaBoxOpen' },
       { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },

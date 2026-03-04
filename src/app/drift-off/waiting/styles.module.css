@@ -1,0 +1,255 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error p {
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+.retryBtn {
+  background: var(--color-primary, #7c3aed);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retryBtn:hover {
+  background: var(--color-primary-hover, #6d28d9);
+}
+
+.waitingContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.waitingCard {
+  background: var(--color-card, #fff);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.waitingHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-foreground);
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--color-muted-foreground, #6b7280);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.statusSection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  min-width: 150px;
+}
+
+.statusDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.statusDot.completed {
+  background: #22c55e;
+}
+
+.statusDot.active {
+  background: var(--color-primary, #7c3aed);
+  animation: pulse 2s infinite;
+}
+
+.statusDot.pending {
+  background: #e5e7eb;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.statusText {
+  font-size: 0.85rem;
+  color: var(--color-muted-foreground, #6b7280);
+  font-weight: 500;
+}
+
+.infoSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.infoCard {
+  background: var(--color-muted, #f9fafb);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.infoTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0 0 1rem 0;
+}
+
+.infoList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.infoList li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-muted-foreground, #6b7280);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.infoList li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary, #7c3aed);
+  font-weight: 600;
+}
+
+.actionSection {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  margin-bottom: 2rem;
+}
+
+.actionText {
+  color: var(--color-muted-foreground, #6b7280);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.actionBtn {
+  background: var(--color-primary, #7c3aed);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.actionBtn:hover {
+  background: var(--color-primary-hover, #6d28d9);
+  transform: translateY(-1px);
+}
+
+.supportSection {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.supportText {
+  color: var(--color-muted-foreground, #6b7280);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .waitingCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .statusSection {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .infoSection {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
