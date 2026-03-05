@@ -1,6 +1,7 @@
 'use client';
 
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export interface PaginationProps {
@@ -66,7 +67,7 @@ export default function Pagination({
           className={styles.paginationButton}
           aria-label="Previous page"
         >
-          <FaChevronLeft aria-hidden />
+          <Icon icon={ICON_ARROW_LEFT} width={16} height={16} aria-hidden />
           Previous
         </button>
         <div className={styles.paginationNumbers}>
@@ -109,7 +110,7 @@ export default function Pagination({
           aria-label="Next page"
         >
           Next
-          <FaChevronRight aria-hidden />
+          <Icon icon={ICON_ARROW_RIGHT} width={16} height={16} aria-hidden />
         </button>
       </div>
     </nav>

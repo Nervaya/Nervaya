@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaPenToSquare, FaTrash, FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_PEN, ICON_TRASH, ICON_EYE, ICON_EYE_SLASH } from '@/constants/icons';
 import type { Blog } from '@/types/blog.types';
 import styles from './styles.module.css';
 
@@ -22,7 +23,11 @@ export default function BlogListCard({ blog, formatDate, onDelete }: BlogListCar
           <div className={styles.noImage}>No Image</div>
         )}
         <span className={`${styles.statusBadge} ${blog.isPublished ? styles.published : styles.draft}`}>
-          {blog.isPublished ? <FaEye /> : <FaEyeSlash />}
+          {blog.isPublished ? (
+            <Icon icon={ICON_EYE} width={12} height={12} />
+          ) : (
+            <Icon icon={ICON_EYE_SLASH} width={12} height={12} />
+          )}
           {blog.isPublished ? 'Published' : 'Draft'}
         </span>
       </div>
@@ -46,11 +51,11 @@ export default function BlogListCard({ blog, formatDate, onDelete }: BlogListCar
       </div>
       <div className={styles.actions}>
         <Link href={`/admin/blogs/edit/${blog._id}`} className={styles.editButton}>
-          <FaPenToSquare />
+          <Icon icon={ICON_PEN} width={16} height={16} />
           Edit
         </Link>
         <button onClick={onDelete} className={styles.deleteButton}>
-          <FaTrash />
+          <Icon icon={ICON_TRASH} width={16} height={16} />
           Delete
         </button>
       </div>

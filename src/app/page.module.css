@@ -28,7 +28,7 @@
 }
 
 .heroTitle {
-  font-size: var(--font-size-hero);
+  font-size: var(--font-size-5xl);
   font-weight: 600;
   line-height: 1.2;
   color: var(--foreground);
@@ -37,11 +37,11 @@
   max-width: 800px;
 
   @media (max-width: 1024px) {
-    font-size: var(--font-size-6xl);
+    font-size: var(--font-size-4xl);
   }
 
   @media (max-width: 768px) {
-    font-size: var(--font-size-5xl);
+    font-size: var(--font-size-3xl);
     margin-bottom: var(--spacing-md);
   }
 }

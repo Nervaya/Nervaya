@@ -1,20 +1,10 @@
-import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import Order from '@/lib/models/order.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY } from '@/lib/constants/enums';
-
-const getRazorpayInstance = () => {
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-    throw new Error('RAZORPAY Credentials must be defined');
-  }
-  return new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
-};
+import { getRazorpayInstance } from '@/lib/utils/razorpay.util';
 
 export interface RazorpayOrderResponse {
   id: string;

@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+import { Icon } from '@iconify/react';
 import { SectionContent as SectionContentType, GridItem, Subsection } from '@/utils/privacyPolicyData';
 import styles from './styles.module.css';
 
@@ -37,7 +38,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
             <div className={styles.cookieGrid}>
               {subsection.cookieCards.map((card: GridItem) => (
                 <div key={`${subsection.title}-cookie-${card.title}`} className={styles.cookieCard}>
-                  <div className={styles.cookieIcon}>{card.icon}</div>
+                  <div className={styles.cookieIcon}>
+                    <Icon icon={card.icon} width={24} height={24} color="white" />
+                  </div>
                   <h4 className={styles.cookieTitle}>{card.title}</h4>
                   <p className={styles.cookieText}>{card.text}</p>
                 </div>
@@ -52,7 +55,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const gridItems = useMemo(() => {
     return content.gridItems?.map((item: GridItem) => (
       <div key={`grid-${item.title}-${item.text}`} className={styles.gridItem}>
-        <div className={styles.gridIcon}>{item.icon}</div>
+        <div className={styles.gridIcon}>
+          <Icon icon={item.icon} width={28} height={28} color="white" />
+        </div>
         <h4 className={styles.gridTitle}>{item.title}</h4>
         <p className={styles.gridText}>{item.text}</p>
       </div>
@@ -62,7 +67,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const securityCards = useMemo(() => {
     return content.securityCards?.map((card: GridItem) => (
       <div key={`security-${card.title}`} className={styles.securityCard}>
-        <div className={styles.securityIcon}>{card.icon}</div>
+        <div className={styles.securityIcon}>
+          <Icon icon={card.icon} width={24} height={24} color="white" />
+        </div>
         <h4 className={styles.securityTitle}>{card.title}</h4>
         <p className={styles.securityText}>{card.text}</p>
       </div>
@@ -72,7 +79,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const rightsCards = useMemo(() => {
     return content.rightsCards?.map((card: GridItem) => (
       <div key={`rights-${card.title}-${card.text}`} className={styles.rightCard}>
-        <div className={styles.rightIcon}>{card.icon}</div>
+        <div className={styles.rightIcon}>
+          <Icon icon={card.icon} width={24} height={24} color="white" />
+        </div>
         <h4 className={styles.rightTitle}>{card.title}</h4>
         <p className={styles.rightText}>{card.text}</p>
       </div>
@@ -82,7 +91,9 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   const contactItems = useMemo(() => {
     return content.contactItems?.map((item) => (
       <div key={`contact-${item.label}`} className={styles.contactItem}>
-        <div className={styles.contactIcon}>{item.icon}</div>
+        <div className={styles.contactIcon}>
+          <Icon icon={item.icon} width={20} height={20} color="white" />
+        </div>
         <div className={styles.contactContent}>
           <strong className={styles.contactLabel}>{item.label}</strong>
           {item.href ? (

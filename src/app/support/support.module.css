@@ -48,7 +48,7 @@
 }
 
 .title {
-  font-size: var(--font-size-6xl);
+  font-size: var(--font-size-4xl);
   font-weight: 600;
   color: var(--accent);
   margin: 0 0 var(--spacing-md) 0;
@@ -57,19 +57,19 @@
 
 @media (max-width: 1024px) {
   .title {
-    font-size: var(--font-size-5xl);
+    font-size: var(--font-size-3xl);
   }
 }
 
 @media (max-width: 768px) {
   .title {
-    font-size: var(--font-size-4xl);
+    font-size: var(--font-size-3xl);
     margin-bottom: var(--spacing-sm);
   }
 }
 
 .subtitle {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   line-height: 1.6;
   color: var(--muted-dim);
   margin: 0;
@@ -78,7 +78,7 @@
 
 @media (max-width: 1024px) {
   .subtitle {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     max-width: 600px;
   }
 }

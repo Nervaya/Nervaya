@@ -1,18 +1,26 @@
 'use client';
 
-import { FaCheck } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import {
+  ICON_BRAIN,
+  ICON_CLOCK,
+  ICON_CHART,
+  ICON_USER_SETTINGS,
+  ICON_SHIELD,
+  ICON_USER_MEDICAL,
+} from '@/constants/icons';
 import styles from './styles.module.css';
 
 const LEFT_FEATURES = [
-  'Scientifically-backed audio techniques',
-  'Available anytime, anywhere',
-  'Progressive improvement over time',
+  { text: 'Scientifically-backed audio techniques', icon: ICON_BRAIN },
+  { text: 'Available anytime, anywhere', icon: ICON_CLOCK },
+  { text: 'Progressive improvement over time', icon: ICON_CHART },
 ];
 
 const RIGHT_FEATURES = [
-  'Customized to your sleep patterns',
-  'No medication or side effects',
-  'Expert support included',
+  { text: 'Customized to your sleep patterns', icon: ICON_USER_SETTINGS },
+  { text: 'No medication or side effects', icon: ICON_SHIELD },
+  { text: 'Expert support included', icon: ICON_USER_MEDICAL },
 ];
 
 const WhatMakesDifferentSection = () => {
@@ -23,19 +31,23 @@ const WhatMakesDifferentSection = () => {
         input so you get a rest experience that fits you—not a one-size-fits-all track.
       </p>
       <div className={styles.whatMakesGrid}>
-        <ul aria-label="Session features">
+        <ul className={styles.whatMakesList} aria-label="Session features">
           {LEFT_FEATURES.map((feature) => (
-            <li key={feature} className={styles.whatMakesItem}>
-              <FaCheck className={styles.whatMakesBullet} aria-hidden />
-              <span>{feature}</span>
+            <li key={feature.text} className={styles.whatMakesItem}>
+              <div className={styles.whatMakesIcon} aria-hidden>
+                <Icon icon={feature.icon} width={12} height={12} />
+              </div>
+              <span>{feature.text}</span>
             </li>
           ))}
         </ul>
-        <ul aria-label="Session benefits">
+        <ul className={styles.whatMakesList} aria-label="Session benefits">
           {RIGHT_FEATURES.map((feature) => (
-            <li key={feature} className={styles.whatMakesItem}>
-              <FaCheck className={styles.whatMakesBullet} aria-hidden />
-              <span>{feature}</span>
+            <li key={feature.text} className={styles.whatMakesItem}>
+              <div className={styles.whatMakesIcon} aria-hidden>
+                <Icon icon={feature.icon} width={12} height={12} />
+              </div>
+              <span>{feature.text}</span>
             </li>
           ))}
         </ul>

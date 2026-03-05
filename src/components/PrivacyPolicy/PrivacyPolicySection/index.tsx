@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
-import { IoChevronDownOutline } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_DOWN } from '@/constants/icons';
 import { PrivacySection } from '@/utils/privacyPolicyData';
 import styles from './styles.module.css';
 
@@ -20,7 +21,7 @@ const PrivacyPolicySection = memo(({ section, isOpen, onToggle, children }: Priv
       <div className={styles.sectionNumber}>{section.number}</div>
       <button className={styles.sectionHeader} onClick={onToggle} aria-expanded={isOpen}>
         <h2 className={styles.sectionTitle}>{section.title}</h2>
-        <IoChevronDownOutline className={iconClassName} />
+        <Icon icon={ICON_ARROW_DOWN} className={iconClassName} width={20} height={20} aria-hidden />
       </button>
       {isOpen && <div className={styles.sectionContent}>{children}</div>}
     </section>

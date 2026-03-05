@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
+import { ICON_MOON } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export default function DriftOffWaitingPage() {
@@ -100,7 +102,9 @@ export default function DriftOffWaitingPage() {
         <div className={styles.waitingContainer}>
           <div className={styles.waitingCard}>
             <div className={styles.waitingHeader}>
-              <div className={styles.icon}>🌙</div>
+              <div className={styles.icon}>
+                <Icon icon={ICON_MOON} width={40} height={40} />
+              </div>
               <h1 className={styles.title}>Your Deep Rest Session is Being Prepared</h1>
               <p className={styles.subtitle}>
                 Thank you for completing your assessment. Our team is carefully reviewing your responses to create a

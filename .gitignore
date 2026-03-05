@@ -23,6 +23,9 @@
 # Cursor IDE (rules, skills, local state)
 .cursor/
 
+
+#windsurf
+.windsurf/
 # misc
 .DS_Store
 *.pem

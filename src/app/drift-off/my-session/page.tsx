@@ -3,11 +3,13 @@
 import { useState, useEffect, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
 import type { VideoPlayerProps } from '@/components/DriftOff/VideoPlayer';
+import { ICON_HEADPHONES, ICON_CLOCK } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const VideoPlayerDynamic = dynamic(() => import('@/components/DriftOff/VideoPlayer'), {
@@ -66,7 +68,7 @@ export default function DriftOffMySessionPage() {
         {!isLoading && !error && !response && (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon} aria-hidden>
-              🎧
+              <Icon icon={ICON_HEADPHONES} width={48} height={48} />
             </div>
             <h2 className={styles.emptyTitle}>No session yet</h2>
             <p className={styles.emptyText}>You haven&apos;t purchased a Deep Rest Session yet.</p>
@@ -79,7 +81,7 @@ export default function DriftOffMySessionPage() {
         {!isLoading && !error && response && !response.assignedVideoUrl && (
           <div className={styles.pendingState}>
             <div className={styles.pendingIcon} aria-hidden>
-              ⏳
+              <Icon icon={ICON_CLOCK} width={48} height={48} />
             </div>
             <h2 className={styles.pendingTitle}>Your session is being prepared</h2>
             <p className={styles.pendingText}>

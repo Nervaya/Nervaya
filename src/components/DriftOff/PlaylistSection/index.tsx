@@ -2,7 +2,8 @@
 
 import { useSyncExternalStore, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { FaPlay, FaInfinity } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_PLAY, ICON_INFINITY } from '@/constants/icons';
 import { DRIFT_OFF_PLAYLIST_VIDEOS } from '@/lib/constants/driftOff.constants';
 import { trackPreviewPlay, trackAudioCompleted50, trackAudioCompleted100 } from '@/utils/analytics';
 import styles from './styles.module.css';
@@ -49,7 +50,7 @@ const PlaylistSection = () => {
     <div className={styles.card}>
       <div className={styles.playlistHeader}>
         <div className={styles.accessBadge}>
-          <FaInfinity /> Unlimited Lifetime Access
+          <Icon icon={ICON_INFINITY} width={16} height={16} /> Unlimited Lifetime Access
         </div>
       </div>
 
@@ -72,8 +73,8 @@ const PlaylistSection = () => {
                   onTimeUpdate={(e) => handleTimeUpdate(video.id, video.title, e)}
                   light={playingId !== video.id}
                   playIcon={
-                    <div className={styles.playlistPlayIcon}>
-                      <FaPlay className={styles.playlistPlayIconSvg} color="#4f46e5" size={16} />
+                    <div className={styles.supportIcon}>
+                      <Icon icon={ICON_PLAY} width={16} height={16} />
                     </div>
                   }
                 />

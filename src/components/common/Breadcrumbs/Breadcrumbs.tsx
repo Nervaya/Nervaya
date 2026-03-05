@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { FaHouse } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_HOME } from '@/constants/icons';
 import styles from './Breadcrumbs.module.css';
 
 export interface BreadcrumbItem {
@@ -34,7 +35,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
               )}
               {isFirst && item.href ? (
                 <Link href={item.href} className={styles.link} aria-current={isLast ? 'page' : undefined}>
-                  <FaHouse className={styles.icon} aria-hidden />
+                  <Icon icon={ICON_HOME} width={16} height={16} className={styles.icon} aria-hidden />
                   <span>{item.label}</span>
                 </Link>
               ) : item.href && !isLast ? (

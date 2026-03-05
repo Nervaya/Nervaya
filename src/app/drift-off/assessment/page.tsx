@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import DriftOffAssessmentContainer from '@/components/DriftOff/DriftOffAssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
@@ -9,6 +10,7 @@ import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
 import type { IDriftOffOrder, IDriftOffResponse } from '@/types/driftOff.types';
+import { ICON_MOON, ICON_CLIPBOARD, ICON_ARROW_RIGHT } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export default function DriftOffAssessmentPage() {
@@ -37,7 +39,7 @@ export default function DriftOffAssessmentPage() {
 
         if (!orderRes.success || !orderRes.data) {
           setError('Failed to load order information');
-          router.replace('/drift-off/payment');
+          setIsLoading(false);
           return;
         }
 
@@ -92,7 +94,7 @@ export default function DriftOffAssessmentPage() {
         setIsRedirecting(false);
       }
     },
-    [router, hasCheckedRedirects],
+    [hasCheckedRedirects],
   );
 
   const loadData = useCallback(async () => {
@@ -187,7 +189,9 @@ export default function DriftOffAssessmentPage() {
           <div className={styles.optionsContainer}>
             <div className={styles.optionsCard}>
               <div className={styles.optionsHeader}>
-                <div className={styles.icon}>🌙</div>
+                <div className={styles.icon}>
+                  <Icon icon={ICON_MOON} width={40} height={40} />
+                </div>
                 <h1 className={styles.title}>Assessment Already Completed</h1>
                 <p className={styles.subtitle}>
                   You&apos;ve already completed your Deep Rest assessment. You can either keep your existing responses
@@ -238,7 +242,7 @@ export default function DriftOffAssessmentPage() {
                       }
                     }}
                   >
-                    📋 View My Sessions
+                    <Icon icon={ICON_CLIPBOARD} width={20} height={20} /> View My Sessions
                   </button>
 
                   <button
@@ -252,7 +256,8 @@ export default function DriftOffAssessmentPage() {
                       loadOrderData(orderId ?? '');
                     }}
                   >
-                    🔄 Retake Assessment
+                    <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} style={{ transform: 'rotate(90deg)' }} />{' '}
+                    Retake Assessment
                   </button>
                 </div>
 

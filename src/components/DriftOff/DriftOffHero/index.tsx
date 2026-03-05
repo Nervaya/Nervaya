@@ -2,7 +2,8 @@
 
 import { useSyncExternalStore, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { FaPlay } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_PLAY } from '@/constants/icons';
 import {
   DRIFT_OFF_HERO_VIDEO_AUTHOR,
   DRIFT_OFF_HERO_VIDEO_IS_FREE,
@@ -57,7 +58,7 @@ const DriftOffHero = () => {
                 onClick={() => setPlaying(true)}
                 aria-label="Play video"
               >
-                <FaPlay className={styles.heroPlayButtonIcon} color="currentColor" size={20} aria-hidden />
+                <Icon icon={ICON_PLAY} width={20} height={20} className={styles.heroPlayButtonIcon} aria-hidden />
               </button>
             </>
           )}

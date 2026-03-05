@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { Icon } from '@iconify/react';
+import { ICON_LINK, ICON_FOLDER, ICON_UPLOAD, ICON_CHECK, ICON_CLOSE } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface DriftOffAssignVideoModalProps {
@@ -130,7 +132,7 @@ const DriftOffAssignVideoModal = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Assign Video</h2>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            ✕
+            <Icon icon={ICON_CLOSE} width={20} height={20} />
           </button>
         </div>
         <p className={styles.modalSubtitle}>
@@ -143,14 +145,14 @@ const DriftOffAssignVideoModal = ({
             className={`${styles.methodBtn} ${uploadMethod === 'url' ? styles.active : ''}`}
             onClick={() => setUploadMethod('url')}
           >
-            🔗 Video URL
+            <Icon icon={ICON_LINK} width={16} height={16} /> Video URL
           </button>
           <button
             type="button"
             className={`${styles.methodBtn} ${uploadMethod === 'file' ? styles.active : ''}`}
             onClick={() => setUploadMethod('file')}
           >
-            📁 Upload File
+            <Icon icon={ICON_FOLDER} width={16} height={16} /> Upload File
           </button>
         </div>
 
@@ -190,7 +192,13 @@ const DriftOffAssignVideoModal = ({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
               >
-                {isUploading ? `Uploading... ${uploadProgress}%` : '📤 Choose File'}
+                {isUploading ? (
+                  `Uploading... ${uploadProgress}%`
+                ) : (
+                  <>
+                    <Icon icon={ICON_UPLOAD} width={16} height={16} /> Choose File
+                  </>
+                )}
               </button>
 
               {isUploading && (
@@ -201,7 +209,7 @@ const DriftOffAssignVideoModal = ({
 
               {videoUrl && uploadMethod === 'file' && (
                 <div className={styles.uploadSuccess}>
-                  ✅ Video uploaded successfully!
+                  <Icon icon={ICON_CHECK} width={16} height={16} /> Video uploaded successfully!
                   <br />
                   <small>{videoUrl}</small>
                 </div>

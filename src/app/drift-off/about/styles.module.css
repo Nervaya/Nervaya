@@ -4,93 +4,147 @@
 }
 
 .pageHeader {
-  background: var(--color-primary, #7c3aed);
-  padding: 1.75rem 2rem;
+  background: var(--color-glass-bg);
+  padding: 2.5rem 2rem;
   width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  margin: 2rem;
+  margin-left: 0;
+}
+
+.pageHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/background.png') center/cover;
+  opacity: 0.1;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
   .pageHeader {
-    padding: 1.25rem 1.25rem;
+    padding: 2rem 1.25rem;
+    margin: 1rem;
+    margin-left: 0;
   }
 }
 
 .pageHeaderInner {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
+  margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
   .pageHeaderInner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 }
 
 .pageHeaderTitle {
-  font-size: 1.75rem;
+  font-size: var(--font-size-4xl);
   font-weight: 700;
-  color: #fff;
+  color: var(--color-foreground);
   margin: 0;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 480px) {
   .pageHeaderTitle {
-    font-size: 1.4rem;
+    font-size: var(--font-size-3xl);
   }
 }
 
 .pageHeaderSubtitle {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0.35rem 0 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  margin: 0.5rem 0 0;
+  max-width: 600px;
+}
+
+@media (max-width: 480px) {
+  .pageHeaderSubtitle {
+    font-size: var(--font-size-base);
+  }
 }
 
 .buyBtn {
   display: inline-flex;
   align-items: center;
-  background: #fff;
-  color: var(--color-primary, #7c3aed);
-  font-size: 0.875rem;
+  justify-content: center;
+  background: var(--color-foreground);
+  color: var(--color-accent);
+  font-size: 1rem;
   font-weight: 700;
-  padding: 0.6rem 1.3rem;
-  border-radius: 8px;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.18s;
+  transition: all 0.2s ease;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .buyBtn {
+    width: 100%;
+  }
 }
 
 .buyBtn:hover {
-  background: #f3e8ff;
+  background: var(--color-white-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 2rem 3rem;
+  margin: 0;
+  margin-right: auto;
+  padding: 2rem 2rem 3rem 0;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 1.5rem 1.25rem 2rem;
+    padding: 1.5rem 1.25rem 2rem 0;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 1rem 1rem 1.5rem;
+    padding: 1rem 1rem 1.5rem 0;
   }
 }
 
 .section {
   margin-bottom: 3rem;
+  text-align: left;
+  width: 100%;
+  max-width: 1200px;
+  margin-right: auto;
 }
 
 @media (max-width: 768px) {
@@ -100,16 +154,18 @@
 }
 
 .sectionTitle {
-  font-size: 1.5rem;
+  font-size: var(--font-size-3xl);
   font-weight: 700;
   color: var(--color-foreground);
   margin: 0 0 1.25rem 0;
   letter-spacing: -0.01em;
+  text-align: left;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
   .sectionTitle {
-    font-size: 1.25rem;
+    font-size: var(--font-size-2xl);
     margin-bottom: 1rem;
   }
 }

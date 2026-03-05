@@ -2,7 +2,8 @@
 
 import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_EYE, ICON_EYE_CLOSED } from '@/constants/icons';
 import {
   AUTH_FORM_MODE,
   AUTH_STEP,
@@ -180,7 +181,7 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
                       onClick={() => setShowSignupPassword((prev) => !prev)}
                       aria-label={showSignupPassword ? 'Hide password' : 'Show password'}
                     >
-                      {showSignupPassword ? <FaEyeSlash /> : <FaEye />}
+                      <Icon icon={showSignupPassword ? ICON_EYE_CLOSED : ICON_EYE} width={20} height={20} />
                     </button>
                   </div>
                   {fieldErrors.password && (
@@ -263,7 +264,7 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
                       onClick={() => setShowLoginPassword((prev) => !prev)}
                       aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
                     >
-                      {showLoginPassword ? <FaEyeSlash /> : <FaEye />}
+                      <Icon icon={showLoginPassword ? ICON_EYE_CLOSED : ICON_EYE} width={20} height={20} />
                     </button>
                   </div>
                   {fieldErrors.password && (

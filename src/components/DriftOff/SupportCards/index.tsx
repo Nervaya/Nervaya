@@ -1,4 +1,5 @@
-import { FaRegCommentDots } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_CHAT } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const SupportCards = () => {
@@ -7,7 +8,7 @@ const SupportCards = () => {
       <div className={styles.supportCard}>
         <div className={styles.supportContent}>
           <div className={styles.supportIcon}>
-            <FaRegCommentDots />
+            <Icon icon={ICON_CHAT} width={32} height={32} />
           </div>
           <div className={styles.supportTextContainer}>
             <h3 className={styles.cardHeading} style={{ fontSize: '1.5rem' }}>
@@ -24,7 +25,7 @@ const SupportCards = () => {
       <div className={styles.supportCard}>
         <div className={styles.supportContent}>
           <div className={styles.supportIcon}>
-            <FaRegCommentDots />
+            <Icon icon={ICON_CHAT} width={32} height={32} />
           </div>
           <div className={styles.supportTextContainer}>
             <h3 className={styles.cardHeading} style={{ fontSize: '1.5rem' }}>

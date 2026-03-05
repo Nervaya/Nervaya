@@ -1,7 +1,7 @@
 .container {
   display: flex;
   gap: 2.5rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -14,6 +14,24 @@
 .stepsCol {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: var(--font-size-2xl);
+    margin-bottom: 1rem;
+  }
 }
 
 .stepsList {
@@ -27,7 +45,7 @@
 
 .stepItem {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: flex-start;
 }
 
@@ -36,7 +54,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--color-primary, #7c3aed);
+  background: var(--color-accent);
   color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
@@ -48,7 +66,8 @@
 .stepBody {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
+  padding-top: 0.2rem;
 }
 
 .stepTitle {
@@ -60,19 +79,27 @@
 
 .stepDesc {
   font-size: 0.875rem;
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.6;
+  text-align: left;
 }
 
 .sessionCard {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   max-width: 340px;
-  background: #fdf8f0;
-  border: 1px solid #e8d8b8;
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border: 1px solid var(--color-glass-border);
+  border-radius: 24px;
   padding: 1.5rem;
+  text-align: left;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -87,7 +114,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   margin: 0 0 0.25rem 0;
 }
 
@@ -113,12 +140,13 @@
   gap: 0.6rem;
   align-items: flex-start;
   font-size: 0.85rem;
-  color: var(--color-foreground);
+  color: var(--color-text-muted);
   line-height: 1.5;
+  text-align: left;
 }
 
 .bullet {
-  color: var(--color-primary, #7c3aed);
+  color: var(--color-accent);
   font-size: 0.55rem;
   margin-top: 0.35rem;
   flex-shrink: 0;

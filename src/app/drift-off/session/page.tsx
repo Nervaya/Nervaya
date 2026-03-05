@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
+import { ICON_MOON, ICON_HEADPHONES, ICON_BED, ICON_CLOSE, ICON_CLOCK } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export default function DriftOffSessionPage() {
@@ -96,7 +98,9 @@ export default function DriftOffSessionPage() {
         <div className={styles.sessionContainer}>
           <div className={styles.sessionCard}>
             <div className={styles.sessionHeader}>
-              <div className={styles.icon}>🌙</div>
+              <div className={styles.icon}>
+                <Icon icon={ICON_MOON} width={40} height={40} />
+              </div>
               <h1 className={styles.title}>Your Personalized Deep Rest Session</h1>
               <p className={styles.subtitle}>
                 This session has been carefully crafted based on your assessment responses to help you achieve deep,
@@ -125,26 +129,34 @@ export default function DriftOffSessionPage() {
               <h2 className={styles.sectionTitle}>Session Guidelines</h2>
               <div className={styles.guidelinesGrid}>
                 <div className={styles.guidelineCard}>
-                  <div className={styles.guidelineIcon}>🎧</div>
+                  <div className={styles.guidelineIcon}>
+                    <Icon icon={ICON_HEADPHONES} width={32} height={32} />
+                  </div>
                   <h3 className={styles.guidelineTitle}>Use Headphones</h3>
                   <p className={styles.guidelineText}>
                     For the best experience, use comfortable headphones to fully immerse yourself.
                   </p>
                 </div>
                 <div className={styles.guidelineCard}>
-                  <div className={styles.guidelineIcon}>🛏️</div>
+                  <div className={styles.guidelineIcon}>
+                    <Icon icon={ICON_BED} width={32} height={32} />
+                  </div>
                   <h3 className={styles.guidelineTitle}>Find a Comfortable Position</h3>
                   <p className={styles.guidelineText}>
                     Lie down in a comfortable position where you won&apos;t be disturbed.
                   </p>
                 </div>
                 <div className={styles.guidelineCard}>
-                  <div className={styles.guidelineIcon}>🔇</div>
+                  <div className={styles.guidelineIcon}>
+                    <Icon icon={ICON_CLOSE} width={32} height={32} />
+                  </div>
                   <h3 className={styles.guidelineTitle}>Minimize Distractions</h3>
                   <p className={styles.guidelineText}>Ensure your environment is quiet and free from interruptions.</p>
                 </div>
                 <div className={styles.guidelineCard}>
-                  <div className={styles.guidelineIcon}>⏰</div>
+                  <div className={styles.guidelineIcon}>
+                    <Icon icon={ICON_CLOCK} width={32} height={32} />
+                  </div>
                   <h3 className={styles.guidelineTitle}>Allow Full Duration</h3>
                   <p className={styles.guidelineText}>
                     Give yourself the full time to experience the complete session.

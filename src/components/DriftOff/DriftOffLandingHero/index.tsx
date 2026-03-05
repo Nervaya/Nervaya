@@ -3,7 +3,8 @@
 import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { FaPlay } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_PLAY } from '@/constants/icons';
 import { DRIFT_OFF_LANDING_VIDEO_URL } from '@/lib/constants/driftOff.constants';
 import type { VideoPlayerProps } from '../VideoPlayer';
 import styles from './styles.module.css';
@@ -60,7 +61,7 @@ const DriftOffLandingHero = () => {
                 onClick={() => setPlaying(true)}
                 aria-label="Play sample video"
               >
-                <FaPlay size={18} aria-hidden />
+                <Icon icon={ICON_PLAY} width={18} height={18} aria-hidden />
               </button>
             )}
           </div>

@@ -1,27 +1,26 @@
-import React from 'react';
 import {
-  FaHandshake,
-  FaCalendar,
-  FaCreditCard,
-  FaEnvelope,
-  FaChartLine,
-  FaGavel,
-  FaLock,
-  FaUserShield,
-  FaClipboardCheck,
-  FaDatabase,
-  FaCookieBite,
-  FaChartSimple,
-  FaGear,
-  FaEye,
-  FaPenToSquare,
-  FaTrash,
-  FaDownload,
-  FaBan,
-  FaCirclePause,
-  FaPhone,
-  FaLocationDot,
-} from 'react-icons/fa6';
+  ICON_HANDSHAKE,
+  ICON_CALENDAR,
+  ICON_CREDIT_CARD,
+  ICON_CHAT,
+  ICON_CHART,
+  ICON_GAVEL,
+  ICON_LOCK,
+  ICON_SHIELD_USER,
+  ICON_CLIPBOARD,
+  ICON_DATABASE,
+  ICON_COOKIE,
+  ICON_CHART_SIMPLE,
+  ICON_SETTINGS,
+  ICON_EYE,
+  ICON_PEN,
+  ICON_TRASH,
+  ICON_DOWNLOAD,
+  ICON_BAN,
+  ICON_PAUSE,
+  ICON_PHONE,
+  ICON_LOCATION,
+} from '@/constants/icons';
 
 export interface TOCItem {
   id: string;
@@ -35,7 +34,7 @@ export interface ListItem {
 }
 
 export interface GridItem {
-  icon: React.ReactNode;
+  icon: string;
   title: string;
   text: string;
 }
@@ -55,7 +54,7 @@ export interface SectionContent {
   cookieCards?: GridItem[];
   rightsCards?: GridItem[];
   contactItems?: {
-    icon: React.ReactNode;
+    icon: string;
     label: string;
     text: string;
     href?: string;
@@ -160,32 +159,32 @@ export const privacySections: PrivacySection[] = [
       paragraphs: ['We use the information we collect for the following purposes:'],
       gridItems: [
         {
-          icon: <FaHandshake />,
+          icon: ICON_HANDSHAKE,
           title: 'Service Provision',
           text: 'To provide, maintain, and improve our therapy and wellness services',
         },
         {
-          icon: <FaCalendar />,
+          icon: ICON_CALENDAR,
           title: 'Appointment Scheduling',
           text: 'To schedule and manage therapy sessions and consultations',
         },
         {
-          icon: <FaCreditCard />,
+          icon: ICON_CREDIT_CARD,
           title: 'Payment Processing',
           text: 'To process payments, manage billing, and send payment confirmations',
         },
         {
-          icon: <FaEnvelope />,
+          icon: ICON_CHAT,
           title: 'Communication',
           text: 'To send you updates, reminders, and respond to your inquiries',
         },
         {
-          icon: <FaChartLine />,
+          icon: ICON_CHART,
           title: 'Analytics & Improvement',
           text: 'To analyze usage patterns and improve our services and user experience',
         },
         {
-          icon: <FaGavel />,
+          icon: ICON_GAVEL,
           title: 'Legal Compliance',
           text: 'To comply with legal obligations and protect our rights and interests',
         },
@@ -203,22 +202,22 @@ export const privacySections: PrivacySection[] = [
       ],
       securityCards: [
         {
-          icon: <FaLock />,
+          icon: ICON_LOCK,
           title: 'Encryption',
           text: 'All data transmitted between your device and our servers is encrypted using SSL/TLS technology to ensure secure communication.',
         },
         {
-          icon: <FaUserShield />,
+          icon: ICON_SHIELD_USER,
           title: 'Access Control',
           text: 'We restrict access to your personal information to authorized employees and service providers who need it to perform their duties.',
         },
         {
-          icon: <FaClipboardCheck />,
+          icon: ICON_CLIPBOARD,
           title: 'Regular Audits',
           text: 'We conduct regular security audits and assessments to identify and address potential vulnerabilities in our systems.',
         },
         {
-          icon: <FaDatabase />,
+          icon: ICON_DATABASE,
           title: 'Secure Storage',
           text: 'Your data is stored on secure servers with multiple layers of protection, including firewalls and intrusion detection systems.',
         },
@@ -239,17 +238,17 @@ export const privacySections: PrivacySection[] = [
           title: 'Types of Cookies We Use',
           cookieCards: [
             {
-              icon: <FaCookieBite />,
+              icon: ICON_COOKIE,
               title: 'Essential Cookies',
               text: 'These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility.',
             },
             {
-              icon: <FaChartSimple />,
+              icon: ICON_CHART_SIMPLE,
               title: 'Analytics Cookies',
               text: 'These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.',
             },
             {
-              icon: <FaGear />,
+              icon: ICON_SETTINGS,
               title: 'Preference Cookies',
               text: 'These cookies remember your preferences and settings to provide a more personalized experience on future visits.',
             },
@@ -269,32 +268,32 @@ export const privacySections: PrivacySection[] = [
       ],
       rightsCards: [
         {
-          icon: <FaEye />,
+          icon: ICON_EYE,
           title: 'Access',
           text: 'You have the right to request access to the personal information we hold about you and receive a copy of that information.',
         },
         {
-          icon: <FaPenToSquare />,
+          icon: ICON_PEN,
           title: 'Correction',
           text: 'You can request that we correct any inaccurate or incomplete personal information we have about you.',
         },
         {
-          icon: <FaTrash />,
+          icon: ICON_TRASH,
           title: 'Deletion',
           text: 'You may request that we delete your personal information, subject to certain legal and operational requirements.',
         },
         {
-          icon: <FaDownload />,
+          icon: ICON_DOWNLOAD,
           title: 'Portability',
           text: 'You have the right to receive your personal information in a structured, commonly used format and transmit it to another service provider.',
         },
         {
-          icon: <FaBan />,
+          icon: ICON_BAN,
           title: 'Objection',
           text: 'You can object to the processing of your personal information for certain purposes, such as direct marketing.',
         },
         {
-          icon: <FaCirclePause />,
+          icon: ICON_PAUSE,
           title: 'Restriction',
           text: 'You may request that we restrict the processing of your personal information under certain circumstances.',
         },
@@ -311,19 +310,19 @@ export const privacySections: PrivacySection[] = [
       ],
       contactItems: [
         {
-          icon: <FaEnvelope />,
+          icon: ICON_CHAT,
           label: 'Email',
           text: 'privacy@example.com',
           href: 'mailto:privacy@example.com',
         },
         {
-          icon: <FaPhone />,
+          icon: ICON_PHONE,
           label: 'Phone',
           text: '+1 (555) 123-4567',
           href: 'tel:+15551234567',
         },
         {
-          icon: <FaLocationDot />,
+          icon: ICON_LOCATION,
           label: 'Address',
           text: '123 Wellness Street, Suite 100, City, State 12345',
         },

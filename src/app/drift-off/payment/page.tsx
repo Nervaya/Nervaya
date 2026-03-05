@@ -24,6 +24,7 @@ export default function DriftOffPaymentPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
+  const [initError, setInitError] = useState<string | null>(null);
 
   const {
     driftOffOrderId,
@@ -45,6 +46,7 @@ export default function DriftOffPaymentPage() {
       }
 
       try {
+        setInitError(null);
         const ordersRes = await axiosInstance.get<unknown, ApiResponse<IDriftOffOrder[]>>('/drift-off/orders');
 
         if (ordersRes.success && ordersRes.data) {
@@ -54,7 +56,7 @@ export default function DriftOffPaymentPage() {
           }
         }
       } catch {
-        // Failed to check existing orders
+        setInitError('Failed to verify your session status. Please refresh the page or try again later.');
       } finally {
         setIsChecking(false);
       }
@@ -106,7 +108,19 @@ export default function DriftOffPaymentPage() {
                 <p className={styles.price}>₹{DRIFT_OFF_SESSION_PRICE}</p>
                 <p className={styles.priceNote}>One-time payment · Personalized for you</p>
 
-                {error && (
+                {initError && (
+                  <div className={styles.error} role="alert" style={{ marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
+                      <div>
+                        <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Error</div>
+                        <div>{initError}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {error && !initError && (
                   <div className={styles.error} role="alert">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
@@ -118,7 +132,7 @@ export default function DriftOffPaymentPage() {
                   </div>
                 )}
 
-                {!showPaymentHandler && (
+                {!showPaymentHandler && !initError && (
                   <button type="button" className={styles.payBtn} onClick={initiatePayment} disabled={isCreating}>
                     {isCreating ? (
                       <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>

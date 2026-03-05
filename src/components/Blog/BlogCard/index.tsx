@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaClock, FaUser, FaCalendar } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CLOCK, ICON_USER, ICON_CALENDAR } from '@/constants/icons';
 import type { Blog } from '@/types/blog.types';
 import styles from './styles.module.css';
 
@@ -39,15 +40,15 @@ export default function BlogCard({ blog, formatDate, getExcerpt }: BlogCardProps
           <p className={styles.excerpt}>{getExcerpt(blog.content)}</p>
           <div className={styles.meta}>
             <span className={styles.metaItem}>
-              <FaUser />
+              <Icon icon={ICON_USER} width={16} height={16} aria-hidden />
               {blog.author}
             </span>
             <span className={styles.metaItem}>
-              <FaCalendar />
+              <Icon icon={ICON_CALENDAR} width={16} height={16} aria-hidden />
               {formatDate(blog.createdAt)}
             </span>
             <span className={styles.metaItem}>
-              <FaClock />
+              <Icon icon={ICON_CLOCK} width={16} height={16} aria-hidden />
               {blog.readTime} min read
             </span>
           </div>

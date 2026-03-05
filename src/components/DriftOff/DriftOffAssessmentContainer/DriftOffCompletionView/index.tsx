@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { ICON_HEADPHONES } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const DriftOffCompletionView = () => (
   <div className={styles.container}>
     <div className={styles.iconWrapper} aria-hidden>
-      <span className={styles.icon}>🎧</span>
+      <Icon icon={ICON_HEADPHONES} width={48} height={48} />
     </div>
     <h2 className={styles.title}>You&apos;re all set!</h2>
     <p className={styles.message}>

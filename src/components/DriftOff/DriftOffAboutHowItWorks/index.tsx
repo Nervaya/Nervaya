@@ -1,5 +1,10 @@
 import styles from './styles.module.css';
 
+interface DriftOffAboutHowItWorksProps {
+  sectionTitle?: string;
+  sectionTitleId?: string;
+}
+
 const STEPS = [
   {
     id: 1,
@@ -29,10 +34,18 @@ const SESSION_CONTENTS = [
   'Familiar Phrases — Words are repeated as affirmations built over time',
 ] as const;
 
-const DriftOffAboutHowItWorks = () => {
+const DriftOffAboutHowItWorks = ({
+  sectionTitle = 'How Deep Rest Sessions Work',
+  sectionTitleId,
+}: DriftOffAboutHowItWorksProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.stepsCol}>
+        {sectionTitle && (
+          <h2 id={sectionTitleId} className={styles.sectionTitle}>
+            {sectionTitle}
+          </h2>
+        )}
         <ol className={styles.stepsList} aria-label="How Deep Rest Sessions work">
           {STEPS.map((step) => (
             <li key={step.id} className={styles.stepItem}>

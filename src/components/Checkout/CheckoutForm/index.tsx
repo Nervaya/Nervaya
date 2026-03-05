@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_LOCATION } from '@/constants/icons';
 import { ShippingAddress } from '@/types/supplement.types';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -86,7 +87,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading: _loading
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.sectionHeader}>
         <span className={styles.sectionHeaderIcon} aria-hidden>
-          <FaLocationDot />
+          <Icon icon={ICON_LOCATION} width={20} height={20} />
         </span>
         <h2 className={styles.title}>Shipping Address</h2>
       </div>

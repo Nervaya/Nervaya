@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_SUNRISE } from '@/constants/icons';
 import { TherapistSlot } from '@/types/session.types';
 import styles from './styles.module.css';
 
@@ -106,13 +107,11 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
           disabled={!canGoPrev}
           aria-label="Previous time period (e.g. Morning)"
         >
-          <IoChevronBack aria-hidden />
+          <Icon icon={ICON_ARROW_LEFT} width={20} height={20} aria-hidden />
         </button>
         <div className={styles.periodNavLabel}>
           <span className={styles.periodIcon}>
-            {currentGroup.period === 'Morning' && '🌅'}
-            {currentGroup.period === 'Afternoon' && '☀️'}
-            {currentGroup.period === 'Evening' && '🌆'}
+            <Icon icon={ICON_SUNRISE} width={16} height={16} />
           </span>
           <span>{currentGroup.period}</span>
           <span className={styles.periodCount}>({availableCount} available)</span>
@@ -124,7 +123,7 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
           disabled={!canGoNext}
           aria-label="Next time period (e.g. Evening)"
         >
-          <IoChevronForward aria-hidden />
+          <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} aria-hidden />
         </button>
       </div>
 

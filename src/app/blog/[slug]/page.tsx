@@ -3,7 +3,8 @@
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaClock, FaUser, FaCalendar, FaChevronLeft, FaShareNodes } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CLOCK, ICON_USER, ICON_CALENDAR, ICON_ARROW_LEFT, ICON_SHARE } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import { blogsApi } from '@/lib/api/blogs';
@@ -78,7 +79,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
           <h2>Blog Not Found</h2>
           <p>{error || 'The blog post you are looking for does not exist.'}</p>
           <Link href="/blog" className={styles.backButton}>
-            <FaChevronLeft />
+            <Icon icon={ICON_ARROW_LEFT} />
             Back to Blog
           </Link>
         </div>
@@ -91,11 +92,11 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
       <article className={styles.container}>
         <div className={styles.navigation}>
           <Link href="/blog" className={styles.backLink}>
-            <FaChevronLeft />
+            <Icon icon={ICON_ARROW_LEFT} />
             Back to Blog
           </Link>
           <button onClick={handleShare} className={styles.shareButton}>
-            <FaShareNodes />
+            <Icon icon={ICON_SHARE} />
             Share
           </button>
           {shareMessage && (
@@ -128,7 +129,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
           <div className={styles.meta}>
             <div className={styles.authorInfo}>
               <div className={styles.authorAvatar}>
-                <FaUser />
+                <Icon icon={ICON_USER} />
               </div>
               <div className={styles.authorDetails}>
                 <span className={styles.authorName}>{blog.author}</span>
@@ -136,7 +137,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
               </div>
             </div>
             <div className={styles.readTime}>
-              <FaClock />
+              <Icon icon={ICON_CLOCK} />
               <span>{blog.readTime} min read</span>
             </div>
           </div>
@@ -148,13 +149,13 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
         <footer className={styles.footer}>
           <div className={styles.footerMeta}>
             <span className={styles.metaItem}>
-              <FaCalendar />
+              <Icon icon={ICON_CALENDAR} />
               Published on {formatDate(blog.createdAt)}
             </span>
           </div>
           <div className={styles.footerActions}>
             <button onClick={handleShare} className={styles.shareButtonLarge}>
-              <FaShareNodes />
+              <Icon icon={ICON_SHARE} />
               Share this article
             </button>
           </div>
@@ -162,7 +163,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
 
         <div className={styles.backToBlogs}>
           <Link href="/blog" className={styles.backButton}>
-            <FaChevronLeft />
+            <Icon icon={ICON_ARROW_LEFT} />
             Back to all blogs
           </Link>
         </div>

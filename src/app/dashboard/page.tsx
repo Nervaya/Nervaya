@@ -1,8 +1,15 @@
 'use client';
 
 import { useMemo } from 'react';
-import { FaClipboardList, FaCalendarCheck, FaHeartPulse, FaArrowRight, FaBed } from 'react-icons/fa6';
-import { FaShoppingBag } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import {
+  ICON_CLIPBOARD,
+  ICON_CALENDAR,
+  ICON_HEART_PULSE,
+  ICON_ARROW_RIGHT,
+  ICON_BED,
+  ICON_SHOPPING_BAG,
+} from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { StatTile } from '@/components/Dashboard/StatTile';
@@ -41,11 +48,11 @@ export default function DashboardPage() {
       timeLabel: it.timeLabel,
       icon:
         it.iconKey === 'session' ? (
-          <FaCalendarCheck aria-hidden />
+          <Icon icon={ICON_CALENDAR} aria-hidden />
         ) : it.iconKey === 'order' ? (
-          <FaShoppingBag aria-hidden />
+          <Icon icon={ICON_SHOPPING_BAG} aria-hidden />
         ) : (
-          <FaClipboardList aria-hidden />
+          <Icon icon={ICON_CLIPBOARD} aria-hidden />
         ),
     }));
   }, [recentActivity]);
@@ -94,7 +101,7 @@ export default function DashboardPage() {
                   })()
                 : 'Book your next appointment anytime.'
             }
-            icon={<FaCalendarCheck aria-hidden />}
+            icon={<Icon icon={ICON_CALENDAR} aria-hidden />}
             cta={{ label: 'My sessions', href: '/account' }}
           />
 
@@ -102,7 +109,7 @@ export default function DashboardPage() {
             title="Sessions summary"
             value={`${sessionCounts.completed} completed`}
             subtitle={`${sessionCounts.pending} pending • ${sessionCounts.confirmed} confirmed • ${sessionCounts.cancelled} cancelled`}
-            icon={<FaHeartPulse aria-hidden />}
+            icon={<Icon icon={ICON_HEART_PULSE} aria-hidden />}
             cta={{ label: 'Book therapist', href: '/therapy-corner' }}
           />
 
@@ -114,7 +121,7 @@ export default function DashboardPage() {
                 ? `Latest: ${latestOrder.orderStatus} • ₹${Math.round(latestOrder.totalAmount)}`
                 : "No orders yet — browse supplements when you're ready."
             }
-            icon={<FaShoppingBag aria-hidden />}
+            icon={<Icon icon={ICON_SHOPPING_BAG} aria-hidden />}
             cta={{ label: 'My orders', href: '/account' }}
           />
 
@@ -122,7 +129,7 @@ export default function DashboardPage() {
             title="Sleep assessment"
             value={assessmentTile.value}
             subtitle={assessmentTile.subtitle}
-            icon={<FaBed aria-hidden />}
+            icon={<Icon icon={ICON_BED} aria-hidden />}
             cta={{ label: assessmentTile.ctaLabel, href: '/sleep-assessment' }}
           />
         </div>
@@ -137,7 +144,7 @@ export default function DashboardPage() {
               Explore what Nervaya offers. <span className={styles.muted}>Your activity will show up here.</span>
             </p>
             <span className={styles.inlineHint}>
-              Go to <span className={styles.accent}>Therapy Corner</span> <FaArrowRight aria-hidden />
+              Go to <span className={styles.accent}>Therapy Corner</span> <Icon icon={ICON_ARROW_RIGHT} aria-hidden />
             </span>
           </div>
         )}

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { IoChevronBack } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import BlogForm from '@/components/Admin/BlogForm';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -81,7 +82,7 @@ export default function AddBlogPage() {
         subtitle="Add a new blog post to your platform"
         actions={
           <Link href="/admin/blogs" className={styles.backLink}>
-            <IoChevronBack aria-hidden />
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             Back to Blogs
           </Link>
         }

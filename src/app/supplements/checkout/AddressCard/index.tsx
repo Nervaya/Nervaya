@@ -1,7 +1,8 @@
 'use client';
 
 import type { ShippingAddress } from '@/types/supplement.types';
-import { FaHouse, FaPenToSquare } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_HOUSE, ICON_PEN } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface AddressCardProps {
@@ -17,7 +18,7 @@ export function AddressCard({ address, label = 'Home Address', isDefault, onEdit
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <span className={styles.icon} aria-hidden>
-            <FaHouse />
+            <Icon icon={ICON_HOUSE} aria-hidden />
           </span>
           <div>
             <h3 className={styles.label}>{label}</h3>
@@ -25,7 +26,7 @@ export function AddressCard({ address, label = 'Home Address', isDefault, onEdit
           </div>
         </div>
         <button type="button" className={styles.editButton} onClick={onEdit} aria-label="Edit address">
-          <FaPenToSquare aria-hidden />
+          <Icon icon={ICON_PEN} aria-hidden />
         </button>
       </div>
       <div className={styles.body}>

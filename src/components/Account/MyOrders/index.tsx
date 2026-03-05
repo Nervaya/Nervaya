@@ -8,7 +8,8 @@ import api from '@/lib/axios';
 import Pagination from '@/components/common/Pagination';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
-import { FaShoppingBag } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_SHOPPING_BAG } from '@/constants/icons';
 
 export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -67,7 +68,7 @@ export default function MyOrders() {
         <h2 className={styles.heading}>My Orders</h2>
         <div className={styles.emptyState}>
           <div className={styles.iconWrapper}>
-            <FaShoppingBag className={styles.icon} />
+            <Icon icon={ICON_SHOPPING_BAG} className={styles.icon} />
           </div>
           <h3 className={styles.emptyTitle}>No orders yet</h3>
           <p className={styles.emptyText}>Your product purchases will appear here</p>

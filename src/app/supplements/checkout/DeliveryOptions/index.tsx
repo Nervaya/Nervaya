@@ -1,7 +1,8 @@
 'use client';
 
 import type { DeliveryMethod } from '@/types/supplement.types';
-import { FaBox } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_BOX } from '@/constants/icons';
 import { formatPrice } from '@/utils/cart.util';
 import { getShippingCost } from '@/utils/shipping.util';
 import styles from './styles.module.css';
@@ -24,7 +25,7 @@ export function DeliveryOptions({ selectedMethod, onSelect, subtotal }: Delivery
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <span className={styles.headerIcon} aria-hidden>
-          <FaBox />
+          <Icon icon={ICON_BOX} />
         </span>
         <h3 className={styles.headerTitle}>Delivery Options</h3>
       </div>

@@ -12,7 +12,8 @@ import { CheckoutSavedAddresses } from './CheckoutSavedAddresses';
 import { AddressCard } from './AddressCard';
 import { DeliveryOptions } from './DeliveryOptions';
 import { PromoCode } from './PromoCode';
-import { FaChevronLeft } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT } from '@/constants/icons';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 
@@ -98,7 +99,7 @@ export default function CheckoutPage() {
       <div className={styles.container}>
         <PageHeader title="Checkout" />
         <Link href="/supplements/cart" className={styles.backToCartLink}>
-          <FaChevronLeft aria-hidden />
+          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
           Back to cart
         </Link>
         {error && <div className={styles.error}>{error}</div>}

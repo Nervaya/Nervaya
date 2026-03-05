@@ -8,8 +8,9 @@ import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
-import { FaArrowLeft } from 'react-icons/fa6';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -56,7 +57,7 @@ export default function TherapistSlotsPage() {
         <div className={styles.error}>
           <p>{error || 'Therapist not found'}</p>
           <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <FaArrowLeft />
+            <Icon icon={ICON_ARROW_LEFT} />
             Back to Therapists
           </button>
         </div>
@@ -71,7 +72,7 @@ export default function TherapistSlotsPage() {
         subtitle={`Therapist: ${therapist.name}`}
         actions={
           <button type="button" onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <FaArrowLeft aria-hidden />
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             Back to Therapists
           </button>
         }

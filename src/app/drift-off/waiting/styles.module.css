@@ -24,8 +24,8 @@
 }
 
 .retryBtn {
-  background: var(--color-primary, #7c3aed);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-foreground);
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -35,7 +35,7 @@
 }
 
 .retryBtn:hover {
-  background: var(--color-primary-hover, #6d28d9);
+  background: var(--color-accent-hover);
 }
 
 .waitingContainer {
@@ -45,11 +45,13 @@
 }
 
 .waitingCard {
-  background: var(--color-card, #fff);
+  background: var(--color-glass-bg);
   border-radius: 20px;
   padding: 3rem 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-border, #e5e7eb);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
 }
 
 .waitingHeader {
@@ -74,7 +76,7 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: var(--font-size-4xl);
   font-weight: 800;
   color: var(--color-foreground);
   margin: 0 0 1rem 0;
@@ -82,8 +84,8 @@
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: var(--color-muted-foreground, #6b7280);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.6;
   max-width: 600px;
@@ -120,12 +122,12 @@
 }
 
 .statusDot.active {
-  background: var(--color-primary, #7c3aed);
+  background: var(--color-accent);
   animation: pulse 2s infinite;
 }
 
 .statusDot.pending {
-  background: #e5e7eb;
+  background: var(--color-text-dim);
 }
 
 @keyframes pulse {
@@ -140,7 +142,7 @@
 
 .statusText {
   font-size: 0.85rem;
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
@@ -152,10 +154,10 @@
 }
 
 .infoCard {
-  background: var(--color-muted, #f9fafb);
+  background: var(--color-card-bg-light);
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid var(--color-border, #e5e7eb);
+  border: 1px solid var(--color-glass-border);
 }
 
 .infoTitle {
@@ -175,7 +177,7 @@
   position: relative;
   padding-left: 1.5rem;
   margin-bottom: 0.75rem;
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -184,26 +186,26 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: var(--color-primary, #7c3aed);
+  color: var(--color-accent);
   font-weight: 600;
 }
 
 .actionSection {
   text-align: center;
   padding: 2rem 0;
-  border-top: 1px solid var(--color-border, #e5e7eb);
+  border-top: 1px solid var(--color-glass-border);
   margin-bottom: 2rem;
 }
 
 .actionText {
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   margin-bottom: 1rem;
   font-size: 0.95rem;
 }
 
 .actionBtn {
-  background: var(--color-primary, #7c3aed);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-foreground);
   border: none;
   padding: 0.75rem 2rem;
   border-radius: 8px;
@@ -214,18 +216,18 @@
 }
 
 .actionBtn:hover {
-  background: var(--color-primary-hover, #6d28d9);
+  background: var(--color-accent-hover);
   transform: translateY(-1px);
 }
 
 .supportSection {
   text-align: center;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--color-border, #e5e7eb);
+  border-top: 1px solid var(--color-glass-border);
 }
 
 .supportText {
-  color: var(--color-muted-foreground, #6b7280);
+  color: var(--color-text-muted);
   font-size: 0.85rem;
   margin: 0;
 }
@@ -236,11 +238,11 @@
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-3xl);
   }
 
   .subtitle {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .statusSection {

@@ -2,9 +2,13 @@ import mongoose from 'mongoose';
 import { v4 } from 'uuid';
 
 // MongoDB connection
-const MONGODB_URI =
-  process.env.MONGODB_URI ||
-  'mongodb+srv://backendintern_db_user:Lfb9f7tvoY71TTX4@tapza-pharmacy.jegm7jk.mongodb.net/nervaya';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    'MONGODB_URI environment variable is required. Run with: MONGODB_URI=... node scripts/update-drift-off-questions.js',
+  );
+}
 
 const questionOptionSchema = new mongoose.Schema(
   {

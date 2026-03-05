@@ -1,8 +1,8 @@
 'use client';
 
 import styles from './styles.module.css';
-import { FaWhatsapp } from 'react-icons/fa6';
-import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_WHATSAPP, ICON_CHAT } from '@/constants/icons';
 import Button from '@/components/common/Button/Button';
 
 const ChatWithUs = () => {
@@ -16,7 +16,7 @@ const ChatWithUs = () => {
     <section className={styles.supportSection}>
       <div className={styles.chatBanner}>
         <div className={styles.whatsappIconContainer}>
-          <FaWhatsapp className={styles.whatsappIcon} />
+          <Icon icon={ICON_WHATSAPP} className={styles.whatsappIcon} />
         </div>
         <div className={styles.bannerText}>
           <span className={styles.chatBadge}>WhatsApp</span>
@@ -29,7 +29,7 @@ const ChatWithUs = () => {
       <div className={styles.supportCard}>
         <div className={styles.cardHeader}>
           <div className={styles.cardIcon}>
-            <IoChatbubbleEllipsesOutline />
+            <Icon icon={ICON_CHAT} width={24} height={24} />
           </div>
           <h3 className={styles.cardTitle}>Get Instant Support</h3>
         </div>
@@ -40,7 +40,7 @@ const ChatWithUs = () => {
       </div>
       <div className={styles.buttonContainer}>
         <Button variant="primary" className={styles.whatsappButton} onClick={handleWhatsAppClick}>
-          <IoChatbubbleEllipsesOutline className={styles.buttonIcon} />
+          <Icon icon={ICON_CHAT} width={20} height={20} className={styles.buttonIcon} />
           <span className={styles.buttonTextDesktop}>Chat with Us on WhatsApp</span>
           <span className={styles.buttonTextMobile}>Chat on WhatsApp</span>
         </Button>

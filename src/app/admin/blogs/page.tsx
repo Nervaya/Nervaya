@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { FaPlus } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_ADD } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -107,7 +108,7 @@ export default function AdminBlogsPage() {
         subtitle="Manage blog posts and content"
         actions={
           <Link href="/admin/blogs/add" className={styles.addButton}>
-            <FaPlus aria-hidden />
+            <Icon icon={ICON_ADD} aria-hidden />
             New Blog
           </Link>
         }
