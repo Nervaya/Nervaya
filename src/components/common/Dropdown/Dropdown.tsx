@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useId } from 'react';
-import { IoChevronDown, IoCheckmark } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_DOWN, ICON_CHECK } from '@/constants/icons';
 import styles from './Dropdown.module.css';
 
 export interface DropdownOption {
@@ -82,7 +83,13 @@ export default function Dropdown({
         disabled={disabled}
       >
         <span className={styles.triggerValue}>{displayLabel}</span>
-        <IoChevronDown className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} aria-hidden />
+        <Icon
+          icon={ICON_ARROW_DOWN}
+          className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
+          aria-hidden
+          width={20}
+          height={20}
+        />
       </button>
       {open && (
         <div
@@ -111,7 +118,7 @@ export default function Dropdown({
                 }}
               >
                 <span className={styles.optionLabel}>{opt.label}</span>
-                {isSelected && <IoCheckmark className={styles.check} aria-hidden />}
+                {isSelected && <Icon icon={ICON_CHECK} className={styles.check} aria-hidden width={16} height={16} />}
               </div>
             );
           })}

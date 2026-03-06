@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import { IoAdd, IoClose } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ADD, ICON_CLOSE } from '@/constants/icons';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import LottieLoader from '@/components/common/LottieLoader';
 import { quillModules, quillFormats } from '@/lib/constants/blogEditor.constants';
@@ -147,7 +148,7 @@ export default function BlogForm({
                 placeholder="Add a tag..."
               />
               <button type="button" onClick={onAddTag} className={styles.addTagButton}>
-                <IoAdd />
+                <Icon icon={ICON_ADD} width={20} height={20} />
               </button>
             </div>
             {tags.length > 0 && (
@@ -156,7 +157,7 @@ export default function BlogForm({
                   <span key={tag} className={styles.tag}>
                     {tag}
                     <button type="button" onClick={() => onRemoveTag(tag)} className={styles.removeTagButton}>
-                      <IoClose />
+                      <Icon icon={ICON_CLOSE} width={16} height={16} />
                     </button>
                   </span>
                 ))}

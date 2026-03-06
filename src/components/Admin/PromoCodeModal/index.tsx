@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { FaXmark } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CLOSE } from '@/constants/icons';
 import type { CreatePromoCodeDto, PromoCode } from '@/types/supplement.types';
 import PromoCodeForm from '../PromoCodeForm';
 import styles from './styles.module.css';
@@ -62,7 +63,7 @@ const PromoCodeModal: React.FC<PromoCodeModalProps> = ({
             <p className={styles.subtitle}>Fill in the details below</p>
           </div>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close modal" title="Close">
-            <FaXmark className={styles.closeIcon} />
+            <Icon icon={ICON_CLOSE} className={styles.closeIcon} />
           </button>
         </div>
         <div className={styles.content}>

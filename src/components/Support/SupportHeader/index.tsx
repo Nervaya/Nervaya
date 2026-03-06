@@ -1,4 +1,5 @@
-import { IoHeadsetOutline } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_HEADSET } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const SupportHeader = () => {
@@ -6,7 +7,7 @@ const SupportHeader = () => {
     <header className={styles.header}>
       <div className={styles.headerContent}>
         <div className={styles.headerBadge}>
-          <IoHeadsetOutline className={styles.badgeIcon} />
+          <Icon icon={ICON_HEADSET} className={styles.badgeIcon} />
           <span className={styles.badgeText}>Support</span>
         </div>
         <h1 className={styles.headerTitle}>We&apos;re Here to Help</h1>

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { FaTableCells, FaList, FaFilter } from 'react-icons/fa6';
-import { IoClose } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_GRID, ICON_LIST, ICON_FILTER, ICON_CLOSE, ICON_WHATSAPP } from '@/constants/icons';
 import { Dropdown } from '@/components/common';
 import SupplementFilters, { type PriceRange } from '../SupplementFilters';
 import { trackSearch } from '@/utils/analytics';
@@ -94,7 +94,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             aria-expanded={popoverOpen}
             aria-haspopup="dialog"
           >
-            <FaFilter aria-hidden />
+            <Icon icon={ICON_FILTER} width={16} height={16} aria-hidden />
             <span>Filters</span>
           </button>
           {popoverOpen && (
@@ -111,7 +111,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             aria-label="Grid view"
             aria-pressed={viewMode === 'grid'}
           >
-            <FaTableCells aria-hidden />
+            <Icon icon={ICON_GRID} width={16} height={16} aria-hidden />
           </button>
           <button
             type="button"
@@ -120,7 +120,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
             aria-label="List view"
             aria-pressed={viewMode === 'list'}
           >
-            <FaList aria-hidden />
+            <Icon icon={ICON_LIST} width={16} height={16} aria-hidden />
           </button>
         </div>
         <div className={styles.sortGroup}>
@@ -138,11 +138,12 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
           <div className={styles.filterHeader}>
             <span className={styles.filterTitle}>Shop by price</span>
             <button type="button" className={styles.filterClose} onClick={closeFilter} aria-label="Close filter">
-              <IoClose aria-hidden />
+              <Icon icon={ICON_CLOSE} width={16} height={16} aria-hidden />
             </button>
           </div>
           <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />
           <button type="button" className={styles.filterDone} onClick={closeFilter} aria-label="Close price filter">
+            <Icon icon={ICON_WHATSAPP} width={20} height={20} className={styles.buttonIcon} />
             Done
           </button>
         </div>

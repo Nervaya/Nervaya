@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { FaRegComment, FaRegUser, FaRegEnvelope } from 'react-icons/fa6';
-import { IoVideocamOutline } from 'react-icons/io5';
-import { CiCalendar } from 'react-icons/ci';
+import { Icon } from '@iconify/react';
+import { ICON_CHAT, ICON_USER, ICON_MAIL, ICON_CALENDAR, ICON_VIDEO } from '@/constants/icons';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
 import { Dropdown } from '@/components/common';
@@ -43,7 +42,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
         <div className={styles.cardHeader}>
           <div className={styles.headerLeft}>
             <div className={styles.titleWrapper}>
-              <FaRegComment className={styles.titleIcon} />
+              <Icon icon={ICON_CHAT} className={styles.titleIcon} />
               <h2 className={styles.formTitle}>Free 1 on 1 Assistance</h2>
             </div>
             <p className={styles.formSubtitle}>
@@ -61,7 +60,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
             <div className={styles.formLeft}>
               <Input
                 label="First Name"
-                labelIcon={<FaRegUser className={styles.labelIcon} />}
+                labelIcon={<Icon icon={ICON_USER} className={styles.labelIcon} />}
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -73,7 +72,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
 
               <Input
                 label="Last Name"
-                labelIcon={<FaRegUser className={styles.labelIcon} />}
+                labelIcon={<Icon icon={ICON_USER} className={styles.labelIcon} />}
                 type="text"
                 name="lastName"
                 value={formData.lastName}
@@ -85,11 +84,11 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
 
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>
-                  <CiCalendar className={styles.labelIcon} />
+                  <Icon icon={ICON_CALENDAR} className={styles.labelIcon} />
                   How would you like to connect?
                 </label>
                 <div className={styles.selectWrapper}>
-                  <IoVideocamOutline className={styles.selectIcon} aria-hidden />
+                  <Icon icon={ICON_VIDEO} className={styles.selectIcon} aria-hidden />
                   <Dropdown
                     id="connectionType"
                     options={connectionOptions}
@@ -106,7 +105,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
               <div className={styles.inputGroup}>
                 <Input
                   label="Email Address"
-                  labelIcon={<FaRegEnvelope className={styles.labelIcon} />}
+                  labelIcon={<Icon icon={ICON_MAIL} className={styles.labelIcon} />}
                   type="email"
                   name="email"
                   value={formData.email}
@@ -131,7 +130,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
 
           <div className={styles.formFooter}>
             <Button type="submit" variant="primary" className={styles.submitButton}>
-              <CiCalendar className={styles.buttonIcon} />
+              <Icon icon={ICON_CALENDAR} className={styles.buttonIcon} />
               Schedule Free Consultation
             </Button>
             <p className={styles.footerText}>We&apos;ll respond within 24 hours to confirm your appointment</p>

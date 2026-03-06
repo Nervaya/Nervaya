@@ -39,7 +39,7 @@
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: var(--font-size-4xl);
   font-weight: 600;
   color: #f8fafc;
   margin: 0;
@@ -49,13 +49,13 @@
 
 @media (max-width: 768px) {
   .title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-3xl);
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-3xl);
   }
 }
 

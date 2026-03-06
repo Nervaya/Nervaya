@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import Script from 'next/script';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { paymentsApi } from '@/lib/api/payments';
-import { RazorpayPaymentResponse } from '@/types/payment.types';
+import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { trackPaymentFailed } from '@/utils/analytics';
+import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
+import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
 import styles from './styles.module.css';
 
 interface PaymentHandlerProps {
@@ -18,25 +19,6 @@ interface PaymentHandlerProps {
   userPhone?: string;
   onSuccess?: (paymentId: string) => void;
   onError?: (error: string) => void;
-}
-
-interface RazorpayOptions {
-  key: string;
-  amount: number;
-  currency: string;
-  name?: string;
-  description?: string;
-  order_id: string;
-  prefill?: { name?: string; email?: string; contact?: string };
-  handler?: (response: RazorpayPaymentResponse) => void;
-  theme?: { color?: string };
-  modal?: { ondismiss?: () => void };
-}
-
-declare global {
-  interface Window {
-    Razorpay: new (options: RazorpayOptions) => { open: () => void };
-  }
 }
 
 const PaymentHandler: React.FC<PaymentHandlerProps> = ({
@@ -52,77 +34,54 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 }) => {
   const router = useRouter();
 
-  const handlePayment = React.useCallback(async () => {
-    if (!window.Razorpay) {
-      onError?.('Razorpay SDK not loaded');
-      return;
-    }
+  const handleSuccess = useCallback(
+    async (response: RazorpayPaymentResponse) => {
+      try {
+        const result = await paymentsApi.verify({
+          orderId,
+          paymentId: response.razorpay_payment_id,
+          razorpaySignature: response.razorpay_signature,
+        });
 
-    const options = {
-      key: razorpayKeyId,
-      amount: Math.round(amount * 100),
-      currency: 'INR',
-      name: 'Nervaya',
-      description: `Order #${orderId}`,
-      order_id: razorpayOrderId,
-      handler: async (response: RazorpayPaymentResponse) => {
-        try {
-          const result = await paymentsApi.verify({
-            orderId,
-            paymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-          });
-
-          if (result.success) {
-            onSuccess?.(response.razorpay_payment_id);
-            router.push(`/supplements/order-success/${orderId}`);
-          } else {
-            const reason = result.message || 'Payment verification failed';
-            trackPaymentFailed({ order_id: orderId, reason });
-            onError?.(reason);
-          }
-        } catch (_error) {
-          trackPaymentFailed({ order_id: orderId, reason: 'Failed to verify payment' });
-          onError?.('Failed to verify payment');
+        if (result.success) {
+          onSuccess?.(response.razorpay_payment_id);
+          router.push(`/supplements/order-success/${orderId}`);
+        } else {
+          const reason = result.message || 'Payment verification failed';
+          trackPaymentFailed({ order_id: orderId, reason });
+          onError?.(reason);
         }
-      },
-      prefill: {
-        name: userName || '',
-        email: userEmail || '',
-        contact: userPhone || '',
-      },
-      theme: {
-        color: '#7c3aed',
-      },
-      modal: {
-        ondismiss: () => {
-          trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
-          onError?.('Payment cancelled');
-        },
-      },
-    };
+      } catch (_error) {
+        trackPaymentFailed({ order_id: orderId, reason: 'Failed to verify payment' });
+        onError?.('Failed to verify payment');
+      }
+    },
+    [orderId, onSuccess, onError, router],
+  );
 
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
-  }, [razorpayKeyId, amount, orderId, razorpayOrderId, userName, userEmail, userPhone, onSuccess, onError, router]);
-
-  useEffect(() => {
-    if (window.Razorpay && razorpayOrderId) {
-      handlePayment();
-    }
-  }, [razorpayOrderId, handlePayment]);
+  const { openPaymentModal } = useRazorpayCheckout({
+    razorpayKeyId,
+    razorpayOrderId,
+    amount,
+    name: 'Nervaya',
+    description: `Order #${orderId}`,
+    prefill: {
+      name: userName,
+      email: userEmail,
+      contact: userPhone,
+    },
+    onSuccess: handleSuccess,
+    onError,
+    onDismiss: () => {
+      trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
+      onError?.('Payment cancelled');
+    },
+    autoOpen: true,
+  });
 
   return (
     <>
-      <Script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
-        onLoad={() => {
-          if (razorpayOrderId && razorpayKeyId) {
-            handlePayment();
-          }
-        }}
-      />
+      <RazorpayCheckoutScript onLoad={() => openPaymentModal()} />
       <div className={styles.loading}>
         <p>Opening payment gateway...</p>
       </div>

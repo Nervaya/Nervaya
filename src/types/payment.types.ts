@@ -51,10 +51,19 @@ export interface RazorpayOptions {
   theme: {
     color: string;
   };
+  modal?: {
+    ondismiss?: () => void;
+  };
 }
 
 export interface RazorpayPaymentResponse {
   razorpay_payment_id: string;
   razorpay_order_id: string;
   razorpay_signature: string;
+}
+
+declare global {
+  interface Window {
+    Razorpay: new (options: RazorpayOptions) => { open: () => void };
+  }
 }

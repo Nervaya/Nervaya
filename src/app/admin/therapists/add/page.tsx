@@ -7,7 +7,8 @@ import { therapistsApi } from '@/lib/api/therapists';
 import styles from './styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { FaArrowLeft, FaUserPlus } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_USER_PLUS } from '@/constants/icons';
 
 export default function AddTherapistPage() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function AddTherapistPage() {
         subtitle="Create a new therapist profile for your platform"
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
-            <FaArrowLeft aria-hidden />
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             <span>Back to Therapists</span>
           </Link>
         }
@@ -213,7 +214,7 @@ export default function AddTherapistPage() {
               </span>
             ) : (
               <span className={styles.buttonContent}>
-                <FaUserPlus />
+                <Icon icon={ICON_USER_PLUS} />
                 <span>Create Therapist</span>
               </span>
             )}

@@ -7,7 +7,8 @@ import MySessions from '@/components/Account/MySessions';
 import MyOrders from '@/components/Account/MyOrders';
 import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
-import { FaUser, FaEnvelope, FaSave, FaLock } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_USER, ICON_MAIL, ICON_SAVE, ICON_LOCK } from '@/constants/icons';
 import { useAuth } from '@/hooks/useAuth';
 import api from '@/lib/axios';
 import { AUTH_API } from '@/lib/constants/api.constants';
@@ -145,7 +146,7 @@ export default function AccountPage() {
               <div className={styles.settingsCol}>
                 <div className={styles.inputGroup}>
                   <label className={styles.label} htmlFor="account-name">
-                    <FaUser className={styles.icon} /> Full Name
+                    <Icon icon={ICON_USER} className={styles.icon} /> Full Name
                   </label>
                   <input
                     id="account-name"
@@ -159,7 +160,7 @@ export default function AccountPage() {
                 </div>
 
                 <h2 className={styles.sectionTitle}>
-                  <FaLock className={styles.icon} /> Change password
+                  <Icon icon={ICON_LOCK} className={styles.icon} /> Change password
                 </h2>
                 <form onSubmit={handlePasswordSubmit} className={styles.passwordForm}>
                   <div className={styles.inputGroup}>
@@ -234,7 +235,7 @@ export default function AccountPage() {
                     </p>
                   )}
                   <button type="submit" className={styles.saveBtn} disabled={passwordLoading}>
-                    <FaLock /> {passwordLoading ? 'Updating…' : 'Change password'}
+                    <Icon icon={ICON_LOCK} /> {passwordLoading ? 'Updating…' : 'Change password'}
                   </button>
                 </form>
               </div>
@@ -243,7 +244,7 @@ export default function AccountPage() {
                 <form onSubmit={handleProfileSubmit} className={styles.profileFormCol}>
                   <div className={styles.inputGroup}>
                     <label className={styles.label} htmlFor="account-email">
-                      <FaEnvelope className={styles.icon} /> Email Address
+                      <Icon icon={ICON_MAIL} className={styles.icon} /> Email Address
                     </label>
                     <input
                       id="account-email"
@@ -266,7 +267,7 @@ export default function AccountPage() {
                     </p>
                   )}
                   <button type="submit" className={styles.saveBtn} disabled={profileLoading || !user}>
-                    <FaSave /> {profileLoading ? 'Saving…' : 'Save profile'}
+                    <Icon icon={ICON_SAVE} /> {profileLoading ? 'Saving…' : 'Save profile'}
                   </button>
                 </form>
               </div>

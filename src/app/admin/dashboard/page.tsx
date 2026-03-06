@@ -1,6 +1,7 @@
 'use client';
 
-import { FaBoxOpen, FaCalendarCheck, FaPills, FaUsers, FaIndianRupeeSign } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_BOX, ICON_CALENDAR, ICON_PILL, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import LottieLoader from '@/components/common/LottieLoader';
 import StatusState from '@/components/common/StatusState';
@@ -63,13 +64,13 @@ export default function AdminDashboardPage() {
           title="Total Orders"
           value={orders.total}
           subtitle={`Pending: ${orders.byStatus?.pending ?? 0} · Confirmed: ${orders.byStatus?.confirmed ?? 0}`}
-          icon={<FaBoxOpen />}
+          icon={<Icon icon={ICON_BOX} />}
         />
         <StatsCard
           title="Total Revenue"
           value={formatPrice(revenue.total)}
           subtitle={`This month: ${formatPrice(revenue.thisMonth)}`}
-          icon={<FaIndianRupeeSign />}
+          icon={<Icon icon={ICON_RUPEE} />}
           trend={revenue.growthPercent >= 0 ? 'up' : 'down'}
           trendLabel={
             revenue.growthPercent >= 0
@@ -81,19 +82,19 @@ export default function AdminDashboardPage() {
           title="Sessions"
           value={sessions.total}
           subtitle={`Upcoming: ${sessions.upcomingCount} · Completed: ${sessions.completedCount}`}
-          icon={<FaCalendarCheck />}
+          icon={<Icon icon={ICON_CALENDAR} />}
         />
         <StatsCard
           title="Supplements"
           value={supplements.total}
           subtitle={`Active: ${supplements.activeCount} · Low stock: ${supplements.lowStockCount}`}
-          icon={<FaPills />}
+          icon={<Icon icon={ICON_PILL} />}
         />
         <StatsCard
           title="Users"
           value={users.total}
           subtitle={`Customers: ${users.customers} · Admins: ${users.admins}`}
-          icon={<FaUsers />}
+          icon={<Icon icon={ICON_USERS_GROUP} />}
         />
       </section>
 

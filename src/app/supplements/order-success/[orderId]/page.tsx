@@ -4,7 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { FaGlobe, FaTruck, FaEnvelope, FaBox, FaCalendarDay, FaHouse } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_GLOBE, ICON_TRUCK, ICON_ENVELOPE, ICON_BOX, ICON_CALENDAR_DAY, ICON_HOUSE } from '@/constants/icons';
 import { Order, OrderItem } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import { ordersApi } from '@/lib/api/orders';
@@ -156,7 +157,7 @@ export default function OrderSuccessPage() {
 
             <div className={styles.orderSection}>
               <h3 className={styles.sectionTitle}>
-                <FaGlobe className={styles.sectionIcon} aria-hidden />
+                <Icon icon={ICON_GLOBE} className={styles.sectionIcon} aria-hidden />
                 Order Items
               </h3>
               <ul className={styles.itemsList} aria-label="Order items">
@@ -172,7 +173,7 @@ export default function OrderSuccessPage() {
 
             <div className={styles.orderSection}>
               <h3 className={styles.sectionTitle}>
-                <FaTruck className={styles.sectionIcon} aria-hidden />
+                <Icon icon={ICON_TRUCK} className={styles.sectionIcon} aria-hidden />
                 Shipping Address
               </h3>
               <address className={styles.address}>
@@ -223,19 +224,19 @@ export default function OrderSuccessPage() {
             <div className={styles.nextSteps}>
               <div className={styles.nextStepCard}>
                 <div className={styles.stepIcon} aria-hidden>
-                  <FaEnvelope />
+                  <Icon icon={ICON_ENVELOPE} />
                 </div>
                 <p>We&apos;ve sent a confirmation email to {userEmail}.</p>
               </div>
               <div className={styles.nextStepCard}>
                 <div className={styles.stepIcon} aria-hidden>
-                  <FaBox />
+                  <Icon icon={ICON_BOX} />
                 </div>
                 <p>Your order is being prepared and will ship within 1–2 business days.</p>
               </div>
               <div className={styles.nextStepCard}>
                 <div className={styles.stepIcon} aria-hidden>
-                  <FaCalendarDay />
+                  <Icon icon={ICON_CALENDAR_DAY} />
                 </div>
                 <p>Expected arrival in 5–7 business days.</p>
               </div>
@@ -244,7 +245,7 @@ export default function OrderSuccessPage() {
 
           <div className={styles.actions}>
             <Link href="/supplements" className={styles.primaryButton}>
-              <FaHouse aria-hidden />
+              <Icon icon={ICON_HOUSE} aria-hidden />
               Continue Shopping
             </Link>
             <p className={styles.supportText}>

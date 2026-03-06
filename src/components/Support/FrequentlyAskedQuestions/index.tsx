@@ -1,9 +1,10 @@
 'use client';
 
 import { useReducer } from 'react';
-import styles from './styles.module.css';
-import { IoAdd, IoRemove } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ADD, ICON_REMOVE } from '@/constants/icons';
 import { faqData } from '@/utils/faqData';
+import styles from './styles.module.css';
 
 type FAQState = {
   expandedId: number | null;
@@ -60,7 +61,11 @@ const FrequentlyAskedQuestions = () => {
                   aria-label={isExpanded ? 'Collapse answer' : 'Expand answer'}
                   data-button-id={item.id}
                 >
-                  {isExpanded ? <IoRemove className={styles.toggleIcon} /> : <IoAdd className={styles.toggleIcon} />}
+                  {isExpanded ? (
+                    <Icon icon={ICON_REMOVE} className={styles.toggleIcon} />
+                  ) : (
+                    <Icon icon={ICON_ADD} className={styles.toggleIcon} />
+                  )}
                 </button>
               </div>
               {isExpanded && (

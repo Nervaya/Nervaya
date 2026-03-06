@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { FaHeartPulse, FaPills, FaClipboardList } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CHAT, ICON_USER, ICON_CLIPBOARD } from '@/constants/icons';
 import styles from './QuickActions.module.css';
 
 export function QuickActions() {
@@ -11,16 +12,16 @@ export function QuickActions() {
       <h2 className={styles.title}>Quick actions</h2>
       <div className={styles.grid}>
         <Link className={styles.action} href="/therapy-corner">
-          <FaHeartPulse aria-hidden />
+          <Icon icon={ICON_CHAT} width={20} height={20} aria-hidden />
           Book a therapist
         </Link>
         <Link className={styles.action} href="/supplements">
-          <FaPills aria-hidden />
+          <Icon icon={ICON_USER} width={20} height={20} aria-hidden />
           Browse supplements
         </Link>
         <Link className={styles.action} href="/sleep-assessment">
-          <FaClipboardList aria-hidden />
-          Take assessment
+          <Icon icon={ICON_CLIPBOARD} width={20} height={20} aria-hidden />
+          Take sleep assessment
         </Link>
       </div>
     </section>

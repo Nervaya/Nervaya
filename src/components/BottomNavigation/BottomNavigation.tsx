@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaChevronUp } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_UP } from '@/constants/icons';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 import { primaryNavItems, moreNavItems, type BottomNavItem } from '@/utils/bottomNavigationConstants';
@@ -115,7 +116,7 @@ const BottomNavigation = () => {
               aria-expanded={isMoreOpen}
             >
               <span className={`${styles.iconWrapper} ${isMoreOpen ? styles.chevronUp : ''}`}>
-                <FaChevronUp className={styles.chevronIcon} />
+                <Icon icon={ICON_ARROW_UP} width={20} height={20} className={styles.chevronIcon} />
               </span>
               <span className={styles.label}>More</span>
             </button>

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { IoChevronBack, IoAdd, IoClose } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_ADD, ICON_CLOSE } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -116,7 +117,7 @@ export default function AddQuestionPage() {
         subtitle="Create a new assessment question"
         actions={
           <Link href="/admin/sleep-assessment" className={styles.backLink}>
-            <IoChevronBack aria-hidden />
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             Back to Questions
           </Link>
         }
@@ -183,7 +184,7 @@ export default function AddQuestionPage() {
           <div className={styles.optionsHeader}>
             <h3 className={styles.optionsTitle}>Options</h3>
             <button type="button" onClick={addOption} className={styles.addOptionButton}>
-              <IoAdd aria-hidden />
+              <Icon icon={ICON_ADD} aria-hidden />
               Add Option
             </button>
           </div>
@@ -209,7 +210,7 @@ export default function AddQuestionPage() {
                     className={styles.removeOptionButton}
                     aria-label="Remove option"
                   >
-                    <IoClose aria-hidden />
+                    <Icon icon={ICON_CLOSE} aria-hidden />
                   </button>
                 )}
               </li>

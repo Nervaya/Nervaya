@@ -1,6 +1,7 @@
 'use client';
 
-import { FaReceipt, FaShieldHalved } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_RECEIPT, ICON_SHIELD } from '@/constants/icons';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
 import { getShippingCost } from '../useCheckout';
 import type { Cart, DeliveryMethod } from '@/types/supplement.types';
@@ -31,7 +32,7 @@ export function CheckoutOrderSummary({
     <div className={styles.summary}>
       <div className={styles.summaryHeader}>
         <span className={styles.summaryHeaderIcon} aria-hidden>
-          <FaReceipt />
+          <Icon icon={ICON_RECEIPT} />
         </span>
         <h2 className={styles.summaryTitle}>Order Summary</h2>
       </div>
@@ -80,7 +81,7 @@ export function CheckoutOrderSummary({
           </Button>
           <p className={styles.securityMessage}>
             <span className={styles.securityIcon} aria-hidden>
-              <FaShieldHalved />
+              <Icon icon={ICON_SHIELD} />
             </span>
             Your payment is secure
           </p>

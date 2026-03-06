@@ -19,6 +19,10 @@
   --font-size-6xl: 2rem;
   --font-size-hero: 3rem;
 
+  --heading-page: var(--font-size-4xl);
+  --heading-section: var(--font-size-3xl);
+  --description: var(--font-size-lg);
+
   --navbar-height: 100px;
   --navbar-padding-x: 40px;
 

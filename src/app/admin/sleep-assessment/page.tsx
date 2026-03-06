@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import { IoAdd, IoDocumentTextOutline, IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -145,7 +146,7 @@ export default function AdminSleepAssessmentPage() {
         subtitle="Manage and configure assessment questions"
         actions={
           <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
-            <IoAdd aria-hidden />
+            <Icon icon={ICON_ADD} aria-hidden />
             Add Question
           </Link>
         }
@@ -157,7 +158,7 @@ export default function AdminSleepAssessmentPage() {
         </div>
       ) : questions.length === 0 ? (
         <div className={styles.emptyState}>
-          <IoDocumentTextOutline aria-hidden />
+          <Icon icon={ICON_DOCUMENT} aria-hidden />
           <h3>No Questions Yet</h3>
           <p>Create your first assessment question to get started.</p>
           <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
@@ -189,7 +190,7 @@ export default function AdminSleepAssessmentPage() {
               disabled={currentIndex === 0 || isAnimating}
               aria-label="Previous question"
             >
-              <IoChevronBack aria-hidden />
+              <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             </button>
 
             <div className={styles.cardViewport}>
@@ -250,7 +251,7 @@ export default function AdminSleepAssessmentPage() {
               disabled={currentIndex === questions.length - 1 || isAnimating}
               aria-label="Next question"
             >
-              <IoChevronForward aria-hidden />
+              <Icon icon={ICON_ARROW_RIGHT} aria-hidden />
             </button>
           </div>
 

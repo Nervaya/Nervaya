@@ -7,7 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
-import { FaBars, FaChevronLeft, FaChevronRight, FaXmark } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_MENU, ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_CLOSE } from '@/constants/icons';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
@@ -91,7 +92,11 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
           aria-expanded={isMobileOpen}
           aria-controls="app-sidebar"
         >
-          {isMobileOpen ? <FaXmark /> : <FaBars />}
+          {isMobileOpen ? (
+            <Icon icon={ICON_CLOSE} width={24} height={24} />
+          ) : (
+            <Icon icon={ICON_MENU} width={24} height={24} />
+          )}
         </button>
       )}
 
@@ -125,7 +130,11 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                 aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 aria-pressed={isCollapsed}
               >
-                {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+                {isCollapsed ? (
+                  <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} />
+                ) : (
+                  <Icon icon={ICON_ARROW_LEFT} width={20} height={20} />
+                )}
               </button>
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
@@ -144,7 +153,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                                 onClick={closeMobileSidebar}
                               >
                                 <span className={styles.icon}>
-                                  {iconMap[item.icon] || iconMap['FaHouse']}
+                                  <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
                                   {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
                                     <span className={styles.badge}>{cartCount}</span>
                                   )}
@@ -171,7 +180,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                           onClick={closeMobileSidebar}
                         >
                           <span className={styles.icon}>
-                            {iconMap[item.icon] || iconMap['FaHouse']}
+                            <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
                             {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
                               <span className={styles.badge}>{cartCount}</span>
                             )}
@@ -192,7 +201,9 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                             closeMobileSidebar();
                           }}
                         >
-                          <span className={styles.icon}>{iconMap['FaRightFromBracket']}</span>
+                          <span className={styles.icon}>
+                            <Icon icon={iconMap['FaRightFromBracket']} width={20} height={20} />
+                          </span>
                           <span className={styles.title} aria-hidden={isCollapsed}>
                             Logout
                           </span>

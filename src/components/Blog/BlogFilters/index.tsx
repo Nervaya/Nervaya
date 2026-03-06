@@ -1,6 +1,7 @@
 'use client';
 
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_MAGNIFYING_GLASS } from '@/constants/icons';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 
@@ -24,7 +25,7 @@ export default function BlogFilters({
   return (
     <div className={styles.filtersRow}>
       <form onSubmit={onSearchSubmit} className={styles.searchForm}>
-        <FaMagnifyingGlass className={styles.searchIcon} aria-hidden />
+        <Icon icon={ICON_MAGNIFYING_GLASS} className={styles.searchIcon} aria-hidden />
         <input
           type="search"
           value={searchInput}

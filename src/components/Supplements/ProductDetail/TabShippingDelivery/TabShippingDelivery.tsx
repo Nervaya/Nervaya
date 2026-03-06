@@ -1,18 +1,20 @@
 'use client';
 
 import React from 'react';
+import { Icon } from '@iconify/react';
+import { ICON_BOX } from '@/constants/icons';
 import styles from './TabShippingDelivery.module.css';
 
 const SHIPPING_OPTIONS = [
   {
     title: 'Free Standard Shipping',
     description: 'All orders ship free via standard delivery (5-7 business days)',
-    icon: '🚚',
+    icon: ICON_BOX,
   },
   {
     title: 'Express Shipping Available',
     description: 'Get your order in 2-3 business days for $12.99',
-    icon: '📦',
+    icon: ICON_BOX,
   },
 ];
 
@@ -28,7 +30,7 @@ const TabShippingDelivery: React.FC = () => {
           {SHIPPING_OPTIONS.map((opt) => (
             <li key={opt.title} className={styles.option}>
               <span className={styles.optionIcon} aria-hidden>
-                {opt.icon}
+                <Icon icon={opt.icon} width={24} height={24} />
               </span>
               <div>
                 <h4 className={styles.optionTitle}>{opt.title}</h4>

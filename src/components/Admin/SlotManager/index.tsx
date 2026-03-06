@@ -5,7 +5,8 @@ import DatePicker from '@/components/Booking/DatePicker';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
-import { FaCalendarDays, FaCircleCheck, FaClock, FaCalendarXmark, FaPlus } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CALENDAR, ICON_CHECK, ICON_CLOCK, ICON_CLOSE, ICON_ADD } from '@/constants/icons';
 
 interface Schedule {
   date: string;
@@ -198,7 +199,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
 
       {error && (
         <div className={styles.errorBanner}>
-          <FaCalendarXmark />
+          <Icon icon={ICON_CLOSE} width={20} height={20} />
           <span>{error}</span>
         </div>
       )}
@@ -207,7 +208,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
         <div className={styles.topRow}>
           <div className={styles.calendarSection}>
             <h3 className={styles.sectionTitle}>
-              <FaCalendarDays className={styles.sectionIcon} />
+              <Icon icon={ICON_CALENDAR} width={20} height={20} className={styles.sectionIcon} />
               Select Date
             </h3>
             <DatePicker selectedDate={selectedDate} onDateSelect={setSelectedDate} minDate={new Date()} />
@@ -230,7 +231,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                   setAddSlotOpen(true);
                 }}
               >
-                <FaPlus />
+                <Icon icon={ICON_ADD} width={16} height={16} />
                 Add Slot
               </button>
             </div>
@@ -242,7 +243,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                 <div className={styles.statsContainer}>
                   <div className={`${styles.statCard} ${styles.statTotal}`}>
                     <div className={styles.statIcon}>
-                      <FaCalendarDays />
+                      <Icon icon={ICON_CALENDAR} width={20} height={20} />
                     </div>
                     <div className={styles.statInfo}>
                       <div className={styles.statValue}>{totalSlots}</div>
@@ -251,7 +252,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                   </div>
                   <div className={`${styles.statCard} ${styles.statBooked}`}>
                     <div className={styles.statIcon}>
-                      <FaCircleCheck />
+                      <Icon icon={ICON_CHECK} width={20} height={20} />
                     </div>
                     <div className={styles.statInfo}>
                       <div className={styles.statValue}>{bookedCount}</div>
@@ -260,7 +261,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
                   </div>
                   <div className={`${styles.statCard} ${styles.statAvailable}`}>
                     <div className={styles.statIcon}>
-                      <FaClock />
+                      <Icon icon={ICON_CLOCK} width={20} height={20} />
                     </div>
                     <div className={styles.statInfo}>
                       <div className={styles.statValue}>{availableCount}</div>
@@ -288,7 +289,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
         {!loading && schedule && schedule.slots.length > 0 && (
           <div className={styles.timeSlotsSection}>
             <h3 className={styles.sectionTitle}>
-              <FaClock className={styles.sectionIcon} />
+              <Icon icon={ICON_CLOCK} width={20} height={20} className={styles.sectionIcon} />
               Time Slots
             </h3>
             <div className={styles.timeSlotsGrid}>
@@ -309,7 +310,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
 
         {!loading && (!schedule || schedule.slots.length === 0) && (
           <div className={styles.emptySlots}>
-            <FaCalendarXmark className={styles.emptyIcon} />
+            <Icon icon={ICON_CLOSE} width={48} height={48} className={styles.emptyIcon} />
             <p>No slots configured for this date</p>
             <span className={styles.emptyHint}>Set up consulting hours to create available slots</span>
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import { IoDocumentTextOutline } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_DOCUMENT } from '@/constants/icons';
 import ProgressBar from '../ProgressBar';
 import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
@@ -65,7 +66,7 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     return (
       <div className={styles.emptyState} role="status">
         <div className={styles.emptyStateIcon} aria-hidden>
-          <IoDocumentTextOutline />
+          <Icon icon={ICON_DOCUMENT} width={48} height={48} />
         </div>
         <p className={styles.emptyStateText}>No questions available at the moment.</p>
       </div>

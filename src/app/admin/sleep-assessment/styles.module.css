@@ -39,7 +39,7 @@
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: var(--font-size-4xl);
   font-weight: 600;
   color: #f8fafc;
   margin: 0 0 8px;
@@ -48,20 +48,20 @@
 
 @media (max-width: 768px) {
   .title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-3xl);
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-3xl);
   }
 }
 
 .subtitle {
   color: #94a3b8;
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-lg);
   letter-spacing: 0.01em;
 }
 
@@ -164,7 +164,7 @@
 }
 
 .emptyState h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-3xl);
   font-weight: 600;
   color: #f8fafc;
   margin: 0 0 8px;
@@ -303,7 +303,7 @@
 }
 
 .questionText {
-  font-size: 1.1875rem;
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 14px;
@@ -313,7 +313,7 @@
 
 @media (max-width: 480px) {
   .questionText {
-    font-size: 1rem;
+    font-size: var(--font-size-lg);
   }
 }
 
@@ -825,13 +825,14 @@
 }
 
 .modalTitle {
-  font-size: 1.5rem;
+  font-size: var(--font-size-4xl);
   font-weight: 600;
   color: #f8fafc;
   margin: 0 0 12px;
 }
 
 .modalMessage {
+  font-size: var(--font-size-base);
   color: #94a3b8;
   line-height: 1.6;
   margin: 0 0 24px;

@@ -1,4 +1,5 @@
-import { FaStar } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
+import { ICON_STAR } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const Testimonials = () => {
@@ -29,7 +30,7 @@ const Testimonials = () => {
               <h4>{review.name}</h4>
               <div className={styles.stars}>
                 {['s1', 's2', 's3', 's4', 's5'].slice(0, review.stars).map((starKey) => (
-                  <FaStar key={`${review.id}-${starKey}`} size={14} />
+                  <Icon icon={ICON_STAR} key={`${review.id}-${starKey}`} width={14} height={14} />
                 ))}
               </div>
             </div>

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IoAlertCircleOutline, IoDocumentTextOutline } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_ALERT, ICON_DOCUMENT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
@@ -50,7 +51,7 @@ export default function SleepAssessmentPage() {
         {error && !isLoading && (
           <div className={styles.errorContainer}>
             <div className={styles.errorIcon}>
-              <IoAlertCircleOutline aria-hidden />
+              <Icon icon={ICON_ALERT} aria-hidden />
             </div>
             <p className={styles.errorText}>{error}</p>
             <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
@@ -62,7 +63,7 @@ export default function SleepAssessmentPage() {
         {!isLoading && !error && questions.length === 0 && (
           <div className={styles.emptyContainer}>
             <div className={styles.emptyIcon}>
-              <IoDocumentTextOutline aria-hidden />
+              <Icon icon={ICON_DOCUMENT} aria-hidden />
             </div>
             <h2 className={styles.emptyTitle}>No Questions Available</h2>
             <p className={styles.emptyText}>

@@ -1,63 +1,9 @@
-import {
-  FaHouse,
-  FaRightFromBracket,
-  FaBed,
-  FaHeartPulse,
-  FaCartShopping,
-  FaChartPie,
-  FaCalendarCheck,
-  FaUserGroup,
-  FaClipboardList,
-  FaFileMedical,
-  FaMoneyBillWave,
-  FaBoxOpen,
-  FaHeadset,
-  FaCommentDots,
-  FaRegCommentDots,
-  FaBars,
-  FaUserDoctor,
-  FaGear,
-  FaUsers,
-  FaIndianRupeeSign,
-  FaBell,
-  FaShieldHalved,
-  FaStethoscope,
-  FaPills,
-  FaCapsules,
-  FaNewspaper,
-  FaTag,
-} from 'react-icons/fa6';
+import { SIDEBAR_ICON_MAP } from '@/constants/icons';
 import type { NavigationMenuGroup } from '@/types/navigation.types';
 
-export const iconMap: { [key: string]: React.ReactElement } = {
-  FaHouse: <FaHouse />,
-  FaBed: <FaBed />,
-  FaHeartPulse: <FaHeartPulse />,
-  FaCartShopping: <FaCartShopping />,
-  FaChartPie: <FaChartPie />,
-  FaCalendarCheck: <FaCalendarCheck />,
-  FaUserGroup: <FaUserGroup />,
-  FaClipboardList: <FaClipboardList />,
-  FaFileMedical: <FaFileMedical />,
-  FaMoneyBillWave: <FaMoneyBillWave />,
-  FaBoxOpen: <FaBoxOpen />,
-  FaHeadset: <FaHeadset />,
-  FaCommentDots: <FaCommentDots />,
-  FaRegCommentDots: <FaRegCommentDots />,
-  FaBars: <FaBars />,
-  FaUserDoctor: <FaUserDoctor />,
-  FaGear: <FaGear />,
-  FaUsers: <FaUsers />,
-  FaIndianRupeeSign: <FaIndianRupeeSign />,
-  FaBell: <FaBell />,
-  FaShieldHalved: <FaShieldHalved />,
-  FaStethoscope: <FaStethoscope />,
-  FaPills: <FaPills />,
-  FaCapsules: <FaCapsules />,
-  FaNewspaper: <FaNewspaper />,
-  FaTag: <FaTag />,
-  FaRightFromBracket: <FaRightFromBracket />,
-};
+// Re-export icon map for backward compatibility during migration
+// iconMap now returns Iconify icon ID strings instead of React elements
+export const iconMap: Record<string, string> = SIDEBAR_ICON_MAP;
 
 export interface SidebarNavItem {
   title: string;
@@ -88,7 +34,10 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'Sleep',
-    items: [{ title: 'Drift Off', path: '/drift-off', icon: 'FaBed' }],
+    items: [
+      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'My Session', path: '/drift-off/my-session', icon: 'FaHeadphones' },
+    ],
   },
   {
     title: 'Shop',
@@ -122,6 +71,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         path: '/admin/sleep-assessment',
         icon: 'FaClipboardList',
       },
+      { title: 'Drift Off', path: '/admin/drift-off', icon: 'FaBed' },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
       { title: 'Orders', path: '/admin/orders', icon: 'FaBoxOpen' },
       { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },

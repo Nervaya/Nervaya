@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_PEN } from '@/constants/icons';
 import { therapistsApi } from '@/lib/api/therapists';
 import styles from '../../add/styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { FaArrowLeft, FaPenToSquare } from 'react-icons/fa6';
 import LottieLoader from '@/components/common/LottieLoader';
 
 export default function EditTherapistPage() {
@@ -115,7 +116,7 @@ export default function EditTherapistPage() {
         subtitle="Update therapist profile information"
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
-            <FaArrowLeft aria-hidden />
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
             <span>Back to Therapists</span>
           </Link>
         }
@@ -257,7 +258,7 @@ export default function EditTherapistPage() {
               </span>
             ) : (
               <span className={styles.buttonContent}>
-                <FaPenToSquare />
+                <Icon icon={ICON_PEN} />
                 <span>Update Therapist</span>
               </span>
             )}

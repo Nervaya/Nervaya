@@ -2,10 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { Icon } from '@iconify/react';
+import { ICON_UPLOAD, ICON_CLOSE } from '@/constants/icons';
 import { uploadApi } from '@/lib/api/upload';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
-import { FaCloudArrowUp, FaXmark } from 'react-icons/fa6';
 
 interface ImageUploadProps {
   onUpload: (url: string) => void;
@@ -91,12 +92,12 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compac
             unoptimized
           />
           <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
-            <FaXmark size={12} />
+            <Icon icon={ICON_CLOSE} width={12} height={12} />
           </button>
         </>
       ) : (
         <>
-          <FaCloudArrowUp size={32} color="#7c3aed" />
+          <Icon icon={ICON_UPLOAD} width={32} height={32} color="#7c3aed" />
           <p className={styles.label}>{label}</p>
         </>
       )}

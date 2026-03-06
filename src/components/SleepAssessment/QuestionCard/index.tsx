@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback } from 'react';
-import { IoCheckmark } from 'react-icons/io5';
+import { Icon } from '@iconify/react';
+import { ICON_CHECK } from '@/constants/icons';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -111,7 +112,7 @@ const QuestionCard = ({
               <span className={styles.optionIndicator}>
                 {questionType === 'multiple_choice' && (
                   <span className={styles.checkbox}>
-                    {isOptionSelected(option.value) && <IoCheckmark aria-hidden />}
+                    {isOptionSelected(option.value) && <Icon icon={ICON_CHECK} aria-hidden />}
                   </span>
                 )}
                 {questionType === 'single_choice' && (

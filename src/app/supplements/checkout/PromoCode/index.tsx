@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FaTag } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_TAG } from '@/constants/icons';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import styles from './styles.module.css';
@@ -46,7 +47,7 @@ export function PromoCode({
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
         <span className={styles.titleIcon} aria-hidden>
-          <FaTag />
+          <Icon icon={ICON_TAG} />
         </span>
         Have a promo code?
       </h3>

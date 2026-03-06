@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { FaXmark } from 'react-icons/fa6';
+import { Icon } from '@iconify/react';
+import { ICON_CLOSE } from '@/constants/icons';
 import { SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '../SupplementForm';
 import styles from './styles.module.css';
@@ -88,7 +89,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
             aria-label="Close modal"
             title="Close"
           >
-            <FaXmark className={styles.closeIcon} />
+            <Icon icon={ICON_CLOSE} className={styles.closeIcon} />
           </button>
         </div>
 
