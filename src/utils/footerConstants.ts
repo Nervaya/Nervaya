@@ -4,11 +4,13 @@ export interface FooterLink {
 }
 
 export interface FooterLinkGroup {
+  title: string;
   links: FooterLink[];
 }
 
 export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
+    title: 'Products',
     links: [
       { text: 'Therapy', href: '/therapy' },
       { text: 'Drift Off', href: '/drift-off' },
@@ -16,6 +18,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     ],
   },
   {
+    title: 'Company',
     links: [
       { text: 'About Us', href: '/about-us' },
       { text: 'Privacy Policy', href: '/privacy-policy' },
@@ -24,6 +27,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     ],
   },
   {
+    title: 'For Professionals',
     links: [
       { text: 'For Therapists', href: '/for-therapists' },
       { text: 'For Counselors', href: '/for-counselors' },
@@ -33,7 +37,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
 ];
 
 export const SOCIAL_LINKS = [
-  { name: 'linked_in', icon: './icons/linked_in.svg', alt: 'linked_in' },
-  { name: 'twitter', icon: './icons/twitter.svg', alt: 'twitter' },
-  { name: 'instagram', icon: './icons/instagram.svg', alt: 'instagram' },
+  { name: 'linkedin', icon: '/icons/linked_in.svg', alt: 'LinkedIn', href: 'https://www.linkedin.com' },
+  { name: 'x', icon: '/icons/twitter.svg', alt: 'X (Twitter)', href: 'https://x.com' },
+  { name: 'instagram', icon: '/icons/instagram.svg', alt: 'Instagram', href: 'https://www.instagram.com' },
 ] as const;

@@ -9,15 +9,7 @@
   color: var(--foreground);
   overflow: hidden;
   position: relative;
-  font-family:
-    var(--font-geist-sans),
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: var(--font-sans);
   perspective: 1000px;
 }
 

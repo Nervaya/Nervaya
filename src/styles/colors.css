@@ -1,18 +1,18 @@
 :root {
-  --color-glass-bg: rgba(10, 10, 12, 0.75);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
-  --color-glass-blur: 20px;
+  --color-glass-bg: rgba(255, 255, 255, 0.95);
+  --color-glass-border: rgba(0, 0, 0, 0.08);
+  --color-glass-blur: 12px;
 
-  --color-background: #020617;
-  --color-foreground: #ededed;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
 
-  --color-text-primary: #ededed;
-  --color-text-muted: #9ca3af;
-  --color-text-dim: #6b7280;
+  --color-text-primary: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-dim: #94a3b8;
 
   --color-accent: #7c3aed;
   --color-accent-hover: #6d28d9;
-  --color-accent-dim: rgba(124, 58, 237, 0.2);
+  --color-accent-dim: rgba(124, 58, 237, 0.1);
 
   --color-destructive: #ef4444;
   --color-destructive-hover: #dc2626;
@@ -24,22 +24,22 @@
   --color-indigo-700: #3730a3;
   --color-indigo-400: #818cf8;
   --color-indigo-200: #a5b4fc;
-  --color-indigo-dim: rgba(79, 70, 229, 0.2);
-  --color-indigo-border: rgba(129, 140, 248, 0.3);
-  --color-indigo-border-light: rgba(165, 180, 252, 0.3);
+  --color-indigo-dim: rgba(79, 70, 229, 0.1);
+  --color-indigo-border: rgba(79, 70, 229, 0.2);
+  --color-indigo-border-light: rgba(79, 70, 229, 0.1);
   --color-emerald-400: #34d399;
-  --color-emerald-dim: rgba(16, 185, 129, 0.2);
-  --color-emerald-border: rgba(52, 211, 153, 0.3);
+  --color-emerald-dim: rgba(16, 185, 129, 0.1);
+  --color-emerald-border: rgba(16, 185, 129, 0.2);
   --color-amber-400: #fbbf24;
-  --color-card-bg: rgba(17, 24, 39, 0.75);
-  --color-card-bg-light: rgba(17, 24, 39, 0.5);
-  --color-card-bg-video: rgba(17, 24, 39, 0.6);
-  --color-border-light: rgba(255, 255, 255, 0.1);
-  --color-border-light-hover: rgba(255, 255, 255, 0.2);
-  --color-overlay-dark: rgba(0, 0, 0, 0.8);
-  --color-overlay-mid: rgba(0, 0, 0, 0.7);
-  --color-text-slate-300: #cbd5e1;
-  --color-text-slate-400: #94a3b8;
-  --color-white-dim: rgba(255, 255, 255, 0.2);
-  --color-white-bright: rgba(255, 255, 255, 0.9);
+  --color-card-bg: #ffffff;
+  --color-card-bg-light: #f8fafc;
+  --color-card-bg-video: #f1f5f9;
+  --color-border-light: #e2e8f0;
+  --color-border-light-hover: #cbd5e1;
+  --color-overlay-dark: rgba(0, 0, 0, 0.5);
+  --color-overlay-mid: rgba(0, 0, 0, 0.4);
+  --color-text-slate-300: #334155;
+  --color-text-slate-400: #475569;
+  --color-white-dim: rgba(0, 0, 0, 0.05);
+  --color-white-bright: #ffffff;
 }

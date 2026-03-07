@@ -16,7 +16,7 @@
   flex-direction: column;
   background: transparent;
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   overflow-x: visible;
   padding-top: var(--spacing-md);
   box-sizing: border-box;

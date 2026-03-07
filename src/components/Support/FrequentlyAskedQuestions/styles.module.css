@@ -60,7 +60,7 @@
   color: #fff;
   margin: 0 0 16px 0;
   line-height: 1.2;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -91,7 +91,7 @@
   max-width: 700px;
   margin-left: 0;
   margin-right: auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -185,7 +185,7 @@
   margin: 0;
   line-height: 1.5;
   flex: 1;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 768px) {
@@ -260,7 +260,7 @@
   color: #d1d5db;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
   display: block;
   width: 100%;
 }

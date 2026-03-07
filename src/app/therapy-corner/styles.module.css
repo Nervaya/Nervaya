@@ -4,7 +4,7 @@
   margin: 0 auto;
   padding: 0;
   min-height: 100vh;
-  background: transparent;
+  background: var(--color-background);
 }
 
 .sectionTitle {
@@ -48,32 +48,80 @@
   margin-bottom: var(--spacing-md);
 }
 
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  align-items: center;
+}
+
+.filterSelect {
+  min-width: 160px;
+  padding: 10px 36px 10px 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: #ffffff;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 0.2s ease;
+}
+
+.filterSelect:hover,
+.filterSelect:focus {
+  border-color: var(--color-border-light-hover);
+  outline: none;
+}
+
+.noResults {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-2xl);
+  text-align: center;
+}
+
 .therapistList {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .therapistList {
+    grid-template-columns: 1fr;
+  }
 }
 
 .therapistCard {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  background: #ffffff;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
   transition: all 0.2s ease;
 }
 
 .therapistCard:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-glass-border);
+  border-color: var(--color-border-light-hover);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .therapistInfo {
   display: flex;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-xl);
+  align-items: flex-start;
 }
 
 .therapistInfo h3 {
@@ -81,28 +129,32 @@
   font-weight: 600;
   color: var(--color-foreground);
   margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: -0.01em;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  background: var(--color-accent-dim);
-  border-radius: var(--spacing-md);
+  width: 96px;
+  height: 96px;
+  background: var(--color-card-bg-light);
+  border-radius: 8px;
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
+  border: 1px solid var(--color-border-light);
 }
 
 .credentials {
   color: var(--color-text-muted);
   font-size: var(--font-size-base);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
 }
 
 .details {
-  color: var(--color-text-muted);
+  color: var(--color-text-dim);
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-sm);
+  line-height: 1.5;
 }
 
 .tags {
@@ -113,19 +165,19 @@
 
 .tags span {
   background: var(--color-accent-dim);
-  color: var(--accent);
+  color: var(--color-accent);
   padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--spacing-lg);
+  border-radius: 8px;
   font-size: var(--font-size-xs);
   font-weight: 600;
 }
 
 .actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  border-top: 1px solid var(--color-glass-border);
-  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--spacing-lg);
 }
 
 .price {
@@ -139,11 +191,11 @@
 
 .outlineBtn {
   background: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+  padding: var(--spacing-sm) var(--spacing-lg);
   min-height: 44px;
-  border-radius: var(--spacing-md);
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: var(--font-size-sm);
@@ -152,24 +204,26 @@
 
 .outlineBtn:hover {
   background: var(--color-accent-dim);
-  color: var(--color-foreground);
-  transform: translateY(-2px);
+  color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 .primaryBtn {
-  background: var(--accent);
+  background: var(--color-accent);
   border: none;
-  color: var(--color-foreground);
-  padding: var(--spacing-sm) var(--spacing-md);
+  color: #ffffff;
+  padding: var(--spacing-sm) var(--spacing-lg);
   min-height: 44px;
-  border-radius: var(--spacing-md);
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: var(--font-size-sm);
   transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
 }
 
 .primaryBtn:hover {
   background: var(--color-accent-hover);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
