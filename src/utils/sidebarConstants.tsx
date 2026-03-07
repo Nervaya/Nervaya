@@ -22,32 +22,30 @@ export const sidebarBottomNavItems: SidebarNavItem[] = [
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
-    title: 'General',
+    title: 'GENERAL',
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
-      {
-        title: 'Questionnaire',
-        path: '/sleep-assessment',
-        icon: 'FaClipboardList',
-      },
+      { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
+      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
     ],
   },
   {
-    title: 'Sleep',
+    title: 'THERAPY',
+    items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUserDoctor' }],
+  },
+  {
+    title: 'DRIFT OFF',
     items: [
-      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' },
       { title: 'My Session', path: '/drift-off/my-session', icon: 'FaHeadphones' },
     ],
   },
   {
-    title: 'Shop',
-    items: [
-      { title: 'Supplements', path: '/supplements', icon: 'FaPills' },
-      { title: 'Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
-    ],
+    title: 'SUPPLEMENTS',
+    items: [{ title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' }],
   },
   {
-    title: 'Support',
+    title: 'HELP',
     items: [
       {
         title: 'Therapy Corner',

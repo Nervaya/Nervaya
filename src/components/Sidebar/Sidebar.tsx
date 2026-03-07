@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { ICON_MENU, ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_CLOSE } from '@/constants/icons';
+import { ICON_MENU, ICON_ARROW_LEFT_OUTLINE, ICON_ARROW_RIGHT_OUTLINE, ICON_CLOSE } from '@/constants/icons';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
@@ -131,9 +131,9 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                 aria-pressed={isCollapsed}
               >
                 {isCollapsed ? (
-                  <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} />
+                  <Icon icon={ICON_ARROW_RIGHT_OUTLINE} width={22} height={22} />
                 ) : (
-                  <Icon icon={ICON_ARROW_LEFT} width={20} height={20} />
+                  <Icon icon={ICON_ARROW_LEFT_OUTLINE} width={22} height={22} />
                 )}
               </button>
               <nav className={styles.nav}>
@@ -146,7 +146,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                           const isActive =
                             pathname === item.path || (isAdminRoute && pathname.startsWith(`${item.path}/`));
                           return (
-                            <li key={item.path}>
+                            <li key={`${item.path}-${item.title}`}>
                               <Link
                                 href={item.path}
                                 className={`${styles.navItem} ${isActive ? styles.active : ''}`}
