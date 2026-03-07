@@ -7,7 +7,6 @@ export interface LandingPageCard {
   description: string;
   buttonText: string;
   href: string;
-  badge?: string;
 }
 
 export const landingPageCardsData: LandingPageCard[] = [
@@ -37,6 +36,5 @@ export const landingPageCardsData: LandingPageCard[] = [
       'Our non-habit-forming, fast-absorbing formula helps you unwind naturally and drift into deep, restorative sleep — waking refreshed, never dependent.',
     buttonText: 'Shop Now',
     href: '/supplements',
-    badge: 'Coming Soon',
   },
 ];

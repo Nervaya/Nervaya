@@ -4,7 +4,7 @@
 :root {
   --background: #020617;
   --foreground: #ededed;
-  --navbar-height: 100px;
+  --navbar-height: 76px;
   --navbar-safe-gap: 24px;
   --card-bg: #171717;
   --border: #333;
@@ -23,7 +23,7 @@
 
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 88px;
+    --navbar-height: 64px;
     --navbar-safe-gap: 16px;
   }
 }

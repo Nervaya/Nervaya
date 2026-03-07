@@ -1,6 +1,7 @@
 export interface FooterLink {
   text: string;
   href: string;
+  isHeading?: boolean;
 }
 
 export interface FooterLinkGroup {
@@ -10,22 +11,23 @@ export interface FooterLinkGroup {
 export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
     links: [
-      { text: 'Therapy', href: '/therapy' },
+      { text: 'Therapy', href: '/therapy', isHeading: true },
       { text: 'Drift Off', href: '/drift-off' },
+      { text: 'Sleep Elixir', href: '/supplements' },
       { text: 'Blog', href: '/blog' },
     ],
   },
   {
     links: [
-      { text: 'About Us', href: '/about-us' },
-      { text: 'Privacy Policy', href: '/privacy-policy' },
-      { text: 'Terms & Cond.', href: '/terms-and-conditions' },
+      { text: 'About Us', href: '/about-us', isHeading: true },
       { text: 'Delivery Policy', href: '/delivery-policy' },
+      { text: 'Privacy Policy', href: '/privacy-policy' },
+      { text: 'T & C', href: '/terms-and-conditions' },
     ],
   },
   {
     links: [
-      { text: 'For Therapists', href: '/for-therapists' },
+      { text: 'For Therapists', href: '/for-therapists', isHeading: true },
       { text: 'For Counselors', href: '/for-counselors' },
       { text: 'For Yoga Trainers', href: '/for-yoga-trainers' },
     ],
@@ -33,7 +35,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
 ];
 
 export const SOCIAL_LINKS = [
-  { name: 'linked_in', icon: './icons/linked_in.svg', alt: 'linked_in' },
-  { name: 'twitter', icon: './icons/twitter.svg', alt: 'twitter' },
-  { name: 'instagram', icon: './icons/instagram.svg', alt: 'instagram' },
+  { name: 'linked_in', icon: '/icons/linked_in.svg', alt: 'LinkedIn' },
+  { name: 'twitter', icon: '/icons/twitter.svg', alt: 'X / Twitter' },
+  { name: 'instagram', icon: '/icons/instagram.svg', alt: 'Instagram' },
 ] as const;

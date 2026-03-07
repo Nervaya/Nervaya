@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import { driftOffApi } from '@/lib/api/driftOff';
 
 interface DriftOffPaymentState {
@@ -8,6 +9,7 @@ interface DriftOffPaymentState {
   razorpayOrderId: string | null;
   razorpayKeyId: string | null;
   isCreating: boolean;
+  isVerifying: boolean;
   error: string | null;
   showPaymentHandler: boolean;
 }
@@ -18,6 +20,7 @@ export function useDriftOffPayment() {
     razorpayOrderId: null,
     razorpayKeyId: null,
     isCreating: false,
+    isVerifying: false,
     error: null,
     showPaymentHandler: false,
   });
@@ -56,13 +59,13 @@ export function useDriftOffPayment() {
         razorpayOrderId: razorpayRes.data.id,
         razorpayKeyId: razorpayRes.data.key_id,
         isCreating: false,
+        isVerifying: false,
         error: null,
         showPaymentHandler: true,
       });
     } catch (err) {
       let msg = 'Failed to process payment';
 
-      // Handle specific error cases
       if (err instanceof Error) {
         if (err.message.includes('receipt')) {
           msg = 'Payment system configuration error. Please try again in a few moments.';
@@ -81,13 +84,23 @@ export function useDriftOffPayment() {
     }
   }, []);
 
+  // Called immediately when payment succeeds (before async verification)
+  // flushSync forces React to update the DOM synchronously — eliminates the flash
+  // of the payment card between Razorpay modal close and next async render cycle
+  const handleVerifyStart = useCallback(() => {
+    flushSync(() => {
+      setState((prev) => ({ ...prev, isVerifying: true }));
+    });
+  }, []);
+
   const handlePaymentError = useCallback((message: string) => {
     setState((prev) => ({
       ...prev,
       showPaymentHandler: false,
+      isVerifying: false,
       error: message === 'Payment cancelled' ? null : message,
     }));
   }, []);
 
-  return { ...state, initiatePayment, handlePaymentError };
+  return { ...state, initiatePayment, handleVerifyStart, handlePaymentError };
 }
