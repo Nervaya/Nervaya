@@ -14,6 +14,9 @@
   --color-accent-hover: #6d28d9;
   --color-accent-dim: rgba(124, 58, 237, 0.1);
 
+  --gradient-accent: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+  --gradient-accent-hover: linear-gradient(90deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
+
   --color-destructive: #ef4444;
   --color-destructive-hover: #dc2626;
 

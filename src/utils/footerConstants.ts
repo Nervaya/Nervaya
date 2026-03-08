@@ -1,6 +1,7 @@
 export interface FooterLink {
   text: string;
   href: string;
+  isHeading?: boolean;
 }
 
 export interface FooterLinkGroup {
@@ -20,10 +21,10 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
     title: 'Company',
     links: [
-      { text: 'About Us', href: '/about-us' },
-      { text: 'Privacy Policy', href: '/privacy-policy' },
-      { text: 'Terms & Cond.', href: '/terms-and-conditions' },
+      { text: 'About Us', href: '/about-us', isHeading: true },
       { text: 'Delivery Policy', href: '/delivery-policy' },
+      { text: 'Privacy Policy', href: '/privacy-policy' },
+      { text: 'T & C', href: '/terms-and-conditions' },
     ],
   },
   {

@@ -4,9 +4,10 @@
   left: 0;
   right: 0;
   z-index: 3000;
-  background: transparent;
-  border: none;
-  margin-top: 24px;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--color-glass-blur));
+  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  border-bottom: 1px solid var(--color-glass-border);
 }
 
 .navbar {
@@ -21,7 +22,6 @@
   --nav-pill-focus: #dac6ff;
   width: 100%;
   display: flex;
-  justify-content: center;
 }
 
 .navbarMain {
@@ -97,7 +97,7 @@
   .navbarContainer {
     width: 100%;
     padding: 0 16px;
-    height: 60px;
+    min-height: var(--navbar-height);
   }
 }
 
@@ -119,6 +119,12 @@
   height: 36px;
   width: auto;
   object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .navbarLogo img {
+    height: 26px;
+  }
 }
 
 .navbarMenu {
@@ -146,7 +152,7 @@
     flex-direction: column;
     align-items: stretch;
     padding: 16px;
-    gap: 4px;
+    gap: 8px;
     transform: scale(0.95);
     opacity: 0;
     pointer-events: none;
@@ -414,10 +420,6 @@
   background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
   transform: translateY(-3px);
   box-shadow: 0 12px 35px rgba(124, 58, 237, 0.45);
-}
-
-.navbarCta::before {
-  display: none;
 }
 
 .accountButton {

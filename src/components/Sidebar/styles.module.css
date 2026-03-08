@@ -152,7 +152,7 @@
   text-transform: uppercase;
   color: rgba(226, 212, 255, 0.55);
   font-weight: 700;
-  padding: 24px 28px 8px;
+  padding: 20px var(--spacing-md) 8px;
   letter-spacing: 0.08em;
 }
 

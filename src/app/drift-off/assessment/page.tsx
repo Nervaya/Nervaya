@@ -2,15 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Icon } from '@iconify/react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import DriftOffAssessmentContainer from '@/components/DriftOff/DriftOffAssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
-import type { IDriftOffOrder, IDriftOffResponse } from '@/types/driftOff.types';
-import { ICON_MOON, ICON_CLIPBOARD, ICON_ARROW_RIGHT } from '@/constants/icons';
+import type { IDriftOffOrder } from '@/types/driftOff.types';
 import styles from './styles.module.css';
 
 export default function DriftOffAssessmentPage() {
@@ -24,7 +22,6 @@ export default function DriftOffAssessmentPage() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [hasCheckedRedirects, setHasCheckedRedirects] = useState(false);
   const [currentUrl, setCurrentUrl] = useState('');
-  const [existingResponse, setExistingResponse] = useState<IDriftOffResponse | null>(null);
 
   const loadOrderData = useCallback(
     async (orderIdToLoad: string) => {
@@ -66,15 +63,15 @@ export default function DriftOffAssessmentPage() {
         // Check if user has already completed the assessment (only check once)
         if (!hasCheckedRedirects) {
           try {
-            const responseRes = await axiosInstance.get<unknown, ApiResponse<IDriftOffResponse>>(
+            const responseRes = await axiosInstance.get<unknown, ApiResponse<{ completedAt?: string }>>(
               `/drift-off/responses/order/${orderIdToLoad}`,
             );
 
-            if (responseRes.success && responseRes.data) {
-              setExistingResponse(responseRes.data);
-              setIsLoading(false);
+            if (responseRes.success && responseRes.data?.completedAt) {
               setHasCheckedRedirects(true);
-              return; // Don't load questions, show options instead
+              // Assessment already completed — go straight to my-session page
+              router.replace('/drift-off/my-session');
+              return;
             }
           } catch {
             // No existing response found, proceeding with assessment
@@ -94,7 +91,7 @@ export default function DriftOffAssessmentPage() {
         setIsRedirecting(false);
       }
     },
-    [hasCheckedRedirects],
+    [hasCheckedRedirects, router],
   );
 
   const loadData = useCallback(async () => {
@@ -185,94 +182,7 @@ export default function DriftOffAssessmentPage() {
           </div>
         )}
 
-        {!isLoading && !error && existingResponse && (
-          <div className={styles.optionsContainer}>
-            <div className={styles.optionsCard}>
-              <div className={styles.optionsHeader}>
-                <div className={styles.icon}>
-                  <Icon icon={ICON_MOON} width={40} height={40} />
-                </div>
-                <h1 className={styles.title}>Assessment Already Completed</h1>
-                <p className={styles.subtitle}>
-                  You&apos;ve already completed your Deep Rest assessment. You can either keep your existing responses
-                  and view your sessions, or retake assessment to update your preferences.
-                </p>
-              </div>
-
-              <div className={styles.optionsContent}>
-                <div className={styles.existingInfo}>
-                  <h3 className={styles.infoTitle}>Your Previous Assessment</h3>
-                  <div className={styles.infoItem}>
-                    <span className={styles.infoLabel}>Completed:</span>
-                    <span className={styles.infoValue}>
-                      {existingResponse.completedAt
-                        ? new Date(existingResponse.completedAt).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })
-                        : 'Recently'}
-                    </span>
-                  </div>
-                  <div className={styles.infoItem}>
-                    <span className={styles.infoLabel}>Status:</span>
-                    <span className={`${styles.infoValue} ${styles.statusCompleted}`}>
-                      {existingResponse.assignedVideoUrl ? 'Session Ready' : 'Processing'}
-                    </span>
-                  </div>
-                  {existingResponse.assignedVideoUrl && (
-                    <div className={styles.infoItem}>
-                      <span className={styles.infoLabel}>Session:</span>
-                      <span className={styles.infoValue}>Video Assigned</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.optionsActions}>
-                  <button
-                    type="button"
-                    className={styles.keepBtn}
-                    onClick={() => {
-                      if (existingResponse.assignedVideoUrl) {
-                        router.replace('/drift-off/session');
-                      } else {
-                        router.replace('/drift-off/waiting');
-                      }
-                    }}
-                  >
-                    <Icon icon={ICON_CLIPBOARD} width={20} height={20} /> View My Sessions
-                  </button>
-
-                  <button
-                    type="button"
-                    className={styles.retakeBtn}
-                    onClick={() => {
-                      // Clear existing response and start fresh assessment
-                      setExistingResponse(null);
-                      setHasCheckedRedirects(false);
-                      // Load questions for retake
-                      loadOrderData(orderId ?? '');
-                    }}
-                  >
-                    <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} style={{ transform: 'rotate(90deg)' }} />{' '}
-                    Retake Assessment
-                  </button>
-                </div>
-
-                <div className={styles.optionsNote}>
-                  <p>
-                    <strong>Note:</strong> Retaking assessment will replace your previous responses. Your current
-                    session recommendations will be updated based on your new answers.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {!isLoading && !error && orderId && questions.length === 0 && !existingResponse && (
+        {!isLoading && !error && orderId && questions.length === 0 && (
           <div className={styles.empty}>
             <p>Assessment questions are currently being updated. Please check back later.</p>
           </div>

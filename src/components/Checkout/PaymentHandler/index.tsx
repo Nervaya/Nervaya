@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { paymentsApi } from '@/lib/api/payments';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
@@ -17,6 +17,7 @@ interface PaymentHandlerProps {
   userName?: string;
   userEmail?: string;
   userPhone?: string;
+  onVerifyStart?: () => void;
   onSuccess?: (paymentId: string) => void;
   onError?: (error: string) => void;
 }
@@ -29,13 +30,17 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
   userName,
   userEmail,
   userPhone,
+  onVerifyStart,
   onSuccess,
   onError,
 }) => {
   const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleSuccess = useCallback(
     async (response: RazorpayPaymentResponse) => {
+      // Immediately signal verification started — hides the payment UI before async call
+      onVerifyStart?.();
       try {
         const result = await paymentsApi.verify({
           orderId,
@@ -45,6 +50,7 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 
         if (result.success) {
           onSuccess?.(response.razorpay_payment_id);
+          setIsNavigating(true); // Keep loading state active during Next.js route transition
           router.push(`/supplements/order-success/${orderId}`);
         } else {
           const reason = result.message || 'Payment verification failed';
@@ -56,8 +62,20 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
         onError?.('Failed to verify payment');
       }
     },
-    [orderId, onSuccess, onError, router],
+    [orderId, onSuccess, onError, router, onVerifyStart],
   );
+
+  // Stable prefill object — prevents new reference on every render
+  const prefill = useMemo(
+    () => ({ name: userName, email: userEmail, contact: userPhone }),
+    [userName, userEmail, userPhone],
+  );
+
+  // Stable dismiss handler
+  const handleDismiss = useCallback(() => {
+    trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
+    onError?.('Payment cancelled');
+  }, [orderId, onError]);
 
   const { openPaymentModal } = useRazorpayCheckout({
     razorpayKeyId,
@@ -65,26 +83,25 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
     amount,
     name: 'Nervaya',
     description: `Order #${orderId}`,
-    prefill: {
-      name: userName,
-      email: userEmail,
-      contact: userPhone,
-    },
+    prefill,
     onSuccess: handleSuccess,
     onError,
-    onDismiss: () => {
-      trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
-      onError?.('Payment cancelled');
-    },
+    onDismiss: handleDismiss,
     autoOpen: true,
   });
 
   return (
     <>
       <RazorpayCheckoutScript onLoad={() => openPaymentModal()} />
-      <div className={styles.loading}>
-        <p>Opening payment gateway...</p>
-      </div>
+      {isNavigating ? (
+        <div className={styles.loading}>
+          <p>Redirecting to order success page…</p>
+        </div>
+      ) : (
+        <div className={styles.loading}>
+          <p>Opening payment gateway...</p>
+        </div>
+      )}
     </>
   );
 };
