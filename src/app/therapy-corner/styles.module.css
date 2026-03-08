@@ -1,175 +1,333 @@
-.container {
-  color: var(--color-foreground);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0;
-  min-height: 100vh;
-  background: transparent;
-}
-
-.sectionTitle {
-  font-size: var(--font-size-2xl);
-  font-weight: 600;
-  color: var(--color-foreground);
-  margin: 0 0 var(--spacing-md) 0;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+.pageContentWhite {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .section {
-  margin-bottom: var(--spacing-2xl);
+  margin: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: #1f2937;
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sectionMeta {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.filterBar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e1e7ef;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.filterSelect {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 36px 10px 12px;
+  border-radius: 999px;
+  border: 1px solid #d8e0ea;
+  background: #f8fafc;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 500;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.filterSelect:focus,
+.filterSelect:hover {
+  outline: none;
+  border-color: #b9c7d8;
+  background: #ffffff;
 }
 
 .loadingContainer {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-2xl) var(--spacing-xl);
-  min-height: 400px;
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-    gap: var(--spacing-md);
-  }
-}
-
-.paginationWrap {
-  margin-top: var(--spacing-xl);
-  display: flex;
-  justify-content: center;
+  min-height: 300px;
 }
 
 .error {
-  color: var(--color-destructive);
-  margin-bottom: var(--spacing-md);
+  color: #dc2626;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.noResults {
+  margin: 0;
+  text-align: center;
+  padding: 28px 14px;
+  color: #5f6b7a;
+  font-weight: 500;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  background: #ffffff;
 }
 
 .therapistList {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .therapistCard {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  transition: all 0.2s ease;
+  border-radius: 16px;
+  border: 1px solid #dde5f0;
+  background: #ffffff;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .therapistCard:hover {
   transform: translateY(-2px);
-  border-color: var(--color-glass-border);
+  border-color: #cfd9e6;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+.cardBody {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .therapistInfo {
   display: flex;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  gap: 14px;
+  align-items: flex-start;
 }
 
-.therapistInfo h3 {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--color-foreground);
-  margin: 0 0 var(--spacing-xs) 0;
+.avatar,
+.avatarFallback {
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  background: var(--color-accent-dim);
-  border-radius: var(--spacing-md);
-  flex-shrink: 0;
   background-size: cover;
   background-position: center;
+  background-color: #f3f4f6;
+  border: 1px solid #e1e7ef;
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #f2ece8 0%, #e8ded9 100%);
+  color: #6b5f57;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: 1px solid #ddd2cc;
+}
+
+.therapistText {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 4px;
+}
+
+.nameRow h3 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(1.2rem, 1.6vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.expBadge {
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  background: rgba(124, 58, 237, 0.08);
+  color: var(--color-accent);
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .credentials {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-base);
-  margin-bottom: var(--spacing-sm);
+  margin: 0 0 8px;
+  color: #4b5563;
+  font-size: 0.96rem;
+  font-weight: 500;
+  line-height: 1.45;
 }
 
-.details {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--spacing-sm);
+.metaLine {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  color: #475569;
+  font-size: 0.93rem;
+}
+
+.metaLine span {
+  color: #0f172a;
+  font-weight: 700;
 }
 
 .tags {
+  margin-top: 12px;
   display: flex;
-  gap: var(--spacing-sm);
   flex-wrap: wrap;
+  gap: 8px;
 }
 
-.tags span {
-  background: var(--color-accent-dim);
-  color: var(--accent);
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--spacing-lg);
-  font-size: var(--font-size-xs);
+.tag,
+.emptyTag {
+  max-width: 100%;
+  border-radius: 999px;
+  border: 1px solid #dce5f0;
+  background: #f8fbff;
+  color: #334155;
+  padding: 5px 10px;
+  font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actions {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #e7edf5;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--color-glass-border);
-  padding-top: var(--spacing-md);
-}
-
-.price {
-  font-weight: 600;
-}
-
-.buttons {
-  display: flex;
-  gap: var(--spacing-md);
-}
-
-.outlineBtn {
-  background: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  padding: var(--spacing-sm) var(--spacing-md);
-  min-height: 44px;
-  border-radius: var(--spacing-md);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: var(--font-size-sm);
-  transition: all 0.2s ease;
-}
-
-.outlineBtn:hover {
-  background: var(--color-accent-dim);
-  color: var(--color-foreground);
-  transform: translateY(-2px);
+  justify-content: flex-end;
 }
 
 .primaryBtn {
-  background: var(--accent);
+  min-height: 42px;
+  padding: 0 18px;
   border: none;
-  color: var(--color-foreground);
-  padding: var(--spacing-sm) var(--spacing-md);
-  min-height: 44px;
-  border-radius: var(--spacing-md);
+  border-radius: 10px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: 600;
-  font-size: var(--font-size-sm);
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .primaryBtn:hover {
   background: var(--color-accent-hover);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+}
+
+.paginationWrap {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1150px) {
+  .filterBar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 920px) {
+  .therapistList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .filterBar {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .therapistCard {
+    padding: 14px;
+  }
+
+  .therapistInfo {
+    gap: 10px;
+  }
+
+  .avatar,
+  .avatarFallback {
+    width: 74px;
+    height: 74px;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .primaryBtn {
+    width: 100%;
+  }
 }

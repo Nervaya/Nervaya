@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import MySessions from '@/components/Account/MySessions';
 import MyOrders from '@/components/Account/MyOrders';
 import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
 import styles from './styles.module.css';
@@ -14,7 +15,7 @@ import { AUTH_API } from '@/lib/constants/api.constants';
 import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { validatePassword } from '@/lib/utils/validation.util';
 
-type TabType = 'settings' | 'orders';
+type TabType = 'settings' | 'orders' | 'sessions';
 
 export default function AccountPage() {
   const { user, updateUser } = useAuth();
@@ -130,6 +131,12 @@ export default function AccountPage() {
             onClick={() => setActiveTab('orders')}
           >
             My Orders
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'sessions' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('sessions')}
+          >
+            My Sessions
           </button>
         </div>
 
@@ -269,6 +276,7 @@ export default function AccountPage() {
         )}
 
         {activeTab === 'orders' && <MyOrders />}
+        {activeTab === 'sessions' && <MySessions />}
       </div>
     </Sidebar>
   );

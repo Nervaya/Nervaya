@@ -1,17 +1,30 @@
 @import '../styles/colors.css';
 @import '../styles/spacing.css';
 
+/* Ensure fonts are loaded and applied globally */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+
 :root {
-  --background: #020617;
-  --foreground: #ededed;
-  --navbar-height: 76px;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --navbar-height: 64px;
   --navbar-safe-gap: 24px;
-  --card-bg: #171717;
-  --border: #333;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
   --border-hover: #7c3aed;
   --accent: #7c3aed;
-  --muted: #9ca3af;
-  --muted-dim: #6b7280;
+  --muted: #64748b;
+  --muted-dim: #94a3b8;
+  --radius-button: 8px;
+  --font-sans:
+    var(--font-source-sans), 'Source Sans 3', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-heading: var(--font-merriweather), 'Merriweather', Georgia, 'Times New Roman', serif;
+  --font-mono:
+    var(--font-geist-mono), 'Geist Mono', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
 
   --margin-xs: var(--spacing-xs);
   --margin-sm: var(--spacing-sm);
@@ -23,7 +36,7 @@
 
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 64px;
+    --navbar-height: 60px;
     --navbar-safe-gap: 16px;
   }
 }
@@ -46,12 +59,24 @@ body {
   overflow-y: auto;
   padding-top: var(--navbar-height);
   color: var(--foreground);
-  background: url('/background.png') no-repeat center center fixed;
-  background-size: cover;
-  background-color: var(--color-background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.route-home {
+  background: url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 * {
@@ -60,6 +85,35 @@ body {
   margin: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+/* Apply fonts globally to all text elements with higher specificity */
+html body h1,
+html body h2,
+html body h3,
+html body h4,
+html body h5,
+html body h6 {
+  font-family: var(--font-heading) !important;
+  color: #2d3748;
+  font-weight: 700;
+}
+
+html body p,
+html body span,
+html body div,
+html body li,
+html body td,
+html body th,
+html body label,
+html body a {
+  font-family: var(--font-sans) !important;
+}
+
+html body code,
+html body pre,
+html body .code {
+  font-family: var(--font-mono) !important;
 }
 
 body {
@@ -76,14 +130,17 @@ a {
 }
 
 .main-content {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   min-height: 100vh;
   padding: var(--spacing-xl);
   padding-top: max(var(--spacing-xl), var(--navbar-safe-gap, 32px));
   position: relative;
   z-index: 1;
   transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: 320px;
+  margin-left: 280px;
+  border-left: 1px solid rgba(124, 58, 237, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -92,9 +149,87 @@ a {
     padding: var(--spacing-lg);
     padding-top: max(var(--spacing-lg), var(--navbar-safe-gap, 24px));
     padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
   }
 }
 
 body.sidebar-collapsed .main-content {
-  margin-left: 120px;
+  margin-left: 88px;
+}
+
+body.route-non-home .main-content {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Add some colorful card and content styles */
+.card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12);
+  border-color: rgba(124, 58, 237, 0.2);
+}
+
+/* Enhanced text colors */
+
+.text-primary {
+  color: #2d3748;
+}
+
+.text-accent {
+  color: #7c3aed;
+}
+
+.text-muted {
+  color: #64748b;
+}
+
+/* Button enhancements */
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.35);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.8);
+  color: #2d3748;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.15);
 }

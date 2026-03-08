@@ -22,7 +22,9 @@ const Navbar = () => {
 
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrollDownStyleActive, setIsScrollDownStyleActive] = useState(false);
   const productsDropdownRef = useRef<HTMLLIElement>(null);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -61,6 +63,31 @@ const Navbar = () => {
     return () => cancelAnimationFrame(id);
   }, [pathname]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollYRef.current + 4;
+      const isScrollingUp = currentScrollY < lastScrollYRef.current - 4;
+
+      if (currentScrollY <= 16) {
+        setIsScrollDownStyleActive(false);
+      } else if (isScrollingDown) {
+        setIsScrollDownStyleActive(true);
+      } else if (isScrollingUp) {
+        setIsScrollDownStyleActive(false);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    lastScrollYRef.current = window.scrollY;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsProductsDropdownOpen(false);
@@ -72,7 +99,7 @@ const Navbar = () => {
         <div className={styles.navbarContainer}>
           <div className={styles.navbarLogo}>
             <Link href="/">
-              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={155} height={52} priority />
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={160} height={52} />
             </Link>
           </div>
         </div>
@@ -81,11 +108,13 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`${styles.navbar} ${styles.navbarMain}`}>
+    <nav
+      className={`${styles.navbar} ${styles.navbarMain} ${isScrollDownStyleActive ? styles.navbarScrolledDown : ''}`}
+    >
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLogo}>
           <Link href="/">
-            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={155} height={52} priority />
+            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={160} height={52} />
           </Link>
         </div>
         <button

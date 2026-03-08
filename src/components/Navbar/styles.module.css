@@ -11,8 +11,16 @@
 }
 
 .navbar {
+  --nav-pill-text: rgba(244, 238, 255, 0.92);
+  --nav-pill-bg: transparent;
+  --nav-pill-border: transparent;
+  --nav-pill-shadow: none;
+  --nav-pill-hover-text: #ffffff;
+  --nav-pill-hover-bg: rgba(186, 154, 255, 0.22);
+  --nav-pill-hover-border: rgba(227, 210, 255, 0.4);
+  --nav-pill-hover-shadow: none;
+  --nav-pill-focus: #dac6ff;
   width: 100%;
-  padding: 0;
   display: flex;
 }
 
@@ -22,17 +30,52 @@
   left: 0;
   right: 0;
   z-index: 3000;
-  pointer-events: none;
-  isolation: isolate;
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border-bottom: 1px solid var(--color-glass-border);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  background: transparent;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+  transition:
+    background-color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+:global(body.route-non-home) .navbarMain {
+  background: linear-gradient(rgba(9, 2, 29, 0.7), rgba(9, 2, 29, 0.7)), url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom-color: rgba(124, 58, 237, 0.38);
+}
+
+:global(body.route-non-home) .navbarAuthPage {
+  margin-top: 0;
+  background: linear-gradient(rgba(9, 2, 29, 0.7), rgba(9, 2, 29, 0.7)), url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.navbarScrolledDown {
+  background: rgba(9, 2, 29, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-bottom-color: rgba(124, 58, 237, 0.4);
 }
 
 .navbarMain .navbarContainer {
   pointer-events: auto;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .navbarMain {
+    top: 0;
+  }
 }
 
 .navbarContainer {
@@ -40,11 +83,14 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-height: var(--navbar-height);
-  margin: 0;
-  padding: 0 64px;
-  box-sizing: border-box;
+  max-width: 1280px;
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 24px;
   background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -70,7 +116,7 @@
 
 .navbarLogo img {
   display: block;
-  height: 32px;
+  height: 36px;
   width: auto;
   object-fit: contain;
 }
@@ -85,7 +131,7 @@
   display: flex;
   list-style: none;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   padding: 0;
 }
@@ -93,16 +139,16 @@
 @media (max-width: 768px) {
   .navbarMenu {
     position: fixed;
-    top: var(--navbar-height);
-    left: var(--spacing-md);
-    right: var(--spacing-md);
+    top: 60px;
+    right: 16px;
     width: auto;
     min-width: 240px;
     height: auto;
-    background: rgba(20, 20, 24, 0.95);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    background: rgba(14, 8, 30, 0.96);
+    border: 1px solid rgba(215, 192, 255, 0.24);
+    border-radius: 12px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     flex-direction: column;
     align-items: stretch;
     padding: 16px;
@@ -111,7 +157,7 @@
     opacity: 0;
     pointer-events: none;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   }
 
   .navbarMenuOpen {
@@ -133,18 +179,21 @@
 }
 
 .navbarMenu a {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 16px;
-  font-weight: bold;
+  color: var(--nav-pill-text);
+  font-size: 0.96rem;
+  font-weight: 600;
   text-decoration: none;
-  padding: 12px 16px;
+  padding: 8px 18px;
   border-radius: 8px;
-  font-family:
-    'Inter',
-    system-ui,
-    -apple-system,
-    sans-serif;
-  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  background: var(--nav-pill-bg);
+  border: 1px solid var(--nav-pill-border);
+  position: relative;
+  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -156,18 +205,30 @@
   }
 
   .navbarMenu a:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--nav-pill-hover-bg);
+    border-color: var(--nav-pill-hover-border);
   }
 }
 
 .navbarMenu a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-pill-hover-text);
+  background: var(--nav-pill-hover-bg);
+  border-color: var(--nav-pill-hover-border);
+}
+
+.navbarMenu a:active {
+  background: rgba(186, 154, 255, 0.3);
+}
+
+.navbarMenu a:focus-visible {
+  outline: 2px solid var(--nav-pill-focus);
+  outline-offset: 2px;
 }
 
 .navbarMenu a[aria-current='page'] {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--nav-pill-text);
+  background: var(--nav-pill-bg);
+  border-color: var(--nav-pill-border);
 }
 
 .navbarDropdown {
@@ -185,19 +246,24 @@
 }
 
 .navbarDropdownButton {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 16px;
-  font-weight: bold;
-  padding: 12px 16px;
+  background: var(--nav-pill-bg);
+  border: 1px solid var(--nav-pill-border);
+  color: var(--nav-pill-text);
+  font-size: 0.96rem;
+  font-weight: 600;
+  padding: 8px 18px;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  position: relative;
+  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -209,13 +275,24 @@
   }
 
   .navbarDropdownButton:hover {
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--nav-pill-hover-text);
+    background: var(--nav-pill-hover-bg);
   }
 }
 
 .navbarDropdownButton:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-pill-hover-text);
+  background: var(--nav-pill-hover-bg);
+  border-color: var(--nav-pill-hover-border);
+}
+
+.navbarDropdownButton:active {
+  background: rgba(186, 154, 255, 0.3);
+}
+
+.navbarDropdownButton:focus-visible {
+  outline: 2px solid var(--nav-pill-focus);
+  outline-offset: 2px;
 }
 
 .dropdownArrow {
@@ -230,17 +307,18 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  background: rgba(14, 14, 16, 0.95);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: rgba(15, 8, 32, 0.95);
+  border: 1px solid rgba(221, 201, 255, 0.26);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 8px;
   padding: 6px;
   list-style: none;
   min-width: 180px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 32px rgba(4, 2, 11, 0.42);
   z-index: 1000;
   animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
@@ -277,47 +355,57 @@
 
 .dropdownItem {
   display: block;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  font-weight: 400;
-  padding: 10px 12px;
+  color: rgba(245, 236, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 10px 16px;
   border-radius: 8px;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 @media (max-width: 768px) {
   .dropdownItem {
     width: 100%;
     padding: 12px 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(245, 236, 255, 0.9);
     font-size: 0.9rem;
-    font-weight: 400;
+    font-weight: 500;
     border-radius: 8px;
     text-align: left;
   }
 
   .dropdownItem:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+    background: rgba(165, 118, 255, 0.28);
+    color: #ffffff;
   }
 }
 
 .dropdownItem:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: rgba(165, 118, 255, 0.28);
+  color: #ffffff;
+}
+
+.dropdownItem:focus-visible {
+  outline: 2px solid var(--nav-pill-focus);
+  outline-offset: 2px;
 }
 
 .navbarCta {
-  background: #ffffff;
-  color: #000;
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  color: #ffffff;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 24px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  margin-left: 8px;
+  margin-right: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+  position: relative;
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -329,28 +417,44 @@
 }
 
 .navbarCta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(124, 58, 237, 0.45);
 }
 
 .accountButton {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: var(--font-size-base, 0.9rem);
-  font-weight: 600;
-  padding: 12px 16px;
-  border: none;
-  cursor: pointer;
+  background: var(--nav-pill-bg);
+  color: var(--nav-pill-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 1px solid var(--nav-pill-border);
   border-radius: 8px;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  position: relative;
+  overflow: visible;
 }
 
 .accountButton:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-pill-hover-text);
+  background: var(--nav-pill-hover-bg);
+  border-color: var(--nav-pill-hover-border);
+}
+
+.accountButton:active {
+  background: rgba(186, 154, 255, 0.3);
+}
+
+.accountButton:focus-visible {
+  outline: 2px solid var(--nav-pill-focus);
+  outline-offset: 2px;
 }
 
 .hamburger {
@@ -377,7 +481,7 @@
 .hamburgerBar {
   width: 100%;
   height: 2px;
-  background: #fff;
+  background: rgba(246, 239, 255, 0.95);
   border-radius: 2px;
   transition: all 0.3s ease;
 }
