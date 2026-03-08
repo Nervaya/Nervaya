@@ -1,46 +1,232 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { therapistsApi } from '@/lib/api/therapists';
+import { useEffect, useMemo, useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useTherapists } from '@/app/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
 import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+import { scheduleApi, ScheduleByDateRangeItem } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
+import { ICON_FILTER } from '@/constants/icons';
 import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 
+import { FilterModal, FilterState } from './components/FilterModal';
+import { TherapistCard } from './components/TherapistCard';
+import { VideoPreviewModal } from './components/VideoPreviewModal';
+
+const FILTER_ALL = '';
+const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
+const LOOKAHEAD_DAYS = 30;
+
+function parseTime12Hour(timeValue: string): { hours: number; minutes: number } | null {
+  const match = timeValue.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+
+  const hour = Number(match[1]);
+  const minutes = Number(match[2]);
+  const period = match[3].toUpperCase();
+
+  if (Number.isNaN(hour) || Number.isNaN(minutes) || hour > 12 || minutes > 59) {
+    return null;
+  }
+
+  let hours24 = hour % 12;
+  if (period === 'PM') {
+    hours24 += 12;
+  }
+
+  return { hours: hours24, minutes };
+}
+
+function getSlotDateTime(dateValue: string, startTime: string): Date | null {
+  const [year, month, day] = dateValue.split('-').map(Number);
+  const parsedTime = parseTime12Hour(startTime);
+
+  if (!year || !month || !day || !parsedTime) {
+    return null;
+  }
+
+  const dateTime = new Date(year, month - 1, day, parsedTime.hours, parsedTime.minutes, 0, 0);
+  return Number.isNaN(dateTime.getTime()) ? null : dateTime;
+}
+
+function getDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getNextAvailableSlotDateTime(schedules: ScheduleByDateRangeItem[], now: Date): Date | null {
+  const slots = schedules
+    .flatMap((schedule) =>
+      schedule.slots.map((slot) => ({
+        dateTime: getSlotDateTime(schedule.date, slot.startTime),
+        isAvailable: slot.isAvailable,
+      })),
+    )
+    .filter(
+      (slot): slot is { dateTime: Date; isAvailable: boolean } =>
+        slot.isAvailable && slot.dateTime !== null && slot.dateTime.getTime() > now.getTime(),
+    )
+    .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime());
+
+  return slots[0]?.dateTime ?? null;
+}
+
+function formatNextSlot(dateTime: Date): string {
+  const datePart = dateTime.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short' });
+  const timePart = dateTime.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+  return `${datePart} ${timePart}`;
+}
+
+function formatExperience(experience?: string) {
+  if (!experience) return 'Experience not specified';
+  const normalized = experience.trim();
+  if (/year/i.test(normalized)) return normalized;
+
+  const numericMatch = normalized.match(/\d+/);
+  if (numericMatch?.[0]) {
+    return `${numericMatch[0]}+ years of experience`;
+  }
+
+  return normalized;
+}
+
+function formatGender(value: string) {
+  return value
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export default function TherapyCornerPage() {
-  const [therapists, setTherapists] = useState<Therapist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [page, setPage] = useState(1);
+  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
+
+  const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists();
+  const error = fetchError ? fetchError.message : '';
+
+  const [filterState, setFilterState] = useState<FilterState>({
+    language: FILTER_ALL,
+    specialization: FILTER_ALL,
+    gender: FILTER_ALL,
+  });
+
+  const [modalFilterState, setModalFilterState] = useState<FilterState>({
+    language: FILTER_ALL,
+    specialization: FILTER_ALL,
+    gender: FILTER_ALL,
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [videoPreviewTherapist, setVideoPreviewTherapist] = useState<Therapist | null>(null);
 
   const limit = PAGE_SIZE_5;
-  const total = therapists.length;
+
+  const filterOptions = useMemo(() => {
+    const languages = new Set<string>();
+    const specializations = new Set<string>();
+    const genders = new Set<string>();
+    therapists.forEach((therapist) => {
+      therapist.languages?.forEach((language) => languages.add(language));
+      therapist.specializations?.forEach((specialization) => specializations.add(specialization));
+      if (therapist.gender) {
+        genders.add(therapist.gender);
+      }
+    });
+    return {
+      languages: Array.from(languages).sort(),
+      specializations: Array.from(specializations).sort(),
+      genders: Array.from(genders).sort(),
+    };
+  }, [therapists]);
+
+  const genderOptions = useMemo(() => {
+    return filterOptions.genders.length > 0 ? filterOptions.genders : Array.from(FALLBACK_GENDERS);
+  }, [filterOptions.genders]);
+
+  const hasActiveFilters = Boolean(filterState.language || filterState.specialization || filterState.gender);
+
+  const filteredTherapists = useMemo(() => {
+    return therapists.filter((therapist) => {
+      if (filterState.language && !therapist.languages?.includes(filterState.language)) return false;
+      if (filterState.specialization && !therapist.specializations?.includes(filterState.specialization)) return false;
+      if (filterState.gender && (therapist.gender || '').toLowerCase() !== filterState.gender.toLowerCase())
+        return false;
+      return true;
+    });
+  }, [therapists, filterState]);
+
+  const total = filteredTherapists.length;
   const totalPages = Math.max(1, Math.ceil(total / limit));
   const paginatedTherapists = useMemo(
-    () => therapists.slice((page - 1) * limit, page * limit),
-    [therapists, page, limit],
+    () => filteredTherapists.slice((page - 1) * limit, page * limit),
+    [filteredTherapists, page, limit],
   );
 
   useEffect(() => {
-    fetchTherapists();
-  }, []);
-
-  const fetchTherapists = async () => {
-    try {
-      const result = await therapistsApi.getAll();
-      setTherapists(result.data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
+    if (paginatedTherapists.length === 0) {
+      return;
     }
+
+    let active = true;
+
+    const loadNextSlots = async () => {
+      const now = new Date();
+      const startDate = getDateKey(now);
+      const endDate = getDateKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() + LOOKAHEAD_DAYS));
+
+      const results = await Promise.all(
+        paginatedTherapists.map(async (therapist) => {
+          try {
+            const response = await scheduleApi.getByDateRange(therapist._id, startDate, endDate, false);
+            const schedules = Array.isArray(response.data) ? response.data : [];
+            const nextSlotDateTime = getNextAvailableSlotDateTime(schedules, now);
+            return [therapist._id, nextSlotDateTime ? formatNextSlot(nextSlotDateTime) : null] as const;
+          } catch {
+            return [therapist._id, null] as const;
+          }
+        }),
+      );
+
+      if (!active) return;
+
+      setNextSlotByTherapist((prev) => ({
+        ...prev,
+        ...Object.fromEntries(results),
+      }));
+    };
+
+    void loadNextSlots();
+
+    return () => {
+      active = false;
+    };
+  }, [paginatedTherapists]);
+
+  const openFilterModal = () => {
+    setModalFilterState(filterState);
+    setIsFilterModalOpen(true);
+  };
+
+  const applyFilters = () => {
+    setFilterState(modalFilterState);
+    setPage(1);
+    setIsFilterModalOpen(false);
+  };
+
+  const clearFilters = () => {
+    setFilterState({ language: FILTER_ALL, specialization: FILTER_ALL, gender: FILTER_ALL });
+    setModalFilterState({ language: FILTER_ALL, specialization: FILTER_ALL, gender: FILTER_ALL });
+    setPage(1);
+    setIsFilterModalOpen(false);
   };
 
   const handleBookAppointment = (therapist: Therapist) => {
@@ -53,16 +239,33 @@ export default function TherapyCornerPage() {
   };
 
   return (
-    <Sidebar>
+    <Sidebar className={styles.pageContentWhite}>
       <div className={containerStyles.container}>
-        <PageHeader
-          title="Therapy Corner"
-          subtitle="Finding the right therapist isn't easy."
-          description="Based on your needs, we've curated a shortlist tailored just for you."
-        />
-
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>✨ Your Recommended Therapists</h2>
+          <div className={styles.highlightBanner}>
+            <p>Finding the right therapist is not easy.</p>
+            <span>Based on your needs, we curated a shortlist tailored for you.</span>
+          </div>
+
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Recommended Therapists</h2>
+            <p className={styles.sectionMeta}>
+              {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
+            </p>
+          </div>
+
+          <div className={styles.toolbar}>
+            <button type="button" className={styles.filterTrigger} onClick={openFilterModal}>
+              <Icon icon={ICON_FILTER} width={18} height={18} />
+              <span>Filters</span>
+              {hasActiveFilters && <span className={styles.filterDot} aria-hidden="true" />}
+            </button>
+            {hasActiveFilters && (
+              <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
+                Clear Filters
+              </button>
+            )}
+          </div>
 
           {loading && (
             <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
@@ -70,67 +273,73 @@ export default function TherapyCornerPage() {
             </div>
           )}
           {error && <p className={styles.error}>{error}</p>}
-
           {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
 
-          {!loading && !error && (
+          {!loading && !error && therapists.length > 0 && (
             <>
-              <ul className={styles.therapistList} aria-label="Recommended therapists">
-                {paginatedTherapists.map((therapist) => (
-                  <li
-                    key={therapist._id}
-                    className={styles.therapistCard}
-                    onMouseEnter={() => handleViewProfile(therapist)}
-                  >
-                    <div className={styles.therapistInfo}>
-                      <div
-                        className={styles.avatar}
-                        style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
-                        role="img"
-                        aria-label={`${therapist.name} profile picture`}
+              {filteredTherapists.length === 0 ? (
+                <>
+                  <p className={styles.noResults}>No therapists match the selected filters.</p>
+                  <div className={styles.paginationWrap}>
+                    <Pagination
+                      page={1}
+                      limit={limit}
+                      total={0}
+                      totalPages={1}
+                      onPageChange={setPage}
+                      ariaLabel="Recommended therapists pagination"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <ul className={styles.therapistList} aria-label="Recommended therapists">
+                    {paginatedTherapists.map((therapist) => (
+                      <TherapistCard
+                        key={therapist._id}
+                        therapist={therapist}
+                        onViewProfile={handleViewProfile}
+                        onBookAppointment={handleBookAppointment}
+                        onVideoPreview={setVideoPreviewTherapist}
+                        formatExperience={formatExperience}
+                        nextSlotLabel={nextSlotByTherapist[therapist._id]}
+                        isNextSlotLoading={!(therapist._id in nextSlotByTherapist)}
                       />
-                      <div>
-                        <h3>{therapist.name}</h3>
-                        <p className={styles.credentials}>
-                          {therapist.qualifications?.join(', ') || 'Professional Therapist'}
-                        </p>
-                        <p className={styles.details}>
-                          Experience: {therapist.experience || 'N/A'} | Languages:{' '}
-                          {therapist.languages?.join(', ') || 'N/A'}
-                        </p>
-                        <div className={styles.tags}>
-                          {therapist.specializations?.map((spec) => (
-                            <span key={spec}>{spec}</span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.actions}>
-                      <div className={styles.buttons}>
-                        <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
-                          Book Appointment
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              {total >= 0 && (
-                <div className={styles.paginationWrap}>
-                  <Pagination
-                    page={page}
-                    limit={limit}
-                    total={total}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                    ariaLabel="Recommended therapists pagination"
-                  />
-                </div>
+                    ))}
+                  </ul>
+                  <div className={styles.paginationWrap}>
+                    <Pagination
+                      page={page}
+                      limit={limit}
+                      total={total}
+                      totalPages={totalPages}
+                      onPageChange={setPage}
+                      ariaLabel="Recommended therapists pagination"
+                    />
+                  </div>
+                </>
               )}
             </>
           )}
         </section>
       </div>
+
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        options={{
+          languages: filterOptions.languages,
+          specializations: filterOptions.specializations,
+          genders: genderOptions,
+        }}
+        state={modalFilterState}
+        onStateChange={(key, value) => setModalFilterState((prev) => ({ ...prev, [key]: value }))}
+        onApply={applyFilters}
+        onClear={clearFilters}
+        formatGender={formatGender}
+      />
+
+      <VideoPreviewModal therapist={videoPreviewTherapist} onClose={() => setVideoPreviewTherapist(null)} />
 
       {selectedTherapist && (
         <BookingModal

@@ -3,10 +3,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ADD } from '@/constants/icons';
+import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import LottieLoader from '@/components/common/LottieLoader';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
 import { ConfirmDeleteDialog, BlogListCard } from '@/components/Admin/BlogList';
 import type { Blog } from '@/types/blog.types';
@@ -103,44 +102,59 @@ export default function AdminBlogsPage() {
         />
       )}
 
-      <PageHeader
-        title="Blogs"
-        subtitle="Manage blog posts and content"
-        actions={
-          <Link href="/admin/blogs/add" className={styles.addButton}>
-            <Icon icon={ICON_ADD} aria-hidden />
-            New Blog
-          </Link>
-        }
-      />
+      <section className={styles.header}>
+        <div className={styles.headerText}>
+          <h1 className={styles.title}>Blogs</h1>
+          <p className={styles.subtitle}>Manage blog posts, drafts, and publishing workflow.</p>
+          <div className={styles.stats}>
+            <span className={styles.statPill}>{pagination.total} total posts</span>
+            {searchQuery ? <span className={styles.statHint}>Filtering: &quot;{searchQuery}&quot;</span> : null}
+          </div>
+        </div>
+        <Link href="/admin/blogs/add" className={styles.addButton}>
+          <Icon icon={ICON_ADD} aria-hidden />
+          New Blog
+        </Link>
+      </section>
 
       {error && <div className={styles.error}>{error}</div>}
 
       <form onSubmit={handleSearchSubmit} className={styles.filters}>
-        <input
-          type="search"
-          placeholder="Search by title or author..."
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          className={styles.searchInput}
-          aria-label="Search blogs"
-        />
+        <label className={styles.searchField}>
+          <Icon icon={ICON_SEARCH} aria-hidden className={styles.searchIcon} />
+          <input
+            type="search"
+            placeholder="Search by title or author..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className={styles.searchInput}
+            aria-label="Search blogs"
+          />
+        </label>
         <button type="submit" className={styles.searchButton}>
           Search
         </button>
       </form>
 
       {loading ? (
-        <div className={styles.loading}>
-          <LottieLoader width={100} height={100} />
-        </div>
+        <LottieLoader width={96} height={96} label="Loading blogs" />
       ) : blogs.length === 0 ? (
-        <div className={styles.empty}>
-          <p>{searchQuery ? 'No blogs match your search.' : 'No blogs found'}</p>
-          <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
-            Create your first blog
-          </Link>
-        </div>
+        <>
+          <div className={styles.empty}>
+            <p>{searchQuery ? 'No blogs match your search.' : 'No blogs found'}</p>
+            <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
+              Create your first blog
+            </Link>
+          </div>
+          <Pagination
+            page={pagination.page}
+            limit={pagination.limit}
+            total={pagination.total}
+            totalPages={pagination.totalPages}
+            onPageChange={goToPage}
+            ariaLabel="Manage blogs pagination"
+          />
+        </>
       ) : (
         <>
           <ul className={styles.list} aria-label="Blog list">
@@ -153,16 +167,14 @@ export default function AdminBlogsPage() {
               />
             ))}
           </ul>
-          {pagination.total > 0 && (
-            <Pagination
-              page={pagination.page}
-              limit={pagination.limit}
-              total={pagination.total}
-              totalPages={pagination.totalPages}
-              onPageChange={goToPage}
-              ariaLabel="Manage blogs pagination"
-            />
-          )}
+          <Pagination
+            page={pagination.page}
+            limit={pagination.limit}
+            total={pagination.total}
+            totalPages={pagination.totalPages}
+            onPageChange={goToPage}
+            ariaLabel="Manage blogs pagination"
+          />
         </>
       )}
     </div>

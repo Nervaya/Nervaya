@@ -6,8 +6,8 @@
   min-height: 100vh;
   background: url('/background.png') no-repeat center center fixed;
   background-size: cover;
-  background-color: #020617;
-  color: var(--foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 @media (max-width: 768px) {
@@ -19,8 +19,8 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
+  border: 3px solid var(--color-border-light);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -33,6 +33,6 @@
 
 .loadingText {
   margin-top: 1rem;
-  color: var(--muted);
+  color: var(--color-text-muted);
   font-size: 0.9rem;
 }

@@ -9,8 +9,6 @@ const Counter = ({ value }: { value: string }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
   const [displayValue, setDisplayValue] = useState('0');
-
-  // Extract number and suffix (e.g., "10,000+" -> 10000 and "+")
   const numValue = parseInt(value.replace(/[^0-9]/g, ''));
   const suffix = value.replace(/[0-9,]/g, '');
   const hasComma = value.includes(',');

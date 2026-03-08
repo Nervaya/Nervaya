@@ -117,7 +117,19 @@ export default function AdminTherapistsPage() {
           }
         />
       ) : therapists.length === 0 ? (
-        <StatusState type="empty" message="No therapists found. Click above to add the first one." />
+        <>
+          <StatusState type="empty" message="No therapists found. Click above to add the first one." />
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={1}
+              limit={limit}
+              total={0}
+              totalPages={1}
+              onPageChange={setPage}
+              ariaLabel="Therapists pagination"
+            />
+          </div>
+        </>
       ) : (
         <>
           <ul className={styles.list} aria-label="Therapist list">
@@ -144,7 +156,13 @@ export default function AdminTherapistsPage() {
                         <strong>Exp:</strong> {therapist.experience}
                       </span>
                       <span className={styles.infoItem}>
+                        <strong>Gender:</strong> {therapist.gender || 'N/A'}
+                      </span>
+                      <span className={styles.infoItem}>
                         <strong>Lang:</strong> {therapist.languages?.join(', ')}
+                      </span>
+                      <span className={styles.infoItem}>
+                        <strong>Video:</strong> {therapist.introVideoUrl ? 'Yes' : 'No'}
                       </span>
                     </div>
 
@@ -174,18 +192,16 @@ export default function AdminTherapistsPage() {
               </li>
             ))}
           </ul>
-          {total > 0 && (
-            <div className={styles.paginationWrap}>
-              <Pagination
-                page={page}
-                limit={limit}
-                total={total}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                ariaLabel="Therapists pagination"
-              />
-            </div>
-          )}
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              ariaLabel="Therapists pagination"
+            />
+          </div>
         </>
       )}
     </div>

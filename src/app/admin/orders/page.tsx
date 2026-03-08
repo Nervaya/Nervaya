@@ -29,6 +29,7 @@ export default function AdminOrdersPage() {
   const [filters, setFilters] = useState<OrderFiltersParams>({});
   const limit = PAGE_SIZE_10;
   const { data: orders, meta, isLoading, error, refetch } = useAdminOrders(page, limit, filters);
+  const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
 
   const handleFiltersApply = useCallback((newFilters: OrderFiltersParams) => {
     setFilters(newFilters);
@@ -91,6 +92,16 @@ export default function AdminOrdersPage() {
           activeCount={countActiveFilters(filters)}
         />
         <StatusState type="empty" message="No orders found." />
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={paginationMeta.page}
+            limit={paginationMeta.limit}
+            total={paginationMeta.total}
+            totalPages={paginationMeta.totalPages}
+            onPageChange={setPage}
+            ariaLabel="Orders pagination"
+          />
+        </div>
       </div>
     );
   }
@@ -141,7 +152,7 @@ export default function AdminOrdersPage() {
           </li>
         ))}
       </ul>
-      {meta && meta.total > 0 && (
+      {meta && (
         <div className={styles.paginationWrap}>
           <Pagination
             page={meta.page}

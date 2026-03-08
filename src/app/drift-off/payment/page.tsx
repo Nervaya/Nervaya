@@ -22,7 +22,7 @@ const BENEFITS = [
 
 export default function DriftOffPaymentPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, initializing } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
 
@@ -31,14 +31,16 @@ export default function DriftOffPaymentPage() {
     razorpayOrderId,
     razorpayKeyId,
     isCreating,
+    isVerifying,
     error,
     showPaymentHandler,
     initiatePayment,
+    handleVerifyStart,
     handlePaymentError,
   } = useDriftOffPayment();
-
-  // Check if user already has a paid order
   useEffect(() => {
+    if (initializing) return;
+
     const checkExistingPaidOrder = async () => {
       if (!isAuthenticated) {
         setIsChecking(false);
@@ -53,25 +55,25 @@ export default function DriftOffPaymentPage() {
           const paidOrder = ordersRes.data.find((order) => order.paymentStatus === 'paid');
           if (paidOrder) {
             router.replace(`/drift-off/assessment?orderId=${paidOrder._id}`);
+            return;
           }
         }
+        setIsChecking(false);
       } catch {
         setInitError('Failed to verify your session status. Please refresh the page or try again later.');
-      } finally {
         setIsChecking(false);
       }
     };
 
     checkExistingPaidOrder();
-  }, [isAuthenticated, router]);
+  }, [initializing, isAuthenticated, router]);
 
-  // Show loading while checking for existing orders
-  if (isChecking) {
+  if (isVerifying || isChecking || initializing) {
     return (
       <Sidebar>
         <div className={styles.wrapper}>
           <div className={styles.loading}>
-            <p>Checking your session status...</p>
+            <p>{isVerifying ? 'Verifying your payment…' : 'Checking your session status...'}</p>
           </div>
         </div>
       </Sidebar>
@@ -79,88 +81,106 @@ export default function DriftOffPaymentPage() {
   }
 
   return (
-    <Sidebar>
-      <div className={styles.wrapper}>
-        <div className={styles.container}>
-          <div className={styles.card}>
-            <div className={styles.cardLeft}>
-              <span className={styles.badge}>Deep Rest Session</span>
-              <h1 className={styles.title}>Your Custom Sleep Session</h1>
-              <p className={styles.subtitle}>
-                A 25-minute personalized audio session curated specifically for your sleep patterns and mental needs by
-                our specialists.
-              </p>
-              <ul className={styles.benefits} aria-label="Session benefits">
-                {BENEFITS.map((benefit) => (
-                  <li key={benefit} className={styles.benefitItem}>
-                    <span className={styles.checkIcon} aria-hidden>
-                      ✓
-                    </span>
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <>
+      <Sidebar>
+        <div className={styles.wrapper}>
+          <div className={styles.container}>
+            <div className={styles.card}>
+              <div className={styles.cardLeft}>
+                <span className={styles.badge}>Deep Rest Session</span>
+                <h1 className={styles.title}>Your Custom Sleep Session</h1>
+                <p className={styles.subtitle}>
+                  A 25-minute personalized audio session curated specifically for your sleep patterns and mental needs
+                  by our specialists.
+                </p>
+                <ul className={styles.benefits} aria-label="Session benefits">
+                  {BENEFITS.map((benefit) => (
+                    <li key={benefit} className={styles.benefitItem}>
+                      <span className={styles.checkIcon} aria-hidden>
+                        ✓
+                      </span>
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <div className={styles.cardRight}>
-              <div className={styles.priceCard}>
-                <p className={styles.priceLabel}>Session Price</p>
-                <p className={styles.price}>₹{DRIFT_OFF_SESSION_PRICE}</p>
-                <p className={styles.priceNote}>One-time payment · Personalized for you</p>
+              <div className={styles.cardRight}>
+                <div className={styles.priceCard}>
+                  <p className={styles.priceLabel}>Session Price</p>
+                  <p className={styles.price}>₹{DRIFT_OFF_SESSION_PRICE}</p>
+                  <p className={styles.priceNote}>One-time payment · Personalized for you</p>
 
-                {initError && (
-                  <div className={styles.error} role="alert" style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
-                      <div>
-                        <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Error</div>
-                        <div>{initError}</div>
+                  {initError && (
+                    <div className={styles.error} role="alert" style={{ marginBottom: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
+                        <div>
+                          <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Error</div>
+                          <div>{initError}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {error && !initError && (
-                  <div className={styles.error} role="alert">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
-                      <div>
-                        <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Payment Error</div>
-                        <div>{error}</div>
+                  {error && !initError && (
+                    <div className={styles.error} role="alert">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>⚠️</span>
+                        <div>
+                          <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Payment Error</div>
+                          <div>{error}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {!showPaymentHandler && !initError && (
-                  <button type="button" className={styles.payBtn} onClick={initiatePayment} disabled={isCreating}>
-                    {isCreating ? (
-                      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                        <span className={styles.spinner}></span>
-                        Processing…
-                      </span>
-                    ) : (
-                      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                        🔒 Pay Now
-                      </span>
-                    )}
-                  </button>
-                )}
+                  {!initError && (
+                    <button
+                      type="button"
+                      className={styles.payBtn}
+                      onClick={initiatePayment}
+                      disabled={isCreating || showPaymentHandler || isVerifying}
+                    >
+                      {isCreating || showPaymentHandler ? (
+                        <span
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                        >
+                          {isCreating ? (
+                            <>
+                              <span className={styles.spinner}></span>
+                              Processing…
+                            </>
+                          ) : (
+                            <>🔒 Pay Now</>
+                          )}
+                        </span>
+                      ) : (
+                        <span
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                        >
+                          🔒 Pay Now
+                        </span>
+                      )}
+                    </button>
+                  )}
 
-                {showPaymentHandler && driftOffOrderId && razorpayOrderId && razorpayKeyId && (
-                  <DriftOffPaymentHandler
-                    driftOffOrderId={driftOffOrderId}
-                    amount={DRIFT_OFF_SESSION_PRICE}
-                    razorpayOrderId={razorpayOrderId}
-                    razorpayKeyId={razorpayKeyId}
-                    onError={handlePaymentError}
-                  />
-                )}
+                  {showPaymentHandler && driftOffOrderId && razorpayOrderId && razorpayKeyId && (
+                    <DriftOffPaymentHandler
+                      driftOffOrderId={driftOffOrderId}
+                      amount={DRIFT_OFF_SESSION_PRICE}
+                      razorpayOrderId={razorpayOrderId}
+                      razorpayKeyId={razorpayKeyId}
+                      onVerifyStart={handleVerifyStart}
+                      onError={handlePaymentError}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Sidebar>
+      </Sidebar>
+    </>
   );
 }

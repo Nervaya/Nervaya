@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_CLOSE } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
@@ -143,7 +142,6 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Question" subtitle="Update assessment question details" />
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
@@ -153,16 +151,12 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Edit Question"
-        subtitle="Update assessment question details"
-        actions={
-          <Link href="/admin/sleep-assessment" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Questions
-          </Link>
-        }
-      />
+      <div className={styles.topActions}>
+        <Link href="/admin/sleep-assessment" className={styles.backLink}>
+          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          Back to Questions
+        </Link>
+      </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (

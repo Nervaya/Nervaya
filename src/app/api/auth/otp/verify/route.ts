@@ -71,7 +71,6 @@ export async function POST(request: NextRequest) {
       );
 
       const { sendWelcomeEmail } = await import('@/lib/services/email/welcome-email.service');
-      // Fire and forget welcome email
       sendWelcomeEmail(pendingData.email, pendingData.name).catch(console.error);
 
       const response = NextResponse.json(successResponse('Email verified successfully', session, 200), { status: 200 });

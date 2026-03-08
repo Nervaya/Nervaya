@@ -1,18 +1,35 @@
 export interface ConsultingHour {
-  dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  startTime: string; // Format: "09:00 AM"
-  endTime: string; // Format: "05:00 PM"
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
   isEnabled: boolean;
 }
 
 export interface Therapist {
   _id: string;
   name: string;
+  slug?: string;
   email?: string;
   qualifications?: string[];
   experience?: string;
   languages?: string[];
   specializations?: string[];
+  gender?: 'male' | 'female' | 'other';
   image?: string;
+  introVideoUrl?: string;
+  introVideoThumbnail?: string;
+  galleryImages?: string[];
+  bio?: string;
+  bioLong?: string;
+  quote?: string;
+  messageToClient?: string;
+  sessionFee?: number;
+  sessionDurationMins?: number;
+  sessionModes?: string[];
+  testimonials?: Array<{
+    name: string;
+    message: string;
+    clientSince?: string;
+  }>;
   consultingHours?: ConsultingHour[];
 }

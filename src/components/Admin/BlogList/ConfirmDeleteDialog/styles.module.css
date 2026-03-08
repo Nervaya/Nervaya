@@ -1,72 +1,93 @@
 .confirmOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1300;
   padding: 20px;
 }
 
 .confirmDialog {
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 400px;
   width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  background: #ffffff;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.22);
+  padding: 24px;
 }
 
 .confirmDialog h3 {
-  margin: 0 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #f8fafc;
+  margin: 0 0 10px 0;
+  color: #0f172a;
+  font-size: 1.28rem;
+  line-height: 1.2;
 }
 
 .confirmDialog p {
-  margin: 0 0 20px 0;
-  color: #94a3b8;
-  line-height: 1.5;
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 0.92rem;
 }
 
 .confirmActions {
   display: flex;
-  gap: 12px;
   justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.confirmButton,
+.cancelButton {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .confirmButton {
-  padding: 10px 20px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border: 1px solid rgba(220, 38, 38, 0.5);
+  background: #dc2626;
+  color: #ffffff;
 }
 
 .confirmButton:hover {
-  background: #dc2626;
+  background: #b91c1c;
+  transform: translateY(-1px);
 }
 
 .cancelButton {
-  padding: 10px 20px;
-  background: transparent;
-  color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border: 1px solid #d5dde8;
+  background: #ffffff;
+  color: #475569;
 }
 
 .cancelButton:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #f8fafc;
+  border-color: rgba(124, 58, 237, 0.45);
+  color: #5b21b6;
+}
+
+@media (max-width: 640px) {
+  .confirmDialog {
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .confirmActions {
+    flex-direction: column-reverse;
+  }
+
+  .confirmButton,
+  .cancelButton {
+    width: 100%;
+  }
 }

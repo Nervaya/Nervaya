@@ -32,6 +32,7 @@ export default function AdminSupplementsPage() {
 
   const limit = PAGE_SIZE_10;
   const { data: supplements, meta, isLoading, error: fetchError, refetch } = useAdminSupplements(page, limit, filters);
+  const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
 
   const handleFiltersApply = useCallback((newFilters: SupplementFiltersParams) => {
     setFilters(newFilters);
@@ -133,18 +134,16 @@ export default function AdminSupplementsPage() {
           onEdit={handleEdit}
           loading={isLoading}
         />
-        {meta && meta.total > 0 && (
-          <div className={styles.paginationWrap}>
-            <Pagination
-              page={meta.page}
-              limit={meta.limit}
-              total={meta.total}
-              totalPages={meta.totalPages}
-              onPageChange={setPage}
-              ariaLabel="Supplements pagination"
-            />
-          </div>
-        )}
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={paginationMeta.page}
+            limit={paginationMeta.limit}
+            total={paginationMeta.total}
+            totalPages={paginationMeta.totalPages}
+            onPageChange={setPage}
+            ariaLabel="Supplements pagination"
+          />
+        </div>
       </div>
 
       <SupplementModal

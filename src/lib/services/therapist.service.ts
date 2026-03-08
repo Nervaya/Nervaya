@@ -4,6 +4,15 @@ import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 
+function toSlug(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 export async function createTherapist(data: Partial<ITherapist>) {
   await connectDB();
   try {
@@ -54,6 +63,8 @@ export async function createTherapist(data: Partial<ITherapist>) {
 
     const therapistData = {
       ...data,
+      slug: data.slug || (data.name ? toSlug(data.name) : ''),
+      gender: data.gender || 'other',
       consultingHours: data.consultingHours || defaultConsultingHours,
     };
 
@@ -100,7 +111,12 @@ export async function updateTherapist(id: string, data: Partial<ITherapist>) {
       throw new ValidationError('Invalid Therapist ID');
     }
 
-    const therapist = await Therapist.findByIdAndUpdate(id, data, {
+    const updateData: Partial<ITherapist> = { ...data };
+    if (!updateData.slug && updateData.name) {
+      updateData.slug = toSlug(updateData.name);
+    }
+
+    const therapist = await Therapist.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     });

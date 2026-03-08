@@ -205,7 +205,7 @@
   margin: 0;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -232,7 +232,7 @@
   line-height: 1.6;
   color: #d1d5db;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -337,7 +337,7 @@
   color: #fff;
   margin: 0;
   line-height: 1.3;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -363,7 +363,7 @@
   line-height: 1.6;
   color: #d1d5db;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
   width: 100%;
   text-align: left;
 }
@@ -392,7 +392,7 @@
   padding: 16px 24px !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-family: var(--font-sans) !important;
   cursor: pointer;
   display: flex !important;
   align-items: center;
@@ -463,7 +463,7 @@
   margin: 0;
   text-align: left;
   line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
   width: 100%;
 }
 
@@ -541,7 +541,7 @@
   color: #a78bfa;
   margin: 0 0 6px 0;
   line-height: 1.2;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 1024px) {
@@ -568,7 +568,7 @@
   color: #9ca3af;
   margin: 0;
   line-height: 1.4;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 768px) {

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import { driftOffApi } from '@/lib/api/driftOff';
+import type { IDriftOffAnswer } from '@/types/driftOff.types';
 
 export interface UseDriftOffAssessmentResult {
   currentQuestion: ISleepAssessmentQuestion | undefined;
@@ -25,14 +26,18 @@ export interface UseDriftOffAssessmentResult {
 export function useDriftOffAssessmentState(
   questions: ISleepAssessmentQuestion[],
   driftOffOrderId: string,
+  initialAnswers: IDriftOffAnswer[] = [],
 ): UseDriftOffAssessmentResult {
+  const hydratedInitialAnswersRef = useRef(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Map<string, string | string[]>>(new Map());
+  const [answers, setAnswers] = useState<Map<string, string | string[]>>(
+    () => new Map(initialAnswers.map((a) => [a.questionId, a.answer])),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [direction, setDirection] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isHydrated] = useState(true);
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   const totalQuestions = questions.length;
@@ -54,30 +59,18 @@ export function useDriftOffAssessmentState(
   }, [currentQuestion, answers]);
 
   useEffect(() => {
-    if (questions.length === 0 || isHydrated) return;
-    const loadExisting = async () => {
-      try {
-        const res = await driftOffApi.getResponses();
-        if (res.success && res.data?.length) {
-          const existing = res.data.find((r) => r.driftOffOrderId === driftOffOrderId);
-          if (existing?.answers?.length) {
-            const hydrated = new Map<string, string | string[]>();
-            existing.answers.forEach((a) => {
-              hydrated.set(a.questionId, a.answer);
-            });
-            setAnswers(hydrated);
-            const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id));
-            if (firstUnanswered >= 0) setCurrentQuestionIndex(firstUnanswered);
-          }
-        }
-      } catch {
-        /* start fresh */
-      } finally {
-        setIsHydrated(true);
-      }
-    };
-    loadExisting();
-  }, [questions, driftOffOrderId, isHydrated]);
+    if (hydratedInitialAnswersRef.current || questions.length === 0) return;
+
+    const hydrated = new Map<string, string | string[]>(initialAnswers.map((a) => [a.questionId, a.answer]));
+    setAnswers(hydrated);
+
+    if (hydrated.size > 0) {
+      const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id));
+      if (firstUnanswered >= 0) setCurrentQuestionIndex(firstUnanswered);
+    }
+
+    hydratedInitialAnswersRef.current = true;
+  }, [questions, initialAnswers]);
 
   const handleAnswerChange = useCallback(
     (answer: string | string[]) => {

@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import BlogForm from '@/components/Admin/BlogForm';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -77,16 +76,16 @@ export default function AddBlogPage() {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Create New Blog"
-        subtitle="Add a new blog post to your platform"
-        actions={
-          <Link href="/admin/blogs" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Blogs
-          </Link>
-        }
-      />
+      <section className={styles.header}>
+        <div className={styles.headerText}>
+          <h1 className={styles.title}>Create New Blog</h1>
+          <p className={styles.subtitle}>Add a new blog post to your platform.</p>
+        </div>
+        <Link href="/admin/blogs" className={styles.backLink}>
+          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          Back to Blogs
+        </Link>
+      </section>
 
       <BlogForm
         formData={formData}

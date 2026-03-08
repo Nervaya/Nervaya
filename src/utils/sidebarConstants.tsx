@@ -1,8 +1,5 @@
 import { SIDEBAR_ICON_MAP } from '@/constants/icons';
 import type { NavigationMenuGroup } from '@/types/navigation.types';
-
-// Re-export icon map for backward compatibility during migration
-// iconMap now returns Iconify icon ID strings instead of React elements
 export const iconMap: Record<string, string> = SIDEBAR_ICON_MAP;
 
 export interface SidebarNavItem {
@@ -12,50 +9,37 @@ export interface SidebarNavItem {
   isDashboard?: boolean;
 }
 
-export const sidebarBottomNavItems: SidebarNavItem[] = [
-  {
-    title: 'Feedback',
-    path: '/support',
-    icon: 'FaRegCommentDots',
-  },
-];
+export const sidebarBottomNavItems: SidebarNavItem[] = [];
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
-    title: 'General',
+    title: 'GENERAL',
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
-      {
-        title: 'Questionnaire',
-        path: '/sleep-assessment',
-        icon: 'FaClipboardList',
-      },
+      { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
+      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
     ],
   },
   {
-    title: 'Sleep',
+    title: 'THERAPY',
+    items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUsers' }],
+  },
+  {
+    title: 'DRIFT OFF',
     items: [
-      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+      { title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' },
       { title: 'My Session', path: '/drift-off/my-session', icon: 'FaHeadphones' },
     ],
   },
   {
-    title: 'Shop',
-    items: [
-      { title: 'Supplements', path: '/supplements', icon: 'FaPills' },
-      { title: 'Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
-    ],
+    title: 'SUPPLEMENTS',
+    items: [{ title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' }],
   },
   {
-    title: 'Support',
+    title: 'HELP',
     items: [
-      {
-        title: 'Therapy Corner',
-        path: '/therapy-corner',
-        icon: 'FaUserDoctor',
-      },
       { title: 'Support', path: '/support', icon: 'FaHeadset' },
-      { title: 'Account', path: '/account', icon: 'FaUsers' },
+      { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
     ],
   },
 ];

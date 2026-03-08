@@ -1,220 +1,214 @@
 .form {
   width: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 28px 32px;
-}
-
-@media (max-width: 768px) {
-  .form {
-    padding: 20px;
-  }
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  padding: 32px;
 }
 
 .errorMessage {
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: 10px;
-  color: #fca5a5;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(254, 242, 242, 0.95);
+  color: #b91c1c;
   font-size: 0.875rem;
+  font-weight: 600;
   margin-bottom: 20px;
 }
 
 .formGrid {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 32px;
-}
-
-@media (max-width: 1024px) {
-  .formGrid {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 30px;
 }
 
 .mainColumn {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
 }
 
 .sideColumn {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #f1f5f9;
+  font-size: 0.89rem;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .required {
-  color: #f87171;
-  margin-left: 4px;
+  color: #ef4444;
+  margin-left: 2px;
 }
 
 .input {
   width: 100%;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  transition: all 0.2s ease;
+  height: 52px;
+  padding: 0 15px;
+  border-radius: 12px;
+  border: 1px solid #d9e2ee;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .input::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .input:focus {
   outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .editorReadingWidth {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 860px;
 }
 
 .contentTip {
-  font-size: 0.8125rem;
-  color: #94a3b8;
-  margin-bottom: 10px;
-  padding: 10px 14px;
-  background: rgba(124, 58, 237, 0.06);
-  border-left: 3px solid rgba(124, 58, 237, 0.4);
-  border-radius: 0 8px 8px 0;
+  margin: 0;
+  padding: 11px 14px;
+  border-left: 3px solid rgba(124, 58, 237, 0.55);
+  border-radius: 0 10px 10px 0;
+  background: rgba(124, 58, 237, 0.08);
+  color: #4b5563;
+  line-height: 1.55;
+  font-size: 0.88rem;
 }
 
 .contentTip strong {
-  color: #c4b5fd;
+  color: #5b21b6;
+  font-weight: 700;
 }
 
 .contentTip kbd {
   display: inline-block;
+  border-radius: 6px;
+  border: 1px solid #d6dce5;
+  background: #ffffff;
   padding: 2px 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-family: inherit;
 }
 
 .editorWrapper {
-  border-radius: 10px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid #d9e2ee;
+  background: #ffffff;
 }
 
 .editorLoading {
-  padding: 60px;
   text-align: center;
   color: #64748b;
+  font-size: 0.95rem;
+  padding: 52px;
 }
 
 .editor {
-  min-height: 400px;
+  min-height: 420px;
 }
 
 .editor :global(.ql-toolbar) {
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
 .editor :global(.ql-toolbar .ql-stroke) {
-  stroke: #94a3b8;
+  stroke: #475569;
 }
 
 .editor :global(.ql-toolbar .ql-fill) {
-  fill: #94a3b8;
+  fill: #475569;
 }
 
 .editor :global(.ql-toolbar .ql-picker) {
-  color: #94a3b8;
+  color: #334155;
 }
 
 .editor :global(.ql-toolbar button:hover .ql-stroke),
 .editor :global(.ql-toolbar button.ql-active .ql-stroke) {
-  stroke: #a78bfa;
+  stroke: #6d28d9;
 }
 
 .editor :global(.ql-toolbar button:hover .ql-fill),
 .editor :global(.ql-toolbar button.ql-active .ql-fill) {
-  fill: #a78bfa;
+  fill: #6d28d9;
 }
 
 .editor :global(.ql-toolbar .ql-picker-label:hover),
 .editor :global(.ql-toolbar .ql-picker-label.ql-active) {
-  color: #a78bfa;
+  color: #6d28d9;
 }
 
 .editor :global(.ql-container) {
   border: none;
   font-size: 1rem;
-  font-family: inherit;
 }
 
 .editor :global(.ql-editor) {
-  min-height: 350px;
-  color: #f8fafc;
-  line-height: 1.7;
+  min-height: 340px;
+  color: #1e293b;
+  line-height: 1.75;
 }
 
 .editor :global(.ql-editor.ql-blank::before) {
-  color: #64748b;
+  color: #94a3b8;
   font-style: normal;
 }
 
 .editor :global(.ql-editor h1),
 .editor :global(.ql-editor h2),
 .editor :global(.ql-editor h3) {
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 .editor :global(.ql-editor a) {
-  color: #a78bfa;
+  color: #5b21b6;
 }
 
 .editor :global(.ql-editor blockquote) {
-  border-left: 4px solid #7c3aed;
-  color: #cbd5e1;
+  border-left: 3px solid rgba(124, 58, 237, 0.5);
+  color: #475569;
 }
 
 .editor :global(.ql-editor pre) {
-  background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  background: #0f172a;
 }
 
 .editor :global(.ql-snow .ql-picker-options) {
-  background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #d1d9e5;
   border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
 }
 
 .editor :global(.ql-snow .ql-picker-item) {
-  color: #f8fafc;
+  color: #334155;
 }
 
 .editor :global(.ql-snow .ql-picker-item:hover) {
-  color: #a78bfa;
+  color: #5b21b6;
 }
 
 .tagInputWrapper {
@@ -227,22 +221,25 @@
 }
 
 .addTagButton {
-  width: 44px;
-  height: 44px;
-  display: flex;
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(124, 58, 237, 0.15);
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  border-radius: 10px;
-  color: #a78bfa;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.34);
+  background: rgba(124, 58, 237, 0.1);
+  color: #6d28d9;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
   flex-shrink: 0;
 }
 
 .addTagButton:hover {
-  background: rgba(124, 58, 237, 0.25);
+  transform: translateY(-1px);
+  background: rgba(124, 58, 237, 0.17);
 }
 
 .addTagButton svg {
@@ -254,45 +251,47 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: rgba(124, 58, 237, 0.15);
-  color: #c4b5fd;
-  border-radius: 6px;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  gap: 5px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.24);
+  background: rgba(124, 58, 237, 0.1);
+  color: #5b21b6;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .removeTagButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  background: transparent;
   border: none;
-  color: #a78bfa;
+  background: transparent;
+  color: #7c3aed;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s ease;
 }
 
 .removeTagButton:hover {
-  color: #f87171;
+  color: #dc2626;
 }
 
 .checkboxLabel {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #f1f5f9;
-  font-size: 0.9375rem;
+  color: #334155;
+  font-size: 0.93rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -307,62 +306,91 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 28px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-@media (max-width: 768px) {
-  .formActions {
-    flex-direction: column-reverse;
-  }
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid #e2e8f0;
 }
 
 .cancelButton,
 .submitButton {
+  min-width: 126px;
+  height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  border-radius: 12px;
+  padding: 0 22px;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .cancelButton {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #cbd5e1;
+  border: 1px solid #d5dde8;
+  background: #ffffff;
+  color: #475569;
 }
 
 .cancelButton:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #f8fafc;
+  border-color: rgba(124, 58, 237, 0.45);
+  color: #5b21b6;
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  border: none;
-  color: white;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+  border: 1px solid rgba(109, 40, 217, 0.65);
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.25);
 }
 
 .submitButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(124, 58, 237, 0.3);
 }
 
 .submitButton:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
   transform: none;
 }
 
+@media (max-width: 1140px) {
+  .formGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+  .form {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .mainColumn,
+  .sideColumn {
+    gap: 18px;
+  }
+
+  .editor {
+    min-height: 330px;
+  }
+
+  .editor :global(.ql-editor) {
+    min-height: 280px;
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
   .cancelButton,
   .submitButton {
     width: 100%;

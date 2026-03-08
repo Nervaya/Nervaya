@@ -22,8 +22,6 @@ export async function POST(request: NextRequest) {
     if (!video) {
       return NextResponse.json(errorResponse('Video file is required', null, 400), { status: 400 });
     }
-
-    // Validate file type
     const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
     if (!allowedTypes.includes(video.type)) {
       return NextResponse.json(
@@ -31,31 +29,21 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
-    // Validate file size (100MB max)
     const maxSize = 100 * 1024 * 1024;
     if (video.size > maxSize) {
       return NextResponse.json(errorResponse('File size must be less than 100MB', null, 400), { status: 400 });
     }
-
-    // Create uploads directory if it doesn't exist
     const uploadsDir = join(process.cwd(), 'public', 'uploads', 'videos');
     if (!existsSync(uploadsDir)) {
       await mkdir(uploadsDir, { recursive: true });
     }
-
-    // Generate unique filename
     const timestamp = Date.now();
     const fileExtension = video.name.split('.').pop() || 'mp4';
     const fileName = `${userId}_${responseId}_${timestamp}.${fileExtension}`;
     const filePath = join(uploadsDir, fileName);
-
-    // Save file to disk
     const bytes = await video.arrayBuffer();
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);
-
-    // Generate public URL
     const videoUrl = `/uploads/videos/${fileName}`;
 
     console.warn(`Video uploaded successfully: ${fileName} for user ${userId}, response ${responseId}`);

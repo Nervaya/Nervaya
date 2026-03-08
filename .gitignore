@@ -22,7 +22,9 @@
 
 # Cursor IDE (rules, skills, local state)
 .cursor/
-
+.antigravity/
+.agent/
+.zed/
 
 #windsurf
 .windsurf/

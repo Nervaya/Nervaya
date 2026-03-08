@@ -6,7 +6,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -141,16 +140,12 @@ export default function AdminSleepAssessmentPage() {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <PageHeader
-        title="Sleep Assessment Questions"
-        subtitle="Manage and configure assessment questions"
-        actions={
-          <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
-            <Icon icon={ICON_ADD} aria-hidden />
-            Add Question
-          </Link>
-        }
-      />
+      <div className={styles.topActions}>
+        <Link href="/admin/sleep-assessment/add" className={styles.addButton}>
+          <Icon icon={ICON_ADD} aria-hidden />
+          Add Question
+        </Link>
+      </div>
 
       {loading ? (
         <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">

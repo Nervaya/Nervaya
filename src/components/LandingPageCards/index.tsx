@@ -11,7 +11,6 @@ const Cards = () => {
         {landingPageCardsData.map((card) => (
           <li key={card.id} className={styles.card}>
             <div className={styles.cardImageWrapper}>
-              {card.badge && <span className={styles.badge}>{card.badge}</span>}
               <Image
                 src={card.image}
                 alt={card.title}

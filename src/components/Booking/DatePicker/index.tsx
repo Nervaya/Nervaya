@@ -18,6 +18,7 @@ interface DatePickerProps {
   maxDate?: Date;
   fullyBookedDates?: Set<string>;
   onMonthChange?: (monthStart: Date) => void;
+  slotAvailability?: Map<string, number>;
 }
 
 export default function DatePicker({
@@ -27,13 +28,9 @@ export default function DatePicker({
   maxDate,
   fullyBookedDates,
   onMonthChange,
+  slotAvailability,
 }: DatePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1));
-  const today = (() => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
-  })();
 
   useEffect(() => {
     const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -43,7 +40,39 @@ export default function DatePicker({
 
   const isDateDisabled = (date: Date) => checkDateDisabled(date, minDate, maxDate, fullyBookedDates);
   const isSelected = (date: Date) => isSameDay(date, selectedDate);
-  const isToday = (date: Date) => isSameDay(date, today);
+
+  // Determine availability status for color coding
+  const getAvailabilityStatus = (date: Date) => {
+    if (isDateDisabled(date)) return 'disabled';
+
+    const dateStr = date.toISOString().split('T')[0];
+    const availableSlots = slotAvailability?.get(dateStr) || 0;
+
+    if (availableSlots === 0) return 'fullyBooked';
+    if (availableSlots <= 1) return 'critical';
+    if (availableSlots <= 3) return 'limited';
+    return 'normal';
+  };
+
+  const getDateClassName = (date: Date) => {
+    const status = getAvailabilityStatus(date);
+    const baseClass = styles.day;
+
+    switch (status) {
+      case 'disabled':
+        return `${baseClass} ${styles.dayDisabled}`;
+      case 'fullyBooked':
+        return `${baseClass} ${styles.dayDisabled}`;
+      case 'critical':
+        return `${baseClass} ${styles.dateCritical}`;
+      case 'limited':
+        return `${baseClass} ${styles.dateLimited}`;
+      case 'normal':
+        return `${baseClass} ${styles.dateNormal}`;
+      default:
+        return baseClass;
+    }
+  };
 
   const navigateMonth = (direction: number) => {
     const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + direction, 1);
@@ -143,15 +172,12 @@ export default function DatePicker({
             const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
             const disabled = isDateDisabled(date);
             const isSelectedDate = isSelected(date);
-            const isTodayDate = isToday(date);
 
             return (
               <button
                 key={day}
                 type="button"
-                className={`${styles.day} ${
-                  isSelectedDate ? styles.daySelected : ''
-                } ${isTodayDate ? styles.dayToday : ''} ${disabled ? styles.dayDisabled : ''}`}
+                className={getDateClassName(date)}
                 onClick={() => handleDateClick(day)}
                 disabled={disabled}
                 aria-label={`Select ${date.toLocaleDateString()}`}

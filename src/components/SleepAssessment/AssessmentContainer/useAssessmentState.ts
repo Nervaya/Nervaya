@@ -98,9 +98,7 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     if (data) {
       try {
         sessionStorage.setItem(COMPLETED_STORAGE_KEY, JSON.stringify(data));
-      } catch {
-        /* ignore */
-      }
+      } catch {}
     }
     return data;
   }, []);

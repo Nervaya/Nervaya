@@ -1,10 +1,19 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import styles from './not-found.module.css';
 import { LazyMotion, m } from 'framer-motion';
 
 export default function NotFound() {
+  useEffect(() => {
+    document.body.classList.add('route-not-found');
+
+    return () => {
+      document.body.classList.remove('route-not-found');
+    };
+  }, []);
+
   return (
     <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
       <div className={styles.container}>

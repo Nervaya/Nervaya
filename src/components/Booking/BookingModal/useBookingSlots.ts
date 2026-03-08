@@ -19,8 +19,11 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fullyBookedDates, setFullyBookedDates] = useState<Set<string>>(new Set());
+  const [slotAvailability, setSlotAvailability] = useState<Map<string, number>>(new Map());
 
   const fetchSlots = useCallback(async () => {
+    if (!therapistId) return;
+
     setLoading(true);
     setError(null);
     try {
@@ -51,6 +54,8 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
 
   const fetchDateAvailability = useCallback(
     async (monthStart: Date) => {
+      if (!therapistId) return;
+
       const year = monthStart.getFullYear();
       const month = monthStart.getMonth();
       const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
@@ -60,20 +65,33 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
         const result = await scheduleApi.getByDateRange(therapistId, startDate, endDate);
         const schedules = result.data as Array<{ date: string; slots: Array<{ isAvailable: boolean }> }> | undefined;
         if (!Array.isArray(schedules)) return;
+
         const booked = new Set<string>();
         const scheduleDates = new Set<string>();
+        const availabilityMap = new Map<string, number>();
+
         for (const s of schedules) {
           scheduleDates.add(s.date);
+          const availableCount = s.slots?.filter((slot) => slot.isAvailable).length ?? 0;
+          availabilityMap.set(s.date, availableCount);
+
           const hasAvailable = s.slots?.some((slot) => slot.isAvailable) ?? false;
           if (!hasAvailable) booked.add(s.date);
         }
+
         for (let d = 1; d <= lastDay; d++) {
           const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-          if (!scheduleDates.has(dateStr)) booked.add(dateStr);
+          if (!scheduleDates.has(dateStr)) {
+            booked.add(dateStr);
+            availabilityMap.set(dateStr, 0);
+          }
         }
+
         setFullyBookedDates(booked);
+        setSlotAvailability(availabilityMap);
       } catch {
         setFullyBookedDates(new Set());
+        setSlotAvailability(new Map());
       }
     },
     [therapistId],
@@ -89,5 +107,11 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
     fetchDateAvailability(month);
   }, [fetchDateAvailability, visibleMonth, selectedDate]);
 
-  return { schedule, loading, error, fetchSlots, fullyBookedDates, fetchDateAvailability };
+  if (!therapistId) {
+    console.error('useBookingSlots: therapistId is required');
+    setError('Therapist ID is required');
+    return { schedule, loading, error, fetchSlots: () => {}, fullyBookedDates, slotAvailability };
+  }
+
+  return { schedule, loading, error, fetchSlots, fullyBookedDates, fetchDateAvailability, slotAvailability };
 }

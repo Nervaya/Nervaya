@@ -21,8 +21,6 @@ function sendGaEvent(eventName: string, params?: Record<string, unknown>): void 
   window.gtag('event', eventName, params);
 }
 
-// ─── Shared Types ────────────────────────────────────────────────────────────
-
 export interface GaItem {
   item_id: string;
   item_name: string;
@@ -41,8 +39,6 @@ export interface EcommerceParams {
 
 export type SleepSeverityLevel = 'mild' | 'moderate' | 'severe';
 export type ScrollDepthThreshold = 25 | 50 | 75 | 90;
-
-// ─── E-commerce Events ───────────────────────────────────────────────────────
 
 export function trackViewItem(params: EcommerceParams): void {
   sendGaEvent('view_item', { currency: params.currency, value: params.value, items: params.items });
@@ -138,8 +134,6 @@ export function trackSelectItem(params: ViewItemListParams): void {
   });
 }
 
-// ─── Auth Events ─────────────────────────────────────────────────────────────
-
 export function trackSignUp(method: string): void {
   sendGaEvent('sign_up', { method });
 }
@@ -147,8 +141,6 @@ export function trackSignUp(method: string): void {
 export function trackLogin(method: string): void {
   sendGaEvent('login', { method });
 }
-
-// ─── Engagement Events ───────────────────────────────────────────────────────
 
 export function trackSearch(searchTerm: string): void {
   sendGaEvent('search', { search_term: searchTerm });
@@ -210,8 +202,6 @@ export function trackExitPage(params: ExitPageParams): void {
   });
 }
 
-// ─── Sleep Quiz Events ───────────────────────────────────────────────────────
-
 export function trackQuizStarted(quizName: string): void {
   sendGaEvent('quiz_started', { quiz_name: quizName });
 }
@@ -261,8 +251,6 @@ export function trackRecommendationClicked(params: RecommendationClickedParams):
     destination_url: params.destination_url,
   });
 }
-
-// ─── Therapy Events ──────────────────────────────────────────────────────────
 
 export interface TherapistParams {
   therapist_id: string;
@@ -321,8 +309,6 @@ export interface PaymentFailedParams {
 export function trackPaymentFailed(params: PaymentFailedParams): void {
   sendGaEvent('payment_failed', { order_id: params.order_id, reason: params.reason });
 }
-
-// ─── Audio / DriftOff Events ─────────────────────────────────────────────────
 
 export interface AudioTrackParams {
   video_id: string;

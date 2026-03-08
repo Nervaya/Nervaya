@@ -117,7 +117,13 @@ export default function BlogForm({
         <div className={styles.sideColumn}>
           <div className={styles.formGroup}>
             <label className={styles.label}>Cover Image</label>
-            <ImageUpload onUpload={onImageUpload} initialUrl={formData.coverImage} label="Upload Cover" compact />
+            <ImageUpload
+              onUpload={onImageUpload}
+              initialUrl={formData.coverImage}
+              label="Upload Cover"
+              compact
+              tone="light"
+            />
           </div>
 
           <div className={styles.formGroup}>

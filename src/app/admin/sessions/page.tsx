@@ -27,6 +27,7 @@ export default function AdminSessionsPage() {
   const [filters, setFilters] = useState<SessionFiltersParams>({});
   const limit = PAGE_SIZE_10;
   const { data: sessions, meta, isLoading, error, refetch } = useAdminSessions(page, limit, filters);
+  const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
 
   const handleFiltersApply = useCallback((newFilters: SessionFiltersParams) => {
     setFilters(newFilters);
@@ -89,6 +90,16 @@ export default function AdminSessionsPage() {
           activeCount={countActiveFilters(filters)}
         />
         <StatusState type="empty" message="No sessions found." />
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={paginationMeta.page}
+            limit={paginationMeta.limit}
+            total={paginationMeta.total}
+            totalPages={paginationMeta.totalPages}
+            onPageChange={setPage}
+            ariaLabel="Sessions pagination"
+          />
+        </div>
       </div>
     );
   }
@@ -128,7 +139,7 @@ export default function AdminSessionsPage() {
           );
         })}
       </ul>
-      {meta && meta.total > 0 && (
+      {meta && (
         <div className={styles.paginationWrap}>
           <Pagination
             page={meta.page}

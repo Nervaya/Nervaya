@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { ICON_MENU, ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_CLOSE } from '@/constants/icons';
+import { ICON_MENU, ICON_ARROW_LEFT_OUTLINE, ICON_ARROW_RIGHT_OUTLINE, ICON_CLOSE } from '@/constants/icons';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
@@ -72,12 +72,16 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
   }, [isMobileOpen]);
 
   useEffect(() => {
+    document.body.classList.add('sidebar-layout');
     if (isCollapsed) {
       document.body.classList.add('sidebar-collapsed');
     } else {
       document.body.classList.remove('sidebar-collapsed');
     }
-    return () => document.body.classList.remove('sidebar-collapsed');
+    return () => {
+      document.body.classList.remove('sidebar-collapsed');
+      document.body.classList.remove('sidebar-layout');
+    };
   }, [isCollapsed]);
 
   const closeMobileSidebar = () => setIsMobileOpen(false);
@@ -131,9 +135,9 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                 aria-pressed={isCollapsed}
               >
                 {isCollapsed ? (
-                  <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} />
+                  <Icon icon={ICON_ARROW_RIGHT_OUTLINE} width={18} height={18} />
                 ) : (
-                  <Icon icon={ICON_ARROW_LEFT} width={20} height={20} />
+                  <Icon icon={ICON_ARROW_LEFT_OUTLINE} width={18} height={18} />
                 )}
               </button>
               <nav className={styles.nav}>
@@ -146,7 +150,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                           const isActive =
                             pathname === item.path || (isAdminRoute && pathname.startsWith(`${item.path}/`));
                           return (
-                            <li key={item.path}>
+                            <li key={`${item.path}-${item.title}`}>
                               <Link
                                 href={item.path}
                                 className={`${styles.navItem} ${isActive ? styles.active : ''}`}
@@ -202,7 +206,12 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
                           }}
                         >
                           <span className={styles.icon}>
-                            <Icon icon={iconMap['FaRightFromBracket']} width={20} height={20} />
+                            <Icon
+                              icon={iconMap['FaRightFromBracket']}
+                              width={20}
+                              height={20}
+                              className={styles.logoutIcon}
+                            />
                           </span>
                           <span className={styles.title} aria-hidden={isCollapsed}>
                             Logout

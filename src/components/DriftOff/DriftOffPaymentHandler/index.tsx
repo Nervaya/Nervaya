@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
 import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
 import { trackAudioPurchase } from '@/utils/analytics';
-import styles from './styles.module.css';
 
 interface DriftOffPaymentHandlerProps {
   driftOffOrderId: string;
@@ -16,6 +15,7 @@ interface DriftOffPaymentHandlerProps {
   razorpayKeyId: string;
   userName?: string;
   userEmail?: string;
+  onVerifyStart?: () => void;
   onError?: (message: string) => void;
 }
 
@@ -26,12 +26,16 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
   razorpayKeyId,
   userName,
   userEmail,
+  onVerifyStart,
   onError,
 }) => {
   const router = useRouter();
+  const prefill = useMemo(() => ({ name: userName, email: userEmail }), [userName, userEmail]);
+  const handleDismiss = useCallback(() => onError?.('Payment cancelled'), [onError]);
 
   const handleSuccess = useCallback(
     async (response: RazorpayPaymentResponse) => {
+      onVerifyStart?.();
       try {
         const result = await driftOffApi.verifyPayment({
           driftOffOrderId,
@@ -52,7 +56,7 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
         onError?.('Failed to verify payment');
       }
     },
-    [amount, driftOffOrderId, onError, router],
+    [amount, driftOffOrderId, onError, onVerifyStart, router],
   );
 
   const { openPaymentModal } = useRazorpayCheckout({
@@ -61,21 +65,20 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
     amount,
     name: 'Nervaya',
     description: 'Deep Rest Session',
-    prefill: { name: userName, email: userEmail },
+    prefill,
     onSuccess: handleSuccess,
     onError,
-    onDismiss: () => onError?.('Payment cancelled'),
-    autoOpen: true,
+    onDismiss: handleDismiss,
+    autoOpen: false,
   });
 
-  return (
-    <>
-      <RazorpayCheckoutScript onLoad={() => openPaymentModal()} />
-      <div className={styles.loading}>
-        <p>Opening payment gateway…</p>
-      </div>
-    </>
-  );
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Razorpay) {
+      openPaymentModal();
+    }
+  }, [openPaymentModal]);
+
+  return <RazorpayCheckoutScript onLoad={openPaymentModal} />;
 };
 
 export default DriftOffPaymentHandler;

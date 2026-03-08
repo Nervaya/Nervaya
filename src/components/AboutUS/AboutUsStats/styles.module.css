@@ -24,10 +24,6 @@
 }
 
 .statsContainer {
-  /* background: rgba(17, 24, 39, 0.75); */
-  /* backdrop-filter: blur(12px); */
-  /* border: 1px solid rgba(255, 255, 255, 0.1); */
-  /* border-radius: 30px; */
   padding: 48px 60px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);

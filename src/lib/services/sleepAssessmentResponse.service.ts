@@ -76,9 +76,14 @@ export async function submitAssessment(
       });
     }
 
+    const mongooseAnswers = validatedAnswers.map((a) => ({
+      questionId: new Types.ObjectId(a.questionId as string),
+      answer: a.answer,
+    }));
+
     const response = await SleepAssessmentResponse.create({
       userId: new Types.ObjectId(userId),
-      answers: validatedAnswers,
+      answers: mongooseAnswers,
       completedAt: new Date(),
     });
 

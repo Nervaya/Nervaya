@@ -14,7 +14,6 @@ export interface IDriftOffResponse extends Document {
   assignedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  // Populated user fields
   user?: {
     _id: mongoose.Types.ObjectId;
     name: string;

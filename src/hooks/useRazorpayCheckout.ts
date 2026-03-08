@@ -1,5 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { RazorpayPaymentResponse, RazorpayOptions } from '@/types/payment.types';
+
+const openedRazorpayOrderIds = new Set<string>();
 
 interface UseRazorpayCheckoutParams {
   razorpayKeyId: string;
@@ -30,11 +32,27 @@ export function useRazorpayCheckout({
   onDismiss,
   autoOpen = false,
 }: UseRazorpayCheckoutParams) {
+  const hasOpened = useRef(false);
+  const onSuccessRef = useRef(onSuccess);
+  const onErrorRef = useRef(onError);
+  const onDismissRef = useRef(onDismiss);
+
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+    onErrorRef.current = onError;
+    onDismissRef.current = onDismiss;
+  }, [onSuccess, onError, onDismiss]);
+
   const openPaymentModal = useCallback(() => {
     if (!window.Razorpay) {
-      onError?.('Razorpay SDK not loaded');
+      onErrorRef.current?.('Razorpay SDK not loaded');
       return;
     }
+    if (openedRazorpayOrderIds.has(razorpayOrderId)) return;
+    if (hasOpened.current) return;
+    hasOpened.current = true;
+    openedRazorpayOrderIds.add(razorpayOrderId);
+    let paymentSucceeded = false;
 
     const options: RazorpayOptions = {
       key: razorpayKeyId,
@@ -43,7 +61,10 @@ export function useRazorpayCheckout({
       name,
       description,
       order_id: razorpayOrderId,
-      handler: onSuccess,
+      handler: (response: RazorpayPaymentResponse) => {
+        paymentSucceeded = true;
+        onSuccessRef.current(response);
+      },
       prefill: {
         name: prefill?.name || '',
         email: prefill?.email || '',
@@ -52,14 +73,16 @@ export function useRazorpayCheckout({
       theme: { color: '#7c3aed' },
       modal: {
         ondismiss: () => {
-          onDismiss?.();
+          if (!paymentSucceeded) {
+            onDismissRef.current?.();
+          }
         },
       },
     };
 
     const razorpay = new window.Razorpay(options);
     razorpay.open();
-  }, [razorpayKeyId, amount, name, description, razorpayOrderId, onSuccess, onError, onDismiss, prefill]);
+  }, [razorpayKeyId, amount, name, description, razorpayOrderId, prefill]);
 
   useEffect(() => {
     if (autoOpen && window.Razorpay && razorpayOrderId) {

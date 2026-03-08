@@ -27,23 +27,17 @@ const DriftOffAssignVideoModal = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Update videoUrl when existingVideoUrl changes
   useEffect(() => {
     setVideoUrl(existingVideoUrl || '');
   }, [existingVideoUrl]);
 
   const handleFileUpload = async (file: File) => {
     if (!file) return;
-
-    // Validate file type
     const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
     if (!allowedTypes.includes(file.type)) {
       setError('Please upload a valid video file (MP4, WebM, or MOV)');
       return;
     }
-
-    // Validate file size (100MB max)
     const maxSize = 100 * 1024 * 1024;
     if (file.size > maxSize) {
       setError('Video file must be smaller than 100MB');
@@ -55,13 +49,10 @@ const DriftOffAssignVideoModal = ({
     setUploadProgress(0);
 
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append('video', file);
       formData.append('responseId', responseId);
       formData.append('userId', userId);
-
-      // Simulate upload progress (in real implementation, this would come from the upload API)
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -71,8 +62,6 @@ const DriftOffAssignVideoModal = ({
           return prev + 10;
         });
       }, 200);
-
-      // Upload to server (you'll need to implement this endpoint)
       const response = await fetch('/api/admin/drift-off/upload-video', {
         method: 'POST',
         body: formData,

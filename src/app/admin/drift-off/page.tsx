@@ -50,8 +50,6 @@ export default function AdminDriftOffPage() {
 
   const isLoadingData = isLoading || questionsLoading;
   const hasError = error || questionsError;
-
-  // Calculate statistics
   const completedResponses = responses.filter((r) => r.completedAt).length;
   const assignedVideos = responses.filter((r) => r.assignedVideoUrl).length;
   const inProgressResponses = responses.length - completedResponses;
@@ -63,7 +61,7 @@ export default function AdminDriftOffPage() {
         subtitle="View all Deep Rest Session responses and assign personalized videos."
       />
 
-      {/* Statistics Summary */}
+      {}
       {!isLoadingData && !hasError && responses.length > 0 && (
         <div className={styles.statsContainer}>
           <div className={styles.statCard}>

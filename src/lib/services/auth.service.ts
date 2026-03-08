@@ -88,7 +88,7 @@ export async function createUserAfterOtpVerification(
     password,
     name,
     role,
-    emailVerified: true, // User verified email via OTP
+    emailVerified: true,
   });
 
   const token = await generateToken(user._id.toString(), user.role);
