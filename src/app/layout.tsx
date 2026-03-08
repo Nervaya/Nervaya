@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Merriweather, Source_Sans_3 } from 'next/font/google';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { EngagementTracker } from '@/components/EngagementTracker';
@@ -39,6 +39,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
     <html lang="en" className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
       <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
@@ -47,7 +50,8 @@ export default function RootLayout({
           <EngagementTracker />
           {children}
         </Providers>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
+        {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+        {gaId && !gtmId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>
   );

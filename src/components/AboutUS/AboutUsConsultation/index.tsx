@@ -1,18 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { ICON_CHAT, ICON_USER, ICON_MAIL, ICON_CALENDAR, ICON_VIDEO } from '@/constants/icons';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
 import { Dropdown } from '@/components/common';
+import { trackLeadSubmitted } from '@/utils/analytics';
 
 interface AboutUsConsultationProps {
   centerCard?: boolean;
 }
 
 const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) => {
+  const pathname = usePathname();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -34,6 +37,12 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.firstName.trim() || !formData.email.trim()) return;
+    trackLeadSubmitted({
+      lead_type: 'free_1_on_1_assistance',
+      source_page: pathname,
+      connection_type: formData.connectionType,
+    });
   };
 
   return (
