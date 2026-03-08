@@ -12,9 +12,9 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
     title: 'Products',
     links: [
-      { text: 'Therapy', href: '/therapy' },
+      { text: 'Therapy Corner', href: '/therapy-corner' },
       { text: 'Drift Off', href: '/drift-off' },
-      { text: 'Blog', href: '/blog' },
+      { text: 'Supplements', href: '/supplements' },
     ],
   },
   {
@@ -27,11 +27,11 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     ],
   },
   {
-    title: 'For Professionals',
+    title: 'Resources',
     links: [
-      { text: 'For Therapists', href: '/for-therapists' },
-      { text: 'For Counselors', href: '/for-counselors' },
-      { text: 'For Yoga Trainers', href: '/for-yoga-trainers' },
+      { text: 'Support Center', href: '/support' },
+      { text: 'Sleep Assessment', href: '/sleep-assessment' },
+      { text: 'Blog', href: '/blog' },
     ],
   },
 ];

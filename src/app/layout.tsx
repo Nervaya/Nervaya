@@ -4,6 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { EngagementTracker } from '@/components/EngagementTracker';
+import BodyRouteClass from '@/components/BodyRouteClass';
 
 const sourceSans = Source_Sans_3({
   variable: '--font-source-sans',
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="en" className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
       <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
         <Providers>
+          <BodyRouteClass />
           <EngagementTracker />
           {children}
         </Providers>

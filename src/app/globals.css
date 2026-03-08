@@ -59,13 +59,17 @@ body {
   overflow-y: auto;
   padding-top: var(--navbar-height);
   color: var(--foreground);
+  background: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.route-home {
   background: url('/background.png');
   background-size: cover;
   background-position: center top;
   background-attachment: fixed;
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 button,
@@ -153,6 +157,13 @@ a {
 
 body.sidebar-collapsed .main-content {
   margin-left: 88px;
+}
+
+body.route-non-home .main-content {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.06) !important;
 }
 
 /* Add some colorful card and content styles */

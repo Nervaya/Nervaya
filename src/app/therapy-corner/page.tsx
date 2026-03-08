@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { therapistsApi } from '@/lib/api/therapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import BookingModal from '@/components/Booking/BookingModal';
 import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
@@ -87,17 +86,21 @@ export default function TherapyCornerPage() {
     trackViewTherapistProfile({ therapist_id: therapist._id, therapist_name: therapist.name });
   };
 
-  return (
-    <Sidebar>
-      <div className={containerStyles.container}>
-        <PageHeader
-          title="Therapy Corner"
-          subtitle="Finding the right therapist isn't easy."
-          description="Based on your needs, we've curated a shortlist tailored just for you."
-        />
+  const getInitials = (name: string) => {
+    const [first = '', second = ''] = name.trim().split(/\s+/, 2);
+    return `${first.charAt(0)}${second.charAt(0)}`.toUpperCase() || 'T';
+  };
 
+  return (
+    <Sidebar className={styles.pageContentWhite}>
+      <div className={containerStyles.container}>
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Your Recommended Therapists</h2>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Recommended Therapists</h2>
+            <p className={styles.sectionMeta}>
+              {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
+            </p>
+          </div>
 
           {loading && (
             <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
@@ -111,45 +114,54 @@ export default function TherapyCornerPage() {
           {!loading && !error && therapists.length > 0 && (
             <>
               <div className={styles.filterBar} aria-label="Filter therapists">
-                <select
-                  className={styles.filterSelect}
-                  value={filterLanguage}
-                  onChange={(e) => setFilterLanguage(e.target.value)}
-                  aria-label="Filter by language"
-                >
-                  <option value={FILTER_ALL}>All Languages</option>
-                  {filterOptions.languages.map((lang) => (
-                    <option key={lang} value={lang}>
-                      {lang}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className={styles.filterSelect}
-                  value={filterSpecialization}
-                  onChange={(e) => setFilterSpecialization(e.target.value)}
-                  aria-label="Filter by specialization"
-                >
-                  <option value={FILTER_ALL}>All Specializations</option>
-                  {filterOptions.specializations.map((spec) => (
-                    <option key={spec} value={spec}>
-                      {spec}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className={styles.filterSelect}
-                  value={filterExperience}
-                  onChange={(e) => setFilterExperience(e.target.value)}
-                  aria-label="Filter by experience"
-                >
-                  <option value={FILTER_ALL}>Any Experience</option>
-                  {filterOptions.experiences.map((exp) => (
-                    <option key={exp} value={exp}>
-                      {exp}
-                    </option>
-                  ))}
-                </select>
+                <label className={styles.filterField}>
+                  <span>Language</span>
+                  <select
+                    className={styles.filterSelect}
+                    value={filterLanguage}
+                    onChange={(e) => setFilterLanguage(e.target.value)}
+                    aria-label="Filter by language"
+                  >
+                    <option value={FILTER_ALL}>All Languages</option>
+                    {filterOptions.languages.map((lang) => (
+                      <option key={lang} value={lang}>
+                        {lang}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={styles.filterField}>
+                  <span>Specialization</span>
+                  <select
+                    className={styles.filterSelect}
+                    value={filterSpecialization}
+                    onChange={(e) => setFilterSpecialization(e.target.value)}
+                    aria-label="Filter by specialization"
+                  >
+                    <option value={FILTER_ALL}>All Specializations</option>
+                    {filterOptions.specializations.map((spec) => (
+                      <option key={spec} value={spec}>
+                        {spec}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={styles.filterField}>
+                  <span>Experience</span>
+                  <select
+                    className={styles.filterSelect}
+                    value={filterExperience}
+                    onChange={(e) => setFilterExperience(e.target.value)}
+                    aria-label="Filter by experience"
+                  >
+                    <option value={FILTER_ALL}>Any Experience</option>
+                    {filterOptions.experiences.map((exp) => (
+                      <option key={exp} value={exp}>
+                        {exp}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
 
               {filteredTherapists.length === 0 ? (
@@ -163,31 +175,46 @@ export default function TherapyCornerPage() {
                         className={styles.therapistCard}
                         onMouseEnter={() => handleViewProfile(therapist)}
                       >
-                        <div className={styles.therapistInfo}>
-                          <div
-                            className={styles.avatar}
-                            style={therapist.image ? { backgroundImage: `url(${therapist.image})` } : {}}
-                            role="img"
-                            aria-label={`${therapist.name} profile picture`}
-                          />
-                          <div>
-                            <h3>{therapist.name}</h3>
-                            <p className={styles.credentials}>
-                              {therapist.qualifications?.join(', ') || 'Professional Therapist'}
-                            </p>
-                            <p className={styles.details}>
-                              Experience: {therapist.experience || 'N/A'} | Languages:{' '}
-                              {therapist.languages?.join(', ') || 'N/A'}
-                            </p>
-                            <div className={styles.tags}>
-                              {therapist.specializations?.map((spec) => (
-                                <span key={spec}>{spec}</span>
-                              ))}
+                        <div className={styles.cardBody}>
+                          <div className={styles.therapistInfo}>
+                            {therapist.image ? (
+                              <div
+                                className={styles.avatar}
+                                style={{ backgroundImage: `url(${therapist.image})` }}
+                                role="img"
+                                aria-label={`${therapist.name} profile picture`}
+                              />
+                            ) : (
+                              <div className={styles.avatarFallback} aria-hidden="true">
+                                {getInitials(therapist.name)}
+                              </div>
+                            )}
+                            <div className={styles.therapistText}>
+                              <div className={styles.nameRow}>
+                                <h3>{therapist.name}</h3>
+                                <span className={styles.expBadge}>{therapist.experience || 'Experience N/A'}</span>
+                              </div>
+                              <p className={styles.credentials}>
+                                {therapist.qualifications?.join(', ') || 'Professional Therapist'}
+                              </p>
+                              <p className={styles.metaLine}>
+                                <span>Speaks</span>
+                                {therapist.languages?.join(', ') || 'N/A'}
+                              </p>
+                              <div className={styles.tags} aria-label={`${therapist.name} specializations`}>
+                                {therapist.specializations?.length ? (
+                                  therapist.specializations.map((spec) => (
+                                    <span key={spec} className={styles.tag} title={spec}>
+                                      {spec}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span className={styles.emptyTag}>General Therapy</span>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className={styles.actions}>
-                          <div className={styles.buttons}>
+                          <div className={styles.actions}>
                             <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
                               Book Appointment
                             </button>
@@ -196,7 +223,7 @@ export default function TherapyCornerPage() {
                       </li>
                     ))}
                   </ul>
-                  {total >= 0 && (
+                  {totalPages > 1 && (
                     <div className={styles.paginationWrap}>
                       <Pagination
                         page={page}

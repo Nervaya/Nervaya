@@ -37,6 +37,25 @@
     border-color 0.28s ease;
 }
 
+:global(body.route-non-home) .navbarMain {
+  background: linear-gradient(rgba(9, 2, 29, 0.7), rgba(9, 2, 29, 0.7)), url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom-color: rgba(124, 58, 237, 0.38);
+}
+
+:global(body.route-non-home) .navbarAuthPage {
+  margin-top: 0;
+  background: linear-gradient(rgba(9, 2, 29, 0.7), rgba(9, 2, 29, 0.7)), url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+}
+
 .navbarScrolledDown {
   background: rgba(9, 2, 29, 0.55);
   backdrop-filter: blur(4px);
