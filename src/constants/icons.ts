@@ -88,6 +88,10 @@ export const ICON_LOCATION = 'solar:map-point-bold';
 export const ICON_SUNRISE = 'solar:sunrise-bold';
 export const ICON_USER_SETTINGS = 'solar:user-id-bold';
 export const ICON_USER_MEDICAL = 'solar:user-check-bold';
+export const ICON_DISCOUNT = 'solar:tag-bold';
+export const ICON_X = 'solar:close-circle-bold';
+
+// Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;
 
 export const SIDEBAR_ICON_MAP: SidebarIconMap = {

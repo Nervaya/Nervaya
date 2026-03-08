@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { therapistsApi } from '@/lib/api/therapists';
+import { useMemo, useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useTherapists } from '@/app/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import BookingModal from '@/components/Booking/BookingModal';
 import Pagination from '@/components/common/Pagination';
@@ -9,47 +10,94 @@ import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
+import { ICON_FILTER } from '@/constants/icons';
 import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 
+import { FilterModal, FilterState } from './components/FilterModal';
+import { TherapistCard } from './components/TherapistCard';
+import { VideoPreviewModal } from './components/VideoPreviewModal';
+
 const FILTER_ALL = '';
+const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
+
+function formatExperience(experience?: string) {
+  if (!experience) return 'Experience not specified';
+  const normalized = experience.trim();
+  if (/year/i.test(normalized)) return normalized;
+
+  const numericMatch = normalized.match(/\d+/);
+  if (numericMatch?.[0]) {
+    return `${numericMatch[0]}+ years of experience`;
+  }
+
+  return normalized;
+}
+
+function formatGender(value: string) {
+  return value
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 export default function TherapyCornerPage() {
-  const [therapists, setTherapists] = useState<Therapist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [page, setPage] = useState(1);
-  const [filterLanguage, setFilterLanguage] = useState(FILTER_ALL);
-  const [filterSpecialization, setFilterSpecialization] = useState(FILTER_ALL);
-  const [filterExperience, setFilterExperience] = useState(FILTER_ALL);
+
+  const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists();
+  const error = fetchError ? fetchError.message : '';
+
+  const [filterState, setFilterState] = useState<FilterState>({
+    language: FILTER_ALL,
+    specialization: FILTER_ALL,
+    gender: FILTER_ALL,
+  });
+
+  const [modalFilterState, setModalFilterState] = useState<FilterState>({
+    language: FILTER_ALL,
+    specialization: FILTER_ALL,
+    gender: FILTER_ALL,
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [videoPreviewTherapist, setVideoPreviewTherapist] = useState<Therapist | null>(null);
 
   const limit = PAGE_SIZE_5;
 
   const filterOptions = useMemo(() => {
     const languages = new Set<string>();
     const specializations = new Set<string>();
-    const experiences = new Set<string>();
-    therapists.forEach((t) => {
-      t.languages?.forEach((l) => languages.add(l));
-      t.specializations?.forEach((s) => specializations.add(s));
-      if (t.experience) experiences.add(t.experience);
+    const genders = new Set<string>();
+    therapists.forEach((therapist) => {
+      therapist.languages?.forEach((language) => languages.add(language));
+      therapist.specializations?.forEach((specialization) => specializations.add(specialization));
+      if (therapist.gender) {
+        genders.add(therapist.gender);
+      }
     });
     return {
       languages: Array.from(languages).sort(),
       specializations: Array.from(specializations).sort(),
-      experiences: Array.from(experiences).sort(),
+      genders: Array.from(genders).sort(),
     };
   }, [therapists]);
 
+  const genderOptions = useMemo(() => {
+    return filterOptions.genders.length > 0 ? filterOptions.genders : Array.from(FALLBACK_GENDERS);
+  }, [filterOptions.genders]);
+
+  const hasActiveFilters = Boolean(filterState.language || filterState.specialization || filterState.gender);
+
   const filteredTherapists = useMemo(() => {
-    return therapists.filter((t) => {
-      if (filterLanguage && !t.languages?.includes(filterLanguage)) return false;
-      if (filterSpecialization && !t.specializations?.includes(filterSpecialization)) return false;
-      if (filterExperience && t.experience !== filterExperience) return false;
+    return therapists.filter((therapist) => {
+      if (filterState.language && !therapist.languages?.includes(filterState.language)) return false;
+      if (filterState.specialization && !therapist.specializations?.includes(filterState.specialization)) return false;
+      if (filterState.gender && (therapist.gender || '').toLowerCase() !== filterState.gender.toLowerCase())
+        return false;
       return true;
     });
-  }, [therapists, filterLanguage, filterSpecialization, filterExperience]);
+  }, [therapists, filterState]);
 
   const total = filteredTherapists.length;
   const totalPages = Math.max(1, Math.ceil(total / limit));
@@ -58,23 +106,22 @@ export default function TherapyCornerPage() {
     [filteredTherapists, page, limit],
   );
 
-  useEffect(() => {
-    fetchTherapists();
-  }, []);
+  const openFilterModal = () => {
+    setModalFilterState(filterState);
+    setIsFilterModalOpen(true);
+  };
 
-  useEffect(() => {
+  const applyFilters = () => {
+    setFilterState(modalFilterState);
     setPage(1);
-  }, [filterLanguage, filterSpecialization, filterExperience]);
+    setIsFilterModalOpen(false);
+  };
 
-  const fetchTherapists = async () => {
-    try {
-      const result = await therapistsApi.getAll();
-      setTherapists(result.data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
+  const clearFilters = () => {
+    setFilterState({ language: FILTER_ALL, specialization: FILTER_ALL, gender: FILTER_ALL });
+    setModalFilterState({ language: FILTER_ALL, specialization: FILTER_ALL, gender: FILTER_ALL });
+    setPage(1);
+    setIsFilterModalOpen(false);
   };
 
   const handleBookAppointment = (therapist: Therapist) => {
@@ -86,20 +133,33 @@ export default function TherapyCornerPage() {
     trackViewTherapistProfile({ therapist_id: therapist._id, therapist_name: therapist.name });
   };
 
-  const getInitials = (name: string) => {
-    const [first = '', second = ''] = name.trim().split(/\s+/, 2);
-    return `${first.charAt(0)}${second.charAt(0)}`.toUpperCase() || 'T';
-  };
-
   return (
     <Sidebar className={styles.pageContentWhite}>
       <div className={containerStyles.container}>
         <section className={styles.section}>
+          <div className={styles.highlightBanner}>
+            <p>Finding the right therapist is not easy.</p>
+            <span>Based on your needs, we curated a shortlist tailored for you.</span>
+          </div>
+
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Recommended Therapists</h2>
             <p className={styles.sectionMeta}>
               {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
             </p>
+          </div>
+
+          <div className={styles.toolbar}>
+            <button type="button" className={styles.filterTrigger} onClick={openFilterModal}>
+              <Icon icon={ICON_FILTER} width={18} height={18} />
+              <span>Filters</span>
+              {hasActiveFilters && <span className={styles.filterDot} aria-hidden="true" />}
+            </button>
+            {hasActiveFilters && (
+              <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
+                Clear Filters
+              </button>
+            )}
           </div>
 
           {loading && (
@@ -108,76 +168,10 @@ export default function TherapyCornerPage() {
             </div>
           )}
           {error && <p className={styles.error}>{error}</p>}
-
-          {!loading && !error && therapists.length === 0 && (
-            <>
-              <p>No therapists found at the moment.</p>
-              <div className={styles.paginationWrap}>
-                <Pagination
-                  page={1}
-                  limit={limit}
-                  total={0}
-                  totalPages={1}
-                  onPageChange={setPage}
-                  ariaLabel="Recommended therapists pagination"
-                />
-              </div>
-            </>
-          )}
+          {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
 
           {!loading && !error && therapists.length > 0 && (
             <>
-              <div className={styles.filterBar} aria-label="Filter therapists">
-                <label className={styles.filterField}>
-                  <span>Language</span>
-                  <select
-                    className={styles.filterSelect}
-                    value={filterLanguage}
-                    onChange={(e) => setFilterLanguage(e.target.value)}
-                    aria-label="Filter by language"
-                  >
-                    <option value={FILTER_ALL}>All Languages</option>
-                    {filterOptions.languages.map((lang) => (
-                      <option key={lang} value={lang}>
-                        {lang}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className={styles.filterField}>
-                  <span>Specialization</span>
-                  <select
-                    className={styles.filterSelect}
-                    value={filterSpecialization}
-                    onChange={(e) => setFilterSpecialization(e.target.value)}
-                    aria-label="Filter by specialization"
-                  >
-                    <option value={FILTER_ALL}>All Specializations</option>
-                    {filterOptions.specializations.map((spec) => (
-                      <option key={spec} value={spec}>
-                        {spec}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className={styles.filterField}>
-                  <span>Experience</span>
-                  <select
-                    className={styles.filterSelect}
-                    value={filterExperience}
-                    onChange={(e) => setFilterExperience(e.target.value)}
-                    aria-label="Filter by experience"
-                  >
-                    <option value={FILTER_ALL}>Any Experience</option>
-                    {filterOptions.experiences.map((exp) => (
-                      <option key={exp} value={exp}>
-                        {exp}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-
               {filteredTherapists.length === 0 ? (
                 <>
                   <p className={styles.noResults}>No therapists match the selected filters.</p>
@@ -196,57 +190,14 @@ export default function TherapyCornerPage() {
                 <>
                   <ul className={styles.therapistList} aria-label="Recommended therapists">
                     {paginatedTherapists.map((therapist) => (
-                      <li
+                      <TherapistCard
                         key={therapist._id}
-                        className={styles.therapistCard}
-                        onMouseEnter={() => handleViewProfile(therapist)}
-                      >
-                        <div className={styles.cardBody}>
-                          <div className={styles.therapistInfo}>
-                            {therapist.image ? (
-                              <div
-                                className={styles.avatar}
-                                style={{ backgroundImage: `url(${therapist.image})` }}
-                                role="img"
-                                aria-label={`${therapist.name} profile picture`}
-                              />
-                            ) : (
-                              <div className={styles.avatarFallback} aria-hidden="true">
-                                {getInitials(therapist.name)}
-                              </div>
-                            )}
-                            <div className={styles.therapistText}>
-                              <div className={styles.nameRow}>
-                                <h3>{therapist.name}</h3>
-                                <span className={styles.expBadge}>{therapist.experience || 'Experience N/A'}</span>
-                              </div>
-                              <p className={styles.credentials}>
-                                {therapist.qualifications?.join(', ') || 'Professional Therapist'}
-                              </p>
-                              <p className={styles.metaLine}>
-                                <span>Speaks</span>
-                                {therapist.languages?.join(', ') || 'N/A'}
-                              </p>
-                              <div className={styles.tags} aria-label={`${therapist.name} specializations`}>
-                                {therapist.specializations?.length ? (
-                                  therapist.specializations.map((spec) => (
-                                    <span key={spec} className={styles.tag} title={spec}>
-                                      {spec}
-                                    </span>
-                                  ))
-                                ) : (
-                                  <span className={styles.emptyTag}>General Therapy</span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className={styles.actions}>
-                            <button className={styles.primaryBtn} onClick={() => handleBookAppointment(therapist)}>
-                              Book Appointment
-                            </button>
-                          </div>
-                        </div>
-                      </li>
+                        therapist={therapist}
+                        onViewProfile={handleViewProfile}
+                        onBookAppointment={handleBookAppointment}
+                        onVideoPreview={setVideoPreviewTherapist}
+                        formatExperience={formatExperience}
+                      />
                     ))}
                   </ul>
                   <div className={styles.paginationWrap}>
@@ -265,6 +216,23 @@ export default function TherapyCornerPage() {
           )}
         </section>
       </div>
+
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        options={{
+          languages: filterOptions.languages,
+          specializations: filterOptions.specializations,
+          genders: genderOptions,
+        }}
+        state={modalFilterState}
+        onStateChange={(key, value) => setModalFilterState((prev) => ({ ...prev, [key]: value }))}
+        onApply={applyFilters}
+        onClear={clearFilters}
+        formatGender={formatGender}
+      />
+
+      <VideoPreviewModal therapist={videoPreviewTherapist} onClose={() => setVideoPreviewTherapist(null)} />
 
       {selectedTherapist && (
         <BookingModal

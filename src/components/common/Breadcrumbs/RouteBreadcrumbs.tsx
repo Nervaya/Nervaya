@@ -12,6 +12,7 @@ const HIDE_BREADCRUMB_PATHS = new Set(['/', '/login', '/signup']);
 const SUPPLEMENT_PATH_REGEX = /^\/supplements\/([^/]+)$/;
 const ORDER_SUCCESS_PATH_REGEX = /^\/supplements\/order-success\/([^/]+)$/;
 const THERAPIST_SLOTS_PATH_REGEX = /^\/admin\/therapists\/([^/]+)\/slots$/;
+const THERAPIST_PROFILE_PATH_REGEX = /^\/therapy-corner\/([^/]+)$/;
 
 function formatOrderNumber(orderId: string): string {
   const year = new Date().getFullYear();
@@ -61,7 +62,7 @@ export default function RouteBreadcrumbs() {
       return;
     }
 
-    const therapistMatch = pathname.match(THERAPIST_SLOTS_PATH_REGEX);
+    const therapistMatch = pathname.match(THERAPIST_SLOTS_PATH_REGEX) || pathname.match(THERAPIST_PROFILE_PATH_REGEX);
     if (therapistMatch) {
       const therapistId = therapistMatch[1];
       therapistsApi
@@ -85,7 +86,10 @@ export default function RouteBreadcrumbs() {
     const updatedItems = [...baseItems];
     const lastItem = updatedItems[updatedItems.length - 1];
 
-    const needsAsyncLabel = pathname?.match(SUPPLEMENT_PATH_REGEX) || pathname?.match(THERAPIST_SLOTS_PATH_REGEX);
+    const needsAsyncLabel =
+      pathname?.match(SUPPLEMENT_PATH_REGEX) ||
+      pathname?.match(THERAPIST_SLOTS_PATH_REGEX) ||
+      pathname?.match(THERAPIST_PROFILE_PATH_REGEX);
     const dynamicLabel = syncLabel || (needsAsyncLabel ? asyncLabel : null);
 
     if (dynamicLabel && lastItem) {

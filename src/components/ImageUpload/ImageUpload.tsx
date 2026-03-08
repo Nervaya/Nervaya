@@ -47,7 +47,7 @@ const ImageUpload = ({
     formData.append('file', file);
 
     try {
-      const data = await uploadApi.image(formData);
+      const data = await uploadApi.upload(formData);
 
       if (data.success && data.data?.url) {
         const imageUrl = data.data.url;

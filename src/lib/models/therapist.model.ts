@@ -9,12 +9,29 @@ export interface IConsultingHour {
 
 export interface ITherapist extends Document {
   name: string;
+  slug?: string;
+  email?: string;
   qualifications: string[];
   experience: string;
+  gender: 'male' | 'female' | 'other';
   languages: string[];
   specializations: string[];
   image?: string;
+  introVideoUrl?: string;
+  introVideoThumbnail?: string;
+  galleryImages?: string[];
   bio?: string;
+  bioLong?: string;
+  quote?: string;
+  messageToClient?: string;
+  sessionFee?: number;
+  sessionDurationMins?: number;
+  sessionModes?: string[];
+  testimonials?: Array<{
+    name: string;
+    message: string;
+    clientSince?: string;
+  }>;
   isAvailable: boolean;
   consultingHours?: IConsultingHour[];
   createdAt: Date;
@@ -28,6 +45,19 @@ const therapistSchema = new Schema<ITherapist>(
       required: [true, 'Name is required'],
       trim: true,
     },
+    slug: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: '',
+      index: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: '',
+    },
     qualifications: {
       type: [String],
       required: [true, 'Qualifications are required'],
@@ -35,6 +65,12 @@ const therapistSchema = new Schema<ITherapist>(
     experience: {
       type: String,
       required: [true, 'Experience is required'],
+    },
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'other'],
+      default: 'other',
+      required: [true, 'Gender is required'],
     },
     languages: {
       type: [String],
@@ -48,9 +84,69 @@ const therapistSchema = new Schema<ITherapist>(
       type: String,
       default: '',
     },
+    introVideoUrl: {
+      type: String,
+      default: '',
+    },
+    introVideoThumbnail: {
+      type: String,
+      default: '',
+    },
+    galleryImages: {
+      type: [String],
+      default: [],
+    },
     bio: {
       type: String,
       default: '',
+    },
+    bioLong: {
+      type: String,
+      default: '',
+    },
+    quote: {
+      type: String,
+      default: '',
+    },
+    messageToClient: {
+      type: String,
+      default: '',
+    },
+    sessionFee: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    sessionDurationMins: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    sessionModes: {
+      type: [String],
+      default: [],
+    },
+    testimonials: {
+      type: [
+        {
+          name: {
+            type: String,
+            required: true,
+            trim: true,
+          },
+          message: {
+            type: String,
+            required: true,
+            trim: true,
+          },
+          clientSince: {
+            type: String,
+            default: '',
+            trim: true,
+          },
+        },
+      ],
+      default: [],
     },
     isAvailable: {
       type: Boolean,

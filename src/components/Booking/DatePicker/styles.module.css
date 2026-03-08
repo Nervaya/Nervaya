@@ -251,6 +251,32 @@
   color: #475569;
 }
 
+/* Color coding for slot availability */
+.dateNormal {
+  background: var(--color-white-dim);
+  border-color: var(--color-border-light);
+}
+
+.dateLimited {
+  background: rgba(251, 146, 60, 0.1);
+  border-color: rgba(251, 146, 60, 0.3);
+}
+
+.dateLimited:hover:not(:disabled) {
+  background: rgba(251, 146, 60, 0.2);
+  border-color: rgba(251, 146, 60, 0.5);
+}
+
+.dateCritical {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.dateCritical:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .day {
     transition: none;

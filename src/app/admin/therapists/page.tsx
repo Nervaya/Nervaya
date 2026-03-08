@@ -156,7 +156,13 @@ export default function AdminTherapistsPage() {
                         <strong>Exp:</strong> {therapist.experience}
                       </span>
                       <span className={styles.infoItem}>
+                        <strong>Gender:</strong> {therapist.gender || 'N/A'}
+                      </span>
+                      <span className={styles.infoItem}>
                         <strong>Lang:</strong> {therapist.languages?.join(', ')}
+                      </span>
+                      <span className={styles.infoItem}>
+                        <strong>Video:</strong> {therapist.introVideoUrl ? 'Yes' : 'No'}
                       </span>
                     </div>
 

@@ -9,6 +9,7 @@ import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
+import { useTherapist } from '@/app/queries/therapists/useTherapist';
 import { trackSelectTimeSlot, trackBookingCompleted, trackBookingAbandoned } from '@/utils/analytics';
 import styles from './styles.module.css';
 
@@ -43,12 +44,15 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
 
   const handleMonthChange = useCallback((monthStart: Date) => setVisibleMonth(monthStart), []);
 
+  const { data: therapist } = useTherapist(therapistId);
+
   const {
     schedule,
     loading,
     error: slotsError,
     fetchSlots,
     fullyBookedDates,
+    slotAvailability,
   } = useBookingSlots(therapistId, selectedDate, visibleMonth);
 
   const slotsForGrid = useMemo(
@@ -199,6 +203,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
               maxDate={maxBookingDate}
               fullyBookedDates={fullyBookedDates}
               onMonthChange={handleMonthChange}
+              slotAvailability={slotAvailability}
             />
             {selectedDate && (
               <p className={styles.selectedDateText}>
@@ -257,6 +262,10 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           booking={booking}
           loading={loading}
           onBook={handleBookSession}
+          sessionFee={therapist?.sessionFee}
+          therapistId={therapistId}
+          therapistName={therapist?.name}
+          selectedDate={schedule?.date}
         />
       </div>
     </div>

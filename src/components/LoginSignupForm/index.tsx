@@ -2,8 +2,6 @@
 
 import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { Icon } from '@iconify/react';
-import { ICON_EYE, ICON_EYE_CLOSED } from '@/constants/icons';
 import {
   AUTH_FORM_MODE,
   AUTH_STEP,
@@ -15,6 +13,8 @@ import {
 import { useAuthForm } from '@/hooks/useAuthForm';
 import { useAuthContext, type AuthData } from '@/context/AuthContext';
 import { OTPVerificationStep } from './OTPVerificationStep';
+import { LoginForm } from './LoginForm';
+import { SignupForm } from './SignupForm';
 import { trackLogin, trackSignUp } from '@/utils/analytics';
 import styles from './styles.module.css';
 import { IMAGES } from '@/utils/imageConstants';
@@ -120,87 +120,19 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
               autoSend={false}
             />
           ) : (
-            <>
-              <h1 className={styles.title}>Create Account</h1>
-              <p className={styles.divider}>or use your email for registration</p>
-              {error && (
-                <div role="alert" className={styles.errorBanner} aria-live="polite">
-                  {error}
-                </div>
-              )}
-              <form className={styles.form} onSubmit={onSignupSubmit}>
-                <div className={styles.inputGroup}>
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    className={`${styles.input} ${fieldErrors.name ? styles.inputError : ''}`}
-                    value={name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    autoComplete="name"
-                    aria-invalid={!!fieldErrors.name}
-                    aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                  />
-                  {fieldErrors.name && (
-                    <span id="name-error" className={styles.fieldError}>
-                      {fieldErrors.name}
-                    </span>
-                  )}
-                </div>
-                <div className={styles.inputGroup}>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
-                    value={email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    autoComplete="email"
-                    aria-invalid={!!fieldErrors.email}
-                    aria-describedby={fieldErrors.email ? 'signup-email-error' : undefined}
-                  />
-                  {fieldErrors.email && (
-                    <span id="signup-email-error" className={styles.fieldError}>
-                      {fieldErrors.email}
-                    </span>
-                  )}
-                </div>
-                <div className={styles.inputGroup}>
-                  <div className={styles.passwordInputWrapper}>
-                    <input
-                      type={showSignupPassword ? 'text' : 'password'}
-                      placeholder="Password"
-                      className={`${styles.input} ${styles.passwordInput} ${fieldErrors.password ? styles.inputError : ''}`}
-                      value={password}
-                      onChange={(e) => handleInputChange('password', e.target.value)}
-                      autoComplete="new-password"
-                      aria-invalid={!!fieldErrors.password}
-                      aria-describedby={fieldErrors.password ? 'signup-password-error' : undefined}
-                    />
-                    <button
-                      type="button"
-                      className={styles.togglePasswordButton}
-                      onClick={() => setShowSignupPassword((prev) => !prev)}
-                      aria-label={showSignupPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <Icon icon={showSignupPassword ? ICON_EYE_CLOSED : ICON_EYE} width={20} height={20} />
-                    </button>
-                  </div>
-                  {fieldErrors.password && (
-                    <span id="signup-password-error" className={styles.fieldError}>
-                      {fieldErrors.password}
-                    </span>
-                  )}
-                </div>
-                <button type="submit" className={styles.button} disabled={loading}>
-                  {loading ? 'Signing up...' : 'Sign Up'}
-                </button>
-              </form>
-              <div className={`${styles.authToggle} md:hidden`}>
-                Already have an account?{' '}
-                <span onClick={handleLoginClick} className={styles.authToggleLink}>
-                  Sign In
-                </span>
-              </div>
-            </>
+            <SignupForm
+              name={name}
+              email={email}
+              password={password}
+              showPassword={showSignupPassword}
+              onTogglePassword={() => setShowSignupPassword((prev) => !prev)}
+              fieldErrors={fieldErrors}
+              loading={loading}
+              error={error}
+              onSubmit={onSignupSubmit}
+              onInputChange={handleInputChange}
+              onLoginClick={handleLoginClick}
+            />
           )}
         </div>
 
@@ -220,73 +152,18 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
               onBack={onOtpBack}
             />
           ) : (
-            <>
-              <h1 className={styles.title}>Sign in</h1>
-              <p className={styles.divider}>or use your account</p>
-              {error && (
-                <div role="alert" className={styles.errorBanner} aria-live="polite">
-                  {error}
-                </div>
-              )}
-              <form className={styles.form} onSubmit={onLoginSubmit}>
-                <div className={styles.inputGroup}>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
-                    value={email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    autoComplete="email"
-                    aria-invalid={!!fieldErrors.email}
-                    aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
-                  />
-                  {fieldErrors.email && (
-                    <span id="login-email-error" className={styles.fieldError}>
-                      {fieldErrors.email}
-                    </span>
-                  )}
-                </div>
-                <div className={styles.inputGroup}>
-                  <div className={styles.passwordInputWrapper}>
-                    <input
-                      type={showLoginPassword ? 'text' : 'password'}
-                      placeholder="Password"
-                      className={`${styles.input} ${styles.passwordInput} ${fieldErrors.password ? styles.inputError : ''}`}
-                      value={password}
-                      onChange={(e) => handleInputChange('password', e.target.value)}
-                      autoComplete="current-password"
-                      aria-invalid={!!fieldErrors.password}
-                      aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
-                    />
-                    <button
-                      type="button"
-                      className={styles.togglePasswordButton}
-                      onClick={() => setShowLoginPassword((prev) => !prev)}
-                      aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <Icon icon={showLoginPassword ? ICON_EYE_CLOSED : ICON_EYE} width={20} height={20} />
-                    </button>
-                  </div>
-                  {fieldErrors.password && (
-                    <span id="login-password-error" className={styles.fieldError}>
-                      {fieldErrors.password}
-                    </span>
-                  )}
-                </div>
-                <a href="#" className={styles.forgotPassword}>
-                  Forgot your password?
-                </a>
-                <button type="submit" className={styles.button} disabled={loading}>
-                  {loading ? 'Signing in...' : 'Sign In'}
-                </button>
-              </form>
-              <div className={`${styles.authToggle} md:hidden`}>
-                Don&apos;t have an account?{' '}
-                <span onClick={handleSignupClick} className={styles.authToggleLink}>
-                  Sign Up
-                </span>
-              </div>
-            </>
+            <LoginForm
+              email={email}
+              password={password}
+              showPassword={showLoginPassword}
+              onTogglePassword={() => setShowLoginPassword((prev) => !prev)}
+              fieldErrors={fieldErrors}
+              loading={loading}
+              error={error}
+              onSubmit={onLoginSubmit}
+              onInputChange={handleInputChange}
+              onSignupClick={handleSignupClick}
+            />
           )}
         </div>
 

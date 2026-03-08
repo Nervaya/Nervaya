@@ -8,6 +8,26 @@
   margin: 24px;
 }
 
+.highlightBanner {
+  margin-bottom: 18px;
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.95) 0%, rgba(147, 51, 234, 0.9) 100%);
+  color: #ffffff;
+}
+
+.highlightBanner p {
+  margin: 0 0 4px;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.highlightBanner span {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
 .sectionHeader {
   display: flex;
   align-items: flex-end;
@@ -31,50 +51,44 @@
   font-weight: 500;
 }
 
-.filterBar {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #e1e7ef;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 12px;
-}
-
-.filterField {
+.toolbar {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  color: #6b7280;
-  font-size: 0.8rem;
-  font-weight: 600;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
-.filterSelect {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 36px 10px 12px;
+.filterTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d7dff0;
+  background: #f8faff;
+  color: #24364f;
+  font-size: 0.93rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filterDot {
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
-  border: 1px solid #d8e0ea;
-  background: #f8fafc;
-  color: #1f2937;
-  font-size: 0.95rem;
-  font-weight: 500;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease;
+  background: var(--color-accent);
 }
 
-.filterSelect:focus,
-.filterSelect:hover {
-  outline: none;
-  border-color: #b9c7d8;
+.clearFiltersBtn {
+  border: 1px solid #d8deec;
+  border-radius: 10px;
+  padding: 10px 14px;
   background: #ffffff;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .loadingContainer {
@@ -108,15 +122,15 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .therapistCard {
-  border-radius: 16px;
-  border: 1px solid #dde5f0;
+  border-radius: 18px;
+  border: 1px solid #dbe3f1;
   background: #ffffff;
   padding: 18px;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -126,7 +140,7 @@
 .therapistCard:hover {
   transform: translateY(-2px);
   border-color: #cfd9e6;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
 }
 
 .cardBody {
@@ -137,35 +151,63 @@
 }
 
 .therapistInfo {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 16px;
+  align-items: start;
 }
 
-.avatar,
-.avatarFallback {
-  width: 88px;
-  height: 88px;
-  border-radius: 12px;
-  flex-shrink: 0;
+.mediaCard {
+  width: 250px;
+  height: 165px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #dce4f0;
+  background: #f1f5f9;
+  position: relative;
 }
 
-.avatar {
-  background-size: cover;
-  background-position: center;
-  background-color: #f3f4f6;
-  border: 1px solid #e1e7ef;
+.mediaImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.avatarFallback {
+.videoPreviewButton {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: #0f172a;
+  text-align: left;
+}
+
+.videoFallback {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, #f2ece8 0%, #e8ded9 100%);
-  color: #6b5f57;
-  font-size: 1.5rem;
+  color: #475569;
   font-weight: 700;
-  border: 1px solid #ddd2cc;
+  font-size: 0.95rem;
+}
+
+.videoOverlay {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111827;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .therapistText {
@@ -173,38 +215,50 @@
   min-width: 0;
 }
 
-.nameRow {
+.titleRow {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 8px 10px;
+  gap: 10px;
   margin-bottom: 4px;
 }
 
-.nameRow h3 {
-  margin: 0;
-  color: #111827;
-  font-size: clamp(1.2rem, 1.6vw, 1.75rem);
-  font-weight: 700;
-  line-height: 1.15;
+.profileThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid #e3e8f4;
 }
 
-.expBadge {
-  border-radius: 999px;
-  border: 1px solid rgba(124, 58, 237, 0.25);
-  background: rgba(124, 58, 237, 0.08);
-  color: var(--color-accent);
-  padding: 5px 10px;
-  font-size: 0.78rem;
+.therapistText h3 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(1.2rem, 1.6vw, 1.85rem);
   font-weight: 700;
+  line-height: 1.15;
 }
 
 .credentials {
   margin: 0 0 8px;
   color: #4b5563;
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   font-weight: 500;
   line-height: 1.45;
+}
+
+.experienceText {
+  margin: 0 0 6px;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.feeText {
+  margin: 0 0 8px;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .metaLine {
@@ -213,7 +267,7 @@
   gap: 8px;
   align-items: baseline;
   color: #475569;
-  font-size: 0.93rem;
+  font-size: 0.96rem;
 }
 
 .metaLine span {
@@ -223,25 +277,60 @@
 
 .tags {
   margin-top: 12px;
+}
+
+.tagsStatic {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
+.marqueeViewport {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: chip-marquee 18s linear infinite;
+}
+
+.marqueeGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .tag,
 .emptyTag {
-  max-width: 100%;
   border-radius: 999px;
   border: 1px solid #dce5f0;
   background: #f8fbff;
   color: #334155;
-  padding: 5px 10px;
-  font-size: 0.82rem;
+  padding: 6px 12px;
+  font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+@keyframes chip-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
 }
 
 .actions {
@@ -250,6 +339,22 @@
   border-top: 1px solid #e7edf5;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+}
+
+.secondaryBtn {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid #d4b7ff;
+  background: #ffffff;
+  color: var(--color-accent);
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .primaryBtn {
@@ -280,14 +385,144 @@
   justify-content: center;
 }
 
-@media (max-width: 1150px) {
-  .filterBar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  padding: 18px;
+}
+
+.filterModal,
+.videoModal {
+  width: min(640px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #d9e2f0;
+  box-shadow: 0 26px 48px rgba(2, 6, 23, 0.22);
+  padding: 18px;
+}
+
+.videoModal {
+  width: min(860px, 100%);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.closeModalBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid #d8e1ef;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filterFields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.filterSelect {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 36px 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d8e0ea;
+  background: #f8fafc;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 500;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.modalActions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modalSecondaryBtn,
+.modalPrimaryBtn {
+  min-height: 40px;
+  border-radius: 10px;
+  border: none;
+  padding: 0 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modalSecondaryBtn {
+  border: 1px solid #d8e1ef;
+  background: #ffffff;
+  color: #475569;
+}
+
+.modalPrimaryBtn {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.videoPlayer {
+  width: 100%;
+  max-height: 72vh;
+  border-radius: 12px;
+  background: #0f172a;
+}
+
+@media (max-width: 1200px) {
+  .therapistInfo {
+    grid-template-columns: 210px 1fr;
+  }
+
+  .mediaCard {
+    width: 210px;
+    height: 150px;
   }
 }
 
 @media (max-width: 920px) {
   .therapistList {
+    grid-template-columns: 1fr;
+  }
+
+  .filterFields {
     grid-template-columns: 1fr;
   }
 }
@@ -298,9 +533,8 @@
     margin-right: 16px;
   }
 
-  .filterBar {
-    grid-template-columns: 1fr;
-    padding: 10px;
+  .highlightBanner p {
+    font-size: 1.2rem;
   }
 
   .sectionHeader {
@@ -309,24 +543,30 @@
     gap: 6px;
   }
 
+  .toolbar {
+    justify-content: flex-start;
+  }
+
   .therapistCard {
     padding: 14px;
   }
 
   .therapistInfo {
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .avatar,
-  .avatarFallback {
-    width: 74px;
-    height: 74px;
+  .mediaCard {
+    width: 100%;
+    height: 190px;
   }
 
   .actions {
-    justify-content: stretch;
+    flex-direction: column;
+    align-items: stretch;
   }
 
+  .secondaryBtn,
   .primaryBtn {
     width: 100%;
   }

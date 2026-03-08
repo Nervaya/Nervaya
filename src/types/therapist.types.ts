@@ -8,11 +8,28 @@ export interface ConsultingHour {
 export interface Therapist {
   _id: string;
   name: string;
+  slug?: string;
   email?: string;
   qualifications?: string[];
   experience?: string;
   languages?: string[];
   specializations?: string[];
+  gender?: 'male' | 'female' | 'other';
   image?: string;
+  introVideoUrl?: string;
+  introVideoThumbnail?: string;
+  galleryImages?: string[];
+  bio?: string;
+  bioLong?: string;
+  quote?: string;
+  messageToClient?: string;
+  sessionFee?: number;
+  sessionDurationMins?: number;
+  sessionModes?: string[];
+  testimonials?: Array<{
+    name: string;
+    message: string;
+    clientSince?: string;
+  }>;
   consultingHours?: ConsultingHour[];
 }
