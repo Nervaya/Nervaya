@@ -10,7 +10,7 @@
   gap: 1rem;
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid #e2e8f0;
   width: 100%;
   min-width: 0;
 }
@@ -23,10 +23,10 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 2px solid #3a3a3a;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  background: #2a2a2a;
-  color: #ffffff;
+  background: #f8fafc;
+  color: #1f2937;
   cursor: pointer;
   transition:
     border-color 0.2s,
@@ -52,7 +52,7 @@
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #1f2937;
   min-width: 0;
   overflow: hidden;
 }
@@ -70,15 +70,15 @@
 .emptyState {
   padding: 3rem 2rem;
   text-align: center;
-  background: #2a2a2a;
+  background: #f8fafc;
   border-radius: 12px;
-  border: 2px dashed #3a3a3a;
+  border: 2px dashed #e2e8f0;
 }
 
 .emptyText {
   font-size: 1.0625rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
@@ -99,10 +99,10 @@
   gap: 0.625rem;
   font-size: 1.0625rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #1f2937;
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .periodIcon {
@@ -190,11 +190,11 @@
 }
 
 .slot.booked {
-  background: #1a1a1a;
-  color: #6b7280;
-  border-color: #2a2a2a;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.6;
   position: relative;
 }
 
@@ -205,7 +205,7 @@
   left: 10%;
   right: 10%;
   height: 2px;
-  background: #6b7280;
+  background: #94a3b8;
   transform: translateY(-50%);
 }
 
@@ -243,7 +243,7 @@
 }
 
 .slot.booked .time {
-  color: #6b7280;
+  color: #94a3b8;
 }
 
 .timeRange {

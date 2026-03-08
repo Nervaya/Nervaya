@@ -77,13 +77,10 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Sleep Assessment</h1>
-        <span className={styles.stepCounter} aria-hidden="true">
-          {currentQuestionIndex + 1}/{totalQuestions}
-        </span>
       </header>
 
       <div className={styles.progressSection}>
-        <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} showStepCounter={false} />
+        <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} showStepCounter={true} />
       </div>
 
       <section className={styles.questionSection} aria-label="Current question">

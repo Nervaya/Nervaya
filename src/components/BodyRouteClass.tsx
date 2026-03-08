@@ -7,7 +7,7 @@ export default function BodyRouteClass() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isHomeRoute = pathname === '/';
+    const isHomeRoute = pathname === '/' || pathname === '/sleep-assessment';
     document.body.classList.toggle('route-home', isHomeRoute);
     document.body.classList.toggle('route-non-home', !isHomeRoute);
   }, [pathname]);

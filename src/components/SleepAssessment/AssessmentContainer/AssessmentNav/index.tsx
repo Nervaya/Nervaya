@@ -22,21 +22,23 @@ export function AssessmentNav({
 }: AssessmentNavProps) {
   return (
     <footer className={styles.footer}>
-      <button
-        type="button"
-        className={`${styles.navButton} ${styles.prevButton}`}
-        onClick={onPrevious}
-        disabled={isFirstQuestion || isSubmitting}
-        aria-label="Previous question"
-      >
-        Previous
-      </button>
+      {!isFirstQuestion && (
+        <button
+          type="button"
+          className={`${styles.navButton} ${styles.prevButton}`}
+          onClick={onPrevious}
+          disabled={isSubmitting}
+          aria-label="Previous question"
+        >
+          Previous
+        </button>
+      )}
       <button
         type="button"
         className={`${styles.navButton} ${styles.nextButton} ${isLastQuestion ? styles.submitButton : ''}`}
         onClick={onNext}
         disabled={!canProceed || isSubmitting}
-        aria-label={isLastQuestion ? 'Submit assessment' : 'Next question'}
+        aria-label={isLastQuestion ? 'Submit assessment' : 'Next Question'}
         aria-busy={isSubmitting}
       >
         {isSubmitting ? (
@@ -47,7 +49,7 @@ export function AssessmentNav({
         ) : isLastQuestion ? (
           'Submit assessment'
         ) : (
-          'Next question'
+          'Next Question'
         )}
       </button>
     </footer>

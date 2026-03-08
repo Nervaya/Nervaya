@@ -1,8 +1,6 @@
 'use client';
 
 import { useCallback } from 'react';
-import { Icon } from '@iconify/react';
-import { ICON_CHECK } from '@/constants/icons';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -109,18 +107,6 @@ const QuestionCard = ({
               role={questionType === 'single_choice' ? 'radio' : 'checkbox'}
               aria-checked={isOptionSelected(option.value)}
             >
-              <span className={styles.optionIndicator}>
-                {questionType === 'multiple_choice' && (
-                  <span className={styles.checkbox}>
-                    {isOptionSelected(option.value) && <Icon icon={ICON_CHECK} aria-hidden />}
-                  </span>
-                )}
-                {questionType === 'single_choice' && (
-                  <span className={styles.radio}>
-                    {isOptionSelected(option.value) && <span className={styles.radioDot} />}
-                  </span>
-                )}
-              </span>
               <span className={styles.optionLabel}>{option.label}</span>
             </button>
           </li>
@@ -131,13 +117,7 @@ const QuestionCard = ({
 
   return (
     <article className={styles.questionCard}>
-      <span className={styles.questionLabel} aria-hidden="true">
-        Your answer
-      </span>
-      <h2 className={styles.questionText}>
-        {questionText}
-        {isRequired && <span className={styles.requiredIndicator}> *</span>}
-      </h2>
+      <h2 className={styles.questionText}>{questionText}</h2>
       <div className={styles.optionsContainer}>{renderOptions()}</div>
     </article>
   );

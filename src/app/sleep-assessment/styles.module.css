@@ -16,9 +16,11 @@
   max-width: 520px;
   margin: 0 auto;
   border-radius: 18px;
-  border: 1px solid #d9e2ee;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(220, 203, 255, 0.18);
+  background: rgba(23, 10, 57, 0.7);
+  box-shadow: 0 22px 50px rgba(8, 2, 27, 0.46);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +41,7 @@
 }
 
 .emptyIcon {
-  color: #94a3b8;
+  color: rgba(232, 225, 255, 0.6);
 }
 
 .errorIcon svg,
@@ -50,7 +52,7 @@
 
 .errorText {
   margin: 0;
-  color: #475569;
+  color: rgba(232, 225, 255, 0.88);
   font-size: 0.95rem;
   line-height: 1.55;
 }
@@ -61,32 +63,35 @@
   min-width: 130px;
   padding: 0 16px;
   border-radius: 10px;
-  border: 1px solid rgba(124, 58, 237, 0.32);
-  background: rgba(124, 58, 237, 0.1);
-  color: #5b21b6;
+  border: 1px solid rgba(220, 201, 255, 0.5);
+  background: rgba(169, 139, 233, 0.16);
+  color: #f4ecff;
   font-size: 0.86rem;
   font-weight: 700;
   cursor: pointer;
+  backdrop-filter: blur(8px);
   transition:
     transform 0.2s ease,
-    background 0.2s ease;
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .retryButton:hover {
-  background: rgba(124, 58, 237, 0.16);
+  background: rgba(193, 164, 250, 0.28);
+  border-color: rgba(233, 218, 255, 0.72);
   transform: translateY(-1px);
 }
 
 .emptyTitle {
   margin: 0;
-  color: #0f172a;
+  color: #f8f3ff;
   font-size: 1.4rem;
   line-height: 1.2;
 }
 
 .emptyText {
   margin: 0;
-  color: #64748b;
+  color: rgba(232, 225, 255, 0.88);
   font-size: 0.94rem;
   line-height: 1.55;
 }

@@ -12,6 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@iconify-icons/ph": "^1.2.5",
     "@iconify/react": "^6.0.2",
     "@next/third-parties": "^16.1.6",
     "axios": "^1.13.2",

@@ -211,6 +211,11 @@ export default function TherapyCornerPage() {
     };
   }, [paginatedTherapists]);
 
+  const handleFilterChange = (key: keyof FilterState, value: string) => {
+    setFilterState((prev) => ({ ...prev, [key]: value }));
+    setPage(1);
+  };
+
   const openFilterModal = () => {
     setModalFilterState(filterState);
     setIsFilterModalOpen(true);
@@ -255,11 +260,53 @@ export default function TherapyCornerPage() {
           </div>
 
           <div className={styles.toolbar}>
-            <button type="button" className={styles.filterTrigger} onClick={openFilterModal}>
+            <button type="button" className={styles.mobileFilterTrigger} onClick={openFilterModal}>
               <Icon icon={ICON_FILTER} width={18} height={18} />
               <span>Filters</span>
               {hasActiveFilters && <span className={styles.filterDot} aria-hidden="true" />}
             </button>
+
+            <div className={styles.inlineFilters}>
+              <select
+                className={styles.filterSelect}
+                value={filterState.specialization}
+                onChange={(e) => handleFilterChange('specialization', e.target.value)}
+              >
+                <option value={FILTER_ALL}>Expertise</option>
+                {filterOptions.specializations.map((spec) => (
+                  <option key={spec} value={spec}>
+                    {spec}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                className={styles.filterSelect}
+                value={filterState.language}
+                onChange={(e) => handleFilterChange('language', e.target.value)}
+              >
+                <option value={FILTER_ALL}>Languages</option>
+                {filterOptions.languages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                className={styles.filterSelect}
+                value={filterState.gender}
+                onChange={(e) => handleFilterChange('gender', e.target.value)}
+              >
+                <option value={FILTER_ALL}>Gender</option>
+                {genderOptions.map((gender) => (
+                  <option key={gender} value={gender}>
+                    {formatGender(gender)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {hasActiveFilters && (
               <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
                 Clear Filters
