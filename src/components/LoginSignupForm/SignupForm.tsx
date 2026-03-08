@@ -106,13 +106,13 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           )}
         </div>
         <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'Signing up...' : 'Sign Up'}
+          {loading ? 'OK...' : 'OK'}
         </button>
       </form>
       <div className={[styles.authToggle, 'md:hidden'].join(' ')}>
         Already have an account?{' '}
         <span onClick={onLoginClick} className={styles.authToggleLink}>
-          Sign In
+          Log In
         </span>
       </div>
     </>

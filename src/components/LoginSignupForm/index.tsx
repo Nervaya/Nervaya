@@ -193,17 +193,17 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
             </div>
 
             <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
-              <h1 className={styles.overlayTitle}>Welcome Back!</h1>
+              <h1 className={`${styles.overlayTitle} ${styles.welcomeBackText}`}>Welcome Back!</h1>
               <p className={styles.overlayText}>To keep connected with us please login with your personal info</p>
               <button type="button" className={styles.ghostButton} onClick={handleLoginClick}>
-                Sign In
+                OK
               </button>
             </div>
             <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
               <h1 className={styles.overlayTitle}>Hello, Friend!</h1>
               <p className={styles.overlayText}>Enter your personal details and start your journey with us</p>
               <button type="button" className={styles.ghostButton} onClick={handleSignupClick}>
-                Sign Up
+                OK
               </button>
             </div>
           </div>

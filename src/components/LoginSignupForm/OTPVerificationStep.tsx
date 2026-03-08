@@ -147,7 +147,7 @@ export function OTPVerificationStep({ email, purpose, onSuccess, onBack, autoSen
             className={styles.backButton}
             onClick={onBack}
             disabled={loading}
-            aria-label="Back to sign in"
+            aria-label="Back to log in"
           >
             Back
           </button>

@@ -32,7 +32,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   return (
     <>
-      <h1 className={styles.title}>Sign in</h1>
+      <h1 className={styles.title}>Log In</h1>
       <p className={styles.divider}>or use your account</p>
       {error && (
         <div role="alert" className={styles.errorBanner} aria-live="polite">
@@ -90,7 +90,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           Forgot your password?
         </a>
         <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? 'OK...' : 'OK'}
         </button>
       </form>
       <div className={[styles.authToggle, 'md:hidden'].join(' ')}>
