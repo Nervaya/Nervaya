@@ -129,8 +129,9 @@
   border-radius: 18px;
   border: 1px solid #dbe3f1;
   background: #ffffff;
-  padding: 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -139,30 +140,31 @@
 
 .therapistCard:hover {
   transform: translateY(-2px);
-  border-color: #cfd9e6;
-  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+  border-color: rgba(124, 58, 237, 0.25);
+  box-shadow: 0 14px 28px rgba(124, 58, 237, 0.12);
 }
 
 .cardBody {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 0;
 }
 
 .therapistInfo {
   display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 16px;
+  grid-template-columns: 38% 1fr;
+  gap: 12px;
   align-items: start;
+  padding: 14px 14px 12px;
 }
 
 .mediaCard {
-  width: 250px;
-  height: 165px;
-  border-radius: 14px;
+  width: 100%;
+  height: 170px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #dce4f0;
+  border: 1px solid #d8dee9;
   background: #f1f5f9;
   position: relative;
 }
@@ -213,70 +215,85 @@
 .therapistText {
   flex: 1;
   min-width: 0;
+  padding-left: 4px;
 }
 
 .titleRow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
-.profileThumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  object-fit: cover;
-  border: 2px solid #e3e8f4;
+  margin-bottom: 2px;
 }
 
 .therapistText h3 {
   margin: 0;
-  color: #111827;
-  font-size: clamp(1.2rem, 1.6vw, 1.85rem);
+  color: #32343a;
+  font-size: clamp(1.45rem, 1.55vw, 1.75rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .credentials {
-  margin: 0 0 8px;
-  color: #4b5563;
-  font-size: 0.98rem;
+  margin: 0 0 6px;
+  color: #5f6672;
+  font-size: 0.94rem;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .experienceText {
-  margin: 0 0 6px;
-  color: #0f172a;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.35;
+  margin: 0 0 4px;
+  color: #1f2937;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .feeText {
-  margin: 0 0 8px;
-  color: #1f2937;
-  font-size: 0.95rem;
+  margin: 0;
+  color: #334155;
+  font-size: 0.98rem;
   font-weight: 700;
 }
 
-.metaLine {
-  margin: 0;
+.infoDivider {
+  height: 1px;
+  background: #eceff5;
+}
+
+.cardMeta {
+  padding: 10px 14px;
+}
+
+.expertiseRow {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.expertiseLabel {
+  color: #585e69;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.speaksLine {
+  margin: 8px 0 0;
   display: flex;
   gap: 8px;
   align-items: baseline;
-  color: #475569;
-  font-size: 0.96rem;
+  color: #43484f;
+  font-size: 0.93rem;
+  font-weight: 500;
 }
 
-.metaLine span {
-  color: #0f172a;
-  font-weight: 700;
+.speaksLine span {
+  color: #5b616d;
+  font-weight: 500;
 }
 
 .tags {
-  margin-top: 12px;
+  min-width: 0;
 }
 
 .tagsStatic {
@@ -307,15 +324,37 @@
 
 .tag,
 .emptyTag {
-  border-radius: 999px;
-  border: 1px solid #dce5f0;
+  border-radius: 8px;
+  border: 1px solid #dde4ef;
   background: #f8fbff;
-  color: #334155;
-  padding: 6px 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  color: #4d5768;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
   line-height: 1.2;
   white-space: nowrap;
+}
+
+.availabilitySection {
+  border-top: 1px solid #eceff4;
+  background: #fcfbff;
+  padding: 8px 14px 10px;
+}
+
+.nextSlotLine {
+  margin: 0;
+  color: #475569;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.nextSlotValue {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.nextSlotFallback {
+  color: #5f6671;
 }
 
 @keyframes chip-marquee {
@@ -335,37 +374,46 @@
 
 .actions {
   margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid #e7edf5;
+  padding: 10px 14px 14px;
+  border-top: 1px solid #eceff4;
+  background: #ffffff;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 
 .secondaryBtn {
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 10px;
-  border: 1px solid #d4b7ff;
+  min-height: 46px;
+  flex: 1;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.28);
   background: #ffffff;
   color: var(--color-accent);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .primaryBtn {
-  min-height: 42px;
-  padding: 0 18px;
+  min-height: 46px;
+  flex: 1;
+  padding: 0 16px;
   border: none;
-  border-radius: 10px;
-  background: var(--color-accent);
+  border-radius: 12px;
+  background: var(--gradient-accent);
   color: #ffffff;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -373,10 +421,16 @@
     box-shadow 0.2s ease;
 }
 
-.primaryBtn:hover {
-  background: var(--color-accent-hover);
+.secondaryBtn:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  background: rgba(124, 58, 237, 0.06);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+}
+
+.primaryBtn:hover {
+  background: var(--gradient-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.3);
 }
 
 .paginationWrap {
@@ -508,12 +562,12 @@
 
 @media (max-width: 1200px) {
   .therapistInfo {
-    grid-template-columns: 210px 1fr;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .mediaCard {
-    width: 210px;
-    height: 150px;
+  .therapistText {
+    padding-left: 0;
   }
 }
 
@@ -548,17 +602,24 @@
   }
 
   .therapistCard {
-    padding: 14px;
+    border-radius: 16px;
   }
 
   .therapistInfo {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
+    padding: 12px;
   }
 
   .mediaCard {
-    width: 100%;
-    height: 190px;
+    height: 180px;
+  }
+
+  .cardMeta,
+  .availabilitySection,
+  .actions {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .actions {

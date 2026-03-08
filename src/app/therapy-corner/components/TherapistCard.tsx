@@ -12,6 +12,8 @@ interface TherapistCardProps {
   onBookAppointment: (therapist: Therapist) => void;
   onVideoPreview: (therapist: Therapist) => void;
   formatExperience: (exp?: string) => string;
+  nextSlotLabel?: string | null;
+  isNextSlotLoading: boolean;
 }
 
 export function TherapistCard({
@@ -20,7 +22,12 @@ export function TherapistCard({
   onBookAppointment,
   onVideoPreview,
   formatExperience,
+  nextSlotLabel,
+  isNextSlotLoading,
 }: TherapistCardProps) {
+  const nextSlotPrefix = 'Next online slot:';
+  const nextSlotText = isNextSlotLoading ? 'Checking availability...' : nextSlotLabel || 'No upcoming online slot';
+
   return (
     <li className={styles.therapistCard} onMouseEnter={() => onViewProfile(therapist)}>
       <div className={styles.cardBody}>
@@ -58,10 +65,6 @@ export function TherapistCard({
 
           <div className={styles.therapistText}>
             <div className={styles.titleRow}>
-              {therapist.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={therapist.image} alt={`${therapist.name} profile`} className={styles.profileThumb} />
-              ) : null}
               <h3>{therapist.name}</h3>
             </div>
             <p className={styles.credentials}>{therapist.qualifications?.join(', ') || 'Professional Therapist'}</p>
@@ -71,14 +74,28 @@ export function TherapistCard({
                 ₹{therapist.sessionFee} for {therapist.sessionDurationMins} mins
               </p>
             ) : null}
-            <p className={styles.metaLine}>
-              <span>Speaks</span>
-              {therapist.languages?.join(', ') || 'N/A'}
-            </p>
+          </div>
+        </div>
+
+        <div className={styles.infoDivider} />
+
+        <div className={styles.cardMeta}>
+          <div className={styles.expertiseRow}>
+            <span className={styles.expertiseLabel}>Expertise:</span>
             <div className={styles.tags}>
               <SpecializationMarquee items={therapist.specializations || []} />
             </div>
           </div>
+          <p className={styles.speaksLine}>
+            <span>Speaks:</span> {therapist.languages?.join(', ') || 'N/A'}
+          </p>
+        </div>
+
+        <div className={styles.availabilitySection}>
+          <p className={styles.nextSlotLine}>
+            {nextSlotPrefix}{' '}
+            <span className={nextSlotLabel ? styles.nextSlotValue : styles.nextSlotFallback}>{nextSlotText}</span>
+          </p>
         </div>
 
         <div className={styles.actions}>

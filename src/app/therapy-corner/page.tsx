@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useTherapists } from '@/app/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
@@ -8,6 +8,7 @@ import BookingModal from '@/components/Booking/BookingModal';
 import Pagination from '@/components/common/Pagination';
 import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+import { scheduleApi, ScheduleByDateRangeItem } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
 import { ICON_FILTER } from '@/constants/icons';
@@ -20,6 +21,69 @@ import { VideoPreviewModal } from './components/VideoPreviewModal';
 
 const FILTER_ALL = '';
 const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
+const LOOKAHEAD_DAYS = 30;
+
+function parseTime12Hour(timeValue: string): { hours: number; minutes: number } | null {
+  const match = timeValue.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+
+  const hour = Number(match[1]);
+  const minutes = Number(match[2]);
+  const period = match[3].toUpperCase();
+
+  if (Number.isNaN(hour) || Number.isNaN(minutes) || hour > 12 || minutes > 59) {
+    return null;
+  }
+
+  let hours24 = hour % 12;
+  if (period === 'PM') {
+    hours24 += 12;
+  }
+
+  return { hours: hours24, minutes };
+}
+
+function getSlotDateTime(dateValue: string, startTime: string): Date | null {
+  const [year, month, day] = dateValue.split('-').map(Number);
+  const parsedTime = parseTime12Hour(startTime);
+
+  if (!year || !month || !day || !parsedTime) {
+    return null;
+  }
+
+  const dateTime = new Date(year, month - 1, day, parsedTime.hours, parsedTime.minutes, 0, 0);
+  return Number.isNaN(dateTime.getTime()) ? null : dateTime;
+}
+
+function getDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getNextAvailableSlotDateTime(schedules: ScheduleByDateRangeItem[], now: Date): Date | null {
+  const slots = schedules
+    .flatMap((schedule) =>
+      schedule.slots.map((slot) => ({
+        dateTime: getSlotDateTime(schedule.date, slot.startTime),
+        isAvailable: slot.isAvailable,
+      })),
+    )
+    .filter(
+      (slot): slot is { dateTime: Date; isAvailable: boolean } =>
+        slot.isAvailable && slot.dateTime !== null && slot.dateTime.getTime() > now.getTime(),
+    )
+    .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime());
+
+  return slots[0]?.dateTime ?? null;
+}
+
+function formatNextSlot(dateTime: Date): string {
+  const datePart = dateTime.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short' });
+  const timePart = dateTime.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+  return `${datePart} ${timePart}`;
+}
 
 function formatExperience(experience?: string) {
   if (!experience) return 'Experience not specified';
@@ -44,6 +108,7 @@ function formatGender(value: string) {
 export default function TherapyCornerPage() {
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [page, setPage] = useState(1);
+  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
 
   const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists();
   const error = fetchError ? fetchError.message : '';
@@ -105,6 +170,46 @@ export default function TherapyCornerPage() {
     () => filteredTherapists.slice((page - 1) * limit, page * limit),
     [filteredTherapists, page, limit],
   );
+
+  useEffect(() => {
+    if (paginatedTherapists.length === 0) {
+      return;
+    }
+
+    let active = true;
+
+    const loadNextSlots = async () => {
+      const now = new Date();
+      const startDate = getDateKey(now);
+      const endDate = getDateKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() + LOOKAHEAD_DAYS));
+
+      const results = await Promise.all(
+        paginatedTherapists.map(async (therapist) => {
+          try {
+            const response = await scheduleApi.getByDateRange(therapist._id, startDate, endDate, false);
+            const schedules = Array.isArray(response.data) ? response.data : [];
+            const nextSlotDateTime = getNextAvailableSlotDateTime(schedules, now);
+            return [therapist._id, nextSlotDateTime ? formatNextSlot(nextSlotDateTime) : null] as const;
+          } catch {
+            return [therapist._id, null] as const;
+          }
+        }),
+      );
+
+      if (!active) return;
+
+      setNextSlotByTherapist((prev) => ({
+        ...prev,
+        ...Object.fromEntries(results),
+      }));
+    };
+
+    void loadNextSlots();
+
+    return () => {
+      active = false;
+    };
+  }, [paginatedTherapists]);
 
   const openFilterModal = () => {
     setModalFilterState(filterState);
@@ -197,6 +302,8 @@ export default function TherapyCornerPage() {
                         onBookAppointment={handleBookAppointment}
                         onVideoPreview={setVideoPreviewTherapist}
                         formatExperience={formatExperience}
+                        nextSlotLabel={nextSlotByTherapist[therapist._id]}
+                        isNextSlotLoading={!(therapist._id in nextSlotByTherapist)}
                       />
                     ))}
                   </ul>
