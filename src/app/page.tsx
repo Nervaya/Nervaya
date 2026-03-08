@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 
 const HomePage = () => {
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <section className={styles.heroSection}>
         <div className={styles.heroCopy}>
           <h1 className={styles.heroTitle}>
@@ -49,7 +49,8 @@ const HomePage = () => {
       <Cards />
 
       <Footer />
-    </div>
+    </main>
   );
 };
+
 export default HomePage;

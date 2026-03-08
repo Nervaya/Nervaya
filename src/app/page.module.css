@@ -11,110 +11,135 @@
 .heroSection {
   position: relative;
   z-index: 1;
-  padding-top: calc(var(--spacing-2xl) + 1.5rem);
-  padding-left: var(--spacing-xl);
-  padding-right: var(--spacing-xl);
-  padding-bottom: var(--spacing-2xl);
+  padding-top: calc(var(--spacing-2xl, 4rem) + 4rem);
+  padding-left: var(--spacing-xl, 2rem);
+  padding-right: var(--spacing-xl, 2rem);
+  padding-bottom: var(--spacing-2xl, 4rem);
   max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  gap: var(--spacing-xl);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--spacing-xl, 3rem);
   align-items: center;
+}
 
-  @media (max-width: 1024px) {
-    .heroSection {
-      padding-left: var(--spacing-lg);
-      padding-right: var(--spacing-lg);
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--spacing-lg);
-    }
+@media (max-width: 1024px) {
+  .heroSection {
+    grid-template-columns: 1fr;
+    padding-left: var(--spacing-lg, 1.5rem);
+    padding-right: var(--spacing-lg, 1.5rem);
+    gap: 3rem;
   }
+}
 
-  @media (max-width: 768px) {
-    .heroSection {
-      padding-top: var(--spacing-xl);
-      padding-left: 24px;
-      padding-right: 24px;
-      padding-bottom: var(--spacing-xl);
-    }
+@media (max-width: 768px) {
+  .heroSection {
+    padding-top: calc(var(--spacing-xl, 2rem) + 2rem);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: var(--spacing-xl, 2rem);
   }
+}
 
+.heroCopy {
+  max-width: 620px;
+  text-align: left;
+}
+
+@media (max-width: 1024px) {
   .heroCopy {
-    max-width: 620px;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+.heroTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
+  font-family: var(--font-heading) !important;
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #f8f3ff;
+  margin-bottom: var(--spacing-lg, 1.5rem);
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  align-items: flex-start;
+}
+
+.heroTitleLine {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .heroTitleLine {
+    max-width: 100%;
   }
 
   .heroTitle {
-    display: flex;
-    flex-direction: column;
-    gap: 0.12em;
-    font-family: var(--font-heading) !important;
-    font-size: clamp(2rem, 3.6vw, 4.05rem);
-    font-weight: 700;
-    line-height: 1.04;
-    color: #f8f3ff;
-    margin-bottom: var(--spacing-lg);
-    letter-spacing: -0.018em;
-    text-wrap: pretty;
+    font-size: clamp(2.2rem, 5.5vw, 3.5rem);
+    line-height: 1.15;
+    align-items: center;
   }
+}
 
-  .heroTitleLine {
-    display: block;
-
-    @media (max-width: 1024px) {
-      max-width: 100%;
-    }
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: clamp(2rem, 8vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md, 1rem);
+    letter-spacing: -0.02em;
   }
+}
 
-  @media (max-width: 1024px) {
-    .heroTitle {
-      font-size: clamp(1.9rem, 5.2vw, 3.25rem);
-      line-height: 1.08;
-    }
-  }
+.heroSubtitle {
+  font-family: var(--font-sans) !important;
+  font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(232, 225, 255, 0.88);
+  margin-bottom: var(--spacing-xl, 2rem);
+  max-width: 680px;
+  text-wrap: balance;
+}
 
-  @media (max-width: 768px) {
-    .heroTitle {
-      font-size: clamp(1.75rem, 8.4vw, 2.2rem);
-      line-height: 1.12;
-      margin-bottom: var(--spacing-md);
-      letter-spacing: -0.02em;
-    }
-  }
-
+@media (max-width: 1024px) {
   .heroSubtitle {
-    font-family: var(--font-sans) !important;
-    font-size: clamp(1.02rem, 1.5vw, 1.14rem);
-    line-height: 1.58;
-    color: rgba(232, 225, 255, 0.88);
-    margin-bottom: var(--spacing-lg);
-    max-width: 620px;
-
-    @media (max-width: 1024px) {
-      max-width: 520px;
-    }
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
   }
+}
 
-  @media (max-width: 768px) {
-    .heroSubtitle {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: var(--spacing-lg);
-      max-width: 100%;
-    }
+@media (max-width: 768px) {
+  .heroSubtitle {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-lg, 1.5rem);
+    max-width: 100%;
   }
+}
 
+.buttonGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: var(--spacing-md, 1rem);
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
   .buttonGroup {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
+    justify-content: center;
   }
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .buttonGroup {
     flex-direction: column;
-    width: 100%;
-    max-width: 480px;
+    max-width: 400px;
+    margin: 0 auto;
     gap: 12px;
   }
 }
@@ -124,40 +149,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: var(--btn-padding-y, 0.75rem) var(--btn-padding-x, 1.5rem);
+  min-height: 52px;
+  padding: 0 1.75rem;
   font-size: 1.125rem;
   font-weight: 600;
   font-family: var(--font-sans) !important;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
   white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
-  background: var(--gradient-accent);
-  color: var(--color-foreground);
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
-}
-
-.primaryButton:hover,
-.secondaryButton:hover {
-  background: var(--gradient-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
-}
-
-.primaryButton:active,
-.secondaryButton:active {
-  transform: translateY(0);
 }
 
 @media (max-width: 768px) {
   .primaryButton,
   .secondaryButton {
     width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
+    min-height: 56px;
+    padding: 0 1.5rem;
   }
 }
 
@@ -182,6 +193,7 @@
   background: rgba(169, 139, 233, 0.16);
   color: #f4ecff;
   border: 1px solid rgba(220, 201, 255, 0.5);
+  backdrop-filter: blur(8px);
 }
 
 .secondaryButton:hover {
@@ -196,15 +208,23 @@
 
 .heroVisual {
   position: relative;
-  min-height: 420px;
+  min-height: 480px;
+  width: 100%;
   isolation: isolate;
+  display: block;
+}
 
-  @media (max-width: 1024px) {
-    min-height: 380px;
+@media (max-width: 1024px) {
+  .heroVisual {
+    min-height: 420px;
+    max-width: 600px;
+    margin: 0 auto;
   }
+}
 
-  @media (max-width: 768px) {
-    min-height: 320px;
+@media (max-width: 768px) {
+  .heroVisual {
+    display: none;
   }
 }
 
