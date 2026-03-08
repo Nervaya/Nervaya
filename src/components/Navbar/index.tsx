@@ -72,7 +72,7 @@ const Navbar = () => {
         <div className={styles.navbarContainer}>
           <div className={styles.navbarLogo}>
             <Link href="/">
-              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={115} height={38} />
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={155} height={52} priority />
             </Link>
           </div>
         </div>
@@ -85,7 +85,7 @@ const Navbar = () => {
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLogo}>
           <Link href="/">
-            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={115} height={38} />
+            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={155} height={52} priority />
           </Link>
         </div>
         <button

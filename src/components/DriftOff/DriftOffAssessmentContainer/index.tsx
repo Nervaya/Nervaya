@@ -1,10 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import ProgressBar from '@/components/SleepAssessment/ProgressBar';
 import { AssessmentQuestionStep } from '@/components/SleepAssessment/AssessmentContainer/AssessmentQuestionStep';
 import { AssessmentNav } from '@/components/SleepAssessment/AssessmentContainer/AssessmentNav';
 import LottieLoader from '@/components/common/LottieLoader';
-import DriftOffCompletionView from './DriftOffCompletionView';
 import { useDriftOffAssessmentState } from './useDriftOffAssessmentState';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import styles from './styles.module.css';
@@ -15,6 +16,8 @@ interface DriftOffAssessmentContainerProps {
 }
 
 export default function DriftOffAssessmentContainer({ questions, driftOffOrderId }: DriftOffAssessmentContainerProps) {
+  const router = useRouter();
+
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -33,6 +36,12 @@ export default function DriftOffAssessmentContainer({ questions, driftOffOrderId
     handlePrevious,
   } = useDriftOffAssessmentState(questions, driftOffOrderId);
 
+  useEffect(() => {
+    if (isComplete) {
+      router.replace('/drift-off/my-session');
+    }
+  }, [isComplete, router]);
+
   if (!isHydrated) {
     return (
       <div className={styles.loading} aria-busy="true">
@@ -43,7 +52,12 @@ export default function DriftOffAssessmentContainer({ questions, driftOffOrderId
   }
 
   if (isComplete) {
-    return <DriftOffCompletionView />;
+    return (
+      <div className={styles.loading} aria-busy="true">
+        <LottieLoader width={160} height={160} />
+        <p className={styles.loadingText}>Redirecting to your session…</p>
+      </div>
+    );
   }
 
   if (!currentQuestion) {
@@ -62,6 +76,13 @@ export default function DriftOffAssessmentContainer({ questions, driftOffOrderId
           {currentQuestionIndex + 1}/{totalQuestions}
         </span>
       </header>
+
+      <div className={styles.oneTimeNote} role="status">
+        <p>
+          This assessment can only be taken once. We do this to ensure the authenticity of your responses. Your
+          responses will be saved and our specialists will use them to curate your personalized session.
+        </p>
+      </div>
 
       <div className={styles.progressSection}>
         <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} showStepCounter={false} />

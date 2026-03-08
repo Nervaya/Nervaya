@@ -17,28 +17,20 @@ const Footer = () => (
     </div>
 
     <ul className={styles['nervaya-link-container']}>
-      {FOOTER_LINK_GROUPS.map((group, index) => (
-        <li
-          key={group.links[0]?.href || 'group'}
-          className={`${styles['link-box']} ${index === 2 ? styles['link-box-full'] : ''}`}
-        >
+      {FOOTER_LINK_GROUPS.map((group) => (
+        <li key={group.links[0]?.href || 'group'} className={styles['link-box']}>
           {group.links.map((link) => (
-            <Link key={link.href} href={link.href} className={styles['link']}>
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`${styles['link']} ${link.isHeading ? styles['link-heading'] : ''}`}
+            >
               {link.text}
             </Link>
           ))}
         </li>
       ))}
     </ul>
-
-    {/* Mobile View */}
-    <div className={styles['mobile-link-grid']}>
-      {FOOTER_LINK_GROUPS.flatMap((group) => group.links).map((link) => (
-        <Link key={link.href} href={link.href} className={styles['link']}>
-          {link.text}
-        </Link>
-      ))}
-    </div>
   </footer>
 );
 

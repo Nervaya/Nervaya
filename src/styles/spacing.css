@@ -23,11 +23,11 @@
   --heading-section: var(--font-size-3xl);
   --description: var(--font-size-lg);
 
-  --navbar-height: 100px;
-  --navbar-padding-x: 40px;
+  --navbar-height: 76px;
+  --navbar-padding-x: 48px;
 
-  --navbar-height-mobile: 80px;
-  --navbar-padding-x-mobile: 16px;
+  --navbar-height-mobile: 64px;
+  --navbar-padding-x-mobile: 20px;
 }
 
 @media (max-width: 768px) {

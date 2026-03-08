@@ -102,7 +102,7 @@ export default function DashboardPage() {
                 : 'Book your next appointment anytime.'
             }
             icon={<Icon icon={ICON_CALENDAR} aria-hidden />}
-            cta={{ label: 'My sessions', href: '/account' }}
+            cta={{ label: 'Book session', href: '/therapy-corner' }}
           />
 
           <StatTile

@@ -77,25 +77,6 @@
   }
 }
 
-.badge {
-  position: absolute;
-  top: var(--spacing-lg);
-  left: var(--spacing-lg);
-  background: #f3f8ff;
-  color: #1a1a1a;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 48px;
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  z-index: 10;
-  min-width: 138px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
-
 .cardImage {
   display: block;
 }
