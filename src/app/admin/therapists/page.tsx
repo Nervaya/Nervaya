@@ -117,7 +117,19 @@ export default function AdminTherapistsPage() {
           }
         />
       ) : therapists.length === 0 ? (
-        <StatusState type="empty" message="No therapists found. Click above to add the first one." />
+        <>
+          <StatusState type="empty" message="No therapists found. Click above to add the first one." />
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={1}
+              limit={limit}
+              total={0}
+              totalPages={1}
+              onPageChange={setPage}
+              ariaLabel="Therapists pagination"
+            />
+          </div>
+        </>
       ) : (
         <>
           <ul className={styles.list} aria-label="Therapist list">
@@ -174,18 +186,16 @@ export default function AdminTherapistsPage() {
               </li>
             ))}
           </ul>
-          {total > 0 && (
-            <div className={styles.paginationWrap}>
-              <Pagination
-                page={page}
-                limit={limit}
-                total={total}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                ariaLabel="Therapists pagination"
-              />
-            </div>
-          )}
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              ariaLabel="Therapists pagination"
+            />
+          </div>
         </>
       )}
     </div>

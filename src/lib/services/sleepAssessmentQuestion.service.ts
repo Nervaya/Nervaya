@@ -2,7 +2,6 @@ import SleepAssessmentQuestion, { ISleepAssessmentQuestion } from '@/lib/models/
 import connectDB from '@/lib/db/mongodb';
 import { NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
-import { validate as validateUUID } from 'uuid';
 import type { CreateQuestionInput, UpdateQuestionInput } from '@/types/sleepAssessment.types';
 
 const OPTION_BASED_TYPES = ['single_choice', 'multiple_choice', 'scale'] as const;
@@ -54,11 +53,7 @@ async function findQuestion(identifier: string) {
     return await SleepAssessmentQuestion.findById(identifier);
   }
 
-  if (validateUUID(identifier)) {
-    return await SleepAssessmentQuestion.findOne({ questionId: identifier });
-  }
-
-  return null;
+  return await SleepAssessmentQuestion.findOne({ questionId: identifier });
 }
 
 export async function getQuestionById(identifier: string): Promise<ISleepAssessmentQuestion> {

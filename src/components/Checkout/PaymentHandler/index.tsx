@@ -39,7 +39,6 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 
   const handleSuccess = useCallback(
     async (response: RazorpayPaymentResponse) => {
-      // Immediately signal verification started — hides the payment UI before async call
       onVerifyStart?.();
       try {
         const result = await paymentsApi.verify({
@@ -50,7 +49,7 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
 
         if (result.success) {
           onSuccess?.(response.razorpay_payment_id);
-          setIsNavigating(true); // Keep loading state active during Next.js route transition
+          setIsNavigating(true);
           router.push(`/supplements/order-success/${orderId}`);
         } else {
           const reason = result.message || 'Payment verification failed';
@@ -64,14 +63,10 @@ const PaymentHandler: React.FC<PaymentHandlerProps> = ({
     },
     [orderId, onSuccess, onError, router, onVerifyStart],
   );
-
-  // Stable prefill object — prevents new reference on every render
   const prefill = useMemo(
     () => ({ name: userName, email: userEmail, contact: userPhone }),
     [userName, userEmail, userPhone],
   );
-
-  // Stable dismiss handler
   const handleDismiss = useCallback(() => {
     trackPaymentFailed({ order_id: orderId, reason: 'Payment cancelled by user' });
     onError?.('Payment cancelled');

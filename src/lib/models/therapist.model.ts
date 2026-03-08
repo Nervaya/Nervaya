@@ -1,9 +1,9 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface IConsultingHour {
-  dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  startTime: string; // Format: "09:00 AM"
-  endTime: string; // Format: "05:00 PM"
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
   isEnabled: boolean;
 }
 

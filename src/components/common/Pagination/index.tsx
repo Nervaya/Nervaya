@@ -36,9 +36,11 @@ export default function Pagination({
   onPageChange,
   ariaLabel = 'Pagination',
 }: PaginationProps) {
-  const start = total === 0 ? 0 : (page - 1) * limit + 1;
-  const end = Math.min(page * limit, total);
-  const pageItems = totalPages >= 1 ? getPaginationPages(page, totalPages) : [];
+  const safeTotalPages = Math.max(1, totalPages || 0);
+  const safePage = Math.min(Math.max(page, 1), safeTotalPages);
+  const start = total === 0 ? 0 : (safePage - 1) * limit + 1;
+  const end = total === 0 ? 0 : Math.min(safePage * limit, total);
+  const pageItems = getPaginationPages(safePage, safeTotalPages);
   const pageItemsWithKeys = pageItems.reduce<{ item: number | 'ellipsis'; key: string }[]>((acc, item) => {
     if (item === 'ellipsis') {
       const ellipsisCount = acc.filter((x) => x.item === 'ellipsis').length;
@@ -62,8 +64,8 @@ export default function Pagination({
       <div className={styles.paginationControls}>
         <button
           type="button"
-          onClick={() => !noData && onPageChange(page - 1)}
-          disabled={page <= 1 || noData}
+          onClick={() => !noData && onPageChange(safePage - 1)}
+          disabled={safePage <= 1 || noData}
           className={styles.paginationButton}
           aria-label="Previous page"
         >
@@ -92,9 +94,9 @@ export default function Pagination({
                   key={key}
                   type="button"
                   onClick={() => onPageChange(item)}
-                  className={`${styles.paginationNumber} ${page === item ? styles.paginationNumberActive : ''}`}
+                  className={`${styles.paginationNumber} ${safePage === item ? styles.paginationNumberActive : ''}`}
                   aria-label={`Page ${item}`}
-                  aria-current={page === item ? 'page' : undefined}
+                  aria-current={safePage === item ? 'page' : undefined}
                 >
                   {item}
                 </button>
@@ -104,8 +106,8 @@ export default function Pagination({
         </div>
         <button
           type="button"
-          onClick={() => !noData && onPageChange(page + 1)}
-          disabled={page >= totalPages || noData}
+          onClick={() => !noData && onPageChange(safePage + 1)}
+          disabled={safePage >= safeTotalPages || noData}
           className={styles.paginationButton}
           aria-label="Next page"
         >

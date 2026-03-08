@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import DriftOffPaymentHandler from '@/components/DriftOff/DriftOffPaymentHandler';
-import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
 import { DRIFT_OFF_SESSION_PRICE } from '@/lib/constants/driftOff.constants';
 import { useDriftOffPayment } from './useDriftOffPayment';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,7 +22,7 @@ const BENEFITS = [
 
 export default function DriftOffPaymentPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, initializing } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
 
@@ -39,9 +38,9 @@ export default function DriftOffPaymentPage() {
     handleVerifyStart,
     handlePaymentError,
   } = useDriftOffPayment();
-
-  // Check if user already has a paid order
   useEffect(() => {
+    if (initializing) return;
+
     const checkExistingPaidOrder = async () => {
       if (!isAuthenticated) {
         setIsChecking(false);
@@ -56,7 +55,7 @@ export default function DriftOffPaymentPage() {
           const paidOrder = ordersRes.data.find((order) => order.paymentStatus === 'paid');
           if (paidOrder) {
             router.replace(`/drift-off/assessment?orderId=${paidOrder._id}`);
-            return; // Prevent setting isChecking to false while router transitions
+            return;
           }
         }
         setIsChecking(false);
@@ -67,20 +66,25 @@ export default function DriftOffPaymentPage() {
     };
 
     checkExistingPaidOrder();
-  }, [isAuthenticated, router]);
+  }, [initializing, isAuthenticated, router]);
+
+  if (isVerifying || isChecking || initializing) {
+    return (
+      <Sidebar>
+        <div className={styles.wrapper}>
+          <div className={styles.loading}>
+            <p>{isVerifying ? 'Verifying your payment…' : 'Checking your session status...'}</p>
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
 
   return (
     <>
-      <RazorpayCheckoutScript />
       <Sidebar>
         <div className={styles.wrapper}>
-          {(isVerifying || isChecking) && (
-            <div className={styles.loading}>
-              <p>{isVerifying ? 'Verifying your payment…' : 'Checking your session status...'}</p>
-            </div>
-          )}
-
-          <div className={styles.container} style={{ display: isVerifying || isChecking ? 'none' : 'flex' }}>
+          <div className={styles.container}>
             <div className={styles.card}>
               <div className={styles.cardLeft}>
                 <span className={styles.badge}>Deep Rest Session</span>
@@ -131,14 +135,25 @@ export default function DriftOffPaymentPage() {
                     </div>
                   )}
 
-                  {!showPaymentHandler && !initError && (
-                    <button type="button" className={styles.payBtn} onClick={initiatePayment} disabled={isCreating}>
-                      {isCreating ? (
+                  {!initError && (
+                    <button
+                      type="button"
+                      className={styles.payBtn}
+                      onClick={initiatePayment}
+                      disabled={isCreating || showPaymentHandler || isVerifying}
+                    >
+                      {isCreating || showPaymentHandler ? (
                         <span
                           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                         >
-                          <span className={styles.spinner}></span>
-                          Processing…
+                          {isCreating ? (
+                            <>
+                              <span className={styles.spinner}></span>
+                              Processing…
+                            </>
+                          ) : (
+                            <>🔒 Pay Now</>
+                          )}
                         </span>
                       ) : (
                         <span

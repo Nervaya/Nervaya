@@ -83,13 +83,9 @@ export function useDriftOffPayment() {
       }));
     }
   }, []);
-
-  // Called immediately when payment succeeds (before async verification)
-  // flushSync forces React to update the DOM synchronously — eliminates the flash
-  // of the payment card between Razorpay modal close and next async render cycle
   const handleVerifyStart = useCallback(() => {
     flushSync(() => {
-      setState((prev) => ({ ...prev, isVerifying: true }));
+      setState((prev) => ({ ...prev, isVerifying: true, showPaymentHandler: false }));
     });
   }, []);
 

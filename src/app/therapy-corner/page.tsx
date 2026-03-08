@@ -109,7 +109,21 @@ export default function TherapyCornerPage() {
           )}
           {error && <p className={styles.error}>{error}</p>}
 
-          {!loading && !error && therapists.length === 0 && <p>No therapists found at the moment.</p>}
+          {!loading && !error && therapists.length === 0 && (
+            <>
+              <p>No therapists found at the moment.</p>
+              <div className={styles.paginationWrap}>
+                <Pagination
+                  page={1}
+                  limit={limit}
+                  total={0}
+                  totalPages={1}
+                  onPageChange={setPage}
+                  ariaLabel="Recommended therapists pagination"
+                />
+              </div>
+            </>
+          )}
 
           {!loading && !error && therapists.length > 0 && (
             <>
@@ -165,7 +179,19 @@ export default function TherapyCornerPage() {
               </div>
 
               {filteredTherapists.length === 0 ? (
-                <p className={styles.noResults}>No therapists match the selected filters.</p>
+                <>
+                  <p className={styles.noResults}>No therapists match the selected filters.</p>
+                  <div className={styles.paginationWrap}>
+                    <Pagination
+                      page={1}
+                      limit={limit}
+                      total={0}
+                      totalPages={1}
+                      onPageChange={setPage}
+                      ariaLabel="Recommended therapists pagination"
+                    />
+                  </div>
+                </>
               ) : (
                 <>
                   <ul className={styles.therapistList} aria-label="Recommended therapists">
@@ -223,18 +249,16 @@ export default function TherapyCornerPage() {
                       </li>
                     ))}
                   </ul>
-                  {totalPages > 1 && (
-                    <div className={styles.paginationWrap}>
-                      <Pagination
-                        page={page}
-                        limit={limit}
-                        total={total}
-                        totalPages={totalPages}
-                        onPageChange={setPage}
-                        ariaLabel="Recommended therapists pagination"
-                      />
-                    </div>
-                  )}
+                  <div className={styles.paginationWrap}>
+                    <Pagination
+                      page={page}
+                      limit={limit}
+                      total={total}
+                      totalPages={totalPages}
+                      onPageChange={setPage}
+                      ariaLabel="Recommended therapists pagination"
+                    />
+                  </div>
                 </>
               )}
             </>

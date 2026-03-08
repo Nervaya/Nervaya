@@ -143,7 +143,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
         </header>
 
-        {/* eslint-disable-next-line react/no-danger -- Blog content from API; rich text rendered as HTML */}
+        {/* eslint-disable-next-line react/no-danger */}
         <div className={styles.content} dangerouslySetInnerHTML={{ __html: blog.content }} />
 
         <footer className={styles.footer}>

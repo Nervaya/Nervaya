@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_CLOSE } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
@@ -112,16 +111,12 @@ export default function AddQuestionPage() {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Add New Question"
-        subtitle="Create a new assessment question"
-        actions={
-          <Link href="/admin/sleep-assessment" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Questions
-          </Link>
-        }
-      />
+      <div className={styles.topActions}>
+        <Link href="/admin/sleep-assessment" className={styles.backLink}>
+          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          Back to Questions
+        </Link>
+      </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && (

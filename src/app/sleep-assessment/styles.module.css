@@ -1,164 +1,109 @@
 .pageContainer {
   min-height: 100vh;
   width: 100%;
-  max-width: 1100px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md) 0;
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 0;
-  }
 }
 
 .loadingContainer {
-  flex: 1;
+  min-height: 380px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-2xl) var(--spacing-xl);
-  min-height: 400px;
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-    gap: var(--spacing-md);
-  }
 }
 
-.errorContainer {
-  flex: 1;
+.errorContainer,
+.emptyContainer {
+  min-height: 360px;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid #d9e2ee;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-2xl) var(--spacing-xl);
   text-align: center;
-  max-width: 420px;
-  margin: 0 auto;
+  gap: 10px;
+  padding: 28px;
+}
 
-  @media (max-width: 768px) {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-  }
+.errorIcon,
+.emptyIcon {
+  width: 52px;
+  height: 52px;
 }
 
 .errorIcon {
-  width: 64px;
-  height: 64px;
-  color: var(--color-destructive);
-
-  @media (max-width: 768px) {
-    width: 56px;
-    height: 56px;
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.errorText {
-  color: var(--color-text-slate-400);
-  font-size: var(--font-size-lg);
-  line-height: 1.6;
-
-  @media (max-width: 768px) {
-    font-size: var(--font-size-base);
-  }
-}
-
-.retryButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 160px;
-  min-height: 48px;
-  padding: 0 var(--spacing-lg);
-  margin-top: var(--spacing-xs);
-  background: var(--color-accent-dim);
-  color: var(--accent);
-  border: 1px solid var(--color-accent-dim);
-  border-radius: 12px;
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background: var(--color-accent-dim);
-    border-color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--color-accent-dim);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: 280px;
-  }
-}
-
-.emptyContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-2xl) var(--spacing-xl);
-  text-align: center;
-  max-width: 420px;
-  margin: 0 auto;
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-  }
+  color: #ef4444;
 }
 
 .emptyIcon {
-  width: 64px;
-  height: 64px;
-  color: var(--muted-dim);
+  color: #94a3b8;
+}
 
-  @media (max-width: 768px) {
-    width: 56px;
-    height: 56px;
-  }
+.errorIcon svg,
+.emptyIcon svg {
+  width: 100%;
+  height: 100%;
+}
 
-  svg {
-    width: 100%;
-    height: 100%;
-  }
+.errorText {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.retryButton {
+  margin-top: 4px;
+  height: 42px;
+  min-width: 130px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 58, 237, 0.32);
+  background: rgba(124, 58, 237, 0.1);
+  color: #5b21b6;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.retryButton:hover {
+  background: rgba(124, 58, 237, 0.16);
+  transform: translateY(-1px);
 }
 
 .emptyTitle {
-  font-size: var(--font-size-3xl);
-  font-weight: 600;
-  color: var(--color-text-slate-300);
   margin: 0;
-
-  @media (max-width: 768px) {
-    font-size: var(--font-size-xl);
-  }
+  color: #0f172a;
+  font-size: 1.4rem;
+  line-height: 1.2;
 }
 
 .emptyText {
-  color: var(--color-text-slate-400);
-  font-size: var(--font-size-lg);
-  line-height: 1.6;
   margin: 0;
+  color: #64748b;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
 
-  @media (max-width: 768px) {
-    font-size: var(--font-size-base);
+@media (max-width: 768px) {
+  .loadingContainer {
+    min-height: 300px;
+  }
+
+  .errorContainer,
+  .emptyContainer {
+    min-height: 300px;
+    padding: 20px;
+  }
+
+  .retryButton {
+    width: 100%;
+    max-width: 240px;
   }
 }

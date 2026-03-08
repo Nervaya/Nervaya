@@ -13,9 +13,16 @@ interface ImageUploadProps {
   initialUrl?: string;
   label?: string;
   compact?: boolean;
+  tone?: 'dark' | 'light';
 }
 
-const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compact = false }: ImageUploadProps) => {
+const ImageUpload = ({
+  onUpload,
+  initialUrl = '',
+  label = 'Upload Image',
+  compact = false,
+  tone = 'dark',
+}: ImageUploadProps) => {
   const [preview, setPreview] = useState<string>(initialUrl);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +81,7 @@ const ImageUpload = ({ onUpload, initialUrl = '', label = 'Upload Image', compac
 
   return (
     <div
-      className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''}`}
+      className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''} ${tone === 'light' ? styles.light : ''}`}
       onClick={handleClick}
     >
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />

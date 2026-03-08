@@ -210,7 +210,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
             <h3 className={styles.sectionTitle}>Available Time Slots</h3>
             {loading ? (
               <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-                <LottieLoader width={160} height={160} />
+                <LottieLoader width={160} height={160} centerPage={false} />
               </div>
             ) : displayError && !loading ? (
               <div className={styles.errorMessage}>

@@ -1,7 +1,3 @@
-// Icon registry - Centralized Iconify icon IDs
-// All icons used across the application should be defined here
-
-// Sidebar Icons
 export const ICON_HOME = 'solar:home-2-bold';
 export const ICON_HOUSE = 'solar:home-bold-duotone';
 export const ICON_DASHBOARD = 'solar:widget-2-bold-duotone';
@@ -92,8 +88,6 @@ export const ICON_LOCATION = 'solar:map-point-bold';
 export const ICON_SUNRISE = 'solar:sunrise-bold';
 export const ICON_USER_SETTINGS = 'solar:user-id-bold';
 export const ICON_USER_MEDICAL = 'solar:user-check-bold';
-
-// Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;
 
 export const SIDEBAR_ICON_MAP: SidebarIconMap = {

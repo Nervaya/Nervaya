@@ -57,7 +57,7 @@ export async function sendOtp(
       return {
         success: false,
         message: 'Signup session expired. Please sign up again.',
-        statusCode: 400, // Or 410 Gone? 400 is safer generic.
+        statusCode: 400,
       };
     }
   }

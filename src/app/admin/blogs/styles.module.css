@@ -1,147 +1,233 @@
 .container {
   width: 100%;
-  padding: 0 24px 0 0;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 16px 0 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
 }
 
 .header {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #ffffff;
   margin: 0;
+  font-size: clamp(1.85rem, 2vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #0f172a;
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 1.5rem;
-  }
+.subtitle {
+  margin: 0;
+  font-size: 1rem;
+  color: #475569;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  background: rgba(124, 58, 237, 0.08);
+  color: #5b21b6;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.statHint {
+  color: #64748b;
+  font-size: 0.84rem;
+  font-weight: 600;
 }
 
 .addButton {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border: none;
+  height: 44px;
+  padding: 0 16px;
   border-radius: 10px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: #ffffff;
+  border: 1px solid rgba(109, 40, 217, 0.65);
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.2);
+  font-size: 0.88rem;
+  font-weight: 700;
   text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  flex-shrink: 0;
 }
 
 .addButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(124, 58, 237, 0.26);
 }
 
 .error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  background: rgba(254, 242, 242, 0.9);
+  color: #b91c1c;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .filters {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.searchField {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid #dbe4f1;
+  background: #f8fafc;
+  padding: 0 14px;
+}
+
+.searchIcon {
+  color: #64748b;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .searchInput {
-  flex: 1;
-  min-width: 200px;
-  max-width: 400px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #0f172a;
+  width: 100%;
+  font-size: 0.95rem;
 }
 
 .searchInput::placeholder {
-  color: #64748b;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  color: #94a3b8;
 }
 
 .searchButton {
-  padding: 12px 20px;
-  background: rgba(124, 58, 237, 0.2);
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  border-radius: 10px;
-  color: #c4b5fd;
-  font-size: 0.875rem;
-  font-weight: 600;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  background: rgba(124, 58, 237, 0.1);
+  color: #5b21b6;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .searchButton:hover {
-  background: rgba(124, 58, 237, 0.3);
-  color: #f8fafc;
+  background: rgba(124, 58, 237, 0.16);
+  transform: translateY(-1px);
 }
 
-.loading,
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: #94a3b8;
   text-align: center;
+  gap: 12px;
+  min-height: 280px;
+  border-radius: 18px;
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #64748b;
+  padding: 30px 20px;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 0.97rem;
 }
 
 .emptyAddButton {
-  margin-top: 16px;
-  padding: 10px 20px;
-  background: rgba(124, 58, 237, 0.15);
-  color: #a78bfa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
   border: 1px solid rgba(124, 58, 237, 0.3);
-  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.1);
+  color: #5b21b6;
   text-decoration: none;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.emptyAddButton:hover {
-  background: rgba(124, 58, 237, 0.25);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.92rem;
+  }
+
+  .addButton {
+    width: 100%;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchField,
+  .searchButton {
+    width: 100%;
+  }
 }

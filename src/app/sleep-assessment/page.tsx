@@ -6,7 +6,7 @@ import { ICON_ALERT, ICON_DOCUMENT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
-import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';

@@ -1,7 +1,6 @@
 @import '../styles/colors.css';
 @import '../styles/spacing.css';
 
-/* Ensure fonts are loaded and applied globally */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
@@ -9,7 +8,7 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
-  --navbar-height: 64px;
+  --navbar-height: 82px;
   --navbar-safe-gap: 24px;
   --card-bg: #ffffff;
   --border: #e2e8f0;
@@ -36,7 +35,7 @@
 
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 60px;
+    --navbar-height: 74px;
     --navbar-safe-gap: 16px;
   }
 }
@@ -72,6 +71,13 @@ body.route-home {
   background-attachment: fixed;
 }
 
+body.route-not-found {
+  background: url('/background.png');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
 button,
 input,
 select,
@@ -87,7 +93,6 @@ textarea {
   -ms-overflow-style: none;
 }
 
-/* Apply fonts globally to all text elements with higher specificity */
 html body h1,
 html body h2,
 html body h3,
@@ -166,7 +171,6 @@ body.route-non-home .main-content {
   border-left: 1px solid rgba(15, 23, 42, 0.06) !important;
 }
 
-/* Add some colorful card and content styles */
 .card {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -183,8 +187,6 @@ body.route-non-home .main-content {
   border-color: rgba(124, 58, 237, 0.2);
 }
 
-/* Enhanced text colors */
-
 .text-primary {
   color: #2d3748;
 }
@@ -197,7 +199,6 @@ body.route-non-home .main-content {
   color: #64748b;
 }
 
-/* Button enhancements */
 .btn-primary {
   background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
   color: #ffffff;

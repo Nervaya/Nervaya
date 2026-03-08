@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
 import LottieLoader from '@/components/common/LottieLoader';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import { blogsApi } from '@/lib/api/blogs';
 import styles from '../../add/styles.module.css';
 import 'react-quill-new/dist/quill.snow.css';
@@ -109,9 +108,18 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Blog" subtitle="Update blog post content and settings" />
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
-          <LottieLoader width={100} height={100} />
+        <section className={styles.header}>
+          <div className={styles.headerText}>
+            <h1 className={styles.title}>Edit Blog</h1>
+            <p className={styles.subtitle}>Update blog post content and settings.</p>
+          </div>
+          <Link href="/admin/blogs" className={styles.backLink}>
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            Back to Blogs
+          </Link>
+        </section>
+        <div className={styles.loadingState}>
+          <LottieLoader width={96} height={96} label="Loading blog" />
         </div>
       </div>
     );
@@ -119,16 +127,16 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Edit Blog"
-        subtitle="Update blog post content and settings"
-        actions={
-          <Link href="/admin/blogs" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Blogs
-          </Link>
-        }
-      />
+      <section className={styles.header}>
+        <div className={styles.headerText}>
+          <h1 className={styles.title}>Edit Blog</h1>
+          <p className={styles.subtitle}>Update blog post content and settings.</p>
+        </div>
+        <Link href="/admin/blogs" className={styles.backLink}>
+          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          Back to Blogs
+        </Link>
+      </section>
 
       <BlogForm
         formData={formData}

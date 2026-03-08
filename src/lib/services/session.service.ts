@@ -45,9 +45,7 @@ export async function createSession(userId: string, therapistId: string, date: s
 
     try {
       await bookSlot(therapistId, date, startTime, session._id.toString());
-    } catch {
-      // Schedule may not exist for this date; Session remains source of truth
-    }
+    } catch {}
 
     return session;
   } catch (error) {

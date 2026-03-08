@@ -8,14 +8,20 @@ import { AssessmentNav } from '@/components/SleepAssessment/AssessmentContainer/
 import LottieLoader from '@/components/common/LottieLoader';
 import { useDriftOffAssessmentState } from './useDriftOffAssessmentState';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
+import type { IDriftOffAnswer } from '@/types/driftOff.types';
 import styles from './styles.module.css';
 
 interface DriftOffAssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
   driftOffOrderId: string;
+  initialAnswers?: IDriftOffAnswer[];
 }
 
-export default function DriftOffAssessmentContainer({ questions, driftOffOrderId }: DriftOffAssessmentContainerProps) {
+export default function DriftOffAssessmentContainer({
+  questions,
+  driftOffOrderId,
+  initialAnswers = [],
+}: DriftOffAssessmentContainerProps) {
   const router = useRouter();
 
   const {
@@ -34,7 +40,7 @@ export default function DriftOffAssessmentContainer({ questions, driftOffOrderId
     handleAnswerChange,
     handleNext,
     handlePrevious,
-  } = useDriftOffAssessmentState(questions, driftOffOrderId);
+  } = useDriftOffAssessmentState(questions, driftOffOrderId, initialAnswers);
 
   useEffect(() => {
     if (isComplete) {

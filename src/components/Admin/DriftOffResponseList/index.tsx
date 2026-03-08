@@ -145,7 +145,7 @@ const DriftOffResponseList = ({ responses, questions, onAssign }: DriftOffRespon
         })}
       </ul>
 
-      {/* Pagination at the bottom */}
+      {}
       <Pagination
         page={currentPage}
         limit={ITEMS_PER_PAGE}

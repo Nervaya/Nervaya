@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
 import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
-import styles from './styles.module.css';
 
 interface DriftOffPaymentHandlerProps {
   driftOffOrderId: string;
@@ -30,17 +29,11 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
   onError,
 }) => {
   const router = useRouter();
-  const [isNavigating, setIsNavigating] = useState(false);
-
-  // Stable prefill object — only changes when name/email actually change
   const prefill = useMemo(() => ({ name: userName, email: userEmail }), [userName, userEmail]);
-
-  // Stable dismiss handler — only changes when onError changes
   const handleDismiss = useCallback(() => onError?.('Payment cancelled'), [onError]);
 
   const handleSuccess = useCallback(
     async (response: RazorpayPaymentResponse) => {
-      // Immediately signal verification started — hides the payment page UI before async call
       onVerifyStart?.();
       try {
         const result = await driftOffApi.verifyPayment({
@@ -49,7 +42,6 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
           razorpaySignature: response.razorpay_signature,
         });
         if (result.success) {
-          setIsNavigating(true); // Keep loading state active during Next.js route transition
           router.replace(`/drift-off/assessment?orderId=${driftOffOrderId}`);
         } else {
           onError?.(result.message || 'Payment verification failed');
@@ -71,23 +63,16 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
     onSuccess: handleSuccess,
     onError,
     onDismiss: handleDismiss,
-    autoOpen: true,
+    autoOpen: false,
   });
 
-  return (
-    <>
-      <RazorpayCheckoutScript onLoad={() => openPaymentModal()} />
-      {isNavigating ? (
-        <div className={styles.loading}>
-          <p>Redirecting to assessment…</p>
-        </div>
-      ) : (
-        <div className={styles.loading}>
-          <p>Opening payment gateway…</p>
-        </div>
-      )}
-    </>
-  );
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Razorpay) {
+      openPaymentModal();
+    }
+  }, [openPaymentModal]);
+
+  return <RazorpayCheckoutScript onLoad={openPaymentModal} />;
 };
 
 export default DriftOffPaymentHandler;

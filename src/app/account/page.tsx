@@ -5,7 +5,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import MySessions from '@/components/Account/MySessions';
 import MyOrders from '@/components/Account/MyOrders';
-import containerStyles from '@/app/dashboard/styles.module.css'; // Reusing dashboard styles for consistency
+import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { ICON_USER, ICON_MAIL, ICON_SAVE, ICON_LOCK } from '@/constants/icons';

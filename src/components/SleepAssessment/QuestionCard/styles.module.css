@@ -4,47 +4,23 @@
 
 .questionLabel {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   margin-bottom: 6px;
-}
-
-@media (max-width: 480px) {
-  .questionLabel {
-    font-size: 0.6875rem;
-    margin-bottom: 5px;
-  }
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .questionText {
-  font-size: 1.375rem;
-  font-weight: 500;
-  color: #f1f5f9;
+  margin: 0 0 16px 0;
+  color: #0f172a;
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
   line-height: 1.45;
-  margin-bottom: 16px;
-  letter-spacing: -0.01em;
-}
-
-@media (max-width: 768px) {
-  .questionText {
-    font-size: 1.25rem;
-    margin-bottom: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .questionText {
-    font-size: 1.125rem;
-    margin-bottom: 12px;
-  }
 }
 
 .requiredIndicator {
-  color: #f87171;
-  font-weight: 400;
+  color: #ef4444;
 }
 
 .optionsContainer {
@@ -60,77 +36,40 @@
   gap: 8px;
 }
 
-@media (max-width: 480px) {
-  .optionsList {
-    gap: 6px;
-  }
-}
-
 .optionCard {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d9e2ee;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.95rem;
+  text-align: left;
   cursor: pointer;
   transition:
-    background 0.2s ease,
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: left;
-  color: #e2e8f0;
-  font-size: 1rem;
-  border-left: 3px solid transparent;
-}
-
-@media (max-width: 768px) {
-  .optionCard {
-    padding: 10px 18px;
-    gap: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .optionCard {
-    padding: 10px 16px;
-    gap: 10px;
-    font-size: 0.9375rem;
-    border-radius: 12px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .optionCard {
-    transition: none;
-  }
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .optionCard:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  background: #f8fafc;
+  border-color: #cdd8e7;
+  transform: translateY(-1px);
 }
 
 .optionCard:focus-visible {
   outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .optionCard.selected {
-  background: rgba(124, 58, 237, 0.1);
-  border-color: rgba(124, 58, 237, 0.35);
-  border-left-color: #8b5cf6;
-  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.2);
-}
-
-.optionCard.selected:hover {
-  background: rgba(124, 58, 237, 0.14);
   border-color: rgba(124, 58, 237, 0.45);
+  background: rgba(124, 58, 237, 0.09);
 }
 
 .optionIndicator {
@@ -138,28 +77,13 @@
 }
 
 .radio {
-  width: 22px;
-  height: 22px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  display: flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 2px solid #cbd5e1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 768px) {
-  .radio {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .radio {
-    width: 18px;
-    height: 18px;
-  }
 }
 
 .optionCard.selected .radio {
@@ -167,81 +91,31 @@
 }
 
 .radioDot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
   background: #7c3aed;
-  border-radius: 50%;
-  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 768px) {
-  .radioDot {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .radioDot {
-    width: 7px;
-    height: 7px;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 .checkbox {
-  width: 22px;
-  height: 22px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 20px;
+  height: 20px;
   border-radius: 6px;
-  display: flex;
+  border: 2px solid #cbd5e1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 768px) {
-  .checkbox {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .checkbox {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-  }
 }
 
 .optionCard.selected .checkbox {
-  background: #7c3aed;
   border-color: #7c3aed;
+  background: #7c3aed;
 }
 
 .checkbox svg {
-  width: 12px;
-  height: 10px;
-  color: white;
-  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 480px) {
-  .checkbox svg {
-    width: 10px;
-    height: 8px;
-  }
+  width: 11px;
+  height: 9px;
+  color: #ffffff;
 }
 
 .optionLabel {
@@ -259,110 +133,79 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-@media (max-width: 480px) {
-  .scaleList {
-    gap: 8px;
-  }
+  gap: 8px;
 }
 
 .scaleOption {
-  min-width: 48px;
-  height: 48px;
-  display: flex;
+  min-width: 44px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #d9e2ee;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  color: #e2e8f0;
-  font-size: 1rem;
-  font-weight: 500;
+  padding: 0 12px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0 16px;
-}
-
-@media (max-width: 768px) {
-  .scaleOption {
-    min-width: 44px;
-    height: 44px;
-    font-size: 0.9375rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .scaleOption {
-    min-width: 40px;
-    height: 40px;
-    font-size: 0.875rem;
-    padding: 0 12px;
-    border-radius: 10px;
-  }
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .scaleOption:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  background: #f8fafc;
+  border-color: #cdd8e7;
 }
 
 .scaleOption:focus-visible {
   outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .scaleOption.selected {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  border-color: transparent;
-  color: white;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  border-color: rgba(109, 40, 217, 0.7);
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  color: #ffffff;
 }
 
 .textInput {
   width: 100%;
   min-height: 120px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  color: #f8fafc;
-  font-size: 1rem;
-  font-family: inherit;
+  border: 1px solid #d9e2ee;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
   line-height: 1.6;
+  font-family: inherit;
+  padding: 12px 14px;
   resize: vertical;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 768px) {
-  .textInput {
-    padding: 14px 16px;
-    min-height: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .textInput {
-    padding: 12px 14px;
-    font-size: 0.9375rem;
-  }
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .textInput::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .textInput:focus {
   outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
-.textInput:focus-visible {
-  outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
+@media (max-width: 768px) {
+  .questionText {
+    font-size: 1.15rem;
+  }
+
+  .optionCard {
+    padding: 10px 12px;
+  }
 }

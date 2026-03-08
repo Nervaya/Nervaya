@@ -1,8 +1,5 @@
 import { SIDEBAR_ICON_MAP } from '@/constants/icons';
 import type { NavigationMenuGroup } from '@/types/navigation.types';
-
-// Re-export icon map for backward compatibility during migration
-// iconMap now returns Iconify icon ID strings instead of React elements
 export const iconMap: Record<string, string> = SIDEBAR_ICON_MAP;
 
 export interface SidebarNavItem {
@@ -12,13 +9,7 @@ export interface SidebarNavItem {
   isDashboard?: boolean;
 }
 
-export const sidebarBottomNavItems: SidebarNavItem[] = [
-  {
-    title: 'Feedback',
-    path: '/support',
-    icon: 'FaRegCommentDots',
-  },
-];
+export const sidebarBottomNavItems: SidebarNavItem[] = [];
 
 export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
@@ -31,7 +22,7 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'THERAPY',
-    items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUserDoctor' }],
+    items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUsers' }],
   },
   {
     title: 'DRIFT OFF',
@@ -47,13 +38,8 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
     title: 'HELP',
     items: [
-      {
-        title: 'Therapy Corner',
-        path: '/therapy-corner',
-        icon: 'FaUserDoctor',
-      },
       { title: 'Support', path: '/support', icon: 'FaHeadset' },
-      { title: 'Account', path: '/account', icon: 'FaUsers' },
+      { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
     ],
   },
 ];
