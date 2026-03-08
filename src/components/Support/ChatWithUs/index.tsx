@@ -2,14 +2,20 @@
 
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
+import { usePathname } from 'next/navigation';
 import { ICON_WHATSAPP, ICON_CHAT } from '@/constants/icons';
 import Button from '@/components/common/Button/Button';
+import { trackWhatsAppClick } from '@/utils/analytics';
 
 const ChatWithUs = () => {
+  const pathname = usePathname();
+
   const handleWhatsAppClick = () => {
     const phoneNumber = '1234567890';
     const message = encodeURIComponent('Hello! I need support with your product.');
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    const destination = `https://wa.me/${phoneNumber}?text=${message}`;
+    trackWhatsAppClick(destination, pathname);
+    window.open(destination, '_blank');
   };
 
   return (

@@ -4,7 +4,7 @@ import api from '@/lib/axios';
 import { promoApi } from '@/lib/api/promo';
 import type { Cart, Order, ShippingAddress, SavedAddress, Supplement } from '@/types/supplement.types';
 import { getShippingCost, type DeliveryMethod } from '@/utils/shipping.util';
-import { trackBeginCheckout, trackAddPaymentInfo, type GaItem } from '@/utils/analytics';
+import { trackBeginCheckout, trackAddPaymentInfo, trackCouponApplied, type GaItem } from '@/utils/analytics';
 
 export { getShippingCost };
 
@@ -144,6 +144,12 @@ export function useCheckout() {
         const result = await promoApi.apply(code, cart._id, cart.totalAmount);
         setAppliedPromoCode(code);
         setPromoDiscount(result.discount ?? 0);
+        trackCouponApplied({
+          coupon_code: code,
+          discount_value: result.discount ?? 0,
+          currency: 'INR',
+          cart_value: cart.totalAmount,
+        });
       } catch (err) {
         const msg = err instanceof Error ? err.message : 'Invalid or expired promo code';
         setPromoError(mapPromoErrorMessage(msg));

@@ -1,11 +1,23 @@
 declare global {
   interface Window {
     gtag?: (command: string, action: string, params?: Record<string, unknown>) => void;
+    dataLayer?: Array<Record<string, unknown>>;
   }
 }
 
 function sendGaEvent(eventName: string, params?: Record<string, unknown>): void {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+  if (typeof window === 'undefined') return;
+
+  if (process.env.NEXT_PUBLIC_GTM_ID) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      ...(params || {}),
+    });
+    return;
+  }
+
+  if (typeof window.gtag !== 'function') return;
   window.gtag('event', eventName, params);
 }
 
@@ -34,6 +46,16 @@ export type ScrollDepthThreshold = 25 | 50 | 75 | 90;
 
 export function trackViewItem(params: EcommerceParams): void {
   sendGaEvent('view_item', { currency: params.currency, value: params.value, items: params.items });
+  if (params.items[0]) {
+    sendGaEvent('view_product', {
+      currency: params.currency,
+      value: params.value,
+      item_id: params.items[0].item_id,
+      item_name: params.items[0].item_name,
+      ...(params.items[0].item_category && { item_category: params.items[0].item_category }),
+      price: params.items[0].price,
+    });
+  }
 }
 
 export function trackAddToCart(params: EcommerceParams): void {
@@ -87,6 +109,11 @@ export function trackPurchase(params: PurchaseParams): void {
     ...(params.coupon && { coupon: params.coupon }),
     items: params.items,
   });
+  sendGaEvent('order_value', {
+    transaction_id: params.transaction_id,
+    currency: params.currency,
+    value: params.value,
+  });
 }
 
 export interface ViewItemListParams {
@@ -125,6 +152,38 @@ export function trackLogin(method: string): void {
 
 export function trackSearch(searchTerm: string): void {
   sendGaEvent('search', { search_term: searchTerm });
+}
+
+export interface ClickAnyButtonParams {
+  button_text: string;
+  page_path: string;
+  button_id?: string;
+  destination_url?: string;
+}
+
+export function trackClickAnyButton(params: ClickAnyButtonParams): void {
+  sendGaEvent('click_any_button', {
+    button_text: params.button_text,
+    page_path: params.page_path,
+    ...(params.button_id && { button_id: params.button_id }),
+    ...(params.destination_url && { destination_url: params.destination_url }),
+  });
+}
+
+export interface CouponAppliedParams {
+  coupon_code: string;
+  discount_value?: number;
+  currency?: string;
+  cart_value?: number;
+}
+
+export function trackCouponApplied(params: CouponAppliedParams): void {
+  sendGaEvent('coupon_applied', {
+    coupon_code: params.coupon_code,
+    ...(params.discount_value !== undefined && { discount_value: params.discount_value }),
+    ...(params.currency && { currency: params.currency }),
+    ...(params.cart_value !== undefined && { cart_value: params.cart_value }),
+  });
 }
 
 export interface ScrollDepthParams {
@@ -270,6 +329,12 @@ export interface AudioTrackParams {
   video_title: string;
 }
 
+export interface AudioPurchaseParams {
+  order_id: string;
+  value: number;
+  currency?: string;
+}
+
 export function trackViewAudioPage(): void {
   sendGaEvent('view_audio_page', { page: 'drift_off' });
 }
@@ -284,4 +349,40 @@ export function trackAudioCompleted50(params: AudioTrackParams): void {
 
 export function trackAudioCompleted100(params: AudioTrackParams): void {
   sendGaEvent('audio_completed_100', { video_id: params.video_id, video_title: params.video_title });
+}
+
+export function trackAudioPurchase(params: AudioPurchaseParams): void {
+  sendGaEvent('audio_purchase', {
+    order_id: params.order_id,
+    value: params.value,
+    currency: params.currency || 'INR',
+  });
+}
+
+export interface LeadSubmittedParams {
+  lead_type: string;
+  source_page: string;
+  connection_type?: string;
+}
+
+export function trackLeadSubmitted(params: LeadSubmittedParams): void {
+  sendGaEvent('lead_submitted', {
+    lead_type: params.lead_type,
+    source_page: params.source_page,
+    ...(params.connection_type && { connection_type: params.connection_type }),
+  });
+}
+
+export function trackWhatsAppClick(destination_url: string, page_path?: string): void {
+  sendGaEvent('whatsapp_click', {
+    destination_url,
+    ...(page_path && { page_path }),
+  });
+}
+
+export function trackPhoneClick(phone_number: string, page_path?: string): void {
+  sendGaEvent('phone_click', {
+    phone_number,
+    ...(page_path && { page_path }),
+  });
 }
