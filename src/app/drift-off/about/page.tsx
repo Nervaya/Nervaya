@@ -1,21 +1,33 @@
+import Link from 'next/link';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import WhatAreSection from '@/components/DriftOff/WhatAreSection';
 import WhyChooseSection from '@/components/DriftOff/WhyChooseSection';
 import DriftOffAboutHowItWorks from '@/components/DriftOff/DriftOffAboutHowItWorks';
 import WhatMakesDifferentSection from '@/components/DriftOff/WhatMakesDifferentSection';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 import styles from './styles.module.css';
 
 export default function DriftOffAboutPage() {
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Home', href: '/dashboard' },
+    { label: 'Drift Off', href: '/drift-off' },
+    { label: 'About' },
+  ];
+
   return (
-    <Sidebar>
+    <Sidebar className={styles.pageContentWhite} hideGlobalBreadcrumbs>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <section className={styles.section} aria-labelledby="what-are-heading">
-            <h2 id="what-are-heading" className={styles.sectionTitle}>
-              What Are Deep Rest Sessions?
-            </h2>
-            <WhatAreSection />
-          </section>
+          <PageHeader
+            title="What Are Deep Rest Sessions?"
+            subtitle="Deep Rest Sessions are 25-minute personalized audio experiences designed for anyone who struggles to unwind or fall asleep. They blend gentle hypnotic guidance with neuroplasticity-backed techniques to help your mind and body transition into deep, restorative rest."
+            breadcrumbs={breadcrumbs}
+            actions={
+              <Link href="/drift-off/payment" className={styles.headerBtn}>
+                Buy Session
+              </Link>
+            }
+          />
 
           <section className={styles.section} aria-labelledby="why-choose-heading">
             <h2 id="why-choose-heading" className={styles.sectionTitle}>

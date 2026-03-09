@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import Breadcrumbs, { type BreadcrumbItem } from '../common/Breadcrumbs';
 
 interface PageHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   description?: string;
   actions?: ReactNode;
@@ -20,7 +20,7 @@ const PageHeader = ({ title, subtitle, description, actions, breadcrumbs }: Page
       )}
       <div className={styles.mainRow}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>{title}</h1>
+          {title && <h1 className={styles.title}>{title}</h1>}
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           {description && <p className={styles.description}>{description}</p>}
         </div>

@@ -24,8 +24,6 @@ const DriftOffLandingHero = () => {
   return (
     <section className={styles.hero} aria-label="Drift Off hero">
       <div className={styles.heroLeft}>
-        <span className={styles.badge}>Unleashing full power of Neuroplasticity</span>
-        <h1 className={styles.title}>Deep Rest Sessions</h1>
         <p className={styles.description}>
           No more longing for the right session. You are as unique as your needs and our specialists will curate a 25
           min Deep Rest Session for you targeting your special mental needs.

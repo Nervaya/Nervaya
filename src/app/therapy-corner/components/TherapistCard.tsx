@@ -29,7 +29,7 @@ export function TherapistCard({
   const nextSlotText = isNextSlotLoading ? 'Checking availability...' : nextSlotLabel || 'No upcoming online slot';
 
   return (
-    <li className={styles.therapistCard} onMouseEnter={() => onViewProfile(therapist)}>
+    <li className={styles.therapistCard}>
       <div className={styles.cardBody}>
         <div className={styles.therapistInfo}>
           <div className={styles.mediaCard}>
@@ -48,18 +48,24 @@ export function TherapistCard({
                     className={styles.mediaImage}
                   />
                 ) : (
-                  <div className={styles.videoFallback}>Intro Video</div>
+                  <div className={styles.videoFallback}>
+                    <Icon icon="ph:video-camera-bold" width={32} />
+                    <span>Intro Video</span>
+                  </div>
                 )}
                 <span className={styles.videoOverlay}>
-                  <Icon icon={ICON_PLAY} width={18} height={18} />
-                  Watch video
+                  <Icon icon={ICON_PLAY} width={14} height={14} />
+                  Watch intro
                 </span>
               </button>
             ) : therapist.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={therapist.image} alt={therapist.name} className={styles.mediaImage} />
             ) : (
-              <div className={styles.videoFallback}>No Image</div>
+              <div className={styles.videoFallback}>
+                <Icon icon="ph:user-bold" width={40} />
+                <span>No Image</span>
+              </div>
             )}
           </div>
 
@@ -68,31 +74,34 @@ export function TherapistCard({
               <h3>{therapist.name}</h3>
             </div>
             <p className={styles.credentials}>{therapist.qualifications?.join(', ') || 'Professional Therapist'}</p>
-            <p className={styles.experienceText}>{formatExperience(therapist.experience)}</p>
-            {therapist.sessionFee && therapist.sessionDurationMins ? (
-              <p className={styles.feeText}>
-                ₹{therapist.sessionFee} for {therapist.sessionDurationMins} mins
-              </p>
-            ) : null}
+            <div className={styles.metaInfoRow}>
+              <span className={styles.experienceText}>
+                <Icon icon="ph:briefcase-bold" />
+                {formatExperience(therapist.experience)}
+              </span>
+              {therapist.sessionFee && therapist.sessionDurationMins ? (
+                <span className={styles.feeText}>₹{therapist.sessionFee}</span>
+              ) : null}
+            </div>
           </div>
         </div>
 
-        <div className={styles.infoDivider} />
-
         <div className={styles.cardMeta}>
           <div className={styles.expertiseRow}>
-            <span className={styles.expertiseLabel}>Expertise:</span>
+            <span className={styles.expertiseLabel}>Expertise</span>
             <div className={styles.tags}>
               <SpecializationMarquee items={therapist.specializations || []} />
             </div>
           </div>
           <p className={styles.speaksLine}>
-            <span>Speaks:</span> {therapist.languages?.join(', ') || 'N/A'}
+            <Icon icon="ph:translate-bold" />
+            <span>{therapist.languages?.join(', ') || 'English'}</span>
           </p>
         </div>
 
         <div className={styles.availabilitySection}>
           <p className={styles.nextSlotLine}>
+            <span className={styles.statusDot} />
             {nextSlotPrefix}{' '}
             <span className={nextSlotLabel ? styles.nextSlotValue : styles.nextSlotFallback}>{nextSlotText}</span>
           </p>
@@ -104,10 +113,10 @@ export function TherapistCard({
             className={styles.secondaryBtn}
             onClick={() => onViewProfile(therapist)}
           >
-            View Profile
+            Profile
           </Link>
           <button className={styles.primaryBtn} onClick={() => onBookAppointment(therapist)}>
-            Book Appointment
+            Book Now
           </button>
         </div>
       </div>

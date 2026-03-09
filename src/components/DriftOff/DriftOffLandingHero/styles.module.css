@@ -1,11 +1,12 @@
 .hero {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
-  padding: 2rem 0;
+  gap: 3rem;
+  padding: 3rem 0;
   margin-bottom: var(--spacing-2xl);
   position: relative;
-  overflow: hidden;
+  background-color: #fafbff;
+  border-radius: 32px;
 }
 
 @media (max-width: 900px) {
@@ -16,11 +17,11 @@
 }
 
 .heroLeft {
-  flex: 1;
-  min-width: 0;
+  flex: 1.1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  justify-content: center;
+  min-width: 0;
 }
 
 .badge {
@@ -28,26 +29,29 @@
   background: var(--color-accent-dim);
   color: var(--color-accent);
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
+  font-weight: 700;
+  padding: 6px 14px;
   border-radius: 999px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   width: fit-content;
-  border: 1px solid var(--color-accent);
-  transition: all 0.2s ease;
+  border: 1px solid var(--color-accent-dim);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--color-shadow);
+  background: var(--color-accent);
+  color: var(--color-white-bright);
+  border-color: var(--color-accent);
 }
 
 .title {
-  font-size: var(--font-size-4xl);
-  font-weight: 700;
-  color: var(--color-foreground);
-  line-height: 1.15;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.05;
   margin: 0;
+  letter-spacing: -0.05em;
 }
 
 @media (max-width: 768px) {
@@ -63,11 +67,13 @@
 }
 
 .description {
-  font-size: var(--font-size-lg);
-  color: var(--color-foreground);
-  line-height: 1.65;
-  margin: 0;
-  max-width: 420px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #475569;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  max-width: 580px;
+  font-weight: 500;
 }
 
 .actions {
@@ -81,46 +87,47 @@
 .btnPrimary {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: var(--color-accent);
-  color: #ffffff;
-  font-size: 0.9rem;
+  gap: 10px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: var(--color-white-bright);
+  font-size: 1rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  padding: 14px 32px;
+  border-radius: 14px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
-  box-shadow: 0 4px 12px var(--color-shadow);
-  border: 1px solid var(--color-accent);
+  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.25);
+  border: none;
 }
 
 .btnPrimary:hover {
-  background: var(--color-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px var(--color-shadow);
+  background: var(--gradient-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
 }
 
 .btnOutline {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: transparent;
-  color: var(--color-accent);
-  font-size: 0.9rem;
+  gap: 8px;
+  background: var(--color-white-bright);
+  color: var(--color-text-primary);
+  font-size: 0.9375rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
+  padding: 12px 28px;
   border-radius: 12px;
   text-decoration: none;
-  border: 2px solid var(--color-accent);
-  transition: all 0.2s ease;
+  border: 1px solid var(--color-border-light);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
 
 .btnOutline:hover {
-  background: var(--color-accent-dim);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--color-shadow);
+  background: var(--color-dashboard-bg);
+  border-color: var(--color-border-light-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--color-card-shadow);
 }
 
 .heroRight {
@@ -137,17 +144,17 @@
 }
 
 .videoCard {
-  background: var(--color-card);
-  border-radius: 20px;
+  background: var(--color-white-bright);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--color-shadow);
-  border: 1px solid var(--color-border);
-  transition: all 0.2s ease;
+  box-shadow: var(--color-card-shadow);
+  border: 1px solid var(--color-border-light);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .videoCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--color-shadow);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--color-card-shadow-hover);
 }
 
 .videoWrapper {
@@ -184,9 +191,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
+  padding: 16px 20px;
+  background: var(--color-white-bright);
+  border-top: 1px solid var(--color-border-light);
 }
 
 @media (max-width: 480px) {

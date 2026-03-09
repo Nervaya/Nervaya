@@ -9,7 +9,7 @@
 .title {
   font-size: 1.25rem;
   font-weight: 700;
-  margin: 0 0 16px 0;
+  margin: 0 0 var(--spacing-lg) 0;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
 }
@@ -17,7 +17,7 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--spacing-md);
 }
 
 .row {
@@ -50,11 +50,12 @@
 .divider {
   height: 1px;
   background: var(--color-glass-border);
-  margin: var(--spacing-sm) 0;
+  margin: var(--spacing-xs) 0;
 }
 
 .actions {
   width: 100%;
+  margin-top: var(--spacing-lg);
 }
 
 .checkoutButton {

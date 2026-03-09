@@ -12,12 +12,14 @@ import { scheduleApi, ScheduleByDateRangeItem } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
 import { ICON_FILTER } from '@/constants/icons';
-import containerStyles from '@/app/dashboard/styles.module.css';
+import _containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 
 import { FilterModal, FilterState } from './components/FilterModal';
 import { TherapistCard } from './components/TherapistCard';
 import { VideoPreviewModal } from './components/VideoPreviewModal';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 const FILTER_ALL = '';
 const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
@@ -243,21 +245,22 @@ export default function TherapyCornerPage() {
     trackViewTherapistProfile({ therapist_id: therapist._id, therapist_name: therapist.name });
   };
 
-  return (
-    <Sidebar className={styles.pageContentWhite}>
-      <div className={containerStyles.container}>
-        <section className={styles.section}>
-          <div className={styles.highlightBanner}>
-            <p>Finding the right therapist is not easy.</p>
-            <span>Based on your needs, we curated a shortlist tailored for you.</span>
-          </div>
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Therapy Corner' }];
 
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Recommended Therapists</h2>
-            <p className={styles.sectionMeta}>
-              {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
-            </p>
-          </div>
+  return (
+    <Sidebar className={styles.pageContentWhite} hideGlobalBreadcrumbs>
+      <div className={styles.container}>
+        <section className={styles.section}>
+          <PageHeader
+            title="Finding the right therapist is not easy."
+            subtitle="Based on your needs, we curated a shortlist tailored for you."
+            breadcrumbs={breadcrumbs}
+            actions={
+              <p className={styles.sectionMeta}>
+                {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
+              </p>
+            }
+          />
 
           <div className={styles.toolbar}>
             <button type="button" className={styles.mobileFilterTrigger} onClick={openFilterModal}>

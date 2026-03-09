@@ -1,115 +1,116 @@
 .supportSection {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-xl);
-  min-width: 0;
-}
-
-@media (max-width: 768px) {
-  .supportSection {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .supportSection {
-    gap: var(--spacing-md);
-  }
+  gap: 2rem;
 }
 
 .supportCard {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
-  padding: var(--spacing-xl);
-  transition: all 0.2s ease;
-  margin-bottom: 0;
-  color: var(--color-foreground);
+  border-radius: 28px;
+  padding: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--spacing-lg);
-  min-width: 0;
-  box-sizing: border-box;
-  box-shadow: 0 4px 20px var(--color-shadow);
+  gap: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
-@media (max-width: 480px) {
-  .supportCard {
-    padding: var(--spacing-lg);
-    border-radius: 16px;
-  }
+/* Card 1 Theme: Lavender/Indigo */
+.supportCard:nth-child(1) {
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.supportCard:nth-child(1) .supportIcon {
+  background: #ffffff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+
+.supportCard:nth-child(1):hover {
+  border-color: #c4b5fd;
+  background: #ede9fe;
+}
+
+/* Card 2 Theme: Slate/Blue */
+.supportCard:nth-child(2) {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.supportCard:nth-child(2) .supportIcon {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.supportCard:nth-child(2):hover {
+  border-color: #cbd5e1;
+  background: #e2e8f0;
+}
+
+.supportCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 .supportContent {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-lg);
-}
-
-.supportTextContainer {
-  flex: 1;
-  min-width: 0;
+  gap: 1.5rem;
 }
 
 .supportIcon {
-  background: var(--color-accent-dim);
-  color: var(--color-accent);
   width: 56px;
   height: 56px;
-  border-radius: 50%;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-5xl);
   flex-shrink: 0;
-  border: 2px solid var(--color-accent);
-  box-shadow: 0 4px 12px var(--color-shadow);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .supportCard:hover .supportIcon {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px var(--color-shadow);
+  transform: rotate(-5deg) scale(1.1);
 }
 
 .cardHeading {
-  font-size: var(--font-size-4xl);
-  font-weight: 600;
-  color: var(--color-foreground);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.75rem 0;
 }
 
 .cardParagraph {
-  font-size: var(--font-size-lg);
-  line-height: 1.7;
-  color: var(--color-foreground);
-  margin: 0 0 var(--spacing-lg) 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: #475569;
+  font-weight: 500;
+  margin: 0;
 }
 
 .supportButton {
-  background: transparent;
-  color: var(--color-accent);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  min-height: 44px;
-  border-radius: var(--spacing-md);
-  border: 2px solid var(--color-accent);
+  background: #ffffff;
+  color: #0f172a;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 1px solid transparent;
   text-decoration: none;
   font-weight: 600;
-  font-size: var(--font-size-sm);
-  transition: all 0.2s ease;
-  margin-top: auto;
-  align-self: flex-end;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
 .supportButton:hover {
-  background: var(--color-accent-dim);
-  color: var(--color-foreground);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--color-shadow);
+  background: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
 }

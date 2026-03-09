@@ -1,7 +1,7 @@
 .header {
   background: transparent;
-  padding: 40px 0 24px 0;
-  margin-bottom: 24px;
+  padding: 16px 0 20px 0;
+  margin-bottom: 16px;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -46,11 +46,11 @@
   font-size: 2.125rem;
   /* Slightly larger for emphasis */
   margin: 0;
-  font-weight: 800;
-  /* Extra bold */
+  font-weight: 700;
+  /* Professional bold */
   color: var(--color-foreground);
   line-height: 1.1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
 }
 
 @media (max-width: 480px) {

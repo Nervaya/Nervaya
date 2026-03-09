@@ -10,26 +10,12 @@
   }
 }
 
-:root {
-  --color-primary: #6366f1;
-  --color-primary-hover: #5558e3;
-  --color-secondary: #475569;
-  --color-accent: #6366f1;
-  --color-accent-hover: #5558e3;
-  --color-accent-dim: rgba(99, 102, 241, 0.08);
-  --color-accent-light: #a78bfa;
-  --color-accent-secondary: #8b5cf6;
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-glass-bg: #ffffff;
-  --color-glass-border: #e2e8f0;
-  --color-glass-blur: 0px;
-  --color-foreground: #1a202c;
-  --color-text-muted: #64748b;
-  --color-muted-foreground: #94a3b8;
-  --color-card: #ffffff;
-  --color-border: #e2e8f0;
-  --color-shadow: rgba(99, 102, 241, 0.1);
+:global(body.route-non-home) .pageContentWhite {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-left: none !important;
+  box-shadow: none !important;
 }
 
 .wrapper {
@@ -42,36 +28,28 @@
 .container {
   color: var(--color-foreground);
   max-width: 1200px;
-  margin-left: 0;
-  margin-right: auto;
-  margin-top: 0;
-  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg) 0;
-  padding-top: var(--spacing-sm);
+  margin: 0 auto;
+  padding: 0 24px var(--spacing-2xl);
   width: 100%;
-  min-width: 0;
-  overflow-x: hidden;
   box-sizing: border-box;
   position: relative;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) 0;
-    padding-top: var(--spacing-xs);
+    padding: 0 16px var(--spacing-xl);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
-    padding-top: var(--spacing-xs);
+    padding: 0 12px var(--spacing-lg);
   }
 }
 
 .section {
-  margin-bottom: var(--spacing-2xl);
+  margin: 16px 0 var(--spacing-2xl) 0;
   min-width: 0;
-  padding: 1rem 0;
 }
 
 @media (max-width: 1024px) {
@@ -93,11 +71,11 @@
 }
 
 .sectionTitle {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  color: var(--color-foreground);
-  margin: 0 0 var(--spacing-lg) 0;
-  letter-spacing: -0.02em;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xl);
+  letter-spacing: -0.04em;
   line-height: 1.25;
   display: flex;
   align-items: center;

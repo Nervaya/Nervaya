@@ -8,8 +8,6 @@
 
 .contentWrapper {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .center {
@@ -33,21 +31,21 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
-  padding: 3rem 1rem;
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px var(--color-shadow);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  gap: 1.5rem;
+  padding: 4rem 2rem;
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 24px;
+  box-shadow: var(--color-card-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .emptyState:hover,
 .pendingState:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--color-shadow);
+  transform: translateY(-4px);
+  box-shadow: var(--color-card-shadow-hover);
 }
 
 .emptyIcon,
@@ -60,10 +58,11 @@
 
 .emptyTitle,
 .pendingTitle {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-foreground);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
   margin: 0;
+  letter-spacing: -0.03em;
 }
 
 @media (max-width: 480px) {
@@ -75,57 +74,58 @@
 
 .emptyText,
 .pendingText {
-  font-size: 0.9rem;
-  color: var(--color-foreground);
+  font-size: 1rem;
+  color: var(--color-text-slate-400);
   margin: 0;
-  line-height: 1.65;
-  max-width: 400px;
+  line-height: 1.6;
+  max-width: 440px;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-accent);
-  color: #ffffff;
-  font-size: 0.9rem;
+  background: var(--gradient-accent);
+  color: var(--color-white-bright);
+  font-size: 0.9375rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  padding: 12px 28px;
+  border-radius: 14px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 0.5rem;
-  box-shadow: 0 4px 12px var(--color-shadow);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
 }
 
 .btn:hover {
-  background: var(--color-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px var(--color-shadow);
+  background: var(--gradient-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
 }
 
 .btnOutline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  color: var(--color-accent, #6366f1);
-  font-size: 0.9rem;
+  background: var(--color-white-bright);
+  color: var(--color-text-primary);
+  font-size: 0.9375rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  padding: 12px 28px;
+  border-radius: 14px;
   text-decoration: none;
-  border: 2px solid var(--color-accent, #6366f1);
-  transition: all 0.2s ease;
+  border: 1px solid var(--color-border-light);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 0.5rem;
 }
 
 .btnOutline:hover {
-  background: var(--color-accent-dim);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--color-shadow);
+  background: var(--color-dashboard-bg);
+  border-color: var(--color-border-light-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--color-card-shadow);
 }
 
 .sessionState {
@@ -142,15 +142,16 @@
 }
 
 .sessionTitle {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-foreground);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
   margin: 0;
+  letter-spacing: -0.03em;
 }
 
 .sessionSubtitle {
-  font-size: 0.875rem;
-  color: var(--color-foreground);
+  font-size: 1rem;
+  color: var(--color-text-slate-400);
   margin: 0;
 }
 
@@ -158,11 +159,11 @@
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  background: var(--color-surface);
-  border-radius: 20px;
+  background: var(--color-card-bg-video);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--color-shadow);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--color-card-shadow);
+  border: 1px solid var(--color-border-light);
 }
 
 .videoPlayer {
