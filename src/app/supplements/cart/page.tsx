@@ -131,10 +131,12 @@ export default function CartPage() {
   const start = (page - 1) * PAGE_SIZE_3;
   const paginatedItems = cart.items.slice(start, start + PAGE_SIZE_3);
 
+  const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Supplements', href: '/supplements' }, { label: 'Cart' }];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
-        <PageHeader title="Shopping Cart" />
+        <PageHeader title="Shopping Cart" breadcrumbs={breadcrumbs} />
         {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           <ul className={styles.itemsSection} aria-label="Cart items">

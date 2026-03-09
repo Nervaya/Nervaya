@@ -14,7 +14,15 @@ import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
 
-const Sidebar = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+const Sidebar = ({
+  children,
+  className,
+  hideGlobalBreadcrumbs = false,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+  hideGlobalBreadcrumbs?: boolean;
+}) => {
   const { cartCount } = useCart();
   const { isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
@@ -230,7 +238,7 @@ const Sidebar = ({ children, className }: { children?: React.ReactNode; classNam
       {isMobileOpen && isDesktop && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
       <main className={`main-content ${className || ''}`}>
-        <RouteBreadcrumbs />
+        {!hideGlobalBreadcrumbs && <RouteBreadcrumbs />}
         {children}
       </main>
 

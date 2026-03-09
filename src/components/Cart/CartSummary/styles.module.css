@@ -1,40 +1,36 @@
 .summary {
   background: var(--color-white-bright);
-  border: 1px solid var(--color-border-light);
-  border-radius: 16px;
   padding: 24px;
-  height: fit-content;
-  position: sticky;
-  top: 24px;
-  box-shadow: var(--color-card-shadow);
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
 
 .title {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  margin: 0 0 var(--spacing-lg) 0;
-  color: var(--color-foreground);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .details {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  gap: 12px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  font-size: var(--font-size-base);
+  font-size: 0.9375rem;
   color: var(--color-text-muted);
 }
 
 .totalRow {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--color-foreground);
-  margin-top: var(--spacing-sm);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 1.125rem;
 }
 
 .totalRow span:last-child {
@@ -42,13 +38,13 @@
 }
 
 .freeShipping {
+  font-size: 0.75rem;
+  color: var(--color-tile-emerald);
   background: var(--color-emerald-dim);
-  color: var(--color-emerald-400);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 8px;
-  font-size: var(--font-size-base);
-  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
   text-align: center;
+  font-weight: 600;
 }
 
 .divider {
