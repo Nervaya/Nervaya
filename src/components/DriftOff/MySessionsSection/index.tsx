@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useSyncExternalStore } from 'react';
+import React, { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
@@ -29,24 +29,51 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const loadResponses = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const res = await driftOffApi.getResponses();
+      if (res.success && res.data?.length) {
+        const sorted = [...res.data].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        const latestResponse = sorted[0] ?? null;
+        setResponse(latestResponse);
+      } else {
+        setResponse(null);
+      }
+    } catch {
+      setError('Failed to load your session. Please try again.');
+      setResponse(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await driftOffApi.getResponses();
-        if (res.success && res.data?.length) {
-          const completed = res.data
-            .filter((r) => r.completedAt !== null)
-            .sort((a, b) => new Date(b.completedAt || '').getTime() - new Date(a.completedAt || '').getTime());
-          setResponse(completed[0] ?? null);
-        }
-      } catch {
-        setError('Failed to load your session. Please try again.');
-      } finally {
-        setIsLoading(false);
+    loadResponses();
+  }, [loadResponses]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !isLoading) {
+        loadResponses();
       }
     };
-    load();
-  }, []);
+
+    const handleFocus = () => {
+      if (!isLoading) {
+        loadResponses();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [loadResponses, isLoading]);
 
   return (
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
@@ -79,7 +106,23 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
           </div>
         )}
 
-        {!isLoading && !error && response && !response.assignedVideoUrl && (
+        {!isLoading && !error && response && !response.completedAt && (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon} aria-hidden>
+              <Icon icon={ICON_CLOCK} width={48} height={48} />
+            </div>
+            <h3 className={styles.emptyTitle}>Assessment Pending</h3>
+            <p className={styles.emptyText}>
+              You have purchased a Deep Rest Session but haven&apos;t finished the assessment yet. Please complete it so
+              our specialists can craft your personalized session.
+            </p>
+            <Link href={`/drift-off/assessment?orderId=${response.driftOffOrderId}`} className={styles.btn}>
+              Complete Assessment
+            </Link>
+          </div>
+        )}
+
+        {!isLoading && !error && response && response.completedAt && !response.assignedVideoUrl && (
           <div className={styles.pendingState}>
             <div className={styles.pendingIcon} aria-hidden>
               <Icon icon={ICON_CLOCK} width={48} height={48} />
@@ -90,7 +133,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
               just for you. This usually takes 1–2 days. We&apos;ll notify you when it&apos;s ready.
             </p>
             <Link href="/drift-off" className={styles.btnOutline}>
-              Back to Drift Off
+              Back to Home
             </Link>
           </div>
         )}

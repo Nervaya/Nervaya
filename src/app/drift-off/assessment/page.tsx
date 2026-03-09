@@ -28,7 +28,7 @@ export default function DriftOffAssessmentPage() {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       const questionsRes = await axiosInstance.get<unknown, ApiResponse<ISleepAssessmentQuestion[]>>(
-        '/sleep-assessment/questions',
+        '/drift-off/questions',
       );
 
       if (!questionsRes.success) {
@@ -88,7 +88,7 @@ export default function DriftOffAssessmentPage() {
 
           if (responseRes.success && responseRes.data?.completedAt) {
             hasCheckedRedirectsRef.current = true;
-            router.replace('/drift-off/my-session');
+            router.replace('/drift-off/sessions');
             return;
           }
 

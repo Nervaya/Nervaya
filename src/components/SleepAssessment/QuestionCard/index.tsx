@@ -81,7 +81,7 @@ const QuestionCard = ({
               <li key={option.id}>
                 <button
                   type="button"
-                  className={`${styles.scaleOption} ${isOptionSelected(option.value) ? styles.selected : ''}`}
+                  className={styles.scaleOption}
                   onClick={() => handleSingleChoice(option.value)}
                   aria-pressed={isOptionSelected(option.value)}
                 >
@@ -100,7 +100,7 @@ const QuestionCard = ({
           <li key={option.id}>
             <button
               type="button"
-              className={`${styles.optionCard} ${isOptionSelected(option.value) ? styles.selected : ''}`}
+              className={styles.optionCard}
               onClick={() =>
                 questionType === 'single_choice' ? handleSingleChoice(option.value) : handleMultipleChoice(option.value)
               }

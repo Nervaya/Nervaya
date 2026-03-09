@@ -24,7 +24,7 @@ export const driftOffApi = {
     api.post('/payments/drift-off/verify', body) as Promise<ApiResponse<{ verified: boolean; orderId: string }>>,
 
   getResponses: (): Promise<ApiResponse<IDriftOffResponse[]>> =>
-    api.get('/drift-off/responses') as Promise<ApiResponse<IDriftOffResponse[]>>,
+    api.get(`/drift-off/responses?t=${Date.now()}`) as Promise<ApiResponse<IDriftOffResponse[]>>,
 
   saveAnswer: (body: {
     driftOffOrderId: string;

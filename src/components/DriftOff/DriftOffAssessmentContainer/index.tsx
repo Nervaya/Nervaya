@@ -44,7 +44,9 @@ export default function DriftOffAssessmentContainer({
 
   useEffect(() => {
     if (isComplete) {
-      router.replace('/drift-off/my-session');
+      setTimeout(() => {
+        router.replace('/drift-off/sessions');
+      }, 500);
     }
   }, [isComplete, router]);
 

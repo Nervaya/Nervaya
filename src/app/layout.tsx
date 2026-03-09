@@ -44,6 +44,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
+<<<<<<< HEAD
       <head>
         {gtmId && (
           <>
@@ -61,15 +62,9 @@ export default function RootLayout({
           </>
         )}
       </head>
+=======
+>>>>>>> da7604a (drift off flow fix)
       <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
-        {gtmId && (
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}"
-              height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-            }}
-          />
-        )}
         <Providers>
           <BodyRouteClass />
           <EngagementTracker />

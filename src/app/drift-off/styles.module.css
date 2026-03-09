@@ -54,32 +54,39 @@
 
 @media (max-width: 1024px) {
   .section {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: 3rem;
   }
 }
 
 @media (max-width: 768px) {
   .section {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: 3rem;
   }
 }
 
 @media (max-width: 480px) {
   .section {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 2rem;
   }
 }
 
 .sectionTitle {
   font-size: 2rem;
+<<<<<<< HEAD
   font-weight: 800;
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-xl);
   letter-spacing: -0.04em;
+=======
+  font-weight: 700;
+  color: var(--color-foreground);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+>>>>>>> da7604a (drift off flow fix)
   line-height: 1.25;
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: 0.5rem;
   min-width: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -99,21 +106,21 @@
 
 @media (max-width: 1024px) {
   .sectionTitle {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-md);
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
   }
 }
 
 @media (max-width: 768px) {
   .sectionTitle {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
   .sectionTitle {
-    font-size: var(--font-size-base);
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
   }
 }
