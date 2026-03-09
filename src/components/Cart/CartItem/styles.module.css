@@ -1,13 +1,19 @@
 .cartItem {
   display: flex;
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
+  padding: 20px;
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
   margin-bottom: var(--spacing-md);
+  box-shadow: var(--color-card-shadow);
+  transition: all 0.3s ease;
+}
+
+.cartItem:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--color-card-shadow-hover);
+  border-color: var(--color-accent-dim);
 }
 
 @media (max-width: 768px) {
@@ -86,20 +92,21 @@
 }
 
 .removeButton {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 8px 16px;
   background: transparent;
-  border: 1px solid var(--color-destructive);
-  color: var(--color-destructive);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-muted);
   border-radius: 8px;
-  font-size: var(--font-size-base);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .removeButton:hover:not(:disabled) {
-  background: var(--color-destructive);
-  color: var(--color-foreground);
+  background: #fff5f5;
+  border-color: var(--color-destructive);
+  color: var(--color-destructive);
 }
 
 .removeButton:disabled {

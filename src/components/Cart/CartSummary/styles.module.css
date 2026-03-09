@@ -1,13 +1,12 @@
 .summary {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
-  padding: var(--spacing-lg);
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 24px;
   height: fit-content;
   position: sticky;
-  top: var(--spacing-lg);
+  top: 24px;
+  box-shadow: var(--color-card-shadow);
 }
 
 .title {
@@ -64,6 +63,16 @@
 
 .checkoutButton {
   width: 100%;
+  background: var(--gradient-accent) !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+}
+
+.checkoutButton:hover {
+  background: var(--gradient-accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
 .shopLink {
