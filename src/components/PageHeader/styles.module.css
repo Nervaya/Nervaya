@@ -18,49 +18,8 @@
   }
 }
 
-.breadcrumbs {
-  margin-bottom: 16px;
-}
-
-.breadcrumbList {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 10px;
-}
-
-.breadcrumbItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9375rem;
-  /* Increased from 13px to ~15px */
-  font-weight: 500;
-}
-
-.separator {
-  color: var(--color-text-dim);
-  opacity: 0.5;
-  font-size: 0.875rem;
-}
-
-.breadcrumbLink {
-  color: var(--color-text-muted);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid transparent;
-}
-
-.breadcrumbLink:hover {
-  color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
-}
-
-.breadcrumbCurrent {
-  color: var(--color-text-primary);
-  font-weight: 600;
+.breadcrumbsWrapper {
+  margin-bottom: 12px;
 }
 
 .mainRow {

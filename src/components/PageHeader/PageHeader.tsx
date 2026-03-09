@@ -1,11 +1,6 @@
 import React, { type ReactNode } from 'react';
-import Link from 'next/link';
 import styles from './styles.module.css';
-
-interface BreadcrumbItem {
-  label: string;
-  href?: string;
-}
+import Breadcrumbs, { type BreadcrumbItem } from '../common/Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
@@ -19,22 +14,9 @@ const PageHeader = ({ title, subtitle, description, actions, breadcrumbs }: Page
   return (
     <div className={styles.header}>
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-          <ol className={styles.breadcrumbList}>
-            {breadcrumbs.map((item, index) => (
-              <li key={item.label} className={styles.breadcrumbItem}>
-                {index > 0 && <span className={styles.separator}>/</span>}
-                {item.href ? (
-                  <Link href={item.href} className={styles.breadcrumbLink}>
-                    {item.label}
-                  </Link>
-                ) : (
-                  <span className={styles.breadcrumbCurrent}>{item.label}</span>
-                )}
-              </li>
-            ))}
-          </ol>
-        </nav>
+        <div className={styles.breadcrumbsWrapper}>
+          <Breadcrumbs items={breadcrumbs} />
+        </div>
       )}
       <div className={styles.mainRow}>
         <div className={styles.titleSection}>
