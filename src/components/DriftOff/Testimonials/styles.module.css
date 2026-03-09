@@ -22,10 +22,8 @@
 }
 
 .testimonialCard {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
   border-radius: 24px;
   padding: var(--spacing-xl);
   transition: all 0.2s ease;
@@ -33,10 +31,13 @@
   color: var(--color-foreground);
   flex: 1;
   min-width: 0;
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 .testimonialCard:hover {
   transform: translateY(-2px);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 30px var(--color-shadow);
 }
 
 .userProfile {
@@ -50,13 +51,21 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: var(--accent);
-  color: var(--color-foreground);
+  background: var(--color-accent);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: var(--font-size-2xl);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 4px 12px var(--color-shadow);
+  transition: all 0.2s ease;
+}
+
+.testimonialCard:hover .userAvatar {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--color-shadow);
 }
 
 .userInfo h4 {
@@ -67,13 +76,13 @@
 }
 
 .stars {
-  color: var(--color-amber-400);
+  color: #fbbf24;
 }
 
 .testimonialText {
   font-size: var(--font-size-base);
   line-height: 1.7;
-  color: var(--color-text-muted);
+  color: var(--color-foreground);
   margin: 0 0 var(--spacing-lg) 0;
   font-style: italic;
 }

@@ -1,11 +1,32 @@
 .container {
-  color: #0f172a;
+  color: #1e293b;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   min-height: 70vh;
   width: 100%;
   box-sizing: border-box;
+}
+
+.welcomeHero {
+  margin-bottom: var(--spacing-xl, 40px);
+  padding: var(--spacing-2xl) 0 var(--spacing-xl);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+  position: relative;
+}
+
+.welcomeHero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100px;
+  right: -100px;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .loadingContainer {

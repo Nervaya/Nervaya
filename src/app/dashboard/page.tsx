@@ -75,7 +75,9 @@ export default function DashboardPage() {
   return (
     <Sidebar>
       <div className={styles.container}>
-        <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
+        <section className={styles.welcomeHero}>
+          <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
+        </section>
 
         {error && (
           <div className={styles.errorRow} role="alert">
@@ -103,6 +105,7 @@ export default function DashboardPage() {
             }
             icon={<Icon icon={ICON_CALENDAR} aria-hidden />}
             cta={{ label: 'Book session', href: '/therapy-corner' }}
+            themeColor="var(--color-tile-indigo)"
           />
 
           <StatTile
@@ -111,6 +114,7 @@ export default function DashboardPage() {
             subtitle={`${sessionCounts.pending} pending • ${sessionCounts.confirmed} confirmed • ${sessionCounts.cancelled} cancelled`}
             icon={<Icon icon={ICON_HEART_PULSE} aria-hidden />}
             cta={{ label: 'Book therapist', href: '/therapy-corner' }}
+            themeColor="var(--color-tile-violet)"
           />
 
           <StatTile
@@ -123,6 +127,7 @@ export default function DashboardPage() {
             }
             icon={<Icon icon={ICON_SHOPPING_BAG} aria-hidden />}
             cta={{ label: 'My orders', href: '/account' }}
+            themeColor="var(--color-tile-emerald)"
           />
 
           <StatTile
@@ -131,6 +136,7 @@ export default function DashboardPage() {
             subtitle={assessmentTile.subtitle}
             icon={<Icon icon={ICON_BED} aria-hidden />}
             cta={{ label: assessmentTile.ctaLabel, href: '/sleep-assessment' }}
+            themeColor="var(--color-tile-rose)"
           />
         </div>
 

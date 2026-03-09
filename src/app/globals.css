@@ -135,7 +135,7 @@ a {
 }
 
 .main-content {
-  background: #f8fafc;
+  background: var(--color-dashboard-bg, #f8fafc);
   min-height: 100vh;
   padding: var(--spacing-xl);
   padding-top: max(var(--spacing-xl), var(--navbar-safe-gap, 32px));
@@ -152,7 +152,7 @@ a {
     padding: var(--spacing-lg);
     padding-top: max(var(--spacing-lg), var(--navbar-safe-gap, 24px));
     padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-    background: #f8fafc;
+    background: var(--color-dashboard-bg, #f8fafc);
   }
 }
 
@@ -166,7 +166,7 @@ body.route-home .main-content {
 }
 
 body.route-non-home .main-content {
-  background: #f8fafc !important;
+  background: var(--color-dashboard-bg, #f8fafc) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-left: 1px solid #e2e8f0 !important;

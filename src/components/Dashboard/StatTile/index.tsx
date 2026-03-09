@@ -15,11 +15,19 @@ interface StatTileProps {
   subtitle?: string;
   icon: React.ReactNode;
   cta?: TileCta;
+  themeColor?: string;
 }
 
-export function StatTile({ title, value, subtitle, icon, cta }: StatTileProps) {
+export function StatTile({ title, value, subtitle, icon, cta, themeColor }: StatTileProps) {
+  const dynamicStyles = themeColor
+    ? ({
+        '--tile-accent': themeColor,
+        '--tile-accent-dim': `${themeColor}15`,
+      } as React.CSSProperties)
+    : {};
+
   return (
-    <article className={styles.tile}>
+    <article className={styles.tile} style={dynamicStyles}>
       <div className={styles.topRow}>
         <div style={{ minWidth: 0 }}>
           <p className={styles.title}>{title}</p>

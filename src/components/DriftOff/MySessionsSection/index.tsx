@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useSyncExternalStore } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
-import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
@@ -20,7 +19,11 @@ const emptySubscribe = () => () => {};
 const getClient = () => true;
 const getServer = () => false;
 
-export default function DriftOffMySessionPage() {
+interface MySessionsSectionProps {
+  className?: string;
+}
+
+export default function MySessionsSection({ className = '' }: MySessionsSectionProps) {
   const hasMounted = useSyncExternalStore(emptySubscribe, getClient, getServer);
   const [response, setResponse] = useState<IDriftOffResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,10 +49,8 @@ export default function DriftOffMySessionPage() {
   }, []);
 
   return (
-    <Sidebar>
-      <div className={styles.wrapper}>
-        <h1 className={styles.heading}>My Deep Rest Session</h1>
-
+    <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
+      <div className={styles.contentWrapper}>
         {isLoading && (
           <div className={styles.center}>
             <LottieLoader width={160} height={160} />
@@ -70,7 +71,7 @@ export default function DriftOffMySessionPage() {
             <div className={styles.emptyIcon} aria-hidden>
               <Icon icon={ICON_HEADPHONES} width={48} height={48} />
             </div>
-            <h2 className={styles.emptyTitle}>No session yet</h2>
+            <h3 className={styles.emptyTitle}>No session yet</h3>
             <p className={styles.emptyText}>You haven&apos;t purchased a Deep Rest Session yet.</p>
             <Link href="/drift-off/payment" className={styles.btn}>
               Get Your Session
@@ -83,7 +84,7 @@ export default function DriftOffMySessionPage() {
             <div className={styles.pendingIcon} aria-hidden>
               <Icon icon={ICON_CLOCK} width={48} height={48} />
             </div>
-            <h2 className={styles.pendingTitle}>Your session is being prepared</h2>
+            <h3 className={styles.pendingTitle}>Your session is being prepared</h3>
             <p className={styles.pendingText}>
               Our specialists are reviewing your assessment answers and crafting a personalized 25-min Deep Rest Session
               just for you. This usually takes 1–2 days. We&apos;ll notify you when it&apos;s ready.
@@ -97,7 +98,7 @@ export default function DriftOffMySessionPage() {
         {!isLoading && !error && response?.assignedVideoUrl && (
           <div className={styles.sessionState}>
             <div className={styles.sessionHeader}>
-              <h2 className={styles.sessionTitle}>Your Personalized Session</h2>
+              <h3 className={styles.sessionTitle}>Your Personalized Session</h3>
               <p className={styles.sessionSubtitle}>Curated specially for you by our sleep specialists</p>
             </div>
             <div className={styles.videoWrapper}>
@@ -117,6 +118,6 @@ export default function DriftOffMySessionPage() {
           </div>
         )}
       </div>
-    </Sidebar>
+    </section>
   );
 }

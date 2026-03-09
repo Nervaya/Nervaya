@@ -45,4 +45,14 @@
   --color-text-slate-400: #475569;
   --color-white-dim: rgba(0, 0, 0, 0.05);
   --color-white-bright: #ffffff;
+  --color-dashboard-bg: #f8fafc;
+  --color-card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --color-card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+
+  /* Dashboard Tile Themes */
+  --color-tile-indigo: #6366f1;
+  --color-tile-emerald: #10b981;
+  --color-tile-rose: #f43f5e;
+  --color-tile-amber: #f59e0b;
+  --color-tile-violet: #8b5cf6;
 }

@@ -3,6 +3,9 @@
   align-items: center;
   gap: 2.5rem;
   padding: 2rem 0;
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+  overflow: hidden;
 }
 
 @media (max-width: 900px) {
@@ -26,10 +29,17 @@
   color: var(--color-accent);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.35rem 0.85rem;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
   letter-spacing: 0.01em;
   width: fit-content;
+  border: 1px solid var(--color-accent);
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 .title {
@@ -54,7 +64,7 @@
 
 .description {
   font-size: var(--font-size-lg);
-  color: var(--color-text-muted);
+  color: var(--color-foreground);
   line-height: 1.65;
   margin: 0;
   max-width: 420px;
@@ -73,18 +83,22 @@
   align-items: center;
   gap: 0.4rem;
   background: var(--color-accent);
-  color: var(--color-foreground);
+  color: #ffffff;
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.65rem 1.4rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   text-decoration: none;
-  transition: background 0.18s;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 4px 12px var(--color-shadow);
+  border: 1px solid var(--color-accent);
 }
 
 .btnPrimary:hover {
   background: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--color-shadow);
 }
 
 .btnOutline {
@@ -95,18 +109,18 @@
   color: var(--color-accent);
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.65rem 1.4rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   text-decoration: none;
-  border: 1.5px solid var(--color-accent);
-  transition:
-    background 0.18s,
-    color 0.18s;
+  border: 2px solid var(--color-accent);
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .btnOutline:hover {
   background: var(--color-accent-dim);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 .heroRight {
@@ -123,20 +137,24 @@
 }
 
 .videoCard {
-  background: var(--color-glass-bg);
-  border-radius: 16px;
+  background: var(--color-card);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--color-glass-border);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
+  box-shadow: 0 4px 20px var(--color-shadow);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.videoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--color-shadow);
 }
 
 .videoWrapper {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  background: #1a1a2e;
+  background: var(--color-surface);
   overflow: hidden;
 }
 
@@ -166,8 +184,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem 1.25rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
 }
 
 @media (max-width: 480px) {
@@ -181,7 +200,7 @@
 .videoTitle {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-foreground);
 }
 
 .dot {
@@ -192,5 +211,6 @@
 
 .videoAuthor {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-foreground);
+  opacity: 0.8;
 }

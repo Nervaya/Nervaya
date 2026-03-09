@@ -28,10 +28,8 @@
 }
 
 .stepCard {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
   border-radius: 20px;
   padding: var(--spacing-2xl);
   transition: all 0.2s ease;
@@ -45,6 +43,7 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 @media (max-width: 1024px) {
@@ -66,19 +65,20 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   pointer-events: none;
 }
 
 .stepCard:hover {
   transform: translateY(-2px);
-  border-color: var(--color-glass-border);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 30px var(--color-shadow);
 }
 
 .stepNumber {
-  background: var(--accent);
-  color: var(--color-foreground);
+  background: var(--color-accent);
+  color: #ffffff;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -88,20 +88,22 @@
   font-size: var(--font-size-4xl);
   font-weight: 600;
   margin-bottom: var(--spacing-lg);
-  border: 1px solid var(--color-glass-border);
+  border: 2px solid var(--color-accent);
   transition: all 0.2s ease;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 .stepCard:hover .stepNumber {
-  transform: scale(1.06);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--color-shadow);
 }
 
 .stepDescription {
   margin: 0;
   font-size: var(--font-size-base);
   line-height: 1.65;
-  color: var(--color-text-muted);
+  color: var(--color-foreground);
   overflow-wrap: break-word;
   word-wrap: break-word;
 }

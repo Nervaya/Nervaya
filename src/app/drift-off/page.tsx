@@ -1,6 +1,7 @@
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { DriftOffPageTracker } from './DriftOffPageTracker';
 import DriftOffLandingHero from '@/components/DriftOff/DriftOffLandingHero';
+import MySessionsSection from '@/components/DriftOff/MySessionsSection';
 import HowItWorks from '@/components/DriftOff/HowItWorks';
 import PlaylistSection from '@/components/DriftOff/PlaylistSection';
 import SupportCards from '@/components/DriftOff/SupportCards';
@@ -14,6 +15,13 @@ export default function DriftOffPage() {
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <DriftOffLandingHero />
+
+          <section className={styles.section} aria-labelledby="my-sessions-heading">
+            <h2 id="my-sessions-heading" className={styles.sectionTitle}>
+              My Deep Rest Sessions
+            </h2>
+            <MySessionsSection />
+          </section>
 
           <section className={styles.section} aria-labelledby="how-it-works-heading">
             <h2 id="how-it-works-heading" className={styles.sectionTitle}>
@@ -30,6 +38,9 @@ export default function DriftOffPage() {
           </section>
 
           <section className={styles.section} aria-labelledby="support-heading">
+            <h2 id="support-heading" className={styles.sectionTitle}>
+              Support & Assistance
+            </h2>
             <SupportCards />
           </section>
 

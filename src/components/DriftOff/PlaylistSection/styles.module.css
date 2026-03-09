@@ -1,33 +1,8 @@
 .card {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 24px;
-  padding: var(--spacing-2xl);
-  transition: all 0.2s ease;
-  margin-bottom: 0;
-  color: var(--color-foreground);
+  min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
-}
-
-@media (max-width: 1024px) {
-  .card {
-    padding: var(--spacing-xl);
-  }
-}
-
-@media (max-width: 480px) {
-  .card {
-    padding: var(--spacing-lg);
-    border-radius: 16px;
-  }
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-glass-border);
+  padding: 0;
 }
 
 .playlistHeader {
@@ -46,8 +21,8 @@
 }
 
 .accessBadge {
-  background: var(--color-emerald-dim);
-  color: var(--color-emerald-400);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
   padding: var(--spacing-xs) var(--spacing-lg);
   border-radius: var(--spacing-lg);
   font-weight: 600;
@@ -55,7 +30,13 @@
   align-items: center;
   gap: var(--spacing-xs);
   font-size: var(--font-size-xs);
-  border: 1px solid var(--color-emerald-border);
+  border: 1px solid var(--color-accent);
+  transition: all 0.2s ease;
+}
+
+.accessBadge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 .playlistGrid {
@@ -82,10 +63,8 @@
 }
 
 .videoCard {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -94,6 +73,7 @@
   aspect-ratio: 16/9;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 @media (max-width: 480px) {
@@ -104,7 +84,8 @@
 
 .videoCard:hover {
   transform: translateY(-2px);
-  border-color: var(--color-glass-border);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 30px var(--color-shadow);
 }
 
 .videoCardContent {
@@ -113,7 +94,7 @@
   left: 0;
   width: 100%;
   padding: var(--spacing-lg);
-  background: linear-gradient(to top, var(--color-overlay-dark), transparent);
+  background: linear-gradient(to top, rgba(26, 32, 44, 0.95), transparent);
   color: var(--color-foreground);
 }
 
@@ -127,19 +108,20 @@
 }
 
 .videoDuration {
-  background: var(--color-overlay-mid);
+  background: var(--color-surface);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--spacing-sm);
   font-size: var(--font-size-sm);
   position: absolute;
   top: var(--spacing-md);
   right: var(--spacing-md);
-  backdrop-filter: blur(4px);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
 }
 
 .playlistVideoWrapper {
   height: 100%;
-  background: var(--color-accent-dim);
+  background: var(--color-surface);
   position: relative;
   min-height: 192px;
 }
@@ -155,7 +137,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--color-white-bright);
+  background: var(--color-accent);
   width: 48px;
   height: 48px;
   min-width: 44px;
@@ -165,8 +147,15 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 15px var(--color-overlay);
+  box-shadow: 0 4px 12px var(--color-shadow);
   z-index: 2;
+  transition: all 0.2s ease;
+  border: 2px solid var(--color-accent);
+}
+
+.playlistPlayIcon:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 20px var(--color-shadow);
 }
 
 .playlistPlayIconSvg {
@@ -185,7 +174,8 @@
 .videoCardAuthor {
   margin: 0;
   font-size: var(--font-size-base);
-  color: var(--color-text-muted);
+  color: #ffffff;
+  opacity: 0.9;
 }
 
 .freeBadgeSmall {
