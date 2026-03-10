@@ -14,7 +14,7 @@
 
 .questionText {
   margin: 0 0 32px 0;
-  color: #ffffff;
+  color: var(--qc-text, #ffffff);
   font-size: clamp(1.25rem, 2vw, 1.5rem);
   font-weight: 400;
   line-height: 1.45;
@@ -43,9 +43,9 @@
   align-items: center;
   padding: 16px 20px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
-  color: #ffffff;
+  border: 1px solid var(--qc-border, rgba(255, 255, 255, 0.08));
+  background: var(--qc-bg, transparent);
+  color: var(--qc-text, #ffffff);
   font-size: 1rem;
   text-align: left;
   cursor: pointer;
@@ -53,8 +53,8 @@
 }
 
 .optionCard:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--qc-bg-hover, rgba(255, 255, 255, 0.03));
+  border-color: var(--qc-border-hover, rgba(255, 255, 255, 0.15));
 }
 
 .optionCard:focus-visible {
@@ -63,7 +63,7 @@
   box-shadow: 0 0 0 2px rgba(138, 77, 255, 0.2);
 }
 
-.optionCard.selected {
+.optionCard[aria-checked='true'] {
   border-color: #8a4dff;
   background: rgba(138, 77, 255, 0.08);
 }
@@ -76,13 +76,13 @@
   width: 20px;
   height: 20px;
   border-radius: 999px;
-  border: 2px solid rgba(220, 201, 255, 0.4);
+  border: 2px solid var(--qc-radio-border, rgba(220, 201, 255, 0.4));
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.optionCard.selected .radio {
+.optionCard[aria-checked='true'] .radio {
   border-color: #8a4dff;
 }
 
@@ -97,13 +97,13 @@
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 2px solid rgba(220, 201, 255, 0.4);
+  border: 2px solid var(--qc-radio-border, rgba(220, 201, 255, 0.4));
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.optionCard.selected .checkbox {
+.optionCard[aria-checked='true'] .checkbox {
   border-color: #8a4dff;
   background: #8a4dff;
 }
@@ -111,7 +111,7 @@
 .checkbox svg {
   width: 11px;
   height: 9px;
-  color: #ffffff;
+  color: var(--qc-text, #ffffff);
 }
 
 .optionLabel {
@@ -136,9 +136,9 @@
   min-width: 44px;
   height: 42px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
-  color: #ffffff;
+  border: 1px solid var(--qc-border, rgba(255, 255, 255, 0.08));
+  background: var(--qc-bg, transparent);
+  color: var(--qc-text, #ffffff);
   font-size: 1rem;
   display: inline-flex;
   align-items: center;
@@ -149,8 +149,8 @@
 }
 
 .scaleOption:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--qc-bg-hover, rgba(255, 255, 255, 0.03));
+  border-color: var(--qc-border-hover, rgba(255, 255, 255, 0.15));
 }
 
 .scaleOption:focus-visible {
@@ -159,7 +159,7 @@
   box-shadow: 0 0 0 2px rgba(138, 77, 255, 0.2);
 }
 
-.scaleOption.selected {
+.scaleOption[aria-pressed='true'] {
   border-color: #8a4dff;
   background: rgba(138, 77, 255, 0.08);
 }
@@ -168,9 +168,9 @@
   width: 100%;
   min-height: 120px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
-  color: #ffffff;
+  border: 1px solid var(--qc-border, rgba(255, 255, 255, 0.08));
+  background: var(--qc-bg, transparent);
+  color: var(--qc-text, #ffffff);
   font-size: 1rem;
   line-height: 1.6;
   font-family: inherit;
@@ -182,7 +182,7 @@
 }
 
 .textInput::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--qc-placeholder, rgba(255, 255, 255, 0.4));
 }
 
 .textInput:focus {

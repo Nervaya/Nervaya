@@ -5,6 +5,26 @@
   max-width: 640px;
   margin: 0 auto;
   padding: 1.5rem 0;
+
+  /* Theme overrides for QuestionCard */
+  --qc-text: var(--color-foreground);
+  --qc-border: var(--color-glass-border);
+  --qc-bg-hover: var(--color-glass-bg);
+  --qc-border-hover: var(--color-muted);
+  --qc-radio-border: var(--color-glass-border);
+  --qc-placeholder: var(--color-text-muted);
+  --qc-bg: var(--color-card-bg);
+
+  /* Theme overrides for AssessmentNav */
+  --nav-prev-color: var(--color-text-muted);
+  --nav-prev-border: var(--color-glass-border);
+  --nav-prev-bg-hover: var(--color-glass-bg);
+  --nav-prev-border-hover: var(--color-muted);
+
+  --nav-next-bg: var(--color-glass-bg);
+  --nav-next-color: var(--color-foreground);
+  --nav-next-bg-hover: var(--color-muted-dim);
+  --nav-next-color-hover: #ffffff;
 }
 
 .loading {

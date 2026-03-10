@@ -196,17 +196,19 @@
   color: rgba(244, 238, 255, 0.92);
   background: transparent;
   border: none;
+  display: flex;
+  align-items: center;
 }
 
 .logoutButton {
   appearance: none;
   -webkit-appearance: none;
-  width: 100%;
+  width: auto;
   cursor: pointer;
 }
 
 .logoutIcon {
-  transform: translateX(1px);
+  transform: none;
 }
 
 .bottomMenu {
@@ -214,6 +216,8 @@
   padding: 12px 0 18px;
   border-top: none;
   background: transparent;
+  display: flex;
+  flex-direction: column;
 }
 
 .icon {

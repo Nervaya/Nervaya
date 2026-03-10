@@ -32,7 +32,7 @@ export async function saveAnswer(
     >;
   }
   if (!response) throw new Error('Failed to create or find drift off response');
-  const idx = response.answers.findIndex((a) => a.questionId === input.questionId);
+  const idx = response.answers.findIndex((a) => String(a.questionId) === input.questionId);
   if (idx >= 0) {
     response.answers[idx].answer = input.answer;
   } else {

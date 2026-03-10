@@ -24,8 +24,7 @@ export default function SleepAssessmentPage() {
           '/sleep-assessment/questions',
         );
         if (response.success) {
-          const shuffled = [...(response.data || [])].sort(() => Math.random() - 0.5);
-          setQuestions(shuffled);
+          setQuestions(response.data || []);
         } else {
           setError('Failed to load questions');
         }
