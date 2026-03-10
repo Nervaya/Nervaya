@@ -4,6 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LottieLoader from '@/components/common/LottieLoader';
+import { Icon } from '@iconify/react';
+import { ICON_CALENDAR, ICON_USERS_GROUP, ICON_GLOBE, ICON_VIDEO } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import Pagination from '@/components/common/Pagination';
 import StatusState from '@/components/common/StatusState';
@@ -157,15 +159,19 @@ export default function AdminTherapistsPage() {
 
                     <div className={styles.infoRow}>
                       <span className={styles.infoItem}>
+                        <Icon icon={ICON_CALENDAR} />
                         <strong>Exp:</strong> {therapist.experience}
                       </span>
                       <span className={styles.infoItem}>
+                        <Icon icon={ICON_USERS_GROUP} />
                         <strong>Gender:</strong> {therapist.gender || 'N/A'}
                       </span>
                       <span className={styles.infoItem}>
+                        <Icon icon={ICON_GLOBE} />
                         <strong>Lang:</strong> {therapist.languages?.join(', ')}
                       </span>
                       <span className={styles.infoItem}>
+                        <Icon icon={ICON_VIDEO} />
                         <strong>Video:</strong> {therapist.introVideoUrl ? 'Yes' : 'No'}
                       </span>
                     </div>

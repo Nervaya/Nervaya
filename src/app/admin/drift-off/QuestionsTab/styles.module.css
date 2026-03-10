@@ -20,23 +20,21 @@
 }
 
 .addButton {
-  height: 44px;
+  height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 0 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(109, 40, 217, 0.65);
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  gap: 10px;
+  padding: 0 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--gradient-accent-vibrant, linear-gradient(135deg, #10b981 0%, #059669 100%));
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.9375rem;
   font-weight: 700;
-  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.24);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .addButton:hover {
@@ -72,9 +70,8 @@
   height: 100%;
   width: var(--progress, 0%);
   border-radius: inherit;
-  background: linear-gradient(90deg, #7c3aed 0%, #8b5cf6 45%, #a78bfa 100%);
-  transition: width 0.35s ease;
-  box-shadow: 0 0 14px rgba(124, 58, 237, 0.3);
+  background: var(--gradient-accent);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .questionCounter {
@@ -107,6 +104,13 @@
   gap: 26px;
 }
 
+@media (max-width: 768px) {
+  .carouselRow {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 10px;
+  }
+}
+
 .cardViewport {
   min-width: 0;
   width: 100%;
@@ -121,6 +125,13 @@
   padding: 34px;
 }
 
+@media (max-width: 768px) {
+  .questionCard {
+    border-radius: 18px;
+    padding: 22px 18px;
+  }
+}
+
 .questionHeader {
   display: flex;
   align-items: center;
@@ -132,15 +143,16 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  border: 1px solid rgba(124, 58, 237, 0.35);
-  background: rgba(124, 58, 237, 0.12);
-  color: #5b21b6;
-  font-size: 1.08rem;
-  font-weight: 700;
+  border: 1.5px solid var(--color-accent-dim);
+  background: var(--color-white-bright);
+  color: var(--color-accent);
+  font-size: 1.125rem;
+  font-weight: 800;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .questionMeta {
@@ -189,9 +201,9 @@
 }
 
 .questionContent {
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 22px 0;
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  padding: 24px 0;
 }
 
 .questionText {
@@ -200,6 +212,12 @@
   font-size: clamp(1.5rem, 2.2vw, 2.25rem);
   line-height: 1.35;
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .questionText {
+    font-size: 1.5rem;
+  }
 }
 
 .optionsPreview {
@@ -244,66 +262,76 @@
 
 .editButton,
 .deleteButton {
-  height: 42px;
-  min-width: 104px;
-  border-radius: 11px;
-  border: 1px solid transparent;
-  font-size: 0.92rem;
+  height: 44px;
+  min-width: 110px;
+  border-radius: 12px;
+  font-size: 0.9375rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .editButton {
-  border-color: rgba(124, 58, 237, 0.35);
-  background: rgba(124, 58, 237, 0.1);
-  color: #5b21b6;
+  background: var(--color-white-bright);
+  border: 1.5px solid var(--color-border-light);
+  color: var(--color-text-primary);
 }
 
 .editButton:hover {
-  transform: translateY(-1px);
-  background: rgba(124, 58, 237, 0.16);
+  background: var(--color-white-dim);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
 }
 
 .deleteButton {
-  border-color: rgba(239, 68, 68, 0.33);
-  background: rgba(239, 68, 68, 0.09);
-  color: #dc2626;
+  background: var(--color-white-bright);
+  border: 1.5px solid #fee2e2;
+  color: var(--color-destructive);
 }
 
 .deleteButton:hover {
-  transform: translateY(-1px);
-  background: rgba(239, 68, 68, 0.15);
+  background: #fee2e2;
+  border-color: #fecaca;
+  transform: translateY(-2px);
 }
 
 .navButton {
   width: 56px;
   height: 56px;
-  border-radius: 999px;
-  border: 1px solid rgba(124, 58, 237, 0.25);
-  background: #ffffff;
-  color: #7c3aed;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-white-bright);
+  color: var(--color-text-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .navButton {
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .navButton svg {
   width: 24px;
   height: 24px;
+}
+
+@media (max-width: 768px) {
+  .navButton svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .navPrev {
@@ -315,9 +343,11 @@
 }
 
 .navButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  background: #f7f3ff;
-  box-shadow: 0 12px 28px rgba(124, 58, 237, 0.2);
+  transform: translateY(-2px);
+  background: var(--color-white-dim);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 8px 20px var(--color-accent-dim);
 }
 
 .navButton:disabled {
@@ -366,6 +396,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .keyboardHint {
+    display: none;
+  }
 }
 
 .keyboardHint kbd {
@@ -479,6 +515,13 @@
   gap: 10px;
 }
 
+@media (max-width: 768px) {
+  .modalActions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}
+
 .modalButton {
   height: 40px;
   min-width: 98px;
@@ -488,6 +531,12 @@
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .modalButton {
+    width: 100%;
+  }
 }
 
 .cancelButton {
@@ -510,43 +559,4 @@
 .confirmButton:hover {
   transform: translateY(-1px);
   background: #dc2626;
-}
-
-@media (max-width: 768px) {
-  .carouselRow {
-    grid-template-columns: 42px minmax(0, 1fr) 42px;
-    gap: 10px;
-  }
-
-  .navButton {
-    width: 42px;
-    height: 42px;
-  }
-
-  .navButton svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .questionCard {
-    border-radius: 18px;
-    padding: 22px 18px;
-  }
-
-  .questionText {
-    font-size: 1.5rem;
-  }
-
-  .keyboardHint {
-    display: none;
-  }
-
-  .modalActions {
-    flex-direction: column-reverse;
-    align-items: stretch;
-  }
-
-  .modalButton {
-    width: 100%;
-  }
 }

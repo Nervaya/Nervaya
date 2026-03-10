@@ -5,7 +5,7 @@ import containerStyles from '@/app/admin/styles.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={containerStyles.container}>{children}</div>
     </Sidebar>
   );

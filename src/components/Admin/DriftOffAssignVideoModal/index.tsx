@@ -52,7 +52,8 @@ const DriftOffAssignVideoModal = ({
       const formData = new FormData();
       formData.append('video', file);
       formData.append('responseId', responseId);
-      formData.append('userId', userId);
+      const uid = typeof userId === 'string' ? userId : (userId as { _id: string })._id;
+      formData.append('userId', uid);
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -76,7 +77,7 @@ const DriftOffAssignVideoModal = ({
 
       const result = await response.json();
       if (result.success) {
-        setVideoUrl(result.data.videoUrl);
+        setVideoUrl(result.data.videoUrl || '');
         setUploadMethod('url');
       } else {
         throw new Error(result.message || 'Upload failed');
@@ -125,7 +126,8 @@ const DriftOffAssignVideoModal = ({
           </button>
         </div>
         <p className={styles.modalSubtitle}>
-          User ID: <code className={styles.userId}>{userId}</code>
+          User ID:{' '}
+          <code className={styles.userId}>{typeof userId === 'string' ? userId : (userId as { _id: string })._id}</code>
         </p>
 
         <div className={styles.uploadMethodSelector}>
@@ -156,8 +158,8 @@ const DriftOffAssignVideoModal = ({
                 type="url"
                 className={styles.input}
                 placeholder="https://www.youtube.com/watch?v=..."
-                value={videoUrl || ''}
-                onChange={(e) => setVideoUrl(e.target.value)}
+                value={videoUrl ?? ''}
+                onChange={(e) => setVideoUrl(e.target.value ?? '')}
                 required
               />
             </>

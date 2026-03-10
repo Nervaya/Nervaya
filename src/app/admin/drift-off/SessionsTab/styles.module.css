@@ -46,25 +46,22 @@
 
 .statsContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-  padding: 0 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+  padding: 0;
 }
 
 .statCard {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(17, 24, 39, 0.9) 100%);
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 24px;
+  padding: 32px 24px;
   text-align: center;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(124, 58, 237, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: var(--color-card-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
 }
 
 .statCard::before {
@@ -73,43 +70,45 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-primary, #7c3aed), var(--color-primary-light, #ede9fe));
+  height: 6px;
+  background: var(--gradient-accent, linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%));
 }
 
 .statCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15);
-  border-color: var(--color-primary, #7c3aed);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.15);
+  border-color: var(--color-accent);
 }
 
 .statNumber {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: var(--color-primary, #7c3aed);
-  margin-bottom: 0.5rem;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  margin-bottom: 8px;
   line-height: 1;
   position: relative;
   display: inline-block;
+  font-family: var(--font-heading);
 }
 
 .statNumber::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: -4px;
   left: 50%;
   transform: translateX(-50%);
-  width: 30px;
-  height: 2px;
-  background: var(--color-primary, #7c3aed);
-  border-radius: 1px;
+  width: 40px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  opacity: 0.3;
 }
 
 .statLabel {
-  font-size: 0.85rem;
-  color: var(--color-muted-foreground, #6b7280);
-  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+  margin-top: 12px;
 }

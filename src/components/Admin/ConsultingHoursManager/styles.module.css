@@ -1,19 +1,22 @@
 .container {
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 24px;
+  background: var(--color-white-bright);
+  border-radius: 20px;
+  padding: 32px;
   margin-top: 24px;
+  margin-bottom: 32px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--color-card-shadow);
 }
 
 .workflowSteps {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
-  padding: 20px;
-  background: #2a2a2a;
-  border-radius: 12px;
-  border: 1px solid #3a3a3a;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: var(--color-white-dim);
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
 }
 
 @media (max-width: 768px) {
@@ -49,19 +52,19 @@
 }
 
 .stepActive .stepNumber {
-  background: #8b5cf6;
+  background: var(--color-accent);
   color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 4px var(--color-accent-dim);
 }
 
 .stepCompleted .stepNumber {
-  background: #22c55e;
+  background: #10b981;
   color: #ffffff;
 }
 
 .stepPending .stepNumber {
-  background: #3a3a3a;
-  color: #6b7280;
+  background: var(--color-border-light);
+  color: var(--color-text-muted);
 }
 
 .stepContent {
@@ -69,15 +72,15 @@
 }
 
 .stepTitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
   margin: 0 0 4px 0;
 }
 
 .stepDescription {
-  font-size: 12px;
-  color: #a0a0a0;
+  font-size: 13px;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -110,15 +113,15 @@
 }
 
 .stepCompleted + .stepConnector {
-  background: #22c55e;
+  background: #10b981;
 }
 
 .section {
-  background: #2a2a2a;
-  border: 1px solid #3a3a3a;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
 }
 
 .sectionHeader {
@@ -138,31 +141,36 @@
 }
 
 .sectionTitle {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 12px;
+  font-family: var(--font-heading);
 }
 
 .unsavedBadge {
-  background: rgba(239, 68, 68, 0.2);
+  background: #fef2f2;
   color: #ef4444;
-  padding: 4px 12px;
+  padding: 6px 14px;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #fee2e2;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.05);
 }
 
 .savedBadge {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-  padding: 4px 12px;
+  background: #f0fdf4;
+  color: #10b981;
+  padding: 6px 14px;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #dcfce7;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.05);
 }
 
 .saveSection,
@@ -174,8 +182,8 @@
 
 .saveDescription,
 .generateDescription {
-  color: #a0a0a0;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
   margin: 0;
   line-height: 1.6;
 }
@@ -220,21 +228,24 @@
 }
 
 .quickActionButton {
-  padding: 8px 16px;
-  background: #2a2a2a;
-  color: #ffffff;
-  border: 1px solid #3a3a3a;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 10px 18px;
+  background: var(--color-white-bright);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .quickActionButton:hover {
-  background: #3a3a3a;
-  border-color: #8b5cf6;
-  color: #8b5cf6;
+  background: var(--color-white-dim);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 768px) {
@@ -244,15 +255,16 @@
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
   margin: 0 0 8px 0;
+  font-family: var(--font-heading);
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #a0a0a0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -293,38 +305,49 @@
 }
 
 .generateButton {
-  padding: 12px 20px;
-  background: #2a2a2a;
-  color: #ffffff;
-  border: 1px solid #3a3a3a;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 12px 24px;
+  background: var(--color-white-bright);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .generateButton:hover:not(:disabled) {
-  background: #3a3a3a;
-  border-color: #8b5cf6;
-  color: #8b5cf6;
+  background: var(--color-white-dim);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .generateButton {
+    width: 100%;
+  }
 }
 
 .generateButton:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .saveButton {
-  padding: 12px 24px;
-  background: #8b5cf6;
+  padding: 14px 28px;
+  background: var(--color-accent);
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px var(--color-accent-dim);
 }
 
 .saveButton:hover:not(:disabled) {
@@ -332,14 +355,13 @@
   transform: translateY(-1px);
 }
 
-.saveButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 @media (max-width: 768px) {
-  .generateButton,
   .saveButton {
     width: 100%;
   }
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

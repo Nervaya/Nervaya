@@ -40,6 +40,12 @@
   color: var(--color-foreground);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .navButton {
+    transition: none;
+  }
+}
+
 .navButton:hover:not(:disabled) {
   background: var(--color-accent-dim);
   color: var(--color-accent);
@@ -54,12 +60,6 @@
 .navButton:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navButton {
-    transition: none;
-  }
 }
 
 .monthYear {
@@ -78,13 +78,14 @@
 }
 
 .monthDisplay {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--color-text-primary);
   padding: 8px 16px;
   text-align: center;
   min-width: 180px;
   letter-spacing: -0.01em;
+  font-family: var(--font-heading);
 }
 
 @media (max-width: 480px) {
@@ -108,6 +109,13 @@
   transition: all 0.2s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .monthSelect,
+  .yearSelect {
+    transition: none;
+  }
+}
+
 .monthSelect:hover,
 .yearSelect:hover {
   border-color: rgba(139, 92, 246, 0.4);
@@ -124,13 +132,6 @@
 .yearSelect option {
   background: #1e1e24;
   color: #f8fafc;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .monthSelect,
-  .yearSelect {
-    transition: none;
-  }
 }
 
 .calendar {
@@ -154,7 +155,7 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #64748b;
+  color: var(--color-text-slate-400);
   padding: 8px 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -202,6 +203,12 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .day {
+    transition: none;
+  }
+}
+
 .day:hover:not(:disabled) {
   background: var(--color-accent-dim);
   border-color: var(--color-accent-dim);
@@ -240,9 +247,9 @@
 
 .dayDisabled {
   background: transparent;
-  color: #475569;
+  color: var(--color-text-slate-400);
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .dayDisabled:hover {
@@ -275,10 +282,4 @@
 .dateCritical:hover:not(:disabled) {
   background: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.5);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .day {
-    transition: none;
-  }
 }

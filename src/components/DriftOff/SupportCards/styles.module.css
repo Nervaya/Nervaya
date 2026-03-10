@@ -18,38 +18,21 @@
   overflow: hidden;
 }
 
-/* Card 1 Theme: Lavender/Indigo */
-.supportCard:nth-child(1) {
+/* Unified Card Theme: Lavender/Indigo */
+.supportCard {
   background: #f5f3ff;
   border: 1px solid #ddd6fe;
 }
 
-.supportCard:nth-child(1) .supportIcon {
+.supportCard .supportIcon {
   background: #ffffff;
   color: #7c3aed;
   border: 1px solid #ddd6fe;
 }
 
-.supportCard:nth-child(1):hover {
+.supportCard:hover {
   border-color: #c4b5fd;
   background: #ede9fe;
-}
-
-/* Card 2 Theme: Slate/Blue */
-.supportCard:nth-child(2) {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-}
-
-.supportCard:nth-child(2) .supportIcon {
-  background: #ffffff;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-}
-
-.supportCard:nth-child(2):hover {
-  border-color: #cbd5e1;
-  background: #e2e8f0;
 }
 
 .supportCard:hover {

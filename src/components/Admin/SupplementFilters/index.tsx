@@ -63,7 +63,7 @@ export default function SupplementFilters({
           ariaLabel="Active status"
         />
       </div>
-      <div className={styles.field} style={{ minWidth: '180px' }}>
+      <div className={styles.field}>
         <label htmlFor="supplement-search">Search name/description</label>
         <input
           id="supplement-search"

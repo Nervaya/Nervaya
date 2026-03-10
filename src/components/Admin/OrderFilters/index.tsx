@@ -131,7 +131,7 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
           aria-label="Maximum amount"
         />
       </div>
-      <div className={styles.field} style={{ minWidth: '140px' }}>
+      <div className={styles.field}>
         <label htmlFor="order-user-id">User ID</label>
         <input
           id="order-user-id"

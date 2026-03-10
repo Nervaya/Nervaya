@@ -8,7 +8,7 @@
   background: linear-gradient(180deg, rgba(139, 92, 246, 0.04) 0%, rgba(30, 41, 59, 0.6) 100%);
   position: relative;
   min-height: 140px;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

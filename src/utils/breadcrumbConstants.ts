@@ -41,6 +41,17 @@ function isDynamicSegment(segment: string): boolean {
   return false;
 }
 
+const UNAVAILABLE_ROUTES = new Set([
+  '/admin',
+  '/admin/blogs/edit',
+  '/admin/supplements/edit',
+  '/admin/sleep-assessment/edit',
+  '/admin/drift-off/questions',
+  '/admin/drift-off/questions/edit',
+  '/admin/therapists/edit',
+  '/supplements/order-success',
+]);
+
 export function getBreadcrumbsForPath(pathname: string): BreadcrumbItem[] {
   const clean = pathname.replace(/\/$/, '') || '/';
   if (clean === '/') {
@@ -59,7 +70,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbItem[] {
 
     items.push({
       label,
-      href: isLast ? undefined : href,
+      href: isLast || UNAVAILABLE_ROUTES.has(href) || isDynamicSegment(segment) ? undefined : href,
     });
   }
 

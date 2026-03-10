@@ -9,7 +9,16 @@ import styles from './styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_UPLOAD, ICON_USER_PLUS } from '@/constants/icons';
+import {
+  ICON_ARROW_LEFT,
+  ICON_UPLOAD,
+  ICON_USER_PLUS,
+  ICON_INFO,
+  ICON_RECEIPT,
+  ICON_FILE,
+  ICON_TAG,
+  ICON_USER,
+} from '@/constants/icons';
 import { GENDER_OPTIONS, parseCommaSeparated, parseTestimonials } from '@/lib/utils/therapist.utils';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
@@ -137,7 +146,10 @@ export default function AddTherapistPage() {
         <div className={styles.formLayout}>
           <div className={styles.formMain}>
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Basic Information</h2>
+              <h2 className={styles.sectionTitle}>
+                <Icon icon={ICON_INFO} />
+                <span>Basic Information</span>
+              </h2>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label} htmlFor="name">
@@ -207,7 +219,10 @@ export default function AddTherapistPage() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Professional Details</h2>
+              <h2 className={styles.sectionTitle}>
+                <Icon icon={ICON_RECEIPT} />
+                <span>Professional Details</span>
+              </h2>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label} htmlFor="qualifications">
@@ -275,7 +290,10 @@ export default function AddTherapistPage() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Therapist Profile Content</h2>
+              <h2 className={styles.sectionTitle}>
+                <Icon icon={ICON_FILE} />
+                <span>Therapist Profile Content</span>
+              </h2>
               <div className={styles.formGroup}>
                 <label className={styles.label} htmlFor="bio">
                   Short Bio
@@ -350,7 +368,10 @@ export default function AddTherapistPage() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Pricing & Media</h2>
+              <h2 className={styles.sectionTitle}>
+                <Icon icon={ICON_TAG} />
+                <span>Pricing & Media</span>
+              </h2>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label} htmlFor="sessionFee">
@@ -453,12 +474,16 @@ export default function AddTherapistPage() {
           </div>
 
           <aside className={styles.formSidebar}>
-            <h2 className={styles.sectionTitle}>Profile Image</h2>
+            <h2 className={styles.sectionTitle}>
+              <Icon icon={ICON_USER} />
+              <span>Profile Image</span>
+            </h2>
             <div className={styles.imageUploadWrapper}>
               <ImageUpload
                 onUpload={(url) => setFormData((prev) => ({ ...prev, image: url }))}
                 initialUrl={formData.image}
                 label="Upload photo"
+                tone="light"
               />
             </div>
             <span className={styles.hint}>Square, 400x400px min</span>

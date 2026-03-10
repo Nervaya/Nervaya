@@ -75,7 +75,7 @@ export default function SessionFilters({
           ariaLabel="Session status"
         />
       </div>
-      <div className={styles.field} style={{ minWidth: '160px' }}>
+      <div className={styles.field}>
         <label htmlFor="session-therapist">Therapist</label>
         <Dropdown
           id="session-therapist"
@@ -108,7 +108,7 @@ export default function SessionFilters({
           aria-label="Date to"
         />
       </div>
-      <div className={styles.field} style={{ minWidth: '140px' }}>
+      <div className={styles.field}>
         <label htmlFor="session-user-id">User ID</label>
         <input
           id="session-user-id"
