@@ -12,6 +12,7 @@ import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import LottieLoader from '@/components/common/LottieLoader';
 import { GENDER_OPTIONS, parseCommaSeparated, parseTestimonials } from '@/lib/utils/therapist.utils';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function EditTherapistPage() {
   const router = useRouter();
@@ -21,6 +22,13 @@ export default function EditTherapistPage() {
   const [videoUploading, setVideoUploading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Therapists', href: '/admin/therapists' },
+    { label: 'Edit' },
+  ];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -202,7 +210,7 @@ export default function EditTherapistPage() {
   if (initialLoading) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Therapist" subtitle="Update therapist profile information" />
+        <PageHeader title="Edit Therapist" subtitle="Update therapist profile information" breadcrumbs={breadcrumbs} />
         <div className={styles.form} style={{ alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
           <LottieLoader width={80} height={80} />
         </div>
@@ -215,6 +223,7 @@ export default function EditTherapistPage() {
       <PageHeader
         title="Edit Therapist"
         subtitle="Update therapist profile, media and profile-page content"
+        breadcrumbs={breadcrumbs}
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
             <Icon icon={ICON_ARROW_LEFT} aria-hidden />

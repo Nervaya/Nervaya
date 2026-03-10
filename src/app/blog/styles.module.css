@@ -1,22 +1,21 @@
 .container {
   width: 100%;
   max-width: 1200px;
-  margin: 0;
-  margin-right: auto;
-  padding: var(--spacing-lg) var(--spacing-lg);
+  margin: 0 auto;
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   overflow-x: hidden;
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-lg) var(--spacing-md);
+    padding: var(--spacing-md, 16px) var(--spacing-md, 16px) var(--spacing-xl, 32px);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: var(--spacing-md) var(--spacing-sm);
+    padding: var(--spacing-sm, 12px) var(--spacing-sm, 12px) var(--spacing-lg, 24px);
   }
 }
 

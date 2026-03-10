@@ -11,6 +11,7 @@ import type { OrderFiltersParams } from '@/lib/api/orders';
 import { formatPrice } from '@/utils/cart.util';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 function countActiveFilters(f: OrderFiltersParams): number {
   let n = 0;
@@ -31,6 +32,8 @@ export default function AdminOrdersPage() {
   const { data: orders, meta, isLoading, error, refetch } = useAdminOrders(page, limit, filters);
   const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Orders' }];
+
   const handleFiltersApply = useCallback((newFilters: OrderFiltersParams) => {
     setFilters(newFilters);
     setPage(1);
@@ -44,7 +47,7 @@ export default function AdminOrdersPage() {
   if (isLoading) {
     return (
       <div>
-        <PageHeader title="Orders" subtitle="View all orders (read-only)." />
+        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
         <OrderFilters
           initialFilters={filters}
           onApply={handleFiltersApply}
@@ -61,7 +64,7 @@ export default function AdminOrdersPage() {
   if (error) {
     return (
       <div>
-        <PageHeader title="Orders" subtitle="View all orders (read-only)." />
+        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
         <OrderFilters
           initialFilters={filters}
           onApply={handleFiltersApply}
@@ -84,7 +87,7 @@ export default function AdminOrdersPage() {
   if (!orders?.length) {
     return (
       <div>
-        <PageHeader title="Orders" subtitle="View all orders (read-only)." />
+        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
         <OrderFilters
           initialFilters={filters}
           onApply={handleFiltersApply}
@@ -108,7 +111,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <PageHeader title="Orders" subtitle="View all orders (read-only)." />
+      <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
       <OrderFilters
         initialFilters={filters}
         onApply={handleFiltersApply}

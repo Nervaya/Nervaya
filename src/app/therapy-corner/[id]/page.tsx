@@ -77,6 +77,8 @@ export default function TherapistProfilePage() {
                   padding: '60px 8%',
                   alignItems: 'center',
                   background: '#ffffff',
+                  borderRadius: '12px',
+                  margin: '20px 4%',
                 }}
               >
                 <div
@@ -208,6 +210,8 @@ export default function TherapistProfilePage() {
                   textAlign: 'center',
                   gap: '24px',
                   overflow: 'hidden',
+                  borderTop: '1px solid rgba(168, 85, 247, 0.2)',
+                  borderBottom: '1px solid rgba(168, 85, 247, 0.2)',
                 }}
               >
                 <div
@@ -220,16 +224,16 @@ export default function TherapistProfilePage() {
                     zIndex: 2,
                   }}
                 >
-                  <Icon icon="ph:quotes" style={{ color: '#d8b4fe', fontSize: '3.5rem', marginBottom: '-10px' }} />
+                  <Icon icon="ph:quotes" style={{ color: '#a855f7', fontSize: '3.5rem', marginBottom: '-10px' }} />
 
-                  <h2 style={{ margin: 0, color: '#9333ea', fontSize: '1.1rem', fontWeight: 500 }}>Message to You</h2>
+                  <h2 style={{ margin: 0, color: '#7c3aed', fontSize: '1.25rem', fontWeight: 600 }}>Message to You</h2>
                 </div>
 
                 <p
                   style={{
                     margin: 0,
                     maxWidth: '850px',
-                    color: '#475569',
+                    color: '#5b21b6',
                     fontSize: '1.15rem',
                     lineHeight: '1.9',
                     position: 'relative',
@@ -246,9 +250,9 @@ export default function TherapistProfilePage() {
                     position: 'absolute',
                     right: '10%',
                     bottom: '30px',
-                    color: '#e9d5ff',
+                    color: '#c084fc',
                     fontSize: '8rem',
-                    opacity: 0.6,
+                    opacity: 0.4,
                     transform: 'scaleX(-1)',
                     zIndex: 1,
                   }}
@@ -264,6 +268,8 @@ export default function TherapistProfilePage() {
                   alignItems: 'center',
                   gap: '50px',
                   background: '#faf5ff',
+                  borderRadius: '12px',
+                  margin: '20px 4%',
                 }}
               >
                 <h2 style={{ margin: 0, color: '#9333ea', fontSize: '1.1rem', fontWeight: 500 }}>Testimonials</h2>

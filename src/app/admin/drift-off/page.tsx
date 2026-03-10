@@ -6,6 +6,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import SessionsTab from './SessionsTab';
 import QuestionsTab from './QuestionsTab';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 type Tab = 'sessions' | 'questions';
 
@@ -14,11 +15,14 @@ export default function AdminDriftOffPage() {
   const initialTab = (searchParams.get('tab') as Tab) || 'sessions';
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Drift Off' }];
+
   return (
     <div>
       <PageHeader
         title="Drift Off — Admin"
         subtitle="Manage Deep Rest Session questions and view all user responses."
+        breadcrumbs={breadcrumbs}
       />
 
       {/* Tabs */}

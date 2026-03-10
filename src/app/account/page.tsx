@@ -14,6 +14,7 @@ import api from '@/lib/axios';
 import { AUTH_API } from '@/lib/constants/api.constants';
 import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { validatePassword } from '@/lib/utils/validation.util';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 type TabType = 'settings' | 'orders' | 'sessions';
 
@@ -112,11 +113,13 @@ export default function AccountPage() {
     }
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'My Account' }];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={containerStyles.container}>
         <div className={styles.mobileHidden}>
-          <PageHeader title="My Account" />
+          <PageHeader title="My Account" breadcrumbs={breadcrumbs} />
         </div>
 
         <div className={styles.tabs}>

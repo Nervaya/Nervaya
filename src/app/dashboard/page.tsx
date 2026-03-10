@@ -24,6 +24,7 @@ import {
   getNextSessionInfo,
   getSessionCounts,
 } from '@/components/Dashboard/dashboardViewModel.util';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -59,11 +60,17 @@ export default function DashboardPage() {
 
   const welcomeName = user?.name?.trim() ? user.name : 'there';
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Dashboard' }];
+
   if (loading) {
     return (
-      <Sidebar>
+      <Sidebar hideGlobalBreadcrumbs>
         <div className={styles.container}>
-          <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
+          <PageHeader
+            title={`Welcome back, ${welcomeName}!`}
+            subtitle="Here's your personalized overview."
+            breadcrumbs={breadcrumbs}
+          />
           <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
             <LottieLoader width={200} height={200} />
           </div>
@@ -73,11 +80,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
-        <section className={styles.welcomeHero}>
-          <PageHeader title={`Welcome back, ${welcomeName}!`} subtitle="Here's your personalized overview." />
-        </section>
+        <PageHeader
+          title={`Welcome back, ${welcomeName}!`}
+          subtitle="Here's your personalized overview."
+          breadcrumbs={breadcrumbs}
+        />
 
         {error && (
           <div className={styles.errorRow} role="alert">

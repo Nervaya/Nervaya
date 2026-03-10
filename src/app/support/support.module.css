@@ -6,32 +6,24 @@
 .container {
   color: var(--color-foreground);
   max-width: 1200px;
-  margin-left: 0;
-  margin-right: auto;
-  margin-top: 0;
-  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg) 0;
-  padding-top: var(--spacing-sm);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   width: 100%;
   min-width: 0;
-  overflow-x: visible;
+  overflow-x: hidden;
   box-sizing: border-box;
   min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md) 0;
-    padding-top: var(--spacing-xs);
+    padding: 0 var(--spacing-md, 16px) var(--spacing-xl, 32px);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
-    padding-top: var(--spacing-xs);
+    padding: 0 var(--spacing-sm, 12px) var(--spacing-lg, 24px);
   }
 }
 

@@ -9,6 +9,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import StatusState from '@/components/common/StatusState';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function EditSupplementPage() {
   const params = useParams();
@@ -16,6 +17,12 @@ export default function EditSupplementPage() {
   const [supplement, setSupplement] = useState<Supplement | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Supplements', href: '/admin/supplements' },
+    { label: 'Edit' },
+  ];
 
   const handleSubmit = async (data: SupplementFormData) => {
     try {
@@ -61,7 +68,7 @@ export default function EditSupplementPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
+        <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
@@ -72,7 +79,7 @@ export default function EditSupplementPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
+        <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
         <StatusState
           type="error"
           title={error ? 'Error' : 'Not Found'}
@@ -89,7 +96,7 @@ export default function EditSupplementPage() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="Edit Supplement" subtitle="Update supplement information" />
+      <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
       {error && <div className={styles.error}>{error}</div>}
       <SupplementForm
         key={supplement._id}

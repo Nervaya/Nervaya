@@ -82,3 +82,17 @@
   padding-bottom: 4px;
   /* Slight offset for optical alignment */
 }
+
+/* Dark background pages (route-home: landing, sleep-assessment) need light text */
+:global(body.route-home) .header {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(body.route-home) .title {
+  color: #f8f3ff;
+}
+
+:global(body.route-home) .subtitle,
+:global(body.route-home) .description {
+  color: rgba(232, 225, 255, 0.85);
+}

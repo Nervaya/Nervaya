@@ -9,6 +9,8 @@ import { blogsApi } from '@/lib/api/blogs';
 import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 interface PaginationInfo {
   page: number;
@@ -88,13 +90,16 @@ export default function BlogListPage() {
     return plainText.length > maxLength ? `${plainText.substring(0, maxLength)}...` : plainText;
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Blog' }];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Blog</h1>
-          <p className={styles.subtitle}>Insights, tips, and stories about sleep wellness</p>
-        </header>
+        <PageHeader
+          title="Blog"
+          subtitle="Insights, tips, and stories about sleep wellness"
+          breadcrumbs={breadcrumbs}
+        />
 
         <BlogFilters
           searchInput={searchInput}

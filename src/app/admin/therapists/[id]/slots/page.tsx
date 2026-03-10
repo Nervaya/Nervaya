@@ -11,6 +11,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -19,6 +20,13 @@ export default function TherapistSlotsPage() {
   const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Therapists', href: '/admin/therapists' },
+    { label: 'Manage Slots' },
+  ];
+
   const handleSlotUpdate = useCallback(() => {}, []);
 
   const fetchTherapist = useCallback(async () => {
@@ -70,6 +78,7 @@ export default function TherapistSlotsPage() {
       <PageHeader
         title="Manage Slots"
         subtitle={`Therapist: ${therapist.name}`}
+        breadcrumbs={breadcrumbs}
         actions={
           <button type="button" onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
             <Icon icon={ICON_ARROW_LEFT} aria-hidden />

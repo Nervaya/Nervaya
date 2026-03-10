@@ -7,6 +7,7 @@ import PromoCodeModal from '@/components/Admin/PromoCodeModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from '../supplements/styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AdminPromoCodesPage() {
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
@@ -15,6 +16,8 @@ export default function AdminPromoCodesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPromo, setEditingPromo] = useState<PromoCode | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Promo Codes' }];
 
   const fetchPromoCodes = async () => {
     try {
@@ -118,6 +121,7 @@ export default function AdminPromoCodesPage() {
         <PageHeader
           title="Promo Codes"
           subtitle="Manage discount codes and promotions"
+          breadcrumbs={breadcrumbs}
           actions={
             <button type="button" onClick={handleAdd} className={styles.addButton}>
               Add New Promo Code

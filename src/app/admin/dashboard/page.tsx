@@ -12,14 +12,21 @@ import LowStockAlerts from '@/components/Admin/LowStockAlerts';
 import { useAdminStats } from '@/app/queries/admin/useAdminStats';
 import { formatPrice } from '@/utils/cart.util';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AdminDashboardPage() {
   const { data: stats, isLoading, error, refetch } = useAdminStats();
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Dashboard' }];
+
   if (isLoading) {
     return (
       <div>
-        <PageHeader title="Admin Dashboard" subtitle="Overview of orders, sessions, and inventory." />
+        <PageHeader
+          title="Admin Dashboard"
+          subtitle="Overview of orders, sessions, and inventory."
+          breadcrumbs={breadcrumbs}
+        />
         <div className={styles.loaderWrapper}>
           <LottieLoader width={200} height={200} />
         </div>
@@ -30,7 +37,11 @@ export default function AdminDashboardPage() {
   if (error) {
     return (
       <div>
-        <PageHeader title="Admin Dashboard" subtitle="Overview of orders, sessions, and inventory." />
+        <PageHeader
+          title="Admin Dashboard"
+          subtitle="Overview of orders, sessions, and inventory."
+          breadcrumbs={breadcrumbs}
+        />
         <StatusState
           type="error"
           message={error}
@@ -47,7 +58,11 @@ export default function AdminDashboardPage() {
   if (!stats) {
     return (
       <div>
-        <PageHeader title="Admin Dashboard" subtitle="Overview of orders, sessions, and inventory." />
+        <PageHeader
+          title="Admin Dashboard"
+          subtitle="Overview of orders, sessions, and inventory."
+          breadcrumbs={breadcrumbs}
+        />
         <StatusState type="empty" message="Unable to load dashboard stats." />
       </div>
     );
@@ -57,7 +72,11 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <PageHeader title="Admin Dashboard" subtitle="Overview of orders, sessions, and inventory." />
+      <PageHeader
+        title="Admin Dashboard"
+        subtitle="Overview of orders, sessions, and inventory."
+        breadcrumbs={breadcrumbs}
+      />
 
       <section className={styles.statsGrid} aria-label="Key metrics">
         <StatsCard

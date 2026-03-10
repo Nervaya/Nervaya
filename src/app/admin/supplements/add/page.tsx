@@ -7,10 +7,17 @@ import SupplementForm from '@/components/Admin/SupplementForm';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AddSupplementPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Supplements', href: '/admin/supplements' },
+    { label: 'Add New' },
+  ];
 
   const handleSubmit = async (data: SupplementFormData) => {
     try {
@@ -31,7 +38,7 @@ export default function AddSupplementPage() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="Add New Supplement" subtitle="Create a new supplement entry" />
+      <PageHeader title="Add New Supplement" subtitle="Create a new supplement entry" breadcrumbs={breadcrumbs} />
       {error && <div className={styles.error}>{error}</div>}
       <SupplementForm key="create" onSubmit={handleSubmit} submitLabel="Create Supplement" />
     </div>

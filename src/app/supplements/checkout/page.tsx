@@ -16,6 +16,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function CheckoutPage() {
   const {
@@ -94,10 +95,17 @@ export default function CheckoutPage() {
 
   const showForm = !selectedAddress || editingAddress;
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Home', href: '/dashboard' },
+    { label: 'Supplements', href: '/supplements' },
+    { label: 'Cart', href: '/supplements/cart' },
+    { label: 'Checkout' },
+  ];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
-        <PageHeader title="Checkout" />
+        <PageHeader title="Checkout" breadcrumbs={breadcrumbs} />
         <Link href="/supplements/cart" className={styles.backToCartLink}>
           <Icon icon={ICON_ARROW_LEFT} aria-hidden />
           Back to cart

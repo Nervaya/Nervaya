@@ -11,6 +11,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_UPLOAD, ICON_USER_PLUS } from '@/constants/icons';
 import { GENDER_OPTIONS, parseCommaSeparated, parseTestimonials } from '@/lib/utils/therapist.utils';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AddTherapistPage() {
   const router = useRouter();
@@ -18,6 +19,13 @@ export default function AddTherapistPage() {
   const [loading, setLoading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Therapists', href: '/admin/therapists' },
+    { label: 'Add New' },
+  ];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -111,6 +119,7 @@ export default function AddTherapistPage() {
       <PageHeader
         title="Add New Therapist"
         subtitle="Create therapist profile with media and detailed profile information"
+        breadcrumbs={breadcrumbs}
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
             <Icon icon={ICON_ARROW_LEFT} aria-hidden />

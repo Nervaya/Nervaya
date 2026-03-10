@@ -11,6 +11,7 @@ import { therapistsApi } from '@/lib/api/therapists';
 import { Therapist } from '@/types/therapist.types';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
@@ -19,6 +20,8 @@ export default function AdminTherapistsPage() {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
   const [page, setPage] = useState(1);
+
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Therapists' }];
 
   const limit = PAGE_SIZE_10;
   const total = therapists.length;
@@ -95,6 +98,7 @@ export default function AdminTherapistsPage() {
       <PageHeader
         title="Therapists"
         subtitle="Manage therapist profiles and information"
+        breadcrumbs={breadcrumbs}
         actions={
           <Link href="/admin/therapists/add" className={styles.addButton}>
             Add New Therapist

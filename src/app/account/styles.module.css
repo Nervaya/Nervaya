@@ -1,15 +1,18 @@
 .container {
-  max-width: 800px;
-  margin: 0;
-  margin-right: auto;
+  max-width: 1200px;
+  margin: 0 auto;
   color: var(--color-foreground);
-  padding: 0 var(--spacing-md);
+  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   text-align: left;
   display: block;
   width: 100%;
 
   @media (max-width: 768px) {
-    padding: 0 var(--spacing-sm);
+    padding: 0 var(--spacing-md, 16px) var(--spacing-xl, 32px);
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 var(--spacing-sm, 12px) var(--spacing-lg, 24px);
   }
 }
 

@@ -6,11 +6,13 @@ import { ICON_ALERT, ICON_DOCUMENT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
 import LottieLoader from '@/components/common/LottieLoader';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import containerStyles from '@/app/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function SleepAssessmentPage() {
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
@@ -39,9 +41,16 @@ export default function SleepAssessmentPage() {
     fetchQuestions();
   }, []);
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Sleep Assessment' }];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={containerStyles.container}>
+        <PageHeader
+          title="Sleep Assessment"
+          subtitle="Evaluate your sleep quality and get personalized recommendations"
+          breadcrumbs={breadcrumbs}
+        />
         {isLoading && (
           <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
             <LottieLoader width={200} height={200} />

@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function SupplementsPage() {
   const router = useRouter();
@@ -64,11 +65,17 @@ export default function SupplementsPage() {
   const showFailure = !loading && error != null;
   const showEmpty = !loading && !error && supplements.length === 0;
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Supplements' }];
+
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <PageHeader title="Supplements" subtitle="Discover our range of health supplements" />
+          <PageHeader
+            title="Supplements"
+            subtitle="Discover our range of health supplements"
+            breadcrumbs={breadcrumbs}
+          />
           {error && !showFailure && <div className={styles.error}>{error}</div>}
           {showFailure && (
             <StatusState

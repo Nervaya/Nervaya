@@ -75,3 +75,25 @@
     font-size: 0.95rem;
   }
 }
+
+/* Dark background pages (route-home) need light breadcrumb colors */
+:global(body.route-home) .link {
+  color: rgba(232, 225, 255, 0.75);
+}
+
+:global(body.route-home) .link:hover {
+  color: #f8f3ff;
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+:global(body.route-home) .link[aria-current='page'] {
+  color: #f8f3ff;
+}
+
+:global(body.route-home) .current {
+  color: #f8f3ff;
+}
+
+:global(body.route-home) .separator {
+  color: rgba(232, 225, 255, 0.5);
+}

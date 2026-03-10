@@ -12,6 +12,7 @@ import { useAdminSupplements } from '@/app/queries/supplements/useSupplements';
 import api from '@/lib/axios';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 function countActiveFilters(f: SupplementFiltersParams): number {
   let n = 0;
@@ -29,6 +30,8 @@ export default function AdminSupplementsPage() {
   const [editingSupplement, setEditingSupplement] = useState<Supplement | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Supplements' }];
 
   const limit = PAGE_SIZE_10;
   const { data: supplements, meta, isLoading, error: fetchError, refetch } = useAdminSupplements(page, limit, filters);
@@ -111,6 +114,7 @@ export default function AdminSupplementsPage() {
         <PageHeader
           title="Supplements"
           subtitle="Manage supplement inventory and details"
+          breadcrumbs={breadcrumbs}
           actions={
             <button type="button" onClick={handleAdd} className={styles.addButton}>
               Add New Supplement
