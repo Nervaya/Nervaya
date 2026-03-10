@@ -1,3 +1,14 @@
+@keyframes slideInUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .statsSection {
   padding: 20px 40px;
   max-width: 1400px;
@@ -31,6 +42,10 @@
   gap: 32px;
   list-style: none;
   margin: 0;
+  background: linear-gradient(135deg, rgba(245, 243, 255, 0.9) 0%, rgba(237, 233, 254, 0.85) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.15);
 }
 
 @media (max-width: 1024px) {
@@ -70,6 +85,27 @@
   justify-content: center;
   gap: 32px;
   width: 100%;
+  animation: slideInUpMobile 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.statItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.statItem:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.statItem:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.statItem:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statItem {
+    animation: none;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -104,7 +140,7 @@
 .statValue {
   font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 700;
-  color: #fff;
+  color: #7c3aed;
   line-height: 1.2;
 }
 
@@ -129,7 +165,7 @@
 .statLabel {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
   font-weight: 500;
-  color: #d1d5db;
+  color: #64748b;
   line-height: 1.4;
 }
 
@@ -154,7 +190,7 @@
 .statDivider {
   width: 2px;
   height: 60px;
-  background: #dab2ff;
+  background: rgba(139, 92, 246, 0.3);
   flex-shrink: 0;
 }
 
