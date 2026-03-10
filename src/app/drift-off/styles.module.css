@@ -72,17 +72,10 @@
 
 .sectionTitle {
   font-size: 2rem;
-<<<<<<< HEAD
   font-weight: 800;
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-xl);
   letter-spacing: -0.04em;
-=======
-  font-weight: 700;
-  color: var(--color-foreground);
-  margin: 0 0 1.5rem 0;
-  letter-spacing: -0.02em;
->>>>>>> da7604a (drift off flow fix)
   line-height: 1.25;
   display: flex;
   align-items: center;

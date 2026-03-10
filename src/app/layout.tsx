@@ -44,7 +44,6 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
-<<<<<<< HEAD
       <head>
         {gtmId && (
           <>
@@ -62,8 +61,6 @@ export default function RootLayout({
           </>
         )}
       </head>
-=======
->>>>>>> da7604a (drift off flow fix)
       <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
         <Providers>
           <BodyRouteClass />
