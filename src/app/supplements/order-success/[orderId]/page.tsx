@@ -58,6 +58,7 @@ export default function OrderSuccessPage() {
           const shippingCost = getShippingCost(deliveryMethod, subtotalForShipping);
           trackPurchase({
             transaction_id: foundOrder._id,
+            order_id: foundOrder._id,
             currency: 'INR',
             value: foundOrder.totalAmount,
             shipping: shippingCost,
@@ -68,6 +69,8 @@ export default function OrderSuccessPage() {
               item_category: 'Supplements',
               price: item.price,
               quantity: item.quantity,
+              currency: 'INR',
+              page_type: 'order_success',
             })),
           });
         } else {

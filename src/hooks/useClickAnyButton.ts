@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { trackClickAnyButton, trackPhoneClick, trackWhatsAppClick } from '@/utils/analytics';
+import { trackCtaClick, trackWhatsappSupportClicked, type CtaClickParams } from '@/utils/analytics';
 
 function getButtonLabel(element: HTMLElement): string {
   const ariaLabel = element.getAttribute('aria-label')?.trim();
@@ -36,19 +36,21 @@ export function useClickAnyButton(): void {
       if (!buttonText) return;
 
       const destinationUrl = clickable instanceof HTMLAnchorElement ? clickable.href : undefined;
-      trackClickAnyButton({
-        button_text: buttonText,
-        page_path: pathname,
-        ...(clickable.id && { button_id: clickable.id }),
-        ...(destinationUrl && { destination_url: destinationUrl }),
+      const ctaType = clickable instanceof HTMLAnchorElement ? 'navigation' : 'primary'; // Simplistic mapping
+
+      trackCtaClick({
+        cta_text: buttonText,
+        cta_type: ctaType as CtaClickParams['cta_type'],
+        cta_location: 'dynamic', // Needs better mapping or data attributes
+        page_type: pathname,
+        target_url: destinationUrl || '',
       });
 
-      if (destinationUrl?.startsWith('tel:')) {
-        trackPhoneClick(destinationUrl.replace('tel:', ''), pathname);
-      }
-
       if (destinationUrl && (destinationUrl.includes('wa.me/') || destinationUrl.includes('whatsapp.com/'))) {
-        trackWhatsAppClick(destinationUrl, pathname);
+        trackWhatsappSupportClicked({
+          support_entry_point: 'click',
+          page_type: pathname,
+        });
       }
     };
 

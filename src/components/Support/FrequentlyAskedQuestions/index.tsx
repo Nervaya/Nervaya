@@ -1,6 +1,8 @@
 'use client';
 
 import { useReducer } from 'react';
+import { usePathname } from 'next/navigation';
+import { trackFaqOpened } from '@/utils/analytics';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_REMOVE } from '@/constants/icons';
 import { faqData } from '@/utils/faqData';
@@ -28,9 +30,18 @@ const faqReducer = (state: FAQState, action: FAQAction): FAQState => {
 };
 
 const FrequentlyAskedQuestions = () => {
+  const pathname = usePathname();
   const [state, dispatch] = useReducer(faqReducer, { expandedId: 1 });
 
   const handleToggle = (id: number) => {
+    const item = faqData.find((f) => f.id === id);
+    if (state.expandedId !== id && item) {
+      trackFaqOpened({
+        faq_id: String(id),
+        faq_topic: item.question,
+        page_type: pathname,
+      });
+    }
     dispatch({ type: 'TOGGLE', id });
   };
 

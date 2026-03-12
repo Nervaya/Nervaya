@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { usePathname } from 'next/navigation';
 import { ICON_WHATSAPP, ICON_CHAT } from '@/constants/icons';
 import Button from '@/components/common/Button/Button';
-import { trackWhatsAppClick } from '@/utils/analytics';
+import { trackWhatsappSupportClicked } from '@/utils/analytics';
 
 const ChatWithUs = () => {
   const pathname = usePathname();
@@ -14,7 +14,10 @@ const ChatWithUs = () => {
     const phoneNumber = '1234567890';
     const message = encodeURIComponent('Hello! I need support with your product.');
     const destination = `https://wa.me/${phoneNumber}?text=${message}`;
-    trackWhatsAppClick(destination, pathname);
+    trackWhatsappSupportClicked({
+      support_entry_point: 'Support Page Chat Banner',
+      page_type: pathname,
+    });
     window.open(destination, '_blank');
   };
 

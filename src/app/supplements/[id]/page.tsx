@@ -50,6 +50,8 @@ export default function SupplementDetailPage() {
               item_category: 'Supplements',
               price: response.data.price,
               quantity: 1,
+              currency: 'INR',
+              page_type: 'product_detail',
             },
           ],
         });
@@ -96,6 +98,8 @@ export default function SupplementDetailPage() {
               item_category: 'Supplements',
               price: supplement.price,
               quantity,
+              currency: 'INR',
+              page_type: 'product_detail',
             },
           ],
         });

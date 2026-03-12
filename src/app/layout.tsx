@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Merriweather, Source_Sans_3 } from 'next/font/google';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import Script from 'next/script';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { EngagementTracker } from '@/components/EngagementTracker';
@@ -44,7 +45,22 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
-      <head />
+      <head>
+        <Script id="data-layer-init" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              user_context: {
+                logged_in: false,
+                internal_user_id: null,
+                crm_contact_id: null,
+                lifecycle_stage: "anonymous",
+                user_type: "guest"
+              }
+            });
+          `}
+        </Script>
+      </head>
       <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
         <Providers>
           <BodyRouteClass />

@@ -10,7 +10,7 @@ import { BookingModalFooter } from './BookingModalFooter';
 import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
 import { useTherapist } from '@/app/queries/therapists/useTherapist';
-import { trackSelectTimeSlot, trackBookingCompleted, trackBookingAbandoned } from '@/utils/analytics';
+import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 interface BookingModalProps {
@@ -73,11 +73,8 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   );
 
   const handleClose = useCallback(() => {
-    if (!bookingCompletedRef.current) {
-      trackBookingAbandoned({ therapist_id: therapistId, therapist_name: therapistName });
-    }
     onClose();
-  }, [therapistId, therapistName, onClose]);
+  }, [onClose]);
 
   const handleSlotSelect = useCallback(
     (id: string) => {
@@ -85,15 +82,17 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       setError(null);
       const slot = slotsForGrid.find((s) => s._id === id);
       if (slot) {
-        trackSelectTimeSlot({
+        trackTherapySlotSelected({
+          therapy_type: therapist?.specializations?.[0] || 'General Therapy',
           therapist_id: therapistId,
           therapist_name: therapistName,
-          slot_time: slot.startTime,
-          slot_date: slot.date,
+          slot_datetime: `${slot.date} ${slot.startTime}`,
+          price: therapist?.sessionFee ?? 0,
+          currency: 'INR',
         });
       }
     },
-    [slotsForGrid, therapistId, therapistName],
+    [slotsForGrid, therapistId, therapistName, therapist],
   );
 
   const handleDateSelect = useCallback(
@@ -145,11 +144,13 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     try {
       await sessionsApi.create(therapistId, schedule.date, slot.startTime);
       bookingCompletedRef.current = true;
-      trackBookingCompleted({
+      trackTherapyBooked({
+        therapy_type: therapist?.specializations?.[0] || 'General Therapy',
         therapist_id: therapistId,
         therapist_name: therapistName,
-        slot_time: slot.startTime,
-        slot_date: schedule.date,
+        slot_datetime: `${schedule.date} ${slot.startTime}`,
+        price: therapist?.sessionFee ?? 0,
+        currency: 'INR',
       });
       setSuccessMessage('Session booked successfully!');
       onSuccess?.();

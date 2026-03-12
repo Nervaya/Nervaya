@@ -10,6 +10,7 @@ import { ROLES, Role } from '@/lib/constants/roles';
 import { ROUTES } from '@/utils/routesConstants';
 import { validateReturnUrl } from '@/utils/returnUrl';
 import { AUTH_STORAGE_KEYS } from '@/utils/cookieConstants';
+import { trackLoggedIn, updateGaUserContext } from '@/utils/analytics';
 
 interface User {
   _id: string;
@@ -39,7 +40,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   clearError: () => void;
   updateUser: (updates: Partial<User>) => void;
-  completeLoginWithOtp: (data: AuthData, returnUrl?: string) => void;
+  completeLoginWithOtp: (data: AuthData, isFirstTime?: boolean, returnUrl?: string) => void;
 }
 
 export interface LoginWithOtpData {
@@ -91,23 +92,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (stored) {
       setUser(stored);
       setIsAuthenticated(true);
+      updateGaUserContext({
+        logged_in: true,
+        internal_user_id: stored._id,
+        user_type: 'registered',
+        lifecycle_stage: 'customer',
+      });
     } else {
       setUser(null);
       setIsAuthenticated(false);
+      updateGaUserContext({
+        logged_in: false,
+        internal_user_id: null,
+        user_type: 'guest',
+        lifecycle_stage: 'anonymous',
+      });
     }
     setInitializing(false);
   };
 
-  const handleAuthSuccess = (data: AuthData, returnUrl?: string) => {
+  const handleAuthSuccess = (data: AuthData, isFirstTime: boolean = false, returnUrl?: string) => {
+    setUser(data.user);
+    setIsAuthenticated(true);
+
     if (typeof window !== 'undefined') {
       const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
       localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_USER, JSON.stringify(data.user));
       localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT, String(expiresAt));
       localStorage.setItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN, 'true');
-      window.dispatchEvent(new CustomEvent('auth-state-changed'));
+      window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { source: 'AuthContext' } }));
     }
-    setUser(data.user);
-    setIsAuthenticated(true);
+
+    updateGaUserContext({
+      logged_in: true,
+      internal_user_id: data.user._id,
+      user_type: 'registered',
+      lifecycle_stage: 'customer',
+    });
+
+    trackLoggedIn({
+      signup_method: 'Email',
+      page_type: window.location.pathname,
+      firsttime: isFirstTime ? 1 : 0,
+    });
 
     const safeReturnUrl = validateReturnUrl(returnUrl);
     if (data.user.role === ROLES.ADMIN) {
@@ -122,7 +149,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     hydrateFromStore();
 
-    const handleAuthEvent = () => hydrateFromStore();
+    const handleAuthEvent = (e: Event) => {
+      // Avoid re-hydrating if the event was dispatched by this context itself
+      if ((e as CustomEvent).detail?.source === 'AuthContext') return;
+      hydrateFromStore();
+    };
     if (typeof window !== 'undefined') {
       window.addEventListener('auth-state-changed', handleAuthEvent);
     }
@@ -145,7 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })) as ApiResponse<AuthData | LoginWithOtpData>;
 
       if (response.success && response.data && !('requireOtp' in response.data && response.data.requireOtp)) {
-        handleAuthSuccess(response.data as AuthData, returnUrl);
+        handleAuthSuccess(response.data as AuthData, true, returnUrl);
       }
       return response;
     } catch (err) {
@@ -172,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if ('requireOtp' in data && data.requireOtp) {
           return response;
         }
-        handleAuthSuccess(data as AuthData, returnUrl);
+        handleAuthSuccess(data as AuthData, false, returnUrl);
       }
       return response;
     } catch (err) {
@@ -184,8 +215,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const completeLoginWithOtp = (data: AuthData, returnUrl?: string) => {
-    handleAuthSuccess(data, returnUrl);
+  const completeLoginWithOtp = (data: AuthData, isFirstTime: boolean = false, returnUrl?: string) => {
+    handleAuthSuccess(data, isFirstTime, returnUrl);
   };
 
   const logout = async () => {
@@ -198,12 +229,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
 
-    clearAuthStorage();
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('auth-state-changed'));
-    }
     setUser(null);
     setIsAuthenticated(false);
+    clearAuthStorage();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { source: 'AuthContext' } }));
+    }
+    updateGaUserContext({
+      logged_in: false,
+      internal_user_id: null,
+      user_type: 'guest',
+      lifecycle_stage: 'anonymous',
+    });
     router.push(ROUTES.LOGIN);
   };
 

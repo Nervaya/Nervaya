@@ -6,11 +6,10 @@ import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
 import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 import {
-  trackQuizStarted,
-  trackQuizQuestionAnswered,
-  trackQuizCompleted,
-  trackSleepSeverity,
-  type SleepSeverityLevel,
+  trackSleepScoreGenerated,
+  trackAssessmentStarted,
+  trackAssessmentCompleted,
+  trackAssessmentResultGenerated,
 } from '@/utils/analytics';
 
 export interface UseAssessmentStateResult {
@@ -150,7 +149,12 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
           setHasAlreadyCompleted(true);
           setLatestCompletedResponse(latest);
         } else {
-          trackQuizStarted('Sleep Assessment');
+          trackAssessmentStarted({
+            assessment_type: 'sleep',
+            assessment_id: 'sleep-assessment',
+            assessment_version: '1.0',
+            page_type: '/sleep-assessment',
+          });
         }
       } catch {
       } finally {
@@ -174,32 +178,33 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     try {
       if (answerToSave !== undefined) {
         await saveCurrentAnswer(currentQuestion._id, answerToSave);
-        trackQuizQuestionAnswered({
-          quiz_name: 'Sleep Assessment',
-          question_index: currentQuestionIndex,
-          question_id: currentQuestion._id,
-          total_questions: totalQuestions,
-        });
       }
       if (isLastQuestion) {
         const response = await completeAssessment();
         setCompletedResponse(response ?? null);
         setIsComplete(true);
         const scoreLabel = getSleepScoreLabel(response ?? null);
-        const severityMap: Record<string, SleepSeverityLevel> = {
-          Poor: 'severe',
-          Fair: 'moderate',
-          Moderate: 'moderate',
-          Good: 'mild',
-          Excellent: 'mild',
-        };
-        const severity: SleepSeverityLevel = severityMap[scoreLabel] ?? 'moderate';
-        trackQuizCompleted({
-          quiz_name: 'Sleep Assessment',
+
+        trackAssessmentCompleted({
+          assessment_type: 'sleep',
+          assessment_id: 'sleep-assessment',
           total_questions: totalQuestions,
-          sleep_severity: severity,
+          completion_time_seconds: 0, // Placeholder
         });
-        trackSleepSeverity(severity);
+
+        trackSleepScoreGenerated({
+          sleep_score: ((response as unknown as Record<string, unknown>)?.score as number) ?? 0,
+          score_band: scoreLabel.toLowerCase() as 'poor' | 'average' | 'good',
+          assessment_version: '1.0',
+        });
+
+        trackAssessmentResultGenerated({
+          assessment_type: 'sleep',
+          assessment_id: 'sleep-assessment',
+          score_value: ((response as unknown as Record<string, unknown>)?.score as number) ?? 0,
+          score_band: scoreLabel,
+          recommendation_type: 'product',
+        });
       } else {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
       }

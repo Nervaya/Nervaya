@@ -8,6 +8,8 @@ import StatusState from '@/components/common/StatusState';
 import { IMAGES } from '@/utils/imageConstants';
 import { reviewsApi } from '@/lib/api/reviews';
 import type { Supplement, Review, StarDistribution } from '@/types/supplement.types';
+import { usePathname } from 'next/navigation';
+import { trackReviewViewed } from '@/utils/analytics';
 import styles from './TabReviews.module.css';
 
 interface TabReviewsProps {
@@ -34,9 +36,16 @@ const TabReviews: React.FC<TabReviewsProps> = ({ supplement }) => {
     }
   }, [supplement._id]);
 
+  const pathname = usePathname();
+
   useEffect(() => {
     fetchReviews();
-  }, [fetchReviews]);
+    trackReviewViewed({
+      review_source: 'product_detail',
+      page_type: pathname,
+      item_id: supplement._id,
+    });
+  }, [fetchReviews, pathname, supplement._id]);
 
   const averageRating = supplement.averageRating ?? 0;
   const reviewCount = supplement.reviewCount ?? 0;

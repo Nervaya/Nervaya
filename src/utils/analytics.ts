@@ -5,6 +5,10 @@ declare global {
   }
 }
 
+// ... (previous imports)
+
+export type ScrollDepthThreshold = 25 | 50 | 75 | 90;
+
 function sendGaEvent(eventName: string, params?: Record<string, unknown>): void {
   if (typeof window === 'undefined') return;
 
@@ -21,354 +25,471 @@ function sendGaEvent(eventName: string, params?: Record<string, unknown>): void 
   window.gtag('event', eventName, params);
 }
 
-export interface GaItem {
+// Helper to push user context updates
+export function updateGaUserContext(context: {
+  logged_in?: boolean;
+  internal_user_id?: string | null;
+  crm_contact_id?: string | null;
+  lifecycle_stage?: 'anonymous' | 'lead' | 'contact' | 'customer';
+  user_type?: 'guest' | 'registered';
+}): void {
+  if (typeof window === 'undefined') return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'user_context_update',
+    user_context: context,
+  });
+}
+
+/*
+// 1. page_view
+export interface PageViewParams {
+  page_url: string;
+  page_type: string;
+  traffic_source?: string;
+  device_type?: string;
+  experiment_variant?: string;
+  [key: string]: unknown;
+}
+export function trackPageView(params: PageViewParams): void {
+  sendGaEvent('page_view', params);
+}
+*/
+
+// 2. cta_click
+export interface CtaClickParams {
+  cta_text: string;
+  cta_type: 'primary' | 'secondary' | 'navigation' | 'account' | 'support' | 'social';
+  cta_location: string;
+  page_type: string;
+  target_url: string;
+  module?: string;
+  [key: string]: unknown;
+}
+export function trackCtaClick(params: CtaClickParams): void {
+  sendGaEvent('cta_click', params);
+}
+
+export interface ItemParams {
   item_id: string;
   item_name: string;
   item_category?: string;
+  module?: string;
   price: number;
+  currency: string;
+  page_type: string;
   quantity?: number;
-  discount?: number;
+  [key: string]: unknown;
 }
 
 export interface EcommerceParams {
   currency: string;
   value: number;
-  items: GaItem[];
+  items: ItemParams[];
   coupon?: string;
+  [key: string]: unknown;
 }
 
-export type SleepSeverityLevel = 'mild' | 'moderate' | 'severe';
-export type ScrollDepthThreshold = 25 | 50 | 75 | 90;
-
-export function trackViewItem(params: EcommerceParams): void {
-  sendGaEvent('view_item', { currency: params.currency, value: params.value, items: params.items });
-  if (params.items[0]) {
-    sendGaEvent('view_product', {
-      currency: params.currency,
-      value: params.value,
-      item_id: params.items[0].item_id,
-      item_name: params.items[0].item_name,
-      ...(params.items[0].item_category && { item_category: params.items[0].item_category }),
-      price: params.items[0].price,
-    });
-  }
+// 3. view_item
+export function trackItemView(params: EcommerceParams): void {
+  sendGaEvent('view_item', params as unknown as Record<string, unknown>);
 }
+export const trackViewItem = trackItemView;
 
+// 4. add_to_cart
 export function trackAddToCart(params: EcommerceParams): void {
-  sendGaEvent('add_to_cart', { currency: params.currency, value: params.value, items: params.items });
+  sendGaEvent('add_to_cart', params as unknown as Record<string, unknown>);
 }
 
-export function trackViewCart(params: EcommerceParams): void {
-  sendGaEvent('view_cart', { currency: params.currency, value: params.value, items: params.items });
+/*
+// 5. remove_from_cart
+export function trackRemoveFromCart(params: EcommerceParams): void {
+  sendGaEvent('remove_from_cart', params as unknown as Record<string, unknown>);
+}
+*/
+
+// 6. begin_checkout
+export interface BeginCheckoutParams {
+  value: number;
+  currency: string;
+  item_count: number;
+  modules_in_cart: string[];
+  [key: string]: unknown;
+}
+export function trackBeginCheckout(params: BeginCheckoutParams): void {
+  sendGaEvent('begin_checkout', params);
 }
 
-export function trackBeginCheckout(params: EcommerceParams): void {
-  sendGaEvent('begin_checkout', {
-    currency: params.currency,
-    value: params.value,
-    items: params.items,
-    ...(params.coupon && { coupon: params.coupon }),
-  });
+// 7. add_shipping_info
+export interface ShippingInfoParams {
+  shipping_country: string;
+  shipping_method: string;
+  value: number;
+  currency: string;
+  shipping_details?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+export function trackAddShippingInfo(params: ShippingInfoParams): void {
+  sendGaEvent('add_shipping_info', params);
 }
 
-export interface AddPaymentInfoParams extends EcommerceParams {
-  payment_type: string;
-}
-
-export function trackAddPaymentInfo(params: AddPaymentInfoParams): void {
-  sendGaEvent('add_payment_info', {
-    currency: params.currency,
-    value: params.value,
-    payment_type: params.payment_type,
-    items: params.items,
-    ...(params.coupon && { coupon: params.coupon }),
-  });
-}
-
+// 8. purchase
 export interface PurchaseParams {
   transaction_id: string;
+  order_id: string;
+  value: number;
+  currency: string;
+  tax?: number;
+  shipping?: number;
+  coupon?: string;
+  items: ItemParams[];
+  [key: string]: unknown;
+}
+export function trackPurchase(params: PurchaseParams): void {
+  sendGaEvent('purchase', params);
+}
+
+// 9. purchase_failed
+export interface PurchaseFailedParams {
+  error_code: string;
+  payment_method: string;
+  value: number;
+  currency: string;
+  transaction_id?: string;
+  order_id?: string;
+  [key: string]: unknown;
+}
+export function trackPurchaseFailed(params: PurchaseFailedParams): void {
+  sendGaEvent('purchase_failed', params);
+}
+
+// 10. Logged_in
+export interface LoggedInParams {
+  signup_method: string;
+  page_type: string;
+  firsttime: 1 | 0;
+  [key: string]: unknown;
+}
+export function trackLoggedIn(params: LoggedInParams): void {
+  sendGaEvent('Logged_in', params);
+}
+
+// 11. view_cart
+export interface ViewCartParams {
+  value: number;
+  currency: string;
+  item_count: number;
+  [key: string]: unknown;
+}
+export function trackViewCart(params: ViewCartParams): void {
+  sendGaEvent('view_cart', params);
+}
+
+// 12. apply_coupon
+export interface ApplyCouponParams {
+  coupon_code: string;
+  discount_value: number;
+  value_before: number;
+  value_after: number;
+  [key: string]: unknown;
+}
+export function trackCouponApplied(params: ApplyCouponParams): void {
+  sendGaEvent('apply_coupon', params);
+}
+// Alias for older/other names if needed
+export const trackApplyCoupon = trackCouponApplied;
+
+export interface PaymentInfoParams {
   currency: string;
   value: number;
-  shipping: number;
-  tax?: number;
+  payment_type: string;
+  items: ItemParams[];
   coupon?: string;
-  items: GaItem[];
+  [key: string]: unknown;
+}
+export function trackAddPaymentInfo(params: PaymentInfoParams): void {
+  sendGaEvent('add_payment_info', params);
 }
 
-export function trackPurchase(params: PurchaseParams): void {
-  sendGaEvent('purchase', {
-    transaction_id: params.transaction_id,
-    currency: params.currency,
-    value: params.value,
-    shipping: params.shipping,
-    ...(params.tax !== undefined && { tax: params.tax }),
-    ...(params.coupon && { coupon: params.coupon }),
-    items: params.items,
-  });
-  sendGaEvent('order_value', {
-    transaction_id: params.transaction_id,
-    currency: params.currency,
-    value: params.value,
-  });
-}
-
+/*
+// 13. view_item_list
 export interface ViewItemListParams {
-  item_list_id?: string;
-  item_list_name?: string;
-  items: GaItem[];
+  item_list_name: string;
+  item_ids: string[];
+  page_type: string;
+  [key: string]: unknown;
 }
-
 export function trackViewItemList(params: ViewItemListParams): void {
-  sendGaEvent('view_item_list', {
-    ...(params.item_list_id && { item_list_id: params.item_list_id }),
-    ...(params.item_list_name && { item_list_name: params.item_list_name }),
-    items: params.items,
-  });
+  sendGaEvent('view_item_list', params);
 }
+*/
 
-export function trackSelectItem(params: ViewItemListParams): void {
-  sendGaEvent('select_item', {
-    ...(params.item_list_id && { item_list_id: params.item_list_id }),
-    ...(params.item_list_name && { item_list_name: params.item_list_name }),
-    items: params.items,
-  });
+/*
+// 14. click_item (select_item in dataLayer example)
+export interface ClickItemParams {
+  item_id: string;
+  item_list_name: string;
+  position: number;
+  cta_name: string;
+  [key: string]: unknown;
 }
-
-export function trackSignUp(method: string): void {
-  sendGaEvent('sign_up', { method });
+export function trackClickItem(params: ClickItemParams): void {
+  sendGaEvent('select_item', params);
 }
+*/
 
-export function trackLogin(method: string): void {
-  sendGaEvent('login', { method });
-}
-
-export function trackSearch(searchTerm: string): void {
-  sendGaEvent('search', { search_term: searchTerm });
-}
-
-export interface ClickAnyButtonParams {
-  button_text: string;
-  page_path: string;
-  button_id?: string;
-  destination_url?: string;
-}
-
-export function trackClickAnyButton(params: ClickAnyButtonParams): void {
-  sendGaEvent('click_any_button', {
-    button_text: params.button_text,
-    page_path: params.page_path,
-    ...(params.button_id && { button_id: params.button_id }),
-    ...(params.destination_url && { destination_url: params.destination_url }),
-  });
-}
-
-export interface CouponAppliedParams {
-  coupon_code: string;
-  discount_value?: number;
-  currency?: string;
-  cart_value?: number;
-}
-
-export function trackCouponApplied(params: CouponAppliedParams): void {
-  sendGaEvent('coupon_applied', {
-    coupon_code: params.coupon_code,
-    ...(params.discount_value !== undefined && { discount_value: params.discount_value }),
-    ...(params.currency && { currency: params.currency }),
-    ...(params.cart_value !== undefined && { cart_value: params.cart_value }),
-  });
-}
-
+// 15. scroll_depth
 export interface ScrollDepthParams {
-  percent_scrolled: ScrollDepthThreshold;
-  page_path: string;
+  percent_scrolled: number;
+  page_type: string;
+  [key: string]: unknown;
 }
-
 export function trackScrollDepth(params: ScrollDepthParams): void {
-  sendGaEvent(`scroll_${params.percent_scrolled}`, {
-    percent_scrolled: params.percent_scrolled,
-    page_path: params.page_path,
-  });
+  sendGaEvent('scroll_depth', params);
 }
 
-export interface ExitPageParams {
+// 16. faq_opened
+export interface FaqParams {
+  faq_id: string;
+  faq_topic: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackFaqOpened(params: FaqParams): void {
+  sendGaEvent('faq_opened', params);
+}
+
+// 17. review_viewed
+export function trackReviewViewed(params: { review_source: string; page_type: string; [key: string]: unknown }): void {
+  sendGaEvent('review_viewed', params);
+}
+
+/*
+// 18. testimonial_viewed
+export function trackTestimonialViewed(params: { testimonial_id: string; page_type: string; [key: string]: unknown }): void {
+  sendGaEvent('testimonial_viewed', params);
+}
+*/
+
+/*
+// 19. video_played
+export interface VideoParams {
+  video_id: string;
+  video_position: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackVideoPlayed(params: VideoParams): void {
+  sendGaEvent('video_played', params);
+}
+*/
+
+// 20. whatsapp_support_clicked
+export interface WhatsappParams {
+  support_entry_point: string;
+  page_type: string;
+  module?: string;
+  [key: string]: unknown;
+}
+export function trackWhatsappSupportClicked(params: WhatsappParams): void {
+  sendGaEvent('whatsapp_support_clicked', params);
+}
+
+/*
+// 21. whatsapp_chat_started
+export function trackWhatsappChatStarted(params: WhatsappParams): void {
+  sendGaEvent('whatsapp_chat_started', params);
+}
+*/
+
+/*
+// 22. whatsapp_bot_interaction
+export interface BotParams {
+  bot_step: string;
+  bot_option_selected: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackWhatsappBotInteraction(params: BotParams): void {
+  sendGaEvent('whatsapp_bot_interaction', params);
+}
+*/
+
+/*
+// 23. rating_submitted
+export interface RatingParams {
+  rating_value: number;
+  rating_target: 'product' | 'therapy' | 'assessment';
+  item_id?: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackRatingSubmitted(params: RatingParams): void {
+  sendGaEvent('rating_submitted', params);
+}
+*/
+
+/*
+// 24. review_submitted
+export interface ReviewSubmittedParams {
+  rating_value: number;
+  review_length: number;
+  review_target: string;
+  item_id?: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackReviewSubmitted(params: ReviewSubmittedParams): void {
+  sendGaEvent('review_submitted', params);
+}
+*/
+
+/*
+// 25. feedback_submitted
+export interface FeedbackParams {
+  feedback_type: 'complaint' | 'suggestion' | 'praise';
+  feedback_length: number;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackFeedbackSubmitted(params: FeedbackParams): void {
+  sendGaEvent('feedback_submitted', params);
+}
+*/
+
+// 26. sleep_score_generated
+export interface SleepScoreParams {
+  sleep_score: number;
+  score_band: 'poor' | 'average' | 'good';
+  assessment_version: string;
+  [key: string]: unknown;
+}
+export function trackSleepScoreGenerated(params: SleepScoreParams): void {
+  sendGaEvent('sleep_score_generated', params);
+}
+
+// 27. assessment_started
+export interface AssessmentStartedParams {
+  assessment_type: 'sleep' | 'deep_rest';
+  assessment_id: string;
+  assessment_version: string;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackAssessmentStarted(params: AssessmentStartedParams): void {
+  sendGaEvent('assessment_started', params);
+}
+
+// 28. assessment_completed
+export interface AssessmentCompletedParams {
+  assessment_type: string;
+  assessment_id: string;
+  total_questions: number;
+  completion_time_seconds: number;
+  [key: string]: unknown;
+}
+export function trackAssessmentCompleted(params: AssessmentCompletedParams): void {
+  sendGaEvent('assessment_completed', params);
+}
+
+// 29. assessment_result_generated
+export interface AssessmentResultParams {
+  assessment_type: string;
+  assessment_id: string;
+  score_value: number;
+  score_band: string;
+  recommendation_type: 'content' | 'therapy' | 'product';
+  [key: string]: unknown;
+}
+export function trackAssessmentResultGenerated(params: AssessmentResultParams): void {
+  sendGaEvent('assessment_result_generated', params);
+}
+
+// 30. therapy_slot_selected
+export interface TherapySlotParams {
+  therapy_type: string;
+  therapist_id: string;
+  slot_datetime: string;
+  price: number;
+  currency: string;
+  [key: string]: unknown;
+}
+export function trackTherapySlotSelected(params: TherapySlotParams): void {
+  sendGaEvent('therapy_slot_selected', params);
+}
+
+/*
+// 31. nps_submitted
+export interface NpsParams {
+  nps_score: number;
+  nps_category: 'detractor' | 'passive' | 'promoter';
+  nps_context: string;
+  journey_stage: string;
+  comment_length: number;
+  page_type: string;
+  [key: string]: unknown;
+}
+export function trackNpsSubmitted(params: NpsParams): void {
+  sendGaEvent('nps_submitted', params);
+}
+*/
+
+// extra: therapy_booked
+export function trackTherapyBooked(params: TherapySlotParams): void {
+  sendGaEvent('therapy_booked', params);
+}
+
+// 32. page_exit (Restored for useExitPage hook)
+export interface PageExitParams {
   page_path: string;
   time_on_page_seconds: number;
+  [key: string]: unknown;
+}
+export function trackExitPage(params: PageExitParams): void {
+  sendGaEvent('page_exit', params);
 }
 
-export function trackExitPage(params: ExitPageParams): void {
-  sendGaEvent('exit_page', {
-    page_path: params.page_path,
-    time_on_page_seconds: params.time_on_page_seconds,
-  });
+// Legacy aliases for build compatibility
+export function trackStartBooking(params: { therapist_id: string; therapist_name: string }): void {
+  sendGaEvent('start_booking', params);
 }
 
-export function trackQuizStarted(quizName: string): void {
-  sendGaEvent('quiz_started', { quiz_name: quizName });
-}
-
-export interface QuizQuestionAnsweredParams {
-  quiz_name: string;
-  question_index: number;
-  question_id: string;
-  total_questions: number;
-}
-
-export function trackQuizQuestionAnswered(params: QuizQuestionAnsweredParams): void {
-  sendGaEvent('quiz_question_answered', {
-    quiz_name: params.quiz_name,
-    question_index: params.question_index,
-    question_id: params.question_id,
-    total_questions: params.total_questions,
-  });
-}
-
-export interface QuizCompletedParams {
-  quiz_name: string;
-  total_questions: number;
-  sleep_severity: SleepSeverityLevel;
-}
-
-export function trackQuizCompleted(params: QuizCompletedParams): void {
-  sendGaEvent('quiz_completed', {
-    quiz_name: params.quiz_name,
-    total_questions: params.total_questions,
-    sleep_severity: params.sleep_severity,
-  });
-}
-
-export function trackSleepSeverity(severity: SleepSeverityLevel): void {
-  sendGaEvent(`sleep_severity_${severity}`, { severity });
-}
-
-export interface RecommendationClickedParams {
-  recommendation_title: string;
-  destination_url: string;
-}
-
-export function trackRecommendationClicked(params: RecommendationClickedParams): void {
-  sendGaEvent('recommendation_clicked', {
-    recommendation_title: params.recommendation_title,
-    destination_url: params.destination_url,
-  });
-}
-
-export interface TherapistParams {
-  therapist_id: string;
-  therapist_name: string;
-}
-
-export interface BookingSlotParams extends TherapistParams {
-  slot_time: string;
-  slot_date: string;
-}
-
-export function trackViewTherapistProfile(params: TherapistParams): void {
-  sendGaEvent('view_therapist_profile', {
-    therapist_id: params.therapist_id,
-    therapist_name: params.therapist_name,
-  });
-}
-
-export function trackStartBooking(params: TherapistParams): void {
-  sendGaEvent('start_booking', {
-    therapist_id: params.therapist_id,
-    therapist_name: params.therapist_name,
-  });
-}
-
-export function trackSelectTimeSlot(params: BookingSlotParams): void {
-  sendGaEvent('select_time_slot', {
-    therapist_id: params.therapist_id,
-    therapist_name: params.therapist_name,
-    slot_time: params.slot_time,
-    slot_date: params.slot_date,
-  });
-}
-
-export function trackBookingCompleted(params: BookingSlotParams): void {
-  sendGaEvent('booking_completed', {
-    therapist_id: params.therapist_id,
-    therapist_name: params.therapist_name,
-    slot_time: params.slot_time,
-    slot_date: params.slot_date,
-  });
-}
-
-export function trackBookingAbandoned(params: TherapistParams): void {
-  sendGaEvent('booking_abandoned', {
-    therapist_id: params.therapist_id,
-    therapist_name: params.therapist_name,
-  });
-}
-
-export interface PaymentFailedParams {
-  order_id: string;
-  reason: string;
-}
-
-export function trackPaymentFailed(params: PaymentFailedParams): void {
-  sendGaEvent('payment_failed', { order_id: params.order_id, reason: params.reason });
-}
-
-export interface AudioTrackParams {
-  video_id: string;
-  video_title: string;
-}
-
-export interface AudioPurchaseParams {
-  order_id: string;
-  value: number;
-  currency?: string;
+export function trackViewTherapistProfile(params: { therapist_id: string; therapist_name: string }): void {
+  sendGaEvent('view_therapist_profile', params);
 }
 
 export function trackViewAudioPage(): void {
-  sendGaEvent('view_audio_page', { page: 'drift_off' });
+  sendGaEvent('view_audio_page', { page_type: 'audio' });
 }
 
-export function trackPreviewPlay(params: AudioTrackParams): void {
-  sendGaEvent('preview_play', { video_id: params.video_id, video_title: params.video_title });
+export function trackAudioPurchase(params: { order_id: string; value: number; currency: string }): void {
+  sendGaEvent('audio_purchase', params);
 }
 
-export function trackAudioCompleted50(params: AudioTrackParams): void {
-  sendGaEvent('audio_completed_50', { video_id: params.video_id, video_title: params.video_title });
+export function trackLeadSubmitted(params: { lead_type: string; source_page: string; [key: string]: unknown }): void {
+  sendGaEvent('lead_submitted', params);
 }
 
-export function trackAudioCompleted100(params: AudioTrackParams): void {
-  sendGaEvent('audio_completed_100', { video_id: params.video_id, video_title: params.video_title });
+export function trackPaymentFailed(params: { order_id: string; reason: string }): void {
+  sendGaEvent('payment_failed', params);
 }
 
-export function trackAudioPurchase(params: AudioPurchaseParams): void {
-  sendGaEvent('audio_purchase', {
-    order_id: params.order_id,
-    value: params.value,
-    currency: params.currency || 'INR',
-  });
+export function trackRecommendationClicked(params: { recommendation_title: string; destination_url: string }): void {
+  sendGaEvent('recommendation_clicked', params);
 }
 
-export interface LeadSubmittedParams {
-  lead_type: string;
-  source_page: string;
-  connection_type?: string;
+export function trackPreviewPlay(params: { video_id: string; video_title: string }): void {
+  sendGaEvent('preview_play', params);
 }
 
-export function trackLeadSubmitted(params: LeadSubmittedParams): void {
-  sendGaEvent('lead_submitted', {
-    lead_type: params.lead_type,
-    source_page: params.source_page,
-    ...(params.connection_type && { connection_type: params.connection_type }),
-  });
+export function trackAudioCompleted50(params: { video_id: string; video_title: string }): void {
+  sendGaEvent('audio_completed_50', params);
 }
 
-export function trackWhatsAppClick(destination_url: string, page_path?: string): void {
-  sendGaEvent('whatsapp_click', {
-    destination_url,
-    ...(page_path && { page_path }),
-  });
+export function trackAudioCompleted100(params: { video_id: string; video_title: string }): void {
+  sendGaEvent('audio_completed_100', params);
 }
 
-export function trackPhoneClick(phone_number: string, page_path?: string): void {
-  sendGaEvent('phone_click', {
-    phone_number,
-    ...(page_path && { page_path }),
-  });
+export function trackSearch(search_term: string): void {
+  sendGaEvent('search', { search_term });
 }

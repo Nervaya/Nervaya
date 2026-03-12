@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Cart } from '@/types/supplement.types';
 import Button from '@/components/common/Button';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
+import { trackViewCart, trackBeginCheckout } from '@/utils/analytics';
 import styles from './styles.module.css';
 
 interface CartSummaryProps {
@@ -18,6 +19,14 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = f
   const subtotal = cart.totalAmount;
   const shipping = subtotal > 500 ? 0 : 50;
   const total = subtotal + shipping;
+
+  React.useEffect(() => {
+    trackViewCart({
+      value: total,
+      currency: 'INR',
+      item_count: itemCount,
+    });
+  }, [total, itemCount]);
 
   return (
     <div className={styles.summary}>
@@ -42,7 +51,20 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = f
       </div>
       <div className={styles.actions}>
         {cart.items.length > 0 ? (
-          <Button variant="primary" onClick={onCheckout} loading={loading} className={styles.checkoutButton}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              trackBeginCheckout({
+                value: total,
+                currency: 'INR',
+                item_count: itemCount,
+                modules_in_cart: cart.items.map(() => 'supplements'),
+              });
+              onCheckout?.();
+            }}
+            loading={loading}
+            className={styles.checkoutButton}
+          >
             Proceed to Checkout
           </Button>
         ) : (

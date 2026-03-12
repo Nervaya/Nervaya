@@ -23,7 +23,7 @@ export function useScrollDepth(): void {
       for (const threshold of THRESHOLDS) {
         if (scrollPercent >= threshold && !firedRef.current.has(threshold)) {
           firedRef.current.add(threshold);
-          trackScrollDepth({ percent_scrolled: threshold, page_path: pathname });
+          trackScrollDepth({ percent_scrolled: threshold, page_type: pathname });
         }
       }
     };

@@ -4,11 +4,18 @@ import api from '@/lib/axios';
 import { promoApi } from '@/lib/api/promo';
 import type { Cart, Order, ShippingAddress, SavedAddress, Supplement } from '@/types/supplement.types';
 import { getShippingCost, type DeliveryMethod } from '@/utils/shipping.util';
-import { trackBeginCheckout, trackAddPaymentInfo, trackCouponApplied, type GaItem } from '@/utils/analytics';
+import {
+  trackBeginCheckout,
+  trackAddPaymentInfo,
+  trackCouponApplied,
+  trackAddShippingInfo,
+  trackPurchaseFailed,
+  type ItemParams,
+} from '@/utils/analytics';
 
 export { getShippingCost };
 
-function cartItemsToGaItems(cart: Cart): GaItem[] {
+function cartItemsToGaItems(cart: Cart): ItemParams[] {
   return cart.items.map((item) => {
     const isPopulated =
       typeof item.supplementId === 'object' && item.supplementId !== null && 'name' in item.supplementId;
@@ -19,6 +26,8 @@ function cartItemsToGaItems(cart: Cart): GaItem[] {
       item_category: 'Supplements',
       price: item.price,
       quantity: item.quantity,
+      currency: 'INR',
+      page_type: '/checkout',
     };
   });
 }
@@ -67,7 +76,8 @@ export function useCheckout() {
           trackBeginCheckout({
             currency: 'INR',
             value: response.data.totalAmount,
-            items: cartItemsToGaItems(response.data),
+            item_count: response.data.items.length,
+            modules_in_cart: ['supplements'],
           });
         }
       }
@@ -147,8 +157,8 @@ export function useCheckout() {
         trackCouponApplied({
           coupon_code: code,
           discount_value: result.discount ?? 0,
-          currency: 'INR',
-          cart_value: cart.totalAmount,
+          value_before: cart.totalAmount,
+          value_after: cart.totalAmount - (result.discount ?? 0),
         });
       } catch (err) {
         const msg = err instanceof Error ? err.message : 'Invalid or expired promo code';
@@ -176,6 +186,12 @@ export function useCheckout() {
     setCreatingOrder(true);
     setError(null);
     try {
+      trackAddShippingInfo({
+        shipping_country: selectedAddress.country,
+        shipping_method: selectedDeliveryMethod,
+        value: cart.totalAmount - promoDiscount,
+        currency: 'INR',
+      });
       trackAddPaymentInfo({
         currency: 'INR',
         value: cart.totalAmount - promoDiscount,
@@ -202,9 +218,21 @@ export function useCheckout() {
         setRazorpayOrderId(paymentResponse.data.id);
         if (paymentResponse.data.key_id) setRazorpayKeyId(paymentResponse.data.key_id);
       } else {
+        trackPurchaseFailed({
+          error_code: 'PAYMENT_INIT_FAILED',
+          payment_method: 'Razorpay',
+          value: cart.totalAmount - promoDiscount,
+          currency: 'INR',
+        });
         setError('Failed to initialize payment');
       }
     } catch (err) {
+      trackPurchaseFailed({
+        error_code: 'ORDER_CREATION_FAILED',
+        payment_method: 'Razorpay',
+        value: cart ? cart.totalAmount - promoDiscount : 0,
+        currency: 'INR',
+      });
       setError(err instanceof Error ? err.message : 'Failed to process order');
     } finally {
       setCreatingOrder(false);
