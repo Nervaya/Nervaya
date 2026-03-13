@@ -15,6 +15,7 @@ import { PromoCode } from './PromoCode';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import LottieLoader from '@/components/common/LottieLoader';
+import Modal from '@/components/common/Modal';
 import styles from './styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
@@ -28,8 +29,9 @@ export default function CheckoutPage() {
     savedAddresses,
     showSavedAddresses,
     selectedAddress,
-    editingAddress,
-    formKey,
+    isAddressModalOpen,
+    handleCloseAddressModal,
+    handleAddNewAddress,
     handleAddressSubmit,
     handleUseAddress,
     handleEditAddress,
@@ -93,8 +95,6 @@ export default function CheckoutPage() {
     );
   }
 
-  const showForm = !selectedAddress || editingAddress;
-
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Home', href: '/dashboard' },
     { label: 'Supplements', href: '/supplements' },
@@ -113,31 +113,39 @@ export default function CheckoutPage() {
         {error && <div className={styles.error}>{error}</div>}
         <div className={styles.content}>
           <div className={styles.formSection}>
-            {selectedAddress && !editingAddress && (
-              <AddressCard
-                address={selectedAddress}
-                label="Home Address"
-                isDefault={false}
-                onEdit={handleEditAddress}
+            {showSavedAddresses && (
+              <CheckoutSavedAddresses
+                addresses={savedAddresses}
+                onUseAddress={handleUseAddress}
+                onAddNew={handleAddNewAddress}
               />
             )}
-            {showSavedAddresses && showForm && (
-              <CheckoutSavedAddresses addresses={savedAddresses} onUseAddress={handleUseAddress} />
+
+            {selectedAddress && (
+              <div className={styles.selectedAddressWrapper}>
+                <AddressCard
+                  address={selectedAddress}
+                  label="Shipping Address"
+                  isDefault={false}
+                  onEdit={handleEditAddress}
+                />
+              </div>
             )}
-            {showForm && (
-              <CheckoutForm
-                key={formKey}
-                onSubmit={handleAddressSubmit}
-                loading={false}
-                initialAddress={selectedAddress}
-              />
-            )}
+
             <DeliveryOptions
               selectedMethod={selectedDeliveryMethod}
               onSelect={handleDeliveryMethodSelect}
               subtotal={cart.totalAmount}
             />
           </div>
+
+          <Modal
+            isOpen={isAddressModalOpen}
+            onClose={handleCloseAddressModal}
+            title={selectedAddress ? 'Edit Address' : 'Add New Address'}
+          >
+            <CheckoutForm onSubmit={handleAddressSubmit} loading={false} initialAddress={selectedAddress} />
+          </Modal>
           <div className={styles.summarySection}>
             <CheckoutOrderSummary
               cart={cart}

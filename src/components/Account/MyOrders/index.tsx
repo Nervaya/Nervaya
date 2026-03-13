@@ -96,7 +96,12 @@ export default function MyOrders() {
 
           return (
             <li key={order._id} className={styles.orderCard}>
-              <div className={styles.orderImagePlaceholder}>{/* Placeholder for image */}</div>
+              <div className={styles.orderImagePlaceholder}>
+                {firstItem.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={firstItem.image} alt={firstItem.name} className={styles.productImage} />
+                ) : null}
+              </div>
 
               <div className={styles.orderDetails}>
                 <div className={styles.orderHeaderMain}>

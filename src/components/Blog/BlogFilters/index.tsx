@@ -2,7 +2,7 @@
 
 import { Icon } from '@iconify/react';
 import { ICON_MAGNIFYING_GLASS } from '@/constants/icons';
-import { Dropdown } from '@/components/common';
+import { MultiSelect } from '@/components/common';
 import styles from './styles.module.css';
 
 interface BlogFiltersProps {
@@ -10,8 +10,8 @@ interface BlogFiltersProps {
   onSearchInputChange: (value: string) => void;
   onSearchSubmit: (e: React.FormEvent) => void;
   allTags: string[];
-  selectedTag: string | null;
-  onFilterChange: (value: string | null) => void;
+  selectedTags: string[];
+  onFilterChange: (values: string[]) => void;
 }
 
 export default function BlogFilters({
@@ -19,7 +19,7 @@ export default function BlogFilters({
   onSearchInputChange,
   onSearchSubmit,
   allTags,
-  selectedTag,
+  selectedTags,
   onFilterChange,
 }: BlogFiltersProps) {
   return (
@@ -43,13 +43,14 @@ export default function BlogFilters({
           <label htmlFor="blog-filter" className={styles.filterLabel}>
             Filter by topic
           </label>
-          <Dropdown
+          <MultiSelect
             id="blog-filter"
-            options={[{ value: '', label: 'All topics' }, ...allTags.map((tag) => ({ value: tag, label: tag }))]}
-            value={selectedTag ?? ''}
-            onChange={(value) => onFilterChange(value || null)}
+            options={allTags.map((tag) => ({ value: tag, label: tag }))}
+            values={selectedTags}
+            onChange={onFilterChange}
             ariaLabel="Filter by topic"
             className={styles.filterSelect}
+            placeholder="Select topics..."
           />
         </div>
       )}

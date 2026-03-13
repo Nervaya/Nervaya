@@ -141,7 +141,12 @@ export default function MySessions() {
 
                 return (
                   <div key={session._id} className={styles.sessionCard}>
-                    <div className={styles.cardImagePlaceholder}>{/* Placeholder for thumbnail */}</div>
+                    <div className={styles.cardImagePlaceholder}>
+                      {therapist?.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={therapist.image} alt={therapist.name} className={styles.therapistImage} />
+                      ) : null}
+                    </div>
 
                     <div className={styles.cardContent}>
                       <h4 className={styles.itemTitle}>{therapist?.name || 'Unknown Therapist'}</h4>
@@ -260,6 +265,14 @@ export default function MySessions() {
                 return (
                   <div key={session._id} className={styles.sessionCard}>
                     <div className={styles.cardImagePlaceholder}>
+                      {session.assignedVideoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={`https://img.youtube.com/vi/${session.assignedVideoUrl.split('v=')[1]?.split('&')[0]}/0.jpg`}
+                          alt={title}
+                          className={styles.therapistImage}
+                        />
+                      ) : null}
                       <span className={styles.lifetimeBadge}>
                         <Icon icon="lucide:infinity" /> Lifetime
                       </span>

@@ -146,15 +146,15 @@ export interface PaginatedBlogsResult {
 }
 
 export async function getPublishedBlogsPaginated(
-  options: { tag?: string; search?: string; page?: number; limit?: number } = {},
+  options: { tags?: string[]; search?: string; page?: number; limit?: number } = {},
 ): Promise<PaginatedBlogsResult> {
   await connectDB();
   try {
-    const { tag, search, page = 1, limit = PAGE_SIZE_3 } = options;
+    const { tags, search, page = 1, limit = PAGE_SIZE_3 } = options;
     const filter: Record<string, unknown> = { isPublished: true };
 
-    if (tag) {
-      filter.tags = { $in: [tag] };
+    if (tags && tags.length > 0) {
+      filter.tags = { $in: tags };
     }
 
     if (search && search.trim()) {

@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { ICON_CLOCK, ICON_USER, ICON_CALENDAR, ICON_ARROW_LEFT, ICON_SHARE } from '@/constants/icons';
+import { ICON_USER, ICON_ARROW_LEFT, ICON_SHARE } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import { blogsApi } from '@/lib/api/blogs';
@@ -20,7 +20,6 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -58,7 +57,6 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
       } catch {}
     } else {
       navigator.clipboard.writeText(window.location.href);
-      setShareMessage('Link copied to clipboard!');
     }
   };
 
@@ -90,30 +88,38 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   return (
     <Sidebar>
       <article className={styles.container}>
-        <div className={styles.navigation}>
-          <Link href="/blog" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} />
-            Back to Blog
-          </Link>
-          <button onClick={handleShare} className={styles.shareButton}>
-            <Icon icon={ICON_SHARE} />
-            Share
-          </button>
-          {shareMessage && (
-            <span className={styles.shareMessage} role="status">
-              {shareMessage}
-            </span>
-          )}
-        </div>
+        <header className={styles.header}>
+          <h1 className={styles.title}>{blog.title}</h1>
+
+          <div className={styles.meta}>
+            <div className={styles.authorInfo}>
+              <div className={styles.authorAvatar}>
+                <Icon icon={ICON_USER} width={24} height={24} />
+              </div>
+              <div className={styles.metaText}>
+                <div className={styles.authorRow}>
+                  <span className={styles.authorName}>{blog.author}</span>
+                </div>
+                <div className={styles.subMeta}>
+                  <span className={styles.publishDate}>{formatDate(blog.createdAt)}</span>
+                  <span className={styles.metaDot}>•</span>
+                  <span className={styles.readTimeText}>{blog.readTime} min read</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
 
         {blog.coverImage && (
           <div className={styles.heroImage}>
             <Image src={blog.coverImage} alt={blog.title} fill className={styles.image} priority />
-            <div className={styles.heroOverlay} />
           </div>
         )}
 
-        <header className={styles.header}>
+        <div className={styles.contentWrapper}>
+          {/* eslint-disable-next-line react/no-danger */}
+          <div className={styles.content} dangerouslySetInnerHTML={{ __html: blog.content }} />
+
           {blog.tags.length > 0 && (
             <div className={styles.tags}>
               {blog.tags.map((tag) => (
@@ -123,50 +129,20 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
               ))}
             </div>
           )}
-
-          <h1 className={styles.title}>{blog.title}</h1>
-
-          <div className={styles.meta}>
-            <div className={styles.authorInfo}>
-              <div className={styles.authorAvatar}>
-                <Icon icon={ICON_USER} />
-              </div>
-              <div className={styles.authorDetails}>
-                <span className={styles.authorName}>{blog.author}</span>
-                <span className={styles.publishDate}>{formatDate(blog.createdAt)}</span>
-              </div>
-            </div>
-            <div className={styles.readTime}>
-              <Icon icon={ICON_CLOCK} />
-              <span>{blog.readTime} min read</span>
-            </div>
-          </div>
-        </header>
-
-        {/* eslint-disable-next-line react/no-danger */}
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: blog.content }} />
+        </div>
 
         <footer className={styles.footer}>
-          <div className={styles.footerMeta}>
-            <span className={styles.metaItem}>
-              <Icon icon={ICON_CALENDAR} />
-              Published on {formatDate(blog.createdAt)}
-            </span>
-          </div>
           <div className={styles.footerActions}>
             <button onClick={handleShare} className={styles.shareButtonLarge}>
-              <Icon icon={ICON_SHARE} />
+              <Icon icon={ICON_SHARE} width={20} />
               Share this article
             </button>
+            <Link href="/blog" className={styles.backButton}>
+              <Icon icon={ICON_ARROW_LEFT} width={18} />
+              Back to all insights
+            </Link>
           </div>
         </footer>
-
-        <div className={styles.backToBlogs}>
-          <Link href="/blog" className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} />
-            Back to all blogs
-          </Link>
-        </div>
       </article>
     </Sidebar>
   );

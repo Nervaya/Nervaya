@@ -161,9 +161,8 @@ a {
   padding-top: max(var(--spacing-xl), var(--navbar-safe-gap, 32px));
   position: relative;
   z-index: 1;
-  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: 280px;
-  border-left: 1px solid #e2e8f0;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 240px;
 }
 
 @media (max-width: 768px) {
@@ -177,7 +176,7 @@ a {
 }
 
 body.sidebar-collapsed .main-content {
-  margin-left: 88px;
+  margin-left: 72px;
 }
 
 body.route-home .main-content {

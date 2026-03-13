@@ -6,3 +6,5 @@ export { default as GlobalLoader } from './GlobalLoader';
 export { default as LottieLoader } from './LottieLoader';
 export { Dropdown } from './Dropdown';
 export type { DropdownOption } from './Dropdown';
+export { MultiSelect } from './MultiSelect';
+export type { MultiSelectOption } from './MultiSelect';

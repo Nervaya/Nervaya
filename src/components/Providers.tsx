@@ -7,6 +7,8 @@ import { CartProvider } from '@/context/CartContext';
 import dynamic from 'next/dynamic';
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 
+import { SidebarProvider } from '@/context/SidebarContext';
+
 const Navbar = dynamic(() => import('@/components/Navbar'), {
   ssr: true,
 });
@@ -20,9 +22,11 @@ export default function Providers({ children }: ProvidersProps) {
     <AuthProvider>
       <AuthGuard>
         <CartProvider>
-          <ScrollToTop />
-          <Navbar />
-          {children}
+          <SidebarProvider>
+            <ScrollToTop />
+            <Navbar />
+            {children}
+          </SidebarProvider>
         </CartProvider>
       </AuthGuard>
     </AuthProvider>

@@ -11,13 +11,8 @@
   .filtersRow {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
     margin-bottom: 28px;
-  }
-}
-
-@media (max-width: 480px) {
-  .filtersRow {
-    margin-bottom: 20px;
   }
 }
 
@@ -28,18 +23,17 @@
   flex: 1;
   min-width: 0;
   max-width: 420px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-card-bg, #ffffff);
+  border: 1px solid var(--color-border-light, #e2e8f0);
   border-radius: 12px;
   overflow: hidden;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .searchForm:focus-within {
-  border-color: rgba(124, 58, 237, 0.4);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: var(--color-accent, #7c3aed);
+  box-shadow: 0 0 0 3px var(--color-accent-dim, rgba(124, 58, 237, 0.1));
 }
 
 @media (max-width: 768px) {
@@ -48,25 +42,13 @@
   }
 }
 
-@media (max-width: 480px) {
-  .searchForm {
-    min-width: 0;
-  }
-}
-
 .searchIcon {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  color: #64748b;
+  color: var(--color-text-dim, #94a3b8);
   margin-left: 16px;
   pointer-events: none;
-}
-
-@media (max-width: 480px) {
-  .searchIcon {
-    margin-left: 12px;
-  }
 }
 
 .searchInput {
@@ -75,99 +57,62 @@
   padding: 12px 14px;
   background: transparent;
   border: none;
-  color: #f8fafc;
+  color: var(--color-text-primary, #0f172a);
   font-size: 0.9375rem;
   outline: none;
 }
 
 .searchInput::placeholder {
-  color: #64748b;
-}
-
-@media (max-width: 480px) {
-  .searchInput {
-    padding: 12px 10px;
-    font-size: 0.875rem;
-  }
+  color: var(--color-text-dim, #94a3b8);
 }
 
 .searchButton {
   padding: 12px 20px;
-  background: rgba(124, 58, 237, 0.2);
+  background: var(--color-accent, #7c3aed);
   border: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  color: #c4b5fd;
+  color: #ffffff;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .searchButton:hover {
-  background: rgba(124, 58, 237, 0.3);
-  color: #f8fafc;
-}
-
-@media (max-width: 480px) {
-  .searchButton {
-    padding: 12px 14px;
-    font-size: 0.8125rem;
-  }
+  background: var(--color-accent-hover, #6d28d9);
 }
 
 .filterSelectWrapper {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 180px;
+  min-width: 220px;
+  flex: 1;
 }
 
 @media (max-width: 768px) {
   .filterSelectWrapper {
-    min-width: 0;
+    min-width: 100%;
   }
 }
 
 .filterLabel {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #94a3b8;
+  font-weight: 700;
+  color: var(--color-text-dim, #94a3b8);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
 }
 
 .filterSelect {
-  padding: 12px 36px 12px 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #f8fafc;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
+  width: 100%;
 }
 
-.filterSelect:hover {
-  border-color: rgba(124, 58, 237, 0.3);
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.filterSelect:focus {
-  outline: none;
-  border-color: rgba(124, 58, 237, 0.5);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
-}
-
-.filterSelect option {
-  background: #1e293b;
-  color: #f8fafc;
+/* Remove any ad-hoc overrides that might interfere with Dropdown's internal styling */
+.filterSelect :global(.dropdown-trigger) {
+  background: var(--color-card-bg, #ffffff);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

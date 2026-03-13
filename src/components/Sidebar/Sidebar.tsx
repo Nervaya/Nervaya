@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -8,11 +8,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { ICON_MENU, ICON_ARROW_LEFT_OUTLINE, ICON_ARROW_RIGHT_OUTLINE, ICON_CLOSE } from '@/constants/icons';
 import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
+
+import { useSidebar } from '@/context/SidebarContext';
 
 const Sidebar = ({
   children,
@@ -26,47 +27,15 @@ const Sidebar = ({
   const { cartCount } = useCart();
   const { isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    try {
-      return window.localStorage.getItem('sidebar-collapsed') === 'true';
-    } catch {
-      return false;
-    }
-  });
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+
+  const { isCollapsed, isMobileOpen, isDesktop, closeMobileSidebar } = useSidebar();
+
   const isAdminRoute = pathname.startsWith('/admin');
   const menuGroups = isAdminRoute ? adminMenuGroups : sidebarMenuGroups;
   const bottomNavItems = isAdminRoute ? [] : sidebarBottomNavItems;
-  const expandedWidth = 280;
-  const collapsedWidth = 88;
-  const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : expandedWidth;
-
-  useEffect(() => {
-    const handleResize = () => {
-      const desktop = window.innerWidth > 768;
-      setIsDesktop(desktop);
-      if (!desktop) {
-        setIsCollapsed(false);
-        setIsMobileOpen(false);
-        return;
-      }
-      try {
-        const stored = window.localStorage.getItem('sidebar-collapsed');
-        if (stored !== null) {
-          setIsCollapsed(stored === 'true');
-        }
-      } catch {}
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const expandedWidth = 240;
+  const collapsedWidth = 72;
+  const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : 240;
 
   useEffect(() => {
     if (!isMobileOpen) {
@@ -92,62 +61,23 @@ const Sidebar = ({
     };
   }, [isCollapsed]);
 
-  const closeMobileSidebar = () => setIsMobileOpen(false);
-
   return (
     <>
-      {isDesktop && (
-        <button
-          className={styles.mobileToggle}
-          onClick={() => setIsMobileOpen((v) => !v)}
-          aria-label={isMobileOpen ? 'Close sidebar' : 'Open sidebar'}
-          aria-expanded={isMobileOpen}
-          aria-controls="app-sidebar"
-        >
-          {isMobileOpen ? (
-            <Icon icon={ICON_CLOSE} width={24} height={24} />
-          ) : (
-            <Icon icon={ICON_MENU} width={24} height={24} />
-          )}
-        </button>
-      )}
-
       <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <AnimatePresence mode="wait">
-          {isDesktop && (
+          {(isDesktop || isMobileOpen) && (
             <m.aside
               className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
               id="app-sidebar"
-              initial={false}
+              initial={isDesktop ? false : { x: -300 }}
               animate={{ x: 0, width: sidebarWidth }}
+              exit={{ x: -300 }}
               transition={{
-                type: 'spring',
-                stiffness: 300,
-                damping: 30,
-                mass: 0.8,
+                type: 'tween',
+                duration: 0.3,
+                ease: [0.4, 0, 0.2, 1],
               }}
             >
-              <button
-                type="button"
-                className={styles.edgeToggle}
-                onClick={() =>
-                  setIsCollapsed((v) => {
-                    const next = !v;
-                    try {
-                      window.localStorage.setItem('sidebar-collapsed', String(next));
-                    } catch {}
-                    return next;
-                  })
-                }
-                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                aria-pressed={isCollapsed}
-              >
-                {isCollapsed ? (
-                  <Icon icon={ICON_ARROW_RIGHT_OUTLINE} width={18} height={18} />
-                ) : (
-                  <Icon icon={ICON_ARROW_LEFT_OUTLINE} width={18} height={18} />
-                )}
-              </button>
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
                   {menuGroups.map((group) => (
@@ -170,9 +100,7 @@ const Sidebar = ({
                                     <span className={styles.badge}>{cartCount}</span>
                                   )}
                                 </span>
-                                <span className={styles.title} aria-hidden={isCollapsed}>
-                                  {item.title}
-                                </span>
+                                <span className={styles.title}>{item.title}</span>
                               </Link>
                             </li>
                           );
@@ -181,55 +109,51 @@ const Sidebar = ({
                     </li>
                   ))}
                 </ul>
-
-                <div className={styles.bottomMenu}>
-                  <ul className={styles.navList}>
-                    {bottomNavItems.map((item) => (
-                      <li key={item.path}>
-                        <Link
-                          href={item.path}
-                          className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ''}`}
-                          onClick={closeMobileSidebar}
-                        >
-                          <span className={styles.icon}>
-                            <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
-                            {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
-                              <span className={styles.badge}>{cartCount}</span>
-                            )}
-                          </span>
-                          <span className={styles.title} aria-hidden={isCollapsed}>
-                            {item.title}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                    {isAuthenticated && (
-                      <li>
-                        <button
-                          type="button"
-                          className={`${styles.navItem} ${styles.secondaryItem} ${styles.logoutButton}`}
-                          onClick={() => {
-                            logout();
-                            closeMobileSidebar();
-                          }}
-                        >
-                          <span className={styles.icon}>
-                            <Icon
-                              icon={iconMap['FaRightFromBracket']}
-                              width={20}
-                              height={20}
-                              className={styles.logoutIcon}
-                            />
-                          </span>
-                          <span className={styles.title} aria-hidden={isCollapsed}>
-                            Logout
-                          </span>
-                        </button>
-                      </li>
-                    )}
-                  </ul>
-                </div>
               </nav>
+
+              <div className={styles.bottomMenu}>
+                <ul className={styles.navList}>
+                  {bottomNavItems.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        href={item.path}
+                        className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ''}`}
+                        onClick={closeMobileSidebar}
+                      >
+                        <span className={styles.icon}>
+                          <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
+                          {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                            <span className={styles.badge}>{cartCount}</span>
+                          )}
+                        </span>
+                        <span className={styles.title}>{item.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                  {isAuthenticated && (
+                    <li>
+                      <button
+                        type="button"
+                        className={`${styles.navItem} ${styles.secondaryItem} ${styles.logoutButton}`}
+                        onClick={() => {
+                          logout();
+                          closeMobileSidebar();
+                        }}
+                      >
+                        <span className={styles.icon}>
+                          <Icon
+                            icon={iconMap['FaRightFromBracket']}
+                            width={20}
+                            height={20}
+                            className={styles.logoutIcon}
+                          />
+                        </span>
+                        <span className={styles.title}>Logout</span>
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </div>
             </m.aside>
           )}
         </AnimatePresence>

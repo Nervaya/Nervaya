@@ -80,10 +80,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1280px;
   min-height: var(--navbar-height);
-  margin: 0 auto;
-  padding: 10px 14px;
+  padding: 0 16px;
   background: transparent;
   border-radius: 0;
   border: none;
@@ -96,6 +94,31 @@
     padding: 9px 12px;
     min-height: var(--navbar-height);
   }
+}
+
+.navbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: 8px;
+}
+
+.sidebarToggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .navbarLogo {

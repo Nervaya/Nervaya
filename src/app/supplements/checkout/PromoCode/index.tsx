@@ -45,12 +45,14 @@ export function PromoCode({
 
   return (
     <div className={styles.wrapper}>
-      <h3 className={styles.title}>
-        <span className={styles.titleIcon} aria-hidden>
-          <Icon icon={ICON_TAG} />
-        </span>
-        Have a promo code?
-      </h3>
+      <div className={styles.titleWrapper}>
+        <h3 className={styles.title}>
+          <span className={styles.titleIcon} aria-hidden>
+            <Icon icon={ICON_TAG} />
+          </span>
+          Have a promo code?
+        </h3>
+      </div>
       <div className={styles.body}>
         {isApplied ? (
           <div className={styles.applied}>
@@ -79,7 +81,7 @@ export function PromoCode({
               />
               <Button
                 type="button"
-                variant="secondary"
+                variant="primary"
                 onClick={handleApply}
                 loading={loading}
                 className={styles.applyButton}

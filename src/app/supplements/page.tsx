@@ -62,6 +62,12 @@ export default function SupplementsPage() {
     fetchSupplements();
   }, [fetchSupplements]);
 
+  useEffect(() => {
+    if (!loading && supplements.length === 1 && !error) {
+      router.replace(`/supplements/${supplements[0]._id}`);
+    }
+  }, [supplements, loading, error, router]);
+
   const showFailure = !loading && error != null;
   const showEmpty = !loading && !error && supplements.length === 0;
 

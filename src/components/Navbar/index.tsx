@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import { ICON_USER } from '@/constants/icons';
 import { NAVBAR_PRODUCTS_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
+import { useSidebar } from '@/context/SidebarContext';
 import { hasRole } from '@/lib/constants/rbac';
 import { ROLES } from '@/lib/constants/roles';
 import { ROUTES, AUTH_ROUTES } from '@/utils/routesConstants';
@@ -88,6 +89,8 @@ const Navbar = () => {
     };
   }, []);
 
+  const { toggleCollapsed, setIsMobileOpen, isMobileOpen } = useSidebar();
+
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsProductsDropdownOpen(false);
@@ -112,10 +115,25 @@ const Navbar = () => {
       className={`${styles.navbar} ${styles.navbarMain} ${isScrollDownStyleActive ? styles.navbarScrolledDown : ''}`}
     >
       <div className={styles.navbarContainer}>
-        <div className={styles.navbarLogo}>
-          <Link href="/">
-            <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={160} height={52} />
-          </Link>
+        <div className={styles.navbarLeft}>
+          <button
+            className={styles.sidebarToggle}
+            onClick={() => {
+              if (window.innerWidth > 768) {
+                toggleCollapsed();
+              } else {
+                setIsMobileOpen(!isMobileOpen);
+              }
+            }}
+            aria-label="Toggle Sidebar"
+          >
+            <Icon icon="material-symbols:menu-rounded" width={28} height={28} />
+          </button>
+          <div className={styles.navbarLogo}>
+            <Link href="/">
+              <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={110} height={36} />
+            </Link>
+          </div>
         </div>
         <button
           className={styles.hamburger}

@@ -29,19 +29,20 @@ export default function BlogListPage() {
     totalPages: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
 
-  const fetchBlogs = useCallback(async (page: number, tag: string | null, search: string) => {
+  const fetchBlogs = useCallback(async (page: number, tags: string[], search: string) => {
     try {
       setLoading(true);
       setError(null);
       const response = await blogsApi.getAll({
         page,
         limit: PAGE_SIZE_3,
-        tag: tag || undefined,
+        tags: tags.length > 0 ? tags : undefined,
         search: search.trim() || undefined,
       });
       if (response.success && response.data) {
@@ -53,16 +54,17 @@ export default function BlogListPage() {
       setError(err instanceof Error ? err.message : 'Failed to load blogs');
     } finally {
       setLoading(false);
+      setIsInitialLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchBlogs(1, selectedTag, searchQuery);
-  }, [selectedTag, searchQuery, fetchBlogs]);
+    fetchBlogs(1, selectedTags, searchQuery);
+  }, [selectedTags, searchQuery, fetchBlogs]);
 
   const goToPage = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-    fetchBlogs(page, selectedTag, searchQuery);
+    fetchBlogs(page, selectedTags, searchQuery);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -71,8 +73,8 @@ export default function BlogListPage() {
     setSearchQuery(searchInput.trim());
   };
 
-  const handleFilterChange = (value: string | null) => {
-    setSelectedTag(value);
+  const handleFilterChange = (values: string[]) => {
+    setSelectedTags(values);
     setSearchQuery('');
     setSearchInput('');
   };
@@ -96,50 +98,58 @@ export default function BlogListPage() {
     <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
         <PageHeader
-          title="Blog"
+          title="Sleep & Wellness Insights"
           subtitle="Insights, tips, and stories about sleep wellness"
           breadcrumbs={breadcrumbs}
         />
 
-        <BlogFilters
-          searchInput={searchInput}
-          onSearchInputChange={setSearchInput}
-          onSearchSubmit={handleSearchSubmit}
-          allTags={allTags}
-          selectedTag={selectedTag}
-          onFilterChange={handleFilterChange}
-        />
-
-        {loading ? (
+        {isInitialLoading ? (
           <div className={styles.loading}>
             <LottieLoader width={100} height={100} />
           </div>
-        ) : error ? (
-          <div className={styles.error}>
-            <p>{error}</p>
-          </div>
         ) : (
           <>
-            {blogs.length === 0 ? (
-              <div className={styles.empty}>
-                <p>
-                  {searchQuery || selectedTag
-                    ? 'No posts match your filters. Try a different search or tag.'
-                    : 'No blog posts available yet.'}
-                </p>
+            <BlogFilters
+              searchInput={searchInput}
+              onSearchInputChange={setSearchInput}
+              onSearchSubmit={handleSearchSubmit}
+              allTags={allTags}
+              selectedTags={selectedTags}
+              onFilterChange={handleFilterChange}
+            />
+
+            {error ? (
+              <div className={styles.error}>
+                <p>{error}</p>
+              </div>
+            ) : loading ? (
+              <div className={styles.loading}>
+                <LottieLoader width={100} height={100} />
               </div>
             ) : (
-              <BlogGrid blogs={blogs} formatDate={formatDate} getExcerpt={getExcerpt} />
-            )}
-            {pagination.total >= 0 && (
-              <Pagination
-                page={pagination.page}
-                limit={pagination.limit}
-                total={pagination.total}
-                totalPages={pagination.totalPages}
-                onPageChange={goToPage}
-                ariaLabel="Blog pagination"
-              />
+              <>
+                {blogs.length === 0 ? (
+                  <div className={styles.empty}>
+                    <p>
+                      {searchQuery || selectedTags.length > 0
+                        ? 'No posts match your filters. Try a different search or tag.'
+                        : 'No blog posts available yet.'}
+                    </p>
+                  </div>
+                ) : (
+                  <BlogGrid blogs={blogs} formatDate={formatDate} getExcerpt={getExcerpt} />
+                )}
+                {pagination.total >= 0 && (
+                  <Pagination
+                    page={pagination.page}
+                    limit={pagination.limit}
+                    total={pagination.total}
+                    totalPages={pagination.totalPages}
+                    onPageChange={goToPage}
+                    ariaLabel="Blog pagination"
+                  />
+                )}
+              </>
             )}
           </>
         )}

@@ -15,13 +15,15 @@ export interface AdminBlogsListResponse {
 
 export const blogsApi = {
   getAll: (params?: {
-    tag?: string;
+    tags?: string[];
     search?: string;
     page?: number;
     limit?: number;
   }): Promise<ApiResponse<BlogsListResponse>> => {
     const searchParams = new URLSearchParams();
-    if (params?.tag) searchParams.set('tag', params.tag);
+    if (params?.tags && params.tags.length > 0) {
+      params.tags.forEach((tag) => searchParams.append('tag', tag));
+    }
     if (params?.search) searchParams.set('search', params.search);
     if (params?.page) searchParams.set('page', String(params.page));
     if (params?.limit) searchParams.set('limit', String(params.limit));

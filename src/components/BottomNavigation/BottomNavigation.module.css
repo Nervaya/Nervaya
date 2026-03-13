@@ -4,11 +4,12 @@
   left: 0;
   right: 0;
   width: 100%;
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(10, 6, 26, 0.98);
+  /* Matched to navbar theme */
+  backdrop-filter: blur(25px) saturate(160%);
+  -webkit-backdrop-filter: blur(25px) saturate(160%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
   z-index: 1000;
   display: none;
   overflow: visible;
@@ -17,324 +18,194 @@
 @media (max-width: 768px) {
   .bottomNav {
     display: block;
-    border: 1px solid var(--color-glass-border);
-    border-radius: 16px;
-    margin: 0 12px;
+    margin: 0;
     left: 0;
     right: 0;
-    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    width: calc(100% - 24px);
-    max-width: calc(100vw - 24px);
-    padding-bottom: env(safe-area-inset-bottom, 0);
-    box-shadow:
-      0 -4px 20px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.05);
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    padding-bottom: env(safe-area-inset-bottom, 10px);
   }
 }
 
 .navBar {
-  border-radius: inherit;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
   overflow: visible;
 }
 
 .morePanel {
   position: absolute;
-  bottom: 100%;
-  left: 0;
-  right: 0;
+  bottom: calc(100% + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 440px;
   display: flex;
-  justify-content: flex-end;
-  padding: 0 4px 8px 24px;
-}
-
-@media (max-width: 480px) {
-  .morePanel {
-    padding: 0 2px 6px 20px;
-  }
-}
-
-.morePanel .moreList {
-  min-width: 56px;
-  background: rgba(15, 23, 42, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--color-glass-border);
-  border-radius: 14px;
-  padding: 8px;
-  box-shadow:
-    0 -4px 24px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.06);
-  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  justify-content: center;
+  padding: 0;
   z-index: 1001;
 }
 
-@media (max-width: 480px) {
-  .morePanel .moreList {
-    padding: 6px;
-  }
+.morePanel .moreList {
+  width: 100%;
+  background: rgba(14, 8, 30, 0.97);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: slideUpScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
-@keyframes slideUp {
+@keyframes slideUpScale {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(30px) scale(0.9);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .moreList {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-@media (max-width: 480px) {
-  .moreList {
-    gap: 3px;
-  }
-}
-
 .moreIconItem {
-  flex: none;
+  display: flex;
+  justify-content: center;
 }
 
 .moreIconLink {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
-  padding: 0 8px;
-  color: rgba(255, 255, 255, 0.65);
+  gap: 10px;
+  padding: 14px 8px;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 16px;
   background: transparent;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.moreIconLink:hover {
-  color: rgba(255, 255, 255, 0.95);
-  background: rgba(255, 255, 255, 0.08);
-}
-
+.moreIconLink:hover,
 .moreIconLink:active {
-  transform: scale(0.98);
-}
-
-@media (max-width: 480px) {
-  .moreIconLink {
-    height: 40px;
-    min-height: 40px;
-  }
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
 }
 
 .moreIconLink.active {
   color: #c4b5fd;
-  background: rgba(196, 181, 253, 0.12);
+  background: rgba(196, 181, 253, 0.08);
 }
 
 .moreIcon {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  color: inherit;
-}
-
-@media (max-width: 480px) {
-  .moreIcon {
-    font-size: 1.1rem;
-  }
 }
 
 .navList {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   list-style: none;
   margin: 0;
   padding: 0;
-  justify-content: space-around;
   align-items: center;
-  min-height: 64px;
-  padding: 8px 4px;
-  overflow: visible;
-  gap: 2px;
-}
-
-@media (max-width: 480px) {
-  .navList {
-    padding: 6px 1px;
-    min-height: 60px;
-  }
+  min-height: 68px;
+  padding: 0 4px;
 }
 
 .navItem {
-  flex: 1;
-  min-width: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-.navLink {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 6px 2px;
-  min-width: 44px;
-  min-height: 44px;
-  color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 12px;
-  position: relative;
-  flex: 1 1 0;
-  max-width: 100px;
-}
-
-.navLink:active {
-  transform: scale(0.95);
-}
-
-@media (max-width: 768px) {
-  .navLink:hover {
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.05);
-  }
-}
-
-@media (max-width: 480px) {
-  .navLink {
-    padding: 4px 1px;
-    gap: 2px;
-    min-width: 40px;
-  }
-}
-
-.navLink.active {
-  color: #c4b5fd;
-}
-
+.navLink,
 .moreButton {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  padding: 6px 2px;
-  min-width: 44px;
-  min-height: 44px;
-  color: rgba(255, 255, 255, 0.6);
+  gap: 6px;
+  padding: 8px 2px;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
-  font: inherit;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
   position: relative;
-  flex: 1 1 0;
-  max-width: 100px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.moreButton:active {
-  transform: scale(0.95);
-}
-
+.navLink:hover,
 .moreButton:hover {
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-@media (max-width: 480px) {
-  .moreButton {
-    padding: 4px 1px;
-    gap: 2px;
-    min-width: 40px;
-  }
-}
-
+.navLink.active,
 .moreButton.active {
-  color: #c4b5fd;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Hotstar style indicator: subtle scaling and brightness */
+.navLink.active .iconWrapper,
+.moreButton.active .iconWrapper {
+  transform: scale(1.15) translateY(-1px);
+  filter: drop-shadow(0 0 8px rgba(196, 181, 253, 0.4));
 }
 
 .iconWrapper {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-}
-
-.iconWrapper.chevronUp .chevronIcon {
-  transform: rotate(180deg);
-}
-
-@media (max-width: 480px) {
-  .iconWrapper {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.chevronIcon {
-  font-size: 1rem;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  color: inherit;
+  width: 26px;
+  height: 26px;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .icon {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  color: inherit;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 480px) {
-  .icon {
-    font-size: 1rem;
-  }
-}
-
-.navLink.active .icon {
-  transform: scale(1.1);
 }
 
 .badge {
   position: absolute;
   top: -6px;
-  right: -8px;
-  background-color: #ef4444;
+  right: -10px;
+  background: #f43f5e;
   color: white;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 800;
   min-width: 18px;
   height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: 20px;
   padding: 0 4px;
-  border: 2px solid rgba(17, 24, 39, 0.8);
+  border: 2px solid #0a061a;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.4);
 }
 
 .label {
@@ -342,18 +213,8 @@
   font-weight: 500;
   text-align: center;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  line-height: 1.2;
-  color: inherit;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 480px) {
-  .label {
-    font-size: 0.6rem;
-  }
+  letter-spacing: 0.02em;
+  opacity: 0.9;
 }
 
 .logoutButton {
@@ -365,13 +226,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  padding: 14px 8px;
+  transition: all 0.2s ease;
+}
+
+.logoutButton:active {
+  transform: scale(0.95);
 }
 
 .logoutLabel {
-  font-size: 10px;
-  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #f43f5e;
+  font-weight: 600;
 }
 
 .logoutIcon {
-  color: var(--color-destructive);
+  color: #f43f5e;
+  font-size: 1.6rem;
+}
+
+.moreButton .chevronIcon {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moreButton.active .chevronIcon {
+  transform: rotate(180deg);
 }

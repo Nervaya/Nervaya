@@ -13,7 +13,7 @@
   gap: var(--spacing-sm);
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: var(--color-foreground);
+  color: #ffffff;
   font-size: var(--font-size-lg);
   font-weight: 600;
 }
@@ -26,7 +26,7 @@
 
 .headerTitle {
   margin: 0;
-  color: var(--color-foreground);
+  color: #ffffff;
 }
 
 .body {
@@ -82,7 +82,7 @@
 
 .optionDuration {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-text-primary);
 }
 
 .optionCost {

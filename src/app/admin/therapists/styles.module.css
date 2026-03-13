@@ -175,7 +175,7 @@
   background: var(--color-accent-dim);
   color: var(--color-accent);
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
   border: 1px solid transparent;

@@ -146,6 +146,13 @@
   background-color: #f3e8ff; /* Light purple */
   border-radius: 12px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {

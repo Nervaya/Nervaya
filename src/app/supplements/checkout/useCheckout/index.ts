@@ -52,8 +52,8 @@ export function useCheckout() {
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<ShippingAddress | undefined>(undefined);
-  const [editingAddress, setEditingAddress] = useState(true);
-  const [formKey, setFormKey] = useState(0);
+  const [editingAddress, setEditingAddress] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
   const [showSavedAddresses, setShowSavedAddresses] = useState(false);
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<DeliveryMethod>('standard');
@@ -114,19 +114,30 @@ export function useCheckout() {
       }
     }
     setSelectedAddress(address);
+    setIsAddressModalOpen(false);
     setEditingAddress(false);
-    setFormKey((prev) => prev + 1);
+  }, []);
+
+  const handleAddNewAddress = useCallback(() => {
+    setSelectedAddress(undefined);
+    setEditingAddress(true);
+    setIsAddressModalOpen(true);
   }, []);
 
   const handleUseAddress = useCallback((addr: SavedAddress) => {
     const { _id, label: _label, isDefault: _isDefault, ...shippingAddr } = addr;
     setSelectedAddress(shippingAddr as ShippingAddress);
     setEditingAddress(false);
-    setFormKey((prev) => prev + 1);
+    setIsAddressModalOpen(false);
   }, []);
 
   const handleEditAddress = useCallback(() => {
     setEditingAddress(true);
+    setIsAddressModalOpen(true);
+  }, []);
+
+  const handleCloseAddressModal = useCallback(() => {
+    setIsAddressModalOpen(false);
   }, []);
 
   const handleDeliveryMethodSelect = useCallback((method: DeliveryMethod) => {
@@ -249,9 +260,10 @@ export function useCheckout() {
     showSavedAddresses,
     selectedAddress,
     editingAddress,
-    formKey,
-    setSelectedAddress,
-    setFormKey,
+    isAddressModalOpen,
+    setIsAddressModalOpen,
+    handleCloseAddressModal,
+    handleAddNewAddress,
     handleAddressSubmit,
     handleUseAddress,
     handleEditAddress,

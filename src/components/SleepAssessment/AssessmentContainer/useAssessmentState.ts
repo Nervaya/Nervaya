@@ -214,16 +214,7 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     } finally {
       setIsSubmitting(false);
     }
-  }, [
-    canProceed,
-    currentQuestion,
-    currentQuestionIndex,
-    answers,
-    isLastQuestion,
-    totalQuestions,
-    saveCurrentAnswer,
-    completeAssessment,
-  ]);
+  }, [canProceed, currentQuestion, answers, isLastQuestion, totalQuestions, saveCurrentAnswer, completeAssessment]);
 
   const handlePrevious = useCallback(() => {
     if (isFirstQuestion) return;

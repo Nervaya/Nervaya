@@ -47,7 +47,9 @@ const BottomNavigation = () => {
           onClick={() => setIsMoreOpen(false)}
         >
           <span className={styles.iconWrapper}>
-            <span className={styles.icon}>{iconMap[item.icon] || iconMap['FaHouse']}</span>
+            <span className={styles.icon}>
+              <Icon icon={iconMap[item.icon] || item.icon} />
+            </span>
             {badge && <span className={styles.badge}>{cartCount}</span>}
           </span>
           <span className={styles.label}>{item.title}</span>
@@ -68,7 +70,10 @@ const BottomNavigation = () => {
           aria-label={item.title}
           onClick={() => setIsMoreOpen(false)}
         >
-          <span className={styles.moreIcon}>{iconMap[item.icon] || iconMap['FaHouse']}</span>
+          <span className={styles.moreIcon}>
+            <Icon icon={iconMap[item.icon] || item.icon} />
+          </span>
+          <span className={styles.label}>{item.title}</span>
         </Link>
       </li>
     );
@@ -94,7 +99,9 @@ const BottomNavigation = () => {
                   }}
                   aria-label="Logout"
                 >
-                  <span className={`${styles.moreIcon} ${styles.logoutIcon}`}>{iconMap['FaRightFromBracket']}</span>
+                  <span className={`${styles.moreIcon} ${styles.logoutIcon}`}>
+                    <Icon icon={iconMap['FaRightFromBracket']} />
+                  </span>
                   <span className={`${styles.logoutLabel}`}>Logout</span>
                 </button>
               </li>

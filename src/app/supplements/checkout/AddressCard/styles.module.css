@@ -13,7 +13,7 @@
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: var(--color-foreground);
+  color: #ffffff;
 }
 
 .headerLeft {
@@ -33,12 +33,12 @@
   font-size: var(--font-size-lg);
   font-weight: 600;
   margin: 0 0 var(--spacing-xs) 0;
-  color: var(--color-foreground);
+  color: #ffffff;
 }
 
 .defaultBadge {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-text-primary);
   display: block;
 }
 
@@ -52,13 +52,14 @@
   background: transparent;
   border: 1px solid var(--color-glass-border);
   border-radius: 8px;
-  color: var(--color-foreground);
+  color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .editButton:hover {
   background: var(--color-card-bg);
+  color: var(--accent);
 }
 
 .body {
@@ -74,7 +75,7 @@
 
 .text {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: var(--color-text-primary);
   margin: 0 0 var(--spacing-xs) 0;
   line-height: 1.4;
 }

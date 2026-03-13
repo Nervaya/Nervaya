@@ -9,7 +9,7 @@ import { PAGE_SIZE_3, PAGE_SIZE_10 } from '@/lib/constants/pagination.constants'
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const tag = searchParams.get('tag') || undefined;
+    const tags = searchParams.getAll('tag');
     const search = searchParams.get('search') || undefined;
     const page = searchParams.get('page');
     const limit = searchParams.get('limit');
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     const limitNum = limit ? Math.min(PAGE_SIZE_10, Math.max(1, parseInt(limit, 10) || PAGE_SIZE_3)) : PAGE_SIZE_3;
 
     const result = await getPublishedBlogsPaginated({
-      tag,
+      tags: tags.length > 0 ? tags : undefined,
       search,
       page: pageNum,
       limit: limitNum,
