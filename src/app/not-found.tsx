@@ -7,11 +7,7 @@ import { LazyMotion, m } from 'framer-motion';
 
 export default function NotFound() {
   useEffect(() => {
-    document.body.classList.add('route-not-found');
-
-    return () => {
-      document.body.classList.remove('route-not-found');
-    };
+    // Standard professional layout
   }, []);
 
   return (
@@ -20,11 +16,11 @@ export default function NotFound() {
         <m.div
           className={styles.glow}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.1, 1],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
-            duration: 10,
+            duration: 15,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
@@ -32,11 +28,11 @@ export default function NotFound() {
         <m.div
           className={styles.secondaryGlow}
           animate={{
-            translateY: [0, -30, 0],
-            opacity: [0.3, 0.5, 0.3],
+            translateY: [0, -20, 0],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
-            duration: 12,
+            duration: 18,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
@@ -58,10 +54,10 @@ export default function NotFound() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
           >
-            <h2 className={styles.subtitle}>Page Not Found</h2>
+            <h2 className={styles.subtitle}>Oops! Page Not Found</h2>
 
             <p className={styles.description}>
-              This page is currently dreaming. Let&apos;s get you back to wakefulness.
+              The page you are looking for might have been moved, deleted, or is temporarily unavailable.
             </p>
           </m.div>
 
