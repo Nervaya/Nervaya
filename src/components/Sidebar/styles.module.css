@@ -1,6 +1,6 @@
 .sidebar {
   width: 280px;
-  background: url('/background.png');
+  background: var(--bg-main);
   background-size: cover;
   background-position: center top;
   color: #2d3748;

@@ -4,6 +4,7 @@ import styles from './page.module.css';
 
 import Cards from '@/components/LandingPageCards';
 import Footer from '@/components/Footer';
+import { IMAGES } from '@/utils/imageConstants';
 
 const HomePage = () => {
   return (
@@ -34,7 +35,7 @@ const HomePage = () => {
           <div className={styles.visualPanel}>
             <div className={styles.visualImageWrap}>
               <Image
-                src="/email-assets/welcome-hero.png"
+                src={IMAGES.HERO_MAIN}
                 alt=""
                 fill
                 className={styles.visualImage}

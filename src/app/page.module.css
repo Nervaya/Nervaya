@@ -2,7 +2,7 @@
   position: relative;
   min-height: 100vh;
   background-color: #09021d;
-  background-image: url('/background.png');
+  background-image: var(--bg-main);
   background-size: cover;
   background-position: center top;
   overflow: hidden;

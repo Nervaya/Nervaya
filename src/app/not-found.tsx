@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import styles from './not-found.module.css';
 import { LazyMotion, m } from 'framer-motion';
+import { IMAGES } from '@/utils/imageConstants';
 
 export default function NotFound() {
   useEffect(() => {
@@ -12,7 +13,7 @@ export default function NotFound() {
 
   return (
     <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
-      <div className={styles.container}>
+      <div className={styles.container} style={{ '--bg-404': `url(${IMAGES.NOT_FOUND_404})` } as React.CSSProperties}>
         <m.div
           className={styles.glow}
           animate={{

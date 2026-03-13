@@ -6,6 +6,7 @@ import './globals.css';
 import Providers from '@/components/Providers';
 import { EngagementTracker } from '@/components/EngagementTracker';
 import BodyRouteClass from '@/components/BodyRouteClass';
+import { IMAGES } from '@/utils/imageConstants';
 
 const sourceSans = Source_Sans_3({
   variable: '--font-source-sans',
@@ -61,7 +62,10 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}>
+      <body
+        className={`${sourceSans.variable} ${merriweather.variable} ${geistMono.variable}`}
+        style={{ '--bg-main': `url(${IMAGES.BACKGROUND_MAIN})` } as React.CSSProperties}
+      >
         <Providers>
           <BodyRouteClass />
           <EngagementTracker />

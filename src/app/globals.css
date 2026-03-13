@@ -65,14 +65,14 @@ body {
 }
 
 body.route-home {
-  background: url('/background.png');
+  background: var(--bg-main);
   background-size: cover;
   background-position: center top;
   background-attachment: fixed;
 }
 
 body.route-not-found {
-  background: url('/background.png');
+  background: var(--bg-main);
   background-size: cover;
   background-position: center top;
   background-attachment: fixed;

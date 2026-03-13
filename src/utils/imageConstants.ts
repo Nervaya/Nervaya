@@ -13,4 +13,7 @@ export const IMAGES = {
 
   API_ERROR: 'https://res.cloudinary.com/disrq2eh8/image/upload/api_errpr_fst50b.png',
   NO_DATA_FOUND: 'https://res.cloudinary.com/disrq2eh8/image/upload/no-data-concept_jobemv.png',
+
+  HERO_MAIN: 'https://res.cloudinary.com/disrq2eh8/image/upload/v1771770997/welcome-hero_mygw11.png',
+  NOT_FOUND_404: 'https://res.cloudinary.com/disrq2eh8/image/upload/v1773381422/404-bg_wz5p2l.png',
 } as const;

@@ -30,7 +30,7 @@
   left: 0;
   right: 0;
   z-index: 3000;
-  background: url('/background.png');
+  background: var(--bg-main);
   background-size: cover;
   background-position: center top;
   border-bottom: 1px solid rgba(124, 58, 237, 0.3);
@@ -38,7 +38,7 @@
 }
 
 :global(body.route-non-home) .navbarMain {
-  background: linear-gradient(rgba(9, 2, 29, 0.3), rgba(9, 2, 29, 0.3)), url('/background.png');
+  background: linear-gradient(rgba(9, 2, 29, 0.3), rgba(9, 2, 29, 0.3)), var(--bg-main);
   background-size: cover;
   background-position: center top;
   border-bottom-color: rgba(124, 58, 237, 0.38);
@@ -46,7 +46,7 @@
 
 :global(body.route-non-home) .navbarAuthPage {
   margin-top: 0;
-  background: linear-gradient(rgba(9, 2, 29, 0.4), rgba(9, 2, 29, 0.4)), url('/background.png');
+  background: linear-gradient(rgba(9, 2, 29, 0.4), rgba(9, 2, 29, 0.4)), var(--bg-main);
   background-size: cover;
   background-position: center top;
   border-bottom: 1px solid rgba(124, 58, 237, 0.3);

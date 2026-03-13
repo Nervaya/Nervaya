@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: url('/background.png') no-repeat center center fixed;
+  background: var(--bg-main) no-repeat center center fixed;
   background-size: cover;
   background-color: var(--color-background);
   color: var(--color-foreground);

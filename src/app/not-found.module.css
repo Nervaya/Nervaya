@@ -13,8 +13,7 @@
   position: relative;
   font-family: var(--font-sans);
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%),
-    url('/backgrounds/404-bg.png');
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%), var(--bg-404);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
