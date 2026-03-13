@@ -83,6 +83,13 @@ input,
 select,
 textarea {
   font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  cursor: default;
 }
 
 * {
@@ -128,6 +135,19 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
+}
+
+/* Ensure overlays and interactive containers that use onClick have pointers */
+.modal-overlay,
+[class*='modalOverlay'],
+[class*='mobileOverlay'],
+[class*='overlay'],
+.clickable-card,
+[class*='sessionCard'],
+[class*='orderCard'],
+[class*='navItem'] {
+  cursor: pointer;
 }
 
 *::-webkit-scrollbar {
