@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
@@ -76,8 +76,14 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
   // const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
 
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
   // Fetch availability for the month
-  const fetchAvailability = async (monthDate: Date) => {
+  const fetchAvailability = useCallback(async (monthDate: Date) => {
     // setIsLoadingAvailability(true);
     try {
       const monthStr = monthDate.toISOString().slice(0, 7); // YYYY-MM
@@ -92,10 +98,10 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
       // } finally {
       //   setIsLoadingAvailability(false);
     }
-  };
+  }, []);
 
   // Fetch specific booked slots for the selected date
-  const fetchBookedSlots = async (date: Date) => {
+  const fetchBookedSlots = useCallback(async (date: Date) => {
     try {
       const dateStr = date.toISOString().split('T')[0];
       const response = await axios.get(`/api/consultations/availability?date=${dateStr}`);
@@ -104,15 +110,15 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
     } catch (error) {
       console.error('Failed to fetch booked slots:', error);
     }
-  };
-
-  useEffect(() => {
-    fetchAvailability(new Date());
   }, []);
 
   useEffect(() => {
+    fetchAvailability(today);
+  }, [fetchAvailability, today]);
+
+  useEffect(() => {
     fetchBookedSlots(formData.date);
-  }, [formData.date]);
+  }, [formData.date, fetchBookedSlots]);
 
   useEffect(() => {
     // Also reset selected time if it's now booked
@@ -130,8 +136,12 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
 
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-    setFormData({ ...formData, mobile: value });
+    setFormData((prev) => ({ ...prev, mobile: value }));
   };
+
+  const handleDateSelect = useCallback((date: Date) => {
+    setFormData((prev) => ({ ...prev, date }));
+  }, []);
 
   const connectionOptions = [
     { value: 'Google Meet', label: 'Google Meet' },
@@ -342,8 +352,8 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
               <div className={styles.datetimeGrid}>
                 <DatePicker
                   selectedDate={formData.date}
-                  onDateSelect={(date) => setFormData({ ...formData, date })}
-                  minDate={new Date()}
+                  onDateSelect={handleDateSelect}
+                  minDate={today}
                   slotAvailability={slotAvailability}
                   onMonthChange={fetchAvailability}
                 />
