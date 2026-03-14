@@ -31,7 +31,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   useEffect(() => {
     const handleResize = () => {
-      const desktop = window.innerWidth > 768;
+      const desktop = window.innerWidth > 770;
       setIsDesktop(desktop);
       if (!desktop) {
         setIsCollapsed(false);

@@ -89,7 +89,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const { toggleCollapsed, setIsMobileOpen, isMobileOpen } = useSidebar();
+  const { toggleCollapsed, isDesktop } = useSidebar();
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -116,19 +116,11 @@ const Navbar = () => {
     >
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLeft}>
-          <button
-            className={styles.sidebarToggle}
-            onClick={() => {
-              if (window.innerWidth > 768) {
-                toggleCollapsed();
-              } else {
-                setIsMobileOpen(!isMobileOpen);
-              }
-            }}
-            aria-label="Toggle Sidebar"
-          >
-            <Icon icon="material-symbols:menu-rounded" width={28} height={28} />
-          </button>
+          {isAuthenticated && isDesktop && (
+            <button className={styles.sidebarToggle} onClick={toggleCollapsed} aria-label="Toggle Sidebar">
+              <Icon icon="material-symbols:menu-rounded" width={28} height={28} />
+            </button>
+          )}
           <div className={styles.navbarLogo}>
             <Link href="/">
               <Image src="/icons/nervaya-logo.svg" alt="Nervaya logo" width={110} height={36} />

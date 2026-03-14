@@ -15,7 +15,7 @@
   overflow: visible;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 770px) {
   .bottomNav {
     display: block;
     margin: 0;
@@ -190,8 +190,8 @@
 
 .badge {
   position: absolute;
-  top: -6px;
-  right: -10px;
+  top: -4px;
+  right: -4px;
   background: #f43f5e;
   color: white;
   font-size: 0.65rem;

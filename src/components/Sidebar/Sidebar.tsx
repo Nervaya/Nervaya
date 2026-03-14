@@ -65,7 +65,7 @@ const Sidebar = ({
     <>
       <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <AnimatePresence mode="wait">
-          {(isDesktop || isMobileOpen) && (
+          {isAuthenticated && isDesktop && (isDesktop || isMobileOpen) && (
             <m.aside
               className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
               id="app-sidebar"
@@ -161,7 +161,7 @@ const Sidebar = ({
 
       {isMobileOpen && isDesktop && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
-      <main className={`main-content ${className || ''}`}>
+      <main className={`main-content ${!isAuthenticated || !isDesktop ? 'no-sidebar' : ''} ${className || ''}`}>
         {!hideGlobalBreadcrumbs && <RouteBreadcrumbs />}
         {children}
       </main>
