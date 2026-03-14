@@ -9,6 +9,7 @@ import {
   ICON_ARROW_RIGHT,
   ICON_BED,
   ICON_SHOPPING_BAG,
+  ICON_MOON_SLEEP,
 } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
@@ -32,7 +33,7 @@ export default function DashboardPage() {
 
   const sessionCounts = useMemo(() => getSessionCounts(sessions), [sessions]);
   const nextSession = useMemo(() => getNextSessionInfo(sessions), [sessions]);
-  const latestOrder = useMemo(() => (orders.length > 0 ? orders[0] : null), [orders]);
+
   const assessmentTile = useMemo(
     () => getAssessmentTileModel(latestAssessment, inProgressAssessment),
     [latestAssessment, inProgressAssessment],
@@ -127,25 +128,21 @@ export default function DashboardPage() {
           />
 
           <StatTile
-            title="Orders"
-            value={`${orders.length}`}
-            subtitle={
-              latestOrder
-                ? `Latest: ${latestOrder.orderStatus} • ₹${Math.round(latestOrder.totalAmount)}`
-                : "No orders yet — browse supplements when you're ready."
-            }
-            icon={<Icon icon={ICON_SHOPPING_BAG} aria-hidden />}
-            cta={{ label: 'My orders', href: '/account' }}
-            themeColor="var(--color-tile-emerald)"
-          />
-
-          <StatTile
             title="Sleep assessment"
             value={assessmentTile.value}
             subtitle={assessmentTile.subtitle}
             icon={<Icon icon={ICON_BED} aria-hidden />}
             cta={{ label: assessmentTile.ctaLabel, href: '/sleep-assessment' }}
             themeColor="var(--color-tile-rose)"
+          />
+
+          <StatTile
+            title="Drift-Off"
+            value="Restful Sleep"
+            subtitle="Listen to our curated deep rest sessions."
+            icon={<Icon icon={ICON_MOON_SLEEP} aria-hidden />}
+            cta={{ label: 'Listen now', href: '/drift-off' }}
+            themeColor="#6366f1"
           />
         </div>
 

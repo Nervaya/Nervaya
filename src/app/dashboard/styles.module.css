@@ -97,10 +97,16 @@
   margin-bottom: var(--spacing-2xl, 48px);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
+  .tilesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md, 16px);
+  }
+}
+
+@media (max-width: 770px) {
   .tilesGrid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md, 16px);
     margin-bottom: var(--spacing-xl, 32px);
   }
 }
