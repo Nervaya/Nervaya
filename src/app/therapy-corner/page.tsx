@@ -20,6 +20,7 @@ import { TherapistCard } from './components/TherapistCard';
 import { VideoPreviewModal } from './components/VideoPreviewModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { CustomDropdown } from '@/components/common/CustomDropdown';
 
 const FILTER_ALL = '';
 const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
@@ -157,14 +158,24 @@ export default function TherapyCornerPage() {
   const hasActiveFilters = Boolean(filterState.language || filterState.specialization || filterState.gender);
 
   const filteredTherapists = useMemo(() => {
-    return therapists.filter((therapist) => {
-      if (filterState.language && !therapist.languages?.includes(filterState.language)) return false;
-      if (filterState.specialization && !therapist.specializations?.includes(filterState.specialization)) return false;
-      if (filterState.gender && (therapist.gender || '').toLowerCase() !== filterState.gender.toLowerCase())
-        return false;
-      return true;
-    });
+    return therapists
+      .filter((therapist) => {
+        if (filterState.language && !therapist.languages?.includes(filterState.language)) return false;
+        if (filterState.specialization && !therapist.specializations?.includes(filterState.specialization))
+          return false;
+        if (filterState.gender && (therapist.gender || '').toLowerCase() !== filterState.gender.toLowerCase())
+          return false;
+        return true;
+      })
+      .sort((a, b) => {
+        if (a.isAvailable === b.isAvailable) return 0;
+        return a.isAvailable ? -1 : 1;
+      });
   }, [therapists, filterState]);
+
+  const activeCount = useMemo(() => {
+    return therapists.filter((t) => t.isAvailable).length;
+  }, [therapists]);
 
   const total = filteredTherapists.length;
   const totalPages = Math.max(1, Math.ceil(total / limit));
@@ -255,11 +266,7 @@ export default function TherapyCornerPage() {
             title="Finding the right therapist is not easy."
             subtitle="Based on your needs, we curated a shortlist tailored for you."
             breadcrumbs={breadcrumbs}
-            actions={
-              <p className={styles.sectionMeta}>
-                {filteredTherapists.length} therapist{filteredTherapists.length === 1 ? '' : 's'} available
-              </p>
-            }
+            actions={<p className={styles.sectionMeta}>{activeCount} Verified Experts Available</p>}
           />
 
           <div className={styles.toolbar}>
@@ -270,44 +277,38 @@ export default function TherapyCornerPage() {
             </button>
 
             <div className={styles.inlineFilters}>
-              <select
-                className={styles.filterSelect}
+              <CustomDropdown
+                placeholder="Expertise"
                 value={filterState.specialization}
-                onChange={(e) => handleFilterChange('specialization', e.target.value)}
-              >
-                <option value={FILTER_ALL}>Expertise</option>
-                {filterOptions.specializations.map((spec) => (
-                  <option key={spec} value={spec}>
-                    {spec}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => handleFilterChange('specialization', val)}
+                options={[
+                  { value: FILTER_ALL, label: 'Expertise' },
+                  ...filterOptions.specializations.map((spec) => ({ value: spec, label: spec })),
+                ]}
+                icon="lucide:brain"
+              />
 
-              <select
-                className={styles.filterSelect}
+              <CustomDropdown
+                placeholder="Languages"
                 value={filterState.language}
-                onChange={(e) => handleFilterChange('language', e.target.value)}
-              >
-                <option value={FILTER_ALL}>Languages</option>
-                {filterOptions.languages.map((lang) => (
-                  <option key={lang} value={lang}>
-                    {lang}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => handleFilterChange('language', val)}
+                options={[
+                  { value: FILTER_ALL, label: 'Languages' },
+                  ...filterOptions.languages.map((lang) => ({ value: lang, label: lang })),
+                ]}
+                icon="lucide:languages"
+              />
 
-              <select
-                className={styles.filterSelect}
+              <CustomDropdown
+                placeholder="Gender"
                 value={filterState.gender}
-                onChange={(e) => handleFilterChange('gender', e.target.value)}
-              >
-                <option value={FILTER_ALL}>Gender</option>
-                {genderOptions.map((gender) => (
-                  <option key={gender} value={gender}>
-                    {formatGender(gender)}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => handleFilterChange('gender', val)}
+                options={[
+                  { value: FILTER_ALL, label: 'Gender' },
+                  ...genderOptions.map((gender) => ({ value: gender, label: formatGender(gender) })),
+                ]}
+                icon="lucide:user"
+              />
             </div>
 
             {hasActiveFilters && (

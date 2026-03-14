@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_CLOSE } from '@/constants/icons';
+import { ICON_X } from '@/constants/icons';
+import { CustomDropdown } from '@/components/common/CustomDropdown';
 import styles from '../styles.module.css';
 
 export interface FilterOptions {
@@ -44,58 +45,52 @@ export function FilterModal({
         <div className={styles.modalHeader}>
           <h3>Filter Therapists</h3>
           <button type="button" className={styles.closeModalBtn} onClick={onClose} aria-label="Close filters">
-            <Icon icon={ICON_CLOSE} width={18} height={18} />
+            <Icon icon={ICON_X} width={24} height={24} />
           </button>
         </div>
 
         <div className={styles.filterFields}>
-          <label className={styles.filterField}>
+          <div className={styles.filterField}>
             <span>Language</span>
-            <select
-              className={styles.filterSelect}
+            <CustomDropdown
+              placeholder="All Languages"
               value={state.language}
-              onChange={(e) => onStateChange('language', e.target.value)}
-            >
-              <option value="">All Languages</option>
-              {options.languages.map((language) => (
-                <option key={language} value={language}>
-                  {language}
-                </option>
-              ))}
-            </select>
-          </label>
+              onChange={(val) => onStateChange('language', val)}
+              options={[
+                { value: '', label: 'All Languages' },
+                ...options.languages.map((lang) => ({ value: lang, label: lang })),
+              ]}
+              icon="lucide:languages"
+            />
+          </div>
 
-          <label className={styles.filterField}>
+          <div className={styles.filterField}>
             <span>Specialization</span>
-            <select
-              className={styles.filterSelect}
+            <CustomDropdown
+              placeholder="All Specializations"
               value={state.specialization}
-              onChange={(e) => onStateChange('specialization', e.target.value)}
-            >
-              <option value="">All Specializations</option>
-              {options.specializations.map((specialization) => (
-                <option key={specialization} value={specialization}>
-                  {specialization}
-                </option>
-              ))}
-            </select>
-          </label>
+              onChange={(val) => onStateChange('specialization', val)}
+              options={[
+                { value: '', label: 'All Specializations' },
+                ...options.specializations.map((spec) => ({ value: spec, label: spec })),
+              ]}
+              icon="lucide:brain"
+            />
+          </div>
 
-          <label className={styles.filterField}>
+          <div className={styles.filterField}>
             <span>Gender</span>
-            <select
-              className={styles.filterSelect}
+            <CustomDropdown
+              placeholder="Any Gender"
               value={state.gender}
-              onChange={(e) => onStateChange('gender', e.target.value)}
-            >
-              <option value="">Any Gender</option>
-              {options.genders.map((gender) => (
-                <option key={gender} value={gender}>
-                  {formatGender(gender)}
-                </option>
-              ))}
-            </select>
-          </label>
+              onChange={(val) => onStateChange('gender', val)}
+              options={[
+                { value: '', label: 'Any Gender' },
+                ...options.genders.map((gender) => ({ value: gender, label: formatGender(gender) })),
+              ]}
+              icon="lucide:user"
+            />
+          </div>
         </div>
 
         <div className={styles.modalActions}>

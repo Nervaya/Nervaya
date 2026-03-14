@@ -31,5 +31,6 @@ export interface Therapist {
     message: string;
     clientSince?: string;
   }>;
+  isAvailable: boolean;
   consultingHours?: ConsultingHour[];
 }

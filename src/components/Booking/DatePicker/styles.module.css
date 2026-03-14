@@ -179,107 +179,98 @@
 
 .day {
   aspect-ratio: 1;
-  border: 1px solid transparent;
-  background: var(--color-white-dim);
+  border: 1px solid #f1f5f9;
+  background: #ffffff;
   border-radius: 12px;
-  font-size: var(--font-size-base);
+  font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--color-foreground);
+  color: #334155;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  max-height: 44px;
+  min-height: 44px;
+  position: relative;
 }
 
 @media (max-width: 768px) {
   .day {
     min-height: 40px;
-    max-height: 44px;
-    font-size: var(--font-size-sm);
+    font-size: 0.875rem;
     border-radius: 10px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .day {
-    transition: none;
-  }
-}
-
 .day:hover:not(:disabled) {
-  background: var(--color-accent-dim);
-  border-color: var(--color-accent-dim);
-  color: var(--color-accent);
-}
-
-.day:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-accent);
+  background: #ffffff;
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
 }
 
 .dayToday {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  font-weight: 700;
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+  color: #7c3aed;
+  font-weight: 600;
 }
 
 .dayToday:hover:not(:disabled) {
-  background: rgba(139, 92, 246, 0.25);
+  background: #ede9fe;
+  border-color: #8b5cf6;
 }
 
 .daySelected {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  border-color: transparent;
-  color: white;
+  background: #8b5cf6 !important;
+  border: none !important;
+  color: #ffffff !important;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+  z-index: 10;
 }
 
 .daySelected:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #6d28d9 100%);
-  border-color: transparent;
-  color: white;
+  background: #7c3aed !important;
+  transform: translateY(-1px);
 }
 
 .dayDisabled {
-  background: transparent;
-  color: var(--color-text-slate-400);
+  background: #f8fafc;
+  color: #cbd5e1;
   cursor: not-allowed;
-  opacity: 0.3;
+  border: 1px solid #f1f5f9;
+  opacity: 0.5;
 }
 
 .dayDisabled:hover {
-  background: transparent;
-  border-color: transparent;
-  color: #475569;
+  background: #f8fafc;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Color coding for slot availability */
 .dateNormal {
-  background: var(--color-white-dim);
-  border-color: var(--color-border-light);
+  background: #ffffff;
 }
 
 .dateLimited {
-  background: rgba(251, 146, 60, 0.1);
-  border-color: rgba(251, 146, 60, 0.3);
+  background: #fffaf5;
+  border-color: #fed7aa;
 }
 
 .dateLimited:hover:not(:disabled) {
-  background: rgba(251, 146, 60, 0.2);
-  border-color: rgba(251, 146, 60, 0.5);
+  background: #fff7ed;
+  border-color: #fb923c;
 }
 
 .dateCritical {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: #fff5f5;
+  border-color: #fecaca;
 }
 
 .dateCritical:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.5);
+  background: #fef2f2;
+  border-color: #f87171;
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_CLOSE } from '@/constants/icons';
+import { ICON_X } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface DriftOffAssignVideoModalProps {
@@ -52,7 +52,7 @@ const DriftOffAssignVideoModal = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Assign Video</h2>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            <Icon icon={ICON_CLOSE} width={20} height={20} />
+            <Icon icon={ICON_X} width={20} height={20} />
           </button>
         </div>
         <p className={styles.modalSubtitle}>

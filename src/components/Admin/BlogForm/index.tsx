@@ -4,7 +4,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ADD, ICON_CLOSE } from '@/constants/icons';
+import { ICON_ADD, ICON_X } from '@/constants/icons';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import LottieLoader from '@/components/common/LottieLoader';
 import { quillModules, quillFormats } from '@/lib/constants/blogEditor.constants';
@@ -163,7 +163,7 @@ export default function BlogForm({
                   <span key={tag} className={styles.tag}>
                     {tag}
                     <button type="button" onClick={() => onRemoveTag(tag)} className={styles.removeTagButton}>
-                      <Icon icon={ICON_CLOSE} width={16} height={16} />
+                      <Icon icon={ICON_X} width={16} height={16} />
                     </button>
                   </span>
                 ))}

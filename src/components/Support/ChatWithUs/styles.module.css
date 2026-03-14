@@ -67,9 +67,10 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
   padding: 24px 40px 28px;
   gap: 12px;
-  margin: 0;
   box-sizing: border-box;
 }
 
@@ -202,22 +203,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-}
-
-.chatBadge {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 4px 12px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #25d366;
-  background: rgba(37, 211, 102, 0.15);
-  border: 1px solid rgba(37, 211, 102, 0.25);
-  border-radius: 20px;
-  margin-bottom: 4px;
 }
 
 .bannerTitle {

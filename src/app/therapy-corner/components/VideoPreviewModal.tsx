@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_CLOSE } from '@/constants/icons';
+import { ICON_X } from '@/constants/icons';
 import { Therapist } from '@/types/therapist.types';
 import styles from '../styles.module.css';
 
@@ -18,7 +18,7 @@ export function VideoPreviewModal({ therapist, onClose }: VideoPreviewModalProps
         <div className={styles.modalHeader}>
           <h3>{therapist.name} - Intro Video</h3>
           <button type="button" className={styles.closeModalBtn} onClick={onClose} aria-label="Close video">
-            <Icon icon={ICON_CLOSE} width={18} height={18} />
+            <Icon icon={ICON_X} width={18} height={18} />
           </button>
         </div>
         <video className={styles.videoPlayer} controls autoPlay poster={therapist.introVideoThumbnail || ''}>

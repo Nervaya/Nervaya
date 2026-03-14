@@ -1,4 +1,6 @@
 'use client';
+import { Icon } from '@iconify/react';
+import { ICON_X } from '@/constants/icons';
 
 import styles from './styles.module.css';
 
@@ -15,7 +17,7 @@ export function BookingModalHeader({ therapistName, onClose }: BookingModalHeade
         <p className={styles.subtitle}>with {therapistName}</p>
       </div>
       <button className={styles.closeBtn} onClick={onClose} aria-label="Close booking modal">
-        Close
+        <Icon icon={ICON_X} width={20} height={20} />
       </button>
     </div>
   );

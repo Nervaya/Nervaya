@@ -124,20 +124,19 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--spacing-md);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 }
@@ -147,140 +146,88 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: 1px solid var(--color-border-light);
-  border-radius: 14px;
-  background: var(--color-white-dim);
-  color: var(--color-foreground);
+  gap: 4px;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1f2937;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
   position: relative;
-  min-height: 72px;
+  min-height: 80px;
 }
 
 @media (max-width: 768px) {
   .slot {
-    padding: 6px;
-    gap: 2px;
-    border-radius: 12px;
-    min-height: 60px;
+    padding: 0.75rem;
+    min-height: 70px;
   }
 }
 
 .slot:hover:not(:disabled) {
-  border-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
-  background: var(--color-accent-dim);
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
 }
 
 .slot.selected {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  color: white;
-  border-color: var(--color-accent);
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  background: #8b5cf6;
+  color: #ffffff;
+  border-color: #7c3aed;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
 .slot.selected:hover {
-  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #6d28d9 100%);
-  border-color: var(--color-accent-hover);
+  background: #7c3aed;
+  border-color: #6d28d9;
 }
 
 .slot.booked {
-  background: #f1f5f9;
+  background: #f8fafc;
   color: #94a3b8;
   border-color: #e2e8f0;
   cursor: not-allowed;
-  opacity: 0.6;
-  position: relative;
+  opacity: 0.7;
 }
 
 .slot.booked::after {
   content: '';
   position: absolute;
   top: 50%;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: #94a3b8;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: #cbd5e1;
   transform: translateY(-50%);
 }
 
-.slot.booked:hover {
-  transform: none;
-  box-shadow: none;
-}
-
 .slot.customized {
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(59, 130, 246, 0.05);
   border-color: #3b82f6;
-  color: #93c5fd;
-}
-
-.slot.customized:hover:not(:disabled) {
-  background: rgba(59, 130, 246, 0.15);
-  border-color: #60a5fa;
+  color: #1e40af;
 }
 
 .time {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 768px) {
-  .time {
-    font-size: 0.8125rem;
-  }
-}
-
-.slot.selected .time {
-  color: white;
-}
-
-.slot.booked .time {
-  color: #94a3b8;
 }
 
 .timeRange {
   font-size: 0.8125rem;
-  opacity: 0.7;
+  opacity: 0.8;
   font-weight: 400;
-  line-height: 1.2;
-  font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 768px) {
-  .timeRange {
-    font-size: 0.7rem;
-  }
-}
-
+.slot.selected .time,
 .slot.selected .timeRange {
-  opacity: 0.95;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.slot.booked .timeRange {
-  opacity: 0.6;
+  color: #ffffff;
 }
 
 .customizedBadge {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 4px;
+  right: 4px;
   font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-  .customizedBadge {
-    font-size: 0.7rem;
-    top: 4px;
-    right: 4px;
-  }
 }

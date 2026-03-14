@@ -38,17 +38,35 @@ export default function DatePicker({
     onMonthChange?.(monthStart);
   }, [selectedDate, onMonthChange]);
 
-  const isDateDisabled = (date: Date) => checkDateDisabled(date, minDate, maxDate, fullyBookedDates);
+  const isDateDisabled = (date: Date) => {
+    // Strictly only disable past days
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+
+    if (checkDate < today) return true;
+
+    // Additionally check explicitly provided fullyBookedDates
+    return checkDateDisabled(date, minDate, maxDate, fullyBookedDates);
+  };
+
   const isSelected = (date: Date) => isSameDay(date, selectedDate);
 
   // Determine availability status for color coding
   const getAvailabilityStatus = (date: Date) => {
     if (isDateDisabled(date)) return 'disabled';
+    if (!slotAvailability) return 'normal';
 
     const dateStr = date.toISOString().split('T')[0];
-    const availableSlots = slotAvailability?.get(dateStr) || 0;
+    const availableSlots = slotAvailability?.get(dateStr);
 
+    // If we have data for this date and it's 0, it's fully booked
     if (availableSlots === 0) return 'fullyBooked';
+
+    // If no data is available for a future date, assume it's normal (clickable)
+    if (availableSlots === undefined) return 'normal';
+
     if (availableSlots <= 1) return 'critical';
     if (availableSlots <= 3) return 'limited';
     return 'normal';
@@ -57,20 +75,24 @@ export default function DatePicker({
   const getDateClassName = (date: Date) => {
     const status = getAvailabilityStatus(date);
     const baseClass = styles.day;
+    const isSelectedDate = isSelected(date);
+
+    let classes = baseClass;
+    if (isSelectedDate) classes += ` ${styles.daySelected}`;
 
     switch (status) {
       case 'disabled':
-        return `${baseClass} ${styles.dayDisabled}`;
+        return `${classes} ${styles.dayDisabled}`;
       case 'fullyBooked':
-        return `${baseClass} ${styles.dayDisabled}`;
+        return `${classes} ${styles.dayDisabled}`;
       case 'critical':
-        return `${baseClass} ${styles.dateCritical}`;
+        return `${classes} ${styles.dateCritical}`;
       case 'limited':
-        return `${baseClass} ${styles.dateLimited}`;
+        return `${classes} ${styles.dateLimited}`;
       case 'normal':
-        return `${baseClass} ${styles.dateNormal}`;
+        return `${classes} ${styles.dateNormal}`;
       default:
-        return baseClass;
+        return classes;
     }
   };
 

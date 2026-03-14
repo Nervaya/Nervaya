@@ -50,7 +50,7 @@ export function BookingModalFooter({
             {selectedSlot && <span className={styles.sessionTime}> at {selectedSlot}</span>}
           </div>
         )}
-        {sessionFee && (
+        {sessionFee !== undefined && sessionFee !== null && (
           <div className={styles.priceSection}>
             <span className={styles.price}>{formatPrice(sessionFee)}</span>
           </div>
@@ -63,9 +63,9 @@ export function BookingModalFooter({
         className={styles.bookBtn}
         disabled={!selectedSlot || booking || loading}
         onClick={onBook}
-        aria-label="Book selected session"
+        aria-label="Add session to cart"
       >
-        {booking ? 'Booking...' : 'Book Session'}
+        {booking ? 'Adding...' : 'Add to Cart'}
       </button>
     </div>
   );

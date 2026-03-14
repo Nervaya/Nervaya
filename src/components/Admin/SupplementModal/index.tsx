@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
-import { ICON_CLOSE } from '@/constants/icons';
+import { ICON_X } from '@/constants/icons';
 import { SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '../SupplementForm';
 import styles from './styles.module.css';
@@ -89,7 +89,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
             aria-label="Close modal"
             title="Close"
           >
-            <Icon icon={ICON_CLOSE} className={styles.closeIcon} />
+            <Icon icon={ICON_X} className={styles.closeIcon} />
           </button>
         </div>
 

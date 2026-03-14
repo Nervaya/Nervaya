@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { ICON_UPLOAD, ICON_CLOSE } from '@/constants/icons';
+import { ICON_UPLOAD, ICON_X } from '@/constants/icons';
 import { uploadApi } from '@/lib/api/upload';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
@@ -99,7 +99,7 @@ const ImageUpload = ({
             unoptimized
           />
           <button className={styles.removeBtn} onClick={handleRemove} title="Remove image">
-            <Icon icon={ICON_CLOSE} width={12} height={12} />
+            <Icon icon={ICON_X} width={12} height={12} />
           </button>
         </>
       ) : (

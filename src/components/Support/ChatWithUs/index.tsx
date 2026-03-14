@@ -28,7 +28,6 @@ const ChatWithUs = () => {
           <Icon icon={ICON_WHATSAPP} className={styles.whatsappIcon} />
         </div>
         <div className={styles.bannerText}>
-          <span className={styles.chatBadge}>WhatsApp</span>
           <h2 className={styles.bannerTitle}>Chat with Us</h2>
           <p className={styles.bannerSubtitle}>
             Have questions about the product? Let us support your journey to restful sleep.

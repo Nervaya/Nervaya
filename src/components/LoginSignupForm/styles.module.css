@@ -309,8 +309,11 @@
   cursor: pointer;
 }
 
-.authToggleLink:hover {
-  text-decoration: underline;
+.loaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .overlayContainer {

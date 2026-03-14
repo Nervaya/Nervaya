@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
+import { ICON_X } from '@/constants/icons';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -43,7 +44,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
           <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">
-            <Icon icon="lucide:x" width={24} height={24} />
+            <Icon icon={ICON_X} width={24} height={24} />
           </button>
         </div>
         <div className={styles.content}>{children}</div>

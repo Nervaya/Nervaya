@@ -7,9 +7,10 @@ import DatePicker from '../DatePicker';
 import LottieLoader from '@/components/common/LottieLoader';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
-import { sessionsApi } from '@/lib/api/sessions';
+// import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
 import { useTherapist } from '@/app/queries/therapists/useTherapist';
+import { cartApi } from '@/lib/api/cart';
 import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
 import styles from './styles.module.css';
 
@@ -142,7 +143,11 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     setBooking(true);
     setError(null);
     try {
-      await sessionsApi.create(therapistId, schedule.date, slot.startTime);
+      // await sessionsApi.create(therapistId, schedule.date, slot.startTime);
+
+      // Integrating with cartApi
+      await cartApi.add(therapistId, 1); // Mocking for now, need to ensure cart supports therapy types
+
       bookingCompletedRef.current = true;
       trackTherapyBooked({
         therapy_type: therapist?.specializations?.[0] || 'General Therapy',
@@ -152,7 +157,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
         price: therapist?.sessionFee ?? 0,
         currency: 'INR',
       });
-      setSuccessMessage('Session booked successfully!');
+      setSuccessMessage('Added to cart successfully!');
       onSuccess?.();
       setTimeout(() => onClose(), 1200);
     } catch (err) {

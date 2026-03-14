@@ -1,0 +1,129 @@
+.container {
+  position: relative;
+  width: 100%;
+  min-width: 140px;
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: #1f2937;
+  gap: 8px;
+}
+
+.trigger:hover {
+  border-color: #8b5cf6;
+  background: #fdfcff;
+}
+
+.triggerOpen {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.triggerContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.icon {
+  font-size: 1.125rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  font-size: 1rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.optionsWrapper {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.optionsWrapper::-webkit-scrollbar {
+  width: 5px;
+}
+
+.optionsWrapper::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.option:hover {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.optionSelected {
+  background: #f5f3ff;
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.checkIcon {
+  font-size: 0.875rem;
+  color: #7c3aed;
+}
+
+@media (max-width: 768px) {
+  .trigger {
+    padding: 8px 12px;
+    font-size: 0.875rem;
+  }
+
+  .dropdown {
+    min-width: 100%;
+  }
+}

@@ -6,7 +6,7 @@ import { scheduleApi } from '@/lib/api/schedule';
 import { Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
-import { ICON_CALENDAR, ICON_CHECK, ICON_CLOCK, ICON_CLOSE, ICON_ADD } from '@/constants/icons';
+import { ICON_CALENDAR, ICON_CHECK, ICON_CLOCK, ICON_X, ICON_ADD } from '@/constants/icons';
 
 interface Schedule {
   date: string;
@@ -199,7 +199,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
 
       {error && (
         <div className={styles.errorBanner}>
-          <Icon icon={ICON_CLOSE} width={20} height={20} />
+          <Icon icon={ICON_X} width={20} height={20} />
           <span>{error}</span>
         </div>
       )}
@@ -310,7 +310,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
 
         {!loading && (!schedule || schedule.slots.length === 0) && (
           <div className={styles.emptySlots}>
-            <Icon icon={ICON_CLOSE} width={48} height={48} className={styles.emptyIcon} />
+            <Icon icon={ICON_X} width={48} height={48} className={styles.emptyIcon} />
             <p>No slots configured for this date</p>
             <span className={styles.emptyHint}>Set up consulting hours to create available slots</span>
           </div>

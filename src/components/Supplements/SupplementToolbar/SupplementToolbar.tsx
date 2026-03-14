@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_GRID, ICON_LIST, ICON_FILTER, ICON_CLOSE, ICON_WHATSAPP } from '@/constants/icons';
+import { ICON_GRID, ICON_LIST, ICON_FILTER, ICON_X, ICON_WHATSAPP } from '@/constants/icons';
 import { Dropdown } from '@/components/common';
 import SupplementFilters, { type PriceRange } from '../SupplementFilters';
 import { trackSearch } from '@/utils/analytics';
@@ -138,7 +138,7 @@ const SupplementToolbar: React.FC<SupplementToolbarProps> = ({
           <div className={styles.filterHeader}>
             <span className={styles.filterTitle}>Shop by price</span>
             <button type="button" className={styles.filterClose} onClick={closeFilter} aria-label="Close filter">
-              <Icon icon={ICON_CLOSE} width={16} height={16} aria-hidden />
+              <Icon icon={ICON_X} width={16} height={16} aria-hidden />
             </button>
           </div>
           <SupplementFilters priceBounds={priceBounds} value={priceRange} onChange={onPriceChange} />

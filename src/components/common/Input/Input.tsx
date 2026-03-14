@@ -8,6 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   containerClassName?: string;
   variant?: 'dark' | 'light';
   compact?: boolean;
+  showRequiredIndicator?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,6 +19,7 @@ const Input: React.FC<InputProps> = ({
   className,
   variant = 'dark',
   compact = false,
+  showRequiredIndicator = false,
   ...props
 }) => {
   return (
@@ -29,6 +31,11 @@ const Input: React.FC<InputProps> = ({
       <label className={styles.label}>
         {labelIcon && <span className={styles.labelIcon}>{labelIcon}</span>}
         {label}
+        {showRequiredIndicator && (
+          <span className={styles.requiredStar} style={{ color: '#ff0000', marginLeft: '4px', fontWeight: 'bold' }}>
+            *
+          </span>
+        )}
       </label>
       <input
         className={`${styles.input} ${variant === 'light' ? styles.lightInput : ''} ${

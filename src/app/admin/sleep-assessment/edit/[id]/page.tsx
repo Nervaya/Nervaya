@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ADD, ICON_CLOSE } from '@/constants/icons';
+import { ICON_ARROW_LEFT, ICON_ADD, ICON_X } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import { Dropdown } from '@/components/common';
@@ -248,7 +248,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
                     className={styles.removeOptionButton}
                     aria-label="Remove option"
                   >
-                    <Icon icon={ICON_CLOSE} aria-hidden />
+                    <Icon icon={ICON_X} aria-hidden />
                   </button>
                 )}
               </li>

@@ -76,8 +76,14 @@
 .inlineFilters {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+}
+
+.inlineFilters > div {
+  width: auto !important;
+  min-width: 160px;
+  flex-shrink: 0;
 }
 
 .mobileFilterTrigger {

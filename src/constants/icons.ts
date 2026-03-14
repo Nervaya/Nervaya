@@ -86,6 +86,7 @@ export const ICON_PAUSE = 'solar:pause-circle-bold';
 export const ICON_PHONE = 'solar:phone-bold';
 export const ICON_LOCATION = 'solar:map-point-bold';
 export const ICON_SUNRISE = 'solar:sunrise-bold';
+export const ICON_SUN = 'solar:sun-bold';
 export const ICON_USER_SETTINGS = 'solar:user-id-bold';
 export const ICON_USER_MEDICAL = 'solar:user-check-bold';
 export const ICON_DISCOUNT = 'solar:tag-bold';

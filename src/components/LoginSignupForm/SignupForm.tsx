@@ -106,7 +106,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           )}
         </div>
         <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'OK...' : 'OK'}
+          {loading ? (
+            <div className={styles.loaderWrapper}>
+              <Icon icon="line-md:loading-twotone-loop" width={20} height={20} />
+              <span>Loading...</span>
+            </div>
+          ) : (
+            'OK'
+          )}
         </button>
       </form>
       <div className={[styles.authToggle, 'md:hidden'].join(' ')}>

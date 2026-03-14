@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_SUNRISE } from '@/constants/icons';
+import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_SUNRISE, ICON_SUN, ICON_MOON } from '@/constants/icons';
 import { TherapistSlot } from '@/types/session.types';
 import styles from './styles.module.css';
 
@@ -62,6 +62,18 @@ const formatTimeDisplay = (timeStr: string) => {
   }
   return timeStr;
 };
+const getPeriodIconConfig = (period: TimePeriod) => {
+  switch (period) {
+    case 'Morning':
+      return { icon: ICON_SUNRISE, color: '#f59e0b' };
+    case 'Afternoon':
+      return { icon: ICON_SUN, color: '#0ea5e9' };
+    case 'Evening':
+      return { icon: ICON_MOON, color: '#818cf8' };
+    default:
+      return { icon: ICON_SUNRISE, color: '#f59e0b' };
+  }
+};
 
 export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: TimeSlotGridProps) {
   const [currentPeriodIndex, setCurrentPeriodIndex] = useState(0);
@@ -110,8 +122,8 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
           <Icon icon={ICON_ARROW_LEFT} width={20} height={20} aria-hidden />
         </button>
         <div className={styles.periodNavLabel}>
-          <span className={styles.periodIcon}>
-            <Icon icon={ICON_SUNRISE} width={16} height={16} />
+          <span className={styles.periodIcon} style={{ color: getPeriodIconConfig(currentGroup.period).color }}>
+            <Icon icon={getPeriodIconConfig(currentGroup.period).icon} width={20} height={20} />
           </span>
           <span>{currentGroup.period}</span>
           <span className={styles.periodCount}>({availableCount} available)</span>
