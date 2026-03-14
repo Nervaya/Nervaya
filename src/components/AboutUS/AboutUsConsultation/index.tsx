@@ -131,7 +131,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
                 <ul className={styles.expectList}>
                   <li className={styles.expectItem}>Personalized sleep assessment</li>
                   <li className={styles.expectItem}>Custom recommendations</li>
-                  <li className={styles.expectItem}>Answer all your questions</li>
+                  <li className={styles.expectItem}>Answer to all your questions</li>
                 </ul>
               </div>
             </div>
