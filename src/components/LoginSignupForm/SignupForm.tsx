@@ -109,10 +109,10 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           {loading ? (
             <div className={styles.loaderWrapper}>
               <Icon icon="line-md:loading-twotone-loop" width={20} height={20} />
-              <span>Loading...</span>
+              <span>Signing up</span>
             </div>
           ) : (
-            'OK'
+            'Sign up'
           )}
         </button>
       </form>

@@ -12,11 +12,24 @@ interface TherapySessionCardProps {
   onViewDetails: (session: Session) => void;
 }
 
+function getStatusLabel(status: string): string {
+  const s = (status || '').toLowerCase();
+  if (s === 'pending' || s === 'confirmed') return 'Upcoming';
+  if (s === 'completed') return 'Completed';
+  if (s === 'cancelled') return 'Cancelled';
+  return status || 'Upcoming';
+}
+
 const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onViewDetails }) => {
   const therapist = session.therapistId as unknown as Therapist;
+  const statusLabel = getStatusLabel(session.status || '');
+  const canReschedule = ['pending', 'confirmed'].includes((session.status || '').toLowerCase());
 
   return (
     <div className={styles.sessionCard}>
+      <span className={styles.statusTag} data-status={(session.status || '').toLowerCase()}>
+        {statusLabel}
+      </span>
       <div className={styles.cardImagePlaceholder}>
         {therapist?.image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -80,9 +93,11 @@ const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onView
           <button className={styles.primaryActionBtn} onClick={() => onViewDetails(session)}>
             <Icon icon={ICON_CALENDAR} className={styles.btnIcon} /> View Session Details
           </button>
-          <button className={styles.secondaryActionBtn}>
-            Reschedule Appointment <Icon icon="lucide:chevron-right" />
-          </button>
+          {canReschedule && (
+            <button className={styles.secondaryActionBtn}>
+              Reschedule Appointment <Icon icon="lucide:chevron-right" />
+            </button>
+          )}
         </div>
       </div>
     </div>

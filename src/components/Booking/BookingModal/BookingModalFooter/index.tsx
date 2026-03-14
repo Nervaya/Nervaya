@@ -39,6 +39,10 @@ export function BookingModalFooter({
     });
   };
 
+  /** Only show slot time if it looks like a time string (e.g. "9:00 AM"), not a bare id like "0". */
+  const showSlotTime =
+    selectedSlot && (selectedSlot.includes('AM') || selectedSlot.includes('PM') || selectedSlot.includes(':'));
+
   return (
     <div className={styles.footer}>
       <div className={styles.sessionDetails}>
@@ -47,7 +51,7 @@ export function BookingModalFooter({
             {therapistName && <span className={styles.therapistName}>{therapistName}</span>}
             {therapistName && selectedDate && <span className={styles.separator}> • </span>}
             {selectedDate && <span className={styles.sessionDate}>{formatDate(selectedDate)}</span>}
-            {selectedSlot && <span className={styles.sessionTime}> at {selectedSlot}</span>}
+            {showSlotTime && <span className={styles.sessionTime}> at {selectedSlot}</span>}
           </div>
         )}
         {sessionFee !== undefined && sessionFee !== null && (

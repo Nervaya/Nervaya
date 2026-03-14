@@ -93,10 +93,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           {loading ? (
             <div className={styles.loaderWrapper}>
               <Icon icon="line-md:loading-twotone-loop" width={20} height={20} />
-              <span>Loading...</span>
+              <span>Logging in</span>
             </div>
           ) : (
-            'OK'
+            'Log in'
           )}
         </button>
       </form>

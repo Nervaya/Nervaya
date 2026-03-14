@@ -8,7 +8,7 @@ import { ROLES } from '@/lib/constants/roles';
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN, ROLES.THERAPIST]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
+    const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN, ROLES.THERAPIST]);
 
     if (authResult instanceof NextResponse) {
       return authResult;

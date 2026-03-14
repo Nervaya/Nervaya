@@ -1,0 +1,125 @@
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #0f172a);
+  margin: 0 0 0.25rem 0;
+}
+
+.sectionSubtitle {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted, #64748b);
+  margin: 0 0 1rem 0;
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  background: var(--color-accent, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.ctaLink:hover {
+  background: var(--color-accent-hover, #6d28d9);
+  transform: translateY(-1px);
+}
+
+.notLinked {
+  padding: 2rem;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #b91c1c;
+  text-align: center;
+}
+
+.notLinked p {
+  margin: 1rem 0 0 0;
+  font-size: 1rem;
+}
+
+.sessionGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sessionBlock {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: var(--color-card-bg, #f8fafc);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.statusHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #0f172a);
+  margin: 0 0 0.75rem 0;
+}
+
+.sessionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sessionItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 0.9rem;
+}
+
+.sessionItem:last-child {
+  border-bottom: none;
+}
+
+.sessionDate {
+  font-weight: 500;
+  color: var(--color-text-primary, #0f172a);
+}
+
+.sessionTime {
+  color: var(--color-text-muted, #64748b);
+}
+
+.sessionMeta {
+  color: var(--color-text-muted, #64748b);
+  font-size: 0.85rem;
+}
+
+.sessionBadge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: rgba(99, 102, 241, 0.15);
+  color: #4f46e5;
+}
+
+.empty,
+.more {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #64748b);
+}
+
+.more {
+  margin-top: 0.5rem;
+}

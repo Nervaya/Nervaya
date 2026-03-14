@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import StarRating from '@/components/common/StarRating';
+import LottieLoader from '@/components/common/LottieLoader';
 import ReviewCard from '../ReviewCard';
 import StatusState from '@/components/common/StatusState';
 import { IMAGES } from '@/utils/imageConstants';
@@ -61,7 +62,9 @@ const TabReviews: React.FC<TabReviewsProps> = ({ supplement }) => {
   if (loading) {
     return (
       <div className={styles.content}>
-        <div className={styles.loading}>Loading reviews...</div>
+        <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+          <LottieLoader width={120} height={120} />
+        </div>
       </div>
     );
   }

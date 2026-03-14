@@ -7,10 +7,10 @@ const DriftOffHeaderActions = () => {
   return (
     <div className={styles.headerActions}>
       <Link href="#" className={styles.buttonPrimary}>
-        Buy Custom Session &gt;
+        Buy tailored audio &gt;
       </Link>
       <Link href="#" className={styles.buttonSecondary}>
-        Know More &gt;
+        What are Deep Rest sessions? &gt;
       </Link>
     </div>
   );

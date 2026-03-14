@@ -18,6 +18,9 @@ const SHIPPING_OPTIONS = [
   },
 ];
 
+const SHIPPING_AND_DELIVERY_SCRIPT =
+  'We ship across India. Orders are processed within 1–2 business days. Standard delivery takes 5–7 business days; express options may be available at checkout. You will receive tracking details once your order is dispatched. Delivery is made to the address provided at checkout; please ensure someone is available to receive the package.';
+
 const RETURN_POLICY =
   "We offer a 30-day money-back guarantee on all products. If you're not completely satisfied with your purchase, simply return it within 30 days for a full refund. Products must be in original packaging and unused for return eligibility. Contact our customer service team to initiate a return.";
 
@@ -25,7 +28,13 @@ const TabShippingDelivery: React.FC = () => {
   return (
     <div className={styles.content}>
       <section className={styles.section}>
-        <h3 className={styles.heading}>Shipping Information</h3>
+        <h3 className={styles.heading}>Shipping & Delivery</h3>
+        <div className={styles.policyBox}>
+          <p className={styles.policyText}>{SHIPPING_AND_DELIVERY_SCRIPT}</p>
+        </div>
+      </section>
+      <section className={styles.section}>
+        <h3 className={styles.heading}>Shipping Options</h3>
         <ul className={styles.options} aria-label="Shipping options">
           {SHIPPING_OPTIONS.map((opt) => (
             <li key={opt.title} className={styles.option}>
@@ -41,7 +50,7 @@ const TabShippingDelivery: React.FC = () => {
         </ul>
       </section>
       <section className={styles.section}>
-        <h3 className={styles.heading}>Return Policy</h3>
+        <h3 className={styles.heading}>Returns</h3>
         <div className={styles.policyBox}>
           <p className={styles.policyText}>{RETURN_POLICY}</p>
         </div>

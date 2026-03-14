@@ -49,8 +49,8 @@ const ChatWithUs = () => {
       <div className={styles.buttonContainer}>
         <Button variant="primary" className={styles.whatsappButton} onClick={handleWhatsAppClick}>
           <Icon icon={ICON_CHAT} width={20} height={20} className={styles.buttonIcon} />
-          <span className={styles.buttonTextDesktop}>Chat with Us on WhatsApp</span>
-          <span className={styles.buttonTextMobile}>Chat on WhatsApp</span>
+          <span className={styles.buttonTextDesktop}>Chat with Us</span>
+          <span className={styles.buttonTextMobile}>Chat with Us</span>
         </Button>
         <p className={styles.disclaimer}>We typically respond within 2 hours. Your information is kept confidential.</p>
       </div>

@@ -22,6 +22,8 @@ export interface AssessmentTileModel {
   value: string;
   subtitle: string;
   ctaLabel: string;
+  /** When true, do not show CTA (e.g. assessment already completed, no retake). */
+  hideCta?: boolean;
 }
 
 export type ActivityIconKey = 'session' | 'order' | 'assessment';
@@ -73,7 +75,8 @@ export function getAssessmentTileModel(
     return {
       value: scoreLabel,
       subtitle: `Last completed ${formatTimeAgo(completedAt)}`,
-      ctaLabel: 'Retake assessment',
+      ctaLabel: '',
+      hideCta: true,
     };
   }
 

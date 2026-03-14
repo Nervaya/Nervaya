@@ -128,6 +128,25 @@ export async function getUserSessions(userId: string, statusFilter?: string) {
   }
 }
 
+export async function getSessionsByTherapistId(therapistId: string, statusFilter?: string) {
+  await connectDB();
+  try {
+    if (!Types.ObjectId.isValid(therapistId)) {
+      throw new ValidationError('Invalid Therapist ID');
+    }
+
+    const filter: Record<string, unknown> = { therapistId: new Types.ObjectId(therapistId) };
+    if (statusFilter) {
+      filter.status = statusFilter;
+    }
+
+    const sessions = await Session.find(filter).sort({ date: -1, startTime: -1 });
+    return sessions;
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
 export async function getSessionById(sessionId: string) {
   await connectDB();
   try {

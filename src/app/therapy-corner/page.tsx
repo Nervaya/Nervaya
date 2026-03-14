@@ -88,16 +88,14 @@ function formatNextSlot(dateTime: Date): string {
   return `${datePart} ${timePart}`;
 }
 
-function formatExperience(experience?: string) {
-  if (!experience) return 'Experience not specified';
+function formatExperienceYears(experience?: string): string {
+  if (!experience || !experience.trim()) return '—';
   const normalized = experience.trim();
-  if (/year/i.test(normalized)) return normalized;
-
   const numericMatch = normalized.match(/\d+/);
   if (numericMatch?.[0]) {
-    return `${numericMatch[0]}+ years of experience`;
+    return `${numericMatch[0]}+ years`;
   }
-
+  if (/year/i.test(normalized)) return normalized;
   return normalized;
 }
 
@@ -278,11 +276,11 @@ export default function TherapyCornerPage() {
 
             <div className={styles.inlineFilters}>
               <CustomDropdown
-                placeholder="Expertise"
+                placeholder="Qualification"
                 value={filterState.specialization}
                 onChange={(val) => handleFilterChange('specialization', val)}
                 options={[
-                  { value: FILTER_ALL, label: 'Expertise' },
+                  { value: FILTER_ALL, label: 'Qualification' },
                   ...filterOptions.specializations.map((spec) => ({ value: spec, label: spec })),
                 ]}
                 icon="lucide:brain"
@@ -352,7 +350,7 @@ export default function TherapyCornerPage() {
                         onViewProfile={handleViewProfile}
                         onBookAppointment={handleBookAppointment}
                         onVideoPreview={setVideoPreviewTherapist}
-                        formatExperience={formatExperience}
+                        formatExperienceYears={formatExperienceYears}
                         nextSlotLabel={nextSlotByTherapist[therapist._id]}
                         isNextSlotLoading={!(therapist._id in nextSlotByTherapist)}
                       />

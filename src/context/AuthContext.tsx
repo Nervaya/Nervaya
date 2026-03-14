@@ -17,6 +17,8 @@ interface User {
   email: string;
   name: string;
   role: Role;
+  /** Present when role is THERAPIST: the linked Therapist profile id. */
+  therapistId?: string;
 }
 
 export interface AuthData {

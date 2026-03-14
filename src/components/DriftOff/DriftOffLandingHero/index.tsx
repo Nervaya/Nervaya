@@ -44,13 +44,13 @@ const DriftOffLandingHero = () => {
         </p>
         <div className={styles.actions}>
           <Link href="/drift-off/payment" className={styles.btnPrimary}>
-            {hasSessions ? 'Buy New Session' : 'Buy Custom Session'}
+            {hasSessions ? 'Buy new tailored audio' : 'Buy tailored audio'}
           </Link>
           <Link href="/drift-off/sessions" className={styles.btnOutline}>
             View My Sessions
           </Link>
           <Link href="/drift-off/about" className={styles.btnOutline}>
-            Know More
+            What are Deep Rest sessions?
           </Link>
         </div>
       </div>

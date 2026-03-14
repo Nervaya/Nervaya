@@ -64,3 +64,15 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
     ],
   },
 ];
+
+export const therapistMenuGroups: NavigationMenuGroup[] = [
+  {
+    title: 'Therapist',
+    items: [
+      { title: 'Dashboard', path: '/therapist/dashboard', icon: 'FaChartPie' },
+      { title: 'Set your dates', path: '/therapist/schedule', icon: 'FaCalendarCheck' },
+      { title: 'Support', path: '/support', icon: 'FaHeadset' },
+      { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
+    ],
+  },
+];

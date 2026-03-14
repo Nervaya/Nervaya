@@ -9,6 +9,7 @@ import {
   ADMIN_ROUTES,
   PROTECTED_ROUTES,
   CUSTOMER_ONLY_ROUTES,
+  THERAPIST_ROUTES,
   ROUTES,
   isProtectedPath,
 } from '@/utils/routesConstants';
@@ -17,6 +18,12 @@ import LoadingScreen from '@/components/AuthGuard/LoadingScreen';
 
 function isAuthRoute(pathname: string): boolean {
   return AUTH_ROUTES.some((route) => pathname.startsWith(route));
+}
+
+function getDefaultRouteForRole(role: string | undefined): string {
+  if (role === ROLES.ADMIN) return ROUTES.ADMIN_DASHBOARD;
+  if (role === ROLES.THERAPIST) return ROUTES.THERAPIST_DASHBOARD;
+  return ROUTES.DASHBOARD;
 }
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -29,7 +36,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (isAuthRoute(pathname)) {
       if (isAuthenticated) {
-        router.replace(user?.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD);
+        router.replace(getDefaultRouteForRole(user?.role));
       }
       return;
     }
@@ -42,7 +49,16 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     }
 
     if (ADMIN_ROUTES.some((route) => pathname.startsWith(route)) && isAuthenticated && user?.role !== ROLES.ADMIN) {
-      router.replace(ROUTES.DASHBOARD);
+      router.replace(getDefaultRouteForRole(user?.role));
+      return;
+    }
+
+    if (
+      THERAPIST_ROUTES.some((route) => pathname.startsWith(route)) &&
+      isAuthenticated &&
+      user?.role !== ROLES.THERAPIST
+    ) {
+      router.replace(getDefaultRouteForRole(user?.role));
       return;
     }
 

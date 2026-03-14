@@ -891,3 +891,11 @@
   color: #475569;
   font-style: italic;
 }
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  min-height: 200px;
+}

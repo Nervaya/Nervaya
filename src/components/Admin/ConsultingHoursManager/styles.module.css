@@ -297,6 +297,14 @@
   color: #a0a0a0;
 }
 
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  min-height: 200px;
+}
+
 .hoursList {
   display: flex;
   flex-direction: column;

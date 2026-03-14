@@ -218,7 +218,7 @@ const Navbar = () => {
               </li>
               <li>
                 <button type="button" className={styles.navbarCta} onClick={closeMobileMenu}>
-                  Call Us
+                  Contact Us
                 </button>
               </li>
             </>

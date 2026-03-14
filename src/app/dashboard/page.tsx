@@ -5,7 +5,6 @@ import { Icon } from '@iconify/react';
 import {
   ICON_CLIPBOARD,
   ICON_CALENDAR,
-  ICON_HEART_PULSE,
   ICON_ARROW_RIGHT,
   ICON_BED,
   ICON_SHOPPING_BAG,
@@ -29,7 +28,8 @@ import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { loading, error, sessions, orders, latestAssessment, inProgressAssessment, retry } = useDashboardData();
+  const { loading, error, sessions, orders, latestAssessment, inProgressAssessment, driftOffResponses, retry } =
+    useDashboardData();
 
   const sessionCounts = useMemo(() => getSessionCounts(sessions), [sessions]);
   const nextSession = useMemo(() => getNextSessionInfo(sessions), [sessions]);
@@ -100,9 +100,11 @@ export default function DashboardPage() {
 
         <div className={styles.tilesGrid} aria-label="Dashboard summary tiles">
           <StatTile
-            title="Upcoming session"
+            title="Therapy"
             value={
-              nextSession ? `${nextSession.session.date} • ${nextSession.session.startTime}` : 'No upcoming sessions'
+              nextSession
+                ? `${nextSession.session.date} • ${nextSession.session.startTime}`
+                : 'No upcoming therapy sessions'
             }
             subtitle={
               nextSession
@@ -111,20 +113,13 @@ export default function DashboardPage() {
                     const name = typeof th === 'object' && th && 'name' in th ? (th as { name?: string }).name : null;
                     return `With ${name || 'Therapist'}`;
                   })()
-                : 'Book your next appointment anytime.'
+                : sessions.length > 0
+                  ? `${sessionCounts.confirmed + sessionCounts.pending} upcoming • ${sessionCounts.completed} completed • ${sessionCounts.cancelled} cancelled`
+                  : 'Book your next appointment anytime.'
             }
             icon={<Icon icon={ICON_CALENDAR} aria-hidden />}
-            cta={{ label: 'Book session', href: '/therapy-corner' }}
-            themeColor="var(--color-tile-indigo)"
-          />
-
-          <StatTile
-            title="Sessions summary"
-            value={`${sessionCounts.completed} completed`}
-            subtitle={`${sessionCounts.pending} pending • ${sessionCounts.confirmed} confirmed • ${sessionCounts.cancelled} cancelled`}
-            icon={<Icon icon={ICON_HEART_PULSE} aria-hidden />}
-            cta={{ label: 'Book therapist', href: '/therapy-corner' }}
-            themeColor="var(--color-tile-violet)"
+            cta={{ label: 'Book a new session', href: '/therapy-corner' }}
+            iconColor="var(--color-tile-indigo)"
           />
 
           <StatTile
@@ -132,17 +127,32 @@ export default function DashboardPage() {
             value={assessmentTile.value}
             subtitle={assessmentTile.subtitle}
             icon={<Icon icon={ICON_BED} aria-hidden />}
-            cta={{ label: assessmentTile.ctaLabel, href: '/sleep-assessment' }}
-            themeColor="var(--color-tile-rose)"
+            cta={
+              !assessmentTile.hideCta && assessmentTile.ctaLabel
+                ? { label: assessmentTile.ctaLabel, href: '/sleep-assessment' }
+                : undefined
+            }
+            iconColor="var(--color-tile-rose)"
           />
 
           <StatTile
             title="Drift-Off"
-            value="Restful Sleep"
-            subtitle="Listen to our curated deep rest sessions."
+            value={
+              driftOffResponses.length > 0
+                ? `Purchased: ${driftOffResponses.length} session${driftOffResponses.length === 1 ? '' : 's'}`
+                : 'Deep Rest'
+            }
+            subtitle={
+              driftOffResponses.length > 0
+                ? 'Your tailored audio is ready.'
+                : 'Listen to our curated deep rest sessions.'
+            }
             icon={<Icon icon={ICON_MOON_SLEEP} aria-hidden />}
-            cta={{ label: 'Listen now', href: '/drift-off' }}
-            themeColor="#6366f1"
+            cta={{
+              label: driftOffResponses.length > 0 ? 'Playlist made for you' : 'Listen now',
+              href: driftOffResponses.length > 0 ? '/drift-off/sessions' : '/drift-off',
+            }}
+            iconColor="var(--color-tile-violet)"
           />
         </div>
 

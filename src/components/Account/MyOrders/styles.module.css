@@ -1,3 +1,17 @@
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  min-height: 400px;
+}
+
+@media (max-width: 768px) {
+  .loadingContainer {
+    padding: 60px 24px;
+  }
+}
+
 .container {
   width: 100%;
   padding: 1.5rem;

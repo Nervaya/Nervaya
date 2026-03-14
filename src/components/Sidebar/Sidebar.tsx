@@ -8,7 +8,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { adminMenuGroups, iconMap, sidebarMenuGroups, sidebarBottomNavItems } from '@/utils/sidebarConstants';
+import {
+  adminMenuGroups,
+  therapistMenuGroups,
+  iconMap,
+  sidebarMenuGroups,
+  sidebarBottomNavItems,
+} from '@/utils/sidebarConstants';
 import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
@@ -31,8 +37,9 @@ const Sidebar = ({
   const { isCollapsed, isMobileOpen, isDesktop, closeMobileSidebar } = useSidebar();
 
   const isAdminRoute = pathname.startsWith('/admin');
-  const menuGroups = isAdminRoute ? adminMenuGroups : sidebarMenuGroups;
-  const bottomNavItems = isAdminRoute ? [] : sidebarBottomNavItems;
+  const isTherapistRoute = pathname.startsWith('/therapist');
+  const menuGroups = isAdminRoute ? adminMenuGroups : isTherapistRoute ? therapistMenuGroups : sidebarMenuGroups;
+  const bottomNavItems = isAdminRoute || isTherapistRoute ? [] : sidebarBottomNavItems;
   const expandedWidth = 240;
   const collapsedWidth = 72;
   const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : 240;
@@ -86,7 +93,8 @@ const Sidebar = ({
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
                           const isActive =
-                            pathname === item.path || (isAdminRoute && pathname.startsWith(`${item.path}/`));
+                            pathname === item.path ||
+                            ((isAdminRoute || isTherapistRoute) && pathname.startsWith(`${item.path}/`));
                           return (
                             <li key={`${item.path}-${item.title}`}>
                               <Link

@@ -313,7 +313,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
                     showRequiredIndicator
                     required
                   />
-                  <p className={styles.inputHint}>We&apos;ll send the Google Meet link here</p>
+                  <p className={styles.inputHint}>We&apos;ll send confirmation to this email.</p>
                 </div>
               ) : (
                 <div className={styles.inputGroup}>
@@ -330,7 +330,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
                     showRequiredIndicator
                     required
                   />
-                  <p className={styles.inputHint}>We&apos;ll call you on this number</p>
+                  <p className={styles.inputHint}>We will call you on this number.</p>
                 </div>
               )}
 

@@ -22,6 +22,8 @@ export interface IUser extends Document {
   password: string;
   name: string;
   role: Role;
+  /** Set when role is THERAPIST: links to the Therapist profile for this user. */
+  therapistId?: mongoose.Types.ObjectId;
   emailVerified?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -43,6 +45,12 @@ const userSchema = new Schema<IUser>(
       enum: Object.values(ROLES),
       default: ROLES.CUSTOMER,
       required: true,
+    },
+    therapistId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Therapist',
+      default: null,
+      required: false,
     },
     password: {
       type: String,

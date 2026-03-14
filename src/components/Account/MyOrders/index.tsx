@@ -7,6 +7,7 @@ import { Order } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import api from '@/lib/axios';
 import Pagination from '@/components/common/Pagination';
+import LottieLoader from '@/components/common/LottieLoader';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
@@ -51,9 +52,8 @@ export default function MyOrders() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <h2 className={styles.heading}>My Orders</h2>
-        <p>Loading orders...</p>
+      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+        <LottieLoader width={200} height={200} />
       </div>
     );
   }

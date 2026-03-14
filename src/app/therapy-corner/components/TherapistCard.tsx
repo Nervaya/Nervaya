@@ -11,7 +11,7 @@ interface TherapistCardProps {
   onViewProfile: (therapist: Therapist) => void;
   onBookAppointment: (therapist: Therapist) => void;
   onVideoPreview: (therapist: Therapist) => void;
-  formatExperience: (exp?: string) => string;
+  formatExperienceYears: (exp?: string) => string;
   nextSlotLabel?: string | null;
   isNextSlotLoading: boolean;
 }
@@ -21,7 +21,7 @@ export function TherapistCard({
   onViewProfile,
   onBookAppointment,
   onVideoPreview,
-  formatExperience,
+  formatExperienceYears,
   nextSlotLabel,
   isNextSlotLoading,
 }: TherapistCardProps) {
@@ -73,14 +73,12 @@ export function TherapistCard({
             <div className={styles.titleRow}>
               <h3>{therapist.name}</h3>
             </div>
-            <p className={styles.credentials}>{therapist.qualifications?.join(', ') || 'Professional Therapist'}</p>
+            <p className={styles.credentials}>{formatExperienceYears(therapist.experience)}</p>
             <div className={styles.metaInfoRow}>
-              <span className={styles.experienceText}>
-                <Icon icon="ph:briefcase-bold" />
-                {formatExperience(therapist.experience)}
-              </span>
-              {therapist.sessionFee && therapist.sessionDurationMins ? (
-                <span className={styles.feeText}>₹{therapist.sessionFee}</span>
+              {therapist.sessionFee != null && therapist.sessionDurationMins != null ? (
+                <span className={styles.feeText}>
+                  ₹{therapist.sessionFee} for {therapist.sessionDurationMins} min
+                </span>
               ) : null}
             </div>
           </div>
@@ -88,7 +86,7 @@ export function TherapistCard({
 
         <div className={styles.cardMeta}>
           <div className={styles.expertiseRow}>
-            <span className={styles.expertiseLabel}>Expertise</span>
+            <span className={styles.expertiseLabel}>Qualification</span>
             <div className={styles.tags}>
               <SpecializationMarquee items={therapist.specializations || []} />
             </div>

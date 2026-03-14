@@ -8,11 +8,9 @@ import styles from './styles.module.css';
 
 interface CompletionViewProps {
   completedResponse?: ISleepAssessmentResponse | null;
-  showRetakeActions?: boolean;
-  onRetake?: () => void;
 }
 
-export function CompletionView({ completedResponse = null, showRetakeActions = false, onRetake }: CompletionViewProps) {
+export function CompletionView({ completedResponse = null }: CompletionViewProps) {
   const result = getSleepAssessmentResult(completedResponse);
   const scoreLabel = getSleepScoreLabel(completedResponse);
 
@@ -94,23 +92,6 @@ export function CompletionView({ completedResponse = null, showRetakeActions = f
           </ul>
         </section>
       ) : null}
-
-      <div className={styles.actions}>
-        {showRetakeActions && onRetake ? (
-          <>
-            <button type="button" className={styles.primaryButton} onClick={onRetake}>
-              Retake sleep assessment
-            </button>
-            <Link href="/dashboard" className={styles.secondaryButton}>
-              Go to Dashboard
-            </Link>
-          </>
-        ) : (
-          <Link href="/dashboard" className={styles.primaryButton}>
-            Go to Dashboard
-          </Link>
-        )}
-      </div>
     </div>
   );
 }

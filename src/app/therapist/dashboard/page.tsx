@@ -1,0 +1,183 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { ICON_CALENDAR, ICON_ALERT } from '@/constants/icons';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import { useAuth } from '@/hooks/useAuth';
+import LottieLoader from '@/components/common/LottieLoader';
+import { therapistApi, type TherapistSession } from '@/lib/api/therapistApi';
+import type { Therapist } from '@/types/therapist.types';
+import containerStyles from '@/app/dashboard/styles.module.css';
+import styles from './styles.module.css';
+import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+
+const SESSION_STATUS = {
+  PENDING: 'pending',
+  CONFIRMED: 'confirmed',
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
+} as const;
+
+function groupSessionsByStatus(sessions: TherapistSession[]) {
+  const upcoming: TherapistSession[] = [];
+  const completed: TherapistSession[] = [];
+  const cancelled: TherapistSession[] = [];
+  for (const s of sessions) {
+    if (s.status === SESSION_STATUS.CANCELLED) cancelled.push(s);
+    else if (s.status === SESSION_STATUS.COMPLETED) completed.push(s);
+    else if (s.status === SESSION_STATUS.PENDING || s.status === SESSION_STATUS.CONFIRMED) upcoming.push(s);
+  }
+  upcoming.sort((a, b) => (a.date !== b.date ? a.date.localeCompare(b.date) : a.startTime.localeCompare(b.startTime)));
+  completed.sort((a, b) => (a.date !== b.date ? b.date.localeCompare(a.date) : b.startTime.localeCompare(a.startTime)));
+  cancelled.sort((a, b) => (a.date !== b.date ? b.date.localeCompare(a.date) : b.startTime.localeCompare(a.startTime)));
+  return { upcoming, completed, cancelled };
+}
+
+function formatSessionDate(dateStr: string) {
+  const d = new Date(`${dateStr}T12:00:00`);
+  return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+export default function TherapistDashboardPage() {
+  const { user } = useAuth();
+  const [profile, setProfile] = useState<Therapist | null>(null);
+  const [sessions, setSessions] = useState<TherapistSession[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [meRes, sessionsRes] = await Promise.all([therapistApi.getMe(), therapistApi.getSessions()]);
+      if (meRes?.success && meRes?.data) setProfile(meRes.data);
+      else setError(meRes?.message || 'Could not load therapist profile. Contact admin to link your account.');
+      if (sessionsRes?.success && Array.isArray(sessionsRes?.data)) setSessions(sessionsRes.data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const welcomeName = user?.name?.trim() ? user.name : 'there';
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Therapist', href: '/therapist/dashboard' }, { label: 'Dashboard' }];
+
+  if (loading) {
+    return (
+      <Sidebar hideGlobalBreadcrumbs>
+        <div className={containerStyles.container}>
+          <PageHeader title={`Welcome, ${welcomeName}`} subtitle="Therapist dashboard" breadcrumbs={breadcrumbs} />
+          <div className={containerStyles.loadingContainer} aria-busy="true">
+            <LottieLoader width={200} height={200} />
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
+
+  if (error && !profile) {
+    return (
+      <Sidebar hideGlobalBreadcrumbs>
+        <div className={containerStyles.container}>
+          <PageHeader title={`Welcome, ${welcomeName}`} subtitle="Therapist dashboard" breadcrumbs={breadcrumbs} />
+          <div className={styles.notLinked} role="alert">
+            <Icon icon={ICON_ALERT} width={32} height={32} />
+            <p>{error}</p>
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
+
+  const { upcoming, completed, cancelled } = groupSessionsByStatus(sessions);
+
+  return (
+    <Sidebar hideGlobalBreadcrumbs>
+      <div className={containerStyles.container}>
+        <PageHeader
+          title={`Welcome, ${welcomeName}`}
+          subtitle="Manage your availability and view sessions."
+          breadcrumbs={breadcrumbs}
+        />
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Set your availability</h2>
+          <p className={styles.sectionSubtitle}>Configure when you are available for sessions.</p>
+          <Link href="/therapist/schedule" className={styles.ctaLink}>
+            <Icon icon={ICON_CALENDAR} width={20} height={20} />
+            Set your dates
+          </Link>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>My sessions</h2>
+          <p className={styles.sectionSubtitle}>Upcoming, completed, and cancelled sessions.</p>
+
+          <div className={styles.sessionGroups}>
+            <div className={styles.sessionBlock}>
+              <h3 className={styles.statusHeading}>Upcoming</h3>
+              {upcoming.length === 0 ? (
+                <p className={styles.empty}>No upcoming sessions.</p>
+              ) : (
+                <ul className={styles.sessionList}>
+                  {upcoming.map((s) => (
+                    <li key={s._id} className={styles.sessionItem}>
+                      <span className={styles.sessionDate}>{formatSessionDate(s.date)}</span>
+                      <span className={styles.sessionTime}>{s.startTime}</span>
+                      <span className={styles.sessionMeta}>Client ID: {s.userId}</span>
+                      <span className={styles.sessionBadge}>{s.status}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.sessionBlock}>
+              <h3 className={styles.statusHeading}>Completed</h3>
+              {completed.length === 0 ? (
+                <p className={styles.empty}>No completed sessions.</p>
+              ) : (
+                <ul className={styles.sessionList}>
+                  {completed.slice(0, 10).map((s) => (
+                    <li key={s._id} className={styles.sessionItem}>
+                      <span className={styles.sessionDate}>{formatSessionDate(s.date)}</span>
+                      <span className={styles.sessionTime}>{s.startTime}</span>
+                      <span className={styles.sessionMeta}>Client ID: {s.userId}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {completed.length > 10 && <p className={styles.more}>+{completed.length - 10} more</p>}
+            </div>
+
+            <div className={styles.sessionBlock}>
+              <h3 className={styles.statusHeading}>Cancelled</h3>
+              {cancelled.length === 0 ? (
+                <p className={styles.empty}>No cancelled sessions.</p>
+              ) : (
+                <ul className={styles.sessionList}>
+                  {cancelled.slice(0, 5).map((s) => (
+                    <li key={s._id} className={styles.sessionItem}>
+                      <span className={styles.sessionDate}>{formatSessionDate(s.date)}</span>
+                      <span className={styles.sessionTime}>{s.startTime}</span>
+                      <span className={styles.sessionMeta}>Client ID: {s.userId}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {cancelled.length > 5 && <p className={styles.more}>+{cancelled.length - 5} more</p>}
+            </div>
+          </div>
+        </section>
+      </div>
+    </Sidebar>
+  );
+}

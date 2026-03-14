@@ -19,6 +19,9 @@ export const ADMIN_ROUTES = [
   '/admin/sessions',
 ] as const;
 
+/** Routes accessible only by users with THERAPIST role */
+export const THERAPIST_ROUTES = ['/therapist'] as const;
+
 export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
 export const CUSTOMER_ONLY_ROUTES = ['/blog', '/supplements', '/drift-off', '/therapy-corner', '/support'] as const;
@@ -26,7 +29,8 @@ export const CUSTOMER_ONLY_ROUTES = ['/blog', '/supplements', '/drift-off', '/th
 export function isProtectedPath(pathname: string): boolean {
   return (
     PROTECTED_ROUTES.some((route) => pathname.startsWith(route)) ||
-    ADMIN_ROUTES.some((route) => pathname.startsWith(route))
+    ADMIN_ROUTES.some((route) => pathname.startsWith(route)) ||
+    THERAPIST_ROUTES.some((route) => pathname.startsWith(route))
   );
 }
 
@@ -36,6 +40,7 @@ export const ROUTES = {
   SIGNUP: '/signup',
   DASHBOARD: '/dashboard',
   ADMIN_DASHBOARD: '/admin/dashboard',
+  THERAPIST_DASHBOARD: '/therapist/dashboard',
   SUPPLEMENTS: '/supplements',
   CART: '/supplements/cart',
   CHECKOUT: '/supplements/checkout',

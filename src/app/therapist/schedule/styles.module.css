@@ -1,0 +1,25 @@
+.error {
+  padding: 2rem;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #b91c1c;
+}
+
+.error p {
+  margin: 0 0 1rem 0;
+}
+
+.backBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  background: #f1f5f9;
+}

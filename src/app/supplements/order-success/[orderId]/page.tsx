@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
 import { trackPurchase } from '@/utils/analytics';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -101,7 +102,9 @@ export default function OrderSuccessPage() {
     return (
       <Sidebar>
         <div className={styles.container}>
-          <div className={styles.loading}>Loading order details...</div>
+          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+            <LottieLoader width={200} height={200} />
+          </div>
         </div>
       </Sidebar>
     );

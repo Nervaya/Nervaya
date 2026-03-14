@@ -36,6 +36,14 @@
   color: var(--color-text-muted, #9ca3af);
 }
 
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  min-height: 180px;
+}
+
 .summary {
   display: grid;
   grid-template-columns: auto 1fr;

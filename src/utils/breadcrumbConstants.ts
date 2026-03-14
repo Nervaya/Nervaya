@@ -16,6 +16,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   'about-us': 'About Us',
   'privacy-policy': 'Privacy Policy',
   admin: 'Admin',
+  therapist: 'Therapist',
   therapists: 'Therapists',
   settings: 'Settings',
   users: 'Users',
