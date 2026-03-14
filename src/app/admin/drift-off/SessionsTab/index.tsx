@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import LottieLoader from '@/components/common/LottieLoader';
 import DriftOffResponseList from '@/components/Admin/DriftOffResponseList';
 import { useAdminDriftOffResponses, useAssignDriftOffVideo } from '@/app/queries/driftOff/useDriftOff';
 import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
+import Input from '@/components/common/Input';
 import styles from './styles.module.css';
 
 export default function SessionsTab() {
@@ -14,6 +15,7 @@ export default function SessionsTab() {
   const { mutateAsync: assignVideo } = useAssignDriftOffVideo();
   const [responseQuestions, setResponseQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [responseQuestionsLoading, setResponseQuestionsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const loadResponseQuestions = useCallback(async () => {
     try {
@@ -41,31 +43,36 @@ export default function SessionsTab() {
     await refetch();
   };
 
-  const responses = data ?? [];
-  const isLoadingData = isLoading || responseQuestionsLoading;
-  const completedResponses = responses.filter((r) => r.completedAt).length;
-  const assignedVideos = responses.filter((r) => r.assignedVideoUrl).length;
-  const inProgressResponses = responses.length - completedResponses;
+  const filteredResponses = useMemo(() => {
+    return (data ?? []).filter((r) => {
+      // Search Filter
+      if (searchTerm.trim()) {
+        const search = searchTerm.toLowerCase();
+        const userName = r.user?.name?.toLowerCase() || '';
+        const userEmail = r.user?.email?.toLowerCase() || '';
+        if (!userName.includes(search) && !userEmail.includes(search)) {
+          return false;
+        }
+      }
 
+      return true;
+    });
+  }, [data, searchTerm]);
+
+  const isLoadingData = isLoading || responseQuestionsLoading;
   return (
     <div>
-      {!isLoadingData && !error && responses.length > 0 && (
-        <div className={styles.statsContainer}>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{responses.length}</div>
-            <div className={styles.statLabel}>Total Responses</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{completedResponses}</div>
-            <div className={styles.statLabel}>Completed</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{assignedVideos}</div>
-            <div className={styles.statLabel}>Videos Assigned</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{inProgressResponses}</div>
-            <div className={styles.statLabel}>In Progress</div>
+      {!isLoadingData && !error && (
+        <div className={styles.controlsContainer}>
+          <div className={styles.searchWrapper}>
+            <Input
+              label="Search Users"
+              placeholder="Search by name or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              compact
+              variant="light"
+            />
           </div>
         </div>
       )}
@@ -92,14 +99,8 @@ export default function SessionsTab() {
         </div>
       )}
 
-      {!isLoadingData && !error && responses.length === 0 && (
-        <div className={styles.emptyState}>
-          <p>No Drift Off responses yet.</p>
-        </div>
-      )}
-
-      {!isLoadingData && !error && responses.length > 0 && (
-        <DriftOffResponseList responses={responses} questions={responseQuestions} onAssign={handleAssign} />
+      {!isLoadingData && !error && (
+        <DriftOffResponseList responses={filteredResponses} questions={responseQuestions} onAssign={handleAssign} />
       )}
     </div>
   );

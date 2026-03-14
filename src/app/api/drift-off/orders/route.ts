@@ -5,6 +5,7 @@ import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
 import { DRIFT_OFF_SESSION_PRICE } from '@/lib/constants/driftOff.constants';
+import { configService } from '@/lib/services/config.service';
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +25,10 @@ export async function POST(request: NextRequest) {
     const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
     if (authResult instanceof NextResponse) return authResult;
 
-    const order = await createDriftOffOrder(authResult.user.userId, DRIFT_OFF_SESSION_PRICE);
+    const dbPrice = await configService.get('driftOffSessionPrice');
+    const finalPrice = dbPrice !== null ? dbPrice : DRIFT_OFF_SESSION_PRICE;
+
+    const order = await createDriftOffOrder(authResult.user.userId, finalPrice);
 
     return NextResponse.json(successResponse('Drift Off order created', order, 201), { status: 201 });
   } catch (error) {

@@ -44,6 +44,34 @@
   font-size: 0.95rem;
 }
 
+.controlsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--color-white-bright);
+  border: 1px solid var(--color-border-light);
+  border-radius: 20px;
+  box-shadow: var(--color-card-shadow);
+}
+
+.searchWrapper {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .controlsContainer {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .searchWrapper {
+    flex: 1;
+  }
+}
+
 .statsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

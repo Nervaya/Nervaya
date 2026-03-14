@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { ICON_PLAY } from '@/constants/icons';
 import { DRIFT_OFF_LANDING_VIDEO_URL } from '@/lib/constants/driftOff.constants';
+import { useAuth } from '@/hooks/useAuth';
+import { driftOffApi } from '@/lib/api/driftOff';
 import type { VideoPlayerProps } from '../VideoPlayer';
 import styles from './styles.module.css';
 
@@ -19,7 +21,19 @@ const getServerSnapshot = () => false;
 
 const DriftOffLandingHero = () => {
   const hasMounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
+  const { isAuthenticated } = useAuth();
   const [playing, setPlaying] = useState(false);
+  const [hasSessions, setHasSessions] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      driftOffApi.getResponses().then((res) => {
+        if (res.success && res.data && res.data.length > 0) {
+          setHasSessions(true);
+        }
+      });
+    }
+  }, [isAuthenticated]);
 
   return (
     <section className={styles.hero} aria-label="Drift Off hero">
@@ -30,7 +44,10 @@ const DriftOffLandingHero = () => {
         </p>
         <div className={styles.actions}>
           <Link href="/drift-off/payment" className={styles.btnPrimary}>
-            Buy Custom Session
+            {hasSessions ? 'Buy New Session' : 'Buy Custom Session'}
+          </Link>
+          <Link href="/drift-off/sessions" className={styles.btnOutline}>
+            View My Sessions
           </Link>
           <Link href="/drift-off/about" className={styles.btnOutline}>
             Know More

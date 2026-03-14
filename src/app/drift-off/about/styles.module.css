@@ -39,7 +39,7 @@
   min-width: 0;
 }
 
-:global(.page-header_header__v2W_m) {
+.wrapper :global(.page-header_header__v2W_m) {
   margin-bottom: 3.5rem !important;
   padding-top: 0 !important;
 }
@@ -86,7 +86,7 @@
   box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
 }
 
-:global(.page-header_subtitle__B0hD1) {
+.wrapper :global(.page-header_subtitle__B0hD1) {
   font-size: 1.125rem !important;
   font-weight: 450 !important;
   color: #475569 !important;

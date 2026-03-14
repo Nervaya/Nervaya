@@ -2,8 +2,41 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 4px 0;
+  gap: 24px;
+  padding: 4px 0 12px;
+}
+
+.heroCard {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 35%),
+    linear-gradient(180deg, rgba(20, 18, 32, 0.96) 0%, rgba(10, 9, 18, 0.98) 100%);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+}
+
+.heroHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.mild {
+  border-color: rgba(132, 204, 22, 0.26);
+}
+
+.moderate {
+  border-color: rgba(251, 191, 36, 0.26);
+}
+
+.severe {
+  border-color: rgba(248, 113, 113, 0.28);
 }
 
 .scoreRow {
@@ -20,22 +53,65 @@
 }
 
 .scoreBadge {
-  height: 32px;
+  height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 0 14px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
+}
+
+.scoreMetric {
+  min-width: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.metricValue {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.metricLabel {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.62);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.heroTitle {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.heroDescription {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.intentNote {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .sectionHeading {
@@ -45,23 +121,79 @@
   font-weight: 500;
 }
 
+.reasonList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.reasonItem {
+  position: relative;
+  padding: 14px 16px 14px 40px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+}
+
+.reasonItem::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f59e0b 0%, #fb7185 100%);
+}
+
 .cardGrid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .card {
-  border-radius: 8px;
+  border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
+  background: linear-gradient(180deg, rgba(25, 22, 40, 0.96) 0%, rgba(14, 12, 24, 0.98) 100%);
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  min-height: 220px;
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.priorityBadge {
+  width: fit-content;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.primaryPriority {
+  background: rgba(249, 115, 22, 0.16);
+  color: #fdba74;
+}
+
+.secondaryPriority {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .cardTitle {
@@ -82,23 +214,23 @@
 
 .cardButton {
   align-self: flex-start;
-  height: 36px;
+  min-height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 16px;
-  border-radius: 8px;
+  padding: 0 18px;
+  border-radius: 10px;
   border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
   text-decoration: none;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .cardButton:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .actions {
@@ -146,6 +278,12 @@
   color: #ffffff;
 }
 
+@media (max-width: 1100px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .cardGrid {
     grid-template-columns: 1fr;
@@ -154,5 +292,17 @@
   .primaryButton,
   .secondaryButton {
     width: 100%;
+  }
+
+  .heroCard {
+    padding: 20px;
+  }
+
+  .heroTitle {
+    font-size: 1.45rem;
+  }
+
+  .scoreMetric {
+    align-items: flex-start;
   }
 }

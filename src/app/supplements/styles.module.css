@@ -94,3 +94,9 @@
 .browseLink:hover {
   color: var(--color-foreground);
 }
+
+.redirectLoader {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
-import { getSleepScoreLabel, NERVAYA_PICKS, MORE_FAVOURITES } from '@/lib/utils/sleepScore.util';
+import { getSleepAssessmentResult, getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 import styles from './SleepScoreSection.module.css';
 
 interface SleepScoreSectionProps {
@@ -14,6 +14,7 @@ export function SleepScoreSection({ latestAssessment, loading = false }: SleepSc
   const hasCompletedAssessment = Boolean(latestAssessment?.completedAt);
   if (!hasCompletedAssessment && !loading) return null;
 
+  const result = loading ? null : getSleepAssessmentResult(latestAssessment);
   const scoreLabel = loading ? '—' : getSleepScoreLabel(latestAssessment);
 
   return (
@@ -25,35 +26,25 @@ export function SleepScoreSection({ latestAssessment, loading = false }: SleepSc
         <span className={styles.scoreBadge}>{scoreLabel}</span>
       </div>
 
-      <div className={styles.sectionBlock}>
-        <h2 className={styles.sectionHeading}>Nervaya&apos;s Picks</h2>
-        <ul className={styles.cardGrid} aria-label="Nervaya's Picks">
-          {NERVAYA_PICKS.map((card) => (
-            <li key={card.title} className={styles.card}>
-              <h3 className={styles.cardTitle}>{card.title}</h3>
-              <p className={styles.cardDescription}>{card.description}</p>
-              <Link href={card.href} className={styles.cardButton}>
-                {card.buttonText}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {result?.explanation && <p className={styles.explanation}>{result.explanation}</p>}
 
-      <div className={styles.sectionBlock}>
-        <h2 className={styles.sectionHeading}>More Favourites</h2>
-        <ul className={styles.cardGrid} aria-label="More Favourites">
-          {MORE_FAVOURITES.map((card) => (
-            <li key={card.title} className={styles.card}>
-              <h3 className={styles.cardTitle}>{card.title}</h3>
-              <p className={styles.cardDescription}>{card.description}</p>
-              <Link href={card.href} className={styles.cardButton}>
-                {card.buttonText}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {result?.recommendations?.length ? (
+        <div className={styles.sectionBlock}>
+          <h2 className={styles.sectionHeading}>Recommended next steps</h2>
+          <ul className={styles.cardGrid} aria-label="Recommended next steps">
+            {result.recommendations.slice(0, 3).map((card) => (
+              <li key={`${card.key}-${card.priority}`} className={styles.card}>
+                <span className={styles.priorityBadge}>{card.priority === 'primary' ? 'Priority' : 'Support'}</span>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <p className={styles.cardDescription}>{card.description}</p>
+                <Link href={card.href} className={styles.cardButton}>
+                  {card.buttonText}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <div className={styles.actions}>
         <Link href="/sleep-assessment" className={styles.primaryLink}>

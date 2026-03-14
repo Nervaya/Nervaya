@@ -5,6 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import LottieLoader from '@/components/common/LottieLoader';
+import Pagination from '@/components/common/Pagination';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
 import type { VideoPlayerProps } from '@/components/DriftOff/VideoPlayer';
@@ -19,31 +20,32 @@ const emptySubscribe = () => () => {};
 const getClient = () => true;
 const getServer = () => false;
 
+import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+
 interface MySessionsSectionProps {
   className?: string;
 }
 
 export default function MySessionsSection({ className = '' }: MySessionsSectionProps) {
   const hasMounted = useSyncExternalStore(emptySubscribe, getClient, getServer);
-  const [response, setResponse] = useState<IDriftOffResponse | null>(null);
+  const [responses, setResponses] = useState<IDriftOffResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const loadResponses = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
       const res = await driftOffApi.getResponses();
-      if (res.success && res.data?.length) {
+      if (res.success && res.data) {
         const sorted = [...res.data].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        const latestResponse = sorted[0] ?? null;
-        setResponse(latestResponse);
+        setResponses(sorted);
       } else {
-        setResponse(null);
+        setResponses([]);
       }
     } catch {
-      setError('Failed to load your session. Please try again.');
-      setResponse(null);
+      setError('Failed to load your sessions. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -75,6 +77,73 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
     };
   }, [loadResponses, isLoading]);
 
+  const renderSessionCard = (session: IDriftOffResponse) => {
+    const videoUrl = session.assignedVideoUrl;
+    const isReady = Boolean(videoUrl);
+    const isPendingAssessment = !session.completedAt;
+    const isPreparing = session.completedAt && !session.assignedVideoUrl;
+
+    return (
+      <div key={session._id} className={styles.sessionCard}>
+        <div className={styles.cardHeader}>
+          <div className={styles.dateInfo}>
+            <span className={styles.dateLabel}>Purchased on</span>
+            <span className={styles.dateValue}>{new Date(session.createdAt).toLocaleDateString()}</span>
+          </div>
+          <div
+            className={`${styles.statusBadge} ${isReady ? styles.statusReady : isPreparing ? styles.statusPreparing : styles.statusPending}`}
+          >
+            {isReady ? 'Ready' : isPreparing ? 'Preparing' : 'Pending Action'}
+          </div>
+        </div>
+
+        <div className={styles.cardContent}>
+          {isReady ? (
+            <div className={styles.videoContainer}>
+              {hasMounted && (
+                <VideoPlayerDynamic
+                  url={videoUrl ?? ''}
+                  width="100%"
+                  height="100%"
+                  controls
+                  className={styles.videoPlayer}
+                />
+              )}
+            </div>
+          ) : (
+            <div className={styles.placeholderBox}>
+              <Icon
+                icon={isPreparing ? ICON_CLOCK : ICON_HEADPHONES}
+                width={40}
+                height={40}
+                className={styles.placeholderIcon}
+              />
+              <p className={styles.placeholderText}>
+                {isPreparing
+                  ? 'Our specialists are crafting your session...'
+                  : 'Complete your assessment to get started.'}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.cardFooter}>
+          {isPendingAssessment && (
+            <Link href={`/drift-off/assessment?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
+              Complete Assessment
+            </Link>
+          )}
+          {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
+          {isReady && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
+        </div>
+      </div>
+    );
+  };
+
+  const totalSessions = responses.length;
+  const totalPages = Math.ceil(totalSessions / PAGE_SIZE_5);
+  const paginatedResponses = responses.slice((currentPage - 1) * PAGE_SIZE_5, currentPage * PAGE_SIZE_5);
+
   return (
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
       <div className={styles.contentWrapper}>
@@ -87,78 +156,51 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
         {!isLoading && error && (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
-            <button type="button" className={styles.btn} onClick={() => window.location.reload()}>
+            <button type="button" className={styles.btn} onClick={() => loadResponses()}>
               Try Again
             </button>
           </div>
         )}
 
-        {!isLoading && !error && !response && (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon} aria-hidden>
-              <Icon icon={ICON_HEADPHONES} width={48} height={48} />
-            </div>
-            <h3 className={styles.emptyTitle}>No session yet</h3>
-            <p className={styles.emptyText}>You haven&apos;t purchased a Deep Rest Session yet.</p>
-            <Link href="/drift-off/payment" className={styles.btn}>
-              Get Your Session
-            </Link>
-          </div>
-        )}
+        {!isLoading && !error && (
+          <>
+            <div className={styles.sessionsGrid}>
+              {responses.length === 0 && (
+                <div className={styles.noSessionsMessage}>
+                  <h3 className={styles.noSessionsTitle}>Start Your Journey</h3>
+                  <p className={styles.noSessionsText}>
+                    Experience a personalized Deep Rest session designed just for you. Once you purchase a session, it
+                    will appear here.
+                  </p>
+                  <Link href="/drift-off/payment" className={styles.btn}>
+                    Buy Your First Session
+                  </Link>
+                </div>
+              )}
+              {paginatedResponses.map(renderSessionCard)}
 
-        {!isLoading && !error && response && !response.completedAt && (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon} aria-hidden>
-              <Icon icon={ICON_CLOCK} width={48} height={48} />
-            </div>
-            <h3 className={styles.emptyTitle}>Assessment Pending</h3>
-            <p className={styles.emptyText}>
-              You have purchased a Deep Rest Session but haven&apos;t finished the assessment yet. Please complete it so
-              our specialists can craft your personalized session.
-            </p>
-            <Link href={`/drift-off/assessment?orderId=${response.driftOffOrderId}`} className={styles.btn}>
-              Complete Assessment
-            </Link>
-          </div>
-        )}
-
-        {!isLoading && !error && response && response.completedAt && !response.assignedVideoUrl && (
-          <div className={styles.pendingState}>
-            <div className={styles.pendingIcon} aria-hidden>
-              <Icon icon={ICON_CLOCK} width={48} height={48} />
-            </div>
-            <h3 className={styles.pendingTitle}>Your session is being prepared</h3>
-            <p className={styles.pendingText}>
-              Our specialists are reviewing your assessment answers and crafting a personalized 25-min Deep Rest Session
-              just for you. This usually takes 1–2 days. We&apos;ll notify you when it&apos;s ready.
-            </p>
-            <Link href="/drift-off" className={styles.btnOutline}>
-              Back to Home
-            </Link>
-          </div>
-        )}
-
-        {!isLoading && !error && response?.assignedVideoUrl && (
-          <div className={styles.sessionState}>
-            <div className={styles.sessionHeader}>
-              <h3 className={styles.sessionTitle}>Your Personalized Session</h3>
-              <p className={styles.sessionSubtitle}>Curated specially for you by our sleep specialists</p>
-            </div>
-            <div className={styles.videoWrapper}>
-              {hasMounted && (
-                <VideoPlayerDynamic
-                  url={response.assignedVideoUrl}
-                  width="100%"
-                  height="100%"
-                  controls
-                  className={styles.videoPlayer}
-                />
+              {responses.length > 0 && (
+                <Link href="/drift-off/payment" className={styles.addSessionCard}>
+                  <div className={styles.addIcon}>
+                    <Icon icon="ph:plus-circle-bold" width={48} height={48} />
+                  </div>
+                  <h3 className={styles.addTitle}>Need another session?</h3>
+                  <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>
+                  <div className={styles.btn}>Buy New Session</div>
+                </Link>
               )}
             </div>
-            <p className={styles.sessionNote}>
-              Listen to this session anytime — especially before bedtime for best results.
-            </p>
-          </div>
+
+            <div className={styles.paginationWrapper}>
+              <Pagination
+                page={currentPage}
+                limit={PAGE_SIZE_5}
+                total={totalSessions}
+                totalPages={Math.max(1, totalPages)}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
         )}
       </div>
     </section>

@@ -5,9 +5,39 @@ export interface IQuestionAnswer {
   answer: string | string[];
 }
 
+export interface ISleepAssessmentRecommendation {
+  key: 'guided_audio' | 'guided_meditation_audio' | 'counselling' | 'supplement';
+  title: string;
+  description: string;
+  buttonText: string;
+  href: string;
+  priority: 'primary' | 'secondary';
+}
+
+export interface ISleepAssessmentResultFlags {
+  recommendsSupplement: boolean;
+  recommendsCounselling: boolean;
+  prioritiseGuidedMeditationAudio: boolean;
+  hasFrequentSleepOnsetIssue: boolean;
+  highOverthinking: boolean;
+}
+
+export interface ISleepAssessmentResult {
+  severityScore: number;
+  severityBand: 'mild' | 'moderate' | 'severe';
+  severityLabel: string;
+  explanation: string;
+  reasoning: string[];
+  recommendations: ISleepAssessmentRecommendation[];
+  intentAnswer: string | string[] | null;
+  intentLabel: string | null;
+  flags: ISleepAssessmentResultFlags;
+}
+
 export interface ISleepAssessmentResponse extends Document {
   userId: mongoose.Types.ObjectId;
   answers: IQuestionAnswer[];
+  result?: ISleepAssessmentResult | null;
   completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -28,6 +58,107 @@ const questionAnswerSchema = new Schema<IQuestionAnswer>(
   { _id: false },
 );
 
+const sleepAssessmentRecommendationSchema = new Schema<ISleepAssessmentRecommendation>(
+  {
+    key: {
+      type: String,
+      enum: ['guided_audio', 'guided_meditation_audio', 'counselling', 'supplement'],
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    buttonText: {
+      type: String,
+      required: true,
+    },
+    href: {
+      type: String,
+      required: true,
+    },
+    priority: {
+      type: String,
+      enum: ['primary', 'secondary'],
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
+const sleepAssessmentResultFlagsSchema = new Schema<ISleepAssessmentResultFlags>(
+  {
+    recommendsSupplement: {
+      type: Boolean,
+      required: true,
+    },
+    recommendsCounselling: {
+      type: Boolean,
+      required: true,
+    },
+    prioritiseGuidedMeditationAudio: {
+      type: Boolean,
+      required: true,
+    },
+    hasFrequentSleepOnsetIssue: {
+      type: Boolean,
+      required: true,
+    },
+    highOverthinking: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
+const sleepAssessmentResultSchema = new Schema<ISleepAssessmentResult>(
+  {
+    severityScore: {
+      type: Number,
+      required: true,
+    },
+    severityBand: {
+      type: String,
+      enum: ['mild', 'moderate', 'severe'],
+      required: true,
+    },
+    severityLabel: {
+      type: String,
+      required: true,
+    },
+    explanation: {
+      type: String,
+      required: true,
+    },
+    reasoning: {
+      type: [String],
+      default: [],
+    },
+    recommendations: {
+      type: [sleepAssessmentRecommendationSchema],
+      default: [],
+    },
+    intentAnswer: {
+      type: Schema.Types.Mixed,
+      default: null,
+    },
+    intentLabel: {
+      type: String,
+      default: null,
+    },
+    flags: {
+      type: sleepAssessmentResultFlagsSchema,
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
 const sleepAssessmentResponseSchema = new Schema<ISleepAssessmentResponse>(
   {
     userId: {
@@ -39,6 +170,10 @@ const sleepAssessmentResponseSchema = new Schema<ISleepAssessmentResponse>(
     answers: {
       type: [questionAnswerSchema],
       default: [],
+    },
+    result: {
+      type: sleepAssessmentResultSchema,
+      default: null,
     },
     completedAt: {
       type: Date,

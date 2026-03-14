@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { ISleepAssessmentQuestion, ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import axiosInstance from '@/lib/axios';
 import type { ApiResponse } from '@/lib/utils/response.util';
-import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
+import { getSleepAssessmentResult, getSleepRecommendationType, getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 import {
   trackSleepScoreGenerated,
   trackAssessmentStarted,
@@ -183,6 +183,7 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
         const response = await completeAssessment();
         setCompletedResponse(response ?? null);
         setIsComplete(true);
+        const result = getSleepAssessmentResult(response ?? null);
         const scoreLabel = getSleepScoreLabel(response ?? null);
 
         trackAssessmentCompleted({
@@ -193,17 +194,17 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
         });
 
         trackSleepScoreGenerated({
-          sleep_score: ((response as unknown as Record<string, unknown>)?.score as number) ?? 0,
-          score_band: scoreLabel.toLowerCase() as 'poor' | 'average' | 'good',
+          sleep_score: result?.severityScore ?? 0,
+          score_band: result?.severityBand ?? 'moderate',
           assessment_version: '1.0',
         });
 
         trackAssessmentResultGenerated({
           assessment_type: 'sleep',
           assessment_id: 'sleep-assessment',
-          score_value: ((response as unknown as Record<string, unknown>)?.score as number) ?? 0,
+          score_value: result?.severityScore ?? 0,
           score_band: scoreLabel,
-          recommendation_type: 'product',
+          recommendation_type: getSleepRecommendationType(response ?? null),
         });
       } else {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import StatusState from '@/components/common/StatusState';
+import LottieLoader from '@/components/common/LottieLoader';
 import SupplementCatalog from '@/components/Supplements/SupplementCatalog';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
@@ -62,16 +63,37 @@ export default function SupplementsPage() {
     fetchSupplements();
   }, [fetchSupplements]);
 
+  const shouldRedirectToSingleSupplement = !loading && !error && supplements.length === 1;
+
   useEffect(() => {
-    if (!loading && supplements.length === 1 && !error) {
+    if (shouldRedirectToSingleSupplement) {
       router.replace(`/supplements/${supplements[0]._id}`);
     }
-  }, [supplements, loading, error, router]);
+  }, [supplements, shouldRedirectToSingleSupplement, router]);
 
   const showFailure = !loading && error != null;
   const showEmpty = !loading && !error && supplements.length === 0;
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Supplements' }];
+
+  if (shouldRedirectToSingleSupplement) {
+    return (
+      <Sidebar hideGlobalBreadcrumbs>
+        <div className={styles.wrapper}>
+          <div className={styles.container}>
+            <PageHeader
+              title="Supplements"
+              subtitle="Discover our range of health supplements"
+              breadcrumbs={breadcrumbs}
+            />
+            <div className={styles.redirectLoader} aria-live="polite" aria-busy="true">
+              <LottieLoader width={200} height={200} />
+            </div>
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
 
   return (
     <Sidebar hideGlobalBreadcrumbs>

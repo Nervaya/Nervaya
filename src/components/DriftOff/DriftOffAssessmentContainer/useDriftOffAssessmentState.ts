@@ -37,7 +37,7 @@ export function useDriftOffAssessmentState(
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [direction, setDirection] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const [isHydrated] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   const totalQuestions = questions.length;
@@ -46,30 +46,54 @@ export function useDriftOffAssessmentState(
 
   const currentAnswer = useMemo(() => {
     if (!currentQuestion) return null;
-    return answers.get(currentQuestion._id) ?? null;
+    return answers.get(currentQuestion._id) ?? answers.get(currentQuestion.questionId) ?? null;
   }, [currentQuestion, answers]);
 
   const canProceed = useMemo(() => {
     if (!currentQuestion) return false;
     if (!currentQuestion.isRequired) return true;
-    const answer = answers.get(currentQuestion._id);
-    if (!answer) return false;
+
+    // Explicitly use the resolved currentAnswer for consistency
+    const answer = currentAnswer;
+    if (answer === null || answer === undefined) return false;
     if (Array.isArray(answer)) return answer.length > 0;
-    return answer.trim().length > 0;
-  }, [currentQuestion, answers]);
+    if (typeof answer === 'string') return answer.trim().length > 0;
+    return !!answer;
+  }, [currentQuestion, currentAnswer]);
 
   useEffect(() => {
-    if (hydratedInitialAnswersRef.current || questions.length === 0) return;
+    if (questions.length === 0) return;
 
-    const hydrated = new Map<string, string | string[]>(initialAnswers.map((a) => [a.questionId, a.answer]));
-    setAnswers(hydrated);
+    const hydrated = new Map<string, string | string[]>();
+    initialAnswers.forEach((a) => {
+      if (a.questionId) hydrated.set(a.questionId, a.answer);
+
+      const q = questions.find((q) => q.questionId === a.questionId || q._id === a.questionId);
+      if (q) {
+        hydrated.set(q._id, a.answer);
+        if (q.questionId) hydrated.set(q.questionId, a.answer);
+      }
+    });
 
     if (hydrated.size > 0) {
-      const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id));
-      if (firstUnanswered >= 0) setCurrentQuestionIndex(firstUnanswered);
-    }
+      setAnswers((prev) => {
+        const next = new Map(prev);
+        hydrated.forEach((val, key) => next.set(key, val));
+        return next;
+      });
 
-    hydratedInitialAnswersRef.current = true;
+      if (!hydratedInitialAnswersRef.current) {
+        const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id) && !hydrated.has(q.questionId));
+        if (firstUnanswered >= 0) {
+          setCurrentQuestionIndex(firstUnanswered);
+        } else if (questions.length > 0) {
+          // If all are answered but not complete, go to the last question
+          setCurrentQuestionIndex(questions.length - 1);
+        }
+        hydratedInitialAnswersRef.current = true;
+      }
+    }
+    setIsHydrated(true);
   }, [questions, initialAnswers]);
 
   const handleAnswerChange = useCallback(
@@ -78,6 +102,9 @@ export function useDriftOffAssessmentState(
       setAnswers((prev) => {
         const next = new Map(prev);
         next.set(currentQuestion._id, answer);
+        if (currentQuestion.questionId) {
+          next.set(currentQuestion.questionId, answer);
+        }
         return next;
       });
     },
@@ -86,15 +113,15 @@ export function useDriftOffAssessmentState(
 
   const handleNext = useCallback(async () => {
     if (!canProceed || !currentQuestion) return;
-    const answerToSave = answers.get(currentQuestion._id);
-    if (answerToSave === undefined && currentQuestion.isRequired) return;
+    const answerToSave = currentAnswer;
+    if (answerToSave === null && currentQuestion.isRequired) return;
 
     setDirection(1);
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      if (answerToSave !== undefined) {
+      if (answerToSave !== null) {
         await driftOffApi.saveAnswer({
           driftOffOrderId,
           questionId: currentQuestion._id,
@@ -112,7 +139,7 @@ export function useDriftOffAssessmentState(
     } finally {
       setIsSubmitting(false);
     }
-  }, [canProceed, currentQuestion, answers, isLastQuestion, totalQuestions, driftOffOrderId]);
+  }, [canProceed, currentQuestion, currentAnswer, isLastQuestion, totalQuestions, driftOffOrderId]);
 
   const handlePrevious = useCallback(() => {
     if (isFirstQuestion) return;

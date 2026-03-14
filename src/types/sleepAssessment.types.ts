@@ -24,10 +24,48 @@ export interface IQuestionAnswer {
   answer: string | string[];
 }
 
+export type SleepAssessmentSeverityBand = 'mild' | 'moderate' | 'severe';
+
+export type SleepAssessmentRecommendationKey =
+  | 'guided_audio'
+  | 'guided_meditation_audio'
+  | 'counselling'
+  | 'supplement';
+
+export interface SleepAssessmentRecommendation {
+  key: SleepAssessmentRecommendationKey;
+  title: string;
+  description: string;
+  buttonText: string;
+  href: string;
+  priority: 'primary' | 'secondary';
+}
+
+export interface SleepAssessmentResultFlags {
+  recommendsSupplement: boolean;
+  recommendsCounselling: boolean;
+  prioritiseGuidedMeditationAudio: boolean;
+  hasFrequentSleepOnsetIssue: boolean;
+  highOverthinking: boolean;
+}
+
+export interface SleepAssessmentResult {
+  severityScore: number;
+  severityBand: SleepAssessmentSeverityBand;
+  severityLabel: string;
+  explanation: string;
+  reasoning: string[];
+  recommendations: SleepAssessmentRecommendation[];
+  intentAnswer: string | string[] | null;
+  intentLabel: string | null;
+  flags: SleepAssessmentResultFlags;
+}
+
 export interface ISleepAssessmentResponse {
   _id: string;
   userId: string;
   answers: IQuestionAnswer[];
+  result?: SleepAssessmentResult | null;
   completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;

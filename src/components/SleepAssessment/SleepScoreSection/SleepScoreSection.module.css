@@ -37,6 +37,13 @@
   box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
 }
 
+.explanation {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: var(--color-text-muted, #94a3b8);
+}
+
 .sectionBlock {
   display: flex;
   flex-direction: column;
@@ -83,6 +90,18 @@
   font-weight: 700;
   color: var(--color-foreground, #f8fafc);
   margin: 0;
+}
+
+.priorityBadge {
+  width: fit-content;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(249, 115, 22, 0.14);
+  color: #fdba74;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .cardDescription {

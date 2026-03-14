@@ -39,6 +39,7 @@
 .prevButton:not(:disabled):hover {
   background: var(--nav-prev-bg-hover, rgba(255, 255, 255, 0.05));
   border-color: var(--nav-prev-border-hover, rgba(255, 255, 255, 0.2));
+  color: var(--nav-prev-color-hover, #ffffff);
 }
 
 .nextButton {

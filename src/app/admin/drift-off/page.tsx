@@ -5,10 +5,11 @@ import { useSearchParams } from 'next/navigation';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import SessionsTab from './SessionsTab';
 import QuestionsTab from './QuestionsTab';
+import SettingsTab from './SettingsTab';
 import styles from './styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
-type Tab = 'sessions' | 'questions';
+type Tab = 'sessions' | 'questions' | 'settings';
 
 export default function AdminDriftOffPage() {
   const searchParams = useSearchParams();
@@ -41,10 +42,18 @@ export default function AdminDriftOffPage() {
         >
           Questions
         </button>
+        <button
+          type="button"
+          className={`${styles.tab} ${activeTab === 'settings' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          Settings
+        </button>
       </div>
 
       {activeTab === 'sessions' && <SessionsTab />}
       {activeTab === 'questions' && <QuestionsTab />}
+      {activeTab === 'settings' && <SettingsTab />}
     </div>
   );
 }

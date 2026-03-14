@@ -1,11 +1,24 @@
 import connectDB from '@/lib/db/mongodb';
-import DriftOffResponse, { IDriftOffResponse } from '@/lib/models/driftOffResponse.model';
+import DriftOffResponse, { IDriftOffResponse as DriftOffResponseDocument } from '@/lib/models/driftOffResponse.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import { ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
-import type { SaveDriftOffAnswerInput } from '@/types/driftOff.types';
+import type { IDriftOffResponse as DriftOffResponseDto, SaveDriftOffAnswerInput } from '@/types/driftOff.types';
 
-export async function createDriftOffResponse(userId: string, driftOffOrderId: string): Promise<IDriftOffResponse> {
+type PopulatedDriftOffUser = {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+};
+
+type LeanDriftOffResponse = Omit<DriftOffResponseDto, 'userId' | 'user'> & {
+  userId: Types.ObjectId | PopulatedDriftOffUser;
+};
+
+export async function createDriftOffResponse(
+  userId: string,
+  driftOffOrderId: string,
+): Promise<DriftOffResponseDocument> {
   await connectDB();
   if (!Types.ObjectId.isValid(driftOffOrderId)) {
     throw new ValidationError('Invalid order ID');
@@ -23,7 +36,7 @@ export async function saveAnswer(
   userId: string,
   driftOffOrderId: string,
   input: SaveDriftOffAnswerInput,
-): Promise<IDriftOffResponse> {
+): Promise<DriftOffResponseDocument> {
   await connectDB();
   let response = await DriftOffResponse.findOne({ userId, driftOffOrderId });
   if (!response) {
@@ -41,7 +54,10 @@ export async function saveAnswer(
   return response.save();
 }
 
-export async function completeDriftOffResponse(userId: string, driftOffOrderId: string): Promise<IDriftOffResponse> {
+export async function completeDriftOffResponse(
+  userId: string,
+  driftOffOrderId: string,
+): Promise<DriftOffResponseDocument> {
   await connectDB();
   const response = await DriftOffResponse.findOne({ userId, driftOffOrderId });
   if (!response) {
@@ -54,17 +70,17 @@ export async function completeDriftOffResponse(userId: string, driftOffOrderId: 
   return response.save();
 }
 
-export async function getDriftOffResponsesByUser(userId: string): Promise<IDriftOffResponse[]> {
+export async function getDriftOffResponsesByUser(userId: string): Promise<DriftOffResponseDocument[]> {
   await connectDB();
   return DriftOffResponse.find({ userId }).sort({ createdAt: -1 });
 }
 
-export async function getLatestDriftOffResponse(userId: string): Promise<IDriftOffResponse | null> {
+export async function getLatestDriftOffResponse(userId: string): Promise<DriftOffResponseDocument | null> {
   await connectDB();
   return DriftOffResponse.findOne({ userId, completedAt: { $ne: null } }).sort({ completedAt: -1 });
 }
 
-export async function getDriftOffResponseById(responseId: string): Promise<IDriftOffResponse> {
+export async function getDriftOffResponseById(responseId: string): Promise<DriftOffResponseDocument> {
   await connectDB();
   if (!Types.ObjectId.isValid(responseId)) {
     throw new ValidationError('Invalid response ID');
@@ -74,12 +90,28 @@ export async function getDriftOffResponseById(responseId: string): Promise<IDrif
   return response;
 }
 
-export async function getAllDriftOffResponses(): Promise<IDriftOffResponse[]> {
+export async function getAllDriftOffResponses(): Promise<DriftOffResponseDto[]> {
   await connectDB();
-  return DriftOffResponse.find().populate('userId', 'name email').sort({ createdAt: -1 });
+  const responses = await DriftOffResponse.find().populate('userId', 'name email').sort({ createdAt: -1 }).lean();
+
+  return (responses as unknown as LeanDriftOffResponse[]).map((response) => {
+    const userRef = response.userId;
+    const isPopulatedUser = typeof userRef === 'object' && userRef != null && 'name' in userRef && 'email' in userRef;
+
+    return {
+      ...response,
+      user: isPopulatedUser
+        ? {
+            ...userRef,
+            _id: String(userRef._id),
+          }
+        : undefined,
+      userId: String(isPopulatedUser ? userRef._id : userRef),
+    };
+  });
 }
 
-export async function assignVideo(responseId: string, videoUrl: string): Promise<IDriftOffResponse> {
+export async function assignVideo(responseId: string, videoUrl: string): Promise<DriftOffResponseDocument> {
   await connectDB();
   if (!Types.ObjectId.isValid(responseId)) {
     throw new ValidationError('Invalid response ID');

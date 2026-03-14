@@ -94,20 +94,20 @@ export default function CartPage() {
     );
   }
 
-  if (error) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
-          <div className={styles.error}>{error}</div>
-        </div>
-      </Sidebar>
-    );
-  }
+  const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Supplements', href: '/supplements' }, { label: 'Cart' }];
+  const total = cart?.items.length || 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE_3));
+  const start = (page - 1) * PAGE_SIZE_3;
+  const paginatedItems = cart?.items.slice(start, start + PAGE_SIZE_3) || [];
 
-  if (!cart || cart.items.length === 0) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
+  return (
+    <Sidebar hideGlobalBreadcrumbs>
+      <div className={styles.container}>
+        <PageHeader title="Shopping Cart" breadcrumbs={breadcrumbs} />
+
+        {error && <div className={styles.error}>{error}</div>}
+
+        {!cart || total === 0 ? (
           <div className={styles.empty}>
             <div className={styles.lottieWrapper}>
               <Lottie animationData={emptyBoxAnimation} loop={false} />
@@ -118,49 +118,32 @@ export default function CartPage() {
               Continue Shopping
             </button>
           </div>
-          <div className={styles.paginationWrap}>
-            <Pagination total={0} page={1} limit={PAGE_SIZE_3} totalPages={1} onPageChange={() => {}} />
+        ) : (
+          <div className={styles.content}>
+            <ul className={styles.itemsSection} aria-label="Cart items">
+              {paginatedItems.map((item: CartItemType) => {
+                const key =
+                  typeof item.supplementId === 'object' && item.supplementId && '_id' in item.supplementId
+                    ? (item.supplementId as Supplement)._id
+                    : String(item.supplementId);
+                return (
+                  <li key={key}>
+                    <CartItem
+                      item={item}
+                      onQuantityChange={handleQuantityChange}
+                      onRemove={handleRemove}
+                      disabled={updating}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+            <div className={styles.summarySection}>
+              <CartSummary cart={cart} onCheckout={handleCheckout} loading={updating} />
+            </div>
           </div>
-        </div>
-      </Sidebar>
-    );
-  }
+        )}
 
-  const total = cart.items.length;
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE_3));
-  const start = (page - 1) * PAGE_SIZE_3;
-  const paginatedItems = cart.items.slice(start, start + PAGE_SIZE_3);
-
-  const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Supplements', href: '/supplements' }, { label: 'Cart' }];
-
-  return (
-    <Sidebar hideGlobalBreadcrumbs>
-      <div className={styles.container}>
-        <PageHeader title="Shopping Cart" breadcrumbs={breadcrumbs} />
-        {error && <div className={styles.error}>{error}</div>}
-        <div className={styles.content}>
-          <ul className={styles.itemsSection} aria-label="Cart items">
-            {paginatedItems.map((item: CartItemType) => {
-              const key =
-                typeof item.supplementId === 'object' && item.supplementId && '_id' in item.supplementId
-                  ? (item.supplementId as Supplement)._id
-                  : String(item.supplementId);
-              return (
-                <li key={key}>
-                  <CartItem
-                    item={item}
-                    onQuantityChange={handleQuantityChange}
-                    onRemove={handleRemove}
-                    disabled={updating}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-          <div className={styles.summarySection}>
-            <CartSummary cart={cart} onCheckout={handleCheckout} loading={updating} />
-          </div>
-        </div>
         <div className={styles.paginationWrap}>
           <Pagination total={total} page={page} limit={PAGE_SIZE_3} totalPages={totalPages} onPageChange={setPage} />
         </div>

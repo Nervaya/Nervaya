@@ -1,9 +1,150 @@
-import SleepAssessmentResponse, { ISleepAssessmentResponse } from '@/lib/models/sleepAssessmentResponse.model';
+import SleepAssessmentResponse from '@/lib/models/sleepAssessmentResponse.model';
 import SleepAssessmentQuestion from '@/lib/models/sleepAssessmentQuestion.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
-import type { SubmitAssessmentInput, SaveAnswerInput, IQuestionAnswer } from '@/types/sleepAssessment.types';
+import { buildSleepAssessmentResult } from '@/lib/utils/sleepAssessmentResult.util';
+import type {
+  SubmitAssessmentInput,
+  SaveAnswerInput,
+  IQuestionAnswer,
+  ISleepAssessmentResponse,
+} from '@/types/sleepAssessment.types';
+
+type PersistedAnswer = {
+  questionId: Types.ObjectId | string;
+  answer: string | string[];
+};
+
+type HydratableAssessment = Omit<ISleepAssessmentResponse, 'answers'> & {
+  answers: PersistedAnswer[];
+};
+
+type ScoringQuestion = {
+  _id: Types.ObjectId | string;
+  order: number;
+  options: { id: string; label: string; value: string }[];
+};
+
+function castHydratableAssessment(value: unknown): HydratableAssessment {
+  return value as unknown as HydratableAssessment;
+}
+
+function castHydratableAssessments(value: unknown): HydratableAssessment[] {
+  return value as unknown as HydratableAssessment[];
+}
+
+function normalizeQuestionId(questionId: unknown): string {
+  if (typeof questionId === 'string') return questionId;
+  if (questionId && typeof questionId === 'object' && 'toString' in questionId) {
+    return String(questionId);
+  }
+  return '';
+}
+
+function normalizeAnswers(answers: PersistedAnswer[] = []): IQuestionAnswer[] {
+  return answers
+    .map((answer) => ({
+      questionId: normalizeQuestionId(answer.questionId),
+      answer: answer.answer,
+    }))
+    .filter((answer) => answer.questionId);
+}
+
+async function fetchQuestionsForScoring(questionIds: string[]): Promise<ScoringQuestion[]> {
+  const validIds = Array.from(new Set(questionIds.filter((questionId) => Types.ObjectId.isValid(questionId))));
+  if (validIds.length === 0) {
+    return [];
+  }
+
+  const questions = await SleepAssessmentQuestion.find({
+    _id: { $in: validIds.map((questionId) => new Types.ObjectId(questionId)) },
+  })
+    .select('_id order options')
+    .lean();
+
+  return questions as ScoringQuestion[];
+}
+
+async function buildResultFromAnswers(answers: PersistedAnswer[]): Promise<ISleepAssessmentResponse['result']> {
+  const normalizedAnswers = normalizeAnswers(answers);
+  if (normalizedAnswers.length === 0) {
+    return null;
+  }
+
+  const questions = await fetchQuestionsForScoring(normalizedAnswers.map((answer) => answer.questionId));
+  if (questions.length === 0) {
+    return null;
+  }
+
+  return buildSleepAssessmentResult({
+    questions: questions.map((question) => ({
+      _id: normalizeQuestionId(question._id),
+      order: question.order,
+      options: question.options ?? [],
+    })),
+    answers: normalizedAnswers,
+  });
+}
+
+async function hydrateAssessment(assessment: HydratableAssessment | null): Promise<ISleepAssessmentResponse | null> {
+  if (!assessment) {
+    return null;
+  }
+
+  const [hydratedAssessment] = await hydrateAssessments([assessment]);
+  return hydratedAssessment ?? null;
+}
+
+async function hydrateAssessments(assessments: HydratableAssessment[]): Promise<ISleepAssessmentResponse[]> {
+  if (assessments.length === 0) {
+    return [];
+  }
+
+  const questionIdsNeedingResult = new Set<string>();
+
+  for (const assessment of assessments) {
+    if (!assessment.completedAt || assessment.result) {
+      continue;
+    }
+
+    for (const answer of assessment.answers ?? []) {
+      const questionId = normalizeQuestionId(answer.questionId);
+      if (questionId) {
+        questionIdsNeedingResult.add(questionId);
+      }
+    }
+  }
+
+  const questions = await fetchQuestionsForScoring(Array.from(questionIdsNeedingResult));
+  const questionMap = new Map(questions.map((question) => [normalizeQuestionId(question._id), question]));
+
+  return assessments.map((assessment) => {
+    const normalized = normalizeAnswers(assessment.answers);
+    const computedQuestions = normalized
+      .map((answer) => questionMap.get(answer.questionId))
+      .filter((question): question is ScoringQuestion => question != null);
+
+    const result =
+      assessment.result ??
+      (assessment.completedAt && computedQuestions.length > 0
+        ? buildSleepAssessmentResult({
+            questions: computedQuestions.map((question) => ({
+              _id: normalizeQuestionId(question._id),
+              order: question.order,
+              options: question.options ?? [],
+            })),
+            answers: normalized,
+          })
+        : null);
+
+    return {
+      ...assessment,
+      answers: normalized,
+      result,
+    };
+  });
+}
 
 export async function submitAssessment(
   userId: string,
@@ -81,13 +222,23 @@ export async function submitAssessment(
       answer: a.answer,
     }));
 
+    const result = buildSleepAssessmentResult({
+      questions: questions.map((question) => ({
+        _id: question._id.toString(),
+        order: question.order,
+        options: question.options,
+      })),
+      answers: validatedAnswers,
+    });
+
     const response = await SleepAssessmentResponse.create({
       userId: new Types.ObjectId(userId),
       answers: mongooseAnswers,
+      result,
       completedAt: new Date(),
     });
 
-    return response.toObject() as ISleepAssessmentResponse;
+    return (await hydrateAssessment(castHydratableAssessment(response.toObject()))) as ISleepAssessmentResponse;
   } catch (error) {
     throw handleError(error);
   }
@@ -108,7 +259,7 @@ export async function getInProgressAssessment(userId: string): Promise<ISleepAss
       .sort({ updatedAt: -1 })
       .lean();
 
-    return assessment as ISleepAssessmentResponse | null;
+    return await hydrateAssessment(assessment ? castHydratableAssessment(assessment) : null);
   } catch (error) {
     throw handleError(error);
   }
@@ -213,7 +364,7 @@ export async function saveAnswer(userId: string, input: SaveAnswerInput): Promis
     assessment.answers = answers;
     await assessment.save();
 
-    return assessment.toObject() as ISleepAssessmentResponse;
+    return (await hydrateAssessment(castHydratableAssessment(assessment.toObject()))) as ISleepAssessmentResponse;
   } catch (error) {
     throw handleError(error);
   }
@@ -240,10 +391,11 @@ export async function completeAssessment(userId: string): Promise<ISleepAssessme
       throw new ValidationError('At least one answer is required to complete the assessment');
     }
 
+    assessment.result = await buildResultFromAnswers(assessment.answers as PersistedAnswer[]);
     assessment.completedAt = new Date();
     await assessment.save();
 
-    return assessment.toObject() as ISleepAssessmentResponse;
+    return (await hydrateAssessment(castHydratableAssessment(assessment.toObject()))) as ISleepAssessmentResponse;
   } catch (error) {
     throw handleError(error);
   }
@@ -259,7 +411,7 @@ export async function getUserAssessments(userId: string): Promise<ISleepAssessme
 
     const assessments = await SleepAssessmentResponse.find({ userId }).sort({ createdAt: -1 }).lean();
 
-    return assessments as ISleepAssessmentResponse[];
+    return await hydrateAssessments(castHydratableAssessments(assessments));
   } catch (error) {
     throw handleError(error);
   }
@@ -275,7 +427,7 @@ export async function getLatestUserAssessment(userId: string): Promise<ISleepAss
 
     const assessment = await SleepAssessmentResponse.findOne({ userId }).sort({ createdAt: -1 }).lean();
 
-    return assessment as ISleepAssessmentResponse | null;
+    return await hydrateAssessment(assessment ? castHydratableAssessment(assessment) : null);
   } catch (error) {
     throw handleError(error);
   }
@@ -295,7 +447,7 @@ export async function getAssessmentById(assessmentId: string): Promise<ISleepAss
       throw new NotFoundError('Assessment not found');
     }
 
-    return assessment as ISleepAssessmentResponse;
+    return (await hydrateAssessment(castHydratableAssessment(assessment))) as ISleepAssessmentResponse;
   } catch (error) {
     throw handleError(error);
   }
@@ -310,7 +462,7 @@ export async function getAllAssessments(): Promise<ISleepAssessmentResponse[]> {
       .sort({ createdAt: -1 })
       .lean();
 
-    return assessments as ISleepAssessmentResponse[];
+    return await hydrateAssessments(castHydratableAssessments(assessments));
   } catch (error) {
     throw handleError(error);
   }

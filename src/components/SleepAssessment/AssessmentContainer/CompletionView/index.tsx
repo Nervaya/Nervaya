@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
-import { getSleepScoreLabel, NERVAYA_PICKS, MORE_FAVOURITES } from '@/lib/utils/sleepScore.util';
+import { getSleepAssessmentResult, getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 import { trackRecommendationClicked } from '@/utils/analytics';
 import styles from './styles.module.css';
 
@@ -13,66 +13,87 @@ interface CompletionViewProps {
 }
 
 export function CompletionView({ completedResponse = null, showRetakeActions = false, onRetake }: CompletionViewProps) {
+  const result = getSleepAssessmentResult(completedResponse);
   const scoreLabel = getSleepScoreLabel(completedResponse);
 
   return (
     <div className={styles.resultsContainer}>
-      <div className={styles.scoreRow}>
-        <span className={styles.scoreLabel}>Your Sleep Quality Score:</span>
-        <span className={styles.scoreBadge}>{scoreLabel}</span>
-      </div>
-
-      <section className={styles.section} aria-labelledby="nervaya-picks-heading">
-        <h2 id="nervaya-picks-heading" className={styles.sectionHeading}>
-          Nervaya&apos;s Picks
+      <section
+        className={`${styles.heroCard} ${result ? styles[result.severityBand] : ''}`}
+        aria-labelledby="sleep-assessment-result-heading"
+      >
+        <div className={styles.heroHeader}>
+          <div className={styles.scoreRow}>
+            <span className={styles.scoreLabel}>Your Sleep Quality Score:</span>
+            <span className={styles.scoreBadge}>{scoreLabel}</span>
+          </div>
+          {result && (
+            <div className={styles.scoreMetric}>
+              <span className={styles.metricValue}>{result.severityScore}</span>
+              <span className={styles.metricLabel}>Severity score</span>
+            </div>
+          )}
+        </div>
+        <h2 id="sleep-assessment-result-heading" className={styles.heroTitle}>
+          {result ? `${result.severityLabel} Sleep Support Plan` : 'Your Sleep Support Plan'}
         </h2>
-        <ul className={styles.cardGrid} aria-label="Nervaya's Picks">
-          {NERVAYA_PICKS.map((card) => (
-            <li key={card.title} className={styles.card}>
-              <h3 className={styles.cardTitle}>{card.title}</h3>
-              <p className={styles.cardDescription}>{card.description}</p>
-              <Link
-                href={card.href}
-                className={styles.cardButton}
-                onClick={() =>
-                  trackRecommendationClicked({
-                    recommendation_title: card.title,
-                    destination_url: card.href,
-                  })
-                }
-              >
-                {card.buttonText}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <p className={styles.heroDescription}>
+          {result?.explanation ?? 'Your assessment has been completed and your sleep support plan is ready.'}
+        </p>
+        {result?.intentLabel && <p className={styles.intentNote}>Intent: {result.intentLabel}</p>}
       </section>
 
-      <section className={styles.section} aria-labelledby="more-favourites-heading">
-        <h2 id="more-favourites-heading" className={styles.sectionHeading}>
-          More Favourites
-        </h2>
-        <ul className={styles.cardGrid} aria-label="More Favourites">
-          {MORE_FAVOURITES.map((card) => (
-            <li key={card.title} className={styles.card}>
-              <h3 className={styles.cardTitle}>{card.title}</h3>
-              <p className={styles.cardDescription}>{card.description}</p>
-              <Link
-                href={card.href}
-                className={styles.cardButton}
-                onClick={() =>
-                  trackRecommendationClicked({
-                    recommendation_title: card.title,
-                    destination_url: card.href,
-                  })
-                }
-              >
-                {card.buttonText}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {result?.reasoning?.length ? (
+        <section className={styles.section} aria-labelledby="reasoning-heading">
+          <h2 id="reasoning-heading" className={styles.sectionHeading}>
+            Why this result
+          </h2>
+          <ul className={styles.reasonList}>
+            {result.reasoning.map((reason) => (
+              <li key={reason} className={styles.reasonItem}>
+                {reason}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {result?.recommendations?.length ? (
+        <section className={styles.section} aria-labelledby="recommendations-heading">
+          <h2 id="recommendations-heading" className={styles.sectionHeading}>
+            Recommended next steps
+          </h2>
+          <ul className={styles.cardGrid} aria-label="Recommended next steps">
+            {result.recommendations.map((card) => (
+              <li key={`${card.key}-${card.priority}`} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <span
+                    className={`${styles.priorityBadge} ${
+                      card.priority === 'primary' ? styles.primaryPriority : styles.secondaryPriority
+                    }`}
+                  >
+                    {card.priority === 'primary' ? 'Priority' : 'Support'}
+                  </span>
+                  <h3 className={styles.cardTitle}>{card.title}</h3>
+                </div>
+                <p className={styles.cardDescription}>{card.description}</p>
+                <Link
+                  href={card.href}
+                  className={styles.cardButton}
+                  onClick={() =>
+                    trackRecommendationClicked({
+                      recommendation_title: card.title,
+                      destination_url: card.href,
+                    })
+                  }
+                >
+                  {card.buttonText}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <div className={styles.actions}>
         {showRetakeActions && onRetake ? (

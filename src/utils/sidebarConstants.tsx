@@ -26,7 +26,10 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'DRIFT OFF',
-    items: [{ title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' }],
+    items: [
+      { title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' },
+      { title: 'My Sessions', path: '/drift-off/sessions', icon: 'FaCalendarCheck' },
+    ],
   },
   {
     title: 'SUPPLEMENTS',
