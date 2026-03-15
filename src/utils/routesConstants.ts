@@ -1,3 +1,5 @@
+export const PUBLIC_ROUTES = ['/', '/login', '/signup', '/about-us', '/privacy-policy', '/support'] as const;
+
 export const PROTECTED_ROUTES = [
   '/dashboard',
   '/profile',
@@ -7,24 +9,24 @@ export const PROTECTED_ROUTES = [
   '/sleep-assessment',
 ] as const;
 
-export const ADMIN_ROUTES = [
-  '/admin',
-  '/admin/therapists',
-  '/admin/settings',
-  '/admin/users',
-  '/admin/billing',
-  '/admin/supplements',
-  '/admin/sleep-assessment',
-  '/admin/orders',
-  '/admin/sessions',
-] as const;
+export const ADMIN_ROUTES = ['/admin'] as const;
 
 /** Routes accessible only by users with THERAPIST role */
 export const THERAPIST_ROUTES = ['/therapist'] as const;
 
 export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
-export const CUSTOMER_ONLY_ROUTES = ['/blog', '/supplements', '/drift-off', '/therapy-corner', '/support'] as const;
+export const CUSTOMER_ONLY_ROUTES = [
+  '/dashboard',
+  '/blog',
+  '/supplements',
+  '/drift-off',
+  '/therapy-corner',
+  '/support',
+  '/sleep-assessment',
+  '/account',
+  '/profile',
+] as const;
 
 export function isProtectedPath(pathname: string): boolean {
   return (

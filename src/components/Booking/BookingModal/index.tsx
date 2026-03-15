@@ -9,7 +9,7 @@ import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 // import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
-import { useTherapist } from '@/app/queries/therapists/useTherapist';
+import { useTherapist } from '@/queries/therapists/useTherapist';
 import { cartApi } from '@/lib/api/cart';
 import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
 import styles from './styles.module.css';

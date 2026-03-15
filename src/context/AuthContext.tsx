@@ -141,6 +141,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const safeReturnUrl = validateReturnUrl(returnUrl);
     if (data.user.role === ROLES.ADMIN) {
       router.push(ROUTES.ADMIN_DASHBOARD);
+    } else if (data.user.role === ROLES.THERAPIST) {
+      router.push(ROUTES.THERAPIST_DASHBOARD);
     } else if (safeReturnUrl) {
       router.push(safeReturnUrl);
     } else {

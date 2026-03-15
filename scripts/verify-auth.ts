@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import connectDB from '../src/lib/db/mongodb';
 import User from '../src/lib/models/user.model';
 import Therapist from '../src/lib/models/therapist.model';
@@ -14,7 +15,7 @@ async function seedDatabase() {
     console.log('\n👤 Seeding Admin User...');
     const adminData = {
       email: 'admin@nervaya.com',
-      password: 'admin123',
+      password: await bcrypt.hash('admin123', 10),
       name: 'Nervaya Admin',
       role: ROLES.ADMIN,
       emailVerified: true,
@@ -31,7 +32,7 @@ async function seedDatabase() {
     console.log('\n👤 Seeding Normal User...');
     const userData = {
       email: 'bhanu@nervaya.com',
-      password: 'bhanu123',
+      password: await bcrypt.hash('bhanu123', 10),
       name: 'Bhanu Teja',
       role: ROLES.CUSTOMER,
       emailVerified: true,
@@ -76,7 +77,7 @@ async function seedDatabase() {
     // Create Therapist User
     const therapistUserData = {
       email: 'therapist@nervaya.com',
-      password: 'therapist123',
+      password: await bcrypt.hash('therapist123', 10),
       name: 'Dr. Smith',
       role: ROLES.THERAPIST,
       therapistId: therapistProfile._id,

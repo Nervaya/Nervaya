@@ -1,61 +1,79 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { verifyToken } from './lib/utils/jwt.util';
-import { PROTECTED_ROUTES, ADMIN_ROUTES, AUTH_ROUTES, CUSTOMER_ONLY_ROUTES, ROUTES } from '@/utils/routesConstants';
-import { validateReturnUrl } from '@/utils/returnUrl';
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/utils/jwt.util';
 import { COOKIE_NAMES } from '@/utils/cookieConstants';
-import { ROLES } from '@/lib/constants/roles';
-
-function loginRedirectUrl(request: NextRequest, returnPath: string): URL {
-  const url = new URL(ROUTES.LOGIN, request.url);
-  const safeReturn = validateReturnUrl(returnPath);
-  if (safeReturn) {
-    url.searchParams.set('returnUrl', safeReturn);
-  }
-  return url;
-}
+import { ROLES } from '@/lib/constants/enums';
+import { PUBLIC_ROUTES, THERAPIST_ROUTES, ADMIN_ROUTES, CUSTOMER_ONLY_ROUTES, ROUTES } from '@/utils/routesConstants';
 
 export async function proxy(request: NextRequest) {
-  const currentPath = request.nextUrl.pathname;
-  let response: NextResponse;
+  const { pathname } = request.nextUrl;
+
+  // 1. Skip middleware for non-page requests (assets, api, etc.)
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/static') ||
+    pathname.indexOf('.') !== -1
+  ) {
+    return NextResponse.next();
+  }
+
+  // 2. Check if the path is public
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => (route === '/' ? pathname === '/' : pathname.startsWith(route)));
 
   const token = request.cookies.get(COOKIE_NAMES.AUTH_TOKEN)?.value;
+  const decoded = token ? await verifyToken(token) : null;
 
-  if (
-    PROTECTED_ROUTES.some((route) => currentPath.startsWith(route)) ||
-    ADMIN_ROUTES.some((route) => currentPath.startsWith(route))
-  ) {
-    if (!token) {
-      response = NextResponse.redirect(loginRedirectUrl(request, currentPath));
-    } else {
-      const decoded = await verifyToken(token);
-      if (!decoded) {
-        response = NextResponse.redirect(loginRedirectUrl(request, currentPath));
-        response.cookies.delete(COOKIE_NAMES.AUTH_TOKEN);
-      } else if (ADMIN_ROUTES.some((route) => currentPath.startsWith(route)) && decoded.role !== ROLES.ADMIN) {
+  let response: NextResponse;
+
+  // 3. Prevent logged-in users from accessing auth pages (login/signup)
+  if (decoded && (pathname === ROUTES.LOGIN || pathname === ROUTES.SIGNUP)) {
+    let redirectUrl: string = ROUTES.DASHBOARD;
+    if (decoded.role === ROLES.THERAPIST) {
+      redirectUrl = ROUTES.THERAPIST_DASHBOARD;
+    } else if (decoded.role === ROLES.ADMIN) {
+      redirectUrl = ROUTES.ADMIN_DASHBOARD;
+    }
+    response = NextResponse.redirect(new URL(redirectUrl, request.url));
+  }
+  // 4. If it's a public route and not logged in, continue
+  else if (isPublicRoute && !decoded) {
+    response = NextResponse.next();
+  }
+  // 5. If not a public route and not logged in, redirect to login
+  else if (!isPublicRoute && !decoded) {
+    const loginUrl = new URL(ROUTES.LOGIN, request.url);
+    loginUrl.searchParams.set('returnUrl', pathname);
+    response = NextResponse.redirect(loginUrl);
+  }
+  // 6. Role-Based Access Control (RBAC) Logic
+  else if (decoded) {
+    const role = decoded.role;
+
+    // Strict Therapist Redirection
+    if (role === ROLES.THERAPIST) {
+      const isTherapistRoute = THERAPIST_ROUTES.some((route) => pathname.startsWith(route));
+      if (!isTherapistRoute && !isPublicRoute) {
+        response = NextResponse.redirect(new URL(ROUTES.THERAPIST_DASHBOARD, request.url));
+      } else {
+        response = NextResponse.next();
+      }
+    }
+    // Customer Redirection
+    else if (role === ROLES.CUSTOMER) {
+      const isTherapistPath = THERAPIST_ROUTES.some((route) => pathname.startsWith(route));
+      const isAdminPath = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
+      if (isTherapistPath || isAdminPath) {
         response = NextResponse.redirect(new URL(ROUTES.DASHBOARD, request.url));
-      } else if (PROTECTED_ROUTES.some((route) => currentPath.startsWith(route)) && decoded.role === ROLES.ADMIN) {
-        response = NextResponse.redirect(new URL(ROUTES.ADMIN_DASHBOARD, request.url));
       } else {
         response = NextResponse.next();
       }
     }
-  } else if (CUSTOMER_ONLY_ROUTES.some((route) => currentPath.startsWith(route))) {
-    if (token) {
-      const decoded = await verifyToken(token);
-      if (decoded?.role === ROLES.ADMIN) {
+    // Admin Redirection
+    else if (role === ROLES.ADMIN) {
+      const isCustomerOnly = CUSTOMER_ONLY_ROUTES.some((route) => pathname.startsWith(route));
+      const isTherapistPath = THERAPIST_ROUTES.some((route) => pathname.startsWith(route));
+      if (isCustomerOnly || isTherapistPath) {
         response = NextResponse.redirect(new URL(ROUTES.ADMIN_DASHBOARD, request.url));
-      } else {
-        response = NextResponse.next();
-      }
-    } else {
-      response = NextResponse.next();
-    }
-  } else if (AUTH_ROUTES.some((route) => currentPath.startsWith(route))) {
-    if (token) {
-      const decoded = await verifyToken(token);
-      if (decoded) {
-        const redirectUrl = decoded.role === ROLES.ADMIN ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD;
-        response = NextResponse.redirect(new URL(redirectUrl, request.url));
       } else {
         response = NextResponse.next();
       }
@@ -66,8 +84,8 @@ export async function proxy(request: NextRequest) {
     response = NextResponse.next();
   }
 
+  // Add security headers (from original proxy.ts)
   const isProduction = process.env.NODE_ENV === 'production';
-
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-XSS-Protection', '1; mode=block');
@@ -82,17 +100,13 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/blog/:path*',
-    '/dashboard/:path*',
-    '/account/:path*',
-    '/profile/:path*',
-    '/supplements/:path*',
-    '/sleep-assessment/:path*',
-    '/drift-off/:path*',
-    '/therapy-corner/:path*',
-    '/support/:path*',
-    '/admin/:path*',
-    '/login/:path*',
-    '/signup/:path*',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
