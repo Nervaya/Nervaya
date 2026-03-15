@@ -32,6 +32,14 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [requestingResponseId, setRequestingResponseId] = useState<string | null>(null);
+  const [requestErrors, setRequestErrors] = useState<Record<string, string>>({});
+
+  const sortResponses = useCallback(
+    (items: IDriftOffResponse[]) =>
+      [...items].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+    [],
+  );
 
   const loadResponses = useCallback(async () => {
     try {
@@ -39,8 +47,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
       setError(null);
       const res = await driftOffApi.getResponses();
       if (res.success && res.data) {
-        const sorted = [...res.data].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        setResponses(sorted);
+        setResponses(sortResponses(res.data));
       } else {
         setResponses([]);
       }
@@ -49,7 +56,62 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [sortResponses]);
+
+  const handleRequestReSession = useCallback(
+    async (responseId: string) => {
+      let previousResponse: IDriftOffResponse | undefined;
+
+      try {
+        setRequestingResponseId(responseId);
+        setRequestErrors((prev) => {
+          const next = { ...prev };
+          delete next[responseId];
+          return next;
+        });
+        setResponses((prev) => {
+          previousResponse = prev.find((response) => response._id === responseId);
+
+          return sortResponses(
+            prev.map((response) =>
+              response._id === responseId
+                ? {
+                    ...response,
+                    reSessionRequestedAt: new Date(),
+                    reSessionResolvedAt: null,
+                  }
+                : response,
+            ),
+          );
+        });
+
+        const res = await driftOffApi.requestReSession(responseId);
+        if (!res.success || !res.data) {
+          throw new Error(res.message || 'Failed to request a re-session');
+        }
+
+        setResponses((prev) =>
+          sortResponses(
+            prev.map((response) => (response._id === responseId ? { ...response, ...res.data } : response)),
+          ),
+        );
+      } catch (err) {
+        setRequestErrors((prev) => ({
+          ...prev,
+          [responseId]: err instanceof Error ? err.message : 'Failed to request a re-session',
+        }));
+        const restoredResponse = previousResponse;
+        if (restoredResponse) {
+          setResponses((prev) =>
+            sortResponses(prev.map((response) => (response._id === responseId ? restoredResponse : response))),
+          );
+        }
+      } finally {
+        setRequestingResponseId(null);
+      }
+    },
+    [sortResponses],
+  );
 
   useEffect(() => {
     loadResponses();
@@ -82,6 +144,11 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
     const isReady = Boolean(videoUrl);
     const isPendingAssessment = !session.completedAt;
     const isPreparing = session.completedAt && !session.assignedVideoUrl;
+    const hasRequestedReSession = Boolean(session.reSessionRequestedAt);
+    const hasPendingReSessionRequest = Boolean(session.reSessionRequestedAt && !session.reSessionResolvedAt);
+    const hasResolvedReSessionRequest = Boolean(session.reSessionRequestedAt && session.reSessionResolvedAt);
+    const isRequestingThisSession = requestingResponseId === session._id;
+    const requestError = requestErrors[session._id];
 
     return (
       <div key={session._id} className={styles.sessionCard}>
@@ -91,9 +158,23 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
             <span className={styles.dateValue}>{new Date(session.createdAt).toLocaleDateString()}</span>
           </div>
           <div
-            className={`${styles.statusBadge} ${isReady ? styles.statusReady : isPreparing ? styles.statusPreparing : styles.statusPending}`}
+            className={`${styles.statusBadge} ${
+              hasPendingReSessionRequest
+                ? styles.statusRequested
+                : isReady
+                  ? styles.statusReady
+                  : isPreparing
+                    ? styles.statusPreparing
+                    : styles.statusPending
+            }`}
           >
-            {isReady ? 'Ready' : isPreparing ? 'Preparing' : 'Pending Action'}
+            {hasPendingReSessionRequest
+              ? 'Re-Session Requested'
+              : isReady
+                ? 'Ready'
+                : isPreparing
+                  ? 'Preparing'
+                  : 'Pending Action'}
           </div>
         </div>
 
@@ -134,7 +215,37 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
             </Link>
           )}
           {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
-          {isReady && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
+          {isReady && (
+            <>
+              {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
+              <button
+                type="button"
+                className={styles.requestBtn}
+                onClick={() => handleRequestReSession(session._id)}
+                disabled={isRequestingThisSession || hasRequestedReSession}
+              >
+                {isRequestingThisSession
+                  ? 'Requesting…'
+                  : hasPendingReSessionRequest
+                    ? 'Re-Session Requested'
+                    : hasResolvedReSessionRequest
+                      ? 'Re-Session Used'
+                      : 'Request Re-Session'}
+              </button>
+            </>
+          )}
+          {isReady && hasPendingReSessionRequest && (
+            <p className={styles.requestPendingNote}>
+              Re-session requested on {new Date(session.reSessionRequestedAt as Date).toLocaleDateString()}. Our team
+              will assign a replacement video soon.
+            </p>
+          )}
+          {isReady && hasResolvedReSessionRequest && (
+            <p className={styles.reassignedNote}>
+              Your replacement session has been assigned. Re-session requests are limited to one per purchased session.
+            </p>
+          )}
+          {requestError && <p className={styles.requestError}>{requestError}</p>}
         </div>
       </div>
     );

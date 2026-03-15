@@ -32,18 +32,26 @@ export default function UpcomingSessions({ sessions, emptyMessage = 'No upcoming
       {sessions.map((session) => {
         const therapist = session.therapistId;
         const name = typeof therapist === 'object' && therapist && 'name' in therapist ? therapist.name : '—';
+        const formattedDate = new Date(session.date).toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        });
         return (
           <li key={session._id} className={styles.item}>
             <div className={styles.main}>
-              <span className={styles.date}>{new Date(session.date).toLocaleDateString()}</span>
-              <span className={styles.time}>
-                {session.startTime}
-                {session.endTime ? ` – ${session.endTime}` : ''}
-              </span>
-              <span className={styles.therapist}>{name}</span>
-              <span className={styles.badge}>{session.status}</span>
+              <div className={styles.sessionMeta}>
+                <span className={styles.date}>{formattedDate}</span>
+                <span className={styles.time}>
+                  {session.startTime}
+                  {session.endTime ? ` - ${session.endTime}` : ''}
+                </span>
+              </div>
+              <div className={styles.sessionInfo}>
+                <span className={styles.therapist}>{name}</span>
+                <span className={styles.badge}>{session.status}</span>
+              </div>
             </div>
-            <span className={styles.userId}>User: {String(session.userId).slice(0, 8)}…</span>
           </li>
         );
       })}

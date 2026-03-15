@@ -15,8 +15,10 @@ export interface StatsCardProps {
 export default function StatsCard({ title, value, subtitle, icon, trend, trendLabel }: StatsCardProps) {
   return (
     <div className={styles.card}>
-      {icon && <div className={styles.iconWrapper}>{icon}</div>}
-      <h3 className={styles.cardTitle}>{title}</h3>
+      <div className={styles.cardTop}>
+        {icon && <div className={styles.iconWrapper}>{icon}</div>}
+        <h3 className={styles.cardTitle}>{title}</h3>
+      </div>
       <p className={styles.cardValue}>{value}</p>
       {subtitle && <p className={styles.cardHint}>{subtitle}</p>}
       {trend !== undefined && trendLabel && (

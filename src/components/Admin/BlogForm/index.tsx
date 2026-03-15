@@ -59,7 +59,7 @@ export default function BlogForm({
       dynamic(() => import('react-quill-new'), {
         ssr: false,
         loading: () => <div className={styles.editorLoading}>Loading editor...</div>,
-      }),
+      }) as typeof import('react-quill-new').default,
     [],
   );
 

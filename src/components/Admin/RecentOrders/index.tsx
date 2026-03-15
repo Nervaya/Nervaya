@@ -33,7 +33,6 @@ export default function RecentOrders({ orders, emptyMessage = 'No recent orders.
         <thead>
           <tr>
             <th scope="col">Order</th>
-            <th scope="col">User</th>
             <th scope="col">Amount</th>
             <th scope="col">Status</th>
             <th scope="col">Date</th>
@@ -47,7 +46,6 @@ export default function RecentOrders({ orders, emptyMessage = 'No recent orders.
                   #{String(order._id).slice(-8)}
                 </Link>
               </td>
-              <td className={styles.userId}>{String(order.userId).slice(0, 8)}…</td>
               <td>{formatPrice(order.totalAmount)}</td>
               <td>
                 <span className={styles.badge}>{order.orderStatus ?? order.paymentStatus ?? '—'}</span>

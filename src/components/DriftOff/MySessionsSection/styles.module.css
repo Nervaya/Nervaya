@@ -72,6 +72,11 @@
   color: #059669;
 }
 
+.statusRequested {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
 .statusPreparing {
   background: #fffbeb;
   color: #d97706;
@@ -162,6 +167,62 @@
 
 .readyNote {
   color: #059669;
+}
+
+.requestPendingNote,
+.reassignedNote,
+.requestError {
+  font-size: 0.8125rem;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.requestPendingNote {
+  color: #7c3aed;
+}
+
+.reassignedNote {
+  color: #2563eb;
+}
+
+.requestError {
+  color: #dc2626;
+}
+
+.requestBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--color-accent);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.requestBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(124, 58, 237, 0.38);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
+  background: rgba(124, 58, 237, 0.04);
+}
+
+.requestBtn:disabled {
+  background: #f8fafc;
+  border-color: var(--color-border-light);
+  color: var(--color-text-slate-400);
+  box-shadow: none;
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .btn {

@@ -4,11 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 
 interface SidebarContextType {
   isCollapsed: boolean;
-  setIsCollapsed: (value: boolean | ((prev: boolean) => boolean)) => void;
-  isMobileOpen: boolean;
-  setIsMobileOpen: (value: boolean) => void;
   toggleCollapsed: () => void;
-  closeMobileSidebar: () => void;
   isDesktop: boolean;
 }
 
@@ -26,7 +22,6 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
     return false;
   });
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -58,19 +53,11 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setIsCollapsed((prev) => !prev);
   }, []);
 
-  const closeMobileSidebar = useCallback(() => {
-    setIsMobileOpen(false);
-  }, []);
-
   return (
     <SidebarContext.Provider
       value={{
         isCollapsed,
-        setIsCollapsed,
-        isMobileOpen,
-        setIsMobileOpen,
         toggleCollapsed,
-        closeMobileSidebar,
         isDesktop,
       }}
     >

@@ -1,13 +1,11 @@
 import connectDB from '@/lib/db/mongodb';
 import Order from '@/lib/models/order.model';
 import Session from '@/lib/models/session.model';
-import Supplement from '@/lib/models/supplement.model';
 import User from '@/lib/models/user.model';
 import { handleError } from '@/lib/utils/error.util';
 import { PAYMENT_STATUS } from '@/lib/constants/enums';
 import { ROLES } from '@/lib/constants/roles';
 
-const LOW_STOCK_THRESHOLD = 10;
 const RECENT_ORDERS_LIMIT = 5;
 const UPCOMING_DAYS = 7;
 
@@ -23,7 +21,6 @@ export interface RecentOrderRow {
 export interface OrderStats {
   total: number;
   byStatus: Record<string, number>;
-  totalRevenue: number;
   recentOrders: RecentOrderRow[];
 }
 
@@ -41,29 +38,12 @@ export interface SessionStats {
   total: number;
   byStatus: Record<string, number>;
   upcomingCount: number;
-  completedCount: number;
   upcomingSessions: UpcomingSessionRow[];
-}
-
-export interface LowStockItemRow {
-  _id?: string;
-  name: string;
-  stock: number;
-}
-
-export interface SupplementStats {
-  total: number;
-  activeCount: number;
-  inactiveCount: number;
-  lowStockCount: number;
-  outOfStockCount: number;
-  lowStockItems: LowStockItemRow[];
 }
 
 export interface UserStats {
   total: number;
   customers: number;
-  admins: number;
 }
 
 export interface RevenueStats {
@@ -76,7 +56,6 @@ export interface RevenueStats {
 export interface DashboardStats {
   orders: OrderStats;
   sessions: SessionStats;
-  supplements: SupplementStats;
   users: UserStats;
   revenue: RevenueStats;
 }
@@ -93,11 +72,6 @@ export async function getOrderStats(): Promise<OrderStats> {
     byStatusAgg.forEach((row: { _id: string; count: number }) => {
       byStatus[row._id] = row.count;
     });
-    const paidOrders = await Order.aggregate([
-      { $match: { paymentStatus: PAYMENT_STATUS.PAID } },
-      { $group: { _id: null, total: { $sum: '$totalAmount' } } },
-    ]);
-    const totalRevenue = paidOrders[0]?.total ?? 0;
     const recentOrdersRows: RecentOrderRow[] = recentOrders.map((o) => ({
       _id: String(o._id),
       userId: String(o.userId),
@@ -106,7 +80,7 @@ export async function getOrderStats(): Promise<OrderStats> {
       paymentStatus: o.paymentStatus,
       createdAt: o.createdAt,
     }));
-    return { total, byStatus, totalRevenue, recentOrders: recentOrdersRows };
+    return { total, byStatus, recentOrders: recentOrdersRows };
   } catch (error) {
     throw handleError(error);
   }
@@ -119,7 +93,7 @@ export async function getSessionStats(): Promise<SessionStats> {
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + UPCOMING_DAYS);
     const futureDateStr = futureDate.toISOString().split('T')[0];
-    const [total, byStatusAgg, upcomingSessions, completedCount] = await Promise.all([
+    const [total, byStatusAgg, upcomingSessions] = await Promise.all([
       Session.countDocuments(),
       Session.aggregate([{ $group: { _id: '$status', count: { $sum: 1 } } }]),
       Session.find({
@@ -130,7 +104,6 @@ export async function getSessionStats(): Promise<SessionStats> {
         .sort({ date: 1, startTime: 1 })
         .limit(10)
         .lean(),
-      Session.countDocuments({ status: 'completed' }),
     ]);
     const byStatus: Record<string, number> = {};
     byStatusAgg.forEach((row: { _id: string; count: number }) => {
@@ -153,43 +126,7 @@ export async function getSessionStats(): Promise<SessionStats> {
       total,
       byStatus,
       upcomingCount,
-      completedCount,
       upcomingSessions: upcomingSessionsRows,
-    };
-  } catch (error) {
-    throw handleError(error);
-  }
-}
-
-export async function getSupplementStats(): Promise<SupplementStats> {
-  await connectDB();
-  try {
-    const [total, activeCount, inactiveCount, lowStockItems] = await Promise.all([
-      Supplement.countDocuments(),
-      Supplement.countDocuments({ isActive: true }),
-      Supplement.countDocuments({ isActive: false }),
-      Supplement.find({ stock: { $gt: 0, $lt: LOW_STOCK_THRESHOLD } })
-        .select('name stock')
-        .sort({ stock: 1 })
-        .limit(10)
-        .lean(),
-    ]);
-    const lowStockCount = await Supplement.countDocuments({
-      stock: { $gt: 0, $lt: LOW_STOCK_THRESHOLD },
-    });
-    const outOfStockCount = await Supplement.countDocuments({ stock: 0 });
-    const lowStockItemsRows: LowStockItemRow[] = lowStockItems.map((item) => ({
-      _id: item._id != null ? String(item._id) : undefined,
-      name: item.name,
-      stock: item.stock,
-    }));
-    return {
-      total,
-      activeCount,
-      inactiveCount,
-      lowStockCount,
-      outOfStockCount,
-      lowStockItems: lowStockItemsRows,
     };
   } catch (error) {
     throw handleError(error);
@@ -199,12 +136,11 @@ export async function getSupplementStats(): Promise<SupplementStats> {
 export async function getUserStats(): Promise<UserStats> {
   await connectDB();
   try {
-    const [total, customers, admins] = await Promise.all([
+    const [total, customers] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ role: ROLES.CUSTOMER }),
-      User.countDocuments({ role: ROLES.ADMIN }),
     ]);
-    return { total, customers, admins };
+    return { total, customers };
   } catch (error) {
     throw handleError(error);
   }
@@ -248,12 +184,11 @@ export async function getRevenueStats(): Promise<RevenueStats> {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const [orders, sessions, supplements, users, revenue] = await Promise.all([
+  const [orders, sessions, users, revenue] = await Promise.all([
     getOrderStats(),
     getSessionStats(),
-    getSupplementStats(),
     getUserStats(),
     getRevenueStats(),
   ]);
-  return { orders, sessions, supplements, users, revenue };
+  return { orders, sessions, users, revenue };
 }

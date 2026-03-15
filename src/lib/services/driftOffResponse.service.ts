@@ -116,11 +116,43 @@ export async function assignVideo(responseId: string, videoUrl: string): Promise
   if (!Types.ObjectId.isValid(responseId)) {
     throw new ValidationError('Invalid response ID');
   }
-  const response = await DriftOffResponse.findByIdAndUpdate(
-    responseId,
-    { assignedVideoUrl: videoUrl, assignedAt: new Date() },
-    { new: true },
-  );
+  const response = await DriftOffResponse.findById(responseId);
   if (!response) throw new NotFoundError('Drift Off response not found');
-  return response;
+
+  response.assignedVideoUrl = videoUrl;
+  response.assignedAt = new Date();
+
+  if (response.reSessionRequestedAt && !response.reSessionResolvedAt) {
+    response.reSessionResolvedAt = new Date();
+  }
+
+  return response.save();
+}
+
+export async function requestReSession(userId: string, responseId: string): Promise<DriftOffResponseDocument> {
+  await connectDB();
+  if (!Types.ObjectId.isValid(responseId)) {
+    throw new ValidationError('Invalid response ID');
+  }
+
+  const response = await DriftOffResponse.findOne({ _id: responseId, userId });
+  if (!response) {
+    throw new NotFoundError('Drift Off response not found');
+  }
+
+  if (!response.completedAt) {
+    throw new ValidationError('Complete the assessment before requesting a re-session');
+  }
+
+  if (!response.assignedVideoUrl) {
+    throw new ValidationError('A video must be assigned before requesting a re-session');
+  }
+
+  if (response.reSessionRequestedAt) {
+    throw new ValidationError('You can request a re-session only once for this session');
+  }
+
+  response.reSessionRequestedAt = new Date();
+  response.reSessionResolvedAt = null;
+  return response.save();
 }

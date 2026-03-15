@@ -1,0 +1,49 @@
+.sidebar {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: static;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+  font-family: var(--font-heading);
+}
+
+.title svg {
+  color: var(--color-accent);
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 0.9375rem;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+  }
+}
+
+.imageUploadWrapper {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageUploadWrapper > div {
+  min-height: 200px;
+}

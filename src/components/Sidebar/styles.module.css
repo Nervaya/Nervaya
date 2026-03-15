@@ -13,8 +13,8 @@
   display: flex;
   flex-direction: column;
   z-index: 2500;
-  overflow: hidden;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+  will-change: width;
 }
 
 @media (max-width: 768px) {
@@ -29,36 +29,47 @@
   }
 }
 
-.collapsed {
-  width: 72px;
-}
-
-.mobileToggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: transparent;
+.edgeToggle {
+  position: absolute;
+  top: 18px;
+  right: -18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  background: rgba(9, 2, 29, 0.92);
   color: #ffffff;
-  border: none;
-  cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
-  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(9, 2, 29, 0.28);
+  z-index: 3;
+  transition:
+    transform 0.14s ease,
+    background 0.14s ease,
+    border-color 0.14s ease;
 }
 
-.mobileToggle:hover {
-  background: rgba(255, 255, 255, 0.1);
+.edgeToggle:hover {
+  transform: translateX(1px);
+  background: rgba(22, 8, 56, 0.96);
+  border-color: rgba(196, 181, 253, 0.48);
+}
+
+@media (max-width: 768px) {
+  .edgeToggle {
+    display: none;
+  }
+}
+
+.collapsed {
+  width: 72px;
 }
 
 .edgeToggle:focus-visible {
   outline: 2px solid rgba(167, 139, 250, 0.95);
   outline-offset: 2px;
-}
-
-.logoHidden {
-  display: none !important;
 }
 
 .nav {
@@ -89,26 +100,6 @@
   flex-direction: column;
 }
 
-.menuGroup {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.menuGroup:last-child {
-  border-bottom: none;
-}
-
-.groupTitle {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: rgba(226, 212, 255, 0.55);
-  font-weight: 700;
-  padding: 20px var(--spacing-md) 8px;
-  letter-spacing: 0.08em;
-}
-
 .navItem {
   display: flex;
   flex-direction: row;
@@ -120,19 +111,18 @@
   font-size: 0.95rem;
   text-decoration: none;
   border-radius: 10px;
-  transition: all 0.2s ease;
+  transition: all 0.14s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: transparent;
   gap: 24px;
 }
 
 .collapsed .navItem {
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 8px 2px;
+  padding: 12px 10px;
   margin: 4px 4px;
-  gap: 6px;
+  gap: 0;
   min-height: 56px;
 }
 
@@ -161,12 +151,17 @@
 .logoutButton {
   appearance: none;
   -webkit-appearance: none;
-  width: auto;
+  width: 100%;
   cursor: pointer;
+  text-align: left;
 }
 
 .logoutIcon {
   transform: none;
+}
+
+.collapsed .logoutButton {
+  justify-content: center;
 }
 
 .bottomMenu {
@@ -174,23 +169,21 @@
   background: transparent;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
 }
 
 .icon {
   font-size: 1.4rem;
+  min-width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: inherit;
   flex-shrink: 0;
-  width: 24px;
+  width: 40px;
   position: relative;
-}
-
-.collapsed .icon {
-  margin-bottom: 0;
+  transition: transform 0.14s ease;
 }
 
 .badge {
@@ -218,38 +211,20 @@
   opacity: 1;
   font-size: 0.95rem;
   font-weight: 400;
-  transition: all 0.2s ease;
+  max-width: 180px;
+  overflow: hidden;
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease,
+    max-width 0.16s ease;
   white-space: nowrap;
 }
 
 .collapsed .title {
-  font-size: 10px;
-  font-weight: 400;
-  text-align: center;
-  opacity: 0.8;
-  white-space: normal;
-  line-height: 1.2;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  opacity: 0;
+  max-width: 0;
+  min-width: 0;
   overflow: hidden;
-  height: 24px;
-  width: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.collapsed .icon {
-  margin-bottom: 0;
-}
-
-.overlay {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .overlay {
-    display: none;
-  }
+  transform: translateX(-6px);
+  pointer-events: none;
 }

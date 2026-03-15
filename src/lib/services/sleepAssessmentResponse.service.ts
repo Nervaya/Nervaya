@@ -146,6 +146,34 @@ async function hydrateAssessments(assessments: HydratableAssessment[]): Promise<
   });
 }
 
+async function hasCompletedAssessment(userId: string | Types.ObjectId): Promise<boolean> {
+  const normalizedUserId = typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
+  const assessment = await SleepAssessmentResponse.exists({
+    userId: normalizedUserId,
+    completedAt: { $ne: null },
+  });
+
+  return assessment != null;
+}
+
+async function findLatestCompletedAssessment(userId: string | Types.ObjectId): Promise<HydratableAssessment | null> {
+  const normalizedUserId = typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
+  const assessment = await SleepAssessmentResponse.findOne({
+    userId: normalizedUserId,
+    completedAt: { $ne: null },
+  })
+    .sort({ completedAt: -1, createdAt: -1 })
+    .lean();
+
+  return assessment ? castHydratableAssessment(assessment) : null;
+}
+
+async function assertAssessmentNotCompleted(userId: string | Types.ObjectId): Promise<void> {
+  if (await hasCompletedAssessment(userId)) {
+    throw new ValidationError('Sleep assessment has already been completed.');
+  }
+}
+
 export async function submitAssessment(
   userId: string,
   input: SubmitAssessmentInput,
@@ -156,6 +184,8 @@ export async function submitAssessment(
     if (!Types.ObjectId.isValid(userId)) {
       throw new ValidationError('Invalid User ID');
     }
+
+    await assertAssessmentNotCompleted(userId);
 
     if (!input.answers || input.answers.length === 0) {
       throw new ValidationError('At least one answer is required');
@@ -252,6 +282,10 @@ export async function getInProgressAssessment(userId: string): Promise<ISleepAss
       throw new ValidationError('Invalid User ID');
     }
 
+    if (await hasCompletedAssessment(userId)) {
+      return null;
+    }
+
     const assessment = await SleepAssessmentResponse.findOne({
       userId: new Types.ObjectId(userId),
       completedAt: null,
@@ -322,6 +356,8 @@ export async function saveAnswer(userId: string, input: SaveAnswerInput): Promis
       throw new ValidationError(`Invalid question ID: ${input.questionId}`);
     }
 
+    await assertAssessmentNotCompleted(userId);
+
     validateSingleAnswer(
       {
         questionType: question.questionType,
@@ -378,6 +414,8 @@ export async function completeAssessment(userId: string): Promise<ISleepAssessme
       throw new ValidationError('Invalid User ID');
     }
 
+    await assertAssessmentNotCompleted(userId);
+
     const assessment = await SleepAssessmentResponse.findOne({
       userId: new Types.ObjectId(userId),
       completedAt: null,
@@ -425,9 +463,9 @@ export async function getLatestUserAssessment(userId: string): Promise<ISleepAss
       throw new ValidationError('Invalid User ID');
     }
 
-    const assessment = await SleepAssessmentResponse.findOne({ userId }).sort({ createdAt: -1 }).lean();
+    const assessment = await findLatestCompletedAssessment(userId);
 
-    return await hydrateAssessment(assessment ? castHydratableAssessment(assessment) : null);
+    return await hydrateAssessment(assessment);
   } catch (error) {
     throw handleError(error);
   }

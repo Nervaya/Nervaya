@@ -31,8 +31,6 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     completedResponse,
     hasAlreadyCompleted,
     latestCompletedResponse,
-    userWantsRetake,
-    setUserWantsRetake: _setUserWantsRetake,
     isHydrated,
     handleAnswerChange,
     handleNext,
@@ -52,7 +50,7 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     return <CompletionView completedResponse={completedResponse} />;
   }
 
-  if (hasAlreadyCompleted && !userWantsRetake) {
+  if (hasAlreadyCompleted) {
     return <CompletionView completedResponse={latestCompletedResponse} />;
   }
 

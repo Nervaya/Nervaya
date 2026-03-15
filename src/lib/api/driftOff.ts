@@ -43,4 +43,7 @@ export const driftOffApi = {
     api.put(`/admin/drift-off/responses/${responseId}/assign-video`, { videoUrl }) as Promise<
       ApiResponse<IDriftOffResponse>
     >,
+
+  requestReSession: (responseId: string): Promise<ApiResponse<IDriftOffResponse>> =>
+    api.post(`/drift-off/responses/${responseId}/request-re-session`) as Promise<ApiResponse<IDriftOffResponse>>,
 };

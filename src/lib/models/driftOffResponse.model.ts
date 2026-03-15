@@ -12,6 +12,8 @@ export interface IDriftOffResponse extends Document {
   completedAt: Date | null;
   assignedVideoUrl?: string;
   assignedAt?: Date;
+  reSessionRequestedAt?: Date | null;
+  reSessionResolvedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
   user?: {
@@ -52,6 +54,8 @@ const driftOffResponseSchema = new Schema<IDriftOffResponse>(
     completedAt: { type: Date, default: null },
     assignedVideoUrl: { type: String },
     assignedAt: { type: Date },
+    reSessionRequestedAt: { type: Date, default: null },
+    reSessionResolvedAt: { type: Date, default: null },
   },
   { timestamps: true },
 );

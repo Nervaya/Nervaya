@@ -9,6 +9,7 @@ interface DriftOffAssignVideoModalProps {
   responseId: string;
   userId: string;
   existingVideoUrl?: string;
+  hasPendingReSessionRequest?: boolean;
   onClose: () => void;
   onAssign: (responseId: string, videoUrl: string) => Promise<void>;
 }
@@ -17,6 +18,7 @@ const DriftOffAssignVideoModal = ({
   responseId,
   userId,
   existingVideoUrl = '',
+  hasPendingReSessionRequest = false,
   onClose,
   onAssign,
 }: DriftOffAssignVideoModalProps) => {
@@ -50,7 +52,9 @@ const DriftOffAssignVideoModal = ({
     <div className={styles.backdrop} onClick={onClose} role="dialog" aria-modal="true" aria-label="Assign video">
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Assign Video</h2>
+          <h2 className={styles.modalTitle}>
+            {hasPendingReSessionRequest ? 'Assign Replacement Session' : 'Assign Video'}
+          </h2>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
             <Icon icon={ICON_X} width={20} height={20} />
           </button>
@@ -58,6 +62,11 @@ const DriftOffAssignVideoModal = ({
         <p className={styles.modalSubtitle}>
           User ID: <code className={styles.userId}>{userId}</code>
         </p>
+        {hasPendingReSessionRequest && (
+          <p className={styles.requestHint}>
+            This user requested a re-session. Assigning a new video will mark that request as completed.
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <label htmlFor="video-url" className={styles.label}>
@@ -84,7 +93,7 @@ const DriftOffAssignVideoModal = ({
               Cancel
             </button>
             <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
-              {isSubmitting ? 'Assigning…' : 'Assign Video'}
+              {isSubmitting ? 'Assigning…' : hasPendingReSessionRequest ? 'Assign Replacement' : 'Assign Video'}
             </button>
           </div>
         </form>

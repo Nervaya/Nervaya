@@ -1,14 +1,13 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { ICON_BOX, ICON_CALENDAR, ICON_PILL, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
+import { ICON_BOX, ICON_CALENDAR, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import LottieLoader from '@/components/common/LottieLoader';
 import StatusState from '@/components/common/StatusState';
 import StatsCard from '@/components/Admin/StatsCard';
 import RecentOrders from '@/components/Admin/RecentOrders';
 import UpcomingSessions from '@/components/Admin/UpcomingSessions';
-import LowStockAlerts from '@/components/Admin/LowStockAlerts';
 import { useAdminStats } from '@/app/queries/admin/useAdminStats';
 import { formatPrice } from '@/utils/cart.util';
 import styles from './styles.module.css';
@@ -24,7 +23,7 @@ export default function AdminDashboardPage() {
       <div>
         <PageHeader
           title="Admin Dashboard"
-          subtitle="Overview of orders, sessions, and inventory."
+          subtitle="Orders, revenue, sessions, and customers at a glance."
           breadcrumbs={breadcrumbs}
         />
         <div className={styles.loaderWrapper}>
@@ -39,7 +38,7 @@ export default function AdminDashboardPage() {
       <div>
         <PageHeader
           title="Admin Dashboard"
-          subtitle="Overview of orders, sessions, and inventory."
+          subtitle="Orders, revenue, sessions, and customers at a glance."
           breadcrumbs={breadcrumbs}
         />
         <StatusState
@@ -60,7 +59,7 @@ export default function AdminDashboardPage() {
       <div>
         <PageHeader
           title="Admin Dashboard"
-          subtitle="Overview of orders, sessions, and inventory."
+          subtitle="Orders, revenue, sessions, and customers at a glance."
           breadcrumbs={breadcrumbs}
         />
         <StatusState type="empty" message="Unable to load dashboard stats." />
@@ -68,25 +67,26 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const { orders, sessions, supplements, users, revenue } = stats;
+  const { orders, sessions, users, revenue } = stats;
+  const pendingOrders = orders.byStatus?.pending ?? 0;
 
   return (
-    <div>
+    <div className={styles.dashboardStack}>
       <PageHeader
         title="Admin Dashboard"
-        subtitle="Overview of orders, sessions, and inventory."
+        subtitle="Orders, revenue, sessions, and customers at a glance."
         breadcrumbs={breadcrumbs}
       />
 
       <section className={styles.statsGrid} aria-label="Key metrics">
         <StatsCard
-          title="Total Orders"
+          title="Orders"
           value={orders.total}
-          subtitle={`Pending: ${orders.byStatus?.pending ?? 0} · Confirmed: ${orders.byStatus?.confirmed ?? 0}`}
+          subtitle={`Pending review: ${pendingOrders}`}
           icon={<Icon icon={ICON_BOX} />}
         />
         <StatsCard
-          title="Total Revenue"
+          title="Revenue"
           value={formatPrice(revenue.total)}
           subtitle={`This month: ${formatPrice(revenue.thisMonth)}`}
           icon={<Icon icon={ICON_RUPEE} />}
@@ -98,53 +98,45 @@ export default function AdminDashboardPage() {
           }
         />
         <StatsCard
-          title="Sessions"
-          value={sessions.total}
-          subtitle={`Upcoming: ${sessions.upcomingCount} · Completed: ${sessions.completedCount}`}
+          title="Upcoming Sessions"
+          value={sessions.upcomingCount}
+          subtitle={`${sessions.total} total scheduled`}
           icon={<Icon icon={ICON_CALENDAR} />}
         />
         <StatsCard
-          title="Supplements"
-          value={supplements.total}
-          subtitle={`Active: ${supplements.activeCount} · Low stock: ${supplements.lowStockCount}`}
-          icon={<Icon icon={ICON_PILL} />}
-        />
-        <StatsCard
-          title="Users"
-          value={users.total}
-          subtitle={`Customers: ${users.customers} · Admins: ${users.admins}`}
+          title="Customers"
+          value={users.customers}
+          subtitle={`${users.total} total accounts`}
           icon={<Icon icon={ICON_USERS_GROUP} />}
         />
       </section>
 
-      <div className={styles.twoCol}>
-        <section className={styles.section} aria-labelledby="recent-orders-heading">
-          <h2 id="recent-orders-heading" className={styles.sectionTitle}>
-            Recent Orders
-          </h2>
-          <div className={styles.sectionCard}>
+      <div className={styles.contentGrid}>
+        <section className={styles.panel} aria-labelledby="recent-orders-heading">
+          <div className={styles.panelHeader}>
+            <p className={styles.panelEyebrow}>Orders</p>
+            <h2 id="recent-orders-heading" className={styles.sectionTitle}>
+              Recent Orders
+            </h2>
+            <p className={styles.panelSubtitle}>The latest orders and their current status.</p>
+          </div>
+          <div className={styles.panelBody}>
             <RecentOrders orders={orders.recentOrders ?? []} />
           </div>
         </section>
-        <section className={styles.section} aria-labelledby="upcoming-sessions-heading">
-          <h2 id="upcoming-sessions-heading" className={styles.sectionTitle}>
-            Upcoming Sessions
-          </h2>
-          <div className={styles.sectionCard}>
+        <section className={styles.panel} aria-labelledby="upcoming-sessions-heading">
+          <div className={styles.panelHeader}>
+            <p className={styles.panelEyebrow}>Sessions</p>
+            <h2 id="upcoming-sessions-heading" className={styles.sectionTitle}>
+              Upcoming Sessions
+            </h2>
+            <p className={styles.panelSubtitle}>Confirmed and pending sessions scheduled in the next 7 days.</p>
+          </div>
+          <div className={styles.panelBody}>
             <UpcomingSessions sessions={sessions.upcomingSessions ?? []} />
           </div>
         </section>
       </div>
-
-      <section className={styles.section} aria-labelledby="low-stock-heading">
-        <h2 id="low-stock-heading" className={styles.sectionTitle}>
-          Low Stock Alerts
-          {supplements.lowStockCount > 0 && <span className={styles.alertBadge}> {supplements.lowStockCount}</span>}
-        </h2>
-        <div className={styles.sectionCard}>
-          <LowStockAlerts items={supplements.lowStockItems ?? []} />
-        </div>
-      </section>
     </div>
   );
 }

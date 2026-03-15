@@ -80,6 +80,16 @@
   text-transform: uppercase;
 }
 
+.requestCountBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
 .sessionCard:hover {
   border-color: var(--color-accent);
   box-shadow: 0 12px 24px rgba(124, 58, 237, 0.08);
@@ -149,6 +159,28 @@
   border: 1px solid #e0e7ff;
 }
 
+.badgeRequested {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  border: 1px solid rgba(124, 58, 237, 0.16);
+}
+
+.badgeResolved {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+}
+
 .cardContent {
   flex: 1;
   display: flex;
@@ -179,6 +211,34 @@
 .statValue {
   color: var(--color-text-primary);
   font-weight: 700;
+}
+
+.requestAlert,
+.requestResolvedNote,
+.requestInfoNote {
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+.requestAlert {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  color: #6d28d9;
+}
+
+.requestResolvedNote {
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+}
+
+.requestInfoNote {
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: var(--color-text-muted);
 }
 
 .videoSection {
@@ -302,6 +362,14 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(124, 58, 237, 0.35);
   background: var(--gradient-accent-hover);
+}
+
+.assignBtn:disabled {
+  background: #e5e7eb;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .sliderContainer {

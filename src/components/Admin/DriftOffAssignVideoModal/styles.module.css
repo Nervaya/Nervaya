@@ -85,6 +85,18 @@
   margin: 0;
 }
 
+.requestHint {
+  margin: -8px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  color: #6d28d9;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
 .userId {
   background: var(--color-white-dim);
   padding: 4px 10px;

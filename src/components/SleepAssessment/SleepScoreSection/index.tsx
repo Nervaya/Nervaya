@@ -48,7 +48,7 @@ export function SleepScoreSection({ latestAssessment, loading = false }: SleepSc
 
       <div className={styles.actions}>
         <Link href="/sleep-assessment" className={styles.primaryLink}>
-          View full results / Retake assessment
+          View full results
         </Link>
       </div>
     </section>

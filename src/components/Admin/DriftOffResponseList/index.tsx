@@ -16,6 +16,10 @@ interface DriftOffResponseListProps {
 
 const ITEMS_PER_PAGE = 10;
 
+function hasPendingReSessionRequest(response: IDriftOffResponse): boolean {
+  return Boolean(response.reSessionRequestedAt && !response.reSessionResolvedAt);
+}
+
 const DriftOffResponseList = ({ responses, questions, onAssign }: DriftOffResponseListProps) => {
   const [activeResponseId, setActiveResponseId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +59,12 @@ const DriftOffResponseList = ({ responses, questions, onAssign }: DriftOffRespon
 
     // Sort users by their most recent response date
     return Array.from(groups.entries()).sort((a: [string, IDriftOffResponse[]], b: [string, IDriftOffResponse[]]) => {
+      const pendingA = a[1].some(hasPendingReSessionRequest);
+      const pendingB = b[1].some(hasPendingReSessionRequest);
+      if (pendingA !== pendingB) {
+        return pendingA ? -1 : 1;
+      }
+
       const latestA = Math.max(...a[1].map((r: IDriftOffResponse) => new Date(r.createdAt).getTime()));
       const latestB = Math.max(...b[1].map((r: IDriftOffResponse) => new Date(r.createdAt).getTime()));
       return latestB - latestA;
@@ -99,6 +109,7 @@ const DriftOffResponseList = ({ responses, questions, onAssign }: DriftOffRespon
           responseId={activeResponse._id}
           userId={activeResponse.userId}
           existingVideoUrl={activeResponse.assignedVideoUrl}
+          hasPendingReSessionRequest={hasPendingReSessionRequest(activeResponse)}
           onClose={() => setActiveResponseId(null)}
           onAssign={onAssign}
         />

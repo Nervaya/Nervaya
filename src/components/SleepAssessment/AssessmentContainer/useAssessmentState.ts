@@ -27,8 +27,6 @@ export interface UseAssessmentStateResult {
   completedResponse: ISleepAssessmentResponse | null;
   hasAlreadyCompleted: boolean;
   latestCompletedResponse: ISleepAssessmentResponse | null;
-  userWantsRetake: boolean;
-  setUserWantsRetake: (value: boolean) => void;
   isHydrated: boolean;
   handleAnswerChange: (answer: string | string[]) => void;
   handleNext: () => Promise<void>;
@@ -46,7 +44,6 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
   const [isHydrated, setIsHydrated] = useState(false);
   const [hasAlreadyCompleted, setHasAlreadyCompleted] = useState(false);
   const [latestCompletedResponse, setLatestCompletedResponse] = useState<ISleepAssessmentResponse | null>(null);
-  const [userWantsRetake, setUserWantsRetake] = useState(false);
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   const totalQuestions = questions.length;
@@ -134,7 +131,10 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
         const inProgress = inProgressRes?.data ?? null;
         const latest = latestRes?.data ?? null;
 
-        if (inProgress?.answers?.length) {
+        if (latest?.completedAt) {
+          setHasAlreadyCompleted(true);
+          setLatestCompletedResponse(latest);
+        } else if (inProgress?.answers?.length) {
           const hydrated = new Map<string, string | string[]>();
           inProgress.answers.forEach((a: { questionId: string; answer: string | string[] }) => {
             const qid = typeof a.questionId === 'string' ? a.questionId : String(a.questionId);
@@ -145,9 +145,6 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
           if (firstUnansweredIndex >= 0) {
             setCurrentQuestionIndex(firstUnansweredIndex);
           }
-        } else if (latest?.completedAt) {
-          setHasAlreadyCompleted(true);
-          setLatestCompletedResponse(latest);
         } else {
           trackAssessmentStarted({
             assessment_type: 'sleep',
@@ -253,8 +250,6 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
     completedResponse,
     hasAlreadyCompleted,
     latestCompletedResponse,
-    userWantsRetake,
-    setUserWantsRetake,
     isHydrated,
     handleAnswerChange,
     handleNext,

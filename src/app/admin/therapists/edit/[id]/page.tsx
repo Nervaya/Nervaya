@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_PEN, ICON_UPLOAD } from '@/constants/icons';
 import { therapistsApi } from '@/lib/api/therapists';
 import { uploadApi } from '@/lib/api/upload';
-import styles from '../../add/styles.module.css';
+import styles from '../../styles.module.css';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import LottieLoader from '@/components/common/LottieLoader';

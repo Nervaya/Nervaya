@@ -1,47 +1,65 @@
 .card {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.94));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 20px;
   padding: var(--spacing-lg);
-  transition: border-color 0.2s ease;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-  border-color: var(--color-border-light-hover, rgba(255, 255, 255, 0.12));
+  transform: translateY(-2px);
+  border-color: rgba(124, 58, 237, 0.16);
+  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.08);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.1rem;
 }
 
 .iconWrapper {
-  font-size: 1.5rem;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(124, 58, 237, 0.1);
   color: var(--color-accent);
-  margin-bottom: 0.75rem;
+  font-size: 1.35rem;
 }
 
 .cardTitle {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--color-text-muted);
-  margin: 0 0 0.25rem 0;
+  margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .cardValue {
-  font-size: 1.5rem;
+  font-size: 2.3rem;
   font-weight: 700;
-  margin: 0 0 0.25rem 0;
+  line-height: 1;
+  margin: 0 0 0.55rem;
   color: var(--color-foreground);
 }
 
 .cardHint {
-  font-size: 0.875rem;
+  font-size: 0.92rem;
   color: var(--color-text-muted);
   margin: 0;
 }
 
 .trend {
-  font-size: 0.8rem;
-  margin: 0.5rem 0 0 0;
+  font-size: 0.82rem;
+  margin: 0.85rem 0 0;
   font-weight: 600;
 }
 

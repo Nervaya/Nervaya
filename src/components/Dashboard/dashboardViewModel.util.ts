@@ -22,7 +22,7 @@ export interface AssessmentTileModel {
   value: string;
   subtitle: string;
   ctaLabel: string;
-  /** When true, do not show CTA (e.g. assessment already completed, no retake). */
+  /** When true, do not show the CTA. */
   hideCta?: boolean;
 }
 

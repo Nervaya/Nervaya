@@ -179,7 +179,7 @@
 .editor :global(.ql-editor h1),
 .editor :global(.ql-editor h2),
 .editor :global(.ql-editor h3) {
-  color: #0f172a;
+  color: #1e293b;
 }
 
 .editor :global(.ql-editor a) {
@@ -188,7 +188,7 @@
 
 .editor :global(.ql-editor blockquote) {
   border-left: 3px solid rgba(124, 58, 237, 0.5);
-  color: #475569;
+  color: #1e293b;
 }
 
 .editor :global(.ql-editor pre) {

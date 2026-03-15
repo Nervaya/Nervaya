@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import {
   adminMenuGroups,
   therapistMenuGroups,
@@ -34,7 +35,7 @@ const Sidebar = ({
   const { isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
 
-  const { isCollapsed, isMobileOpen, isDesktop, closeMobileSidebar } = useSidebar();
+  const { isCollapsed, isDesktop, toggleCollapsed } = useSidebar();
 
   const isAdminRoute = pathname.startsWith('/admin');
   const isTherapistRoute = pathname.startsWith('/therapist');
@@ -43,17 +44,6 @@ const Sidebar = ({
   const expandedWidth = 240;
   const collapsedWidth = 72;
   const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : 240;
-
-  useEffect(() => {
-    if (!isMobileOpen) {
-      return;
-    }
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isMobileOpen]);
 
   useEffect(() => {
     document.body.classList.add('sidebar-layout');
@@ -72,24 +62,39 @@ const Sidebar = ({
     <>
       <LazyMotion features={() => import('framer-motion').then((mod) => mod.domAnimation)}>
         <AnimatePresence mode="wait">
-          {isAuthenticated && isDesktop && (isDesktop || isMobileOpen) && (
+          {isAuthenticated && isDesktop && (
             <m.aside
-              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isMobileOpen ? styles.mobileOpen : ''}`}
+              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}
               id="app-sidebar"
-              initial={isDesktop ? false : { x: -300 }}
-              animate={{ x: 0, width: sidebarWidth }}
+              initial={false}
+              animate={{ width: sidebarWidth }}
               exit={{ x: -300 }}
               transition={{
-                type: 'tween',
-                duration: 0.3,
-                ease: [0.4, 0, 0.2, 1],
+                width: {
+                  type: 'tween',
+                  duration: 0.16,
+                  ease: [0.22, 1, 0.36, 1],
+                },
+                x: {
+                  type: 'tween',
+                  duration: 0.2,
+                  ease: [0.4, 0, 0.2, 1],
+                },
               }}
             >
+              <button
+                type="button"
+                className={styles.edgeToggle}
+                onClick={toggleCollapsed}
+                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                aria-pressed={isCollapsed}
+              >
+                <Icon icon={isCollapsed ? ICON_ARROW_RIGHT : ICON_ARROW_LEFT} width={18} height={18} />
+              </button>
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
                   {menuGroups.map((group) => (
-                    <li key={group.title || 'default'} className={styles.menuGroup}>
-                      {group.title && !isCollapsed && <div className={styles.groupTitle}>{group.title}</div>}
+                    <li key={group.title || 'default'}>
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
                           const isActive =
@@ -97,11 +102,7 @@ const Sidebar = ({
                             ((isAdminRoute || isTherapistRoute) && pathname.startsWith(`${item.path}/`));
                           return (
                             <li key={`${item.path}-${item.title}`}>
-                              <Link
-                                href={item.path}
-                                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                                onClick={closeMobileSidebar}
-                              >
+                              <Link href={item.path} className={`${styles.navItem} ${isActive ? styles.active : ''}`}>
                                 <span className={styles.icon}>
                                   <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
                                   {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
@@ -126,7 +127,6 @@ const Sidebar = ({
                       <Link
                         href={item.path}
                         className={`${styles.navItem} ${styles.secondaryItem} ${pathname === item.path ? styles.active : ''}`}
-                        onClick={closeMobileSidebar}
                       >
                         <span className={styles.icon}>
                           <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
@@ -145,7 +145,6 @@ const Sidebar = ({
                         className={`${styles.navItem} ${styles.secondaryItem} ${styles.logoutButton}`}
                         onClick={() => {
                           logout();
-                          closeMobileSidebar();
                         }}
                       >
                         <span className={styles.icon}>
@@ -166,8 +165,6 @@ const Sidebar = ({
           )}
         </AnimatePresence>
       </LazyMotion>
-
-      {isMobileOpen && isDesktop && <div className={styles.overlay} onClick={closeMobileSidebar} />}
 
       <main className={`main-content ${!isAuthenticated || !isDesktop ? 'no-sidebar' : ''} ${className || ''}`}>
         {!hideGlobalBreadcrumbs && <RouteBreadcrumbs />}

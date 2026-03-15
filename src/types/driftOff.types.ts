@@ -24,6 +24,8 @@ export interface IDriftOffResponse {
   completedAt: Date | null;
   assignedVideoUrl?: string;
   assignedAt?: Date;
+  reSessionRequestedAt?: Date | null;
+  reSessionResolvedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
   user?: {

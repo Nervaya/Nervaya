@@ -29,9 +29,18 @@ const UserSessionGroup = ({
   const totalPages = Math.ceil(totalSessions / SESSIONS_PER_PAGE);
   const startIndex = (currentPage - 1) * SESSIONS_PER_PAGE;
 
-  const sortedSessions = [...userResponses].sort(
+  const chronologicalSessions = [...userResponses].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
+  const sortedSessions = [...chronologicalSessions].sort((a, b) => {
+    const pendingA = Boolean(a.reSessionRequestedAt && !a.reSessionResolvedAt);
+    const pendingB = Boolean(b.reSessionRequestedAt && !b.reSessionResolvedAt);
+    if (pendingA !== pendingB) {
+      return pendingA ? -1 : 1;
+    }
+
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
   const currentSessions = sortedSessions.slice(startIndex, startIndex + SESSIONS_PER_PAGE);
 
@@ -57,6 +66,9 @@ const UserSessionGroup = ({
 
   const userName = userResponses[0]?.user?.name || 'Unknown User';
   const userEmail = userResponses[0]?.user?.email || '';
+  const pendingReSessionCount = userResponses.filter(
+    (response) => response.reSessionRequestedAt && !response.reSessionResolvedAt,
+  ).length;
 
   return (
     <div className={styles.userGroup}>
@@ -69,6 +81,11 @@ const UserSessionGroup = ({
             <span className={styles.sessionCount}>
               {totalSessions} {totalSessions === 1 ? 'Session' : 'Sessions'}
             </span>
+            {pendingReSessionCount > 0 && (
+              <span className={styles.requestCountBadge}>
+                {pendingReSessionCount} Re-Session {pendingReSessionCount === 1 ? 'Request' : 'Requests'}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -86,8 +103,12 @@ const UserSessionGroup = ({
 
         <div className={styles.sessionCards}>
           {currentSessions.map((response, idx) => {
-            // Calculate overall index for Session # labeling
-            const overallIdx = totalSessions - (startIndex + idx);
+            const chronologicalIndex = chronologicalSessions.findIndex((item) => item._id === response._id);
+            const overallIdx =
+              chronologicalIndex >= 0 ? totalSessions - chronologicalIndex : totalSessions - (startIndex + idx);
+            const hasPendingReSessionRequest = Boolean(response.reSessionRequestedAt && !response.reSessionResolvedAt);
+            const hasResolvedReSessionRequest = Boolean(response.reSessionRequestedAt && response.reSessionResolvedAt);
+            const canAssignSession = !response.assignedVideoUrl || hasPendingReSessionRequest;
 
             return (
               <div key={response._id} className={styles.sessionCard}>
@@ -107,6 +128,8 @@ const UserSessionGroup = ({
                       {response.completedAt ? 'Completed' : 'In Progress'}
                     </span>
                     {response.assignedVideoUrl && <span className={styles.badgeAssigned}>Video Assigned</span>}
+                    {hasPendingReSessionRequest && <span className={styles.badgeRequested}>Re-Session Requested</span>}
+                    {hasResolvedReSessionRequest && <span className={styles.badgeResolved}>Replacement Assigned</span>}
                   </div>
                 </div>
 
@@ -129,7 +152,34 @@ const UserSessionGroup = ({
                         </span>
                       </div>
                     )}
+                    {hasPendingReSessionRequest && response.reSessionRequestedAt && (
+                      <div className={styles.statLine}>
+                        <span className={styles.statLabel}>Re-Session Request:</span>
+                        <span className={styles.statValue}>
+                          {new Date(response.reSessionRequestedAt).toLocaleDateString('en-IN')}
+                        </span>
+                      </div>
+                    )}
                   </div>
+
+                  {hasPendingReSessionRequest && (
+                    <div className={styles.requestAlert}>
+                      The user requested a replacement session. Assigning a new video will fulfill this request.
+                    </div>
+                  )}
+
+                  {hasResolvedReSessionRequest && response.reSessionResolvedAt && (
+                    <div className={styles.requestResolvedNote}>
+                      Replacement session assigned on{' '}
+                      {new Date(response.reSessionResolvedAt).toLocaleDateString('en-IN')}.
+                    </div>
+                  )}
+
+                  {response.assignedVideoUrl && !hasPendingReSessionRequest && !hasResolvedReSessionRequest && (
+                    <div className={styles.requestInfoNote}>
+                      Replacement assignment stays disabled until the user requests a re-session.
+                    </div>
+                  )}
 
                   {response.assignedVideoUrl && (
                     <div className={styles.videoSection}>
@@ -172,8 +222,19 @@ const UserSessionGroup = ({
                 </div>
 
                 <div className={styles.cardActions}>
-                  <button type="button" className={styles.assignBtn} onClick={() => onAssignToResponse(response._id)}>
-                    {response.assignedVideoUrl ? 'Update Session' : 'Assign Session'}
+                  <button
+                    type="button"
+                    className={styles.assignBtn}
+                    onClick={() => onAssignToResponse(response._id)}
+                    disabled={!canAssignSession}
+                  >
+                    {hasPendingReSessionRequest
+                      ? 'Assign Replacement Session'
+                      : hasResolvedReSessionRequest
+                        ? 'Re-Session Already Used'
+                        : response.assignedVideoUrl
+                          ? 'Waiting for Re-Session Request'
+                          : 'Assign Session'}
                   </button>
                 </div>
               </div>
