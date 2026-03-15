@@ -119,6 +119,10 @@ export async function assignVideo(responseId: string, videoUrl: string): Promise
   const response = await DriftOffResponse.findById(responseId);
   if (!response) throw new NotFoundError('Drift Off response not found');
 
+  if (!response.completedAt) {
+    throw new ValidationError('Cannot assign video before questionnaire is completed');
+  }
+
   response.assignedVideoUrl = videoUrl;
   response.assignedAt = new Date();
 

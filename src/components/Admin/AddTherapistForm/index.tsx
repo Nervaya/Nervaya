@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { ICON_ARROW_LEFT, ICON_USER_PLUS } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT, ICON_USER_PLUS } from '@/constants/icons';
 import { ADD_THERAPIST_BREADCRUMBS } from './formData';
 import { useAddTherapistForm } from './useAddTherapistForm';
 import { BasicInformationSection } from './sections/BasicInformationSection';
@@ -34,7 +34,7 @@ export default function AddTherapistForm() {
         breadcrumbs={ADD_THERAPIST_BREADCRUMBS}
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
             <span>Back to Therapists</span>
           </Link>
         }

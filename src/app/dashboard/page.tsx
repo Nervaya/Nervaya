@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import {
   ICON_CLIPBOARD,
   ICON_CALENDAR,
-  ICON_ARROW_RIGHT,
+  ICON_CHEVRON_RIGHT,
   ICON_BED,
   ICON_SHOPPING_BAG,
   ICON_MOON_SLEEP,
@@ -166,7 +166,7 @@ export default function DashboardPage() {
               Explore what Nervaya offers. <span className={styles.muted}>Your activity will show up here.</span>
             </p>
             <span className={styles.inlineHint}>
-              Go to <span className={styles.accent}>Therapy Corner</span> <Icon icon={ICON_ARROW_RIGHT} aria-hidden />
+              Go to <span className={styles.accent}>Therapy Corner</span> <Icon icon={ICON_CHEVRON_RIGHT} aria-hidden />
             </span>
           </div>
         )}

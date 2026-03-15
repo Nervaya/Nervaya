@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_PEN, ICON_UPLOAD } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT, ICON_PEN, ICON_UPLOAD } from '@/constants/icons';
 import { therapistsApi } from '@/lib/api/therapists';
 import { uploadApi } from '@/lib/api/upload';
 import styles from '../../styles.module.css';
@@ -226,7 +226,7 @@ export default function EditTherapistPage() {
         breadcrumbs={breadcrumbs}
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
             <span>Back to Therapists</span>
           </Link>
         }

@@ -40,10 +40,6 @@ export const ICON_REMOVE = 'solar:minus-circle-bold';
 export const ICON_SEARCH = 'solar:magnifer-bold';
 export const ICON_CLOCK = 'solar:clock-circle-bold';
 export const ICON_PLAY = 'solar:play-circle-bold';
-export const ICON_ARROW_LEFT = 'solar:arrow-left-bold';
-export const ICON_ARROW_RIGHT = 'solar:arrow-right-bold';
-export const ICON_ARROW_LEFT_OUTLINE = 'solar:arrow-left-outline';
-export const ICON_ARROW_RIGHT_OUTLINE = 'solar:arrow-right-outline';
 export const ICON_SHARE = 'solar:share-bold';
 export const ICON_ALERT = 'solar:danger-circle-bold';
 export const ICON_ARROW_DOWN = 'solar:alt-arrow-down-bold';
@@ -91,6 +87,8 @@ export const ICON_USER_SETTINGS = 'solar:user-id-bold';
 export const ICON_USER_MEDICAL = 'solar:user-check-bold';
 export const ICON_DISCOUNT = 'solar:tag-bold';
 export const ICON_X = 'solar:close-circle-bold';
+export const ICON_CHEVRON_LEFT = 'lucide:chevron-left';
+export const ICON_CHEVRON_RIGHT = 'lucide:chevron-right';
 
 // Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;

@@ -9,7 +9,7 @@ import { Therapist } from '@/types/therapist.types';
 import LottieLoader from '@/components/common/LottieLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
@@ -65,7 +65,7 @@ export default function TherapistSlotsPage() {
         <div className={styles.error}>
           <p>{error || 'Therapist not found'}</p>
           <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} />
+            <Icon icon={ICON_CHEVRON_LEFT} />
             Back to Therapists
           </button>
         </div>
@@ -81,7 +81,7 @@ export default function TherapistSlotsPage() {
         breadcrumbs={breadcrumbs}
         actions={
           <button type="button" onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
             Back to Therapists
           </button>
         }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import BlogForm from '@/components/Admin/BlogForm';
 import styles from './styles.module.css';
@@ -82,7 +82,7 @@ export default function AddBlogPage() {
           <p className={styles.subtitle}>Add a new blog post to your platform.</p>
         </div>
         <Link href="/admin/blogs" className={styles.backLink}>
-          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
           Back to Blogs
         </Link>
       </section>

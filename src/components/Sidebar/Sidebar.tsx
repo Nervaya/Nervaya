@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import {
   adminMenuGroups,
   therapistMenuGroups,
@@ -89,12 +89,19 @@ const Sidebar = ({
                 aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 aria-pressed={isCollapsed}
               >
-                <Icon icon={isCollapsed ? ICON_ARROW_RIGHT : ICON_ARROW_LEFT} width={18} height={18} />
+                <Icon
+                  icon={isCollapsed ? ICON_CHEVRON_RIGHT : ICON_CHEVRON_LEFT}
+                  className={styles.toggleIcon}
+                  width={18}
+                  height={18}
+                />
               </button>
               <nav className={styles.nav}>
                 <ul className={styles.navList}>
-                  {menuGroups.map((group) => (
+                  {menuGroups.map((group, index) => (
                     <li key={group.title || 'default'}>
+                      {index > 0 && <div className={styles.separator} />}
+                      {group.title && <span className={styles.groupTitle}>{group.title}</span>}
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
                           const isActive =
@@ -121,6 +128,7 @@ const Sidebar = ({
               </nav>
 
               <div className={styles.bottomMenu}>
+                {(bottomNavItems.length > 0 || isAuthenticated) && <div className={styles.separator} />}
                 <ul className={styles.navList}>
                   {bottomNavItems.map((item) => (
                     <li key={item.path}>

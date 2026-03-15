@@ -13,7 +13,7 @@ import { AddressCard } from './AddressCard';
 import { DeliveryOptions } from './DeliveryOptions';
 import { PromoCode } from './PromoCode';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT } from '@/constants/icons';
 import LottieLoader from '@/components/common/LottieLoader';
 import Modal from '@/components/common/Modal';
 import styles from './styles.module.css';
@@ -107,7 +107,7 @@ export default function CheckoutPage() {
       <div className={styles.container}>
         <PageHeader title="Checkout" breadcrumbs={breadcrumbs} />
         <Link href="/supplements/cart" className={styles.backToCartLink}>
-          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
           Back to cart
         </Link>
         {error && <div className={styles.error}>{error}</div>}

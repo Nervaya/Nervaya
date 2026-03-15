@@ -108,7 +108,8 @@ const UserSessionGroup = ({
               chronologicalIndex >= 0 ? totalSessions - chronologicalIndex : totalSessions - (startIndex + idx);
             const hasPendingReSessionRequest = Boolean(response.reSessionRequestedAt && !response.reSessionResolvedAt);
             const hasResolvedReSessionRequest = Boolean(response.reSessionRequestedAt && response.reSessionResolvedAt);
-            const canAssignSession = !response.assignedVideoUrl || hasPendingReSessionRequest;
+            const canAssignSession =
+              !!response.completedAt && (!response.assignedVideoUrl || hasPendingReSessionRequest);
 
             return (
               <div key={response._id} className={styles.sessionCard}>

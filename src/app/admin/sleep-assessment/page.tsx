@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
+import { ICON_ADD, ICON_DOCUMENT, ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
@@ -185,7 +185,7 @@ export default function AdminSleepAssessmentPage() {
               disabled={currentIndex === 0 || isAnimating}
               aria-label="Previous question"
             >
-              <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+              <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
             </button>
 
             <div className={styles.cardViewport}>
@@ -246,7 +246,7 @@ export default function AdminSleepAssessmentPage() {
               disabled={currentIndex === questions.length - 1 || isAnimating}
               aria-label="Next question"
             >
-              <Icon icon={ICON_ARROW_RIGHT} aria-hidden />
+              <Icon icon={ICON_CHEVRON_RIGHT} aria-hidden />
             </button>
           </div>
 

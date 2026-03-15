@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT, ICON_SUNRISE, ICON_SUN, ICON_MOON } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT, ICON_SUNRISE, ICON_SUN, ICON_MOON } from '@/constants/icons';
 import { TherapistSlot } from '@/types/session.types';
 import styles from './styles.module.css';
 
@@ -119,7 +119,7 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
           disabled={!canGoPrev}
           aria-label="Previous time period (e.g. Morning)"
         >
-          <Icon icon={ICON_ARROW_LEFT} width={20} height={20} aria-hidden />
+          <Icon icon={ICON_CHEVRON_LEFT} width={20} height={20} aria-hidden />
         </button>
         <div className={styles.periodNavLabel}>
           <span className={styles.periodIcon} style={{ color: getPeriodIconConfig(currentGroup.period).color }}>
@@ -135,7 +135,7 @@ export default function TimeSlotGrid({ slots, selectedSlot, onSlotSelect }: Time
           disabled={!canGoNext}
           aria-label="Next time period (e.g. Evening)"
         >
-          <Icon icon={ICON_ARROW_RIGHT} width={20} height={20} aria-hidden />
+          <Icon icon={ICON_CHEVRON_RIGHT} width={20} height={20} aria-hidden />
         </button>
       </div>
 

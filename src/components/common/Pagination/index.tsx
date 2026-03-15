@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export interface PaginationProps {
@@ -69,7 +69,7 @@ export default function Pagination({
           className={styles.paginationButton}
           aria-label="Previous page"
         >
-          <Icon icon={ICON_ARROW_LEFT} width={16} height={16} aria-hidden />
+          <Icon icon={ICON_CHEVRON_LEFT} width={16} height={16} aria-hidden />
           Previous
         </button>
         <div className={styles.paginationNumbers}>
@@ -112,7 +112,7 @@ export default function Pagination({
           aria-label="Next page"
         >
           Next
-          <Icon icon={ICON_ARROW_RIGHT} width={16} height={16} aria-hidden />
+          <Icon icon={ICON_CHEVRON_RIGHT} width={16} height={16} aria-hidden />
         </button>
       </div>
     </nav>

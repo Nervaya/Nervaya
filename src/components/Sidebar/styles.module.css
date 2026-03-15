@@ -48,7 +48,14 @@
   transition:
     transform 0.14s ease,
     background 0.14s ease,
-    border-color 0.14s ease;
+    border-color 0.14s ease,
+    right 0.14s ease;
+}
+
+.toggleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .edgeToggle:hover {
@@ -65,6 +72,10 @@
 
 .collapsed {
   width: 72px;
+}
+
+.collapsed .edgeToggle {
+  right: -14px;
 }
 
 .edgeToggle:focus-visible {
@@ -104,34 +115,32 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 12px 16px;
-  margin: 2px 12px;
+  padding: 10px 14px;
+  margin: 2px 8px;
   color: #ffffff;
   font-weight: 400;
   font-size: 0.95rem;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.14s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: transparent;
-  gap: 24px;
+  gap: 12px;
 }
 
 .collapsed .navItem {
   justify-content: center;
-  align-items: center;
-  padding: 12px 10px;
-  margin: 4px 4px;
+  padding: 10px 0;
+  margin: 4px 12px;
   gap: 0;
-  min-height: 56px;
 }
 
 .navItem:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .active {
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
   font-weight: 500;
 }
@@ -141,11 +150,7 @@
 }
 
 .secondaryItem {
-  color: rgba(244, 238, 255, 0.92);
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
+  color: rgba(244, 238, 255, 0.85);
 }
 
 .logoutButton {
@@ -154,77 +159,109 @@
   width: 100%;
   cursor: pointer;
   text-align: left;
-}
-
-.logoutIcon {
-  transform: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font: inherit;
 }
 
 .collapsed .logoutButton {
-  justify-content: center;
+  width: 100%;
+}
+
+.collapsed .logoutIcon {
+  /* Compensate for the visual asymmetry of the logout icon (door + arrow) */
+  /* User requested negative margin-right to reduce right space */
+  margin-right: 17px;
+  transition: transform 0.14s ease;
 }
 
 .bottomMenu {
-  padding: 12px 0 18px;
-  background: transparent;
-  display: flex;
-  flex-direction: column;
+  padding: 12px 0 24px;
   flex-shrink: 0;
 }
 
 .icon {
-  font-size: 1.4rem;
-  min-width: 40px;
-  height: 40px;
+  font-size: 1.25rem;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: inherit;
   flex-shrink: 0;
-  width: 40px;
   position: relative;
   transition: transform 0.14s ease;
 }
 
+.collapsed .icon {
+  margin: 0 auto;
+}
+
 .badge {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -2px;
+  right: -2px;
   background-color: #ff3b30;
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 800;
-  min-width: 18px;
-  height: 18px;
+  min-width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 50%;
   padding: 0 4px;
-  border: 2px solid #ffffff;
+  border: 1.5px solid #09021d;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 10;
   line-height: 1;
 }
 
 .title {
-  opacity: 1;
-  font-size: 0.95rem;
-  font-weight: 400;
-  max-width: 180px;
-  overflow: hidden;
-  transition:
-    opacity 0.12s ease,
-    transform 0.12s ease,
-    max-width 0.16s ease;
+  font-size: 0.92rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: left;
+  transition: opacity 0.12s ease;
 }
 
 .collapsed .title {
   opacity: 0;
-  max-width: 0;
-  min-width: 0;
-  overflow: hidden;
-  transform: translateX(-6px);
+  display: none;
+}
+
+.groupTitle {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  padding: 24px 16px 8px;
+  text-transform: uppercase;
+  text-align: left;
+  transition: opacity 0.12s ease;
+}
+
+.collapsed .groupTitle {
+  opacity: 0;
   pointer-events: none;
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+}
+
+.collapsed .separator {
+  margin: 12px auto;
+  width: 32px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
 }

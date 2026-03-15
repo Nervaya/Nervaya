@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
+import { ICON_CHEVRON_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
 import LottieLoader from '@/components/common/LottieLoader';
 import { blogsApi } from '@/lib/api/blogs';
@@ -114,7 +114,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
             <p className={styles.subtitle}>Update blog post content and settings.</p>
           </div>
           <Link href="/admin/blogs" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
             Back to Blogs
           </Link>
         </section>
@@ -133,7 +133,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
           <p className={styles.subtitle}>Update blog post content and settings.</p>
         </div>
         <Link href="/admin/blogs" className={styles.backLink}>
-          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+          <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
           Back to Blogs
         </Link>
       </section>

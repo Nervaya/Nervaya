@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { ICON_USER, ICON_ARROW_LEFT, ICON_SHARE } from '@/constants/icons';
+import { ICON_USER, ICON_CHEVRON_LEFT, ICON_SHARE } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import { blogsApi } from '@/lib/api/blogs';
@@ -77,7 +77,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
           <h2>Blog Not Found</h2>
           <p>{error || 'The blog post you are looking for does not exist.'}</p>
           <Link href="/blog" className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} />
+            <Icon icon={ICON_CHEVRON_LEFT} />
             Back to Blog
           </Link>
         </div>
@@ -138,7 +138,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
               Share this article
             </button>
             <Link href="/blog" className={styles.backButton}>
-              <Icon icon={ICON_ARROW_LEFT} width={18} />
+              <Icon icon={ICON_CHEVRON_LEFT} width={18} />
               Back to all insights
             </Link>
           </div>
