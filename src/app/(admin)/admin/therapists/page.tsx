@@ -3,11 +3,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, Pagination } from '@/components/common';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_USERS_GROUP, ICON_GLOBE, ICON_VIDEO } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import Pagination from '@/components/common/Pagination';
 import StatusState from '@/components/common/StatusState';
 import { therapistsApi } from '@/lib/api/therapists';
 import { Therapist } from '@/types/therapist.types';
@@ -110,7 +109,7 @@ export default function AdminTherapistsPage() {
 
       {loading ? (
         <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} />
+          <LottieLoader width={200} height={200} centerPage />
         </div>
       ) : error ? (
         <StatusState

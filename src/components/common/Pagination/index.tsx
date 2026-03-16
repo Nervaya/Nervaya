@@ -28,7 +28,7 @@ function getPaginationPages(page: number, totalPages: number): (number | 'ellips
   return pages;
 }
 
-export default function Pagination({
+export function Pagination({
   page,
   limit,
   total,
@@ -118,3 +118,5 @@ export default function Pagination({
     </nav>
   );
 }
+
+export default Pagination;

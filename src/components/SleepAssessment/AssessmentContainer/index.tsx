@@ -40,8 +40,7 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
   if (!isHydrated) {
     return (
       <div className={styles.hydratingState} aria-busy="true" aria-live="polite">
-        <LottieLoader width={160} height={160} />
-        <p className={styles.hydratingText}>Loading your assessment…</p>
+        <LottieLoader width={160} height={160} label="Loading your assessment…" />
       </div>
     );
   }

@@ -1,0 +1,169 @@
+.orderCard {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--color-card-shadow);
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .orderCard {
+    flex-direction: column;
+  }
+}
+
+.orderImagePlaceholder {
+  width: 160px;
+  height: 160px;
+  background-color: #f3e8ff; /* Light purple */
+  border-radius: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .orderImagePlaceholder {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+.orderDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.orderHeaderMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.productTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.productSubtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.productDescription {
+  font-size: 0.9rem;
+  color: var(--color-text-slate-400);
+  margin: 0.25rem 0 0 0;
+  line-height: 1.5;
+}
+
+.infoChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--color-card-bg-light);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-light);
+  flex: 1;
+  min-width: max-content;
+}
+
+.chipIconWrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chipIcon {
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.chipText {
+  display: flex;
+  flex-direction: column;
+}
+
+.chipLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.chipValue {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.copyBtn:hover {
+  opacity: 1;
+}
+
+.orderActions {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.viewOrderLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #ffffff;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: max-content;
+  justify-content: center;
+}
+
+.viewOrderLink:hover {
+  background: var(--color-accent-dim);
+}

@@ -2,25 +2,19 @@
 
 import React, { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
-import LottieLoader from '@/components/common/LottieLoader';
-import Pagination from '@/components/common/Pagination';
+import { LottieLoader, Pagination } from '@/components/common';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
-import type { VideoPlayerProps } from '@/components/DriftOff/VideoPlayer';
-import { ICON_HEADPHONES, ICON_CLOCK } from '@/constants/icons';
+import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+import { SessionCard } from './SessionCard';
+import { EmptySessions } from './EmptySessions';
+import { sortSessionsByDate } from './sessionUtils';
 import styles from './styles.module.css';
-
-const VideoPlayerDynamic = dynamic(() => import('@/components/DriftOff/VideoPlayer'), {
-  ssr: false,
-}) as React.ComponentType<VideoPlayerProps>;
 
 const emptySubscribe = () => () => {};
 const getClient = () => true;
 const getServer = () => false;
-
-import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 
 interface MySessionsSectionProps {
   className?: string;
@@ -35,19 +29,13 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [requestingResponseId, setRequestingResponseId] = useState<string | null>(null);
   const [requestErrors, setRequestErrors] = useState<Record<string, string>>({});
 
-  const sortResponses = useCallback(
-    (items: IDriftOffResponse[]) =>
-      [...items].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
-    [],
-  );
-
   const loadResponses = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
       const res = await driftOffApi.getResponses();
       if (res.success && res.data) {
-        setResponses(sortResponses(res.data));
+        setResponses(sortSessionsByDate(res.data));
       } else {
         setResponses([]);
       }
@@ -56,239 +44,110 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
     } finally {
       setIsLoading(false);
     }
-  }, [sortResponses]);
+  }, []);
 
-  const handleRequestReSession = useCallback(
-    async (responseId: string) => {
-      let previousResponse: IDriftOffResponse | undefined;
+  const handleRequestReSession = useCallback(async (responseId: string) => {
+    let previousResponse: IDriftOffResponse | undefined;
 
-      try {
-        setRequestingResponseId(responseId);
-        setRequestErrors((prev) => {
-          const next = { ...prev };
-          delete next[responseId];
-          return next;
-        });
-        setResponses((prev) => {
-          previousResponse = prev.find((response) => response._id === responseId);
+    try {
+      setRequestingResponseId(responseId);
+      setRequestErrors((prev) => {
+        const next = { ...prev };
+        delete next[responseId];
+        return next;
+      });
+      setResponses((prev) => {
+        previousResponse = prev.find((response) => response._id === responseId);
 
-          return sortResponses(
-            prev.map((response) =>
-              response._id === responseId
-                ? {
-                    ...response,
-                    reSessionRequestedAt: new Date(),
-                    reSessionResolvedAt: null,
-                  }
-                : response,
-            ),
-          );
-        });
-
-        const res = await driftOffApi.requestReSession(responseId);
-        if (!res.success || !res.data) {
-          throw new Error(res.message || 'Failed to request a re-session');
-        }
-
-        setResponses((prev) =>
-          sortResponses(
-            prev.map((response) => (response._id === responseId ? { ...response, ...res.data } : response)),
+        return sortSessionsByDate(
+          prev.map((response) =>
+            response._id === responseId
+              ? {
+                  ...response,
+                  reSessionRequestedAt: new Date(),
+                  reSessionResolvedAt: null,
+                }
+              : response,
           ),
         );
-      } catch (err) {
-        setRequestErrors((prev) => ({
-          ...prev,
-          [responseId]: err instanceof Error ? err.message : 'Failed to request a re-session',
-        }));
-        const restoredResponse = previousResponse;
-        if (restoredResponse) {
-          setResponses((prev) =>
-            sortResponses(prev.map((response) => (response._id === responseId ? restoredResponse : response))),
-          );
-        }
-      } finally {
-        setRequestingResponseId(null);
+      });
+
+      const res = await driftOffApi.requestReSession(responseId);
+      if (!res.success || !res.data) {
+        throw new Error(res.message || 'Failed to request a re-session');
       }
-    },
-    [sortResponses],
-  );
+
+      setResponses((prev) =>
+        sortSessionsByDate(
+          prev.map((response) => (response._id === responseId ? { ...response, ...res.data } : response)),
+        ),
+      );
+    } catch (err) {
+      setRequestErrors((prev) => ({
+        ...prev,
+        [responseId]: err instanceof Error ? err.message : 'Failed to request a re-session',
+      }));
+      const restoredResponse = previousResponse;
+      if (restoredResponse) {
+        setResponses((prev) =>
+          sortSessionsByDate(prev.map((response) => (response._id === responseId ? restoredResponse : response))),
+        );
+      }
+    } finally {
+      setRequestingResponseId(null);
+    }
+  }, []);
 
   useEffect(() => {
     loadResponses();
   }, [loadResponses]);
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && !isLoading) {
+    const handleEvents = () => {
+      if ((document.visibilityState === 'visible' || window.name === 'focus') && !isLoading) {
         loadResponses();
       }
     };
 
-    const handleFocus = () => {
-      if (!isLoading) {
-        loadResponses();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleEvents);
+    window.addEventListener('focus', handleEvents);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleEvents);
+      window.removeEventListener('focus', handleEvents);
     };
   }, [loadResponses, isLoading]);
 
-  const renderSessionCard = (session: IDriftOffResponse) => {
-    const videoUrl = session.assignedVideoUrl;
-    const isReady = Boolean(videoUrl);
-    const isPendingAssessment = !session.completedAt;
-    const isPreparing = session.completedAt && !session.assignedVideoUrl;
-    const hasRequestedReSession = Boolean(session.reSessionRequestedAt);
-    const hasPendingReSessionRequest = Boolean(session.reSessionRequestedAt && !session.reSessionResolvedAt);
-    const hasResolvedReSessionRequest = Boolean(session.reSessionRequestedAt && session.reSessionResolvedAt);
-    const isRequestingThisSession = requestingResponseId === session._id;
-    const requestError = requestErrors[session._id];
-
-    return (
-      <div key={session._id} className={styles.sessionCard}>
-        <div className={styles.cardHeader}>
-          <div className={styles.dateInfo}>
-            <span className={styles.dateLabel}>Purchased on</span>
-            <span className={styles.dateValue}>{new Date(session.createdAt).toLocaleDateString()}</span>
-          </div>
-          <div
-            className={`${styles.statusBadge} ${
-              hasPendingReSessionRequest
-                ? styles.statusRequested
-                : isReady
-                  ? styles.statusReady
-                  : isPreparing
-                    ? styles.statusPreparing
-                    : styles.statusPending
-            }`}
-          >
-            {hasPendingReSessionRequest
-              ? 'Re-Session Requested'
-              : isReady
-                ? 'Ready'
-                : isPreparing
-                  ? 'Preparing'
-                  : 'Pending Action'}
-          </div>
-        </div>
-
-        <div className={styles.cardContent}>
-          {isReady ? (
-            <div className={styles.videoContainer}>
-              {hasMounted && (
-                <VideoPlayerDynamic
-                  url={videoUrl ?? ''}
-                  width="100%"
-                  height="100%"
-                  controls
-                  className={styles.videoPlayer}
-                />
-              )}
-            </div>
-          ) : (
-            <div className={styles.placeholderBox}>
-              <Icon
-                icon={isPreparing ? ICON_CLOCK : ICON_HEADPHONES}
-                width={40}
-                height={40}
-                className={styles.placeholderIcon}
-              />
-              <p className={styles.placeholderText}>
-                {isPreparing
-                  ? 'Our specialists are crafting your session...'
-                  : 'Complete your assessment to get started.'}
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className={styles.cardFooter}>
-          {isPendingAssessment && (
-            <Link href={`/drift-off/assessment?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
-              Complete Assessment
-            </Link>
-          )}
-          {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
-          {isReady && (
-            <>
-              {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
-              <button
-                type="button"
-                className={styles.requestBtn}
-                onClick={() => handleRequestReSession(session._id)}
-                disabled={isRequestingThisSession || hasRequestedReSession}
-              >
-                {isRequestingThisSession
-                  ? 'Requesting…'
-                  : hasPendingReSessionRequest
-                    ? 'Re-Session Requested'
-                    : hasResolvedReSessionRequest
-                      ? 'Re-Session Used'
-                      : 'Request Re-Session'}
-              </button>
-            </>
-          )}
-          {isReady && hasPendingReSessionRequest && (
-            <p className={styles.requestPendingNote}>
-              Re-session requested on {new Date(session.reSessionRequestedAt as Date).toLocaleDateString()}. Our team
-              will assign a replacement video soon.
-            </p>
-          )}
-          {isReady && hasResolvedReSessionRequest && (
-            <p className={styles.reassignedNote}>
-              Your replacement session has been assigned. Re-session requests are limited to one per purchased session.
-            </p>
-          )}
-          {requestError && <p className={styles.requestError}>{requestError}</p>}
-        </div>
-      </div>
-    );
-  };
-
-  const totalSessions = responses.length;
-  const totalPages = Math.ceil(totalSessions / PAGE_SIZE_5);
   const paginatedResponses = responses.slice((currentPage - 1) * PAGE_SIZE_5, currentPage * PAGE_SIZE_5);
 
   return (
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
       <div className={styles.contentWrapper}>
-        {isLoading && (
+        {isLoading ? (
           <div className={styles.center}>
-            <LottieLoader width={160} height={160} />
+            <LottieLoader width={160} height={160} centerPage />
           </div>
-        )}
-
-        {!isLoading && error && (
+        ) : error ? (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
             <button type="button" className={styles.btn} onClick={() => loadResponses()}>
               Try Again
             </button>
           </div>
-        )}
-
-        {!isLoading && !error && (
+        ) : (
           <>
             <div className={styles.sessionsGrid}>
-              {responses.length === 0 && (
-                <div className={styles.noSessionsMessage}>
-                  <h3 className={styles.noSessionsTitle}>Start Your Journey</h3>
-                  <p className={styles.noSessionsText}>
-                    Experience a personalized Deep Rest session designed just for you. Once you purchase a session, it
-                    will appear here.
-                  </p>
-                  <Link href="/drift-off/payment" className={styles.btn}>
-                    Buy Your First Session
-                  </Link>
-                </div>
-              )}
-              {paginatedResponses.map(renderSessionCard)}
+              {responses.length === 0 && <EmptySessions />}
+              {paginatedResponses.map((session) => (
+                <SessionCard
+                  key={session._id}
+                  session={session}
+                  hasMounted={hasMounted}
+                  isRequesting={requestingResponseId === session._id}
+                  requestError={requestErrors[session._id]}
+                  onRequestReSession={handleRequestReSession}
+                />
+              ))}
 
               {responses.length > 0 && (
                 <Link href="/drift-off/payment" className={styles.addSessionCard}>
@@ -306,8 +165,8 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
               <Pagination
                 page={currentPage}
                 limit={PAGE_SIZE_5}
-                total={totalSessions}
-                totalPages={Math.max(1, totalPages)}
+                total={responses.length}
+                totalPages={Math.max(1, Math.ceil(responses.length / PAGE_SIZE_5))}
                 onPageChange={setCurrentPage}
               />
             </div>

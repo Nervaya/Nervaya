@@ -3,7 +3,7 @@
 import React from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementCard from '../SupplementCard';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 interface SupplementGridProps {
@@ -16,7 +16,7 @@ const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCar
   if (loading) {
     return (
       <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-        <LottieLoader width={200} height={200} />
+        <LottieLoader width={200} height={200} centerPage />
       </div>
     );
   }

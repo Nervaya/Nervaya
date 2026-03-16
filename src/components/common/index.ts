@@ -1,10 +1,11 @@
-export { default as Button } from './Button';
-export { default as Input } from './Input';
-export { default as Pagination } from './Pagination';
-export { default as QuantitySelector } from './QuantitySelector';
-export { default as GlobalLoader } from './GlobalLoader';
-export { default as LottieLoader } from './LottieLoader';
+export { Button } from './Button';
+export { Input } from './Input';
+export { Pagination } from './Pagination';
+export { QuantitySelector } from './QuantitySelector';
+export { GlobalLoader } from './GlobalLoader';
+export { LottieLoader } from './LottieLoader';
 export { Dropdown } from './Dropdown';
 export type { DropdownOption } from './Dropdown';
 export { MultiSelect } from './MultiSelect';
 export type { MultiSelectOption } from './MultiSelect';
+export { CustomDropdown } from './CustomDropdown';

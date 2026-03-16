@@ -105,7 +105,7 @@ export default function BlogListPage() {
 
         {isInitialLoading ? (
           <div className={styles.loading}>
-            <LottieLoader width={100} height={100} />
+            <LottieLoader width={100} height={100} centerPage />
           </div>
         ) : (
           <>

@@ -3,7 +3,7 @@
 import { Icon } from '@iconify/react';
 import { ICON_BOX, ICON_CALENDAR, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import StatusState from '@/components/common/StatusState';
 import StatsCard from '@/components/Admin/StatsCard';
 import RecentOrders from '@/components/Admin/RecentOrders';
@@ -27,7 +27,7 @@ export default function AdminDashboardPage() {
           breadcrumbs={breadcrumbs}
         />
         <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} />
+          <LottieLoader width={200} height={200} centerPage />
         </div>
       </div>
     );

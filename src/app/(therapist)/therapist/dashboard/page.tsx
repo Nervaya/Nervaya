@@ -7,7 +7,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { useAuth } from '@/hooks/useAuth';
 import { useTherapist } from '@/context/TherapistContext';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import type { TherapistSession } from '@/lib/api/therapistApi';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
@@ -53,7 +53,7 @@ export default function TherapistDashboardPage() {
         <div className={containerStyles.container}>
           <PageHeader title={`Welcome, ${welcomeName}`} subtitle="Therapist dashboard" breadcrumbs={breadcrumbs} />
           <div className={containerStyles.loadingContainer} aria-busy="true">
-            <LottieLoader width={200} height={200} />
+            <LottieLoader width={200} height={200} centerPage />
           </div>
         </div>
       </Sidebar>

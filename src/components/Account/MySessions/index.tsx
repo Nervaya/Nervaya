@@ -4,8 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { sessionsApi } from '@/lib/api/sessions';
 import { Session } from '@/types/session.types';
-import Pagination from '@/components/common/Pagination';
-import LottieLoader from '@/components/common/LottieLoader';
+import { Pagination, LottieLoader } from '@/components/common';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
@@ -15,7 +14,7 @@ import { ICON_CALENDAR } from '@/constants/icons';
 import TherapySessionCard from './TherapySessionCard';
 import SessionDetailModal from './SessionDetailModal';
 
-export default function MySessions() {
+export function MySessions() {
   const [therapySessions, setTherapySessions] = useState<Session[]>([]);
   const [loadingTherapy, setLoadingTherapy] = useState(true);
   const [errorTherapy, setErrorTherapy] = useState('');
@@ -56,7 +55,7 @@ export default function MySessions() {
   if (loadingTherapy) {
     return (
       <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-        <LottieLoader width={200} height={200} />
+        <LottieLoader width={200} height={200} centerPage />
       </div>
     );
   }

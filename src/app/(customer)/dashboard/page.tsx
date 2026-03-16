@@ -82,7 +82,7 @@ export default function DashboardPage() {
             breadcrumbs={breadcrumbs}
           />
           <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} />
+            <LottieLoader width={200} height={200} centerPage />
           </div>
         </div>
       </Sidebar>

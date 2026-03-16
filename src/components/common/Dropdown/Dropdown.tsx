@@ -21,7 +21,7 @@ interface DropdownProps {
   className?: string;
 }
 
-export default function Dropdown({
+export function Dropdown({
   options,
   value,
   onChange,
@@ -127,3 +127,5 @@ export default function Dropdown({
     </div>
   );
 }
+
+export default Dropdown;

@@ -21,7 +21,7 @@ interface MultiSelectProps {
   className?: string;
 }
 
-export default function MultiSelect({
+export function MultiSelect({
   options,
   values,
   onChange,
@@ -130,3 +130,5 @@ export default function MultiSelect({
     </div>
   );
 }
+
+export default MultiSelect;

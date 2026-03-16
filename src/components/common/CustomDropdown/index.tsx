@@ -89,3 +89,5 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     </div>
   );
 };
+
+export default CustomDropdown;

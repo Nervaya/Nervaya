@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import MySessions from '@/components/Account/MySessions';
-import MyOrders from '@/components/Account/MyOrders';
+import { MySessions } from '@/components/Account/MySessions';
+import { MyOrders } from '@/components/Account/MyOrders';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';

@@ -5,6 +5,14 @@
   margin-top: 40px;
 }
 
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column-reverse;
+    margin-top: 24px;
+    gap: 12px;
+  }
+}
+
 .navButton {
   display: inline-flex;
   align-items: center;
@@ -21,6 +29,13 @@
   white-space: nowrap;
   text-decoration: none;
   box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .navButton {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 .navButton:disabled {
@@ -69,23 +84,13 @@
 
 .buttonContent {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 4px;
+  line-height: 1;
 }
 
 .loadingText {
   font-size: 0.95rem;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column-reverse;
-    margin-top: 24px;
-    gap: 12px;
-  }
-
-  .navButton {
-    width: 100%;
-    margin-left: 0;
-  }
 }

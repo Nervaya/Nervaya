@@ -1,2 +1,2 @@
-export { default as MultiSelect } from './MultiSelect';
+export { MultiSelect, MultiSelect as default } from './MultiSelect';
 export type { MultiSelectOption } from './MultiSelect';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import ProgressBar from '@/components/SleepAssessment/ProgressBar';
 import { AssessmentQuestionStep } from '@/components/SleepAssessment/AssessmentContainer/AssessmentQuestionStep';
 import { AssessmentNav } from '@/components/SleepAssessment/AssessmentContainer/AssessmentNav';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { useDriftOffAssessmentState } from './useDriftOffAssessmentState';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { IDriftOffAnswer } from '@/types/driftOff.types';
@@ -53,8 +53,7 @@ export default function DriftOffAssessmentContainer({
   if (!isHydrated) {
     return (
       <div className={styles.loading} aria-busy="true">
-        <LottieLoader width={160} height={160} />
-        <p className={styles.loadingText}>Loading your assessment…</p>
+        <LottieLoader width={160} height={160} label="Loading your assessment…" />
       </div>
     );
   }
@@ -62,8 +61,7 @@ export default function DriftOffAssessmentContainer({
   if (isComplete) {
     return (
       <div className={styles.loading} aria-busy="true">
-        <LottieLoader width={160} height={160} />
-        <p className={styles.loadingText}>Redirecting to your session…</p>
+        <LottieLoader width={160} height={160} label="Redirecting to your session…" />
       </div>
     );
   }

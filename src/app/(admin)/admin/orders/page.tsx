@@ -2,8 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import Pagination from '@/components/common/Pagination';
-import LottieLoader from '@/components/common/LottieLoader';
+import { Pagination, LottieLoader } from '@/components/common';
 import StatusState from '@/components/common/StatusState';
 import OrderFilters from '@/components/Admin/OrderFilters';
 import { useAdminOrders } from '@/queries/orders/useOrders';
@@ -55,7 +54,7 @@ export default function AdminOrdersPage() {
           activeCount={countActiveFilters(filters)}
         />
         <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} />
+          <LottieLoader width={200} height={200} centerPage />
         </div>
       </div>
     );

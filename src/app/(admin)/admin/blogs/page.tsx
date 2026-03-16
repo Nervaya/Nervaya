@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import LottieLoader from '@/components/common/LottieLoader';
-import Pagination from '@/components/common/Pagination';
+import { LottieLoader, Pagination } from '@/components/common';
 import { ConfirmDeleteDialog, BlogListCard } from '@/components/Admin/BlogList';
 import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
@@ -137,7 +136,7 @@ export default function AdminBlogsPage() {
       </form>
 
       {loading ? (
-        <LottieLoader width={96} height={96} label="Loading blogs" />
+        <LottieLoader width={96} height={96} label="Loading blogs" centerPage />
       ) : blogs.length === 0 ? (
         <>
           <div className={styles.empty}>

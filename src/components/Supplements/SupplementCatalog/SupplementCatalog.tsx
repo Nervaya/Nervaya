@@ -4,8 +4,7 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementToolbar, { type ViewMode, type SortOption } from '../SupplementToolbar';
 import SupplementProductGrid from '../SupplementProductGrid';
-import Pagination from '@/components/common/Pagination';
-import LottieLoader from '@/components/common/LottieLoader';
+import { Pagination, LottieLoader } from '@/components/common';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import type { PriceRange } from '../SupplementFilters';
 import styles from './SupplementCatalog.module.css';
@@ -100,7 +99,7 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   if (loading) {
     return (
       <div className={styles.loading}>
-        <LottieLoader width={200} height={200} />
+        <LottieLoader width={200} height={200} centerPage />
       </div>
     );
   }

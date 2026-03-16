@@ -19,13 +19,7 @@ function isInlineSize(value: number | string): boolean {
   return typeof value === 'number' && value <= 64;
 }
 
-export default function GlobalLoader({
-  width = 120,
-  height = 120,
-  className = '',
-  label,
-  centerPage,
-}: GlobalLoaderProps) {
+export function GlobalLoader({ width = 120, height = 120, className = '', label, centerPage }: GlobalLoaderProps) {
   const shouldCenterPage = centerPage ?? !(isInlineSize(width) && isInlineSize(height));
   const loaderStyle = {
     '--loader-width': toCssSize(width),
@@ -48,3 +42,5 @@ export default function GlobalLoader({
     </div>
   );
 }
+
+export default GlobalLoader;
