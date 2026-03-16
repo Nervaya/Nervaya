@@ -23,7 +23,7 @@
 .scoreLabel {
   font-size: 1rem;
   font-weight: 500;
-  color: var(--color-foreground, #f8fafc);
+  color: #64748b;
 }
 
 .scoreBadge {
@@ -41,7 +41,7 @@
   margin: 0;
   font-size: 0.96rem;
   line-height: 1.65;
-  color: var(--color-text-muted, #94a3b8);
+  color: #64748b;
 }
 
 .sectionBlock {
@@ -53,7 +53,7 @@
 .sectionHeading {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--color-foreground, #f8fafc);
+  color: #1e293b;
   margin: 0;
 }
 
@@ -73,22 +73,20 @@
 }
 
 .card {
-  background: linear-gradient(180deg, rgba(30, 27, 45, 0.95) 0%, rgba(15, 12, 28, 0.98) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: var(--spacing-lg, 20px);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm, 10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 .cardTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--color-foreground, #f8fafc);
+  color: #1e293b;
   margin: 0;
 }
 
@@ -96,8 +94,8 @@
   width: fit-content;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
-  background: rgba(249, 115, 22, 0.14);
-  color: #fdba74;
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -106,7 +104,7 @@
 
 .cardDescription {
   font-size: 0.9rem;
-  color: var(--color-text-muted, #94a3b8);
+  color: #64748b;
   line-height: 1.5;
   margin: 0;
   flex: 1;
@@ -118,9 +116,9 @@
   justify-content: center;
   align-self: flex-start;
   padding: 0.6rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid #7c3aed;
   background: transparent;
-  color: #fff;
+  color: #7c3aed;
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -131,8 +129,8 @@
 }
 
 .cardButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(124, 58, 237, 0.05);
+  border-color: #7c3aed;
 }
 
 .actions {

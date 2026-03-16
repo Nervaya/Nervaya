@@ -7,7 +7,7 @@
   border-radius: 20px;
   border: 1px solid #e2e8f0;
   background: #ffffff;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
   padding: 48px;
 }
 
@@ -17,7 +17,7 @@
 
 .title {
   margin: 0;
-  color: #1e293b;
+  color: #4338ca; /* Subtle Indigo Tint */
   font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;

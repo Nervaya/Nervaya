@@ -12,7 +12,7 @@
 .questionLabel {
   display: block;
   margin-bottom: 6px;
-  color: #a98be9;
+  color: #7c3aed; /* More vibrant Brand Purple */
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -50,9 +50,9 @@
   align-items: center;
   padding: 16px 20px;
   border-radius: 8px;
-  border: 1px solid var(--qc-border, rgba(255, 255, 255, 0.08));
-  background: var(--qc-bg, transparent);
-  color: var(--qc-text, #ffffff);
+  border: 1px solid var(--qc-border, #e2e8f0);
+  background: var(--qc-bg, #f8fafc);
+  color: var(--qc-text, #334155);
   font-size: 1rem;
   text-align: left;
   cursor: pointer;
@@ -60,8 +60,8 @@
 }
 
 .optionCard:hover {
-  background: var(--qc-bg-hover, rgba(255, 255, 255, 0.03));
-  border-color: var(--qc-border-hover, rgba(255, 255, 255, 0.15));
+  background: var(--qc-bg-hover, #f1f5f9);
+  border-color: var(--qc-border-hover, #cbd5e1);
 }
 
 .optionCard:focus-visible {
@@ -83,7 +83,7 @@
   width: 20px;
   height: 20px;
   border-radius: 999px;
-  border: 2px solid var(--qc-radio-border, rgba(220, 201, 255, 0.4));
+  border: 2px solid var(--qc-radio-border, #cbd5e1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,7 @@
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 2px solid var(--qc-radio-border, rgba(220, 201, 255, 0.4));
+  border: 2px solid var(--qc-radio-border, #cbd5e1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -143,9 +143,9 @@
   min-width: 44px;
   height: 42px;
   border-radius: 8px;
-  border: 1px solid var(--qc-border, rgba(255, 255, 255, 0.08));
-  background: var(--qc-bg, transparent);
-  color: var(--qc-text, #ffffff);
+  border: 1px solid var(--qc-border, #e2e8f0);
+  background: var(--qc-bg, #f8fafc);
+  color: var(--qc-text, #334155);
   font-size: 1rem;
   display: inline-flex;
   align-items: center;
@@ -156,8 +156,8 @@
 }
 
 .scaleOption:hover {
-  background: var(--qc-bg-hover, rgba(255, 255, 255, 0.03));
-  border-color: var(--qc-border-hover, rgba(255, 255, 255, 0.15));
+  background: var(--qc-bg-hover, #f1f5f9);
+  border-color: var(--qc-border-hover, #cbd5e1);
 }
 
 .scaleOption:focus-visible {
@@ -189,7 +189,7 @@
 }
 
 .textInput::placeholder {
-  color: var(--qc-placeholder, rgba(255, 255, 255, 0.4));
+  color: var(--qc-placeholder, #94a3b8);
 }
 
 .textInput:focus {

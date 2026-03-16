@@ -89,10 +89,10 @@
 }
 
 :global(body.route-home) .title {
-  color: #f8f3ff;
+  color: #1e293b;
 }
 
 :global(body.route-home) .subtitle,
 :global(body.route-home) .description {
-  color: rgba(232, 225, 255, 0.85);
+  color: #64748b;
 }
