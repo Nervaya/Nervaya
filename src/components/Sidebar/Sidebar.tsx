@@ -21,6 +21,7 @@ import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
 
 import { useSidebar } from '@/context/SidebarContext';
+import { checkIsActivePath } from '@/utils/navigationUtils';
 
 const Sidebar = ({
   children,
@@ -104,9 +105,11 @@ const Sidebar = ({
                       {group.title && <span className={styles.groupTitle}>{group.title}</span>}
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
-                          const isActive =
-                            pathname === item.path ||
-                            ((isAdminRoute || isTherapistRoute) && pathname.startsWith(`${item.path}/`));
+                          const isActive = checkIsActivePath(
+                            pathname,
+                            item.path,
+                            group.items.map((i) => i.path),
+                          );
                           return (
                             <li key={`${item.path}-${item.title}`}>
                               <Link href={item.path} className={`${styles.navItem} ${isActive ? styles.active : ''}`}>

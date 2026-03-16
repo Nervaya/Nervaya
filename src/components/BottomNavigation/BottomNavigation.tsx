@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { primaryNavItems, moreNavItems, type BottomNavItem } from '@/utils/bottomNavigationConstants';
 import { AUTH_ROUTES } from '@/utils/routesConstants';
 import { iconMap } from '@/utils/sidebarConstants';
+import { checkIsActivePath } from '@/utils/navigationUtils';
 import styles from './BottomNavigation.module.css';
 
 const BottomNavigation = () => {
@@ -25,10 +26,11 @@ const BottomNavigation = () => {
   }
 
   const isActive = (path: string) => {
-    if (path === '/dashboard') {
-      return pathname === '/dashboard';
-    }
-    return pathname === path || pathname?.startsWith(`${path}/`);
+    return checkIsActivePath(
+      pathname,
+      path,
+      [...primaryNavItems, ...moreNavItems].map((i) => i.path),
+    );
   };
 
   const showBadge = (path: string, title: string) =>
