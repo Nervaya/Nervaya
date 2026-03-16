@@ -42,6 +42,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
   const [benefitsText, setBenefitsText] = useState(initialData?.benefits?.join(', ') || '');
   const [imagesText, setImagesText] = useState(initialData?.images?.join(', ') || '');
+  const [imageUploading, setImageUploading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
 
   const validate = (): boolean => {
@@ -110,6 +111,10 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+  };
+
+  const handleImageLoading = (isLoading: boolean) => {
+    setImageUploading(isLoading);
   };
 
   return (
@@ -238,6 +243,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           <label className={styles.label}>Product Image</label>
           <ImageUpload
             onUpload={(url) => handleChange('image', url)}
+            onLoadingChange={handleImageLoading}
             initialUrl={formData.image}
             label="Upload Product Image"
             compact={compact}
@@ -257,7 +263,13 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           />
         </div>
       </div>
-      <Button type="submit" variant="primary" loading={loading} className={styles.submitButton}>
+      <Button
+        type="submit"
+        variant="primary"
+        loading={loading}
+        disabled={imageUploading}
+        className={styles.submitButton}
+      >
         {submitLabel}
       </Button>
     </form>

@@ -13,7 +13,7 @@ const SupportPage = () => {
     <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <div className={styles.breadcrumbsWrapper}>
+          <div className={`${styles.breadcrumbsWrapper} breadcrumbs-slot`}>
             <Breadcrumbs items={breadcrumbs} />
           </div>
           <SupportHeader />

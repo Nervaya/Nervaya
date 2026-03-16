@@ -235,7 +235,6 @@
 
 .addSlotButton:hover {
   background: #059669;
-  transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
 }
 
@@ -408,7 +407,6 @@
 }
 
 .modalSubmit:hover:not(:disabled) {
-  transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
 }
@@ -444,7 +442,7 @@
 }
 
 .statCard:hover {
-  transform: translateY(-2px);
+  border-color: rgba(124, 58, 237, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -621,7 +619,7 @@
 }
 
 .timeSlot:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -772,7 +770,6 @@
 .weekDay:hover {
   border-color: var(--color-accent);
   background: #f5f3ff;
-  transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(124, 58, 237, 0.1);
 }
 

@@ -19,16 +19,16 @@
   font-size: 0.9375rem;
   color: #1f2937;
   gap: 8px;
+  min-height: 44px;
 }
 
 .trigger:hover {
-  border-color: #8b5cf6;
+  border-color: var(--accent, #7c3aed);
   background: #fdfcff;
 }
 
 .triggerOpen {
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  border-color: var(--accent, #7c3aed);
 }
 
 .triggerContent {

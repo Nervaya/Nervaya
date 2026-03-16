@@ -4,16 +4,13 @@ import { ICON_X } from '@/constants/icons';
 import { CustomDropdown } from '@/components/common/CustomDropdown';
 import styles from '../styles.module.css';
 
+import { FilterState } from '../page';
+import MultiSelect from '@/components/common/MultiSelect/MultiSelect';
+
 export interface FilterOptions {
   languages: string[];
   specializations: string[];
   genders: string[];
-}
-
-export interface FilterState {
-  language: string;
-  specialization: string;
-  gender: string;
 }
 
 interface FilterModalProps {
@@ -21,7 +18,7 @@ interface FilterModalProps {
   onClose: () => void;
   options: FilterOptions;
   state: FilterState;
-  onStateChange: (key: keyof FilterState, value: string) => void;
+  onStateChange: (key: keyof FilterState, value: FilterState[keyof FilterState]) => void;
   onApply: () => void;
   onClear: () => void;
   formatGender: (gender: string) => string;
@@ -65,16 +62,24 @@ export function FilterModal({
           </div>
 
           <div className={styles.filterField}>
-            <span>Specialization</span>
-            <CustomDropdown
-              placeholder="All Specializations"
-              value={state.specialization}
-              onChange={(val) => onStateChange('specialization', val)}
-              options={[
-                { value: '', label: 'All Specializations' },
-                ...options.specializations.map((spec) => ({ value: spec, label: spec })),
-              ]}
-              icon="lucide:brain"
+            <span>Qualification</span>
+            <MultiSelect
+              placeholder="Select Qualifications"
+              values={state.specialization}
+              onChange={(vals) => onStateChange('specialization', vals)}
+              options={options.specializations.map((spec) => ({ value: spec, label: spec }))}
+            />
+          </div>
+
+          <div className={styles.filterField}>
+            <span>Min Experience (Years)</span>
+            <input
+              type="number"
+              min="0"
+              value={state.minExperience}
+              onChange={(e) => onStateChange('minExperience', e.target.value)}
+              className={styles.modalNumericInput}
+              placeholder="e.g. 5"
             />
           </div>
 
@@ -84,10 +89,7 @@ export function FilterModal({
               placeholder="Any Gender"
               value={state.gender}
               onChange={(val) => onStateChange('gender', val)}
-              options={[
-                { value: '', label: 'Any Gender' },
-                ...options.genders.map((gender) => ({ value: gender, label: formatGender(gender) })),
-              ]}
+              options={[...options.genders.map((gender) => ({ value: gender, label: formatGender(gender) }))]}
               icon="lucide:user"
             />
           </div>

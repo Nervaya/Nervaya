@@ -73,7 +73,9 @@ export function TherapistCard({
             <div className={styles.titleRow}>
               <h3>{therapist.name}</h3>
             </div>
-            <p className={styles.credentials}>{formatExperienceYears(therapist.experience)}</p>
+            <p className={styles.credentials}>
+              {formatExperienceYears(therapist.experience != null ? String(therapist.experience) : undefined)}
+            </p>
             <div className={styles.metaInfoRow}>
               {therapist.sessionFee != null && therapist.sessionDurationMins != null ? (
                 <span className={styles.feeText}>

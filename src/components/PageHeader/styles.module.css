@@ -18,8 +18,9 @@
   }
 }
 
+/* Position and spacing come from global .breadcrumbs-slot for consistent placement on every page */
 .breadcrumbsWrapper {
-  margin-bottom: 12px;
+  /* no extra positioning here; .breadcrumbs-slot in globals.css controls position */
 }
 
 .mainRow {

@@ -61,11 +61,11 @@
   background: var(--color-glass-bg);
   border-radius: 16px;
   border: 1px solid var(--color-glass-border);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  border-color: var(--color-glass-border);
+  border-color: var(--color-accent);
 }
 
 .details {
@@ -154,121 +154,54 @@
 }
 
 .toggleBtn {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-accent-dim);
+  padding: 8px 16px;
+  background: #f5f3ff;
   color: var(--color-accent);
-  border: 1px solid var(--color-accent-dim);
+  border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 8px;
-  font-size: var(--font-size-sm);
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .toggleBtn:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent);
 }
 
 .editButton {
-  background: var(--color-accent-dim);
+  background: #f5f3ff;
   color: var(--color-accent);
-  border: 1px solid var(--color-accent-dim);
-  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: var(--font-size-sm);
+  font-size: 0.85rem;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .editButton:hover {
-  background: var(--color-accent-hover);
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent);
 }
 
 .deleteButton {
-  background: rgba(239, 68, 68, 0.1);
+  background: #fef2f2;
   color: var(--color-destructive);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: var(--font-size-sm);
+  font-size: 0.85rem;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .deleteButton:hover {
-  background: rgba(239, 68, 68, 0.25);
-}
-
-.confirmOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.confirmDialog {
-  background: var(--color-glass-bg);
-  border: 1px solid var(--color-glass-border);
-  padding: var(--spacing-xl);
-  border-radius: 16px;
-  max-width: 400px;
-  width: 90%;
-}
-
-.confirmDialog h3 {
-  margin: 0 0 var(--spacing-md) 0;
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-foreground);
-}
-
-.confirmDialog p {
-  margin: 0 0 var(--spacing-lg) 0;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-.confirmActions {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: flex-end;
-}
-
-.confirmButton {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.confirmButton:hover {
-  background: #dc2626;
-}
-
-.cancelButton {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.cancelButton:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--color-foreground);
+  background: #fee2e2;
+  border-color: var(--color-destructive);
 }
 
 @media (max-width: 768px) {

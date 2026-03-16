@@ -10,10 +10,9 @@ import CartSummary from '@/components/Cart/CartSummary';
 import Pagination from '@/components/common/Pagination';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { cartApi } from '@/lib/api/cart';
-import styles from './styles.module.css';
-import Lottie from 'lottie-react';
+import StatusState from '@/components/common/StatusState';
 import LottieLoader from '@/components/common/LottieLoader';
-import emptyBoxAnimation from './empty_box.json';
+import styles from './styles.module.css';
 
 export default function CartPage() {
   const router = useRouter();
@@ -108,16 +107,16 @@ export default function CartPage() {
         {error && <div className={styles.error}>{error}</div>}
 
         {!cart || total === 0 ? (
-          <div className={styles.empty}>
-            <div className={styles.lottieWrapper}>
-              <Lottie animationData={emptyBoxAnimation} loop={false} />
-            </div>
-            <h2>Your cart is empty</h2>
-            <p>Add some supplements to get started!</p>
-            <button onClick={() => router.push('/supplements')} className={styles.shopButton}>
-              Continue Shopping
-            </button>
-          </div>
+          <StatusState
+            type="empty"
+            title="Your cart is empty"
+            message="Add some supplements to get started on your wellness journey!"
+            action={
+              <button onClick={() => router.push('/supplements')} className={styles.shopButton}>
+                Continue Shopping
+              </button>
+            }
+          />
         ) : (
           <div className={styles.content}>
             <ul className={styles.itemsSection} aria-label="Cart items">
@@ -144,9 +143,11 @@ export default function CartPage() {
           </div>
         )}
 
-        <div className={styles.paginationWrap}>
-          <Pagination total={total} page={page} limit={PAGE_SIZE_3} totalPages={totalPages} onPageChange={setPage} />
-        </div>
+        {total > 0 && (
+          <div className={styles.paginationWrap}>
+            <Pagination total={total} page={page} limit={PAGE_SIZE_3} totalPages={totalPages} onPageChange={setPage} />
+          </div>
+        )}
       </div>
     </Sidebar>
   );

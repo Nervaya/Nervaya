@@ -7,12 +7,18 @@ export interface UploadResponse {
 
 export const uploadApi = {
   upload: (formData: FormData): Promise<ApiResponse<UploadResponse>> => {
-    return api.post('/upload', formData) as Promise<ApiResponse<UploadResponse>>;
+    return api.post('/upload', formData, {
+      headers: { 'Content-Type': null },
+    }) as Promise<ApiResponse<UploadResponse>>;
   },
   image: (formData: FormData): Promise<ApiResponse<UploadResponse>> => {
-    return api.post('/upload', formData) as Promise<ApiResponse<UploadResponse>>;
+    return api.post('/upload', formData, {
+      headers: { 'Content-Type': null },
+    }) as Promise<ApiResponse<UploadResponse>>;
   },
   video: (formData: FormData): Promise<ApiResponse<UploadResponse>> => {
-    return api.post('/upload', formData) as Promise<ApiResponse<UploadResponse>>;
+    return api.post('/upload', formData, {
+      headers: { 'Content-Type': null },
+    }) as Promise<ApiResponse<UploadResponse>>;
   },
 };

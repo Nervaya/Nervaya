@@ -8,6 +8,7 @@ import { ICON_ARROW_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
 import LottieLoader from '@/components/common/LottieLoader';
 import { blogsApi } from '@/lib/api/blogs';
+import { toast } from 'sonner';
 import styles from '../../add/styles.module.css';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -20,6 +21,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -97,9 +99,12 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
 
       const result = await blogsApi.update(id, { ...formData, content, tags });
       if (!result.success) throw new Error(result.message || 'Failed to update blog');
+      toast.success('Blog updated successfully');
       router.push('/admin/blogs');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const msg = err instanceof Error ? err.message : 'An error occurred';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -150,8 +155,9 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
         onRemoveTag={removeTag}
         onTagKeyDown={handleTagKeyDown}
         onImageUpload={handleImageUpload}
+        onImageLoadingChange={setIsImageUploading}
         onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
+        isSubmitting={isSubmitting || isImageUploading}
         submitLabel="Update Blog"
         error={error}
         showPublished={true}

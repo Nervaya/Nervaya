@@ -11,7 +11,7 @@ export interface Therapist {
   slug?: string;
   email?: string;
   qualifications?: string[];
-  experience?: string;
+  experience?: number;
   languages?: string[];
   specializations?: string[];
   gender?: 'male' | 'female' | 'other';

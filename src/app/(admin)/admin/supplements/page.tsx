@@ -13,6 +13,7 @@ import api from '@/lib/axios';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { toast } from 'sonner';
 
 function countActiveFilters(f: SupplementFiltersParams): number {
   let n = 0;
@@ -51,12 +52,13 @@ export default function AdminSupplementsPage() {
     try {
       const response = (await api.delete(`/supplements/${id}`)) as { success: boolean };
       if (response.success) {
+        toast.success('Supplement deleted successfully');
         refetch();
       } else {
-        setError('Failed to delete supplement');
+        toast.error('Failed to delete supplement');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete supplement');
+      toast.error(err instanceof Error ? err.message : 'Failed to delete supplement');
     }
   };
 
@@ -82,24 +84,26 @@ export default function AdminSupplementsPage() {
       if (editingSupplement) {
         const response = (await api.put(`/supplements/${editingSupplement._id}`, data)) as { success: boolean };
         if (response.success) {
+          toast.success('Supplement updated successfully');
           refetch();
           handleModalClose();
         } else {
-          setError('Failed to update supplement');
+          toast.error('Failed to update supplement');
           throw new Error('Failed to update supplement');
         }
       } else {
         const response = (await api.post('/supplements', data)) as { success: boolean };
         if (response.success) {
+          toast.success('Supplement created successfully');
           refetch();
           handleModalClose();
         } else {
-          setError('Failed to create supplement');
+          toast.error('Failed to create supplement');
           throw new Error('Failed to create supplement');
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save supplement');
+      toast.error(err instanceof Error ? err.message : 'Failed to save supplement');
       throw err;
     } finally {
       setSubmitting(false);

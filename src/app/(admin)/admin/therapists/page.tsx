@@ -13,13 +13,16 @@ import { Therapist } from '@/types/therapist.types';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { ConfirmDeleteDialog } from '@/components/Admin/common';
+import { toast } from 'sonner';
 
 export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [_deleteError, setDeleteError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [page, setPage] = useState(1);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Therapists' }];
@@ -63,38 +66,32 @@ export default function AdminTherapistsPage() {
   const handleDeleteConfirm = async () => {
     if (!confirmDelete) return;
     const { id } = confirmDelete;
-    setConfirmDelete(null);
     try {
+      setIsDeleting(true);
       const result = await therapistsApi.delete(id);
       if (result.success) {
+        setConfirmDelete(null);
+        toast.success(`Therapist "${confirmDelete.name}" deleted successfully`);
         fetchTherapists();
       } else {
-        setDeleteError('Failed to delete therapist');
+        toast.error('Failed to delete therapist');
       }
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Failed to delete therapist');
+      toast.error(err instanceof Error ? err.message : 'Failed to delete therapist');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   return (
     <div>
-      {confirmDelete && (
-        <div className={styles.confirmOverlay}>
-          <div className={styles.confirmDialog}>
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete {confirmDelete.name}? This action cannot be undone.</p>
-            {deleteError && <p className={styles.confirmError}>{deleteError}</p>}
-            <div className={styles.confirmActions}>
-              <button onClick={handleDeleteConfirm} className={styles.confirmButton}>
-                Delete
-              </button>
-              <button onClick={() => setConfirmDelete(null)} className={styles.cancelButton}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteDialog
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title={confirmDelete?.name || ''}
+        isDeleting={isDeleting}
+      />
 
       <PageHeader
         title="Therapists"

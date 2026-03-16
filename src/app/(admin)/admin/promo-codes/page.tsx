@@ -8,6 +8,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from '../supplements/styles.module.css';
 import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { toast } from 'sonner';
 
 export default function AdminPromoCodesPage() {
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
@@ -38,12 +39,13 @@ export default function AdminPromoCodesPage() {
     try {
       const response = (await api.delete(`/promo/${id}`)) as { success: boolean };
       if (response.success) {
+        toast.success('Promo code deleted successfully');
         fetchPromoCodes();
       } else {
-        setError('Failed to delete promo code');
+        toast.error('Failed to delete promo code');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete promo code');
+      toast.error(err instanceof Error ? err.message : 'Failed to delete promo code');
     }
   };
 
@@ -55,12 +57,13 @@ export default function AdminPromoCodesPage() {
         isActive: !promo.isActive,
       })) as { success: boolean };
       if (response.success) {
+        toast.success(`Promo code ${!promo.isActive ? 'activated' : 'deactivated'} successfully`);
         fetchPromoCodes();
       } else {
-        setError('Failed to update promo code');
+        toast.error('Failed to update promo code');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update promo code');
+      toast.error(err instanceof Error ? err.message : 'Failed to update promo code');
     }
   };
 
@@ -87,24 +90,26 @@ export default function AdminPromoCodesPage() {
           success: boolean;
         };
         if (response.success) {
+          toast.success('Promo code updated successfully');
           fetchPromoCodes();
           handleModalClose();
         } else {
-          setError('Failed to update promo code');
+          toast.error('Failed to update promo code');
           throw new Error('Failed to update promo code');
         }
       } else {
         const response = (await api.post('/promo', data)) as { success: boolean };
         if (response.success) {
+          toast.success('Promo code created successfully');
           fetchPromoCodes();
           handleModalClose();
         } else {
-          setError('Failed to create promo code');
+          toast.error('Failed to create promo code');
           throw new Error('Failed to create promo code');
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save promo code');
+      toast.error(err instanceof Error ? err.message : 'Failed to save promo code');
       throw err;
     } finally {
       setSubmitting(false);

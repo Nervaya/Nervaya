@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import { LottieLoader, Pagination } from '@/components/common';
-import { ConfirmDeleteDialog, BlogListCard } from '@/components/Admin/BlogList';
+import LottieLoader from '@/components/common/LottieLoader';
+import Pagination from '@/components/common/Pagination';
+import StatusState from '@/components/common/StatusState';
+import { BlogListCard } from '@/components/Admin/BlogList';
+import { ConfirmDeleteDialog } from '@/components/Admin/common';
+import { toast } from 'sonner';
 import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
@@ -31,6 +35,7 @@ export default function AdminBlogsPage() {
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchBlogs = useCallback(async (page: number, search: string) => {
     try {
@@ -71,15 +76,19 @@ export default function AdminBlogsPage() {
   const handleDelete = async () => {
     if (!confirmDelete) return;
     try {
+      setIsDeleting(true);
       const response = await blogsApi.delete(confirmDelete.id);
       if (response.success) {
         setConfirmDelete(null);
+        toast.success(`Blog "${confirmDelete.title}" deleted successfully`);
         await fetchBlogs(pagination.page, searchQuery);
       } else {
-        setError('Failed to delete blog');
+        toast.error('Failed to delete blog');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete blog');
+      toast.error(err instanceof Error ? err.message : 'Failed to delete blog');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -93,13 +102,13 @@ export default function AdminBlogsPage() {
 
   return (
     <div className={styles.container}>
-      {confirmDelete && (
-        <ConfirmDeleteDialog
-          title={confirmDelete.title}
-          onConfirm={handleDelete}
-          onCancel={() => setConfirmDelete(null)}
-        />
-      )}
+      <ConfirmDeleteDialog
+        isOpen={!!confirmDelete}
+        title={confirmDelete?.title || ''}
+        onConfirm={handleDelete}
+        onClose={() => setConfirmDelete(null)}
+        isDeleting={isDeleting}
+      />
 
       <section className={styles.header}>
         <div className={styles.headerText}>
@@ -139,12 +148,20 @@ export default function AdminBlogsPage() {
         <LottieLoader width={96} height={96} label="Loading blogs" centerPage />
       ) : blogs.length === 0 ? (
         <>
-          <div className={styles.empty}>
-            <p>{searchQuery ? 'No blogs match your search.' : 'No blogs found'}</p>
-            <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
-              Create your first blog
-            </Link>
-          </div>
+          <StatusState
+            type="empty"
+            title={searchQuery ? 'No match found' : 'No blogs found'}
+            message={
+              searchQuery
+                ? `We couldn't find any blogs matching "${searchQuery}".`
+                : 'Get started by creating your first blog post to share with your audience.'
+            }
+            action={
+              <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
+                Create your first blog
+              </Link>
+            }
+          />
           <Pagination
             page={pagination.page}
             limit={pagination.limit}

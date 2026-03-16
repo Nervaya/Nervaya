@@ -15,9 +15,18 @@
   position: relative;
 }
 
+/* Align breadcrumbs to same position as other pages (container has 24px left padding) */
+.container :global(.breadcrumbs-slot) {
+  margin-left: -64px;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 16px var(--spacing-xl);
+  }
+
+  .container :global(.breadcrumbs-slot) {
+    margin-left: 0;
   }
 }
 
@@ -78,6 +87,16 @@
   gap: 12px;
   flex-wrap: nowrap;
   align-items: center;
+}
+
+.andSeparator {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  padding: 0 4px;
 }
 
 .inlineFilters > div {
@@ -374,6 +393,10 @@
   position: relative;
 }
 
+.marqueeViewport:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
 .marqueeTrack {
   display: flex;
   gap: 12px;
@@ -617,7 +640,6 @@
 
 .filterSelect:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-dim);
   background-position: right 16px center;
 }
 
@@ -648,6 +670,52 @@
 .modalPrimaryBtn {
   background: var(--color-accent);
   color: #ffffff;
+}
+
+.modalNumericInput {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-white-bright);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.modalNumericInput:focus {
+  border-color: var(--color-accent);
+}
+
+.toolbarNumericInput {
+  width: 120px !important;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-white-bright);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.toolbarNumericInput:focus {
+  border-color: var(--color-accent);
+}
+
+/* Hide arrows/spinners in numeric input */
+.toolbarNumericInput::-webkit-outer-spin-button,
+.toolbarNumericInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.toolbarNumericInput[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .videoPlayer {

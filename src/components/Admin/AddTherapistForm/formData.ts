@@ -11,8 +11,6 @@ export interface TherapistFormData {
   specializations: string;
   image: string;
   introVideoUrl: string;
-  introVideoThumbnail: string;
-  galleryImages: string;
   bio: string;
   bioLong: string;
   quote: string;
@@ -46,8 +44,6 @@ export const INITIAL_THERAPIST_FORM_DATA: TherapistFormData = {
   specializations: '',
   image: '',
   introVideoUrl: '',
-  introVideoThumbnail: '',
-  galleryImages: '',
   bio: '',
   bioLong: '',
   quote: '',

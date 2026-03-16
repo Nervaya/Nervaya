@@ -13,25 +13,89 @@ import { ProfileContentSection } from './sections/ProfileContentSection';
 import { ProfileImageSidebar } from './sections/ProfileImageSidebar';
 import styles from './styles.module.css';
 
-export default function AddTherapistForm() {
+const STEPS = [
+  { id: 1, label: 'Basic Info', icon: 'lucide:user' },
+  { id: 2, label: 'Professional', icon: 'lucide:briefcase' },
+  { id: 3, label: 'Content', icon: 'lucide:file-text' },
+  { id: 4, label: 'Pricing & Photo', icon: 'lucide:camera' },
+];
+interface AddTherapistFormProps {
+  initialData?: import('@/types/therapist.types').Therapist | null;
+  therapistId?: string;
+  title?: string;
+  subtitle?: string;
+  submitLabel?: string;
+  breadcrumbs?: import('@/components/common/Breadcrumbs').BreadcrumbItem[];
+}
+
+export default function AddTherapistForm({
+  initialData,
+  therapistId,
+  title = 'Add New Therapist',
+  subtitle = 'Create therapist profile with media and detailed profile information',
+  submitLabel = 'Create Therapist',
+  breadcrumbs = ADD_THERAPIST_BREADCRUMBS,
+}: AddTherapistFormProps) {
   const {
     error,
     formData,
     handleChange,
     handleImageUpload,
+    handleTagChange,
     handleSubmit,
     handleVideoUpload,
     loading,
     videoInputRef,
     videoUploading,
-  } = useAddTherapistForm();
+    imageUploading,
+    handleImageLoading,
+    currentStep,
+    setCurrentStep,
+    nextStep,
+    prevStep,
+    totalSteps,
+  } = useAddTherapistForm(initialData, therapistId);
+
+  const icon = therapistId ? 'lucide:pencil' : ICON_USER_PLUS;
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicInformationSection formData={formData} onChange={handleChange} />;
+      case 2:
+        return <ProfessionalDetailsSection formData={formData} onChange={handleChange} onTagChange={handleTagChange} />;
+      case 3:
+        return <ProfileContentSection formData={formData} onChange={handleChange} />;
+      case 4:
+        return (
+          <div className={styles.formLayout}>
+            <div className={styles.formMain}>
+              <PricingMediaSection
+                formData={formData}
+                onChange={handleChange}
+                onVideoUpload={handleVideoUpload}
+                videoInputRef={videoInputRef}
+                videoUploading={videoUploading}
+              />
+            </div>
+            <ProfileImageSidebar
+              imageUrl={formData.image}
+              onImageUpload={handleImageUpload}
+              onLoadingChange={handleImageLoading}
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className={styles.container}>
       <PageHeader
-        title="Add New Therapist"
-        subtitle="Create therapist profile with media and detailed profile information"
-        breadcrumbs={ADD_THERAPIST_BREADCRUMBS}
+        title={title}
+        subtitle={subtitle}
+        breadcrumbs={breadcrumbs}
         actions={
           <Link href="/admin/therapists" className={styles.backLink}>
             <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
@@ -41,46 +105,75 @@ export default function AddTherapistForm() {
       />
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        {error && (
-          <div className={styles.errorMessage} role="alert">
-            {error}
+        <div className={styles.formHeader}>
+          <div className={styles.stepper}>
+            {STEPS.map((step) => (
+              <div
+                key={step.id}
+                className={`${styles.step} ${currentStep === step.id ? styles.active : ''} ${
+                  currentStep > step.id ? styles.completed : ''
+                }`}
+                onClick={() => step.id < currentStep && setCurrentStep(step.id)}
+              >
+                <div className={styles.stepCircle}>
+                  {currentStep > step.id ? <Icon icon="lucide:check" /> : <Icon icon={step.icon} />}
+                </div>
+                <span className={styles.stepLabel}>{step.label}</span>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
-        <div className={styles.formLayout}>
-          <div className={styles.formMain}>
-            <BasicInformationSection formData={formData} onChange={handleChange} />
-            <ProfessionalDetailsSection formData={formData} onChange={handleChange} />
-            <ProfileContentSection formData={formData} onChange={handleChange} />
-            <PricingMediaSection
-              formData={formData}
-              onChange={handleChange}
-              onVideoUpload={handleVideoUpload}
-              videoInputRef={videoInputRef}
-              videoUploading={videoUploading}
-            />
-          </div>
+        <div className={styles.formBody}>
+          {error && (
+            <div className={styles.errorMessage} role="alert">
+              {error}
+            </div>
+          )}
 
-          <ProfileImageSidebar imageUrl={formData.image} onImageUpload={handleImageUpload} />
+          <div className={styles.formSectionWrapper}>{renderCurrentStep()}</div>
         </div>
 
         <div className={styles.formActions}>
-          <Link href="/admin/therapists" className={styles.cancelButton}>
-            Cancel
-          </Link>
-          <button type="submit" disabled={loading || videoUploading} className={styles.submitButton}>
-            {loading ? (
-              <span className={styles.buttonContent}>
-                <span className={styles.spinner} />
-                <span>Creating...</span>
-              </span>
-            ) : (
-              <span className={styles.buttonContent}>
-                <Icon icon={ICON_USER_PLUS} />
-                <span>Create Therapist</span>
-              </span>
+          <div className={styles.actionLeft}>
+            {currentStep > 1 && (
+              <button type="button" onClick={prevStep} className={styles.navButton}>
+                <Icon icon="lucide:arrow-left" />
+                <span>Previous</span>
+              </button>
             )}
-          </button>
+          </div>
+
+          <div className={styles.actionRight}>
+            <Link href="/admin/therapists" className={styles.navButton}>
+              Cancel
+            </Link>
+
+            {currentStep < totalSteps ? (
+              <button type="button" onClick={nextStep} className={`${styles.navButton} ${styles.primaryButton}`}>
+                <span>Continue</span>
+                <Icon icon="lucide:arrow-right" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={loading || videoUploading || imageUploading}
+                className={`${styles.navButton} ${styles.primaryButton}`}
+              >
+                {loading ? (
+                  <>
+                    <span className={styles.spinner} />
+                    <span>{therapistId ? 'Updating...' : 'Creating...'}</span>
+                  </>
+                ) : (
+                  <>
+                    <Icon icon={icon} />
+                    <span>{submitLabel}</span>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>

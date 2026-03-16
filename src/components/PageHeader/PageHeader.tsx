@@ -14,7 +14,7 @@ const PageHeader = ({ title, subtitle, description, actions, breadcrumbs }: Page
   return (
     <div className={styles.header}>
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <div className={styles.breadcrumbsWrapper}>
+        <div className={`${styles.breadcrumbsWrapper} breadcrumbs-slot`}>
           <Breadcrumbs items={breadcrumbs} />
         </div>
       )}

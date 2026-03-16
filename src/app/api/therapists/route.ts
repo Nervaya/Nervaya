@@ -5,9 +5,32 @@ import { handleError } from '@/lib/utils/error.util';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const therapists = await getAllTherapists();
+    const { searchParams } = req.nextUrl;
+    const filter: Record<string, unknown> = {};
+
+    const language = searchParams.get('language');
+    if (language) {
+      filter.languages = { $in: [language] };
+    }
+
+    const specializations = searchParams.get('specializations');
+    if (specializations) {
+      filter.specializations = { $all: specializations.split(',') };
+    }
+
+    const gender = searchParams.get('gender');
+    if (gender) {
+      filter.gender = gender;
+    }
+
+    const minExperience = searchParams.get('minExperience');
+    if (minExperience) {
+      filter.experience = { $gte: Number(minExperience) };
+    }
+
+    const therapists = await getAllTherapists(filter);
     return NextResponse.json(successResponse('Therapists fetched successfully', therapists));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

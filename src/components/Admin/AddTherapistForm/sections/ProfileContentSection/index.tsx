@@ -1,4 +1,3 @@
-import { ICON_FILE } from '@/constants/icons';
 import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
@@ -6,7 +5,7 @@ import type { TherapistFormFieldsProps } from '../../formData';
 
 export function ProfileContentSection({ formData, onChange }: TherapistFormFieldsProps) {
   return (
-    <FormSection title="Therapist Profile Content" icon={ICON_FILE}>
+    <FormSection>
       <div className={styles.content}>
         <div className={fieldStyles.formGroup}>
           <label className={fieldStyles.label} htmlFor="bio">

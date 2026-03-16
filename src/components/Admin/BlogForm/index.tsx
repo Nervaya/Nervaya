@@ -29,6 +29,7 @@ interface BlogFormProps {
   onRemoveTag: (tag: string) => void;
   onTagKeyDown: (e: React.KeyboardEvent) => void;
   onImageUpload: (url: string) => void;
+  onImageLoadingChange?: (loading: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
   submitLabel: string;
@@ -48,6 +49,7 @@ export default function BlogForm({
   onRemoveTag,
   onTagKeyDown,
   onImageUpload,
+  onImageLoadingChange,
   onSubmit,
   isSubmitting,
   submitLabel,
@@ -119,6 +121,7 @@ export default function BlogForm({
             <label className={styles.label}>Cover Image</label>
             <ImageUpload
               onUpload={onImageUpload}
+              onLoadingChange={onImageLoadingChange}
               initialUrl={formData.coverImage}
               label="Upload Cover"
               compact

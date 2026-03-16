@@ -94,7 +94,7 @@
   }
 }
 
+/* Position and spacing from global .breadcrumbs-slot for same position as other pages */
 .breadcrumbsWrapper {
-  padding: 16px 0 0 0;
-  margin-bottom: 24px;
+  /* no extra positioning; .breadcrumbs-slot in globals.css controls position */
 }

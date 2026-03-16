@@ -6,6 +6,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import LottieLoader from '@/components/common/LottieLoader';
 import BookingModal from '@/components/Booking/BookingModal';
 import { therapistsApi } from '@/lib/api/therapists';
+import StatusState from '@/components/common/StatusState';
 import { Therapist } from '@/types/therapist.types';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
@@ -61,9 +62,14 @@ export default function TherapistProfilePage() {
           )}
 
           {!loading && error && (
-            <p className={styles.error} style={{ padding: '40px', textAlign: 'center' }}>
-              {error}
-            </p>
+            <StatusState
+              type="error"
+              title="Profile Not Found"
+              message={
+                error ||
+                "We couldn't find the therapist profile you're looking for. It may have been moved or is no longer available."
+              }
+            />
           )}
 
           {!loading && !error && therapist && (

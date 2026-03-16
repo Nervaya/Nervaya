@@ -7,7 +7,7 @@ export interface CreateTherapistData {
   slug?: string;
   email?: string;
   qualifications?: string[];
-  experience?: string;
+  experience?: number;
   gender?: 'male' | 'female' | 'other';
   languages?: string[];
   specializations?: string[];
@@ -36,8 +36,8 @@ export interface CreateTherapistData {
 }
 
 export const therapistsApi = {
-  getAll: (): Promise<ApiResponse<Therapist[]>> => {
-    return api.get('/therapists') as Promise<ApiResponse<Therapist[]>>;
+  getAll: (params?: Record<string, string | number | boolean | undefined>): Promise<ApiResponse<Therapist[]>> => {
+    return api.get('/therapists', { params }) as Promise<ApiResponse<Therapist[]>>;
   },
 
   getById: (id: string): Promise<ApiResponse<Therapist>> => {

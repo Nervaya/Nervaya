@@ -1,43 +1,55 @@
-import { ICON_RECEIPT } from '@/constants/icons';
 import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
 import type { TherapistFormFieldsProps } from '../../formData';
+import { TagInput } from '@/components/common/TagInput';
 
-export function ProfessionalDetailsSection({ formData, onChange }: TherapistFormFieldsProps) {
+export function ProfessionalDetailsSection({
+  formData,
+  onChange: _onChange,
+  onTagChange,
+}: TherapistFormFieldsProps & {
+  onTagChange: (field: keyof import('../../formData').TherapistFormData, tags: string[]) => void;
+}) {
   return (
-    <FormSection title="Professional Details" icon={ICON_RECEIPT}>
+    <FormSection>
       <div className={styles.content}>
         <div className={fieldStyles.formRow}>
           <div className={fieldStyles.formGroup}>
             <label className={fieldStyles.label} htmlFor="qualifications">
               Qualifications <span className={fieldStyles.required}>*</span>
             </label>
-            <input
+            <TagInput
               id="qualifications"
-              name="qualifications"
-              value={formData.qualifications}
-              onChange={onChange}
-              required
-              className={fieldStyles.input}
-              placeholder="M.A. Psychology, Licensed Therapist"
+              tags={
+                formData.qualifications
+                  ? formData.qualifications
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : []
+              }
+              onChange={(tags) => onTagChange('qualifications', tags)}
+              placeholder="e.g. M.A. Psychology"
             />
-            <span className={fieldStyles.hint}>Comma separated</span>
           </div>
           <div className={fieldStyles.formGroup}>
             <label className={fieldStyles.label} htmlFor="specializations">
               Specializations <span className={fieldStyles.required}>*</span>
             </label>
-            <input
+            <TagInput
               id="specializations"
-              name="specializations"
-              value={formData.specializations}
-              onChange={onChange}
-              required
-              className={fieldStyles.input}
-              placeholder="Anxiety, Depression, Sleep Disorders"
+              tags={
+                formData.specializations
+                  ? formData.specializations
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : []
+              }
+              onChange={(tags) => onTagChange('specializations', tags)}
+              placeholder="e.g. Anxiety"
             />
-            <span className={fieldStyles.hint}>Comma separated</span>
           </div>
         </div>
 
@@ -46,30 +58,37 @@ export function ProfessionalDetailsSection({ formData, onChange }: TherapistForm
             <label className={fieldStyles.label} htmlFor="languages">
               Languages <span className={fieldStyles.required}>*</span>
             </label>
-            <input
+            <TagInput
               id="languages"
-              name="languages"
-              value={formData.languages}
-              onChange={onChange}
-              required
-              className={fieldStyles.input}
+              tags={
+                formData.languages
+                  ? formData.languages
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : []
+              }
+              onChange={(tags) => onTagChange('languages', tags)}
               placeholder="English, Hindi"
             />
-            <span className={fieldStyles.hint}>Comma separated</span>
           </div>
           <div className={fieldStyles.formGroup}>
             <label className={fieldStyles.label} htmlFor="sessionModes">
               Session Modes
             </label>
-            <input
+            <TagInput
               id="sessionModes"
-              name="sessionModes"
-              value={formData.sessionModes}
-              onChange={onChange}
-              className={fieldStyles.input}
+              tags={
+                formData.sessionModes
+                  ? formData.sessionModes
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : []
+              }
+              onChange={(tags) => onTagChange('sessionModes', tags)}
               placeholder="Video, Audio, In-person"
             />
-            <span className={fieldStyles.hint}>Comma separated</span>
           </div>
         </div>
       </div>

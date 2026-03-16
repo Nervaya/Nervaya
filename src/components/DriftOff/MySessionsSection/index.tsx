@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
+import { Toaster, toast } from 'sonner';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { LottieLoader, Pagination } from '@/components/common';
@@ -41,6 +42,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
       }
     } catch {
       setError('Failed to load your sessions. Please try again.');
+      toast.error('Failed to load your sessions. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -82,11 +84,11 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
           prev.map((response) => (response._id === responseId ? { ...response, ...res.data } : response)),
         ),
       );
+      toast.success('Re-session requested. We’ll notify you when your new session is ready.');
     } catch (err) {
-      setRequestErrors((prev) => ({
-        ...prev,
-        [responseId]: err instanceof Error ? err.message : 'Failed to request a re-session',
-      }));
+      const message = err instanceof Error ? err.message : 'Failed to request a re-session';
+      setRequestErrors((prev) => ({ ...prev, [responseId]: message }));
+      toast.error(message);
       const restoredResponse = previousResponse;
       if (restoredResponse) {
         setResponses((prev) =>
@@ -122,6 +124,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
 
   return (
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
+      <Toaster position="top-center" richColors closeButton />
       <div className={styles.contentWrapper}>
         {isLoading ? (
           <div className={styles.center}>
@@ -130,7 +133,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
         ) : error ? (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
-            <button type="button" className={styles.btn} onClick={() => loadResponses()}>
+            <button type="button" className={styles.btnRectangle} onClick={() => loadResponses()}>
               Try Again
             </button>
           </div>
@@ -149,16 +152,14 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
                 />
               ))}
 
-              {responses.length > 0 && (
-                <Link href="/drift-off/payment" className={styles.addSessionCard}>
-                  <div className={styles.addIcon}>
-                    <Icon icon="ph:plus-circle-bold" width={48} height={48} />
-                  </div>
-                  <h3 className={styles.addTitle}>Need another session?</h3>
-                  <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>
-                  <div className={styles.btn}>Buy New Session</div>
-                </Link>
-              )}
+              <Link href="/drift-off/payment" className={styles.addSessionCard}>
+                <div className={styles.addIcon}>
+                  <Icon icon="ph:plus-circle-bold" width={48} height={48} />
+                </div>
+                <h3 className={styles.addTitle}>Need another session?</h3>
+                <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>
+                <div className={styles.btnRectangle}>Buy New Session</div>
+              </Link>
             </div>
 
             <div className={styles.paginationWrapper}>

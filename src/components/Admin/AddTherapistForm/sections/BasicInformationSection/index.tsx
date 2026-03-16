@@ -1,4 +1,3 @@
-import { ICON_INFO } from '@/constants/icons';
 import { GENDER_OPTIONS } from '@/lib/utils/therapist.utils';
 import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
@@ -7,7 +6,7 @@ import type { TherapistFormFieldsProps } from '../../formData';
 
 export function BasicInformationSection({ formData, onChange }: TherapistFormFieldsProps) {
   return (
-    <FormSection title="Basic Information" icon={ICON_INFO}>
+    <FormSection>
       <div className={styles.content}>
         <div className={fieldStyles.formRow}>
           <div className={fieldStyles.formGroup}>
@@ -43,16 +42,18 @@ export function BasicInformationSection({ formData, onChange }: TherapistFormFie
         <div className={fieldStyles.formRow}>
           <div className={fieldStyles.formGroup}>
             <label className={fieldStyles.label} htmlFor="experience">
-              Experience <span className={fieldStyles.required}>*</span>
+              Experience (Years) <span className={fieldStyles.required}>*</span>
             </label>
             <input
               id="experience"
               name="experience"
+              type="number"
               value={formData.experience}
               onChange={onChange}
               required
               className={fieldStyles.input}
-              placeholder="10+ years"
+              placeholder="e.g. 10"
+              min="0"
             />
           </div>
           <div className={fieldStyles.formGroup}>

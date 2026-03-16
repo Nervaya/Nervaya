@@ -63,10 +63,114 @@
   flex-direction: column;
   background: var(--color-white-bright);
   border: 1px solid var(--color-border-light);
-  border-radius: 16px;
-  padding: var(--spacing-xl);
-  box-shadow: var(--color-card-shadow);
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
   transition: all 0.3s ease;
+}
+
+.formHeader {
+  padding: 24px 32px;
+  background: #fcfdfe;
+  border-bottom: 1px solid #edf2f7;
+}
+
+/* Stepper Styles */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #f1f5f9;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.stepCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.stepCircle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.step.active .stepCircle {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+  transform: scale(1.05);
+}
+
+.step.completed .stepCircle {
+  background: #f0f9ff;
+  border-color: #7dd3fc;
+  color: #0369a1;
+}
+
+.stepLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.step.active .stepLabel {
+  color: #4c1d95;
+}
+
+/* Form Content */
+.formBody {
+  padding: 32px;
+  min-height: 400px;
+}
+
+.formSectionWrapper {
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form:hover {
@@ -108,11 +212,17 @@
 
 .formActions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: 14px;
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 32px 24px;
+  background: #ffffff;
+  border-top: 1px solid #edf2f7;
+}
+
+.actionRight {
+  display: flex;
+  gap: 12px;
 }
 
 @media (max-width: 768px) {
@@ -146,36 +256,66 @@
   }
 }
 
-.cancelButton {
-  background: transparent;
-  border: 1.5px solid var(--color-border-light);
-  color: var(--color-text-muted);
+.navButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.28);
+  background: #ffffff;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
 
-.cancelButton:hover {
-  background: var(--color-card-bg-light);
-  border-color: var(--color-border-light-hover);
-  color: var(--color-accent);
+.navButton:hover:not(:disabled) {
+  border-color: rgba(124, 58, 237, 0.45);
+  background: rgba(124, 58, 237, 0.06);
   transform: translateY(-1px);
 }
 
-.cancelButton:focus-visible {
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primaryButton {
+  background: var(--gradient-accent);
+  border: none;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--gradient-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.3);
+}
+
+.primaryButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.4);
 }
 
 .submitButton {
   background: var(--gradient-accent);
   border: none;
-  color: white;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
-  min-width: 200px;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.2);
+  min-width: 180px;
 }
 
 .submitButton:hover:not(:disabled) {
   background: var(--gradient-accent-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.3);
 }
 
 .submitButton:disabled {

@@ -9,15 +9,13 @@
   justify-content: space-between;
   gap: 0.5rem;
   width: 100%;
-  min-height: 2.25rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
-  font-size: 0.875rem;
-  color: var(--color-foreground);
+  min-height: 44px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  color: #1f2937;
   cursor: pointer;
   outline: none;
   transition:
@@ -33,7 +31,6 @@
 
 .trigger:focus-visible {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25);
 }
 
 .triggerValue {
@@ -46,9 +43,8 @@
 
 .chevron {
   flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
-  color: var(--color-text-muted);
+  font-size: 1rem;
+  color: #64748b;
   transition: transform 0.2s ease;
 }
 

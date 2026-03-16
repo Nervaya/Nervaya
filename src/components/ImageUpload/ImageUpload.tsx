@@ -14,6 +14,7 @@ interface ImageUploadProps {
   label?: string;
   compact?: boolean;
   tone?: 'dark' | 'light';
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 const ImageUpload = ({
@@ -22,6 +23,7 @@ const ImageUpload = ({
   label = 'Upload Image',
   compact = false,
   tone = 'dark',
+  onLoadingChange,
 }: ImageUploadProps) => {
   const [preview, setPreview] = useState<string>(initialUrl);
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,11 @@ const ImageUpload = ({
       return;
     }
 
+    // Set immediate client-side preview
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
     setLoading(true);
+    onLoadingChange?.(true);
     setError(null);
 
     const formData = new FormData();
@@ -51,18 +57,21 @@ const ImageUpload = ({
 
       if (data.success && data.data?.url) {
         const imageUrl = data.data.url;
-        setPreview(imageUrl);
+        setPreview(imageUrl); // Update preview with actual Cloudinary URL
         onUpload(imageUrl);
       } else {
         setError(data.message || 'Upload failed');
+        // Revert to initial or empty if failed but don't clear if there was an initial URL and we just picked a wrong file
       }
     } catch (err) {
-      setError('Upload failed. Please try again.');
-      if (err instanceof Error) {
-        console.error(err);
-      }
+      const errorMessage = err instanceof Error ? err.message : 'Upload failed. Please try again.';
+      setError(errorMessage);
+      console.error('ImageUpload error:', err);
     } finally {
       setLoading(false);
+      onLoadingChange?.(false);
+      // Clean up the object URL to avoid memory leaks
+      URL.revokeObjectURL(objectUrl);
     }
   };
 

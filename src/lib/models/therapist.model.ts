@@ -12,7 +12,7 @@ export interface ITherapist extends Document {
   slug?: string;
   email?: string;
   qualifications: string[];
-  experience: string;
+  experience: number;
   gender: 'male' | 'female' | 'other';
   languages: string[];
   specializations: string[];
@@ -63,7 +63,7 @@ const therapistSchema = new Schema<ITherapist>(
       required: [true, 'Qualifications are required'],
     },
     experience: {
-      type: String,
+      type: Number,
       required: [true, 'Experience is required'],
     },
     gender: {

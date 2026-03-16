@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useId } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_DOWN, ICON_CHECK } from '@/constants/icons';
+import { ICON_CHECK } from '@/constants/icons';
 import styles from './MultiSelect.module.css';
 
 export interface MultiSelectOption {
@@ -88,7 +88,7 @@ export function MultiSelect({
       >
         <span className={styles.triggerValue}>{displayLabel}</span>
         <Icon
-          icon={ICON_ARROW_DOWN}
+          icon="lucide:chevron-down"
           className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
           aria-hidden
           width={20}

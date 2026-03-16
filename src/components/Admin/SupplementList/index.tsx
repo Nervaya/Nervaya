@@ -7,6 +7,7 @@ import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import LottieLoader from '@/components/common/LottieLoader';
 import StatusState from '@/components/common/StatusState';
+import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';
 
 interface SupplementListProps {
@@ -43,7 +44,7 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
     }
   };
 
-  const handleCancelDelete = () => {
+  const _handleCancelDelete = () => {
     setConfirmDelete(null);
   };
 
@@ -57,22 +58,12 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
 
   return (
     <div className={styles.container}>
-      {confirmDelete && (
-        <div className={styles.confirmOverlay}>
-          <div className={styles.confirmDialog}>
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete &quot;{confirmDelete.name}&quot;? This action cannot be undone.</p>
-            <div className={styles.confirmActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>
-                Delete
-              </button>
-              <button onClick={handleCancelDelete} className={styles.cancelButton}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteDialog
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={handleConfirmDelete}
+        title={confirmDelete?.name || ''}
+      />
       <div className={styles.filters}>
         <input
           type="text"

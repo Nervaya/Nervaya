@@ -81,7 +81,7 @@
 }
 
 .addButton:hover {
-  transform: translateY(-1px);
+  background: var(--color-accent-hover);
   box-shadow: 0 14px 24px rgba(124, 58, 237, 0.26);
 }
 

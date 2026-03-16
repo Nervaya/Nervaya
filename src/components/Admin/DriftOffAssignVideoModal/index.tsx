@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Icon } from '@iconify/react';
-import { ICON_X } from '@/constants/icons';
+import { AdminModal } from '../common';
+import { toast } from 'sonner';
 import styles from './styles.module.css';
 
 interface DriftOffAssignVideoModalProps {
@@ -40,25 +40,25 @@ const DriftOffAssignVideoModal = ({
     setError(null);
     try {
       await onAssign(responseId, trimmed);
+      toast.success('Video assigned successfully');
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to assign video');
+      const msg = err instanceof Error ? err.message : 'Failed to assign video';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className={styles.backdrop} onClick={onClose} role="dialog" aria-modal="true" aria-label="Assign video">
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>
-            {hasPendingReSessionRequest ? 'Assign Replacement Session' : 'Assign Video'}
-          </h2>
-          <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
-            <Icon icon={ICON_X} width={20} height={20} />
-          </button>
-        </div>
+    <AdminModal
+      isOpen={true}
+      onClose={onClose}
+      title={hasPendingReSessionRequest ? 'Assign Replacement Session' : 'Assign Video'}
+      maxWidth="480px"
+    >
+      <div className={styles.modalContent}>
         <p className={styles.modalSubtitle}>
           User ID: <code className={styles.userId}>{userId}</code>
         </p>
@@ -98,7 +98,7 @@ const DriftOffAssignVideoModal = ({
           </div>
         </form>
       </div>
-    </div>
+    </AdminModal>
   );
 };
 

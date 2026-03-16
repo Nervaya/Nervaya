@@ -1,6 +1,6 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_TAG, ICON_UPLOAD } from '@/constants/icons';
+import { ICON_UPLOAD } from '@/constants/icons';
 import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
@@ -20,7 +20,7 @@ export function PricingMediaSection({
   videoUploading,
 }: PricingMediaSectionProps) {
   return (
-    <FormSection title="Pricing & Media" icon={ICON_TAG}>
+    <FormSection>
       <div className={styles.content}>
         <div className={fieldStyles.formRow}>
           <div className={fieldStyles.formGroup}>
@@ -87,35 +87,6 @@ export function PricingMediaSection({
               </span>
             </button>
           </div>
-        </div>
-
-        <div className={fieldStyles.formGroup}>
-          <label className={fieldStyles.label} htmlFor="introVideoThumbnail">
-            Intro Video Thumbnail URL
-          </label>
-          <input
-            id="introVideoThumbnail"
-            name="introVideoThumbnail"
-            value={formData.introVideoThumbnail}
-            onChange={onChange}
-            className={fieldStyles.input}
-            placeholder="https://...jpg"
-          />
-        </div>
-
-        <div className={fieldStyles.formGroup}>
-          <label className={fieldStyles.label} htmlFor="galleryImages">
-            Gallery Images
-          </label>
-          <input
-            id="galleryImages"
-            name="galleryImages"
-            value={formData.galleryImages}
-            onChange={onChange}
-            className={fieldStyles.input}
-            placeholder="https://img1, https://img2"
-          />
-          <span className={fieldStyles.hint}>Comma separated URLs</span>
         </div>
       </div>
     </FormSection>

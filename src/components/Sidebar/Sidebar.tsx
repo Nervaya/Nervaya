@@ -178,7 +178,11 @@ const Sidebar = ({
       </LazyMotion>
 
       <main className={`main-content ${!isAuthenticated || !isDesktop ? 'no-sidebar' : ''} ${className || ''}`}>
-        {!hideGlobalBreadcrumbs && <RouteBreadcrumbs />}
+        {!hideGlobalBreadcrumbs && (
+          <div className="breadcrumbs-slot">
+            <RouteBreadcrumbs />
+          </div>
+        )}
         {children}
       </main>
 

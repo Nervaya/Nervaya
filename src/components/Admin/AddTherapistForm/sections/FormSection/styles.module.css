@@ -1,16 +1,9 @@
 .section {
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-lg);
-  background: var(--color-card-bg-light);
-  border: 1.5px solid var(--color-border-light);
-  border-radius: 14px;
-  transition: all 0.2s ease;
-}
-
-.section:hover {
-  border-color: var(--color-accent-dim);
-  box-shadow: var(--color-card-shadow-hover);
-  transform: translateY(-2px);
+  margin-bottom: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 }
 
 .title {

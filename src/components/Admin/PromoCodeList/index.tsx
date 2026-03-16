@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import type { PromoCode } from '@/types/supplement.types';
 import LottieLoader from '@/components/common/LottieLoader';
 import StatusState from '@/components/common/StatusState';
+import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';
 
 interface PromoCodeListProps {
@@ -59,22 +60,12 @@ const PromoCodeList: React.FC<PromoCodeListProps> = ({
 
   return (
     <div className={styles.container}>
-      {confirmDelete && (
-        <div className={styles.confirmOverlay}>
-          <div className={styles.confirmDialog} role="alertdialog" aria-labelledby="confirm-title">
-            <h3 id="confirm-title">Confirm Delete</h3>
-            <p>Are you sure you want to delete &quot;{confirmDelete.code}&quot;? This action cannot be undone.</p>
-            <div className={styles.confirmActions}>
-              <button onClick={handleConfirmDelete} className={styles.confirmButton}>
-                Delete
-              </button>
-              <button onClick={() => setConfirmDelete(null)} className={styles.cancelButton}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteDialog
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={handleConfirmDelete}
+        title={confirmDelete?.code || ''}
+      />
 
       <div className={styles.filters}>
         <label htmlFor="promo-search" className={styles.visuallyHidden}>
