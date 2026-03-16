@@ -12,20 +12,20 @@
 }
 
 .addButton {
-  height: 44px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(109, 40, 217, 0.65);
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  padding: 0 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-accent);
   color: #ffffff;
   text-decoration: none;
   font-size: 0.88rem;
   font-weight: 700;
-  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.24);
+  box-shadow: 0 4px 12px var(--color-accent-dim);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -268,9 +268,9 @@
 
 .editButton,
 .deleteButton {
-  height: 42px;
+  height: 40px;
   min-width: 104px;
-  border-radius: 11px;
+  border-radius: 8px;
   border: 1px solid transparent;
   font-size: 0.92rem;
   font-weight: 700;
@@ -286,9 +286,9 @@
 }
 
 .editButton {
-  border-color: rgba(124, 58, 237, 0.35);
-  background: rgba(124, 58, 237, 0.1);
-  color: #5b21b6;
+  border: 1px solid var(--color-accent-dim);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
 }
 
 .editButton:hover {
@@ -505,7 +505,7 @@
 .modalButton {
   height: 40px;
   min-width: 98px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid transparent;
   font-size: 0.86rem;
   font-weight: 700;

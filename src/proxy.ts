@@ -12,7 +12,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
-    pathname.indexOf('.') !== -1
+    pathname.indexOf('.') !== -1 ||
+    pathname === '/icon'
   ) {
     return NextResponse.next();
   }
@@ -105,8 +106,8 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
+     * - icon (brand icon metadata)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|icon).*)',
   ],
 };

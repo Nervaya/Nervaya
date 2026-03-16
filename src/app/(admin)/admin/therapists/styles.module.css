@@ -31,8 +31,8 @@
 .addButton {
   background: var(--color-accent);
   color: white;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -202,10 +202,10 @@
 }
 
 .editButton {
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-dim);
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
@@ -221,10 +221,10 @@
 }
 
 .slotsButton {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-dim);
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
@@ -242,11 +242,11 @@
 }
 
 .deleteButton {
-  background: white;
+  background: rgba(239, 68, 68, 0.1);
   color: var(--color-destructive);
-  border: 1.5px solid #fee2e2;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 600;

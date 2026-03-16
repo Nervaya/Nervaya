@@ -102,25 +102,6 @@
   gap: 12px;
 }
 
-.sidebarToggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-right: 8px;
-}
-
-.sidebarToggle:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 .navbarLogo {
   display: flex;
   align-items: center;

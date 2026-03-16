@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import {
   ICON_CLIPBOARD,
@@ -173,9 +174,9 @@ export default function DashboardPage() {
             <p>
               Explore what Nervaya offers. <span className={styles.muted}>Your activity will show up here.</span>
             </p>
-            <span className={styles.inlineHint}>
+            <Link href="/therapy-corner" className={styles.inlineHint}>
               Go to <span className={styles.accent}>Therapy Corner</span> <Icon icon={ICON_CHEVRON_RIGHT} aria-hidden />
-            </span>
+            </Link>
           </div>
         )}
       </div>
