@@ -133,7 +133,6 @@
 
 .btnPrimary:hover {
   background: var(--gradient-accent-hover);
-  transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
 }
 
@@ -158,10 +157,9 @@
 }
 
 .btnOutline:hover {
-  background: var(--color-dashboard-bg);
-  border-color: var(--color-border-light-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--color-card-shadow);
+  background: rgba(124, 58, 237, 0.05);
+  border-color: #7c3aed;
+  color: #7c3aed;
 }
 
 .heroRight {

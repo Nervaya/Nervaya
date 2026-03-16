@@ -86,7 +86,7 @@
   min-height: 44px;
   padding: var(--spacing-sm) var(--spacing-lg);
   background: var(--accent);
-  color: var(--color-foreground);
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   font-size: var(--font-size-base);
