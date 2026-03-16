@@ -89,6 +89,9 @@ export const ICON_DISCOUNT = 'solar:tag-bold';
 export const ICON_X = 'solar:close-circle-bold';
 export const ICON_CHEVRON_LEFT = 'lucide:chevron-left';
 export const ICON_CHEVRON_RIGHT = 'lucide:chevron-right';
+export const ICON_CHEVRON_DOWN = 'lucide:chevron-down';
+export const ICON_ARROW_LEFT = 'lucide:arrow-left';
+export const ICON_ARROW_RIGHT = 'lucide:arrow-right';
 
 // Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;

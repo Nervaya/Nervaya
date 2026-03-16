@@ -12,8 +12,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: transparent;
-  color: var(--foreground);
+  background: #ffffff;
+  color: #0f172a;
   font-family: var(--font-sans);
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;

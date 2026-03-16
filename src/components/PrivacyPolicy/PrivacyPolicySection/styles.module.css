@@ -1,15 +1,22 @@
 .section {
-  background: rgba(17, 24, 39, 0.4);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: visible;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  color: #1e1b4b;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 32px;
   margin-bottom: 20px;
   position: relative;
+}
+
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: rgba(139, 92, 246, 0.12);
 }
 
 .section:last-of-type {
@@ -25,13 +32,13 @@
 @media (max-width: 480px) {
   .section {
     padding-bottom: 24px;
-    background: rgba(17, 24, 39, 0.4);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
     padding: 24px 20px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
@@ -45,7 +52,7 @@
 .sectionNumber {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: #6366f1;
   margin-bottom: 16px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -73,44 +80,53 @@
   gap: 24px;
 }
 
-.sectionHeader:hover {
-  opacity: 0.7;
-}
-
-.sectionTitle {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
-  color: #fff;
+section h2.sectionTitle {
+  font-size: clamp(1.125rem, 1.8vw, 1.375rem) !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
   flex: 1;
+  font-family:
+    'SF Pro Display',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif !important;
 }
 
 @media (max-width: 768px) {
-  .sectionTitle {
-    font-size: clamp(1.5rem, 4vw, 2rem);
+  section h2.sectionTitle {
+    font-size: clamp(1.125rem, 3vw, 1.25rem) !important;
   }
 }
 
 @media (max-width: 480px) {
-  .sectionTitle {
-    font-size: clamp(1.25rem, 5vw, 1.75rem);
-    background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  section h2.sectionTitle {
+    font-size: clamp(1rem, 3.5vw, 1.125rem) !important;
+    font-family:
+      'SF Pro Display',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    color: #1e293b !important;
   }
 }
 
 .accordionIcon {
   width: 24px;
   height: 24px;
-  color: #9ca3af;
+  color: #6366f1;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   margin-top: 4px;
-  opacity: 0.8;
+  opacity: 0.7;
   position: relative;
 }
 
@@ -119,9 +135,8 @@
 }
 
 .accordionIcon:hover {
-  color: #fff;
+  color: #4f46e5;
   opacity: 1;
-  transform: translateY(-2px);
 }
 
 .accordionIcon:hover svg {
@@ -129,9 +144,9 @@
 }
 
 .accordionIconOpen {
-  transform: rotate(180deg);
-  color: #fff;
-  opacity: 1;
+  transform: rotate(0deg);
+  color: #6366f1;
+  opacity: 0.9;
 }
 
 .accordionIconOpen svg {
@@ -139,23 +154,23 @@
 }
 
 .accordionIconOpen:hover {
-  transform: rotate(180deg) translateY(-2px);
-  color: #fff;
+  transform: translateY(-2px);
+  color: #6d28d9;
 }
 
 @media (max-width: 768px) {
   .accordionIcon {
     width: 28px;
     height: 28px;
-    color: #7828c8;
-    opacity: 0.8;
+    color: #6366f1;
+    opacity: 0.7;
   }
 }
 
 @media (max-width: 768px) {
   .accordionIconOpen {
-    color: #9333ea;
-    transform: rotate(180deg) scale(1.1);
+    color: #4f46e5;
+    transform: rotate(0deg);
   }
 }
 
@@ -163,8 +178,8 @@
   .accordionIcon {
     width: 28px;
     height: 28px;
-    color: #7828c8;
-    opacity: 1;
+    color: #6366f1;
+    opacity: 0.8;
     background: transparent;
     border-radius: 0;
     padding: 0;
@@ -196,8 +211,8 @@
 
 @media (max-width: 480px) {
   .accordionIconOpen {
-    color: #9333ea;
-    transform: rotate(180deg);
+    color: #4f46e5;
+    transform: rotate(0deg);
   }
 }
 

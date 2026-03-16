@@ -1,28 +1,28 @@
 .header {
   background: transparent;
-  padding: 120px 40px 80px;
-  color: #fff;
+  padding: 80px 40px 60px;
+  color: #1e1b4b;
   position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
 }
 
 @media (max-width: 1024px) {
   .header {
-    padding: 100px 30px 60px;
+    padding: 60px 30px 40px;
   }
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 80px 24px 50px;
+    padding: 40px 24px 32px;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 80px 20px 50px;
+    padding: 32px 20px 24px;
     background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
   }
 }
 
@@ -32,105 +32,76 @@
   text-align: center;
 }
 
-.headerBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(79, 70, 229, 0.2);
-  border-radius: 20px;
-  margin-bottom: 32px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #818cf8;
-  letter-spacing: 0.01em;
-  border: 1px solid rgba(129, 140, 248, 0.3);
-}
-
-@media (max-width: 768px) {
-  .headerBadge {
-    margin-bottom: 24px;
-    font-size: 0.8125rem;
-    padding: 6px 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .headerBadge {
-    margin-bottom: 20px;
-    font-size: 0.75rem;
-    padding: 6px 14px;
-    background: rgba(79, 70, 229, 0.2);
-    color: #818cf8;
-    border: 1px solid rgba(129, 140, 248, 0.3);
-  }
-}
-
-.badgeIcon {
-  width: 16px;
-  height: 16px;
-}
-
-@media (max-width: 480px) {
-  .badgeIcon {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-.badgeText {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 .headerTitle {
-  font-size: var(--font-size-4xl);
-  font-weight: 600;
-  margin: 0 0 24px;
-  letter-spacing: -0.03em;
-  color: #fff;
-  line-height: 1.1;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+  color: #1e293b;
+  line-height: 1.2;
+  font-family:
+    'SF Pro Display',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 @media (max-width: 768px) {
   .headerTitle {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .headerTitle {
-    margin-bottom: 16px;
-    font-size: var(--font-size-3xl);
-    color: #fff;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 12px;
+    font-size: clamp(1.5rem, 5vw, 1.75rem);
+    color: #1e293b;
+    font-family:
+      'SF Pro Display',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
   }
 }
 
 .headerSubtitle {
-  font-size: var(--font-size-lg);
-  line-height: 1.5;
-  margin: 0 0 40px;
-  color: #d1d5db;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  line-height: 1.4;
+  margin: 0 0 24px;
+  color: #1e293b;
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
-  font-weight: 400;
+  font-weight: 600;
+  font-family:
+    'SF Pro Display',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 @media (max-width: 768px) {
   .headerSubtitle {
-    margin-bottom: 32px;
-    font-size: var(--font-size-base);
+    margin-bottom: 20px;
+    font-size: clamp(0.8125rem, 2vw, 0.9375rem);
   }
 }
 
 @media (max-width: 480px) {
   .headerSubtitle {
-    margin-bottom: 24px;
-    font-size: var(--font-size-base);
-    color: #d1d5db;
+    margin-bottom: 16px;
+    font-size: clamp(0.75rem, 3vw, 0.875rem);
+    color: #1e293b;
+    font-family:
+      'SF Pro Display',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
   }
 }
 
@@ -139,13 +110,25 @@
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #94a3b8;
   font-weight: 400;
+  font-family:
+    'SF Pro Text',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 @media (max-width: 480px) {
   .lastUpdated {
     font-size: 0.8125rem;
+    font-family:
+      'SF Pro Text',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
   }
 }
 

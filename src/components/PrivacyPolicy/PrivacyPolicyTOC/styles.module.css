@@ -11,7 +11,7 @@
   .tableOfContents {
     position: static;
     order: -1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
     padding-bottom: 40px;
   }
 }
@@ -29,7 +29,7 @@
     border-radius: 0;
     padding: 0;
     position: static;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
     margin-bottom: 32px;
   }
 }
@@ -37,7 +37,7 @@
 .tocTitle {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: #64748b;
   margin: 0 0 24px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -48,7 +48,7 @@
     font-size: 0.6875rem;
     margin-bottom: 16px;
     padding: 0;
-    color: #9ca3af;
+    color: #64748b;
     font-weight: 600;
     letter-spacing: 0.08em;
   }
@@ -83,7 +83,7 @@
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 0.9375rem;
-  color: #d1d5db;
+  color: #475569;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
@@ -109,6 +109,7 @@
     -webkit-tap-highlight-color: transparent;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    color: #475569;
   }
 }
 
@@ -132,8 +133,8 @@
 }
 
 .tocLink:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: #1e1b4b;
+  background: rgba(99, 102, 241, 0.06);
 }
 
 .tocLink:hover::before {
@@ -142,26 +143,26 @@
 
 .tocLink:active {
   transform: translateX(4px);
-  background: rgba(120, 40, 200, 0.05);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 @media (max-width: 480px) {
   .tocLink:active {
     transform: translateX(4px);
-    background: rgba(120, 40, 200, 0.05);
+    background: rgba(99, 102, 241, 0.1);
   }
 }
 
 .tocLinkActive {
-  color: #fff;
-  background: rgba(129, 140, 248, 0.2);
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
   font-weight: 500;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive {
-    background: rgba(120, 40, 200, 0.1);
-    color: #7828c8;
+    background: rgba(99, 102, 241, 0.12);
+    color: #6366f1;
     font-weight: 600;
     padding-left: 16px;
     transform: translateX(4px);
@@ -170,37 +171,37 @@
 
 .tocLinkActive::before {
   width: 3px;
-  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
 }
 
 @media (max-width: 480px) {
   .tocLinkActive::before {
-    width: 4px;
-    background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
-    box-shadow: 0 0 8px rgba(120, 40, 200, 0.4);
+    width: 3px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    box-shadow: 0 0 6px rgba(99, 102, 241, 0.3);
   }
 }
 
 .tocLinkActive .tocNumber {
-  color: #7828c8;
+  color: #6366f1;
   font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive .tocNumber {
-    color: #7828c8;
+    color: #6366f1;
     font-weight: 700;
   }
 }
 
 .tocLinkActive .tocText {
-  color: #7828c8;
+  color: #6366f1;
   font-weight: 600;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive .tocText {
-    color: #7828c8;
+    color: #6366f1;
     font-weight: 600;
   }
 }
@@ -208,7 +209,7 @@
 .tocNumber {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #9ca3af;
+  color: #94a3b8;
   min-width: 24px;
   transition: color 0.2s ease;
 }
@@ -217,13 +218,13 @@
   .tocNumber {
     font-size: 0.6875rem;
     min-width: 20px;
-    color: #9ca3af;
+    color: #94a3b8;
     font-weight: 500;
   }
 }
 
 .tocLink:hover .tocNumber {
-  color: #fff;
+  color: #6366f1;
 }
 
 .tocText {
@@ -233,18 +234,18 @@
 @media (max-width: 480px) {
   .tocText {
     flex: 1;
-    color: #d1d5db;
+    color: #475569;
     font-weight: 400;
     transition: color 0.2s ease;
   }
 }
 
 .tocLink:hover .tocText {
-  color: #fff;
+  color: #1e1b4b;
 }
 
 @media (max-width: 480px) {
   .tocLink:hover .tocText {
-    color: #7828c8;
+    color: #6366f1;
   }
 }
