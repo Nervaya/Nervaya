@@ -4,7 +4,7 @@ import WhyChooseSection from '@/components/DriftOff/WhyChooseSection';
 import DriftOffAboutHowItWorks from '@/components/DriftOff/DriftOffAboutHowItWorks';
 import WhatMakesDifferentSection from '@/components/DriftOff/WhatMakesDifferentSection';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function DriftOffAboutPage() {

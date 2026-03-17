@@ -3,16 +3,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LottieLoader, Pagination } from '@/components/common';
+import { LottieLoader, Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_USERS_GROUP, ICON_GLOBE, ICON_VIDEO } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import StatusState from '@/components/common/StatusState';
 import { therapistsApi } from '@/lib/api/therapists';
 import { Therapist } from '@/types/therapist.types';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import { toast } from 'sonner';
 

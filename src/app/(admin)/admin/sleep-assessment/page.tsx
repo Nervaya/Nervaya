@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 

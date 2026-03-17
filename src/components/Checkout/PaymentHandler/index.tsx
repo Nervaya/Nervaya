@@ -6,7 +6,7 @@ import { paymentsApi } from '@/lib/api/payments';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { trackPaymentFailed } from '@/utils/analytics';
 import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
-import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
+import { RazorpayCheckoutScript } from '@/components/common';
 import styles from './styles.module.css';
 
 interface PaymentHandlerProps {

@@ -3,15 +3,13 @@
 import { Icon } from '@iconify/react';
 import { ICON_BOX, ICON_CALENDAR, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { LottieLoader } from '@/components/common';
-import StatusState from '@/components/common/StatusState';
+import { LottieLoader, StatusState, type BreadcrumbItem } from '@/components/common';
 import StatsCard from '@/components/Admin/StatsCard';
 import RecentOrders from '@/components/Admin/RecentOrders';
 import UpcomingSessions from '@/components/Admin/UpcomingSessions';
 import { useAdmin } from '@/context/AdminContext';
 import { formatPrice } from '@/utils/cart.util';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function AdminDashboardPage() {
   const { stats, loading: isLoading, error, refreshStats: refetch } = useAdmin();

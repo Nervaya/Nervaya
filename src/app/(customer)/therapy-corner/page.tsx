@@ -5,9 +5,14 @@ import { Icon } from '@iconify/react';
 import { useTherapists } from '@/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import BookingModal from '@/components/Booking/BookingModal';
-import Pagination from '@/components/common/Pagination';
-import StatusState from '@/components/common/StatusState';
-import LottieLoader from '@/components/common/LottieLoader';
+import {
+  Pagination,
+  StatusState,
+  LottieLoader,
+  type BreadcrumbItem,
+  CustomDropdown,
+  MultiSelect,
+} from '@/components/common';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
@@ -30,10 +35,7 @@ export interface FilterState {
 import { TherapistCard } from './components/TherapistCard';
 import { VideoPreviewModal } from './components/VideoPreviewModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { BreadcrumbItem } from '@/components/common/Breadcrumbs';
-import { CustomDropdown } from '@/components/common/CustomDropdown';
 import { FilterModal } from './components/FilterModal';
-import MultiSelect from '@/components/common/MultiSelect/MultiSelect';
 import { ICON_FILTER } from '@/constants/icons';
 
 const FILTER_ALL = '';

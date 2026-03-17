@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 // import { sessionsApi } from '@/lib/api/sessions';

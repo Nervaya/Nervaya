@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import StarRating from '@/components/common/StarRating';
+import { StarRating } from '@/components/common';
 import type { Review } from '@/types/supplement.types';
 import styles from './ReviewCard.module.css';
 

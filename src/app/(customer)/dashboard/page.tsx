@@ -15,7 +15,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { StatTile } from '@/components/Dashboard/StatTile';
 import { RecentActivity, type ActivityItem } from '@/components/Dashboard/RecentActivity';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 import { useAuth } from '@/hooks/useAuth';
 import { useCustomer } from '@/context/CustomerContext';
@@ -25,7 +25,6 @@ import {
   getNextSessionInfo,
   getSessionCounts,
 } from '@/components/Dashboard/dashboardViewModel.util';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function DashboardPage() {
   const { user } = useAuth();

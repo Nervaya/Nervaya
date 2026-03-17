@@ -14,10 +14,8 @@ import { DeliveryOptions } from './DeliveryOptions';
 import { PromoCode } from './PromoCode';
 import { Icon } from '@iconify/react';
 import { ICON_CHEVRON_LEFT } from '@/constants/icons';
-import LottieLoader from '@/components/common/LottieLoader';
-import Modal from '@/components/common/Modal';
+import { LottieLoader, Modal, type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function CheckoutPage() {
   const {

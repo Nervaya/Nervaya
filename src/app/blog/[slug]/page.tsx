@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { ICON_USER, ICON_CHEVRON_LEFT, ICON_SHARE } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { blogsApi } from '@/lib/api/blogs';
 import type { Blog } from '@/types/blog.types';
 import styles from './styles.module.css';

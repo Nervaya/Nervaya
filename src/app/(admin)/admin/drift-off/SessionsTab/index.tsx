@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import DriftOffResponseList from '@/components/Admin/DriftOffResponseList';
 import { useAdminDriftOffResponses, useAssignDriftOffVideo } from '@/queries/driftOff/useDriftOff';
 import axiosInstance from '@/lib/axios';

@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
-import LottieLoader from '@/components/common/LottieLoader';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import AddTherapistForm from '@/components/Admin/AddTherapistForm';
 import type { Therapist } from '@/types/therapist.types';
 

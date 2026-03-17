@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
-import StarRating from '@/components/common/StarRating';
+import { StarRating } from '@/components/common';
 import styles from './SupplementProductCard.module.css';
 
 interface SupplementProductCardProps {

@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 export interface TherapistFormData {
   name: string;

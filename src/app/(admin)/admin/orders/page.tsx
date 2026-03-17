@@ -2,15 +2,13 @@
 
 import { useState, useCallback } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { Pagination, LottieLoader } from '@/components/common';
-import StatusState from '@/components/common/StatusState';
+import { Pagination, LottieLoader, StatusState, type BreadcrumbItem } from '@/components/common';
 import OrderFilters from '@/components/Admin/OrderFilters';
 import { useAdminOrders } from '@/queries/orders/useOrders';
 import type { OrderFiltersParams } from '@/lib/api/orders';
 import { formatPrice } from '@/utils/cart.util';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 function countActiveFilters(f: OrderFiltersParams): number {
   let n = 0;

@@ -2,15 +2,13 @@
 
 import { useState, useCallback } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { Pagination, LottieLoader } from '@/components/common';
-import StatusState from '@/components/common/StatusState';
+import { Pagination, LottieLoader, StatusState, type BreadcrumbItem } from '@/components/common';
 import SessionFilters from '@/components/Admin/SessionFilters';
 import { useAdminSessions } from '@/queries/sessions/useSessions';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import type { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 function countActiveFilters(f: SessionFiltersParams): number {
   let n = 0;

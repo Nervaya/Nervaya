@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { usePathname } from 'next/navigation';
 import { ICON_WHATSAPP, ICON_CHAT } from '@/constants/icons';
-import Button from '@/components/common/Button/Button';
+import { Button } from '@/components/common';
 import { trackWhatsappSupportClicked } from '@/utils/analytics';
 
 const ChatWithUs = () => {

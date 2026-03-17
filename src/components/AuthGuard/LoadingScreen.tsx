@@ -1,5 +1,5 @@
 import styles from './LoadingScreen.module.css';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 
 export default function LoadingScreen() {
   return (

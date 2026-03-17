@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartItem as CartItemType, Supplement } from '@/types/supplement.types';
-import QuantitySelector from '@/components/common/QuantitySelector';
+import { QuantitySelector } from '@/components/common';
 import { formatPrice } from '@/utils/cart.util';
 import styles from './styles.module.css';
 

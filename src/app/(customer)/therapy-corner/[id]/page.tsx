@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import BookingModal from '@/components/Booking/BookingModal';
 import { therapistsApi } from '@/lib/api/therapists';
 import StatusState from '@/components/common/StatusState';

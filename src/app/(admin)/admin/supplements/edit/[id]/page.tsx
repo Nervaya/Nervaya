@@ -4,12 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, type BreadcrumbItem, StatusState } from '@/components/common';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import StatusState from '@/components/common/StatusState';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function EditSupplementPage() {
   const params = useParams();

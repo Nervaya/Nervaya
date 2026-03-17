@@ -7,7 +7,7 @@ import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
 import { AssessmentQuestionStep } from './AssessmentQuestionStep';
 import { useAssessmentState } from './useAssessmentState';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 

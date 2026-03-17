@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
-import RazorpayCheckoutScript from '@/components/common/RazorpayCheckoutScript';
+import { RazorpayCheckoutScript } from '@/components/common';
 import { trackAudioPurchase } from '@/utils/analytics';
 
 interface DriftOffPaymentHandlerProps {

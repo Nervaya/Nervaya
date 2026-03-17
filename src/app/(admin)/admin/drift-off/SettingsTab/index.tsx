@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { configApi } from '@/lib/api/config';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { Icon } from '@iconify/react';
 import type { ISystemConfig } from '@/types/systemConfig.types';
 import styles from './styles.module.css';

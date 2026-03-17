@@ -6,8 +6,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
-import LottieLoader from '@/components/common/LottieLoader';
-import { Dropdown } from '@/components/common';
+import { LottieLoader, Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 

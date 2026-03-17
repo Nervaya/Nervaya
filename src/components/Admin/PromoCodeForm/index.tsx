@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import type { CreatePromoCodeDto, PromoCode } from '@/types/supplement.types';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common';
 import styles from './styles.module.css';
 
 interface FormData {

@@ -1,4 +1,4 @@
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 const SEGMENT_LABELS: Record<string, string> = {
   supplements: 'Supplements',

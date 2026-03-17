@@ -5,14 +5,13 @@ import { Icon } from '@iconify/react';
 import { ICON_ALERT, ICON_DOCUMENT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function SleepAssessmentPage() {
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);

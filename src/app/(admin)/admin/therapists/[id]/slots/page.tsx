@@ -11,7 +11,7 @@ import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 export default function TherapistSlotsPage() {
   const params = useParams();

@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { SupplementFormData } from '@/types/supplement.types';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
+import { Input, Button } from '@/components/common';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import styles from './styles.module.css';
 

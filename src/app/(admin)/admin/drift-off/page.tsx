@@ -7,7 +7,7 @@ import SessionsTab from './SessionsTab';
 import QuestionsTab from './QuestionsTab';
 import SettingsTab from './SettingsTab';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 type Tab = 'sessions' | 'questions' | 'settings';
 
