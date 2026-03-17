@@ -163,16 +163,33 @@
   background: transparent;
   color: rgba(255, 255, 255, 0.9);
   font: inherit;
+  display: flex;
+  align-items: center;
+  line-height: inherit;
+  padding: 10px 14px;
+  margin: 2px 8px;
+  gap: 12px;
 }
 
 .collapsed .logoutButton {
   width: 100%;
+  justify-content: center;
+  padding: 10px 0;
+  margin: 4px 12px;
+  gap: 0;
+}
+
+.logoutIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .collapsed .logoutIcon {
-  /* Compensate for the visual asymmetry of the logout icon (door + arrow) */
-  /* User requested negative margin-right to reduce right space */
-  margin-right: 17px;
+  margin: 0 auto;
   transition: transform 0.14s ease;
 }
 

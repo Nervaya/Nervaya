@@ -1,11 +1,24 @@
 import type { Metadata } from 'next';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import Script from 'next/script';
+import { Outfit, Inter } from 'next/font/google';
 import './globals.css';
 import Providers from '@/components/Providers';
 import { EngagementTracker } from '@/components/EngagementTracker';
 import BodyRouteClass from '@/components/BodyRouteClass';
 import { IMAGES } from '@/utils/imageConstants';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Nervaya',
@@ -38,7 +51,10 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body style={{ '--bg-main': `url(${IMAGES.BACKGROUND_MAIN})` } as React.CSSProperties}>
+      <body
+        className={`${outfit.variable} ${inter.variable}`}
+        style={{ '--bg-main': `url(${IMAGES.BACKGROUND_MAIN})` } as React.CSSProperties}
+      >
         <Providers>
           <BodyRouteClass />
           <EngagementTracker />

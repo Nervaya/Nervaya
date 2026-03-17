@@ -1,7 +1,6 @@
 'use client';
 
 import { DAYS_OF_WEEK } from '@/lib/constants/consultingHours.constants';
-import LottieLoader from '@/components/common/LottieLoader';
 import { useConsultingHours } from './useConsultingHours';
 import { ConfirmDialog } from './ConfirmDialog';
 import { DayRow } from './DayRow';
@@ -16,7 +15,6 @@ interface ConsultingHoursManagerProps {
 export default function ConsultingHoursManager({ therapistId, onUpdate }: ConsultingHoursManagerProps) {
   const {
     consultingHours,
-    loading,
     saving,
     generating,
     error,
@@ -35,14 +33,6 @@ export default function ConsultingHoursManager({ therapistId, onUpdate }: Consul
     applyToAllDays,
     handleConfirmClear,
   } = useConsultingHours({ therapistId, onUpdate });
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-        <LottieLoader width={120} height={120} />
-      </div>
-    );
-  }
 
   const statusBannerClass =
     generationStatus?.includes('Warning') || generationStatus?.includes('Failed')

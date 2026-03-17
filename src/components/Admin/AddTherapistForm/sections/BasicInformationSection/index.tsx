@@ -1,8 +1,10 @@
 import { GENDER_OPTIONS } from '@/lib/utils/therapist.utils';
 import { FormSection } from '../FormSection';
+import { Dropdown } from '@/components/common';
+import type { DropdownOption } from '@/components/common/Dropdown/Dropdown';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
-import type { TherapistFormFieldsProps } from '../../formData';
+import type { TherapistFormFieldsProps, TherapistFormChangeEvent } from '../../formData';
 
 export function BasicInformationSection({ formData, onChange }: TherapistFormFieldsProps) {
   return (
@@ -60,20 +62,16 @@ export function BasicInformationSection({ formData, onChange }: TherapistFormFie
             <label className={fieldStyles.label} htmlFor="gender">
               Gender <span className={fieldStyles.required}>*</span>
             </label>
-            <select
+            <Dropdown
               id="gender"
-              name="gender"
+              options={GENDER_OPTIONS as unknown as DropdownOption[]}
               value={formData.gender}
-              onChange={onChange}
-              required
-              className={fieldStyles.input}
-            >
-              {GENDER_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+              onChange={(value) =>
+                onChange({
+                  target: { name: 'gender', value },
+                } as unknown as TherapistFormChangeEvent)
+              }
+            />
           </div>
         </div>
       </div>

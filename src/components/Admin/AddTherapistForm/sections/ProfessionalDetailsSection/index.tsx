@@ -30,7 +30,7 @@ export function ProfessionalDetailsSection({
                   : []
               }
               onChange={(tags) => onTagChange('qualifications', tags)}
-              placeholder="e.g. M.A. Psychology"
+              placeholder="Add qualification..."
             />
           </div>
           <div className={fieldStyles.formGroup}>
@@ -48,7 +48,7 @@ export function ProfessionalDetailsSection({
                   : []
               }
               onChange={(tags) => onTagChange('specializations', tags)}
-              placeholder="e.g. Anxiety"
+              placeholder="Add specialization..."
             />
           </div>
         </div>
@@ -69,25 +69,7 @@ export function ProfessionalDetailsSection({
                   : []
               }
               onChange={(tags) => onTagChange('languages', tags)}
-              placeholder="English, Hindi"
-            />
-          </div>
-          <div className={fieldStyles.formGroup}>
-            <label className={fieldStyles.label} htmlFor="sessionModes">
-              Session Modes
-            </label>
-            <TagInput
-              id="sessionModes"
-              tags={
-                formData.sessionModes
-                  ? formData.sessionModes
-                      .split(',')
-                      .map((s) => s.trim())
-                      .filter(Boolean)
-                  : []
-              }
-              onChange={(tags) => onTagChange('sessionModes', tags)}
-              placeholder="Video, Audio, In-person"
+              placeholder="Add language..."
             />
           </div>
         </div>

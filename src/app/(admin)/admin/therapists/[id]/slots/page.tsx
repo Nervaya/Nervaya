@@ -6,7 +6,7 @@ import { therapistsApi } from '@/lib/api/therapists';
 import SlotManager from '@/components/Admin/SlotManager';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
-import LottieLoader from '@/components/common/LottieLoader';
+import GlobalLoader from '@/components/common/GlobalLoader';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
@@ -49,14 +49,7 @@ export default function TherapistSlotsPage() {
   }, [fetchTherapist]);
 
   if (loading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>
-          <LottieLoader width={60} height={60} />
-          <span>Loading therapist information...</span>
-        </div>
-      </div>
-    );
+    return <GlobalLoader label="Loading therapist information..." />;
   }
 
   if (error || !therapist) {

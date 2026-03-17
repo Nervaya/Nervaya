@@ -20,7 +20,7 @@ export const ProfileImageSidebar = ({ imageUrl, onImageUpload, onLoadingChange }
           tone="light"
         />
       </div>
-      <span className={fieldStyles.hint}>Square, 400x400px min</span>
+      <span className={fieldStyles.hint}>Square, 400x400px min. Photo is optional—you can add it later.</span>
     </aside>
   );
 };

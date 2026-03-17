@@ -126,13 +126,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 32px;
+  padding: 48px 24px;
   color: #94a3b8;
   font-size: 1rem;
   gap: 16px;
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .error {

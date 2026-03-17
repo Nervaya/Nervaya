@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import DatePicker from '@/components/Booking/DatePicker';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Dropdown } from '@/components/common';
-import LottieLoader from '@/components/common/LottieLoader';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_CHECK, ICON_CLOCK, ICON_X, ICON_ADD } from '@/constants/icons';
@@ -237,11 +236,7 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
               </button>
             </div>
 
-            {loading ? (
-              <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-                <LottieLoader width={120} height={120} />
-              </div>
-            ) : (
+            {loading ? null : (
               <>
                 <div className={styles.statsContainer}>
                   <div className={`${styles.statCard} ${styles.statTotal}`}>

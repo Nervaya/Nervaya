@@ -17,7 +17,6 @@ export interface TherapistFormData {
   messageToClient: string;
   sessionFee: string;
   sessionDurationMins: string;
-  sessionModes: string;
   testimonials: string;
 }
 
@@ -50,6 +49,5 @@ export const INITIAL_THERAPIST_FORM_DATA: TherapistFormData = {
   messageToClient: '',
   sessionFee: '',
   sessionDurationMins: '',
-  sessionModes: '',
   testimonials: '',
 };

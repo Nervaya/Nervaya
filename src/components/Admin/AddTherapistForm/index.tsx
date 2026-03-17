@@ -104,7 +104,23 @@ export default function AddTherapistForm({
         }
       />
 
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key !== 'Enter') return;
+          const target = e.target as HTMLElement;
+
+          // Allow Enter in textareas for new lines
+          if (target.tagName === 'TEXTAREA') return;
+
+          // Only allow Enter if the focus is on a submit button
+          const isSubmitButton = target.tagName === 'BUTTON' && (target as HTMLButtonElement).type === 'submit';
+          if (!isSubmitButton) {
+            e.preventDefault();
+          }
+        }}
+        className={styles.form}
+      >
         <div className={styles.formHeader}>
           <div className={styles.stepper}>
             {STEPS.map((step) => (
@@ -137,7 +153,7 @@ export default function AddTherapistForm({
         <div className={styles.formActions}>
           <div className={styles.actionLeft}>
             {currentStep > 1 && (
-              <button type="button" onClick={prevStep} className={styles.navButton}>
+              <button key="prev-button" type="button" onClick={prevStep} className={styles.navButton}>
                 <Icon icon="lucide:arrow-left" />
                 <span>Previous</span>
               </button>
@@ -150,12 +166,18 @@ export default function AddTherapistForm({
             </Link>
 
             {currentStep < totalSteps ? (
-              <button type="button" onClick={nextStep} className={`${styles.navButton} ${styles.primaryButton}`}>
+              <button
+                key="continue-button"
+                type="button"
+                onClick={nextStep}
+                className={`${styles.navButton} ${styles.primaryButton}`}
+              >
                 <span>Continue</span>
                 <Icon icon="lucide:arrow-right" />
               </button>
             ) : (
               <button
+                key="submit-button"
                 type="submit"
                 disabled={loading || videoUploading || imageUploading}
                 className={`${styles.navButton} ${styles.primaryButton}`}

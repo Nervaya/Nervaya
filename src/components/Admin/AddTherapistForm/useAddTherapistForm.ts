@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
 import { uploadApi } from '@/lib/api/upload';
@@ -26,7 +26,6 @@ function therapistToFormData(data: Therapist): TherapistFormData {
     messageToClient: data.messageToClient || '',
     sessionFee: data.sessionFee != null ? String(data.sessionFee) : '',
     sessionDurationMins: data.sessionDurationMins != null ? String(data.sessionDurationMins) : '',
-    sessionModes: Array.isArray(data.sessionModes) ? data.sessionModes.join(', ') : '',
     testimonials: data.testimonials?.map((t) => `${t.name} | ${t.clientSince ?? ''} | ${t.message}`).join('\n') ?? '',
   };
 }
@@ -50,6 +49,9 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
   const [error, setError] = useState<string | null>(null);
 
   const totalSteps = 4;
+
+  const initialSnapshot = useMemo(() => toFormData(initialData), [initialData]);
+  const isDirty = JSON.stringify(formData) !== JSON.stringify(initialSnapshot);
 
   const nextStep = () => {
     // Basic validation could happen here if needed
@@ -122,6 +124,16 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Safety guard: only allow submission on the final step
+    if (currentStep < totalSteps) {
+      console.warn(`[Form] Step ${currentStep}/${totalSteps}: Navigating instead of submitting.`);
+      nextStep();
+      return;
+    }
+
+    console.warn(`[Form] Final Step ${currentStep}/${totalSteps}: Processing API call.`);
+
     setLoading(true);
     setError(null);
 
@@ -133,7 +145,7 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
         languages: parseCommaSeparated(formData.languages),
         specializations: parseCommaSeparated(formData.specializations),
         experience: Number(formData.experience) || 0,
-        sessionModes: parseCommaSeparated(formData.sessionModes),
+        sessionModes: ['Online'],
         testimonials: parseTestimonials(formData.testimonials),
         sessionFee: formData.sessionFee ? Number(formData.sessionFee) : 0,
         sessionDurationMins: formData.sessionDurationMins ? Number(formData.sessionDurationMins) : 0,
@@ -178,5 +190,6 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
     nextStep,
     prevStep,
     setCurrentStep,
+    isDirty,
   };
 }

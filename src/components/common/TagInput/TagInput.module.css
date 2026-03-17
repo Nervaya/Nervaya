@@ -1,19 +1,19 @@
 .container {
   width: 100%;
   min-height: 44px;
-  padding: 6px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border-light);
-  background: var(--color-white-bright);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #d9e2ee);
+  background: var(--color-white-bright, #ffffff);
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .container:focus-within {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-dim);
+  border-color: var(--color-accent, #7c3aed);
+  box-shadow: none;
 }
 
 .tagList {
