@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
@@ -21,7 +21,6 @@ export default function AddQuestionPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const [formData, setFormData] = useState({
     questionText: '',
     questionType: 'single_choice' as QuestionType,
@@ -32,6 +31,33 @@ export default function AddQuestionPage() {
     { id: '1', label: '', value: '' },
     { id: '2', label: '', value: '' },
   ]);
+
+  const [usedOrders, setUsedOrders] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const result = await sleepAssessmentApi.getQuestions(true);
+        if (result.success && result.data) {
+          const orders = result.data.map((q) => q.order);
+          setUsedOrders(new Set(orders));
+
+          // Auto-calculate next available order
+          if (orders.length > 0) {
+            const nextOrder = Math.max(...orders) + 1;
+            setFormData((prev) => ({ ...prev, order: nextOrder }));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch used orders:', err);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  const isOrderDuplicate = useMemo(() => {
+    return usedOrders.has(Number(formData.order));
+  }, [formData.order, usedOrders]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -69,7 +95,11 @@ export default function AddQuestionPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null);
+    if (isOrderDuplicate) {
+      setError(`Display Order ${formData.order} is already in use. Please choose a different number.`);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const validOptions = options.filter((opt) => opt.label.trim());
@@ -141,6 +171,7 @@ export default function AddQuestionPage() {
               min="1"
               required
             />
+            {isOrderDuplicate && <span className={styles.orderWarning}>This order is already taken</span>}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="questionType" className={styles.label}>
@@ -217,7 +248,7 @@ export default function AddQuestionPage() {
           <Link href="/admin/sleep-assessment" className={styles.cancelButton}>
             Cancel
           </Link>
-          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+          <button type="submit" className={styles.submitButton} disabled={isSubmitting || isOrderDuplicate}>
             {isSubmitting ? (
               <>
                 <LottieLoader width={50} height={50} />
