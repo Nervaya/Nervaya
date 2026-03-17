@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { AlertTriangle } from 'lucide-react';
+import { Icon } from '@iconify/react';
+import { ICON_ALERT_TRIANGLE } from '@/constants/icons';
 import AdminModal from '../AdminModal';
 import styles from './ConfirmDeleteDialog.module.css';
 
@@ -41,7 +41,7 @@ export default function ConfirmDeleteDialog({
     <AdminModal isOpen={isOpen} onClose={onClose} title="" footer={footer} maxWidth="400px">
       <div className={styles.container}>
         <div className={styles.iconWrapper}>
-          <AlertTriangle className={styles.warningIcon} />
+          <Icon icon={ICON_ALERT_TRIANGLE} className={styles.warningIcon} width={24} height={24} />
         </div>
         <div className={styles.textContent}>
           <h3 className={styles.modalTitle}>Confirm Delete</h3>

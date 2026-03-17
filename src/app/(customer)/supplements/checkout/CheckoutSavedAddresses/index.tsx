@@ -1,8 +1,6 @@
-'use client';
-
 import type { SavedAddress } from '@/types/supplement.types';
 import { Icon } from '@iconify/react';
-
+import { ICON_BOOK_USER, ICON_PLUS } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface CheckoutSavedAddressesProps {
@@ -19,12 +17,12 @@ export function CheckoutSavedAddresses({ addresses, onUseAddress, onAddNew }: Ch
       <div className={styles.sectionHeader}>
         <div className={styles.headerLeft}>
           <span className={styles.sectionHeaderIcon} aria-hidden>
-            <Icon icon="lucide:book-user" width={20} height={20} />
+            <Icon icon={ICON_BOOK_USER} width={20} height={20} />
           </span>
           <h3 className={styles.sectionTitle}>Saved Addresses</h3>
         </div>
         <button type="button" className={styles.addNewButton} onClick={onAddNew}>
-          <Icon icon="lucide:plus" width={16} height={16} />
+          <Icon icon={ICON_PLUS} width={16} height={16} />
           Add New
         </button>
       </div>

@@ -92,6 +92,27 @@ export const ICON_CHEVRON_RIGHT = 'lucide:chevron-right';
 export const ICON_CHEVRON_DOWN = 'lucide:chevron-down';
 export const ICON_ARROW_LEFT = 'lucide:arrow-left';
 export const ICON_ARROW_RIGHT = 'lucide:arrow-right';
+export const ICON_PLUS = 'lucide:plus';
+export const ICON_CHECK_SIMPLE = 'lucide:check';
+export const ICON_ALERT_TRIANGLE = 'lucide:alert-triangle';
+export const ICON_MAP_PIN = 'lucide:map-pin';
+export const ICON_COPY = 'lucide:copy';
+export const ICON_BOOK_USER = 'lucide:book-user';
+export const ICON_LANGUAGES = 'lucide:languages';
+export const ICON_USER_LUCIDE = 'lucide:user';
+export const ICON_PLUS_CIRCLE = 'ph:plus-circle-bold';
+export const ICON_QUOTES = 'ph:quotes';
+export const ICON_VIDEO_CAMERA = 'ph:video-camera-bold';
+export const ICON_USER_BOLD = 'ph:user-bold';
+export const ICON_TRANSLATE = 'ph:translate-bold';
+export const ICON_HASHTAG = 'heroicons:hashtag';
+export const ICON_SAVE_FILLED = 'fluent:save-24-filled';
+export const ICON_LOADING = 'line-md:loading-twotone-loop';
+export const ICON_CALENDAR_LUCIDE = 'lucide:calendar';
+export const ICON_BRIEFCASE = 'lucide:briefcase';
+export const ICON_FILE_TEXT = 'lucide:file-text';
+export const ICON_CAMERA = 'lucide:camera';
+export const ICON_PENCIL = 'lucide:pencil';
 
 // Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;

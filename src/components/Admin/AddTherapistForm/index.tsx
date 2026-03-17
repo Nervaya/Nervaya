@@ -3,7 +3,18 @@
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { ICON_CHEVRON_LEFT, ICON_USER_PLUS } from '@/constants/icons';
+import {
+  ICON_CHEVRON_LEFT,
+  ICON_USER_PLUS,
+  ICON_USER_LUCIDE,
+  ICON_BRIEFCASE,
+  ICON_FILE_TEXT,
+  ICON_CAMERA,
+  ICON_CHECK_SIMPLE,
+  ICON_ARROW_LEFT,
+  ICON_ARROW_RIGHT,
+  ICON_PENCIL,
+} from '@/constants/icons';
 import { ADD_THERAPIST_BREADCRUMBS } from './formData';
 import { useAddTherapistForm } from './useAddTherapistForm';
 import { BasicInformationSection } from './sections/BasicInformationSection';
@@ -15,10 +26,10 @@ import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 const STEPS = [
-  { id: 1, label: 'Basic Info', icon: 'lucide:user' },
-  { id: 2, label: 'Professional', icon: 'lucide:briefcase' },
-  { id: 3, label: 'Content', icon: 'lucide:file-text' },
-  { id: 4, label: 'Pricing & Photo', icon: 'lucide:camera' },
+  { id: 1, label: 'Basic Info', icon: ICON_USER_LUCIDE },
+  { id: 2, label: 'Professional', icon: ICON_BRIEFCASE },
+  { id: 3, label: 'Content', icon: ICON_FILE_TEXT },
+  { id: 4, label: 'Pricing & Photo', icon: ICON_CAMERA },
 ];
 interface AddTherapistFormProps {
   initialData?: import('@/types/therapist.types').Therapist | null;
@@ -57,7 +68,7 @@ export default function AddTherapistForm({
     totalSteps,
   } = useAddTherapistForm(initialData, therapistId);
 
-  const icon = therapistId ? 'lucide:pencil' : ICON_USER_PLUS;
+  const icon = therapistId ? ICON_PENCIL : ICON_USER_PLUS;
 
   const renderCurrentStep = () => {
     switch (currentStep) {
@@ -133,7 +144,7 @@ export default function AddTherapistForm({
                 onClick={() => step.id < currentStep && setCurrentStep(step.id)}
               >
                 <div className={styles.stepCircle}>
-                  {currentStep > step.id ? <Icon icon="lucide:check" /> : <Icon icon={step.icon} />}
+                  {currentStep > step.id ? <Icon icon={ICON_CHECK_SIMPLE} /> : <Icon icon={step.icon} />}
                 </div>
                 <span className={styles.stepLabel}>{step.label}</span>
               </div>
@@ -155,7 +166,7 @@ export default function AddTherapistForm({
           <div className={styles.actionLeft}>
             {currentStep > 1 && (
               <button key="prev-button" type="button" onClick={prevStep} className={styles.navButton}>
-                <Icon icon="lucide:arrow-left" />
+                <Icon icon={ICON_ARROW_LEFT} />
                 <span>Previous</span>
               </button>
             )}
@@ -174,7 +185,7 @@ export default function AddTherapistForm({
                 className={`${styles.navButton} ${styles.primaryButton}`}
               >
                 <span>Continue</span>
-                <Icon icon="lucide:arrow-right" />
+                <Icon icon={ICON_ARROW_RIGHT} />
               </button>
             ) : (
               <button

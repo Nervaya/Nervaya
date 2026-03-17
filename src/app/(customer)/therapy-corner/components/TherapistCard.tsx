@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_PLAY } from '@/constants/icons';
+import { ICON_PLAY, ICON_VIDEO_CAMERA, ICON_USER_BOLD, ICON_TRANSLATE } from '@/constants/icons';
 import { Therapist } from '@/types/therapist.types';
 import { SpecializationMarquee } from './SpecializationMarquee';
 import styles from '../styles.module.css';
@@ -49,7 +49,7 @@ export function TherapistCard({
                   />
                 ) : (
                   <div className={styles.videoFallback}>
-                    <Icon icon="ph:video-camera-bold" width={32} />
+                    <Icon icon={ICON_VIDEO_CAMERA} width={32} />
                     <span>Intro Video</span>
                   </div>
                 )}
@@ -63,7 +63,7 @@ export function TherapistCard({
               <img src={therapist.image} alt={therapist.name} className={styles.mediaImage} />
             ) : (
               <div className={styles.videoFallback}>
-                <Icon icon="ph:user-bold" width={40} />
+                <Icon icon={ICON_USER_BOLD} width={40} />
                 <span>No Image</span>
               </div>
             )}
@@ -94,7 +94,7 @@ export function TherapistCard({
             </div>
           </div>
           <p className={styles.speaksLine}>
-            <Icon icon="ph:translate-bold" />
+            <Icon icon={ICON_TRANSLATE} />
             <span>{therapist.languages?.join(', ') || 'English'}</span>
           </p>
         </div>

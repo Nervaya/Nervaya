@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { ICON_CHEVRON_DOWN, ICON_CHECK_SIMPLE } from '@/constants/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './CustomDropdown.module.css';
 
@@ -53,7 +54,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
           {icon && <Icon icon={icon} className={styles.icon} />}
           <span className={styles.label}>{selectedOption ? selectedOption.label : placeholder}</span>
         </div>
-        <Icon icon="lucide:chevron-down" className={[styles.chevron, isOpen ? styles.chevronRotated : ''].join(' ')} />
+        <Icon icon={ICON_CHEVRON_DOWN} className={[styles.chevron, isOpen ? styles.chevronRotated : ''].join(' ')} />
       </button>
 
       <AnimatePresence>
@@ -79,7 +80,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
                   aria-selected={value === option.value}
                 >
                   {option.label}
-                  {value === option.value && <Icon icon="lucide:check" className={styles.checkIcon} />}
+                  {value === option.value && <Icon icon={ICON_CHECK_SIMPLE} className={styles.checkIcon} />}
                 </div>
               ))}
             </div>

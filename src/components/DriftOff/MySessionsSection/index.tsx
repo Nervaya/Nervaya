@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
+import { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
 import { Toaster, toast } from 'sonner';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import { ICON_PLUS_CIRCLE } from '@/constants/icons';
 import { LottieLoader, Pagination } from '@/components/common';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
@@ -154,7 +155,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
 
               <Link href="/drift-off/payment" className={styles.addSessionCard}>
                 <div className={styles.addIcon}>
-                  <Icon icon="ph:plus-circle-bold" width={48} height={48} />
+                  <Icon icon={ICON_PLUS_CIRCLE} width={48} height={48} />
                 </div>
                 <h3 className={styles.addTitle}>Need another session?</h3>
                 <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>

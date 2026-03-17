@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import { ICON_HEADPHONES } from '@/constants/icons';
 import styles from './styles.module.css';
 
 const WhatAreSection = () => {
   return (
     <div className={styles.whatAreCard}>
       <div className={styles.whatAreIcon} aria-hidden>
-        <Icon icon="solar:headphones-round-bold-duotone" />
+        <Icon icon={ICON_HEADPHONES} />
       </div>
       <div className={styles.whatAreContent}>
         <p className={styles.whatAreText}>

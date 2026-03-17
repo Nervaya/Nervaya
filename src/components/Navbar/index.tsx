@@ -5,13 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@iconify/react';
-import { ICON_USER } from '@/constants/icons';
+import { ICON_USER, ICON_CHEVRON_DOWN } from '@/constants/icons';
 import { NAVBAR_PRODUCTS_LINKS } from '@/utils/navbarConstants';
 import { useAuth } from '@/hooks/useAuth';
 import { hasRole } from '@/lib/constants/rbac';
 import { ROLES } from '@/lib/constants/roles';
 import { ROUTES, AUTH_ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
+import { Dropdown } from '@/components/common/Dropdown';
 
 const Navbar = () => {
   const { isAuthenticated, user } = useAuth();
@@ -20,28 +21,9 @@ const Navbar = () => {
 
   const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname);
 
-  const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrollDownStyleActive, setIsScrollDownStyleActive] = useState(false);
-  const productsDropdownRef = useRef<HTMLLIElement>(null);
   const lastScrollYRef = useRef(0);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (productsDropdownRef.current && !productsDropdownRef.current.contains(event.target as Node)) {
-        setIsProductsDropdownOpen(false);
-      }
-    };
-
-    if (isProductsDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isProductsDropdownOpen]);
-
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -57,7 +39,6 @@ const Navbar = () => {
   useEffect(() => {
     const closeMenus = () => {
       setIsMobileMenuOpen(false);
-      setIsProductsDropdownOpen(false);
     };
     const id = requestAnimationFrame(closeMenus);
     return () => cancelAnimationFrame(id);
@@ -90,7 +71,6 @@ const Navbar = () => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
-    setIsProductsDropdownOpen(false);
   };
 
   if (isAuthPage) {
@@ -139,27 +119,22 @@ const Navbar = () => {
             </Link>
           </li>
           {!isAdmin && (
-            <li className={styles.navbarDropdown} ref={productsDropdownRef}>
-              <button
-                className={styles.navbarDropdownButton}
-                onClick={() => setIsProductsDropdownOpen(!isProductsDropdownOpen)}
-                aria-expanded={isProductsDropdownOpen}
-                aria-haspopup="true"
-              >
-                Products
-                <span className={`${styles.dropdownArrow} ${isProductsDropdownOpen ? styles.arrowOpen : ''}`}>▼</span>
-              </button>
-              {isProductsDropdownOpen && (
-                <ul className={styles.dropdownMenu}>
-                  {NAVBAR_PRODUCTS_LINKS.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href} className={styles.dropdownItem} onClick={closeMobileMenu}>
-                        {link.text}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <li className={styles.navbarDropdown}>
+              <Dropdown
+                variant="navbar"
+                options={NAVBAR_PRODUCTS_LINKS.map((link) => ({
+                  label: link.text,
+                  value: link.href,
+                  href: link.href,
+                  onClick: closeMobileMenu,
+                }))}
+                trigger={
+                  <button className={styles.navbarDropdownButton}>
+                    Products
+                    <Icon icon={ICON_CHEVRON_DOWN} className={styles.dropdownArrow} width={16} height={16} />
+                  </button>
+                }
+              />
             </li>
           )}
           {!isAdmin && (

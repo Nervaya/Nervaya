@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_EYE, ICON_EYE_CLOSED } from '@/constants/icons';
+import { ICON_EYE, ICON_EYE_CLOSED, ICON_LOADING } from '@/constants/icons';
 import styles from './styles.module.css';
 
 import { AuthFormErrors } from '@/hooks/useAuthForm';
@@ -92,7 +92,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <button type="submit" className={styles.button} disabled={loading}>
           {loading ? (
             <div className={styles.loaderWrapper}>
-              <Icon icon="line-md:loading-twotone-loop" width={20} height={20} />
+              <Icon icon={ICON_LOADING} width={20} height={20} />
               <span>Logging in</span>
             </div>
           ) : (
