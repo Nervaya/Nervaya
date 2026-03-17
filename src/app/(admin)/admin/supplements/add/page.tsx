@@ -7,7 +7,7 @@ import SupplementForm from '@/components/Admin/SupplementForm';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 export default function AddSupplementPage() {
   const router = useRouter();

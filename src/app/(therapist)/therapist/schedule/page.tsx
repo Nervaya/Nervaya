@@ -4,11 +4,10 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import { useTherapist } from '@/context/TherapistContext';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function TherapistSchedulePage() {
   const router = useRouter();

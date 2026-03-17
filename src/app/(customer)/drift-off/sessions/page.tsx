@@ -1,7 +1,7 @@
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import MySessionsSection from '@/components/DriftOff/MySessionsSection';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function DriftOffSessionsPage() {

@@ -16,7 +16,7 @@ import {
   sidebarMenuGroups,
   sidebarBottomNavItems,
 } from '@/utils/sidebarConstants';
-import { RouteBreadcrumbs } from '@/components/common/Breadcrumbs';
+import { RouteBreadcrumbs } from '@/components/common';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
 

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import type { PromoCode } from '@/types/supplement.types';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import StatusState from '@/components/common/StatusState';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';

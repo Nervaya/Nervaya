@@ -6,7 +6,7 @@ import PlaylistSection from '@/components/DriftOff/PlaylistSection';
 import SupportCards from '@/components/DriftOff/SupportCards';
 import Testimonials from '@/components/DriftOff/Testimonials';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function DriftOffPage() {

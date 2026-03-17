@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Cart } from '@/types/supplement.types';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
 import { trackViewCart, trackBeginCheckout } from '@/utils/analytics';
 import styles from './styles.module.css';

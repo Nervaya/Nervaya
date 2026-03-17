@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_X } from '@/constants/icons';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { quillModules, quillFormats } from '@/lib/constants/blogEditor.constants';
 import styles from './styles.module.css';
 

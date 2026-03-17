@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import { blogsApi } from '@/lib/api/blogs';
 import { toast } from 'sonner';
 import styles from '../../add/styles.module.css';

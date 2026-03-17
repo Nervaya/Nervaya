@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
 import { blogsApi } from '@/lib/api/blogs';
@@ -10,7 +10,6 @@ import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 interface PaginationInfo {
   page: number;

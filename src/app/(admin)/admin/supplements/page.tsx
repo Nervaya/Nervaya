@@ -7,12 +7,11 @@ import SupplementList from '@/components/Admin/SupplementList';
 import SupplementModal from '@/components/Admin/SupplementModal';
 import SupplementFilters from '@/components/Admin/SupplementFilters';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import Pagination from '@/components/common/Pagination';
+import { Pagination, type BreadcrumbItem } from '@/components/common';
 import { useAdminSupplements } from '@/queries/supplements/useSupplements';
 import api from '@/lib/axios';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 import { toast } from 'sonner';
 
 function countActiveFilters(f: SupplementFiltersParams): number {

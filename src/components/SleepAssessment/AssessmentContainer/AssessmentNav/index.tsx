@@ -1,6 +1,6 @@
 'use client';
 
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 interface AssessmentNavProps {

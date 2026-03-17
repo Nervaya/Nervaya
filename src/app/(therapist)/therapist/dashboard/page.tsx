@@ -7,11 +7,10 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { useAuth } from '@/hooks/useAuth';
 import { useTherapist } from '@/context/TherapistContext';
-import { LottieLoader } from '@/components/common';
+import { LottieLoader, type BreadcrumbItem } from '@/components/common';
 import type { TherapistSession } from '@/lib/api/therapistApi';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 const SESSION_STATUS = {
   PENDING: 'pending',

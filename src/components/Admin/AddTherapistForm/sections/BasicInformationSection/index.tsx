@@ -1,7 +1,6 @@
 import { GENDER_OPTIONS } from '@/lib/utils/therapist.utils';
 import { FormSection } from '../FormSection';
-import { Dropdown } from '@/components/common';
-import type { DropdownOption } from '@/components/common/Dropdown/Dropdown';
+import { Dropdown, type DropdownOption } from '@/components/common';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
 import type { TherapistFormFieldsProps, TherapistFormChangeEvent } from '../../formData';

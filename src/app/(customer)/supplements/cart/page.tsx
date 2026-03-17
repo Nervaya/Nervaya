@@ -11,7 +11,7 @@ import Pagination from '@/components/common/Pagination';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { cartApi } from '@/lib/api/cart';
 import StatusState from '@/components/common/StatusState';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function CartPage() {

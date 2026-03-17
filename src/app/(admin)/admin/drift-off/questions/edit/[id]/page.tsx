@@ -6,8 +6,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X } from '@/constants/icons';
 import { driftOffQuestionsApi, type DriftOffQuestion } from '@/lib/api/driftOffQuestions';
-import LottieLoader from '@/components/common/LottieLoader';
-import { Dropdown } from '@/components/common';
+import { LottieLoader, Dropdown } from '@/components/common';
 import styles from './styles.module.css';
 
 type QuestionType = 'single_choice' | 'multiple_choice' | 'scale';

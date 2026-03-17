@@ -2,7 +2,7 @@ import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
 import type { TherapistFormFieldsProps } from '../../formData';
-import { TagInput } from '@/components/common/TagInput';
+import { TagInput } from '@/components/common';
 
 export function ProfessionalDetailsSection({
   formData,

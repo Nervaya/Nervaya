@@ -2,9 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import QuantitySelector from '@/components/common/QuantitySelector';
-import Button from '@/components/common/Button';
-import StarRating from '@/components/common/StarRating';
+import { QuantitySelector, Button, StarRating } from '@/components/common';
 import { formatPrice } from '@/utils/cart.util';
 import type { Supplement } from '@/types/supplement.types';
 import styles from './ProductInfo.module.css';

@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import StatusState from '@/components/common/StatusState';
-import LottieLoader from '@/components/common/LottieLoader';
+import { StatusState, LottieLoader, type BreadcrumbItem } from '@/components/common';
 import SupplementCatalog from '@/components/Supplements/SupplementCatalog';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
@@ -15,7 +14,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
 
 export default function SupplementsPage() {
   const router = useRouter();

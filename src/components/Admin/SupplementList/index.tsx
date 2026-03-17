@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import StatusState from '@/components/common/StatusState';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';

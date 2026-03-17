@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Supplement } from '@/types/supplement.types';
-import QuantitySelector from '@/components/common/QuantitySelector';
-import Button from '@/components/common/Button';
-import StarRating from '@/components/common/StarRating';
+import { QuantitySelector, Button, StarRating } from '@/components/common';
 import { formatPrice } from '@/utils/cart.util';
 import styles from './styles.module.css';
 

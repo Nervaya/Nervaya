@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import StarRating from '@/components/common/StarRating';
-import LottieLoader from '@/components/common/LottieLoader';
+import { StarRating, LottieLoader, StatusState } from '@/components/common';
 import ReviewCard from '../ReviewCard';
-import StatusState from '@/components/common/StatusState';
 import { IMAGES } from '@/utils/imageConstants';
 import { reviewsApi } from '@/lib/api/reviews';
 import type { Supplement, Review, StarDistribution } from '@/types/supplement.types';

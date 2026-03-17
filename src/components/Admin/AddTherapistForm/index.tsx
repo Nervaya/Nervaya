@@ -11,6 +11,7 @@ import { PricingMediaSection } from './sections/PricingMediaSection';
 import { ProfessionalDetailsSection } from './sections/ProfessionalDetailsSection';
 import { ProfileContentSection } from './sections/ProfileContentSection';
 import { ProfileImageSidebar } from './sections/ProfileImageSidebar';
+import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 const STEPS = [
@@ -25,7 +26,7 @@ interface AddTherapistFormProps {
   title?: string;
   subtitle?: string;
   submitLabel?: string;
-  breadcrumbs?: import('@/components/common/Breadcrumbs').BreadcrumbItem[];
+  breadcrumbs?: BreadcrumbItem[];
 }
 
 export default function AddTherapistForm({

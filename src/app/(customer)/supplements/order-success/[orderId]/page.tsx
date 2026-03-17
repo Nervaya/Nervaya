@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
 import { trackPurchase } from '@/utils/analytics';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });

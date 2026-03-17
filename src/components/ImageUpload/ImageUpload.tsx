@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { ICON_UPLOAD, ICON_X } from '@/constants/icons';
 import { uploadApi } from '@/lib/api/upload';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 interface ImageUploadProps {

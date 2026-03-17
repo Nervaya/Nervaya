@@ -14,7 +14,7 @@ import api from '@/lib/axios';
 import { AUTH_API } from '@/lib/constants/api.constants';
 import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { validatePassword } from '@/lib/utils/validation.util';
-import type { BreadcrumbItem } from '@/components/common/Breadcrumbs';
+import { type BreadcrumbItem } from '@/components/common';
 
 type TabType = 'settings' | 'orders' | 'sessions';
 

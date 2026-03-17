@@ -3,7 +3,7 @@
 import React from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementChip from '../SupplementChip';
-import LottieLoader from '@/components/common/LottieLoader';
+import { LottieLoader } from '@/components/common';
 import styles from './SupplementChipList.module.css';
 
 interface SupplementChipListProps {

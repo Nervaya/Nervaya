@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_LOCATION } from '@/constants/icons';
 import { ShippingAddress } from '@/types/supplement.types';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
+import { Input, Button } from '@/components/common';
 import styles from './styles.module.css';
 
 interface CheckoutFormProps {
