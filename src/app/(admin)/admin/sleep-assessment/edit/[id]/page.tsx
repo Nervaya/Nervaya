@@ -124,7 +124,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
         order: formData.order,
         isRequired: true,
         isActive: true,
-        options: optionsWithValue.map((o) => ({ value: o.value || o.label, label: o.label })),
+        options: optionsWithValue.map((o) => ({ id: o.id, value: o.value || o.label, label: o.label })),
       });
 
       if (!result.success) {

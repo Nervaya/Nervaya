@@ -74,7 +74,8 @@ export function formatExperienceYears(experience?: string): string {
   return normalized;
 }
 
-export function formatGender(value: string) {
+export function formatGender(value: string): string {
+  if (!value) return '';
   return value
     .split('_')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

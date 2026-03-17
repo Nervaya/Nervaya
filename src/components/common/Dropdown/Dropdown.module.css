@@ -9,31 +9,28 @@
   justify-content: space-between;
   gap: 0.5rem;
   width: 100%;
-  min-height: 2.25rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--color-glass-blur));
-  -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
-  font-size: 0.875rem;
-  color: var(--color-foreground);
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid #d9e2ee;
+  border-radius: 12px;
+  font-size: 0.94rem;
+  font-family: inherit;
+  color: #0f172a;
   cursor: pointer;
   outline: none;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .trigger:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--color-border-light-hover);
+  border-color: #cbd5e1;
 }
 
 .trigger:focus-visible {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25);
+  border: 2px solid #7c3aed;
+  padding-left: 11px;
+  padding-right: 11px;
 }
 
 .trigger:disabled {
