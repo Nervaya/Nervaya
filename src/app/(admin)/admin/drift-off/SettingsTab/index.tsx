@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { configApi } from '@/lib/api/config';
 import { LottieLoader } from '@/components/common';
 import { Icon } from '@iconify/react';
+import { ICON_LOADING, ICON_SAVE_FILLED } from '@/constants/icons';
 import type { ISystemConfig } from '@/types/systemConfig.types';
 import styles from './styles.module.css';
 
@@ -98,12 +99,12 @@ export default function SettingsTab() {
             <button type="submit" className={styles.saveBtn} disabled={saving}>
               {saving ? (
                 <>
-                  <Icon icon="line-md:loading-twotone-loop" className={styles.btnIcon} />
+                  <Icon icon={ICON_LOADING} className={styles.btnIcon} />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Icon icon="fluent:save-24-filled" className={styles.btnIcon} />
+                  <Icon icon={ICON_SAVE_FILLED} className={styles.btnIcon} />
                   Save Settings
                 </>
               )}

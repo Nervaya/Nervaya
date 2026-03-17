@@ -12,6 +12,7 @@ import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { getEmbedUrl } from '@/lib/utils/video.utils';
+import { ICON_QUOTES } from '@/constants/icons';
 
 export default function TherapistProfilePage() {
   const params = useParams<{ id: string }>();
@@ -243,7 +244,7 @@ export default function TherapistProfilePage() {
                     zIndex: 2,
                   }}
                 >
-                  <Icon icon="ph:quotes" style={{ color: '#a855f7', fontSize: '3.5rem', marginBottom: '-10px' }} />
+                  <Icon icon={ICON_QUOTES} style={{ color: '#a855f7', fontSize: '3.5rem', marginBottom: '-10px' }} />
 
                   <h2 style={{ margin: 0, color: '#7c3aed', fontSize: '1.25rem', fontWeight: 600 }}>Message to You</h2>
                 </div>
@@ -264,7 +265,7 @@ export default function TherapistProfilePage() {
                 </p>
 
                 <Icon
-                  icon="ph:quotes"
+                  icon={ICON_QUOTES}
                   style={{
                     position: 'absolute',
                     right: '10%',
@@ -338,7 +339,7 @@ export default function TherapistProfilePage() {
                         border: '1px solid rgba(216, 180, 254, 0.3)',
                       }}
                     >
-                      <Icon icon="ph:quotes" style={{ color: '#c084fc', fontSize: '3rem' }} />
+                      <Icon icon={ICON_QUOTES} style={{ color: '#c084fc', fontSize: '3rem' }} />
 
                       <p style={{ margin: 0, color: '#475569', lineHeight: '1.8', fontSize: '1.05rem', flex: 1 }}>
                         &quot;{testimonial.message}&quot;

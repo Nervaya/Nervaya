@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_X } from '@/constants/icons';
+import { ICON_X, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 import { CustomDropdown } from '@/components/common/CustomDropdown';
 import styles from '../styles.module.css';
 
@@ -57,7 +57,7 @@ export function FilterModal({
                 { value: '', label: 'All Languages' },
                 ...options.languages.map((lang) => ({ value: lang, label: lang })),
               ]}
-              icon="lucide:languages"
+              icon={ICON_LANGUAGES}
             />
           </div>
 
@@ -90,7 +90,7 @@ export function FilterModal({
               value={state.gender}
               onChange={(val) => onStateChange('gender', val)}
               options={[...options.genders.map((gender) => ({ value: gender, label: formatGender(gender) }))]}
-              icon="lucide:user"
+              icon={ICON_USER_LUCIDE}
             />
           </div>
         </div>

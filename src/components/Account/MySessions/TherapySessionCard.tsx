@@ -1,11 +1,9 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_CALENDAR, ICON_USER } from '@/constants/icons';
+import { ICON_CALENDAR, ICON_USER, ICON_HASHTAG, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
-
-const ICON_HASHTAG = 'heroicons:hashtag';
 
 interface TherapySessionCardProps {
   session: Session;
@@ -95,7 +93,7 @@ const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onView
           </button>
           {canReschedule && (
             <button className={styles.secondaryActionBtn}>
-              Reschedule Appointment <Icon icon="lucide:chevron-right" />
+              Reschedule Appointment <Icon icon={ICON_CHEVRON_RIGHT} />
             </button>
           )}
         </div>

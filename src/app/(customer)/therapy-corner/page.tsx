@@ -36,7 +36,7 @@ import { TherapistCard } from './components/TherapistCard';
 import { VideoPreviewModal } from './components/VideoPreviewModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { FilterModal } from './components/FilterModal';
-import { ICON_FILTER } from '@/constants/icons';
+import { ICON_FILTER, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 
 const FILTER_ALL = '';
 const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
@@ -236,7 +236,7 @@ export default function TherapyCornerPage() {
                 value={filterState.language}
                 onChange={(val) => handleFilterChange('language', val)}
                 options={filterOptions.languages.map((lang) => ({ value: lang, label: lang }))}
-                icon="lucide:languages"
+                icon={ICON_LANGUAGES}
               />
 
               <CustomDropdown
@@ -244,7 +244,7 @@ export default function TherapyCornerPage() {
                 value={filterState.gender}
                 onChange={(val) => handleFilterChange('gender', val)}
                 options={genderOptions.map((gender) => ({ value: gender, label: formatGender(gender) }))}
-                icon="lucide:user"
+                icon={ICON_USER_LUCIDE}
               />
 
               <input

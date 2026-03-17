@@ -4,6 +4,7 @@ import React from 'react';
 import { Order } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import { Icon } from '@iconify/react';
+import { ICON_CALENDAR_LUCIDE, ICON_HASHTAG, ICON_MAP_PIN, ICON_COPY, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface OrderCardProps {
@@ -37,7 +38,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails }) =>
         <div className={styles.infoChips}>
           <div className={styles.chip}>
             <div className={styles.chipIconWrapper}>
-              <Icon icon="lucide:calendar" className={styles.chipIcon} />
+              <Icon icon={ICON_CALENDAR_LUCIDE} className={styles.chipIcon} />
             </div>
             <div className={styles.chipText}>
               <span className={styles.chipLabel}>Order Date</span>
@@ -53,7 +54,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails }) =>
 
           <div className={styles.chip}>
             <div className={styles.chipIconWrapper}>
-              <Icon icon="heroicons:hashtag" className={styles.chipIcon} />
+              <Icon icon={ICON_HASHTAG} className={styles.chipIcon} />
             </div>
             <div className={styles.chipText}>
               <span className={styles.chipLabel}>Order ID</span>
@@ -63,14 +64,14 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails }) =>
 
           <div className={styles.chip}>
             <div className={styles.chipIconWrapper}>
-              <Icon icon="lucide:map-pin" className={styles.chipIcon} />
+              <Icon icon={ICON_MAP_PIN} className={styles.chipIcon} />
             </div>
             <div className={styles.chipText}>
               <span className={styles.chipLabel}>Tracking ID</span>
               <span className={styles.chipValue}>
                 {order._id.slice(-8)}
                 <button className={styles.copyBtn} aria-label="Copy tracking ID">
-                  <Icon icon="lucide:copy" />
+                  <Icon icon={ICON_COPY} />
                 </button>
               </span>
             </div>
@@ -79,7 +80,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails }) =>
 
         <div className={styles.orderActions}>
           <button onClick={() => onViewDetails(order)} className={styles.viewOrderLink}>
-            View Order Details <Icon icon="lucide:chevron-right" />
+            View Order Details <Icon icon={ICON_CHEVRON_RIGHT} />
           </button>
         </div>
       </div>
