@@ -1,12 +1,13 @@
 import type { ChangeEvent } from 'react';
 import { type BreadcrumbItem } from '@/components/common';
+import { GENDER, type Gender } from '@/lib/constants/enums';
 
 export interface TherapistFormData {
   name: string;
   email: string;
   qualifications: string;
   experience: string;
-  gender: 'male' | 'female' | 'other';
+  gender: Gender;
   languages: string;
   specializations: string;
   image: string;
@@ -38,7 +39,7 @@ export const INITIAL_THERAPIST_FORM_DATA: TherapistFormData = {
   email: '',
   qualifications: '',
   experience: '',
-  gender: 'other',
+  gender: GENDER.OTHER,
   languages: '',
   specializations: '',
   image: '',

@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
+import { GENDER, Gender } from '../constants/enums';
 
 export interface IConsultingHour {
   dayOfWeek: number;
@@ -13,7 +14,7 @@ export interface ITherapist extends Document {
   email?: string;
   qualifications: string[];
   experience: number;
-  gender: 'male' | 'female' | 'other';
+  gender: Gender;
   languages: string[];
   specializations: string[];
   image?: string;
@@ -68,8 +69,8 @@ const therapistSchema = new Schema<ITherapist>(
     },
     gender: {
       type: String,
-      enum: ['male', 'female', 'other'],
-      default: 'other',
+      enum: Object.values(GENDER),
+      default: GENDER.OTHER,
       required: [true, 'Gender is required'],
     },
     languages: {

@@ -1,9 +1,3 @@
-export const GENDER_OPTIONS = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-] as const;
-
 export function parseCommaSeparated(value: string): string[] {
   if (!value) return [];
   return value
