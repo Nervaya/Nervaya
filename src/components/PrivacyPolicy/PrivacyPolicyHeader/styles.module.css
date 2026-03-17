@@ -39,12 +39,7 @@
   letter-spacing: -0.02em;
   color: #1e293b;
   line-height: 1.2;
-  font-family:
-    'SF Pro Display',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: var(--font-heading);
 }
 
 @media (max-width: 768px) {
@@ -58,12 +53,7 @@
     margin-bottom: 12px;
     font-size: clamp(1.5rem, 5vw, 1.75rem);
     color: #1e293b;
-    font-family:
-      'SF Pro Display',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: var(--font-heading);
   }
 }
 
@@ -76,12 +66,7 @@
   margin-left: auto;
   margin-right: auto;
   font-weight: 600;
-  font-family:
-    'SF Pro Display',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 768px) {
@@ -96,12 +81,7 @@
     margin-bottom: 16px;
     font-size: clamp(0.75rem, 3vw, 0.875rem);
     color: #1e293b;
-    font-family:
-      'SF Pro Display',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: var(--font-sans);
   }
 }
 
@@ -112,23 +92,13 @@
   font-size: 0.875rem;
   color: #94a3b8;
   font-weight: 400;
-  font-family:
-    'SF Pro Text',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 480px) {
   .lastUpdated {
     font-size: 0.8125rem;
-    font-family:
-      'SF Pro Text',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: var(--font-sans);
   }
 }
 

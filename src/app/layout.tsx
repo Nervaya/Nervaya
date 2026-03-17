@@ -34,7 +34,7 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${outfit.variable} ${inter.variable}`}>
       <head>
         <Script id="data-layer-init" strategy="beforeInteractive">
           {`
@@ -51,10 +51,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body
-        className={`${outfit.variable} ${inter.variable}`}
-        style={{ '--bg-main': `url(${IMAGES.BACKGROUND_MAIN})` } as React.CSSProperties}
-      >
+      <body style={{ '--bg-main': `url(${IMAGES.BACKGROUND_MAIN})` } as React.CSSProperties}>
         <Providers>
           <BodyRouteClass />
           <EngagementTracker />
