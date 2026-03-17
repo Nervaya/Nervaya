@@ -11,6 +11,7 @@ import { Therapist } from '@/types/therapist.types';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
+import { getEmbedUrl } from '@/lib/utils/video.utils';
 
 export default function TherapistProfilePage() {
   const params = useParams<{ id: string }>();
@@ -45,6 +46,8 @@ export default function TherapistProfilePage() {
 
     void fetchTherapist();
   }, [therapistId]);
+
+  const embedUrl = therapist?.introVideoUrl ? getEmbedUrl(therapist.introVideoUrl) : null;
 
   return (
     <Sidebar className={styles.pageContentWhite}>
@@ -99,13 +102,23 @@ export default function TherapistProfilePage() {
                     margin: '0 auto',
                   }}
                 >
-                  {therapist.introVideoUrl ? (
+                  {embedUrl ? (
+                    <iframe
+                      src={embedUrl}
+                      title={`${therapist.name} - Intro Video`}
+                      style={{ width: '100%', height: '100%', border: 'none' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : therapist.introVideoUrl ? (
                     <video
                       controls
+                      src={therapist.introVideoUrl}
                       poster={therapist.introVideoThumbnail || therapist.image || ''}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     >
                       <source src={therapist.introVideoUrl} />
+                      Your browser does not support the video tag.
                     </video>
                   ) : therapist.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
