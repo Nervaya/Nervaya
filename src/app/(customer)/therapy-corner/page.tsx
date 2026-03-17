@@ -19,13 +19,7 @@ import { GENDER_OPTIONS } from '@/lib/constants/enums';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
-import {
-  getDateKey,
-  getNextAvailableSlotDateTime,
-  formatNextSlot,
-  formatExperienceYears,
-  formatGender,
-} from '@/utils/therapyUtils';
+import { getDateKey, getNextAvailableSlotDateTime, formatNextSlot, formatExperienceYears } from '@/utils/therapyUtils';
 import styles from './styles.module.css';
 
 export interface FilterState {
@@ -101,12 +95,11 @@ export default function TherapyCornerPage() {
   }, [allTherapists]);
 
   const genderOptions = useMemo<Option[]>(() => {
-    return filterOptions.genders.length > 0
-      ? filterOptions.genders.map((g) => {
-          const opt = GENDER_OPTIONS.find((o) => o.value === g);
-          return { value: g, label: opt ? opt.label : formatGender(g) };
-        })
-      : (GENDER_OPTIONS as unknown as Option[]);
+    const availableGenders = new Set(filterOptions.genders);
+    return GENDER_OPTIONS.filter((opt) => availableGenders.has(opt.value)).map((opt) => ({
+      value: opt.value,
+      label: opt.label,
+    }));
   }, [filterOptions.genders]);
 
   const hasActiveFilters = Boolean(
@@ -265,7 +258,7 @@ export default function TherapyCornerPage() {
 
             {hasActiveFilters && (
               <button type="button" className={styles.clearFiltersBtn} onClick={clearFilters}>
-                Clear Filters
+                Clear
               </button>
             )}
           </div>
@@ -334,7 +327,6 @@ export default function TherapyCornerPage() {
         onStateChange={(key, value) => setModalFilterState((prev) => ({ ...prev, [key]: value }))}
         onApply={applyFilters}
         onClear={clearFilters}
-        formatGender={formatGender}
       />
 
       <VideoPreviewModal therapist={videoPreviewTherapist} onClose={() => setVideoPreviewTherapist(null)} />

@@ -155,10 +155,9 @@
 }
 
 .clearFiltersBtn:hover {
-  background: var(--color-dashboard-bg);
-  border-color: var(--color-border-light-hover);
-  color: var(--color-text-primary);
-  transform: translateY(-1px);
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
 }
 
 .loadingContainer {
@@ -202,15 +201,13 @@
   padding: 0;
   overflow: hidden;
   box-shadow: var(--color-card-shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  transition: border-color 0.2s ease;
 }
 
 .therapistCard:hover {
-  transform: translateY(-4px);
   border-color: var(--color-accent);
-  box-shadow: var(--color-card-shadow-hover);
 }
 
 .cardBody {
@@ -557,7 +554,7 @@
   background: #ffffff;
   border-radius: 16px;
   border: 1px solid #d9e2f0;
-  box-shadow: 0 26px 48px rgba(2, 6, 23, 0.22);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.12);
   padding: 18px;
 }
 

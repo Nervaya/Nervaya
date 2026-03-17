@@ -56,7 +56,7 @@ export function Dropdown({
           <DropdownMenu.Content
             className={`${styles.content} ${variant === 'navbar' ? styles.navbarContent : ''}`}
             sideOffset={8}
-            align={variant === 'navbar' ? 'center' : 'start'}
+            align="start"
           >
             {variant === 'navbar' && <div className={styles.arrowPointer} />}
             {options.map((opt) => {

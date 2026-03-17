@@ -16,6 +16,7 @@ import {
   sidebarMenuGroups,
   sidebarBottomNavItems,
 } from '@/utils/sidebarConstants';
+import { ROLES } from '@/lib/constants/roles';
 import { RouteBreadcrumbs } from '@/components/common';
 import BottomNavigation from '@/components/BottomNavigation/BottomNavigation';
 import styles from './styles.module.css';
@@ -33,15 +34,17 @@ const Sidebar = ({
   hideGlobalBreadcrumbs?: boolean;
 }) => {
   const { cartCount } = useCart();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const pathname = usePathname();
 
   const { isCollapsed, isDesktop, toggleCollapsed } = useSidebar();
+  const role = user?.role;
 
-  const isAdminRoute = pathname.startsWith('/admin');
-  const isTherapistRoute = pathname.startsWith('/therapist');
-  const menuGroups = isAdminRoute ? adminMenuGroups : isTherapistRoute ? therapistMenuGroups : sidebarMenuGroups;
-  const bottomNavItems = isAdminRoute || isTherapistRoute ? [] : sidebarBottomNavItems;
+  const isAdmin = role === ROLES.ADMIN;
+  const isTherapist = role === ROLES.THERAPIST;
+
+  const menuGroups = isAdmin ? adminMenuGroups : isTherapist ? therapistMenuGroups : sidebarMenuGroups;
+  const bottomNavItems = isAdmin || isTherapist ? [] : sidebarBottomNavItems;
   const expandedWidth = 240;
   const collapsedWidth = 72;
   const sidebarWidth = isDesktop ? (isCollapsed ? collapsedWidth : expandedWidth) : 240;

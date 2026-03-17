@@ -20,7 +20,6 @@ interface FilterModalProps {
   onStateChange: (key: keyof FilterState, value: FilterState[keyof FilterState]) => void;
   onApply: () => void;
   onClear: () => void;
-  formatGender: (gender: string) => string;
 }
 
 export function FilterModal({ isOpen, onClose, options, state, onStateChange, onApply, onClear }: FilterModalProps) {
@@ -38,6 +37,16 @@ export function FilterModal({ isOpen, onClose, options, state, onStateChange, on
 
         <div className={styles.filterFields}>
           <div className={styles.filterField}>
+            <span>Qualification</span>
+            <MultiSelect
+              placeholder="Select Qualifications"
+              values={state.specialization}
+              onChange={(vals) => onStateChange('specialization', vals)}
+              options={options.specializations.map((spec) => ({ value: spec, label: spec }))}
+            />
+          </div>
+
+          <div className={styles.filterField}>
             <span>Language</span>
             <CustomDropdown
               placeholder="All Languages"
@@ -52,12 +61,13 @@ export function FilterModal({ isOpen, onClose, options, state, onStateChange, on
           </div>
 
           <div className={styles.filterField}>
-            <span>Qualification</span>
-            <MultiSelect
-              placeholder="Select Qualifications"
-              values={state.specialization}
-              onChange={(vals) => onStateChange('specialization', vals)}
-              options={options.specializations.map((spec) => ({ value: spec, label: spec }))}
+            <span>Gender</span>
+            <CustomDropdown
+              placeholder="Any Gender"
+              value={state.gender}
+              onChange={(val) => onStateChange('gender', val)}
+              options={options.genders}
+              icon={ICON_USER_LUCIDE}
             />
           </div>
 
@@ -70,17 +80,6 @@ export function FilterModal({ isOpen, onClose, options, state, onStateChange, on
               onChange={(e) => onStateChange('minExperience', e.target.value)}
               className={styles.modalNumericInput}
               placeholder="e.g. 5"
-            />
-          </div>
-
-          <div className={styles.filterField}>
-            <span>Gender</span>
-            <CustomDropdown
-              placeholder="Any Gender"
-              value={state.gender}
-              onChange={(val) => onStateChange('gender', val)}
-              options={options.genders}
-              icon={ICON_USER_LUCIDE}
             />
           </div>
         </div>

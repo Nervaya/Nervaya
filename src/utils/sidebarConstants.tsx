@@ -17,7 +17,6 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
-      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
     ],
   },
   {
@@ -32,8 +31,11 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     ],
   },
   {
-    title: 'SUPPLEMENTS',
-    items: [{ title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' }],
+    title: 'SHOP',
+    items: [
+      { title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' },
+      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
+    ],
   },
   {
     title: 'HELP',

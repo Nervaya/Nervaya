@@ -73,6 +73,8 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const isProfessional = isAdmin || hasRole(user, ROLES.THERAPIST);
+
   if (isAuthPage) {
     return (
       <nav className={`${styles.navbar} ${styles.navbarAuthPage}`} aria-label="Site navigation">
@@ -113,12 +115,14 @@ const Navbar = () => {
         {isMobileMenuOpen && <div className={styles.mobileOverlay} onClick={closeMobileMenu}></div>}
 
         <ul className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}>
-          <li>
-            <Link href="/" onClick={closeMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
-              Home
-            </Link>
-          </li>
-          {!isAdmin && (
+          {!isProfessional && (
+            <li>
+              <Link href="/" onClick={closeMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
+                Home
+              </Link>
+            </li>
+          )}
+          {!isProfessional && (
             <li className={styles.navbarDropdown}>
               <Dropdown
                 variant="navbar"
@@ -137,7 +141,7 @@ const Navbar = () => {
               />
             </li>
           )}
-          {!isAdmin && (
+          {!isProfessional && (
             <li>
               <Link
                 href="/blog"
@@ -148,15 +152,17 @@ const Navbar = () => {
               </Link>
             </li>
           )}
-          <li>
-            <Link
-              href="/about-us"
-              onClick={closeMobileMenu}
-              aria-current={pathname === '/about-us' ? 'page' : undefined}
-            >
-              About Us
-            </Link>
-          </li>
+          {!isProfessional && (
+            <li>
+              <Link
+                href="/about-us"
+                onClick={closeMobileMenu}
+                aria-current={pathname === '/about-us' ? 'page' : undefined}
+              >
+                About Us
+              </Link>
+            </li>
+          )}
 
           {isAuthenticated ? (
             <li>

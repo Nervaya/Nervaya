@@ -44,43 +44,45 @@ export default function SleepAssessmentPage() {
 
   return (
     <Sidebar hideGlobalBreadcrumbs>
-      <div className={containerStyles.container}>
-        <PageHeader
-          title="Sleep Assessment"
-          subtitle="Evaluate your sleep quality and get personalized recommendations"
-          breadcrumbs={breadcrumbs}
-        />
-        {isLoading && (
-          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} />
-          </div>
-        )}
-
-        {error && !isLoading && (
-          <div className={styles.errorContainer}>
-            <div className={styles.errorIcon}>
-              <Icon icon={ICON_ALERT} aria-hidden />
+      <div className={styles.pageContainer}>
+        <div className={containerStyles.container}>
+          <PageHeader
+            title="Sleep Assessment"
+            subtitle="Evaluate your sleep quality and get personalized recommendations"
+            breadcrumbs={breadcrumbs}
+          />
+          {isLoading && (
+            <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
+              <LottieLoader width={200} height={200} />
             </div>
-            <p className={styles.errorText}>{error}</p>
-            <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
-              Try Again
-            </button>
-          </div>
-        )}
+          )}
 
-        {!isLoading && !error && questions.length === 0 && (
-          <div className={styles.emptyContainer}>
-            <div className={styles.emptyIcon}>
-              <Icon icon={ICON_DOCUMENT} aria-hidden />
+          {error && !isLoading && (
+            <div className={styles.errorContainer}>
+              <div className={styles.errorIcon}>
+                <Icon icon={ICON_ALERT} aria-hidden />
+              </div>
+              <p className={styles.errorText}>{error}</p>
+              <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
+                Try Again
+              </button>
             </div>
-            <h2 className={styles.emptyTitle}>No Questions Available</h2>
-            <p className={styles.emptyText}>
-              The sleep assessment is currently being updated. Please check back later.
-            </p>
-          </div>
-        )}
+          )}
 
-        {!isLoading && !error && questions.length > 0 && <AssessmentContainer questions={questions} />}
+          {!isLoading && !error && questions.length === 0 && (
+            <div className={styles.emptyContainer}>
+              <div className={styles.emptyIcon}>
+                <Icon icon={ICON_DOCUMENT} aria-hidden />
+              </div>
+              <h2 className={styles.emptyTitle}>No Questions Available</h2>
+              <p className={styles.emptyText}>
+                The sleep assessment is currently being updated. Please check back later.
+              </p>
+            </div>
+          )}
+
+          {!isLoading && !error && questions.length > 0 && <AssessmentContainer questions={questions} />}
+        </div>
       </div>
     </Sidebar>
   );

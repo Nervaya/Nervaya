@@ -11,17 +11,20 @@ import { primaryNavItems, moreNavItems, type BottomNavItem } from '@/utils/botto
 import { AUTH_ROUTES } from '@/utils/routesConstants';
 import { iconMap } from '@/utils/sidebarConstants';
 import { checkIsActivePath } from '@/utils/navigationUtils';
+import { hasRole } from '@/lib/constants/rbac';
+import { ROLES } from '@/lib/constants/roles';
 import styles from './BottomNavigation.module.css';
 
 const BottomNavigation = () => {
   const pathname = usePathname();
   const { cartCount } = useCart();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const [isMoreOpen, setIsMoreOpen] = useState(false);
 
+  const isProfessional = hasRole(user, ROLES.ADMIN) || hasRole(user, ROLES.THERAPIST);
   const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname as string);
 
-  if (isAuthPage) {
+  if (isAuthPage || isProfessional) {
     return null;
   }
 
