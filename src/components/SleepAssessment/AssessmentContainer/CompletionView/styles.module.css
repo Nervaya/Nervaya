@@ -7,33 +7,32 @@
 }
 
 .heroCard {
-  border-radius: 24px;
-  border: 2px solid transparent;
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(167, 139, 250, 0.1), rgba(124, 58, 237, 0.4)) border-box;
-  background-size: 200% 200%;
-  animation: borderGlow 6s linear infinite;
-  padding: 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02),
-    0 0 40px rgba(124, 58, 237, 0.03);
+    0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
   position: relative;
   overflow: hidden;
+  border-left-width: 6px;
+  transition: transform 0.3s ease;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center, rgba(124, 58, 237, 0.02) 0%, transparent 70%);
-    pointer-events: none;
+  &.mild {
+    border-left-color: #22c55e;
+    background: linear-gradient(to right, rgba(34, 197, 94, 0.02), #ffffff);
+  }
+  &.moderate {
+    border-left-color: #eab308;
+    background: linear-gradient(to right, rgba(234, 179, 8, 0.02), #ffffff);
+  }
+  &.severe {
+    border-left-color: #ef4444;
+    background: linear-gradient(to right, rgba(239, 68, 68, 0.02), #ffffff);
   }
 
   .heroHeader {
@@ -46,44 +45,38 @@
     z-index: 1;
   }
 
-  &.mild {
-    border-color: rgba(34, 197, 94, 0.2);
-  }
-  &.moderate {
-    border-color: rgba(234, 179, 8, 0.2);
-  }
-  &.severe {
-    border-color: rgba(239, 68, 68, 0.2);
-  }
-
   .scoreRow {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
 
     .scoreLabel {
       color: #64748b;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 500;
     }
 
     .scoreBadge {
-      height: 32px;
+      height: 28px;
       display: inline-flex;
       align-items: center;
-      padding: 0 16px;
-      border-radius: var(--radius-button, 8px);
-      background: var(--accent, #7c3aed);
+      padding: 0 12px;
+      border-radius: 20px;
+      background: #7c3aed;
       color: #ffffff;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
-      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
   }
 
   .scoreMetric {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
     text-align: right;
+    justify-content: flex-end;
 
     .metricValue {
       font-size: 2.5rem;
@@ -93,11 +86,12 @@
     }
 
     .metricLabel {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #94a3b8;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       font-weight: 600;
+      white-space: nowrap;
     }
   }
 
@@ -180,12 +174,16 @@
     }
 
     &::before {
-      content: '✦';
+      content: '';
       position: absolute;
-      left: 18px;
-      top: 16px;
-      color: #7c3aed;
-      font-size: 1.2rem;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
     }
   }
 }
@@ -200,20 +198,20 @@
 
   .card {
     border-radius: var(--radius-button, 8px);
-    border: 1px solid #f1f5f9;
+    border: 1px solid #e2e8f0;
     background: #ffffff;
-    padding: 24px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    min-height: 240px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 20px;
+    min-height: 260px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-      border-color: rgba(124, 58, 237, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+      border-color: #7c3aed;
     }
 
     .cardTop {

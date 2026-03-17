@@ -1,21 +1,27 @@
 import { useState, useEffect, RefObject } from 'react';
-import { PRIVACY_POLICY_SECTIONS, DEFAULT_PRIVACY_POLICY_SECTION } from '@/utils/privacyPolicyConstants';
 
 interface UsePrivacyPolicyScrollProps {
   isMobile: boolean;
   scrollLockRef: RefObject<{ current: boolean }>;
+  sectionIds: string[];
+  defaultSection: string;
 }
 
 export interface ScrollLockRef {
   current: boolean;
 }
 
-export const usePrivacyPolicyScroll = ({ isMobile, scrollLockRef }: UsePrivacyPolicyScrollProps) => {
+export const usePrivacyPolicyScroll = ({
+  isMobile,
+  scrollLockRef,
+  sectionIds,
+  defaultSection,
+}: UsePrivacyPolicyScrollProps) => {
   const [activeSection, setActiveSection] = useState<string>(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       return '';
     }
-    return DEFAULT_PRIVACY_POLICY_SECTION;
+    return defaultSection;
   });
 
   useEffect(() => {
@@ -23,7 +29,7 @@ export const usePrivacyPolicyScroll = ({ isMobile, scrollLockRef }: UsePrivacyPo
       return;
     }
 
-    const sections = [...PRIVACY_POLICY_SECTIONS];
+    const sections = [...sectionIds];
 
     let ticking = false;
     let lastActiveSection = sections[0];
@@ -138,7 +144,7 @@ export const usePrivacyPolicyScroll = ({ isMobile, scrollLockRef }: UsePrivacyPo
       clearTimeout(initialCheck);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isMobile, scrollLockRef]);
+  }, [isMobile, scrollLockRef, sectionIds, defaultSection]);
 
   return { activeSection, setActiveSection };
 };

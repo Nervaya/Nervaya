@@ -1,15 +1,40 @@
 import { memo, useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { SectionContent as SectionContentType, GridItem, Subsection } from '@/utils/privacyPolicyData';
+import { GridItem } from '@/utils/deliveryPolicyData';
 import styles from './styles.module.css';
 
+interface ContactItem {
+  icon: string;
+  label: string;
+  text: string;
+  href?: string;
+}
+
+interface InternalSubsection {
+  title: string;
+  paragraph?: string;
+  listItems?: { label?: string; text: string }[];
+  gridItems?: GridItem[];
+  cookieCards?: GridItem[];
+}
+
+interface InternalSectionContent {
+  paragraphs?: string[];
+  subsections?: InternalSubsection[];
+  gridItems?: GridItem[];
+  securityCards?: GridItem[];
+  cookieCards?: GridItem[];
+  rightsCards?: GridItem[];
+  contactItems?: ContactItem[];
+}
+
 interface SectionContentProps {
-  content: SectionContentType;
+  content: InternalSectionContent;
 }
 
 const SectionContent = memo(({ content }: SectionContentProps) => {
   const paragraphs = useMemo(() => {
-    return content.paragraphs?.map((paragraph) => {
+    return content.paragraphs?.map((paragraph: string) => {
       const keyBase = paragraph.substring(0, 50).replace(/\s+/g, '-');
       return (
         <p key={`paragraph-${keyBase}-${paragraph.length}`} className={styles.paragraph}>
@@ -20,14 +45,14 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   }, [content.paragraphs]);
 
   const subsections = useMemo(() => {
-    return content.subsections?.map((subsection: Subsection) => {
+    return content.subsections?.map((subsection: InternalSubsection) => {
       return (
         <div key={`subsection-${subsection.title}`} className={styles.subsection}>
           <h3 className={styles.subsectionTitle}>{subsection.title}</h3>
           {subsection.paragraph && <p className={styles.paragraph}>{subsection.paragraph}</p>}
           {subsection.listItems && (
             <ul className={styles.list}>
-              {subsection.listItems.map((item) => (
+              {subsection.listItems.map((item: { label?: string; text: string }) => (
                 <li key={`${subsection.title}-${item.label}-${item.text}`}>
                   <strong>{item.label}</strong> {item.text}
                 </li>
@@ -89,7 +114,7 @@ const SectionContent = memo(({ content }: SectionContentProps) => {
   }, [content.rightsCards]);
 
   const contactItems = useMemo(() => {
-    return content.contactItems?.map((item) => (
+    return content.contactItems?.map((item: ContactItem) => (
       <div key={`contact-${item.label}`} className={styles.contactItem}>
         <div className={styles.contactIcon}>
           <Icon icon={item.icon} width={20} height={20} color="white" />

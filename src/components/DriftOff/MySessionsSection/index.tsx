@@ -11,8 +11,8 @@ import type { IDriftOffResponse } from '@/types/driftOff.types';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { SessionCard } from './SessionCard';
 import { EmptySessions } from './EmptySessions';
-import { sortSessionsByDate } from './sessionUtils';
-import styles from './styles.module.css';
+import { sortSessionsByDate } from './SessionUtils';
+import styles from './MySessionsSection.module.css';
 
 const emptySubscribe = () => () => {};
 const getClient = () => true;
@@ -28,8 +28,6 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [requestingResponseId, setRequestingResponseId] = useState<string | null>(null);
-  const [requestErrors, setRequestErrors] = useState<Record<string, string>>({});
 
   const loadResponses = useCallback(async () => {
     try {
@@ -46,58 +44,6 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
       toast.error('Failed to load your sessions. Please try again.');
     } finally {
       setIsLoading(false);
-    }
-  }, []);
-
-  const handleRequestReSession = useCallback(async (responseId: string) => {
-    let previousResponse: IDriftOffResponse | undefined;
-
-    try {
-      setRequestingResponseId(responseId);
-      setRequestErrors((prev) => {
-        const next = { ...prev };
-        delete next[responseId];
-        return next;
-      });
-      setResponses((prev) => {
-        previousResponse = prev.find((response) => response._id === responseId);
-
-        return sortSessionsByDate(
-          prev.map((response) =>
-            response._id === responseId
-              ? {
-                  ...response,
-                  reSessionRequestedAt: new Date(),
-                  reSessionResolvedAt: null,
-                }
-              : response,
-          ),
-        );
-      });
-
-      const res = await driftOffApi.requestReSession(responseId);
-      if (!res.success || !res.data) {
-        throw new Error(res.message || 'Failed to request a re-session');
-      }
-
-      setResponses((prev) =>
-        sortSessionsByDate(
-          prev.map((response) => (response._id === responseId ? { ...response, ...res.data } : response)),
-        ),
-      );
-      toast.success('Re-session requested. We’ll notify you when your new session is ready.');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to request a re-session';
-      setRequestErrors((prev) => ({ ...prev, [responseId]: message }));
-      toast.error(message);
-      const restoredResponse = previousResponse;
-      if (restoredResponse) {
-        setResponses((prev) =>
-          sortSessionsByDate(prev.map((response) => (response._id === responseId ? restoredResponse : response))),
-        );
-      }
-    } finally {
-      setRequestingResponseId(null);
     }
   }, []);
 
@@ -147,20 +93,21 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
                   key={session._id}
                   session={session}
                   hasMounted={hasMounted}
-                  isRequesting={requestingResponseId === session._id}
-                  requestError={requestErrors[session._id]}
-                  onRequestReSession={handleRequestReSession}
+                  isRequesting={false}
+                  requestError={undefined}
                 />
               ))}
 
-              <Link href="/drift-off/payment" className={styles.addSessionCard}>
-                <div className={styles.addIcon}>
-                  <Icon icon={ICON_PLUS_CIRCLE} width={48} height={48} />
-                </div>
-                <h3 className={styles.addTitle}>Need another session?</h3>
-                <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>
-                <div className={styles.btnRectangle}>Buy New Session</div>
-              </Link>
+              {responses.length > 0 && (
+                <Link href="/drift-off/payment" className={styles.addSessionCard}>
+                  <div className={styles.addIcon}>
+                    <Icon icon={ICON_PLUS_CIRCLE} width={48} height={48} />
+                  </div>
+                  <h3 className={styles.addTitle}>Need another session?</h3>
+                  <p className={styles.addText}>Every session is uniquely crafted for your current state.</p>
+                  <div className={styles.btnRectangle}>Buy New Session</div>
+                </Link>
+              )}
             </div>
 
             <div className={styles.paginationWrapper}>

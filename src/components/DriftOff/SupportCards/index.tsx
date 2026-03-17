@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_CHAT } from '@/constants/icons';
 import styles from './styles.module.css';
@@ -15,7 +16,9 @@ const SupportCards = () => {
             <p className={styles.cardParagraph}>You can request for an additional session free of charge</p>
           </div>
         </div>
-        <button className={styles.supportButton}>Request Re-Session</button>
+        <Link href="/drift-off/sessions" className={styles.supportButton}>
+          Request Re-Session
+        </Link>
       </div>
 
       <div className={styles.supportCard}>

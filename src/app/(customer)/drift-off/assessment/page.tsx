@@ -18,6 +18,7 @@ export default function DriftOffAssessmentPage() {
 
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [initialAnswers, setInitialAnswers] = useState<IDriftOffAnswer[]>([]);
+  const [responseId, setResponseId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -83,18 +84,22 @@ export default function DriftOffAssessmentPage() {
         try {
           const responseRes = await axiosInstance.get<
             unknown,
-            ApiResponse<{ completedAt?: string; answers?: IDriftOffAnswer[] }>
+            ApiResponse<{ _id: string; completedAt?: string; answers?: IDriftOffAnswer[] }>
           >(`/drift-off/responses/order/${orderIdToLoad}`);
 
-          if (responseRes.success && responseRes.data?.completedAt) {
+          const isReSessionMode = searchParams.get('mode') === 're-session';
+
+          if (responseRes.success && responseRes.data?.completedAt && !isReSessionMode) {
             hasCheckedRedirectsRef.current = true;
             router.replace('/drift-off/sessions');
             return;
           }
 
           setInitialAnswers(responseRes.data?.answers || []);
+          setResponseId(responseRes.data?._id || null);
         } catch {
           setInitialAnswers([]);
+          setResponseId(null);
         }
         hasCheckedRedirectsRef.current = true;
 
@@ -112,7 +117,7 @@ export default function DriftOffAssessmentPage() {
         setIsRedirecting(false);
       }
     },
-    [router, fetchQuestionsWithRetry],
+    [router, fetchQuestionsWithRetry, searchParams],
   );
 
   const loadData = useCallback(async () => {
@@ -188,6 +193,8 @@ export default function DriftOffAssessmentPage() {
             questions={questions}
             driftOffOrderId={orderId}
             initialAnswers={initialAnswers}
+            responseId={responseId}
+            isReSession={searchParams.get('mode') === 're-session'}
           />
         )}
       </div>

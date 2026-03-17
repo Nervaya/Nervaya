@@ -27,6 +27,8 @@ export function useDriftOffAssessmentState(
   questions: ISleepAssessmentQuestion[],
   driftOffOrderId: string,
   initialAnswers: IDriftOffAnswer[] = [],
+  isReSession = false,
+  responseId: string | null = null,
 ): UseDriftOffAssessmentResult {
   const hydratedInitialAnswersRef = useRef(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -83,18 +85,22 @@ export function useDriftOffAssessmentState(
       });
 
       if (!hydratedInitialAnswersRef.current) {
-        const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id) && !hydrated.has(q.questionId));
-        if (firstUnanswered >= 0) {
-          setCurrentQuestionIndex(firstUnanswered);
-        } else if (questions.length > 0) {
-          // If all are answered but not complete, go to the last question
-          setCurrentQuestionIndex(questions.length - 1);
+        if (isReSession) {
+          setCurrentQuestionIndex(0);
+        } else {
+          const firstUnanswered = questions.findIndex((q) => !hydrated.has(q._id) && !hydrated.has(q.questionId));
+          if (firstUnanswered >= 0) {
+            setCurrentQuestionIndex(firstUnanswered);
+          } else if (questions.length > 0) {
+            // If all are answered but not complete, go to the last question
+            setCurrentQuestionIndex(questions.length - 1);
+          }
         }
         hydratedInitialAnswersRef.current = true;
       }
     }
     setIsHydrated(true);
-  }, [questions, initialAnswers]);
+  }, [questions, initialAnswers, isReSession]);
 
   const handleAnswerChange = useCallback(
     (answer: string | string[]) => {
@@ -129,7 +135,11 @@ export function useDriftOffAssessmentState(
         });
       }
       if (isLastQuestion) {
-        await driftOffApi.completeAssessment(driftOffOrderId);
+        if (isReSession && responseId) {
+          await driftOffApi.requestReSession(responseId);
+        } else {
+          await driftOffApi.completeAssessment(driftOffOrderId);
+        }
         setIsComplete(true);
       } else {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
@@ -139,7 +149,16 @@ export function useDriftOffAssessmentState(
     } finally {
       setIsSubmitting(false);
     }
-  }, [canProceed, currentQuestion, currentAnswer, isLastQuestion, totalQuestions, driftOffOrderId]);
+  }, [
+    canProceed,
+    currentQuestion,
+    currentAnswer,
+    isLastQuestion,
+    totalQuestions,
+    driftOffOrderId,
+    isReSession,
+    responseId,
+  ]);
 
   const handlePrevious = useCallback(() => {
     if (isFirstQuestion) return;

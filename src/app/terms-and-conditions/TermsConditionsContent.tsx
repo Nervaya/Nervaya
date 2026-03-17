@@ -6,13 +6,14 @@ import PrivacyPolicyTOC from '@/components/PrivacyPolicy/PrivacyPolicyTOC';
 import PrivacyPolicySection from '@/components/PrivacyPolicy/PrivacyPolicySection';
 import SectionContent from '@/components/PrivacyPolicy/PrivacyPolicySections/SectionContent';
 import PrivacyPolicyDisclaimer from '@/components/PrivacyPolicy/PrivacyPolicyDisclaimer';
-import { privacySections, tocItems } from '@/utils/privacyPolicyData';
-import { PRIVACY_POLICY_SECTIONS, DEFAULT_PRIVACY_POLICY_SECTION } from '@/utils/privacyPolicyConstants';
+import { termsSections, tocItems } from '@/utils/termsPolicyData';
+import { PrivacySection } from '@/utils/privacyPolicyData';
+import { TERMS_POLICY_SECTIONS, DEFAULT_TERMS_POLICY_SECTION } from '@/utils/termsPolicyConstants';
 import { usePrivacyPolicyScroll } from '@/hooks/usePrivacyPolicyScroll';
-import styles from './privacy-policy.module.css';
+import styles from '../privacy-policy/privacy-policy.module.css';
 
-const PrivacyPolicy = () => {
-  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['introduction']));
+const TermsConditionsContent = () => {
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['introduction', 'definitions']));
   const [isMobile, setIsMobile] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth <= 768;
@@ -24,8 +25,8 @@ const PrivacyPolicy = () => {
   const { activeSection, setActiveSection } = usePrivacyPolicyScroll({
     isMobile,
     scrollLockRef,
-    sectionIds: PRIVACY_POLICY_SECTIONS as unknown as string[],
-    defaultSection: DEFAULT_PRIVACY_POLICY_SECTION,
+    sectionIds: TERMS_POLICY_SECTIONS as unknown as string[],
+    defaultSection: DEFAULT_TERMS_POLICY_SECTION,
   });
 
   useEffect(() => {
@@ -95,14 +96,14 @@ const PrivacyPolicy = () => {
 
   const sectionToggleHandlers = useMemo(() => {
     const handlers: Record<string, () => void> = {};
-    privacySections.forEach((section) => {
+    termsSections.forEach((section) => {
       handlers[section.id] = () => toggleSection(section.id);
     });
     return handlers;
   }, [toggleSection]);
 
   const sectionsWithState = useMemo(() => {
-    return privacySections.map((section) => ({
+    return termsSections.map((section) => ({
       ...section,
       isOpen: openSections.has(section.id),
     }));
@@ -110,7 +111,10 @@ const PrivacyPolicy = () => {
 
   return (
     <div className={styles.container}>
-      <PrivacyPolicyHeader />
+      <PrivacyPolicyHeader
+        title="Terms & Conditions"
+        subtitle="Welcome to NERVAYA. These Terms govern your use of our platform and services."
+      />
 
       <div className={styles.mainContent}>
         <PrivacyPolicyTOC
@@ -124,7 +128,7 @@ const PrivacyPolicy = () => {
           {sectionsWithState.map((section) => (
             <PrivacyPolicySection
               key={section.id}
-              section={section}
+              section={section as unknown as PrivacySection}
               isOpen={section.isOpen}
               onToggle={sectionToggleHandlers[section.id]}
             >
@@ -139,4 +143,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default TermsConditionsContent;

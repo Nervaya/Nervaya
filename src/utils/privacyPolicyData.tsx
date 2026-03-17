@@ -1,25 +1,17 @@
 import {
   ICON_HANDSHAKE,
-  ICON_CALENDAR,
-  ICON_CREDIT_CARD,
   ICON_CHAT,
   ICON_CHART,
   ICON_GAVEL,
   ICON_LOCK,
   ICON_SHIELD_USER,
   ICON_CLIPBOARD,
-  ICON_DATABASE,
   ICON_COOKIE,
   ICON_CHART_SIMPLE,
   ICON_SETTINGS,
-  ICON_EYE,
-  ICON_PEN,
-  ICON_TRASH,
-  ICON_DOWNLOAD,
-  ICON_BAN,
-  ICON_PAUSE,
   ICON_PHONE,
-  ICON_LOCATION,
+  ICON_BELL,
+  ICON_ALERT,
 } from '@/constants/icons';
 
 export interface TOCItem {
@@ -29,7 +21,7 @@ export interface TOCItem {
 }
 
 export interface ListItem {
-  label: string;
+  label?: string;
   text: string;
 }
 
@@ -72,10 +64,13 @@ export const tocItems: TOCItem[] = [
   { id: 'introduction', number: '01', title: 'Introduction' },
   { id: 'information-collect', number: '02', title: 'Information We Collect' },
   { id: 'how-we-use', number: '03', title: 'How We Use Your Data' },
-  { id: 'data-protection', number: '04', title: 'Data Protection' },
-  { id: 'cookies', number: '05', title: 'Cookies & Tracking' },
-  { id: 'privacy-rights', number: '06', title: 'Your Privacy Rights' },
-  { id: 'contact', number: '07', title: 'Contact Us' },
+  { id: 'data-sharing', number: '04', title: 'Information Sharing' },
+  { id: 'data-protection', number: '05', title: 'Data Protection & Security' },
+  { id: 'cookies', number: '06', title: 'Cookies & Tracking' },
+  { id: 'data-retention', number: '07', title: 'Data Retention' },
+  { id: 'choices-consent', number: '08', title: 'Choices & Consent' },
+  { id: 'policy-changes', number: '09', title: 'Changes to Policy' },
+  { id: 'contact', number: '10', title: 'Contact Us' },
 ];
 
 export const privacySections: PrivacySection[] = [
@@ -85,8 +80,9 @@ export const privacySections: PrivacySection[] = [
     title: 'Introduction',
     content: {
       paragraphs: [
-        'At Nervaya, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your data when you use our services, including our website, mobile applications, and therapy services.',
-        'By using our services, you agree to the collection and use of information in accordance with this policy. We encourage you to read this Privacy Policy carefully to understand our practices regarding your personal information and how we will treat it.',
+        'Nervaya Private Limited (“Nervaya”) owns following website: https://www.Nervaya.com/',
+        'This Privacy Policy applies to the service provided via the aforesaid website and application. This policy describes the personal information we collect from you and how we use and secure it. “Identifiable Personal Information” or “IPI” means information that can be used to identify you personally, such as an email address, a photograph with unique identifying features, etc.',
+        'At Nervaya, we are committed to protecting your privacy and adhere with the applicable data protection and privacy laws. Please take some time to read through our privacy policy as this is your sole guide to understand how we aim to use the information we collect from you.',
       ],
     },
   },
@@ -97,55 +93,27 @@ export const privacySections: PrivacySection[] = [
     content: {
       subsections: [
         {
-          title: 'Personal Information',
-          paragraph: 'When you use our services, we may collect the following types of personal information:',
+          title: 'Identifiable Personal Information (IPI)',
+          paragraph: 'We may collect the following information when you provide it voluntarily:',
           listItems: [
+            { label: 'Basic Info:', text: 'User’s name and location/address (optional).' },
+            { label: 'Authentication:', text: 'Phone number (required for login, OTP, etc.).' },
+            { label: 'Profile Media:', text: 'Photo (optional profile pic), photographs, and videos.' },
+            { label: 'Preferences:', text: 'Details of products/services you are looking to buy or avail.' },
             {
-              label: 'Name and Contact Information:',
-              text: 'Your full name, email address, phone number, and mailing address',
-            },
-            {
-              label: 'Demographic Information:',
-              text: 'Age, gender, and other demographic details you choose to provide',
-            },
-            {
-              label: 'Health Information:',
-              text: 'Information related to your mental health, sleep patterns, and wellness goals that you share with us',
-            },
-            {
-              label: 'Payment Information:',
-              text: 'Credit card details, billing address, and payment history (processed securely through third-party payment processors)',
-            },
-            {
-              label: 'Appointment History:',
-              text: 'Records of therapy sessions, consultations, and service usage',
+              label: 'Social & Activity:',
+              text: 'Facebook permissions (if sharing) and user activities (liking policies, interests).',
             },
           ],
         },
         {
-          title: 'Automatically Collected Information',
-          paragraph: 'We automatically collect certain information when you visit our website or use our services:',
+          title: 'Non-Personally Identifiable Information',
+          paragraph: 'We automatically collect technical data about visitors’ web activity:',
           listItems: [
-            {
-              label: 'IP Address:',
-              text: 'Your Internet Protocol address and general location information',
-            },
-            {
-              label: 'Browser Type:',
-              text: 'Information about your web browser and device type',
-            },
-            {
-              label: 'Device Information:',
-              text: 'Device identifiers, operating system, and mobile network information',
-            },
-            {
-              label: 'Usage Data:',
-              text: 'Pages visited, time spent on pages, links clicked, and other interaction data',
-            },
-            {
-              label: 'Cookies and Tracking Technologies:',
-              text: 'Data collected through cookies, web beacons, and similar technologies',
-            },
+            { text: 'Operating system and browser type.' },
+            { text: 'Date and time of visit and referring URLs.' },
+            { text: 'Internet service provider and device identifier.' },
+            { text: 'Pages accessed or visited.' },
           ],
         },
       ],
@@ -156,101 +124,128 @@ export const privacySections: PrivacySection[] = [
     number: '03',
     title: 'How We Use Your Data',
     content: {
-      paragraphs: ['We use the information we collect for the following purposes:'],
+      paragraphs: ['We use the information provided to deliver necessary services and assist you better:'],
       gridItems: [
         {
           icon: ICON_HANDSHAKE,
-          title: 'Service Provision',
-          text: 'To provide, maintain, and improve our therapy and wellness services',
-        },
-        {
-          icon: ICON_CALENDAR,
-          title: 'Appointment Scheduling',
-          text: 'To schedule and manage therapy sessions and consultations',
-        },
-        {
-          icon: ICON_CREDIT_CARD,
-          title: 'Payment Processing',
-          text: 'To process payments, manage billing, and send payment confirmations',
+          title: 'Service Fulfillment',
+          text: 'Execute your requests for products and services and process applications.',
         },
         {
           icon: ICON_CHAT,
-          title: 'Communication',
-          text: 'To send you updates, reminders, and respond to your inquiries',
+          title: 'Relationship Building',
+          text: 'Interact with you to build a relationship and conduct business.',
+        },
+        {
+          icon: ICON_BELL,
+          title: 'Notifications',
+          text: 'Contact you regarding events, promotions, new products, and offers.',
         },
         {
           icon: ICON_CHART,
-          title: 'Analytics & Improvement',
-          text: 'To analyze usage patterns and improve our services and user experience',
+          title: 'Feedback',
+          text: 'Attain feedback to improve our services, products, and website effectiveness.',
+        },
+        {
+          icon: ICON_CLIPBOARD,
+          title: 'Management',
+          text: 'General management, invoicing, account management, and staff recruitment.',
         },
         {
           icon: ICON_GAVEL,
-          title: 'Legal Compliance',
-          text: 'To comply with legal obligations and protect our rights and interests',
+          title: 'Lawful Purposes',
+          text: 'All other lawful purposes related to our business and contract fulfillment.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'data-sharing',
+    number: '04',
+    title: 'Information Sharing',
+    content: {
+      subsections: [
+        {
+          title: 'Third-Party Disclosure',
+          paragraph: 'We share information with third parties only as described in this policy:',
+          listItems: [
+            { text: 'With parent companies, subsidiaries, or joint ventures under common control.' },
+            { text: 'With authorized service providers for fraud prevention, customer service, and research.' },
+            { text: 'These parties are bound to use IPI only for Nervaya-authorized purposes.' },
+          ],
+        },
+        {
+          title: 'Mandatory Sharing',
+          paragraph: 'Nervaya will disclose information when necessarily required by:',
+          listItems: [
+            { text: 'Law inquiries or judicial processes.' },
+            { text: 'Government inquiries.' },
+            { text: 'Suspicion of policy violations or to protect the safety of any person.' },
+          ],
         },
       ],
     },
   },
   {
     id: 'data-protection',
-    number: '04',
+    number: '05',
     title: 'Data Protection & Security',
     content: {
       paragraphs: [
-        'We implement industry-standard security measures to protect your personal information:',
-        'While we strive to protect your personal information, no method of transmission over the Internet or electronic storage is 100% secure. We cannot guarantee absolute security, but we are committed to using commercially reasonable means to protect your data.',
+        'Nervaya takes adequate steps to protect the information we collect, maintaining administrative, technical, and physical safeguards.',
+        'While we follow industry standards and take reasonable measures to minimize risks like hacking, we disclaim liability for errors in transmissions or unauthorized access by third parties.',
       ],
       securityCards: [
         {
-          icon: ICON_LOCK,
-          title: 'Encryption',
-          text: 'All data transmitted between your device and our servers is encrypted using SSL/TLS technology to ensure secure communication.',
-        },
-        {
           icon: ICON_SHIELD_USER,
           title: 'Access Control',
-          text: 'We restrict access to your personal information to authorized employees and service providers who need it to perform their duties.',
+          text: 'Only authorized personnel are provided access to sensitive info, under strict confidentiality agreements.',
+        },
+        {
+          icon: ICON_LOCK,
+          title: 'Encryption',
+          text: 'We use accepted standards of technology and operational security to protect data from loss or destruction.',
         },
         {
           icon: ICON_CLIPBOARD,
-          title: 'Regular Audits',
-          text: 'We conduct regular security audits and assessments to identify and address potential vulnerabilities in our systems.',
+          title: 'Security Policy',
+          text: 'We follow a network-wide security policy to protect the integrity of the personal information we collect.',
         },
         {
-          icon: ICON_DATABASE,
-          title: 'Secure Storage',
-          text: 'Your data is stored on secure servers with multiple layers of protection, including firewalls and intrusion detection systems.',
+          icon: ICON_ALERT,
+          title: 'Risk Management',
+          text: 'We take reasonable measures to prevent and minimize risks associated with internet-based transmissions.',
         },
       ],
     },
   },
   {
     id: 'cookies',
-    number: '05',
-    title: 'Cookies & Tracking Technologies',
+    number: '06',
+    title: 'Cookies & Tracking',
     content: {
       paragraphs: [
-        'We use cookies and similar tracking technologies to enhance your experience, analyze usage patterns, and personalize content. Cookies are small text files stored on your device when you visit our website.',
-        'You can control and manage cookies through your browser settings. However, disabling certain cookies may limit your ability to use some features of our website.',
+        'Cookies are small text files that assist us in providing a customized experience and making navigation easier.',
+        'We primarily use cookies to enhance your online experience and facilitate registration, not to track habits unless permitted.',
       ],
       subsections: [
         {
-          title: 'Types of Cookies We Use',
+          title: 'Cookie Management',
           cookieCards: [
             {
               icon: ICON_COOKIE,
-              title: 'Essential Cookies',
-              text: 'These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility.',
+              title: 'Experience',
+              text: 'Help us ensure your information is directed to you and remember you as a prior user.',
             },
             {
               icon: ICON_CHART_SIMPLE,
-              title: 'Analytics Cookies',
-              text: 'These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.',
+              title: 'Analysis',
+              text: 'Improve customer experience by anonymously logging operational systems and browser types.',
             },
             {
               icon: ICON_SETTINGS,
-              title: 'Preference Cookies',
-              text: 'These cookies remember your preferences and settings to provide a more personalized experience on future visits.',
+              title: 'Choice',
+              text: 'Most browsers permit you to decline cookies, though some site functionality may be impaired.',
             },
           ],
         },
@@ -258,73 +253,58 @@ export const privacySections: PrivacySection[] = [
     },
   },
   {
-    id: 'privacy-rights',
-    number: '06',
-    title: 'Your Privacy Rights',
+    id: 'data-retention',
+    number: '07',
+    title: 'Data Retention',
     content: {
       paragraphs: [
-        'Depending on your location, you may have the following rights regarding your personal information:',
-        'To exercise any of these rights, please contact us at privacy@example.com. We will respond to your request within 30 days.',
+        'Contact information is kept as long as required for the purposes it was collected, or until a user requests deletion.',
+        'Mailing lists and discussion posts are kept for a reasonable period to facilitate requests. Outdated info is destroyed securely.',
+        'We may retain copies for internal record-keeping or compliance with applicable laws and professional standards.',
       ],
-      rightsCards: [
-        {
-          icon: ICON_EYE,
-          title: 'Access',
-          text: 'You have the right to request access to the personal information we hold about you and receive a copy of that information.',
-        },
-        {
-          icon: ICON_PEN,
-          title: 'Correction',
-          text: 'You can request that we correct any inaccurate or incomplete personal information we have about you.',
-        },
-        {
-          icon: ICON_TRASH,
-          title: 'Deletion',
-          text: 'You may request that we delete your personal information, subject to certain legal and operational requirements.',
-        },
-        {
-          icon: ICON_DOWNLOAD,
-          title: 'Portability',
-          text: 'You have the right to receive your personal information in a structured, commonly used format and transmit it to another service provider.',
-        },
-        {
-          icon: ICON_BAN,
-          title: 'Objection',
-          text: 'You can object to the processing of your personal information for certain purposes, such as direct marketing.',
-        },
-        {
-          icon: ICON_PAUSE,
-          title: 'Restriction',
-          text: 'You may request that we restrict the processing of your personal information under certain circumstances.',
-        },
+    },
+  },
+  {
+    id: 'choices-consent',
+    number: '08',
+    title: 'Choices & Consent',
+    content: {
+      paragraphs: [
+        'Personal information is provided to Nervaya voluntarily. Visitors may subsequently choose to withdraw consent or unsubscribe.',
+        'Nervaya will provide instructions on the appropriate website area or in communications regarding how to exercise these choices.',
+      ],
+    },
+  },
+  {
+    id: 'policy-changes',
+    number: '09',
+    title: 'Changes to Policy',
+    content: {
+      paragraphs: [
+        'Nervaya reserves the right to make changes to this privacy policy without the need of your consent.',
+        'We will post all policy changes on this page and notify through a prominent notice if the changes are significant.',
+        'By using our services and website, you agree to abide by our privacy policy.',
       ],
     },
   },
   {
     id: 'contact',
-    number: '07',
+    number: '10',
     title: 'Contact Us',
     content: {
-      paragraphs: [
-        'If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:',
-      ],
+      paragraphs: ['If you have any questions regarding our privacy, feel free to contact us:'],
       contactItems: [
         {
           icon: ICON_CHAT,
           label: 'Email',
-          text: 'privacy@example.com',
-          href: 'mailto:privacy@example.com',
+          text: 'info@nervaya.com',
+          href: 'mailto:info@nervaya.com',
         },
         {
           icon: ICON_PHONE,
           label: 'Phone',
-          text: '+1 (555) 123-4567',
-          href: 'tel:+15551234567',
-        },
-        {
-          icon: ICON_LOCATION,
-          label: 'Address',
-          text: '123 Wellness Street, Suite 100, City, State 12345',
+          text: '8409179911',
+          href: 'tel:8409179911',
         },
       ],
     },

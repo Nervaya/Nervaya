@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
 import { ICON_HEADPHONES, ICON_CLOCK } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DriftOff/VideoPlayer';
-import styles from './styles.module.css';
+import styles from './SessionCard.module.css';
 
 const VideoPlayerDynamic = dynamic(() => import('@/components/DriftOff/VideoPlayer'), {
   ssr: false,
@@ -18,16 +18,9 @@ interface SessionCardProps {
   hasMounted: boolean;
   isRequesting: boolean;
   requestError?: string;
-  onRequestReSession: (id: string) => void;
 }
 
-export const SessionCard: React.FC<SessionCardProps> = ({
-  session,
-  hasMounted,
-  isRequesting,
-  requestError,
-  onRequestReSession,
-}) => {
+export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, isRequesting, requestError }) => {
   const videoUrl = session.assignedVideoUrl;
   const isReady = Boolean(videoUrl);
   const isPendingAssessment = !session.completedAt;
@@ -104,20 +97,25 @@ export const SessionCard: React.FC<SessionCardProps> = ({
         {isReady && (
           <>
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
-            <button
-              type="button"
-              className={styles.requestBtn}
-              onClick={() => onRequestReSession(session._id)}
-              disabled={isRequesting || hasRequestedReSession}
-            >
-              {isRequesting
-                ? 'Requesting…'
-                : hasPendingReSessionRequest
-                  ? 'Re-Session Requested'
-                  : hasResolvedReSessionRequest
-                    ? 'Re-Session Used'
-                    : 'Request Re-Session'}
-            </button>
+            {(!hasRequestedReSession || isRequesting) && (
+              <Link
+                href={`/drift-off/assessment?orderId=${session.driftOffOrderId}&mode=re-session`}
+                className={styles.requestBtn}
+                style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}
+              >
+                {isRequesting ? 'Requesting…' : 'Edit Answers & Re-Request'}
+              </Link>
+            )}
+            {hasPendingReSessionRequest && !isRequesting && (
+              <p className={styles.statusBadge} style={{ width: '100%', margin: '0', textAlign: 'center' }}>
+                Re-Session Requested
+              </p>
+            )}
+            {hasResolvedReSessionRequest && (
+              <p className={styles.statusBadge} style={{ width: '100%', margin: '0', textAlign: 'center' }}>
+                Re-Session Used
+              </p>
+            )}
           </>
         )}
         {isReady && hasPendingReSessionRequest && (

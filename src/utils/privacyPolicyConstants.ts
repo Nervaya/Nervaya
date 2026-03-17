@@ -2,9 +2,12 @@ export const PRIVACY_POLICY_SECTIONS = [
   'introduction',
   'information-collect',
   'how-we-use',
+  'data-sharing',
   'data-protection',
   'cookies',
-  'privacy-rights',
+  'data-retention',
+  'choices-consent',
+  'policy-changes',
   'contact',
 ] as const;
 

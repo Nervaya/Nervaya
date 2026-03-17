@@ -1,21 +1,22 @@
 import { memo, useMemo } from 'react';
-import { TOCItem, tocItems } from '@/utils/privacyPolicyData';
+import { TOCItem } from '@/utils/deliveryPolicyData';
 import styles from './styles.module.css';
 
 interface PrivacyPolicyTOCProps {
   activeSection: string;
   isSectionActive: (sectionId: string) => boolean;
   scrollToSection: (sectionId: string) => void;
+  items: TOCItem[];
 }
 
-const PrivacyPolicyTOC = memo(({ isSectionActive, scrollToSection }: PrivacyPolicyTOCProps) => {
+const PrivacyPolicyTOC = memo(({ isSectionActive, scrollToSection, items }: PrivacyPolicyTOCProps) => {
   const tocItemsWithHandlers = useMemo(() => {
-    return tocItems.map((item: TOCItem) => ({
+    return items.map((item: TOCItem) => ({
       ...item,
       onClick: () => scrollToSection(item.id),
       isActive: isSectionActive(item.id),
     }));
-  }, [scrollToSection, isSectionActive]);
+  }, [scrollToSection, isSectionActive, items]);
 
   return (
     <aside className={styles.tableOfContents}>

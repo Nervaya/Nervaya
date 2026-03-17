@@ -64,11 +64,14 @@ const Footer = () => {
           <Link href="/privacy-policy" className={styles['bottom-link']}>
             Privacy
           </Link>
+          <Link href="/delivery-policy" className={styles['bottom-link']}>
+            Delivery
+          </Link>
           <Link href="/terms-and-conditions" className={styles['bottom-link']}>
             Terms
           </Link>
-          <Link href="/about-us" className={styles['bottom-link']}>
-            Contact
+          <Link href="/return-policy" className={styles['bottom-link']}>
+            Return Policy
           </Link>
         </div>
       </div>

@@ -11,7 +11,7 @@
   .tableOfContents {
     position: static;
     order: -1;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+    border-bottom: 1px solid rgba(124, 58, 237, 0.08);
     padding-bottom: 40px;
   }
 }
@@ -29,7 +29,7 @@
     border-radius: 0;
     padding: 0;
     position: static;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+    border-bottom: 1px solid rgba(124, 58, 237, 0.08);
     margin-bottom: 32px;
   }
 }
@@ -120,7 +120,7 @@
   top: 0;
   bottom: 0;
   width: 0;
-  background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
   border-radius: 8px 0 0 8px;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -133,8 +133,8 @@
 }
 
 .tocLink:hover {
-  color: #1e1b4b;
-  background: rgba(99, 102, 241, 0.06);
+  color: #0f172a;
+  background: rgba(124, 58, 237, 0.06);
 }
 
 .tocLink:hover::before {
@@ -143,26 +143,26 @@
 
 .tocLink:active {
   transform: translateX(4px);
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(124, 58, 237, 0.1);
 }
 
 @media (max-width: 480px) {
   .tocLink:active {
     transform: translateX(4px);
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(124, 58, 237, 0.1);
   }
 }
 
 .tocLinkActive {
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.1);
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.1);
   font-weight: 500;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive {
-    background: rgba(99, 102, 241, 0.12);
-    color: #6366f1;
+    background: rgba(124, 58, 237, 0.12);
+    color: #7c3aed;
     font-weight: 600;
     padding-left: 16px;
     transform: translateX(4px);
@@ -171,37 +171,37 @@
 
 .tocLinkActive::before {
   width: 3px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
 }
 
 @media (max-width: 480px) {
   .tocLinkActive::before {
     width: 3px;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    box-shadow: 0 0 6px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 0 6px rgba(124, 58, 237, 0.3);
   }
 }
 
 .tocLinkActive .tocNumber {
-  color: #6366f1;
+  color: #7c3aed;
   font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive .tocNumber {
-    color: #6366f1;
+    color: #7c3aed;
     font-weight: 700;
   }
 }
 
 .tocLinkActive .tocText {
-  color: #6366f1;
+  color: #7c3aed;
   font-weight: 600;
 }
 
 @media (max-width: 480px) {
   .tocLinkActive .tocText {
-    color: #6366f1;
+    color: #7c3aed;
     font-weight: 600;
   }
 }
@@ -224,7 +224,7 @@
 }
 
 .tocLink:hover .tocNumber {
-  color: #6366f1;
+  color: #7c3aed;
 }
 
 .tocText {
@@ -241,11 +241,11 @@
 }
 
 .tocLink:hover .tocText {
-  color: #1e1b4b;
+  color: #0f172a;
 }
 
 @media (max-width: 480px) {
   .tocLink:hover .tocText {
-    color: #6366f1;
+    color: #7c3aed;
   }
 }

@@ -15,12 +15,16 @@ interface DriftOffAssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
   driftOffOrderId: string;
   initialAnswers?: IDriftOffAnswer[];
+  responseId?: string | null;
+  isReSession?: boolean;
 }
 
 export default function DriftOffAssessmentContainer({
   questions,
   driftOffOrderId,
   initialAnswers = [],
+  responseId = null,
+  isReSession = false,
 }: DriftOffAssessmentContainerProps) {
   const router = useRouter();
 
@@ -40,7 +44,7 @@ export default function DriftOffAssessmentContainer({
     handleAnswerChange,
     handleNext,
     handlePrevious,
-  } = useDriftOffAssessmentState(questions, driftOffOrderId, initialAnswers);
+  } = useDriftOffAssessmentState(questions, driftOffOrderId, initialAnswers, isReSession, responseId);
 
   useEffect(() => {
     if (isComplete) {
