@@ -1,6 +1,7 @@
 import api from '@/lib/axios';
 import type { ApiResponse } from '@/lib/api/types';
 import type { Therapist } from '@/types/therapist.types';
+import { Gender } from '../constants/enums';
 
 export interface CreateTherapistData {
   name: string;
@@ -8,7 +9,7 @@ export interface CreateTherapistData {
   email?: string;
   qualifications?: string[];
   experience?: number;
-  gender?: 'male' | 'female' | 'other';
+  gender?: Gender;
   languages?: string[];
   specializations?: string[];
   image?: string;

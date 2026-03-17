@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_X, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 import { CustomDropdown } from '@/components/common/CustomDropdown';
@@ -10,7 +9,7 @@ import MultiSelect from '@/components/common/MultiSelect/MultiSelect';
 export interface FilterOptions {
   languages: string[];
   specializations: string[];
-  genders: string[];
+  genders: { label: string; value: string }[];
 }
 
 interface FilterModalProps {
@@ -24,16 +23,7 @@ interface FilterModalProps {
   formatGender: (gender: string) => string;
 }
 
-export function FilterModal({
-  isOpen,
-  onClose,
-  options,
-  state,
-  onStateChange,
-  onApply,
-  onClear,
-  formatGender,
-}: FilterModalProps) {
+export function FilterModal({ isOpen, onClose, options, state, onStateChange, onApply, onClear }: FilterModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -89,7 +79,7 @@ export function FilterModal({
               placeholder="Any Gender"
               value={state.gender}
               onChange={(val) => onStateChange('gender', val)}
-              options={[...options.genders.map((gender) => ({ value: gender, label: formatGender(gender) }))]}
+              options={options.genders}
               icon={ICON_USER_LUCIDE}
             />
           </div>

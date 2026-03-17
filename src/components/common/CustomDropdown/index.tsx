@@ -6,7 +6,7 @@ import { ICON_CHEVRON_DOWN, ICON_CHECK_SIMPLE } from '@/constants/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './CustomDropdown.module.css';
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
 }

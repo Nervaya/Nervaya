@@ -13,7 +13,9 @@ import {
   CustomDropdown,
   MultiSelect,
 } from '@/components/common';
+import { type Option } from '@/components/common/CustomDropdown';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
+import { GENDER_OPTIONS } from '@/lib/constants/enums';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
@@ -39,7 +41,6 @@ import { FilterModal } from './components/FilterModal';
 import { ICON_FILTER, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 
 const FILTER_ALL = '';
-const FALLBACK_GENDERS = ['male', 'female', 'non_binary', 'other', 'prefer_not_to_say'] as const;
 const LOOKAHEAD_DAYS = 30;
 
 export default function TherapyCornerPage() {
@@ -99,8 +100,13 @@ export default function TherapyCornerPage() {
     };
   }, [allTherapists]);
 
-  const genderOptions = useMemo(() => {
-    return filterOptions.genders.length > 0 ? filterOptions.genders : Array.from(FALLBACK_GENDERS);
+  const genderOptions = useMemo<Option[]>(() => {
+    return filterOptions.genders.length > 0
+      ? filterOptions.genders.map((g) => {
+          const opt = GENDER_OPTIONS.find((o) => o.value === g);
+          return { value: g, label: opt ? opt.label : formatGender(g) };
+        })
+      : (GENDER_OPTIONS as unknown as Option[]);
   }, [filterOptions.genders]);
 
   const hasActiveFilters = Boolean(
@@ -243,7 +249,7 @@ export default function TherapyCornerPage() {
                 placeholder="Gender"
                 value={filterState.gender}
                 onChange={(val) => handleFilterChange('gender', val)}
-                options={genderOptions.map((gender) => ({ value: gender, label: formatGender(gender) }))}
+                options={genderOptions}
                 icon={ICON_USER_LUCIDE}
               />
 

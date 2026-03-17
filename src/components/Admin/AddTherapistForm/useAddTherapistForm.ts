@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
+import { GENDER, Gender } from '@/lib/constants/enums';
 import { uploadApi } from '@/lib/api/upload';
 import { toast } from 'sonner';
 import { parseCommaSeparated, parseTestimonials } from '@/lib/utils/therapist.utils';
@@ -15,7 +16,7 @@ function therapistToFormData(data: Therapist): TherapistFormData {
     email: data.email || '',
     qualifications: Array.isArray(data.qualifications) ? data.qualifications.join(', ') : '',
     experience: data.experience != null ? String(data.experience) : '',
-    gender: data.gender || 'other',
+    gender: (data.gender as Gender) || GENDER.OTHER,
     languages: Array.isArray(data.languages) ? data.languages.join(', ') : '',
     specializations: Array.isArray(data.specializations) ? data.specializations.join(', ') : '',
     image: data.image || '',

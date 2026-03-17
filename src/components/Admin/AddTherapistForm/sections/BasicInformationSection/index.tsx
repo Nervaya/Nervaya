@@ -1,4 +1,4 @@
-import { GENDER_OPTIONS } from '@/lib/utils/therapist.utils';
+import { GENDER_OPTIONS } from '@/lib/constants/enums';
 import { FormSection } from '../FormSection';
 import { Dropdown, type DropdownOption } from '@/components/common';
 import fieldStyles from '../../fieldStyles.module.css';

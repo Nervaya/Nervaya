@@ -93,3 +93,17 @@ export const AUTH_STEP = {
 } as const;
 
 export type AuthStep = (typeof AUTH_STEP)[keyof typeof AUTH_STEP];
+
+export const GENDER = {
+  MALE: 'male',
+  FEMALE: 'female',
+  OTHER: 'other',
+} as const;
+
+export type Gender = (typeof GENDER)[keyof typeof GENDER];
+
+export const GENDER_OPTIONS = [
+  { label: 'Male', value: GENDER.MALE },
+  { label: 'Female', value: GENDER.FEMALE },
+  { label: 'Other', value: GENDER.OTHER },
+] as const;

@@ -1,3 +1,5 @@
+import { GENDER_OPTIONS } from '@/lib/constants/enums';
+
 export function parseTime12Hour(timeValue: string): { hours: number; minutes: number } | null {
   const match = timeValue.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
   if (!match) return null;
@@ -76,6 +78,9 @@ export function formatExperienceYears(experience?: string): string {
 
 export function formatGender(value: string): string {
   if (!value) return '';
+  const option = GENDER_OPTIONS.find((opt) => opt.value === value.toLowerCase());
+  if (option) return option.label;
+
   return value
     .split('_')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

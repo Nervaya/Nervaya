@@ -1,4 +1,5 @@
 import Therapist, { ITherapist, IConsultingHour } from '@/lib/models/therapist.model';
+import { GENDER } from '../constants/enums';
 import { generateSlotsFromConsultingHours } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
@@ -64,7 +65,7 @@ export async function createTherapist(data: Partial<ITherapist>) {
     const therapistData = {
       ...data,
       slug: data.slug || (data.name ? toSlug(data.name) : ''),
-      gender: data.gender || 'other',
+      gender: data.gender || GENDER.OTHER,
       consultingHours: data.consultingHours || defaultConsultingHours,
     };
 
