@@ -1,6 +1,6 @@
 'use client';
 
-import { LottieLoader } from '@/components/common';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import dynamic from 'next/dynamic';
 
 const DeliveryPolicy = dynamic(() => import('./DeliveryPolicyContent'), {
@@ -15,7 +15,7 @@ const DeliveryPolicy = dynamic(() => import('./DeliveryPolicyContent'), {
         justifyContent: 'center',
       }}
     >
-      <LottieLoader centerPage />
+      <GlobalLoader centerPage />
     </div>
   ),
 });

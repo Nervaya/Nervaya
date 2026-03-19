@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { driftOffQuestionsApi, type DriftOffQuestion } from '@/lib/api/driftOffQuestions';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 export default function QuestionsTab() {
@@ -17,6 +17,15 @@ export default function QuestionsTab() {
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (questionsLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [questionsLoading, showLoader, hideLoader]);
 
   const fetchQuestions = useCallback(async () => {
     setQuestionsLoading(true);
@@ -136,13 +145,8 @@ export default function QuestionsTab() {
           <Icon icon={ICON_ADD} aria-hidden />
           Add Question
         </Link>
-      </div>
-
-      {questionsLoading ? (
-        <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-          <LottieLoader width={200} height={200} />
-        </div>
-      ) : questions.length === 0 ? (
+      </div>{' '}
+      {questions.length === 0 ? (
         <div className={styles.emptyState}>
           <Icon icon={ICON_DOCUMENT} aria-hidden />
           <h3>No Questions Yet</h3>
@@ -260,7 +264,6 @@ export default function QuestionsTab() {
           </p>
         </div>
       )}
-
       {/* Delete modal */}
       {deleteConfirmation && (
         <div className={styles.modalOverlay} onClick={cancelDelete}>

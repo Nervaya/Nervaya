@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
-import { LottieLoader, type BreadcrumbItem, StatusState } from '@/components/common';
+import { type BreadcrumbItem, StatusState } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import api from '@/lib/axios';
 import styles from './styles.module.css';
@@ -15,6 +16,15 @@ export default function EditSupplementPage() {
   const [supplement, setSupplement] = useState<Supplement | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader('Loading supplement details...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
@@ -64,14 +74,7 @@ export default function EditSupplementPage() {
   }, [params.id]);
 
   if (loading) {
-    return (
-      <div className={styles.container}>
-        <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
-        <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} />
-        </div>
-      </div>
-    );
+    return null;
   }
 
   if (error || !supplement) {

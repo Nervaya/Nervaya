@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { ICON_USER, ICON_CHEVRON_LEFT, ICON_SHARE } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { blogsApi } from '@/lib/api/blogs';
 import type { Blog } from '@/types/blog.types';
 import styles from './styles.module.css';
@@ -20,6 +20,15 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -59,16 +68,6 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
       navigator.clipboard.writeText(window.location.href);
     }
   };
-
-  if (loading) {
-    return (
-      <Sidebar>
-        <div className={styles.loadingContainer}>
-          <LottieLoader width={100} height={100} />
-        </div>
-      </Sidebar>
-    );
-  }
 
   if (error || !blog) {
     return (

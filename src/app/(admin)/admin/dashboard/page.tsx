@@ -3,33 +3,29 @@
 import { Icon } from '@iconify/react';
 import { ICON_BOX, ICON_CALENDAR, ICON_USERS_GROUP, ICON_RUPEE } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { LottieLoader, StatusState, type BreadcrumbItem } from '@/components/common';
+import { StatusState, type BreadcrumbItem } from '@/components/common';
 import StatsCard from '@/components/Admin/StatsCard';
 import RecentOrders from '@/components/Admin/RecentOrders';
 import UpcomingSessions from '@/components/Admin/UpcomingSessions';
 import { useAdmin } from '@/context/AdminContext';
+import { useLoading } from '@/context/LoadingContext';
 import { formatPrice } from '@/utils/cart.util';
+import { useEffect } from 'react';
 import styles from './styles.module.css';
 
 export default function AdminDashboardPage() {
   const { stats, loading: isLoading, error, refreshStats: refetch } = useAdmin();
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Dashboard' }];
-
-  if (isLoading) {
-    return (
-      <div>
-        <PageHeader
-          title="Admin Dashboard"
-          subtitle="Orders, revenue, sessions, and customers at a glance."
-          breadcrumbs={breadcrumbs}
-        />
-        <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} centerPage />
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (

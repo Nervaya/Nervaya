@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import { LottieLoader, Pagination, StatusState } from '@/components/common';
+import { Pagination, StatusState } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { BlogListCard } from '@/components/Admin/BlogList';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import { toast } from 'sonner';
@@ -34,6 +35,15 @@ export default function AdminBlogsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; title: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader('Loading blogs');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchBlogs = useCallback(async (page: number, search: string) => {
     try {
@@ -107,7 +117,6 @@ export default function AdminBlogsPage() {
         onClose={() => setConfirmDelete(null)}
         isDeleting={isDeleting}
       />
-
       <section className={styles.header}>
         <div className={styles.headerText}>
           <h1 className={styles.title}>Blogs</h1>
@@ -122,9 +131,7 @@ export default function AdminBlogsPage() {
           New Blog
         </Link>
       </section>
-
       {error && <div className={styles.error}>{error}</div>}
-
       <form onSubmit={handleSearchSubmit} className={styles.filters}>
         <label className={styles.searchField}>
           <Icon icon={ICON_SEARCH} aria-hidden className={styles.searchIcon} />
@@ -140,57 +147,42 @@ export default function AdminBlogsPage() {
         <button type="submit" className={styles.searchButton}>
           Search
         </button>
-      </form>
-
-      {loading ? (
-        <LottieLoader width={96} height={96} label="Loading blogs" centerPage />
-      ) : blogs.length === 0 ? (
-        <>
-          <StatusState
-            type="empty"
-            title={searchQuery ? 'No match found' : 'No blogs found'}
-            message={
-              searchQuery
-                ? `We couldn't find any blogs matching "${searchQuery}".`
-                : 'Get started by creating your first blog post to share with your audience.'
-            }
-            action={
-              <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
-                Create your first blog
-              </Link>
-            }
-          />
-          <Pagination
-            page={pagination.page}
-            limit={pagination.limit}
-            total={pagination.total}
-            totalPages={pagination.totalPages}
-            onPageChange={goToPage}
-            ariaLabel="Manage blogs pagination"
-          />
-        </>
+      </form>{' '}
+      {blogs.length === 0 ? (
+        <StatusState
+          type="empty"
+          title={searchQuery ? 'No match found' : 'No blogs found'}
+          message={
+            searchQuery
+              ? `We couldn't find any blogs matching "${searchQuery}".`
+              : 'Get started by creating your first blog post to share with your audience.'
+          }
+          action={
+            <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
+              Create your first blog
+            </Link>
+          }
+        />
       ) : (
-        <>
-          <ul className={styles.list} aria-label="Blog list">
-            {blogs.map((blog) => (
-              <BlogListCard
-                key={blog._id}
-                blog={blog}
-                formatDate={formatDate}
-                onDelete={() => setConfirmDelete({ id: blog._id, title: blog.title })}
-              />
-            ))}
-          </ul>
-          <Pagination
-            page={pagination.page}
-            limit={pagination.limit}
-            total={pagination.total}
-            totalPages={pagination.totalPages}
-            onPageChange={goToPage}
-            ariaLabel="Manage blogs pagination"
-          />
-        </>
+        <ul className={styles.list} aria-label="Blog list">
+          {blogs.map((blog) => (
+            <BlogListCard
+              key={blog._id}
+              blog={blog}
+              formatDate={formatDate}
+              onDelete={() => setConfirmDelete({ id: blog._id, title: blog.title })}
+            />
+          ))}
+        </ul>
       )}
+      <Pagination
+        page={pagination.page}
+        limit={pagination.limit}
+        total={pagination.total}
+        totalPages={pagination.totalPages}
+        onPageChange={goToPage}
+        ariaLabel="Manage blogs pagination"
+      />
     </div>
   );
 }

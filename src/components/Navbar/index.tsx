@@ -126,6 +126,7 @@ const Navbar = () => {
             <li className={styles.navbarDropdown}>
               <Dropdown
                 variant="navbar"
+                modal={false}
                 options={NAVBAR_PRODUCTS_LINKS.map((link) => ({
                   label: link.text,
                   value: link.href,

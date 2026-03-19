@@ -3,9 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { ICON_UPLOAD, ICON_X } from '@/constants/icons';
+import { ICON_UPLOAD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { uploadApi } from '@/lib/api/upload';
-import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 interface ImageUploadProps {
@@ -96,7 +95,7 @@ const ImageUpload = ({
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
 
       {loading ? (
-        <LottieLoader width={50} height={50} />
+        <Icon icon={ICON_LOADING} width={32} height={32} className={styles.loaderIcon} />
       ) : preview ? (
         <>
           <Image

@@ -5,7 +5,8 @@ import { Toaster, toast } from 'sonner';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_PLUS_CIRCLE } from '@/constants/icons';
-import { LottieLoader, Pagination } from '@/components/common';
+import { Pagination } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { driftOffApi } from '@/lib/api/driftOff';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
@@ -28,6 +29,15 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader('Loading your sessions...');
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, showLoader, hideLoader]);
 
   const loadResponses = useCallback(async () => {
     try {
@@ -73,11 +83,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
       <Toaster position="top-center" richColors closeButton />
       <div className={styles.contentWrapper}>
-        {isLoading ? (
-          <div className={styles.center}>
-            <LottieLoader width={160} height={160} centerPage />
-          </div>
-        ) : error ? (
+        {isLoading ? null : error ? (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
             <button type="button" className={styles.btnRectangle} onClick={() => loadResponses()}>

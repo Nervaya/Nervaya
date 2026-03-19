@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import ProgressBar from '@/components/SleepAssessment/ProgressBar';
 import { AssessmentQuestionStep } from '@/components/SleepAssessment/AssessmentContainer/AssessmentQuestionStep';
 import { AssessmentNav } from '@/components/SleepAssessment/AssessmentContainer/AssessmentNav';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { useDriftOffAssessmentState } from './useDriftOffAssessmentState';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { IDriftOffAnswer } from '@/types/driftOff.types';
@@ -46,6 +46,18 @@ export default function DriftOffAssessmentContainer({
     handlePrevious,
   } = useDriftOffAssessmentState(questions, driftOffOrderId, initialAnswers, isReSession, responseId);
 
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (!isHydrated) {
+      showLoader('Loading your assessment...');
+    } else if (isComplete) {
+      showLoader('Redirecting to your session...');
+    } else {
+      hideLoader();
+    }
+  }, [isHydrated, isComplete, showLoader, hideLoader]);
+
   useEffect(() => {
     if (isComplete) {
       setTimeout(() => {
@@ -55,19 +67,11 @@ export default function DriftOffAssessmentContainer({
   }, [isComplete, router]);
 
   if (!isHydrated) {
-    return (
-      <div className={styles.loading} aria-busy="true">
-        <LottieLoader width={160} height={160} label="Loading your assessment…" />
-      </div>
-    );
+    return null;
   }
 
   if (isComplete) {
-    return (
-      <div className={styles.loading} aria-busy="true">
-        <LottieLoader width={160} height={160} label="Redirecting to your session…" />
-      </div>
-    );
+    return null;
   }
 
   if (!currentQuestion) {

@@ -4,7 +4,8 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementToolbar, { type ViewMode, type SortOption } from '../SupplementToolbar';
 import SupplementProductGrid from '../SupplementProductGrid';
-import { Pagination, LottieLoader } from '@/components/common';
+import { Pagination } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import type { PriceRange } from '../SupplementFilters';
 import styles from './SupplementCatalog.module.css';
@@ -21,6 +22,15 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [page, setPage] = useState(1);
+  const { showLoader, hideLoader } = useLoading();
+
+  React.useEffect(() => {
+    if (loading) {
+      showLoader('Loading supplement catalog...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const handleSearchChange = useCallback((q: string) => {
     setSearchQuery(q);
@@ -97,11 +107,7 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   }, []);
 
   if (loading) {
-    return (
-      <div className={styles.loading}>
-        <LottieLoader width={200} height={200} centerPage />
-      </div>
-    );
+    return null;
   }
 
   return (

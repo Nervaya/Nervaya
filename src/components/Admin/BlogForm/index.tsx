@@ -4,9 +4,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ADD, ICON_X } from '@/constants/icons';
+import { ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
-import { LottieLoader } from '@/components/common';
 import { quillModules, quillFormats } from '@/lib/constants/blogEditor.constants';
 import styles from './styles.module.css';
 
@@ -198,7 +197,7 @@ export default function BlogForm({
         <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
           {isSubmitting ? (
             <>
-              <LottieLoader width={24} height={24} />
+              <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
               {submitLabel.replace(' Blog', 'ing...')}
             </>
           ) : (

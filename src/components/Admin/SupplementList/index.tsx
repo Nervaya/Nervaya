@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
-import { LottieLoader } from '@/components/common';
 import StatusState from '@/components/common/StatusState';
+import { useLoading } from '@/context/LoadingContext';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';
 
@@ -23,6 +23,16 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
     id: string;
     name: string;
   } | null>(null);
+
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader('Loading supplements list...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const filteredSupplements = supplements.filter(
     (supplement) =>
@@ -49,11 +59,7 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
   };
 
   if (loading) {
-    return (
-      <div className={styles.loading}>
-        <LottieLoader width={200} height={200} />
-      </div>
-    );
+    return null;
   }
 
   return (

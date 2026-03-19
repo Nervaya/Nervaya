@@ -33,7 +33,10 @@ export interface UseAssessmentStateResult {
   handlePrevious: () => void;
 }
 
-export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAssessmentStateResult {
+export function useAssessmentState(
+  questions: ISleepAssessmentQuestion[],
+  onHydrated?: () => void,
+): UseAssessmentStateResult {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Map<string, string | string[]>>(new Map());
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -156,11 +159,12 @@ export function useAssessmentState(questions: ISleepAssessmentQuestion[]): UseAs
       } catch {
       } finally {
         setIsHydrated(true);
+        onHydrated?.();
       }
     };
 
     loadState();
-  }, [questions, isHydrated]);
+  }, [questions, isHydrated, onHydrated]);
 
   const handleNext = useCallback(async () => {
     if (!canProceed || !currentQuestion) return;

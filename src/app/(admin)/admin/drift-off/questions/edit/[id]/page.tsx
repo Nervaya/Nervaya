@@ -4,9 +4,10 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT, ICON_ADD, ICON_X } from '@/constants/icons';
+import { ICON_ARROW_LEFT, ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { driftOffQuestionsApi, type DriftOffQuestion } from '@/lib/api/driftOffQuestions';
-import { LottieLoader, Dropdown } from '@/components/common';
+import { Dropdown } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 type QuestionType = 'single_choice' | 'multiple_choice' | 'scale';
@@ -35,6 +36,18 @@ export default function EditDriftOffQuestionPage({ params }: { params: Promise<{
     questionType: 'single_choice' as QuestionType,
     order: 1,
   });
+
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader('Loading question details...');
+    } else if (isSubmitting) {
+      showLoader('Saving changes...');
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, isSubmitting, showLoader, hideLoader]);
 
   const [options, setOptions] = useState<QuestionOption[]>([
     { id: '1', label: '', value: '' },
@@ -144,13 +157,7 @@ export default function EditDriftOffQuestionPage({ params }: { params: Promise<{
   };
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} />
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -267,7 +274,7 @@ export default function EditDriftOffQuestionPage({ params }: { params: Promise<{
           <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <LottieLoader width={50} height={50} />
+                <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
                 Saving...
               </>
             ) : (

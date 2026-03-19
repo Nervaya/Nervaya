@@ -2,17 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
+import { useLoading } from '@/context/LoadingContext';
 import { useTherapists } from '@/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import BookingModal from '@/components/Booking/BookingModal';
-import {
-  Pagination,
-  StatusState,
-  LottieLoader,
-  type BreadcrumbItem,
-  CustomDropdown,
-  MultiSelect,
-} from '@/components/common';
+import { Pagination, StatusState, type BreadcrumbItem, CustomDropdown, MultiSelect } from '@/components/common';
 import { type Option } from '@/components/common/CustomDropdown';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { GENDER_OPTIONS } from '@/lib/constants/enums';
@@ -38,10 +32,6 @@ const FILTER_ALL = '';
 const LOOKAHEAD_DAYS = 30;
 
 export default function TherapyCornerPage() {
-  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
-  const [page, setPage] = useState(1);
-  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
-
   const [filterState, setFilterState] = useState<FilterState>({
     language: FILTER_ALL,
     specialization: [],
@@ -61,6 +51,19 @@ export default function TherapyCornerPage() {
   const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists(apiParams);
   // Separate call to get all options regardless of active filters
   const { data: allTherapists = [] } = useTherapists();
+
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
+  const [page, setPage] = useState(1);
+  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const error = fetchError instanceof Error ? fetchError.message : '';
 
@@ -263,11 +266,6 @@ export default function TherapyCornerPage() {
             )}
           </div>
 
-          {loading && (
-            <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-              <LottieLoader width={200} height={200} centerPage />
-            </div>
-          )}
           {error && <p className={styles.error}>{error}</p>}
           {!loading && !error && (
             <>

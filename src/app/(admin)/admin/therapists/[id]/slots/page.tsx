@@ -6,7 +6,7 @@ import { therapistsApi } from '@/lib/api/therapists';
 import SlotManager from '@/components/Admin/SlotManager';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
 import { Therapist } from '@/types/therapist.types';
-import GlobalLoader from '@/components/common/GlobalLoader';
+import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
@@ -20,6 +20,15 @@ export default function TherapistSlotsPage() {
   const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader('Loading therapist information...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
@@ -47,10 +56,6 @@ export default function TherapistSlotsPage() {
   useEffect(() => {
     fetchTherapist();
   }, [fetchTherapist]);
-
-  if (loading) {
-    return <GlobalLoader label="Loading therapist information..." />;
-  }
 
   if (error || !therapist) {
     return (

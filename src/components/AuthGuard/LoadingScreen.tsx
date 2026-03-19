@@ -1,10 +1,11 @@
 import styles from './LoadingScreen.module.css';
-import { LottieLoader } from '@/components/common';
+import { Icon } from '@iconify/react';
+import { ICON_LOADING } from '@/constants/icons';
 
 export default function LoadingScreen() {
   return (
     <div className={styles.loadingContainer}>
-      <LottieLoader width={200} height={200} />
+      <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
     </div>
   );
 }

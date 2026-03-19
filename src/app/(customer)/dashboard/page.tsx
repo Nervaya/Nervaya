@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import {
@@ -15,9 +15,10 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { StatTile } from '@/components/Dashboard/StatTile';
 import { RecentActivity, type ActivityItem } from '@/components/Dashboard/RecentActivity';
-import { LottieLoader, type BreadcrumbItem } from '@/components/common';
+import type { BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 import { useAuth } from '@/hooks/useAuth';
+import { useLoading } from '@/context/LoadingContext';
 import { useCustomer } from '@/context/CustomerContext';
 import {
   buildRecentActivity,
@@ -38,6 +39,15 @@ export default function DashboardPage() {
     driftOffResponses,
     refreshData: retry,
   } = useCustomer();
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const sessionCounts = useMemo(() => getSessionCounts(sessions), [sessions]);
   const nextSession = useMemo(() => getNextSessionInfo(sessions), [sessions]);
@@ -70,23 +80,6 @@ export default function DashboardPage() {
   const welcomeName = user?.name?.trim() ? user.name : 'there';
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Dashboard' }];
-
-  if (loading) {
-    return (
-      <Sidebar hideGlobalBreadcrumbs>
-        <div className={styles.container}>
-          <PageHeader
-            title={`Welcome back, ${welcomeName}!`}
-            subtitle="Here's your personalized overview."
-            breadcrumbs={breadcrumbs}
-          />
-          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} centerPage />
-          </div>
-        </div>
-      </Sidebar>
-    );
-  }
 
   return (
     <Sidebar hideGlobalBreadcrumbs>

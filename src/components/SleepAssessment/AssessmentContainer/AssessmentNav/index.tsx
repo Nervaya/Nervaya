@@ -1,6 +1,7 @@
 'use client';
 
-import { LottieLoader } from '@/components/common';
+import { Icon } from '@iconify/react';
+import { ICON_LOADING } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface AssessmentNavProps {
@@ -43,7 +44,7 @@ export function AssessmentNav({
       >
         {isSubmitting ? (
           <span className={styles.buttonContent}>
-            <LottieLoader width={36} height={36} />
+            <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
             <span className={styles.loadingText}>Submitting…</span>
           </span>
         ) : isLastQuestion ? (

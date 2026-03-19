@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { StarRating, LottieLoader, StatusState } from '@/components/common';
+import { StarRating, StatusState } from '@/components/common';
+import { ICON_LOADING } from '@/constants/icons';
+import { Icon } from '@iconify/react';
 import ReviewCard from '../ReviewCard';
 import { IMAGES } from '@/utils/imageConstants';
 import { reviewsApi } from '@/lib/api/reviews';
@@ -61,7 +63,7 @@ const TabReviews: React.FC<TabReviewsProps> = ({ supplement }) => {
     return (
       <div className={styles.content}>
         <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-          <LottieLoader width={120} height={120} />
+          <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
         </div>
       </div>
     );

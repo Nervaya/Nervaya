@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { Pagination, LottieLoader, StatusState, type BreadcrumbItem } from '@/components/common';
+import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import SessionFilters from '@/components/Admin/SessionFilters';
 import { useAdminSessions } from '@/queries/sessions/useSessions';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import type { Therapist } from '@/types/therapist.types';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 function countActiveFilters(f: SessionFiltersParams): number {
@@ -26,6 +27,15 @@ export default function AdminSessionsPage() {
   const limit = PAGE_SIZE_10;
   const { data: sessions, meta, isLoading, error, refetch } = useAdminSessions(page, limit, filters);
   const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Sessions' }];
 
@@ -38,23 +48,6 @@ export default function AdminSessionsPage() {
     setFilters({});
     setPage(1);
   }, []);
-
-  if (isLoading) {
-    return (
-      <div>
-        <PageHeader title="Sessions" subtitle="View all sessions (read-only)." breadcrumbs={breadcrumbs} />
-        <SessionFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
-        <div className={styles.loaderWrapper}>
-          <LottieLoader width={200} height={200} centerPage />
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (

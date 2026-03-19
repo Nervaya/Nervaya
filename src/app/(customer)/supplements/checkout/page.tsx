@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import CheckoutForm from '@/components/Checkout/CheckoutForm';
 import PaymentHandler from '@/components/Checkout/PaymentHandler';
@@ -14,7 +15,7 @@ import { DeliveryOptions } from './DeliveryOptions';
 import { PromoCode } from './PromoCode';
 import { Icon } from '@iconify/react';
 import { ICON_CHEVRON_LEFT } from '@/constants/icons';
-import { LottieLoader, Modal, type BreadcrumbItem } from '@/components/common';
+import { Modal, type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function CheckoutPage() {
@@ -47,18 +48,15 @@ export default function CheckoutPage() {
     razorpayOrderId,
     razorpayKeyId,
   } = useCheckout();
+  const { showLoader, hideLoader } = useLoading();
 
-  if (loading) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
-          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} />
-          </div>
-        </div>
-      </Sidebar>
-    );
-  }
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   if (error && !order) {
     return (

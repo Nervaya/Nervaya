@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { StatusState, LottieLoader, type BreadcrumbItem } from '@/components/common';
+import { StatusState, type BreadcrumbItem } from '@/components/common';
 import SupplementCatalog from '@/components/Supplements/SupplementCatalog';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
@@ -22,6 +23,15 @@ export default function SupplementsPage() {
   const [supplements, setSupplements] = useState<Supplement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const handleAddToCart = useCallback(
     async (supplementId: string, quantity: number) => {
@@ -84,9 +94,6 @@ export default function SupplementsPage() {
               subtitle="Discover our range of health supplements"
               breadcrumbs={breadcrumbs}
             />
-            <div className={styles.redirectLoader} aria-live="polite" aria-busy="true">
-              <LottieLoader width={200} height={200} />
-            </div>
           </div>
         </div>
       </Sidebar>

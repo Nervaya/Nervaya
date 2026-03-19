@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
-import { LottieLoader } from '@/components/common';
+import { ICON_LOADING } from '@/constants/icons';
+import { Icon } from '@iconify/react';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from './BookingModalFooter';
 // import { sessionsApi } from '@/lib/api/sessions';
@@ -221,7 +222,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
             <h3 className={styles.sectionTitle}>Available Time Slots</h3>
             {loading ? (
               <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-                <LottieLoader width={160} height={160} centerPage={false} />
+                <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
               </div>
             ) : displayError && !loading ? (
               <div className={styles.errorMessage}>

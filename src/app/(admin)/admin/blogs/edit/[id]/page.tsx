@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { blogsApi } from '@/lib/api/blogs';
 import { toast } from 'sonner';
 import styles from '../../add/styles.module.css';
@@ -32,6 +32,18 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
+
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader('Loading blog details...');
+    } else if (isSubmitting || isImageUploading) {
+      showLoader(isImageUploading ? 'Uploading image...' : 'Saving changes...');
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, isSubmitting, isImageUploading, showLoader, hideLoader]);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -111,23 +123,7 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   };
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <section className={styles.header}>
-          <div className={styles.headerText}>
-            <h1 className={styles.title}>Edit Blog</h1>
-            <p className={styles.subtitle}>Update blog post content and settings.</p>
-          </div>
-          <Link href="/admin/blogs" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Blogs
-          </Link>
-        </section>
-        <div className={styles.loadingState}>
-          <LottieLoader width={96} height={96} label="Loading blog" />
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

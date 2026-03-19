@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { LottieLoader, type BreadcrumbItem } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
+import { type BreadcrumbItem } from '@/components/common';
 import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
 import { blogsApi } from '@/lib/api/blogs';
@@ -33,6 +34,15 @@ export default function BlogListPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchBlogs = useCallback(async (page: number, tags: string[], search: string) => {
     try {
@@ -102,11 +112,7 @@ export default function BlogListPage() {
           breadcrumbs={breadcrumbs}
         />
 
-        {isInitialLoading ? (
-          <div className={styles.loading}>
-            <LottieLoader width={100} height={100} centerPage />
-          </div>
-        ) : (
+        {!isInitialLoading && (
           <>
             <BlogFilters
               searchInput={searchInput}
@@ -120,10 +126,6 @@ export default function BlogListPage() {
             {error ? (
               <div className={styles.error}>
                 <p>{error}</p>
-              </div>
-            ) : loading ? (
-              <div className={styles.loading}>
-                <LottieLoader width={100} height={100} />
               </div>
             ) : (
               <>

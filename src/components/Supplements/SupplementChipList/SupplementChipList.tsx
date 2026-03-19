@@ -3,7 +3,7 @@
 import React from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementChip from '../SupplementChip';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './SupplementChipList.module.css';
 
 interface SupplementChipListProps {
@@ -12,12 +12,17 @@ interface SupplementChipListProps {
 }
 
 const SupplementChipList: React.FC<SupplementChipListProps> = ({ supplements, loading = false }) => {
+  const { showLoader, hideLoader } = useLoading();
+
+  React.useEffect(() => {
+    if (loading) {
+      showLoader('Loading your picks...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
   if (loading) {
-    return (
-      <div className={styles.loading}>
-        <LottieLoader width={200} height={200} />
-      </div>
-    );
+    return null;
   }
 
   if (supplements.length === 0) {

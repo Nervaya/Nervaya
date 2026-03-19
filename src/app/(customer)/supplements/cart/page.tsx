@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Cart, CartItem as CartItemType, Supplement } from '@/types/supplement.types';
 import CartItem from '@/components/Cart/CartItem';
@@ -11,7 +12,6 @@ import Pagination from '@/components/common/Pagination';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { cartApi } from '@/lib/api/cart';
 import StatusState from '@/components/common/StatusState';
-import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 
 export default function CartPage() {
@@ -21,6 +21,15 @@ export default function CartPage() {
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchCart = async () => {
     try {
@@ -80,18 +89,6 @@ export default function CartPage() {
   useEffect(() => {
     fetchCart();
   }, []);
-
-  if (loading) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
-          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} />
-          </div>
-        </div>
-      </Sidebar>
-    );
-  }
 
   const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Supplements', href: '/supplements' }, { label: 'Cart' }];
   const total = cart?.items.length || 0;

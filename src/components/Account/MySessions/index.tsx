@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { sessionsApi } from '@/lib/api/sessions';
 import { Session } from '@/types/session.types';
-import { Pagination, LottieLoader } from '@/components/common';
+import { Pagination } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
@@ -21,6 +22,15 @@ export function MySessions() {
   const [page, setPage] = useState(1);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [mounted, setMounted] = useState(false);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loadingTherapy) {
+      showLoader('Loading your sessions...');
+    } else {
+      hideLoader();
+    }
+  }, [loadingTherapy, showLoader, hideLoader]);
 
   const limit = PAGE_SIZE_3;
 
@@ -53,11 +63,7 @@ export function MySessions() {
   };
 
   if (loadingTherapy) {
-    return (
-      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-        <LottieLoader width={200} height={200} centerPage />
-      </div>
-    );
+    return null;
   }
 
   return (

@@ -7,15 +7,15 @@ import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
 import { AssessmentQuestionStep } from './AssessmentQuestionStep';
 import { useAssessmentState } from './useAssessmentState';
-import { LottieLoader } from '@/components/common';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
 interface AssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
+  onHydrated?: () => void;
 }
 
-export default function AssessmentContainer({ questions }: AssessmentContainerProps) {
+export default function AssessmentContainer({ questions, onHydrated }: AssessmentContainerProps) {
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -35,14 +35,10 @@ export default function AssessmentContainer({ questions }: AssessmentContainerPr
     handleAnswerChange,
     handleNext,
     handlePrevious,
-  } = useAssessmentState(questions);
+  } = useAssessmentState(questions, onHydrated);
 
   if (!isHydrated) {
-    return (
-      <div className={styles.hydratingState} aria-busy="true" aria-live="polite">
-        <LottieLoader width={160} height={160} label="Loading your assessment…" />
-      </div>
-    );
+    return null;
   }
 
   if (isComplete) {

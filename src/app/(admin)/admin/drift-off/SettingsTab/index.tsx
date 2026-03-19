@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { configApi } from '@/lib/api/config';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import { Icon } from '@iconify/react';
 import { ICON_LOADING, ICON_SAVE_FILLED } from '@/constants/icons';
 import type { ISystemConfig } from '@/types/systemConfig.types';
@@ -14,6 +14,15 @@ export default function SettingsTab() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   useEffect(() => {
     fetchConfigs();
@@ -52,14 +61,6 @@ export default function SettingsTab() {
       setSaving(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div className={styles.loaderWrapper}>
-        <LottieLoader width={180} height={180} />
-      </div>
-    );
-  }
 
   return (
     <div className={styles.container}>

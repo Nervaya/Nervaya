@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
 import { trackPurchase } from '@/utils/analytics';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -44,6 +44,15 @@ export default function OrderSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [confettiData, setConfettiData] = useState<object | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchOrder = useCallback(async () => {
     try {
@@ -97,18 +106,6 @@ export default function OrderSuccessPage() {
       .then(setConfettiData)
       .catch(() => {});
   }, []);
-
-  if (loading) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
-          <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-            <LottieLoader width={200} height={200} />
-          </div>
-        </div>
-      </Sidebar>
-    );
-  }
 
   if (error || !order) {
     return (

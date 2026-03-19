@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
+import { useLoading } from '@/context/LoadingContext';
 import DriftOffAssessmentContainer from '@/components/DriftOff/DriftOffAssessmentContainer';
-import { LottieLoader } from '@/components/common';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
@@ -23,6 +23,15 @@ export default function DriftOffAssessmentPage() {
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const hasCheckedRedirectsRef = useRef(false);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [isLoading, showLoader, hideLoader]);
 
   const fetchQuestionsWithRetry = useCallback(async (): Promise<ISleepAssessmentQuestion[]> => {
     const maxAttempts = 3;
@@ -165,12 +174,6 @@ export default function DriftOffAssessmentPage() {
   return (
     <Sidebar>
       <div className={styles.wrapper}>
-        {isLoading && (
-          <div className={styles.loading} aria-busy="true">
-            <LottieLoader width={200} height={200} />
-          </div>
-        )}
-
         {!isLoading && error && (
           <div className={styles.error}>
             <div className={styles.errorContent}>

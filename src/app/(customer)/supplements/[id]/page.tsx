@@ -4,7 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { StatusState, LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
+import { StatusState } from '@/components/common';
 import { ProductImageGallery, ProductInfo, ProductTabs } from '@/components/Supplements/ProductDetail';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
@@ -24,6 +25,15 @@ export default function SupplementDetailPage() {
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchSupplement = useCallback(async () => {
     const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
@@ -115,18 +125,6 @@ export default function SupplementDetailPage() {
       setAdding(false);
     }
   };
-
-  if (loading) {
-    return (
-      <Sidebar>
-        <div className={styles.container}>
-          <div className={styles.loading}>
-            <LottieLoader width={200} height={200} />
-          </div>
-        </div>
-      </Sidebar>
-    );
-  }
 
   if (error && !supplement) {
     return (

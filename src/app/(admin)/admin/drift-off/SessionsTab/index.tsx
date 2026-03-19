@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import DriftOffResponseList from '@/components/Admin/DriftOffResponseList';
 import { useAdminDriftOffResponses, useAssignDriftOffVideo } from '@/queries/driftOff/useDriftOff';
 import axiosInstance from '@/lib/axios';
@@ -16,6 +16,16 @@ export default function SessionsTab() {
   const [responseQuestions, setResponseQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [responseQuestionsLoading, setResponseQuestionsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const { showLoader, hideLoader } = useLoading();
+  const isLoadingData = isLoading || responseQuestionsLoading;
+
+  useEffect(() => {
+    if (isLoadingData) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [isLoadingData, showLoader, hideLoader]);
 
   const loadResponseQuestions = useCallback(async () => {
     try {
@@ -59,7 +69,6 @@ export default function SessionsTab() {
     });
   }, [data, searchTerm]);
 
-  const isLoadingData = isLoading || responseQuestionsLoading;
   return (
     <div>
       {!isLoadingData && !error && (
@@ -74,12 +83,6 @@ export default function SessionsTab() {
               variant="light"
             />
           </div>
-        </div>
-      )}
-
-      {isLoadingData && (
-        <div className={styles.loaderWrapper}>
-          <LottieLoader width={180} height={180} />
         </div>
       )}
 

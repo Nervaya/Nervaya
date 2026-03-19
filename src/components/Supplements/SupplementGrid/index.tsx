@@ -3,7 +3,7 @@
 import React from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementCard from '../SupplementCard';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 interface SupplementGridProps {
@@ -13,12 +13,17 @@ interface SupplementGridProps {
 }
 
 const SupplementGrid: React.FC<SupplementGridProps> = ({ supplements, onAddToCart, loading = false }) => {
+  const { showLoader, hideLoader } = useLoading();
+
+  React.useEffect(() => {
+    if (loading) {
+      showLoader('Loading supplements...');
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
   if (loading) {
-    return (
-      <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-        <LottieLoader width={200} height={200} centerPage />
-      </div>
-    );
+    return null;
   }
 
   if (supplements.length === 0) {

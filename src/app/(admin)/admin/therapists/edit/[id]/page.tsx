@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
-import { LottieLoader, type BreadcrumbItem } from '@/components/common';
+import { type BreadcrumbItem } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import AddTherapistForm from '@/components/Admin/AddTherapistForm';
 import type { Therapist } from '@/types/therapist.types';
 
@@ -13,6 +14,15 @@ export default function EditTherapistPage() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [initialData, setInitialData] = useState<Therapist | null>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (initialLoading) {
+      showLoader('Loading therapist details...');
+    } else {
+      hideLoader();
+    }
+  }, [initialLoading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
@@ -46,14 +56,6 @@ export default function EditTherapistPage() {
 
     fetchTherapist();
   }, [params.id]);
-
-  if (initialLoading) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
-        <LottieLoader width={80} height={80} label="Loading therapist details..." />
-      </div>
-    );
-  }
 
   if (error || !initialData) {
     return (

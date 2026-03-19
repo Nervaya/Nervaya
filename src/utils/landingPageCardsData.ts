@@ -33,7 +33,7 @@ export const landingPageCardsData: LandingPageCard[] = [
     image: IMAGES.CARD_SLEEP_SUPPLEMENTS,
     title: 'Sleep Elixir',
     description:
-      'Our non-habit-forming, fast-absorbing formula helps you unwind naturally and drift into deep, restorative sleep — waking refreshed, never dependent.',
+      'Our non-habit-forming, fast-absorbing formula helps you unwind naturally and drift into deep, restorative sleep-waking refreshed, never dependent.',
     buttonText: 'Shop Now',
     href: '/supplements',
   },

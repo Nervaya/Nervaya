@@ -3,7 +3,6 @@ export { Input } from './Input';
 export { Pagination } from './Pagination';
 export { QuantitySelector } from './QuantitySelector';
 export { GlobalLoader } from './GlobalLoader';
-export { LottieLoader } from './LottieLoader';
 export { Dropdown } from './Dropdown';
 export type { DropdownOption } from './Dropdown';
 export { MultiSelect } from './MultiSelect';

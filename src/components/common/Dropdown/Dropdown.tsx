@@ -24,6 +24,7 @@ interface DropdownProps {
   className?: string;
   variant?: 'default' | 'navbar';
   trigger?: React.ReactNode;
+  modal?: boolean;
 }
 
 export function Dropdown({
@@ -36,13 +37,14 @@ export function Dropdown({
   className = '',
   variant = 'default',
   trigger,
+  modal = true,
 }: DropdownProps) {
   const selectedOption = options.find((o) => o.value === value);
   const displayLabel = selectedOption ? selectedOption.label : placeholder;
 
   return (
     <div className={`${styles.root} ${variant === 'navbar' ? styles.navbarVariant : ''} ${className}`.trim()}>
-      <DropdownMenu.Root>
+      <DropdownMenu.Root modal={modal}>
         <DropdownMenu.Trigger asChild>
           {trigger || (
             <button type="button" className={styles.trigger} aria-label={ariaLabel} disabled={disabled}>

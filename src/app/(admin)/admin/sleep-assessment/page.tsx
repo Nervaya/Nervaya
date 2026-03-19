@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
-import { LottieLoader } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -18,6 +18,15 @@ export default function AdminSleepAssessmentPage() {
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { showLoader, hideLoader } = useLoading();
+
+  useEffect(() => {
+    if (loading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader]);
 
   const fetchQuestions = useCallback(async () => {
     try {
@@ -145,13 +154,8 @@ export default function AdminSleepAssessmentPage() {
           <Icon icon={ICON_ADD} aria-hidden />
           Add Question
         </Link>
-      </div>
-
-      {loading ? (
-        <div className={styles.loadingContainer} aria-busy="true" aria-live="polite">
-          <LottieLoader width={200} height={200} />
-        </div>
-      ) : questions.length === 0 ? (
+      </div>{' '}
+      {questions.length === 0 ? (
         <div className={styles.emptyState}>
           <Icon icon={ICON_DOCUMENT} aria-hidden />
           <h3>No Questions Yet</h3>
@@ -267,7 +271,6 @@ export default function AdminSleepAssessmentPage() {
           </p>
         </div>
       )}
-
       {deleteConfirmation && (
         <div className={styles.modalOverlay} onClick={cancelDelete}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
