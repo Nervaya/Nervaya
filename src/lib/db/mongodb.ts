@@ -38,10 +38,7 @@ async function connectDB(): Promise<typeof mongoose> {
       throw new Error('MONGODB_URI is not defined');
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.warn('MongoDB connected successfully');
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {

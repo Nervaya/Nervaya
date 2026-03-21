@@ -2,11 +2,17 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { useLoading } from '@/context/LoadingContext';
 import { useTherapists } from '@/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import BookingModal from '@/components/Booking/BookingModal';
-import { Pagination, StatusState, type BreadcrumbItem, CustomDropdown, MultiSelect } from '@/components/common';
+import {
+  Pagination,
+  StatusState,
+  GlobalLoader,
+  type BreadcrumbItem,
+  CustomDropdown,
+  MultiSelect,
+} from '@/components/common';
 import { type Option } from '@/components/common/CustomDropdown';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { GENDER_OPTIONS } from '@/lib/constants/enums';
@@ -55,15 +61,6 @@ export default function TherapyCornerPage() {
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [page, setPage] = useState(1);
   const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   const error = fetchError instanceof Error ? fetchError.message : '';
 
@@ -267,6 +264,11 @@ export default function TherapyCornerPage() {
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
+          {loading && (
+            <div className={styles.loadingContainer}>
+              <GlobalLoader label="Loading therapists..." />
+            </div>
+          )}
           {!loading && !error && (
             <>
               {therapists.length === 0 ? (

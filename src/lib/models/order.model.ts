@@ -7,10 +7,13 @@ import {
   DELIVERY_METHOD_VALUES,
   PaymentStatus,
   OrderStatus,
+  ITEM_TYPE,
+  type ItemType,
 } from '@/lib/constants/enums';
 
 export interface IOrderItem {
-  supplementId: Types.ObjectId;
+  itemType: ItemType;
+  itemId: Types.ObjectId | string;
   name: string;
   quantity: number;
   price: number;
@@ -36,7 +39,8 @@ export interface IOrder extends Document {
   razorpayOrderId?: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
-  shippingAddress: IShippingAddress;
+  shippingAddress?: IShippingAddress;
+
   promoCode?: string;
   promoDiscount?: number;
   deliveryMethod?: 'standard' | 'express';
@@ -46,9 +50,14 @@ export interface IOrder extends Document {
 
 const orderItemSchema = new Schema<IOrderItem>(
   {
-    supplementId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Supplement',
+    itemType: {
+      type: String,
+      enum: Object.values(ITEM_TYPE),
+      required: true,
+      default: ITEM_TYPE.SUPPLEMENT,
+    },
+    itemId: {
+      type: Schema.Types.Mixed,
       required: true,
     },
     name: {
@@ -156,7 +165,7 @@ const orderSchema = new Schema<IOrder>(
     },
     shippingAddress: {
       type: shippingAddressSchema,
-      required: [true, 'Shipping address is required'],
+      required: false,
     },
     promoCode: { type: String },
     promoDiscount: { type: Number, min: 0 },

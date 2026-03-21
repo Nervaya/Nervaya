@@ -37,13 +37,13 @@ const RECOMMENDATION_LIBRARY: Record<
     title: 'Guided Audio',
     description: 'Use calming sleep audio to settle into bed and support a more consistent night routine.',
     buttonText: 'Explore Guided Audio',
-    href: '/drift-off',
+    href: '/deep-rest',
   },
   guided_meditation_audio: {
     title: 'Guided Meditation Audio',
     description: 'Your answers suggest overthinking at bedtime, so meditation-led audio should come first.',
     buttonText: 'Start Guided Audio',
-    href: '/drift-off',
+    href: '/deep-rest',
   },
   counselling: {
     title: 'Counselling',

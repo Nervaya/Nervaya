@@ -48,7 +48,6 @@ export default function EditTherapistPage() {
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Error fetching therapist details';
         setError(errorMessage);
-        console.error('Therapist fetch error:', err);
       } finally {
         setInitialLoading(false);
       }

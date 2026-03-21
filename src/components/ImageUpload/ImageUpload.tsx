@@ -65,7 +65,6 @@ const ImageUpload = ({
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Upload failed. Please try again.';
       setError(errorMessage);
-      console.error('ImageUpload error:', err);
     } finally {
       setLoading(false);
       onLoadingChange?.(false);

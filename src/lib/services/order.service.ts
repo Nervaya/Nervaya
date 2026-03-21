@@ -10,12 +10,13 @@ import {
   ORDER_STATUS_VALUES,
   PAYMENT_STATUS_VALUES,
   OrderStatus,
+  ITEM_TYPE,
 } from '@/lib/constants/enums';
 import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
 import { getShippingCost } from '@/utils/shipping.util';
 
 export interface CreateOrderParams {
-  shippingAddress: IOrder['shippingAddress'];
+  shippingAddress?: IOrder['shippingAddress'];
   promoCode?: string;
   promoDiscount?: number;
   deliveryMethod?: 'standard' | 'express';
@@ -29,40 +30,53 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       throw new ValidationError('Invalid User ID');
     }
 
-    const cart = await Cart.findOne({ userId }).populate('items.supplementId');
+    const cart = await Cart.findOne({ userId });
     if (!cart || cart.items.length === 0) {
       throw new ValidationError('Cart is empty');
     }
 
     const orderItems: IOrderItem[] = [];
     for (const cartItem of cart.items) {
-      const supplement = await Supplement.findById(cartItem.supplementId);
-      if (!supplement) {
-        throw new ValidationError(`Supplement ${cartItem.supplementId} not found`);
+      if (cartItem.itemType === ITEM_TYPE.SUPPLEMENT) {
+        const supplement = await Supplement.findById(cartItem.itemId);
+        if (!supplement) {
+          throw new ValidationError(`Supplement ${cartItem.itemId} not found`);
+        }
+
+        if (!supplement.isActive) {
+          throw new ValidationError(`Supplement ${supplement.name} is not available`);
+        }
+
+        if (supplement.stock < cartItem.quantity) {
+          throw new ValidationError(`Insufficient stock for ${supplement.name}`);
+        }
+
+        orderItems.push({
+          itemType: ITEM_TYPE.SUPPLEMENT,
+          itemId: supplement._id,
+          name: supplement.name,
+          quantity: cartItem.quantity,
+          price: cartItem.price,
+          image: supplement.image,
+        });
+
+        supplement.stock -= cartItem.quantity;
+        await supplement.save();
+      } else {
+        orderItems.push({
+          itemType: cartItem.itemType,
+          itemId: cartItem.itemId,
+          name: cartItem.name || 'Digital Session',
+          quantity: cartItem.quantity,
+          price: cartItem.price,
+          image: cartItem.image || '',
+        });
       }
-
-      if (!supplement.isActive) {
-        throw new ValidationError(`Supplement ${supplement.name} is not available`);
-      }
-
-      if (supplement.stock < cartItem.quantity) {
-        throw new ValidationError(`Insufficient stock for ${supplement.name}`);
-      }
-
-      orderItems.push({
-        supplementId: supplement._id,
-        name: supplement.name,
-        quantity: cartItem.quantity,
-        price: cartItem.price,
-        image: supplement.image,
-      });
-
-      supplement.stock -= cartItem.quantity;
-      await supplement.save();
     }
 
     const subtotal = cart.totalAmount;
-    const shipping = getShippingCost(deliveryMethod, subtotal);
+    const isDigitalOnly = cart.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF);
+    const shipping = isDigitalOnly ? 0 : getShippingCost(deliveryMethod, subtotal);
     const totalAmount = Math.max(0, subtotal + shipping - promoDiscount);
 
     const order = await Order.create({
@@ -81,15 +95,17 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       if (promo) await incrementUsage(promo._id.toString());
     }
 
-    await clearCart(userId);
+    // [MOVED] clearCart is now handled in payment.service.ts AFTER successful payment verification
+    // to ensure items stay in cart if payment is cancelled or fails.
+    // await clearCart(userId);
 
-    return await Order.findById(order._id).populate('items.supplementId');
+    return await Order.findById(order._id);
   } catch (error) {
     throw handleError(error);
   }
 }
 
-async function clearCart(userId: string) {
+export async function clearCart(userId: string) {
   await connectDB();
   const cart = await Cart.findOne({ userId });
   if (cart) {
@@ -104,7 +120,7 @@ export async function getOrderById(orderId: string) {
     if (!Types.ObjectId.isValid(orderId)) {
       throw new ValidationError('Invalid Order ID');
     }
-    const order = await Order.findById(orderId).populate('items.supplementId');
+    const order = await Order.findById(orderId);
     if (!order) {
       throw new ValidationError('Order not found');
     }
@@ -174,7 +190,7 @@ export async function getAllOrders(
     const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
     const safeLimit = Math.max(1, Math.min(limit, 100));
     const [data, total] = await Promise.all([
-      Order.find(filter).populate('items.supplementId').sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
       Order.countDocuments(filter),
     ]);
     const totalPages = Math.max(1, Math.ceil(total / safeLimit));
@@ -190,7 +206,7 @@ export async function getUserOrders(userId: string) {
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
-    const orders = await Order.find({ userId }).populate('items.supplementId').sort({ createdAt: -1 });
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
     return orders;
   } catch (error) {
     throw handleError(error);

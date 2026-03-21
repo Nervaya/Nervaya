@@ -86,7 +86,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
               >
                 Add to Cart
               </Button>
-              <Link href="/supplements/cart" className={styles.buyNowLink}>
+              <Link href="/cart" className={styles.buyNowLink}>
                 <Button variant="secondary" type="button" className={styles.buyNowButton}>
                   Buy Now
                 </Button>

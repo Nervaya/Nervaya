@@ -81,7 +81,6 @@ export function handleError(error: unknown): {
     };
   }
 
-  console.error('Unhandled error:', error);
   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
   return {
     message: 'Internal server error',

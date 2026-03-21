@@ -6,7 +6,6 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
   const appPassword = process.env.OTP_EMAIL_APP_PASSWORD;
 
   if (!user?.trim() || !appPassword?.trim()) {
-    console.warn('[Welcome Email] Missing email credentials, skipping welcome email.');
     return;
   }
 
@@ -31,7 +30,5 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
       text,
       html,
     });
-  } catch (error) {
-    console.error('[Welcome Email] Failed to send welcome email:', error);
-  }
+  } catch {}
 }

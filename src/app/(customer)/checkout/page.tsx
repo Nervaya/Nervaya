@@ -1,0 +1,200 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import Sidebar from '@/components/Sidebar/LazySidebar';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import CheckoutForm from '@/components/Checkout/CheckoutForm';
+import PaymentHandler from '@/components/Checkout/PaymentHandler';
+import { useCheckout } from './useCheckout';
+import { CheckoutOrderSummary } from './CheckoutOrderSummary';
+import { CheckoutSavedAddresses } from './CheckoutSavedAddresses';
+import { AddressCard } from './AddressCard';
+import { DeliveryOptions } from './DeliveryOptions';
+import { PromoCode } from './PromoCode';
+import { Icon } from '@iconify/react';
+import { ICON_CHEVRON_LEFT } from '@/constants/icons';
+import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
+import { GlobalLoader, Modal, type BreadcrumbItem } from '@/components/common';
+import styles from './styles.module.css';
+
+export default function CheckoutPage() {
+  const {
+    cart,
+    order,
+    loading,
+    error,
+    creatingOrder,
+    savedAddresses,
+    showSavedAddresses,
+    selectedAddress,
+    isAddressModalOpen,
+    handleCloseAddressModal,
+    handleAddNewAddress,
+    handleAddressSubmit,
+    handleUseAddress,
+    handleEditAddress,
+    selectedDeliveryMethod,
+    handleDeliveryMethodSelect,
+    promoCode,
+    setPromoCode,
+    appliedPromoCode,
+    promoDiscount,
+    promoLoading,
+    promoError,
+    handlePromoCodeApply,
+    handlePromoCodeRemove,
+    handleProceedToPayment,
+    razorpayOrderId,
+    razorpayKeyId,
+    isDigitalOnly,
+  } = useCheckout();
+
+  if (loading) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <div className={styles.loadingContainer}>
+            <GlobalLoader label="Loading checkout..." />
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
+
+  if (error && !order) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <div className={styles.error}>{error}</div>
+        </div>
+      </Sidebar>
+    );
+  }
+
+  if (razorpayOrderId && order && razorpayKeyId) {
+    return (
+      <Sidebar>
+        <PaymentHandler
+          orderId={order._id}
+          amount={order.totalAmount}
+          razorpayOrderId={razorpayOrderId}
+          razorpayKeyId={razorpayKeyId}
+        />
+      </Sidebar>
+    );
+  }
+
+  if (!cart) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <div className={styles.error}>Cart not found</div>
+        </div>
+      </Sidebar>
+    );
+  }
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Home', href: '/dashboard' },
+    { label: 'Cart', href: '/cart' },
+    { label: 'Checkout' },
+  ];
+
+  return (
+    <Sidebar hideGlobalBreadcrumbs>
+      <div className={styles.container}>
+        <PageHeader title="Checkout" breadcrumbs={breadcrumbs} />
+        <Link href="/cart" className={styles.backToCartLink}>
+          <Icon icon={ICON_CHEVRON_LEFT} aria-hidden />
+          Back to cart
+        </Link>
+        {error && <div className={styles.error}>{error}</div>}
+        <div className={styles.content}>
+          <div className={styles.formSection}>
+            {isDigitalOnly ? (
+              <div className={styles.digitalSessionCard}>
+                <Image
+                  src={DRIFT_OFF_SESSION_IMAGE}
+                  alt="Deep Rest Session"
+                  width={320}
+                  height={320}
+                  className={styles.digitalSessionImage}
+                />
+                <div className={styles.digitalSessionInfo}>
+                  <h2 className={styles.digitalSessionTitle}>Deep Rest Session</h2>
+                  <p className={styles.digitalSessionDesc}>
+                    A personalised 25-minute Deep Rest audio session curated by our specialists to match your unique
+                    mental wellness needs.
+                  </p>
+                  <ul className={styles.digitalSessionFeatures}>
+                    <li>✦ Tailored to your assessment</li>
+                    <li>✦ Instant digital delivery</li>
+                    <li>✦ Guided by certified therapists</li>
+                    <li>✦ No shipping — available right away</li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <>
+                {showSavedAddresses && (
+                  <CheckoutSavedAddresses
+                    addresses={savedAddresses}
+                    onUseAddress={handleUseAddress}
+                    onAddNew={handleAddNewAddress}
+                  />
+                )}
+
+                {selectedAddress && (
+                  <div className={styles.selectedAddressWrapper}>
+                    <AddressCard
+                      address={selectedAddress}
+                      label="Shipping Address"
+                      isDefault={false}
+                      onEdit={handleEditAddress}
+                    />
+                  </div>
+                )}
+
+                <DeliveryOptions
+                  selectedMethod={selectedDeliveryMethod}
+                  onSelect={handleDeliveryMethodSelect}
+                  subtotal={cart.totalAmount}
+                />
+              </>
+            )}
+          </div>
+
+          <Modal
+            isOpen={isAddressModalOpen}
+            onClose={handleCloseAddressModal}
+            title={selectedAddress ? 'Edit Address' : 'Add New Address'}
+          >
+            <CheckoutForm onSubmit={handleAddressSubmit} loading={false} initialAddress={selectedAddress} />
+          </Modal>
+          <div className={styles.summarySection}>
+            <CheckoutOrderSummary
+              cart={cart}
+              isDigitalOnly={isDigitalOnly}
+              deliveryMethod={selectedDeliveryMethod}
+              promoDiscount={promoDiscount}
+              onProceedToPayment={handleProceedToPayment}
+              loading={creatingOrder}
+            />
+            <PromoCode
+              code={promoCode}
+              onCodeChange={setPromoCode}
+              onApply={handlePromoCodeApply}
+              onRemove={handlePromoCodeRemove}
+              appliedCode={appliedPromoCode}
+              discount={promoDiscount}
+              loading={promoLoading}
+              error={promoError}
+            />
+          </div>
+        </div>
+      </div>
+    </Sidebar>
+  );
+}

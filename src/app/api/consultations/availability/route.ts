@@ -54,8 +54,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json(availabilityMap);
-  } catch (error: unknown) {
-    console.error('Error fetching availability:', error);
+  } catch (_error: unknown) {
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }

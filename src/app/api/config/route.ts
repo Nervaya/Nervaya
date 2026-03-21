@@ -5,8 +5,7 @@ export async function GET() {
   try {
     const configs = await configService.getPublicConfigs();
     return NextResponse.json({ success: true, data: configs });
-  } catch (error) {
-    console.error('API Config Error:', error);
+  } catch {
     return NextResponse.json({ success: false, message: 'Failed to fetch config' }, { status: 500 });
   }
 }

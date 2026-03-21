@@ -159,36 +159,79 @@
   }
 }
 
-.cardButton {
+.cardActions {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm, 0.75rem);
+  width: 100%;
+  margin-top: auto;
+}
+
+@media (max-width: 1024px) {
+  .cardActions {
+    flex-direction: column;
+  }
+}
+
+.primaryButton,
+.secondaryButton {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.5rem;
-  background: rgba(226, 208, 255, 0.14);
-  color: #f9f4ff;
-  border: 1px solid rgba(224, 205, 255, 0.42);
-  border-radius: 12px;
-  font-family: var(--font-sans) !important;
+  min-height: 48px;
+  padding: 0 1rem;
   font-size: 1.05rem;
   font-weight: 600;
+  font-family: var(--font-sans) !important;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  border: 1px solid transparent;
   white-space: nowrap;
-  width: fit-content;
-  min-height: 48px;
-  align-self: flex-start;
   text-decoration: none;
+  box-sizing: border-box;
   text-align: center;
 }
 
-.cardButton:hover {
-  background: rgba(236, 223, 255, 0.25);
-  transform: translateY(-2px);
-}
-
 @media (max-width: 768px) {
-  .cardButton {
+  .primaryButton,
+  .secondaryButton {
     width: 100%;
     min-height: 52px;
   }
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #8a4dff 0%, #6e2de5 100%);
+  color: #ffffff;
+  border-color: rgba(222, 208, 255, 0.4);
+  box-shadow: 0 10px 24px rgba(81, 33, 183, 0.46);
+}
+
+.primaryButton:hover {
+  background: linear-gradient(135deg, #9962ff 0%, #7a3af3 100%);
+  box-shadow: 0 12px 28px rgba(96, 40, 210, 0.52);
+  transform: translateY(-2px);
+}
+
+.primaryButton:active {
+  transform: translateY(0);
+}
+
+.secondaryButton {
+  background: rgba(169, 139, 233, 0.16);
+  color: #f4ecff;
+  border: 1px solid rgba(220, 201, 255, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.secondaryButton:hover {
+  background: rgba(193, 164, 250, 0.28);
+  border-color: rgba(233, 218, 255, 0.72);
+  transform: translateY(-2px);
+}
+
+.secondaryButton:active {
+  transform: translateY(0);
 }

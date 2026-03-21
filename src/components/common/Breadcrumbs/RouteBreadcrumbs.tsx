@@ -10,7 +10,7 @@ import Breadcrumbs from './Breadcrumbs';
 const HIDE_BREADCRUMB_PATHS = new Set(['/', '/login', '/signup']);
 
 const SUPPLEMENT_PATH_REGEX = /^\/supplements\/([^/]+)$/;
-const ORDER_SUCCESS_PATH_REGEX = /^\/supplements\/order-success\/([^/]+)$/;
+const ORDER_SUCCESS_PATH_REGEX = /^\/order-success\/([^/]+)$/;
 const THERAPIST_SLOTS_PATH_REGEX = /^\/admin\/therapists\/([^/]+)\/slots$/;
 const THERAPIST_PROFILE_PATH_REGEX = /^\/therapy-corner\/([^/]+)$/;
 

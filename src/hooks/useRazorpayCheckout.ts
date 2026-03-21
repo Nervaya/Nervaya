@@ -73,6 +73,8 @@ export function useRazorpayCheckout({
       theme: { color: '#7c3aed' },
       modal: {
         ondismiss: () => {
+          hasOpened.current = false;
+          openedRazorpayOrderIds.delete(razorpayOrderId);
           if (!paymentSucceeded) {
             onDismissRef.current?.();
           }

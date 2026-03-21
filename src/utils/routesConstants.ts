@@ -4,8 +4,9 @@ export const PROTECTED_ROUTES = [
   '/dashboard',
   '/profile',
   '/account',
-  '/supplements/cart',
-  '/supplements/checkout',
+  '/cart',
+  '/checkout',
+  '/order-success',
   '/sleep-assessment',
 ] as const;
 
@@ -20,6 +21,7 @@ export const CUSTOMER_ONLY_ROUTES = [
   '/dashboard',
   '/blog',
   '/supplements',
+  '/deep-rest',
   '/drift-off',
   '/therapy-corner',
   '/support',
@@ -43,7 +45,10 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   ADMIN_DASHBOARD: '/admin/dashboard',
   THERAPIST_DASHBOARD: '/therapist/dashboard',
+  DEEP_REST: '/deep-rest',
+  ADMIN_DEEP_REST: '/admin/deep-rest',
   SUPPLEMENTS: '/supplements',
-  CART: '/supplements/cart',
-  CHECKOUT: '/supplements/checkout',
+  CART: '/cart',
+  CHECKOUT: '/checkout',
+  ORDER_SUCCESS: '/order-success',
 } as const;

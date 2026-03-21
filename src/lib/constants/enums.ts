@@ -107,3 +107,10 @@ export const GENDER_OPTIONS = [
   { label: 'Female', value: GENDER.FEMALE },
   { label: 'Other', value: GENDER.OTHER },
 ] as const;
+
+export const ITEM_TYPE = {
+  SUPPLEMENT: 'Supplement',
+  DRIFT_OFF: 'DriftOff',
+} as const;
+
+export type ItemType = (typeof ITEM_TYPE)[keyof typeof ITEM_TYPE];

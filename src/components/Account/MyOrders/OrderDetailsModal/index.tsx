@@ -45,7 +45,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, onC
               </h3>
               <ul className={styles.itemsList}>
                 {order.items.map((item) => (
-                  <li key={item.supplementId.toString()} className={styles.itemRow}>
+                  <li key={item.itemId.toString()} className={styles.itemRow}>
                     <span>
                       {item.name} x {item.quantity}
                     </span>
@@ -59,13 +59,17 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, onC
               <h3 className={styles.sectionTitle}>
                 <Icon icon={ICON_TRUCK} className={styles.sectionIcon} /> Shipping
               </h3>
-              <address className={styles.address}>
-                {order.shippingAddress.name}
-                <br />
-                {order.shippingAddress.addressLine1}
-                <br />
-                {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
-              </address>
+              {order.shippingAddress ? (
+                <address className={styles.address}>
+                  {order.shippingAddress.name}
+                  <br />
+                  {order.shippingAddress.addressLine1}
+                  <br />
+                  {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                </address>
+              ) : (
+                <div className={styles.digitalDeliveryText}>Digital Delivery via email & profile access</div>
+              )}
             </div>
 
             <div className={styles.financialSummary}>

@@ -69,5 +69,10 @@
 }
 
 .action {
-  margin-top: var(--spacing-sm);
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
 }

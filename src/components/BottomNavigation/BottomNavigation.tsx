@@ -36,8 +36,7 @@ const BottomNavigation = () => {
     );
   };
 
-  const showBadge = (path: string, title: string) =>
-    (path === '/supplements/cart' || title === 'Cart') && cartCount > 0;
+  const showBadge = (path: string, title: string) => (path === '/cart' || title === 'Cart') && cartCount > 0;
 
   const NavLinkItem = ({ item }: { item: BottomNavItem }) => {
     const active = isActive(item.path);

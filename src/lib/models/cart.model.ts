@@ -1,7 +1,12 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
+import { ITEM_TYPE, type ItemType } from '@/lib/constants/enums';
+
 export interface ICartItem {
-  supplementId: Types.ObjectId;
+  itemType: ItemType;
+  itemId: Types.ObjectId | string;
+  name?: string;
+  image?: string;
   quantity: number;
   price: number;
 }
@@ -16,10 +21,21 @@ export interface ICart extends Document {
 
 const cartItemSchema = new Schema<ICartItem>(
   {
-    supplementId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Supplement',
-      required: [true, 'Supplement ID is required'],
+    itemType: {
+      type: String,
+      enum: Object.values(ITEM_TYPE),
+      required: [true, 'Item Type is required'],
+      default: ITEM_TYPE.SUPPLEMENT,
+    },
+    itemId: {
+      type: Schema.Types.Mixed,
+      required: [true, 'Item ID is required'],
+    },
+    name: {
+      type: String,
+    },
+    image: {
+      type: String,
     },
     quantity: {
       type: Number,

@@ -1,6 +1,7 @@
 import connectDB from '@/lib/db/mongodb';
 import Order from '@/lib/models/order.model';
 import Session from '@/lib/models/session.model';
+import '@/lib/models/therapist.model';
 import User from '@/lib/models/user.model';
 import { handleError } from '@/lib/utils/error.util';
 import { PAYMENT_STATUS } from '@/lib/constants/enums';
@@ -66,7 +67,11 @@ export async function getOrderStats(): Promise<OrderStats> {
     const [total, byStatusAgg, recentOrders] = await Promise.all([
       Order.countDocuments(),
       Order.aggregate([{ $group: { _id: '$orderStatus', count: { $sum: 1 } } }]),
-      Order.find().populate('items.supplementId').sort({ createdAt: -1 }).limit(RECENT_ORDERS_LIMIT).lean(),
+      Order.find()
+        .select('_id userId totalAmount orderStatus paymentStatus createdAt')
+        .sort({ createdAt: -1 })
+        .limit(RECENT_ORDERS_LIMIT)
+        .lean(),
     ]);
     const byStatus: Record<string, number> = {};
     byStatusAgg.forEach((row: { _id: string; count: number }) => {
@@ -184,11 +189,24 @@ export async function getRevenueStats(): Promise<RevenueStats> {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const [orders, sessions, users, revenue] = await Promise.all([
+  const [ordersResult, sessionsResult, usersResult, revenueResult] = await Promise.allSettled([
     getOrderStats(),
     getSessionStats(),
     getUserStats(),
     getRevenueStats(),
   ]);
+
+  const orders =
+    ordersResult.status === 'fulfilled' ? ordersResult.value : { total: 0, byStatus: {}, recentOrders: [] };
+  const sessions =
+    sessionsResult.status === 'fulfilled'
+      ? sessionsResult.value
+      : { total: 0, byStatus: {}, upcomingCount: 0, upcomingSessions: [] };
+  const users = usersResult.status === 'fulfilled' ? usersResult.value : { total: 0, customers: 0 };
+  const revenue =
+    revenueResult.status === 'fulfilled'
+      ? revenueResult.value
+      : { total: 0, thisMonth: 0, lastMonth: 0, growthPercent: 0 };
+
   return { orders, sessions, users, revenue };
 }

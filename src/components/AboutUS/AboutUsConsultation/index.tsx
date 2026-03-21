@@ -91,8 +91,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
         map.set(date, count);
       });
       setSlotAvailability(map);
-    } catch (error) {
-      console.error('Failed to fetch availability:', error);
+    } catch {
       // } finally {
       //   setIsLoadingAvailability(false);
     }
@@ -105,9 +104,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
       const response = await axios.get(`/api/consultations/availability?date=${dateStr}`);
       const booked = response.data.map((b: { time: string }) => b.time);
       setBookedSlots(booked);
-    } catch (error) {
-      console.error('Failed to fetch booked slots:', error);
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {

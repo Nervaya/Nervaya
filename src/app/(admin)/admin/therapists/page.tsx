@@ -52,10 +52,7 @@ export default function AdminTherapistsPage() {
       } else {
         setError(true);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Failed to fetch therapists', error);
-      }
+    } catch {
       setError(true);
     } finally {
       setLoading(false);

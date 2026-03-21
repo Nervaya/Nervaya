@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import styles from '@/components/common/GlobalLoader/styles.module.css';
 
 interface LoadingContextType {
   showLoader: (label?: string) => void;
@@ -37,7 +38,11 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   return (
     <LoadingContext.Provider value={value}>
       {children}
-      {isLoading && <GlobalLoader label={loadingLabel} centerPage />}
+      {isLoading && (
+        <div className={styles.fixedOverlay}>
+          <GlobalLoader label={loadingLabel} centerPage />
+        </div>
+      )}
     </LoadingContext.Provider>
   );
 }

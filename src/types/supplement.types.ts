@@ -1,5 +1,11 @@
 import { Types } from 'mongoose';
-import { PaymentStatus, OrderStatus, type DeliveryMethod, type DiscountType } from '@/lib/constants/enums';
+import {
+  PaymentStatus,
+  OrderStatus,
+  type DeliveryMethod,
+  type DiscountType,
+  type ItemType,
+} from '@/lib/constants/enums';
 
 export interface StarDistribution {
   1: number;
@@ -71,7 +77,10 @@ export interface SupplementFormData {
 }
 
 export interface CartItem {
-  supplementId: Types.ObjectId | Supplement;
+  itemType: ItemType;
+  itemId: Types.ObjectId | Supplement | string;
+  name?: string;
+  image?: string;
   quantity: number;
   price: number;
 }
@@ -86,7 +95,8 @@ export interface Cart {
 }
 
 export interface OrderItem {
-  supplementId: Types.ObjectId | Supplement;
+  itemType: ItemType;
+  itemId: Types.ObjectId | Supplement | string;
   name: string;
   quantity: number;
   price: number;

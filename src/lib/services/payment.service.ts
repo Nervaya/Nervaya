@@ -1,9 +1,12 @@
 import crypto from 'crypto';
 import Order from '@/lib/models/order.model';
+import Cart from '@/lib/models/cart.model';
+import DriftOffOrder from '@/lib/models/driftOffOrder.model';
+import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
-import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY } from '@/lib/constants/enums';
+import mongoose, { Types } from 'mongoose';
+import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY, ITEM_TYPE } from '@/lib/constants/enums';
 import { getRazorpayInstance } from '@/lib/utils/razorpay.util';
 
 export interface RazorpayOrderResponse {
@@ -19,16 +22,16 @@ export interface RazorpayOrderResponse {
   created_at: number;
 }
 
-export async function createRazorpayOrder(orderId: string, amount: number) {
+export async function createRazorpayOrder(orderId: string, amount: number, userId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
       throw new ValidationError('Invalid Order ID');
     }
 
-    const order = await Order.findById(orderId);
+    const order = await Order.findOne({ _id: orderId, userId });
     if (!order) {
-      throw new ValidationError('Order not found');
+      throw new ValidationError('Order not found or access denied');
     }
 
     if (amount !== order.totalAmount) {
@@ -63,16 +66,16 @@ export async function createRazorpayOrder(orderId: string, amount: number) {
   }
 }
 
-export async function verifyPayment(orderId: string, paymentId: string, razorpaySignature: string) {
+export async function verifyPayment(orderId: string, paymentId: string, razorpaySignature: string, userId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(orderId)) {
       throw new ValidationError('Invalid Order ID');
     }
 
-    const order = await Order.findById(orderId);
+    const order = await Order.findOne({ _id: orderId, userId });
     if (!order) {
-      throw new ValidationError('Order not found');
+      throw new ValidationError('Order not found or access denied');
     }
 
     if (!order.razorpayOrderId) {
@@ -91,13 +94,60 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
       throw new ValidationError('Invalid payment signature');
     }
 
-    await Order.findByIdAndUpdate(orderId, {
-      paymentId,
-      paymentStatus: PAYMENT_STATUS.PAID,
-      orderStatus: ORDER_STATUS.CONFIRMED,
-    });
+    const session = await mongoose.startSession();
+    try {
+      await session.withTransaction(async () => {
+        const currentOrder = await Order.findById(orderId).session(session);
+        if (!currentOrder) throw new ValidationError('Order not found');
 
-    return { verified: true, order };
+        if (currentOrder.paymentStatus === PAYMENT_STATUS.PAID) {
+          return; // Already processed
+        }
+
+        await Order.findByIdAndUpdate(orderId, {
+          paymentId,
+          paymentStatus: PAYMENT_STATUS.PAID,
+          orderStatus: ORDER_STATUS.CONFIRMED,
+        }).session(session);
+
+        // Clear the user's cart now that payment is confirmed
+        await Cart.findOneAndUpdate({ userId: currentOrder.userId }, { items: [] }).session(session);
+
+        for (const item of currentOrder.items) {
+          if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
+            // Check if DriftOffOrders already created for this Razorpay Order ID to avoid duplicates
+            const existingCount = await DriftOffOrder.countDocuments({
+              razorpayOrderId: currentOrder.razorpayOrderId,
+            }).session(session);
+
+            if (existingCount === 0) {
+              const quantity = item.quantity || 1;
+              for (let i = 0; i < quantity; i++) {
+                const [newDriftOffOrder] = await DriftOffOrder.create(
+                  [
+                    {
+                      userId: currentOrder.userId,
+                      amount: item.price,
+                      paymentStatus: 'paid',
+                      razorpayOrderId: currentOrder.razorpayOrderId,
+                      paymentId,
+                    },
+                  ],
+                  { session },
+                );
+
+                await createDriftOffResponse(currentOrder.userId.toString(), newDriftOffOrder._id.toString(), session);
+              }
+            }
+          }
+        }
+      });
+
+      const order = await Order.findById(orderId);
+      return { verified: true, order };
+    } finally {
+      await session.endSession();
+    }
   } catch (error) {
     throw handleError(error);
   }
@@ -106,24 +156,58 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
 export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: string, event: string) {
   await connectDB();
   try {
-    const order = await Order.findOne({ razorpayOrderId });
-    if (!order) {
-      throw new ValidationError('Order not found');
-    }
+    const session = await mongoose.startSession();
+    try {
+      await session.withTransaction(async () => {
+        const order = await Order.findOne({ razorpayOrderId }).session(session);
+        if (!order) throw new ValidationError('Order not found');
 
-    if (event === 'payment.captured' || event === 'payment.authorized') {
-      await Order.findByIdAndUpdate(order._id, {
-        paymentId,
-        paymentStatus: PAYMENT_STATUS.PAID,
-        orderStatus: ORDER_STATUS.CONFIRMED,
-      });
-    } else if (event === 'payment.failed') {
-      await Order.findByIdAndUpdate(order._id, {
-        paymentStatus: PAYMENT_STATUS.FAILED,
-      });
-    }
+        if (event === 'payment.captured' || event === 'payment.authorized') {
+          if (order.paymentStatus === PAYMENT_STATUS.PAID) return;
 
-    return { success: true };
+          await Order.findByIdAndUpdate(order._id, {
+            paymentId,
+            paymentStatus: PAYMENT_STATUS.PAID,
+            orderStatus: ORDER_STATUS.CONFIRMED,
+          }).session(session);
+
+          // Clear the user's cart now that payment is confirmed
+          await Cart.findOneAndUpdate({ userId: order.userId }, { items: [] }).session(session);
+
+          for (const item of order.items) {
+            if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
+              const existingCount = await DriftOffOrder.countDocuments({ razorpayOrderId }).session(session);
+              if (existingCount === 0) {
+                const quantity = item.quantity || 1;
+                for (let i = 0; i < quantity; i++) {
+                  const [newDriftOffOrder] = await DriftOffOrder.create(
+                    [
+                      {
+                        userId: order.userId,
+                        amount: item.price,
+                        paymentStatus: 'paid',
+                        razorpayOrderId,
+                        paymentId,
+                      },
+                    ],
+                    { session },
+                  );
+
+                  await createDriftOffResponse(order.userId.toString(), newDriftOffOrder._id.toString(), session);
+                }
+              }
+            }
+          }
+        } else if (event === 'payment.failed') {
+          await Order.findByIdAndUpdate(order._id, {
+            paymentStatus: PAYMENT_STATUS.FAILED,
+          }).session(session);
+        }
+      });
+      return { success: true };
+    } finally {
+      await session.endSession();
+    }
   } catch (error) {
     throw handleError(error);
   }

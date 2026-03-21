@@ -58,9 +58,7 @@ export default function AddQuestionPage() {
             setFormData((prev) => ({ ...prev, order: nextOrder }));
           }
         }
-      } catch (err) {
-        console.error('Failed to fetch used orders:', err);
-      }
+      } catch {}
     };
     fetchOrders();
   }, []);

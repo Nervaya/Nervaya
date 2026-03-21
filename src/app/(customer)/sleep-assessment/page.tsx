@@ -5,26 +5,23 @@ import { Icon } from '@iconify/react';
 import { ICON_ALERT, ICON_DOCUMENT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import AssessmentContainer from '@/components/SleepAssessment/AssessmentContainer';
-import { type BreadcrumbItem } from '@/components/common';
+import { GlobalLoader, type BreadcrumbItem } from '@/components/common';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { ApiResponse } from '@/lib/utils/response.util';
-import { useLoading } from '@/context/LoadingContext';
 
 export default function SleepAssessmentPage() {
   const [questions, setQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isContainerHydrated, setIsContainerHydrated] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { showLoader, hideLoader, isLoading } = useLoading();
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        showLoader('Loading your assessment...');
         const response = await axiosInstance.get<unknown, ApiResponse<ISleepAssessmentQuestion[]>>(
           '/sleep-assessment/questions',
         );
@@ -33,8 +30,7 @@ export default function SleepAssessmentPage() {
         } else {
           setError('Failed to load questions');
         }
-      } catch (err) {
-        console.error('Error fetching questions:', err);
+      } catch {
         setError('Failed to load assessment questions. Please try again later.');
       } finally {
         setIsFetching(false);
@@ -42,18 +38,10 @@ export default function SleepAssessmentPage() {
     };
 
     fetchQuestions();
-  }, [showLoader]);
-
-  // Hide loader only when fetching is done AND (hydration is complete OR error OR no questions)
-  useEffect(() => {
-    if (!isFetching) {
-      if (error || questions.length === 0 || isContainerHydrated) {
-        hideLoader();
-      }
-    }
-  }, [isFetching, isContainerHydrated, error, questions.length, hideLoader]);
+  }, []);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Sleep Assessment' }];
+  const showPageLoader = isFetching || (!error && questions.length > 0 && !isContainerHydrated);
 
   return (
     <Sidebar hideGlobalBreadcrumbs>
@@ -65,7 +53,13 @@ export default function SleepAssessmentPage() {
             breadcrumbs={breadcrumbs}
           />
 
-          {error && !isLoading && (
+          {showPageLoader && (
+            <div className={styles.loadingContainer}>
+              <GlobalLoader label="Loading your assessment..." />
+            </div>
+          )}
+
+          {error && !showPageLoader && (
             <div className={styles.errorContainer}>
               <div className={styles.errorIcon}>
                 <Icon icon={ICON_ALERT} aria-hidden />
@@ -77,7 +71,7 @@ export default function SleepAssessmentPage() {
             </div>
           )}
 
-          {!isLoading && !error && questions.length === 0 && (
+          {!showPageLoader && !error && questions.length === 0 && (
             <div className={styles.emptyContainer}>
               <div className={styles.emptyIcon}>
                 <Icon icon={ICON_DOCUMENT} aria-hidden />

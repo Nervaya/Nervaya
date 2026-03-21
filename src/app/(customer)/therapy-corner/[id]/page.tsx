@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common';
 import BookingModal from '@/components/Booking/BookingModal';
 import { therapistsApi } from '@/lib/api/therapists';
 import StatusState from '@/components/common/StatusState';
@@ -22,15 +22,6 @@ export default function TherapistProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [openBooking, setOpenBooking] = useState(false);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   useEffect(() => {
     const fetchTherapist = async () => {
@@ -65,6 +56,12 @@ export default function TherapistProfilePage() {
         <section
           style={{ display: 'flex', flexDirection: 'column', width: '100%', background: '#faf5ff', minHeight: '100vh' }}
         >
+          {loading && (
+            <div className={styles.loadingWrap}>
+              <GlobalLoader label="Loading therapist profile..." />
+            </div>
+          )}
+
           {!loading && error && (
             <StatusState
               type="error"

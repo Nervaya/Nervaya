@@ -5,7 +5,7 @@ export interface NavbarLink {
 
 export const NAVBAR_PRODUCTS_LINKS: NavbarLink[] = [
   { text: 'Therapy Corner', href: '/therapy-corner' },
-  { text: 'Deep Rest Sessions', href: '/drift-off' },
+  { text: 'Deep Rest', href: '/deep-rest' },
   { text: 'Supplements', href: '/supplements' },
 ];
 

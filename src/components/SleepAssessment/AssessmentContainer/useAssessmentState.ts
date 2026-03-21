@@ -210,8 +210,7 @@ export function useAssessmentState(
       } else {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
       }
-    } catch (error) {
-      console.error('Failed to save answer:', error);
+    } catch {
       setSubmitError('Failed to save your answer. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -16,9 +16,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
       try {
         const stored = window.localStorage.getItem('sidebar-collapsed');
         return stored === 'true';
-      } catch (e) {
-        console.error('Failed to load sidebar state', e);
-      }
+      } catch {}
     }
     return false;
   });
@@ -43,9 +41,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (typeof window !== 'undefined') {
       try {
         window.localStorage.setItem('sidebar-collapsed', String(isCollapsed));
-      } catch (e) {
-        console.error('Failed to save sidebar state', e);
-      }
+      } catch {}
     }
   }, [isCollapsed]);
 

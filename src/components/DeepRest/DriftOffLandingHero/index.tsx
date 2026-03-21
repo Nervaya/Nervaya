@@ -1,0 +1,139 @@
+'use client';
+
+import { useState, useSyncExternalStore, useEffect } from 'react';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import { Icon } from '@iconify/react';
+import { ICON_PLAY } from '@/constants/icons';
+import { DRIFT_OFF_LANDING_VIDEO_URL, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
+import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/context/CartContext';
+import { useRouter } from 'next/navigation';
+import { cartApi } from '@/lib/api/cart';
+import { toast } from 'sonner';
+import type { VideoPlayerProps } from '../VideoPlayer';
+import styles from './styles.module.css';
+
+const VideoPlayerDynamic = dynamic(() => import('../VideoPlayer'), {
+  ssr: false,
+}) as React.ComponentType<VideoPlayerProps>;
+
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+const DriftOffLandingHero = () => {
+  const hasMounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
+  const { user } = useAuth();
+  const { refreshCart } = useCart();
+  const router = useRouter();
+  const [playing, setPlaying] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [sessionPrice, setSessionPrice] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Fetch dynamic price from backend config
+    fetch('/api/deep-rest/plan')
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && typeof res.data?.price === 'number') {
+          setSessionPrice(res.data.price);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      router.push('/login?redirect=/deep-rest');
+      return;
+    }
+
+    setIsAdding(true);
+    try {
+      if (sessionPrice === null) {
+        toast.error('Could not load session price. Please try again.');
+        return;
+      }
+      const response = await cartApi.add(
+        'drift-off-session',
+        1,
+        'DriftOff',
+        'Deep Rest Session',
+        sessionPrice,
+        DRIFT_OFF_SESSION_IMAGE,
+      );
+      if (response.success) {
+        refreshCart();
+        router.push('/cart'); // Or /cart if we rename
+      } else {
+        toast.error(`Failed to add to cart: ${response.message}`);
+      }
+    } catch (_err) {
+      toast.error('Failed to add to cart');
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  return (
+    <section className={styles.hero} aria-label="Deep Rest hero">
+      <div className={styles.heroLeft}>
+        <p className={styles.description}>
+          No more longing for the right session. You are as unique as your needs and our specialists will curate a 25
+          min Deep Rest Session for you targeting your special mental needs.
+        </p>
+        <div className={styles.actions}>
+          <Link href="/deep-rest/payment" className={styles.btnPrimary}>
+            Buy new tailored audio
+          </Link>
+          <button onClick={handleAddToCart} className={styles.btnOutline} disabled={isAdding}>
+            Add to Cart
+          </button>
+          <Link href="/deep-rest/sessions" className={styles.btnOutline}>
+            View My Sessions
+          </Link>
+          <Link href="/deep-rest/about" className={styles.btnOutline}>
+            What are Deep Rest sessions?
+          </Link>
+        </div>
+      </div>
+
+      <div className={styles.heroRight}>
+        <div className={styles.videoCard}>
+          <div className={styles.videoWrapper}>
+            {hasMounted && (
+              <VideoPlayerDynamic
+                url={DRIFT_OFF_LANDING_VIDEO_URL}
+                width="100%"
+                height="100%"
+                playing={playing}
+                controls
+                className={styles.playerAbsolute}
+                onPlay={() => setPlaying(true)}
+              />
+            )}
+            {!playing && (
+              <button
+                type="button"
+                className={styles.playButton}
+                onClick={() => setPlaying(true)}
+                aria-label="Play sample video"
+              >
+                <Icon icon={ICON_PLAY} width={18} height={18} aria-hidden />
+              </button>
+            )}
+          </div>
+          <div className={styles.videoMeta}>
+            <span className={styles.videoTitle}>
+              Sample Guided Meditation <span className={styles.dot}>●</span>
+            </span>
+            <span className={styles.videoAuthor}>By Practia</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default DriftOffLandingHero;

@@ -108,7 +108,6 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
   }, [fetchDateAvailability, visibleMonth, selectedDate]);
 
   if (!therapistId) {
-    console.error('useBookingSlots: therapistId is required');
     setError('Therapist ID is required');
     return { schedule, loading, error, fetchSlots: () => {}, fullyBookedDates, slotAvailability };
   }

@@ -124,7 +124,6 @@
 .navbarContent .option[data-highlighted] {
   background: rgba(124, 58, 237, 0.22);
   color: #ffffff;
-  padding-left: 22px;
 }
 
 .navbarVariant.root {

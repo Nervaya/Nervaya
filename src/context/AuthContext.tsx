@@ -227,8 +227,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await api.post(AUTH_API.LOGOUT);
-    } catch (err) {
-      console.error('Logout API call failed:', err);
+    } catch {
     } finally {
       setLoading(false);
     }

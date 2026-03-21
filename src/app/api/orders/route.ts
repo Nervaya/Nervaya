@@ -77,14 +77,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { shippingAddress, promoCode, promoDiscount, deliveryMethod } = body;
 
-    if (!shippingAddress || typeof shippingAddress !== 'object') {
-      return NextResponse.json(errorResponse('Shipping address is required', null, 400), { status: 400 });
-    }
+    if (shippingAddress) {
+      if (typeof shippingAddress !== 'object') {
+        return NextResponse.json(errorResponse('Shipping address must be an object', null, 400), { status: 400 });
+      }
 
-    const requiredFields = ['name', 'phone', 'addressLine1', 'city', 'state', 'zipCode', 'country'];
-    for (const field of requiredFields) {
-      if (!shippingAddress[field]) {
-        return NextResponse.json(errorResponse(`Shipping address ${field} is required`, null, 400), { status: 400 });
+      const requiredFields = ['name', 'phone', 'addressLine1', 'city', 'state', 'zipCode', 'country'];
+      for (const field of requiredFields) {
+        if (!shippingAddress[field]) {
+          return NextResponse.json(errorResponse(`Shipping address ${field} is required`, null, 400), { status: 400 });
+        }
       }
     }
 
