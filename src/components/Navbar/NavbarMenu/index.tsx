@@ -13,7 +13,6 @@ interface NavbarMenuProps {
   isAuthenticated: boolean;
   isMobileMenuOpen: boolean;
   isMobileViewport: boolean;
-  isProfessional: boolean;
   pathname: string;
   dashboardHref: string;
   accountHref: string;
@@ -25,7 +24,6 @@ export function NavbarMenu({
   isAuthenticated,
   isMobileMenuOpen,
   isMobileViewport,
-  isProfessional,
   pathname,
   dashboardHref,
   accountHref,
@@ -36,55 +34,43 @@ export function NavbarMenu({
 
   return (
     <ul className={`${styles.navbarMenu} ${isMobileMenuOpen ? styles.navbarMenuOpen : ''}`}>
-      {!isProfessional && (
-        <li>
-          <Link href="/" onClick={onCloseMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
-            Home
-          </Link>
-        </li>
-      )}
-      {!isProfessional && (
-        <li className={styles.navbarDropdown}>
-          <Dropdown
-            variant="navbar"
-            modal={false}
-            options={NAVBAR_PRODUCTS_LINKS.map((link) => ({
-              label: link.text,
-              value: link.href,
-              href: link.href,
-              onClick: onCloseMobileMenu,
-            }))}
-            trigger={
-              <button className={styles.navbarDropdownButton}>
-                Products
-                <Icon icon={ICON_CHEVRON_DOWN} className={styles.dropdownArrow} width={16} height={16} />
-              </button>
-            }
-          />
-        </li>
-      )}
-      {!isProfessional && (
-        <li>
-          <Link
-            href={dashboardHref}
-            onClick={onCloseMobileMenu}
-            aria-current={pathname === ROUTES.DASHBOARD ? 'page' : undefined}
-          >
-            Dashboard
-          </Link>
-        </li>
-      )}
-      {!isProfessional && (
-        <li>
-          <Link
-            href="/about-us"
-            onClick={onCloseMobileMenu}
-            aria-current={pathname === '/about-us' ? 'page' : undefined}
-          >
-            About Us
-          </Link>
-        </li>
-      )}
+      <li>
+        <Link href="/" onClick={onCloseMobileMenu} aria-current={pathname === '/' ? 'page' : undefined}>
+          Home
+        </Link>
+      </li>
+      <li className={styles.navbarDropdown}>
+        <Dropdown
+          variant="navbar"
+          modal={false}
+          options={NAVBAR_PRODUCTS_LINKS.map((link) => ({
+            label: link.text,
+            value: link.href,
+            href: link.href,
+            onClick: onCloseMobileMenu,
+          }))}
+          trigger={
+            <button className={styles.navbarDropdownButton}>
+              Products
+              <Icon icon={ICON_CHEVRON_DOWN} className={styles.dropdownArrow} width={16} height={16} />
+            </button>
+          }
+        />
+      </li>
+      <li>
+        <Link
+          href={dashboardHref}
+          onClick={onCloseMobileMenu}
+          aria-current={pathname === ROUTES.DASHBOARD || pathname === ROUTES.ADMIN_DASHBOARD ? 'page' : undefined}
+        >
+          Dashboard
+        </Link>
+      </li>
+      <li>
+        <Link href="/about-us" onClick={onCloseMobileMenu} aria-current={pathname === '/about-us' ? 'page' : undefined}>
+          About Us
+        </Link>
+      </li>
 
       {isAuthenticated && isMobileViewport ? (
         <li>

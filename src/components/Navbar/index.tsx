@@ -127,7 +127,6 @@ const Navbar = () => {
             isAuthenticated={isAuthenticated}
             isMobileMenuOpen={isMobileMenuOpen}
             isMobileViewport={isMobileViewport}
-            isProfessional={isProfessional}
             pathname={pathname}
             dashboardHref={dashboardHref}
             accountHref={accountHref}
