@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_PLAY, ICON_VIDEO_CAMERA, ICON_USER_BOLD, ICON_TRANSLATE } from '@/constants/icons';
 import { Therapist } from '@/types/therapist.types';
+import { Badge } from '@/components/common';
 import { SpecializationMarquee } from './SpecializationMarquee';
 import styles from '../styles.module.css';
 
@@ -78,9 +79,9 @@ export function TherapistCard({
             </p>
             <div className={styles.metaInfoRow}>
               {therapist.sessionFee != null && therapist.sessionDurationMins != null ? (
-                <span className={styles.feeText}>
+                <Badge variant="purple" size="sm" className={styles.feeText}>
                   ₹{therapist.sessionFee} for {therapist.sessionDurationMins} min
-                </span>
+                </Badge>
               ) : null}
             </div>
           </div>

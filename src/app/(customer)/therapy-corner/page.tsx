@@ -12,6 +12,7 @@ import {
   type BreadcrumbItem,
   CustomDropdown,
   MultiSelect,
+  Badge,
 } from '@/components/common';
 import { type Option } from '@/components/common/CustomDropdown';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
@@ -20,6 +21,9 @@ import { scheduleApi } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
 import { getDateKey, getNextAvailableSlotDateTime, formatNextSlot, formatExperienceYears } from '@/utils/therapyUtils';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 export interface FilterState {
@@ -193,7 +197,15 @@ export default function TherapyCornerPage() {
     setIsFilterModalOpen(false);
   };
 
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const handleBookAppointment = (therapist: Therapist) => {
+    if (!isAuthenticated) {
+      router.push(`${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(pathname)}`);
+      return;
+    }
     trackStartBooking({ therapist_id: therapist._id, therapist_name: therapist.name });
     setSelectedTherapist(therapist);
   };
@@ -212,7 +224,11 @@ export default function TherapyCornerPage() {
             title="Finding the right therapist is not easy."
             subtitle="Based on your needs, we curated a shortlist tailored for you."
             breadcrumbs={breadcrumbs}
-            actions={<p className={styles.sectionMeta}>{activeCount} Verified Experts Available</p>}
+            actions={
+              <Badge variant="purple" size="sm" className={styles.sectionMeta}>
+                {activeCount} Verified Experts Available
+              </Badge>
+            }
           />
 
           <div className={styles.toolbar}>

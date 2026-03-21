@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import { ICON_CART, ICON_ARROW_RIGHT, ICON_LOADING } from '@/constants/icons';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
+import { Badge } from '@/components/common';
 import { ITEM_TYPE } from '@/lib/constants/enums';
 import type { CartItem, Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
@@ -156,7 +157,11 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
       >
         <span className={styles.cartTriggerIconWrap}>
           <Icon icon={ICON_CART} width={22} height={22} />
-          {isAuthenticated && cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
+          {isAuthenticated && cartCount > 0 && (
+            <Badge variant="error" size="xs" className={styles.cartBadge}>
+              {cartCount}
+            </Badge>
+          )}
         </span>
         <span className={styles.cartTriggerText}>Cart</span>
       </button>
@@ -174,7 +179,7 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
               {isAuthenticated ? 'Your cart orbit' : 'Sign in to unlock your cart'}
             </h3>
           </div>
-          {isAuthenticated && cartCount > 0 && <span className={styles.cartPreviewCount}>{cartCount} items</span>}
+          {isAuthenticated && cartCount > 0 && <Badge size="sm">{cartCount} items</Badge>}
         </div>
 
         {!isAuthenticated ? (

@@ -95,7 +95,7 @@ const Navbar = () => {
   };
 
   const isProfessional = isAdmin || hasRole(user, ROLES.THERAPIST);
-  const shouldShowCartPreview = !isProfessional;
+  const shouldShowCartPreview = isAuthenticated && !isProfessional;
   const dashboardHref = isAuthenticated
     ? isAdmin
       ? ROUTES.ADMIN_DASHBOARD

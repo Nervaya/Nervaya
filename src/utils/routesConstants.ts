@@ -1,4 +1,12 @@
-export const PUBLIC_ROUTES = ['/', '/login', '/signup', '/about-us', '/privacy-policy', '/support'] as const;
+export const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/signup',
+  '/about-us',
+  '/privacy-policy',
+  '/support',
+  '/therapy-corner',
+] as const;
 
 export const PROTECTED_ROUTES = [
   '/dashboard',

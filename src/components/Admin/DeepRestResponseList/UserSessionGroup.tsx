@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { IDeepRestResponse } from '@/types/deepRest.types';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
+import { Badge } from '@/components/common';
 import styles from './styles.module.css';
 
 interface UserSessionGroupProps {
@@ -125,12 +126,12 @@ const UserSessionGroup = ({
                     </span>
                   </div>
                   <div className={styles.badgeRow}>
-                    <span className={response.completedAt ? styles.badgeCompleted : styles.badgePending}>
+                    <Badge variant={response.completedAt ? 'success' : 'warning'}>
                       {response.completedAt ? 'Completed' : 'In Progress'}
-                    </span>
-                    {response.assignedVideoUrl && <span className={styles.badgeAssigned}>Video Assigned</span>}
-                    {hasPendingReSessionRequest && <span className={styles.badgeRequested}>Re-Session Requested</span>}
-                    {hasResolvedReSessionRequest && <span className={styles.badgeResolved}>Replacement Assigned</span>}
+                    </Badge>
+                    {response.assignedVideoUrl && <Badge variant="info">Video Assigned</Badge>}
+                    {hasPendingReSessionRequest && <Badge variant="purple">Re-Session Requested</Badge>}
+                    {hasResolvedReSessionRequest && <Badge variant="neutral">Replacement Assigned</Badge>}
                   </div>
                 </div>
 

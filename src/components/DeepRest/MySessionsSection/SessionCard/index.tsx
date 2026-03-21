@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
 import { ICON_HEADPHONES, ICON_CLOCK } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
+import { Badge } from '@/components/common';
 import styles from './SessionCard.module.css';
 
 const VideoPlayerDynamic = dynamic(() => import('@/components/DeepRest/VideoPlayer'), {
@@ -36,16 +37,8 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
           <span className={styles.dateLabel}>Purchased on</span>
           <span className={styles.dateValue}>{new Date(session.createdAt).toLocaleDateString()}</span>
         </div>
-        <div
-          className={`${styles.statusBadge} ${
-            hasPendingReSessionRequest
-              ? styles.statusRequested
-              : isReady
-                ? styles.statusReady
-                : isPreparing
-                  ? styles.statusPreparing
-                  : styles.statusPending
-          }`}
+        <Badge
+          variant={hasPendingReSessionRequest ? 'purple' : isReady ? 'success' : isPreparing ? 'warning' : 'error'}
         >
           {hasPendingReSessionRequest
             ? 'Re-Session Requested'
@@ -54,7 +47,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
               : isPreparing
                 ? 'Preparing'
                 : 'Pending Action'}
-        </div>
+        </Badge>
       </div>
 
       <div className={styles.cardContent}>
@@ -107,14 +100,14 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
               </Link>
             )}
             {hasPendingReSessionRequest && !isRequesting && (
-              <p className={styles.statusBadge} style={{ width: '100%', margin: '0', textAlign: 'center' }}>
+              <Badge variant="purple" fullWidth>
                 Re-Session Requested
-              </p>
+              </Badge>
             )}
             {hasResolvedReSessionRequest && (
-              <p className={styles.statusBadge} style={{ width: '100%', margin: '0', textAlign: 'center' }}>
+              <Badge variant="neutral" fullWidth>
                 Re-Session Used
-              </p>
+              </Badge>
             )}
           </>
         )}

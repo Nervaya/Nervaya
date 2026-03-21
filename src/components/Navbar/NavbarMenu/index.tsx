@@ -57,15 +57,17 @@ export function NavbarMenu({
           }
         />
       </li>
-      <li>
-        <Link
-          href={dashboardHref}
-          onClick={onCloseMobileMenu}
-          aria-current={pathname === ROUTES.DASHBOARD || pathname === ROUTES.ADMIN_DASHBOARD ? 'page' : undefined}
-        >
-          Dashboard
-        </Link>
-      </li>
+      {isAuthenticated && (
+        <li>
+          <Link
+            href={dashboardHref}
+            onClick={onCloseMobileMenu}
+            aria-current={pathname === ROUTES.DASHBOARD || pathname === ROUTES.ADMIN_DASHBOARD ? 'page' : undefined}
+          >
+            Dashboard
+          </Link>
+        </li>
+      )}
       <li>
         <Link href="/about-us" onClick={onCloseMobileMenu} aria-current={pathname === '/about-us' ? 'page' : undefined}>
           About Us

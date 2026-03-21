@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_USER, ICON_HASHTAG, ICON_CHEVRON_RIGHT } from '@/constants/icons';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
+import { Badge } from '@/components/common';
 import styles from './styles.module.css';
 
 interface TherapySessionCardProps {
@@ -25,9 +26,12 @@ const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onView
 
   return (
     <div className={styles.sessionCard}>
-      <span className={styles.statusTag} data-status={(session.status || '').toLowerCase()}>
+      <Badge
+        variant={statusLabel === 'Upcoming' ? 'info' : statusLabel === 'Completed' ? 'success' : 'error'}
+        className={styles.statusTag}
+      >
         {statusLabel}
-      </span>
+      </Badge>
       <div className={styles.cardImagePlaceholder}>
         {therapist?.image ? (
           // eslint-disable-next-line @next/next/no-img-element
