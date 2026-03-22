@@ -115,11 +115,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   padding: 10px 14px;
   margin: 2px 8px;
+  min-height: 44px;
+  box-sizing: border-box;
   color: #ffffff;
   font-weight: 400;
   font-size: 0.95rem;
+  line-height: 1.25;
   text-decoration: none;
   border-radius: 12px;
   transition: all 0.14s cubic-bezier(0.4, 0, 0.2, 1);
@@ -128,11 +132,24 @@
   gap: 12px;
 }
 
+/* Collapsed: center the row in the rail; fixed width so <button> matches <a> (no width:100% + margin overflow) */
+.collapsed .nav .navList > li > ul.navList > li,
+.collapsed .bottomMenu .navList > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .collapsed .navItem {
   justify-content: center;
+  align-items: center;
   padding: 10px 0;
-  margin: 4px 12px;
+  margin: 4px 0;
   gap: 0;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  box-sizing: border-box;
 }
 
 .navItem:hover {
@@ -153,44 +170,24 @@
   color: rgba(244, 238, 255, 0.85);
 }
 
+/* Button reset; width 100% for expanded row — collapsed .navItem overrides with fixed 48px */
 .logoutButton {
   appearance: none;
   -webkit-appearance: none;
   width: 100%;
+  max-width: 100%;
   cursor: pointer;
   text-align: left;
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.9);
   font: inherit;
-  display: flex;
-  align-items: center;
-  line-height: inherit;
-  padding: 10px 14px;
-  margin: 2px 8px;
-  gap: 12px;
+  font-weight: 400;
 }
 
-.collapsed .logoutButton {
-  width: 100%;
-  justify-content: center;
-  padding: 10px 0;
-  margin: 4px 12px;
-  gap: 0;
-}
-
-.logoutIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.collapsed .logoutIcon {
-  margin: 0 auto;
-  transition: transform 0.14s ease;
+.logoutButton::-moz-focus-inner {
+  border: 0;
+  padding: 0;
 }
 
 .bottomMenu {
@@ -212,7 +209,7 @@
 }
 
 .collapsed .icon {
-  margin: 0 auto;
+  margin: 0;
 }
 
 .badge {

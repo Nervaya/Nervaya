@@ -93,8 +93,3 @@
     max-width: 100%;
   }
 }
-
-/* Position and spacing from global .breadcrumbs-slot for same position as other pages */
-.breadcrumbsWrapper {
-  /* no extra positioning; .breadcrumbs-slot in globals.css controls position */
-}

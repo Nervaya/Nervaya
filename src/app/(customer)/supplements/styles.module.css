@@ -10,7 +10,6 @@
   padding: 0 var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   width: 100%;
   min-width: 0;
-  overflow-x: hidden;
   box-sizing: border-box;
   min-height: 70vh;
 }

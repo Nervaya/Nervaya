@@ -19,7 +19,7 @@ export function NavbarAccountLink({ href, label, isActive, onClick, desktop = fa
       className={`${styles.accountButton} ${desktop ? styles.desktopAccountButton : ''}`.trim()}
       aria-current={isActive ? 'page' : undefined}
     >
-      <Icon icon={ICON_USER} width={24} height={24} />
+      <Icon icon={ICON_USER} width={20} height={20} />
       <span>{label}</span>
     </Link>
   );

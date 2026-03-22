@@ -9,24 +9,15 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px var(--spacing-2xl);
+  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl);
   width: 100%;
   box-sizing: border-box;
   position: relative;
 }
 
-/* Align breadcrumbs to same position as other pages (container has 24px left padding) */
-.container :global(.breadcrumbs-slot) {
-  margin-left: -64px;
-}
-
 @media (max-width: 768px) {
   .container {
     padding: 0 16px var(--spacing-xl);
-  }
-
-  .container :global(.breadcrumbs-slot) {
-    margin-left: 0;
   }
 }
 

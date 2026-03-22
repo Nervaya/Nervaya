@@ -18,9 +18,15 @@
   }
 }
 
-/* Position and spacing come from global .breadcrumbs-slot for consistent placement on every page */
+/* Cancel main (.spacing-xl) + container (.spacing-md) inset; see globals .breadcrumbs-slot for base spacing */
 .breadcrumbsWrapper {
-  /* no extra positioning here; .breadcrumbs-slot in globals.css controls position */
+  margin-left: calc(-1 * (var(--spacing-xl) + var(--spacing-md)));
+}
+
+@media (max-width: 768px) {
+  .breadcrumbsWrapper {
+    margin-left: 0;
+  }
 }
 
 .mainRow {

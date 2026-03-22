@@ -2,8 +2,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-2xl, 64px);
-  overflow-x: hidden;
+  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   box-sizing: border-box;
 }
 
