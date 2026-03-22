@@ -50,7 +50,7 @@ export function CheckoutOrderSummary({
           </div>
           {!isDigitalOnly && (
             <div className={styles.summaryRow}>
-              <span>Shipment</span>
+              <span>Shipping</span>
               <span className={shipping === 0 ? styles.shipmentFree : undefined}>
                 {shipping === 0 ? 'Free' : formatPrice(shipping)}
               </span>

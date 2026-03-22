@@ -9,7 +9,6 @@ import { ICON_LOADING } from '@/constants/icons';
 import { Icon } from '@iconify/react';
 import { BookingModalHeader } from './BookingModalHeader';
 import { BookingModalFooter } from '../BookingModalFooter';
-// import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
 import { useTherapist } from '@/queries/therapists/useTherapist';
 import { cartApi } from '@/lib/api/cart';
@@ -17,6 +16,7 @@ import { ITEM_TYPE } from '@/lib/constants/enums';
 import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
 import { RazorpayCheckoutScript } from '@/components/common';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import styles from './styles.module.css';
 
 interface BookingModalProps {
@@ -46,7 +46,6 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   const [error, setError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [buyMode, setBuyMode] = useState<'checkout' | 'cart'>('checkout');
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const router = useRouter();
 
   const handleMonthChange = useCallback((monthStart: Date) => setVisibleMonth(monthStart), []);
@@ -228,6 +227,9 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
                   price: therapist?.sessionFee ?? 0,
                   currency: 'INR',
                 });
+                toast.info('Booking confirmed successfully!', {
+                  style: { background: '#7c3aed', color: '#fff', border: 'none' },
+                });
                 router.push(`/order-success/${orderId}`);
               } else {
                 throw new Error(verifyData.message || 'Verification failed');
@@ -240,7 +242,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           modal: {
             ondismiss: () => {
               setBooking(false);
-              setError('Payment cancelled.');
+              toast.info('Payment cancelled');
             },
           },
         };
@@ -263,7 +265,9 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           currency: 'INR',
         });
 
-        setSuccessMessage('Added to cart successfully!');
+        toast.info('Added to cart successfully!', {
+          style: { background: '#7c3aed', color: '#fff', border: 'none' },
+        });
         onSuccess?.();
         setTimeout(() => onClose(), 1200);
       }
@@ -346,11 +350,6 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           <div className={styles.errorBanner}>
             <span className={styles.errorIcon}>Warning</span>
             <span>{displayError}</span>
-          </div>
-        )}
-        {successMessage && (
-          <div className={styles.successBanner} role="status">
-            <span>{successMessage}</span>
           </div>
         )}
         {showConfirm && schedule && selectedSlot && (

@@ -15,7 +15,6 @@ interface ProductInfoProps {
   adding: boolean;
   isOutOfStock: boolean;
   maxQuantity: number;
-  successMessage: string | null;
   error: string | null;
 }
 
@@ -33,7 +32,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   adding,
   isOutOfStock,
   maxQuantity,
-  successMessage,
   error,
 }) => {
   const savings =
@@ -96,7 +94,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         </>
       )}
       {error && <div className={styles.error}>{error}</div>}
-      {successMessage && <div className={styles.success}>{successMessage}</div>}
       <div className={styles.trustBadges}>
         {TRUST_BADGES.map((b) => (
           <span key={b.label} className={styles.badge}>

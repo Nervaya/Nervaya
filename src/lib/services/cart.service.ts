@@ -142,15 +142,17 @@ export async function addToCart(
     );
 
     if (existingItemIndex > -1) {
-      const newQuantity = cart.items[existingItemIndex].quantity + quantity;
-
       if (itemType === ITEM_TYPE.SUPPLEMENT) {
+        const newQuantity = cart.items[existingItemIndex].quantity + quantity;
         const supplement = await Supplement.findById(itemId);
         if (supplement && newQuantity > supplement.stock) {
           throw new ValidationError('Insufficient stock');
         }
+        cart.items[existingItemIndex].quantity = newQuantity;
+      } else {
+        // Digital items always have quantity 1
+        cart.items[existingItemIndex].quantity = 1;
       }
-      cart.items[existingItemIndex].quantity = newQuantity;
       if (metadata) {
         cart.items[existingItemIndex].metadata = metadata;
       }
@@ -159,11 +161,11 @@ export async function addToCart(
         itemType,
         itemId:
           itemType === ITEM_TYPE.SUPPLEMENT || itemType === ITEM_TYPE.THERAPY ? new Types.ObjectId(itemId) : itemId,
-        quantity,
+        quantity: itemType === ITEM_TYPE.SUPPLEMENT ? quantity : 1,
         price: finalPrice,
         name: finalName,
         ...(resolvedImage ? { image: resolvedImage } : {}),
-        metadata,
+        ...(metadata ? { metadata } : {}),
       });
     }
 
@@ -200,7 +202,8 @@ export async function updateCartItem(
 
     if (itemIndex === -1) throw new ValidationError('Item not found in cart');
 
-    cart.items[itemIndex].quantity = quantity;
+    const finalQuantity = itemType === ITEM_TYPE.SUPPLEMENT ? quantity : 1;
+    cart.items[itemIndex].quantity = finalQuantity;
     await cart.save();
 
     return await getCartByUserId(userId);

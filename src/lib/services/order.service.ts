@@ -67,6 +67,33 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
         supplement.stock -= cartItem.quantity;
         await supplement.save();
       } else {
+        if (cartItem.itemType === ITEM_TYPE.THERAPY) {
+          if (!Types.ObjectId.isValid(cartItem.itemId)) {
+            throw new ValidationError('Invalid Therapist ID');
+          }
+          const therapist = await Therapist.findById(cartItem.itemId);
+          if (!therapist) {
+            throw new ValidationError('Therapist not found');
+          }
+          if (!therapist.isAvailable) {
+            throw new ValidationError('Therapist is not available');
+          }
+
+          const { date, slot } = cartItem.metadata || {};
+          if (date && slot) {
+            const existingSession = await Session.findOne({
+              therapistId: therapist._id,
+              date,
+              startTime: slot,
+              status: { $ne: 'cancelled' },
+            });
+            if (existingSession) {
+              throw new ValidationError(
+                'One or more therapy slots in your cart have already been booked. Please update your cart.',
+              );
+            }
+          }
+        }
         orderItems.push({
           itemType: cartItem.itemType,
           itemId: cartItem.itemId,
@@ -80,7 +107,9 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
     }
 
     const subtotal = cart.totalAmount;
-    const isDigitalOnly = cart.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF);
+    const isDigitalOnly = cart.items.every(
+      (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
+    );
     const shipping = isDigitalOnly ? 0 : getShippingCost(deliveryMethod, subtotal);
     const totalAmount = Math.max(0, subtotal + shipping - promoDiscount);
 

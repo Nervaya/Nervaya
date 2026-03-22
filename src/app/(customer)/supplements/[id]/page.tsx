@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
 import { trackViewItem, trackAddToCart } from '@/utils/analytics';
+import { toast } from 'sonner';
 import styles from './styles.module.css';
 
 export default function SupplementDetailPage() {
@@ -24,7 +25,6 @@ export default function SupplementDetailPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { refreshCart } = useCart();
 
   const fetchSupplement = useCallback(async () => {
@@ -85,7 +85,6 @@ export default function SupplementDetailPage() {
     }
     setAdding(true);
     setError(null);
-    setSuccessMessage(null);
     try {
       const response = await cartApi.add(supplement._id, quantity);
       if (response.success) {
@@ -105,7 +104,9 @@ export default function SupplementDetailPage() {
           ],
         });
         refreshCart();
-        setSuccessMessage('Added to cart successfully!');
+        toast.info('Added to cart successfully!', {
+          style: { background: '#7c3aed', color: '#fff', border: 'none' },
+        });
         setTimeout(() => {
           router.push('/cart');
         }, 1000);
@@ -203,7 +204,6 @@ export default function SupplementDetailPage() {
               adding={adding}
               isOutOfStock={isOutOfStock}
               maxQuantity={maxQuantity}
-              successMessage={successMessage}
               error={error}
             />
           </div>

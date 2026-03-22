@@ -154,7 +154,7 @@ const DriftOffLandingHero = () => {
         },
         modal: {
           ondismiss: () => {
-            toast.error('Payment cancelled.');
+            toast.info('Payment cancelled');
           },
         },
       };

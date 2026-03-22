@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import Order from '@/lib/models/order.model';
 import Cart from '@/lib/models/cart.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
+import Session from '@/lib/models/session.model';
 import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service';
 import connectDB from '@/lib/db/mongodb';
 import { createSession } from '@/lib/services/session.service';
@@ -55,6 +56,27 @@ export async function createRazorpayOrder(orderId: string, amount: number, userI
     };
 
     const razorpay = getRazorpayInstance();
+
+    // Final sanity check for therapy slots before taking payment
+    for (const item of order.items) {
+      if (item.itemType === ITEM_TYPE.THERAPY) {
+        const { date, slot } = item.metadata || {};
+        if (date && slot) {
+          const existingSession = await Session.findOne({
+            therapistId: item.itemId,
+            date,
+            startTime: slot,
+            status: { $ne: 'cancelled' },
+          });
+          if (existingSession) {
+            throw new ValidationError(
+              `The therapy session on ${date} at ${slot} has just been booked by someone else.`,
+            );
+          }
+        }
+      }
+    }
+
     const razorpayOrder = await razorpay.orders.create(options);
 
     await Order.findByIdAndUpdate(orderId, {

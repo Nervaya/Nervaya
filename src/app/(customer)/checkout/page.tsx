@@ -117,22 +117,22 @@ export default function CheckoutPage() {
               <div className={styles.digitalSessionCard}>
                 <Image
                   src={DRIFT_OFF_SESSION_IMAGE}
-                  alt="Deep Rest Session"
+                  alt="Digital Session"
                   width={320}
                   height={320}
                   className={styles.digitalSessionImage}
                 />
                 <div className={styles.digitalSessionInfo}>
-                  <h2 className={styles.digitalSessionTitle}>Deep Rest Session</h2>
+                  <h2 className={styles.digitalSessionTitle}>Digital Sessions & Services</h2>
                   <p className={styles.digitalSessionDesc}>
-                    A personalised 25-minute Deep Rest audio session curated by our specialists to match your unique
-                    mental wellness needs.
+                    Your order contains digital sessions or services that do not require physical shipping. All
+                    necessary details will be provided via email and in your dashboard.
                   </p>
                   <ul className={styles.digitalSessionFeatures}>
-                    <li>✦ Tailored to your assessment</li>
-                    <li>✦ Instant digital delivery</li>
-                    <li>✦ Guided by certified therapists</li>
-                    <li>✦ No shipping — available right away</li>
+                    <li>✦ Personalised experience</li>
+                    <li>✦ Instant booking confirmation</li>
+                    <li>✦ Guided by certified experts</li>
+                    <li>✦ No shipping — access anywhere</li>
                   </ul>
                 </div>
               </div>

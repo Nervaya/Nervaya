@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Cart } from '@/types/supplement.types';
+import { ITEM_TYPE } from '@/lib/constants/enums';
 import { Button } from '@/components/common';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
 import { trackViewCart, trackBeginCheckout } from '@/utils/analytics';
@@ -17,7 +18,10 @@ interface CartSummaryProps {
 const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = false }) => {
   const itemCount = getCartItemCount(cart.items);
   const subtotal = cart.totalAmount;
-  const shipping = subtotal > 500 ? 0 : 50;
+  const isDigitalOnly = cart.items.every(
+    (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
+  );
+  const shipping = isDigitalOnly ? 0 : subtotal > 500 ? 0 : 50;
   const total = subtotal + shipping;
 
   React.useEffect(() => {
@@ -36,12 +40,16 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = f
           <span>Items ({itemCount})</span>
           <span>{formatPrice(subtotal)}</span>
         </div>
-        <div className={styles.row}>
-          <span>Shipping</span>
-          <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
-        </div>
-        {subtotal < 500 && (
-          <div className={styles.freeShipping}>Add {formatPrice(500 - subtotal)} more for free shipping!</div>
+        {!isDigitalOnly && (
+          <>
+            <div className={styles.row}>
+              <span>Shipping</span>
+              <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+            </div>
+            {subtotal < 500 && (
+              <div className={styles.freeShipping}>Add {formatPrice(500 - subtotal)} more for free shipping!</div>
+            )}
+          </>
         )}
         <div className={styles.divider}></div>
         <div className={`${styles.row} ${styles.totalRow}`}>

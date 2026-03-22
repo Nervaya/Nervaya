@@ -68,7 +68,8 @@ export function useCheckout() {
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoError, setPromoError] = useState<string | null>(null);
 
-  const isDigitalOnly = cart?.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF) ?? false;
+  const isDigitalOnly =
+    cart?.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY) ?? false;
 
   const fetchCart = useCallback(async () => {
     try {

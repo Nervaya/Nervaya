@@ -66,13 +66,15 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove, d
         </Link>
         <p className={styles.price}>{formatPrice(item.price)} each</p>
         <div className={styles.actions}>
-          <QuantitySelector
-            value={item.quantity}
-            onChange={handleQuantityChange}
-            min={1}
-            max={maxStock}
-            disabled={disabled}
-          />
+          {isSupplement && (
+            <QuantitySelector
+              value={item.quantity}
+              onChange={handleQuantityChange}
+              min={1}
+              max={maxStock}
+              disabled={disabled}
+            />
+          )}
           <button className={styles.removeButton} onClick={handleRemove} disabled={disabled} aria-label="Remove item">
             Remove
           </button>
