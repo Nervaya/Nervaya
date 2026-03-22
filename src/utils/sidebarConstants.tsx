@@ -17,6 +17,7 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie', activePaths: ['/dashboard', '/'] },
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
+      { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
     ],
   },
   {
