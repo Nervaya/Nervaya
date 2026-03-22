@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
 
       const { sendWelcomeEmail } = await import('@/lib/services/email/welcome-email.service');
-      sendWelcomeEmail(pendingData.email, pendingData.name).catch(console.error);
+      sendWelcomeEmail(pendingData.email, pendingData.name).catch(() => undefined);
 
       const response = NextResponse.json(successResponse('Email verified successfully', session, 200), { status: 200 });
       response.cookies.set(COOKIE_NAMES.AUTH_TOKEN, session.token, getSecureCookieOptions());

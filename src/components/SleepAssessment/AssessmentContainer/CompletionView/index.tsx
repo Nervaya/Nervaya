@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import { getSleepAssessmentResult, getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 import { trackRecommendationClicked } from '@/utils/analytics';
+import { Badge } from '@/components/common';
 import styles from './styles.module.css';
 
 interface CompletionViewProps {
@@ -22,8 +23,9 @@ export function CompletionView({ completedResponse = null }: CompletionViewProps
       >
         <div className={styles.heroHeader}>
           <div className={styles.scoreRow}>
-            <span className={styles.scoreLabel}>Your Sleep Quality Score:</span>
-            <span className={styles.scoreBadge}>{scoreLabel}</span>
+            <Badge variant="purple" size="sm" className={styles.scoreBadge}>
+              {scoreLabel}
+            </Badge>
           </div>
           {result && (
             <div className={styles.scoreMetric}>
@@ -65,13 +67,13 @@ export function CompletionView({ completedResponse = null }: CompletionViewProps
             {result.recommendations.map((card) => (
               <li key={`${card.key}-${card.priority}`} className={styles.card}>
                 <div className={styles.cardTop}>
-                  <span
-                    className={`${styles.priorityBadge} ${
-                      card.priority === 'primary' ? styles.primaryPriority : styles.secondaryPriority
-                    }`}
+                  <Badge
+                    variant={card.priority === 'primary' ? 'amber' : 'neutral'}
+                    size="xs"
+                    className={styles.priorityBadge}
                   >
                     {card.priority === 'primary' ? 'Priority' : 'Support'}
-                  </span>
+                  </Badge>
                   <h3 className={styles.cardTitle}>{card.title}</h3>
                 </div>
                 <p className={styles.cardDescription}>{card.description}</p>

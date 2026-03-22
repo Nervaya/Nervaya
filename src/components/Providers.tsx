@@ -30,7 +30,7 @@ export default function Providers({ children }: ProvidersProps) {
               <Navbar />
               {children}
               <Toaster
-                position="top-right"
+                position="top-center"
                 closeButton
                 toastOptions={{
                   className: 'sonner-toast',

@@ -4,15 +4,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
-import { StatusState } from '@/components/common';
+import { GlobalLoader, StatusState } from '@/components/common';
 import { ProductImageGallery, ProductInfo, ProductTabs } from '@/components/Supplements/ProductDetail';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
 import { cartApi } from '@/lib/api/cart';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/utils/routesConstants';
 import { trackViewItem, trackAddToCart } from '@/utils/analytics';
+import { toast } from 'sonner';
 import styles from './styles.module.css';
 
 export default function SupplementDetailPage() {
@@ -24,16 +25,7 @@ export default function SupplementDetailPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
+  const { refreshCart } = useCart();
 
   const fetchSupplement = useCallback(async () => {
     const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
@@ -93,7 +85,6 @@ export default function SupplementDetailPage() {
     }
     setAdding(true);
     setError(null);
-    setSuccessMessage(null);
     try {
       const response = await cartApi.add(supplement._id, quantity);
       if (response.success) {
@@ -112,9 +103,12 @@ export default function SupplementDetailPage() {
             },
           ],
         });
-        setSuccessMessage('Added to cart successfully!');
+        refreshCart();
+        toast.info('Added to cart successfully!', {
+          style: { background: '#7c3aed', color: '#fff', border: 'none' },
+        });
         setTimeout(() => {
-          router.push('/supplements/cart');
+          router.push('/cart');
         }, 1000);
       } else {
         setError('Failed to add to cart');
@@ -125,6 +119,18 @@ export default function SupplementDetailPage() {
       setAdding(false);
     }
   };
+
+  if (loading) {
+    return (
+      <Sidebar>
+        <div className={styles.container}>
+          <div className={styles.loading}>
+            <GlobalLoader label="Loading supplement details..." />
+          </div>
+        </div>
+      </Sidebar>
+    );
+  }
 
   if (error && !supplement) {
     return (
@@ -198,7 +204,6 @@ export default function SupplementDetailPage() {
               adding={adding}
               isOutOfStock={isOutOfStock}
               maxQuantity={maxQuantity}
-              successMessage={successMessage}
               error={error}
             />
           </div>

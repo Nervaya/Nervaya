@@ -99,7 +99,7 @@ export function getWelcomeEmailContent({ name }: WelcomeTemplateProps) {
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 24px; color: ${EMAIL_COLORS.textMuted};">
               <tr>
                 <td align="center" style="padding-bottom: 16px;">
-                  <span style="font-size: 20px; vertical-align: middle; margin-right: 8px;">🌙</span> <strong>Deep Rest Sessions</strong> - Drift off naturally
+                  <span style="font-size: 20px; vertical-align: middle; margin-right: 8px;">🌙</span> <strong>Deep Rest Sessions</strong> - Deep Rest naturally
                 </td>
               </tr>
               <tr>
@@ -154,7 +154,7 @@ Take your Free Sleep Assessment here:
 ${EMAIL_CONFIG.appUrl}/sleep-assessment
 
 What's waiting for you:
-- Deep Rest Sessions (Drift off naturally)
+- Deep Rest Sessions (Deep Rest naturally)
 - Natural Supplements (Safe for daily use)
 - Therapy Corner (Personalized support)
 

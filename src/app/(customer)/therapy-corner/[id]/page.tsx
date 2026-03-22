@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, usePathname } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common';
 import BookingModal from '@/components/Booking/BookingModal';
 import { therapistsApi } from '@/lib/api/therapists';
 import StatusState from '@/components/common/StatusState';
 import { Therapist } from '@/types/therapist.types';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
+import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { getEmbedUrl } from '@/lib/utils/video.utils';
@@ -22,15 +24,9 @@ export default function TherapistProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [openBooking, setOpenBooking] = useState(false);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchTherapist = async () => {
@@ -65,6 +61,12 @@ export default function TherapistProfilePage() {
         <section
           style={{ display: 'flex', flexDirection: 'column', width: '100%', background: '#faf5ff', minHeight: '100vh' }}
         >
+          {loading && (
+            <div className={styles.loadingWrap}>
+              <GlobalLoader label="Loading therapist profile..." />
+            </div>
+          )}
+
           {!loading && error && (
             <StatusState
               type="error"
@@ -198,7 +200,13 @@ export default function TherapistProfilePage() {
                   <div style={{ marginTop: '10px' }}>
                     <button
                       type="button"
-                      onClick={() => setOpenBooking(true)}
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          router.push(`${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(pathname)}`);
+                          return;
+                        }
+                        setOpenBooking(true);
+                      }}
                       style={{
                         padding: '12px 28px',
                         background: '#7c3aed',

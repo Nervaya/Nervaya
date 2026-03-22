@@ -33,12 +33,12 @@
 }
 
 .headerTitle {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 700;
-  margin: 0 0 16px;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-weight: 800;
+  margin: 0 0 18px;
+  letter-spacing: -0.035em;
   color: #1e293b;
-  line-height: 1.2;
+  line-height: 1.08;
   font-family: var(--font-heading);
 }
 
@@ -51,36 +51,36 @@
 @media (max-width: 480px) {
   .headerTitle {
     margin-bottom: 12px;
-    font-size: clamp(1.5rem, 5vw, 1.75rem);
+    font-size: clamp(1.875rem, 7vw, 2.375rem);
     color: #1e293b;
     font-family: var(--font-heading);
   }
 }
 
 .headerSubtitle {
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
-  line-height: 1.4;
-  margin: 0 0 24px;
-  color: #1e293b;
-  max-width: 680px;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.65;
+  margin: 0 0 26px;
+  color: #64748b;
+  max-width: 720px;
   margin-left: auto;
   margin-right: auto;
-  font-weight: 600;
+  font-weight: 500;
   font-family: var(--font-sans);
 }
 
 @media (max-width: 768px) {
   .headerSubtitle {
     margin-bottom: 20px;
-    font-size: clamp(0.8125rem, 2vw, 0.9375rem);
+    font-size: clamp(0.9375rem, 2.4vw, 1.0625rem);
   }
 }
 
 @media (max-width: 480px) {
   .headerSubtitle {
     margin-bottom: 16px;
-    font-size: clamp(0.75rem, 3vw, 0.875rem);
-    color: #1e293b;
+    font-size: clamp(0.9375rem, 4vw, 1rem);
+    color: #64748b;
     font-family: var(--font-sans);
   }
 }

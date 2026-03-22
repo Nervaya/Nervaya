@@ -15,7 +15,7 @@ export async function getDriftOffOrderById(orderId: string): Promise<IDriftOffOr
   }
   const order = await DriftOffOrder.findById(orderId);
   if (!order) {
-    throw new NotFoundError('Drift Off order not found');
+    throw new NotFoundError('Deep Rest order not found');
   }
   return order;
 }
@@ -43,7 +43,7 @@ export async function updateOrderPaymentStatus(
   if (paymentId) update.paymentId = paymentId;
   const order = await DriftOffOrder.findByIdAndUpdate(orderId, update, { new: true });
   if (!order) {
-    throw new NotFoundError('Drift Off order not found');
+    throw new NotFoundError('Deep Rest order not found');
   }
   return order;
 }

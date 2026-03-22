@@ -2,7 +2,7 @@ import connectDB from '@/lib/db/mongodb';
 import DriftOffResponse, { IDriftOffResponse as DriftOffResponseDocument } from '@/lib/models/driftOffResponse.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import { ValidationError, NotFoundError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
+import { Types, ClientSession } from 'mongoose';
 import type { IDriftOffResponse as DriftOffResponseDto, SaveDriftOffAnswerInput } from '@/types/driftOff.types';
 
 type PopulatedDriftOffUser = {
@@ -18,18 +18,20 @@ type LeanDriftOffResponse = Omit<DriftOffResponseDto, 'userId' | 'user'> & {
 export async function createDriftOffResponse(
   userId: string,
   driftOffOrderId: string,
+  session: ClientSession | null = null,
 ): Promise<DriftOffResponseDocument> {
   await connectDB();
   if (!Types.ObjectId.isValid(driftOffOrderId)) {
     throw new ValidationError('Invalid order ID');
   }
-  const order = await DriftOffOrder.findOne({ _id: driftOffOrderId, userId, paymentStatus: 'paid' });
+  const order = await DriftOffOrder.findOne({ _id: driftOffOrderId, userId, paymentStatus: 'paid' }).session(session);
   if (!order) {
-    throw new ValidationError('No paid Drift Off order found for this user');
+    throw new ValidationError('No paid Deep Rest order found for this user');
   }
-  const existing = await DriftOffResponse.findOne({ userId, driftOffOrderId });
+  const existing = await DriftOffResponse.findOne({ userId, driftOffOrderId }).session(session);
   if (existing) return existing;
-  return DriftOffResponse.create({ userId, driftOffOrderId, answers: [] });
+  const [newResponse] = await DriftOffResponse.create([{ userId, driftOffOrderId, answers: [] }], { session });
+  return newResponse;
 }
 
 export async function saveAnswer(
@@ -44,7 +46,7 @@ export async function saveAnswer(
       ReturnType<typeof DriftOffResponse.findOne>
     >;
   }
-  if (!response) throw new Error('Failed to create or find drift off response');
+  if (!response) throw new Error('Failed to create or find Deep Rest response');
   const idx = response.answers.findIndex((a) => String(a.questionId) === input.questionId);
   if (idx >= 0) {
     response.answers[idx].answer = input.answer;
@@ -61,7 +63,7 @@ export async function completeDriftOffResponse(
   await connectDB();
   const response = await DriftOffResponse.findOne({ userId, driftOffOrderId });
   if (!response) {
-    throw new NotFoundError('Drift Off response not found');
+    throw new NotFoundError('Deep Rest response not found');
   }
   if (response.answers.length === 0) {
     throw new ValidationError('At least one answer is required');
@@ -72,7 +74,26 @@ export async function completeDriftOffResponse(
 
 export async function getDriftOffResponsesByUser(userId: string): Promise<DriftOffResponseDocument[]> {
   await connectDB();
-  return DriftOffResponse.find({ userId }).sort({ createdAt: -1 });
+
+  // Fallback: Ensure all paid orders have a corresponding response
+  const paidOrders = await DriftOffOrder.find({ userId, paymentStatus: 'paid' });
+  const existingResponses = await DriftOffResponse.find({ userId });
+  const existingOrderIds = new Set(existingResponses.map((r) => r.driftOffOrderId.toString()));
+
+  let missingCount = 0;
+  for (const order of paidOrders) {
+    if (!existingOrderIds.has(order._id.toString())) {
+      await DriftOffResponse.create({ userId, driftOffOrderId: order._id, answers: [] });
+      missingCount++;
+    }
+  }
+
+  // Refetch if we added any
+  if (missingCount > 0) {
+    return DriftOffResponse.find({ userId }).sort({ createdAt: -1 });
+  }
+
+  return existingResponses.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
 
 export async function getLatestDriftOffResponse(userId: string): Promise<DriftOffResponseDocument | null> {
@@ -86,7 +107,7 @@ export async function getDriftOffResponseById(responseId: string): Promise<Drift
     throw new ValidationError('Invalid response ID');
   }
   const response = await DriftOffResponse.findById(responseId);
-  if (!response) throw new NotFoundError('Drift Off response not found');
+  if (!response) throw new NotFoundError('Deep Rest response not found');
   return response;
 }
 
@@ -117,7 +138,7 @@ export async function assignVideo(responseId: string, videoUrl: string): Promise
     throw new ValidationError('Invalid response ID');
   }
   const response = await DriftOffResponse.findById(responseId);
-  if (!response) throw new NotFoundError('Drift Off response not found');
+  if (!response) throw new NotFoundError('Deep Rest response not found');
 
   if (!response.completedAt) {
     throw new ValidationError('Cannot assign video before questionnaire is completed');
@@ -141,7 +162,7 @@ export async function requestReSession(userId: string, responseId: string): Prom
 
   const response = await DriftOffResponse.findOne({ _id: responseId, userId });
   if (!response) {
-    throw new NotFoundError('Drift Off response not found');
+    throw new NotFoundError('Deep Rest response not found');
   }
 
   if (!response.completedAt) {

@@ -108,17 +108,25 @@ const Sidebar = ({
                       {group.title && <span className={styles.groupTitle}>{group.title}</span>}
                       <ul className={styles.navList}>
                         {group.items.map((item) => {
-                          const isActive = checkIsActivePath(
-                            pathname,
-                            item.path,
-                            group.items.map((i) => i.path),
-                          );
+                          const isActive = item.activePaths
+                            ? item.activePaths.some((p) =>
+                                checkIsActivePath(
+                                  pathname,
+                                  p,
+                                  group.items.flatMap((i) => i.activePaths || [i.path]),
+                                ),
+                              )
+                            : checkIsActivePath(
+                                pathname,
+                                item.path,
+                                group.items.map((i) => i.path),
+                              );
                           return (
                             <li key={`${item.path}-${item.title}`}>
                               <Link href={item.path} className={`${styles.navItem} ${isActive ? styles.active : ''}`}>
                                 <span className={styles.icon}>
                                   <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
-                                  {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                                  {(item.path === '/cart' || item.title === 'Cart') && cartCount > 0 && (
                                     <span className={styles.badge}>{cartCount}</span>
                                   )}
                                 </span>
@@ -144,7 +152,7 @@ const Sidebar = ({
                       >
                         <span className={styles.icon}>
                           <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
-                          {(item.path === '/supplements/cart' || item.title === 'Cart') && cartCount > 0 && (
+                          {(item.path === '/cart' || item.title === 'Cart') && cartCount > 0 && (
                             <span className={styles.badge}>{cartCount}</span>
                           )}
                         </span>

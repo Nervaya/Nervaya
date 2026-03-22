@@ -12,7 +12,8 @@ export interface BookingModalFooterProps {
   selectedSlot: string | null;
   booking: boolean;
   loading: boolean;
-  onBook: () => void;
+  onBook: () => void | Promise<void>;
+  onAddToCart?: () => void | Promise<void>;
   therapistId?: string;
   therapistName?: string;
   selectedDate?: string;
@@ -24,6 +25,7 @@ export function BookingModalFooter({
   booking,
   loading,
   onBook,
+  onAddToCart,
   therapistId,
   therapistName: _therapistName,
   selectedDate: _selectedDate,
@@ -122,29 +124,42 @@ export function BookingModalFooter({
       )}
 
       <div className={styles.priceSection}>
-        <div className={styles.priceDisplay}>
-          {appliedPromo ? (
-            <>
-              <span className={styles.originalPrice}>{formatPrice(originalPrice)}</span>
-              <span className={styles.finalPrice}>{formatPrice(finalPrice)}</span>
-            </>
-          ) : (
-            <span className={styles.finalPrice}>{formatPrice(originalPrice)}</span>
-          )}
+        <div className={styles.priceRow}>
+          <span className={styles.priceLabel}>Session Fee</span>
+          <div className={styles.priceDisplay}>
+            {appliedPromo ? (
+              <>
+                <span className={styles.originalPrice}>{formatPrice(originalPrice)}</span>
+                <span className={styles.finalPrice}>{formatPrice(finalPrice)}</span>
+              </>
+            ) : (
+              <span className={styles.finalPrice}>{formatPrice(originalPrice)}</span>
+            )}
+          </div>
         </div>
         <p className={styles.helpText}>
           Trouble finding a slot? <a href="/support">Let Us Help You</a>
         </p>
       </div>
 
-      <button
-        className={styles.bookBtn}
-        disabled={!selectedSlot || booking || loading}
-        onClick={onBook}
-        aria-label="Book selected session"
-      >
-        {booking ? 'Booking...' : 'Book Session'}
-      </button>
+      <div className={styles.buttonGroup}>
+        <button
+          className={styles.cartBtn}
+          onClick={onAddToCart}
+          disabled={!selectedSlot || booking || loading}
+          aria-label="Add session to cart"
+        >
+          Add to Cart
+        </button>
+        <button
+          className={styles.primaryBtn}
+          onClick={onBook}
+          disabled={!selectedSlot || booking || loading}
+          aria-label="Book selected session"
+        >
+          {booking ? 'Booking...' : 'Book Session'}
+        </button>
+      </div>
     </div>
   );
 }

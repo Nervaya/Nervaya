@@ -25,6 +25,45 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/drift-off',
+        destination: '/deep-rest',
+        permanent: true,
+      },
+      {
+        source: '/drift-off/:path*',
+        destination: '/deep-rest/:path*',
+        permanent: true,
+      },
+      {
+        source: '/admin/drift-off',
+        destination: '/admin/deep-rest',
+        permanent: true,
+      },
+      {
+        source: '/admin/drift-off/:path*',
+        destination: '/admin/deep-rest/:path*',
+        permanent: true,
+      },
+      {
+        source: '/api/drift-off/:path*',
+        destination: '/api/deep-rest/:path*',
+        permanent: true,
+      },
+      {
+        source: '/api/admin/drift-off/:path*',
+        destination: '/api/admin/deep-rest/:path*',
+        permanent: true,
+      },
+      {
+        source: '/api/payments/drift-off/:path*',
+        destination: '/api/payments/deep-rest/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

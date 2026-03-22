@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { dashboardApi } from '@/lib/api/dashboard';
-import { driftOffApi } from '@/lib/api/driftOff';
+import { deepRestApi } from '@/lib/api/deepRest';
 import type { Session } from '@/types/session.types';
 import type { Order } from '@/types/supplement.types';
 import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
@@ -42,7 +42,7 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
         dashboardApi.getOrders(),
         dashboardApi.getLatestAssessment(),
         dashboardApi.getInProgressAssessment(),
-        driftOffApi.getResponses().catch(() => ({ success: true, data: [] })),
+        deepRestApi.getResponses().catch(() => ({ success: true, data: [] })),
       ]);
 
       setSessions(sessionsRes?.data || []);

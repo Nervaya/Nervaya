@@ -7,14 +7,17 @@ import {
   DELIVERY_METHOD_VALUES,
   PaymentStatus,
   OrderStatus,
+  type ItemType,
 } from '@/lib/constants/enums';
 
 export interface IOrderItem {
-  supplementId: Types.ObjectId;
+  itemType: ItemType;
+  itemId: Types.ObjectId | string;
   name: string;
   quantity: number;
   price: number;
   image: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface IShippingAddress {
@@ -36,7 +39,8 @@ export interface IOrder extends Document {
   razorpayOrderId?: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
-  shippingAddress: IShippingAddress;
+  shippingAddress?: IShippingAddress;
+
   promoCode?: string;
   promoDiscount?: number;
   deliveryMethod?: 'standard' | 'express';
@@ -46,9 +50,14 @@ export interface IOrder extends Document {
 
 const orderItemSchema = new Schema<IOrderItem>(
   {
-    supplementId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Supplement',
+    itemType: {
+      type: String,
+      enum: ['Supplement', 'DriftOff', 'Therapy'],
+      required: true,
+      default: 'Supplement',
+    },
+    itemId: {
+      type: Schema.Types.Mixed,
       required: true,
     },
     name: {
@@ -68,6 +77,10 @@ const orderItemSchema = new Schema<IOrderItem>(
     image: {
       type: String,
       default: '',
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {},
     },
   },
   { _id: false },
@@ -156,7 +169,7 @@ const orderSchema = new Schema<IOrder>(
     },
     shippingAddress: {
       type: shippingAddressSchema,
-      required: [true, 'Shipping address is required'],
+      required: false,
     },
     promoCode: { type: String },
     promoDiscount: { type: Number, min: 0 },
@@ -166,6 +179,11 @@ const orderSchema = new Schema<IOrder>(
     timestamps: true,
   },
 );
+
+// Force Mongoose to use the updated schema in development
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Order;
+}
 
 const Order: Model<IOrder> = mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema);
 

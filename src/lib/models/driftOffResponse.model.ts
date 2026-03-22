@@ -48,7 +48,7 @@ const driftOffResponseSchema = new Schema<IDriftOffResponse>(
     driftOffOrderId: {
       type: Schema.Types.ObjectId,
       ref: 'DriftOffOrder',
-      required: [true, 'Drift Off Order ID is required'],
+      required: [true, 'Deep Rest Order ID is required'],
     },
     answers: { type: [driftOffAnswerSchema], default: [] },
     completedAt: { type: Date, default: null },

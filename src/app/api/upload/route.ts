@@ -56,7 +56,6 @@ export async function POST(req: NextRequest) {
     const hasValidExtension = validExtensions.some((ext) => fileName.endsWith(ext));
 
     if (!hasValidExtension) {
-      console.error('Invalid extension for:', fileName);
       return NextResponse.json(errorResponse('Invalid file extension', null, 400), { status: 400 });
     }
 
@@ -65,7 +64,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(successResponse('File uploaded successfully', { url }));
   } catch (error) {
-    console.error('SERVER UPLOAD ERROR:', error);
     const errorMessage = error instanceof Error ? error.message : 'Upload failed';
     return NextResponse.json(errorResponse(errorMessage, error as ApiError, 500), { status: 500 });
   }

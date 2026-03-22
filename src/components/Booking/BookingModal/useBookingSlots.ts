@@ -27,7 +27,10 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
     setLoading(true);
     setError(null);
     try {
-      const dateStr = selectedDate.toISOString().split('T')[0];
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
       const result = await scheduleApi.getByDate(therapistId, dateStr);
       const apiSlots = result.data?.slots;
       const apiDate = result.data?.date;
@@ -108,7 +111,6 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
   }, [fetchDateAvailability, visibleMonth, selectedDate]);
 
   if (!therapistId) {
-    console.error('useBookingSlots: therapistId is required');
     setError('Therapist ID is required');
     return { schedule, loading, error, fetchSlots: () => {}, fullyBookedDates, slotAvailability };
   }

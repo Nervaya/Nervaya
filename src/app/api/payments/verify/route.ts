@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const result = await verifyPayment(orderId, paymentId, razorpaySignature);
+    const result = await verifyPayment(orderId, paymentId, razorpaySignature, authResult.user.userId);
     return NextResponse.json(successResponse('Payment verified successfully', result));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

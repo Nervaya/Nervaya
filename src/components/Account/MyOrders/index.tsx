@@ -3,8 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Order } from '@/types/supplement.types';
 import api from '@/lib/axios';
-import { Pagination } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { Pagination, GlobalLoader } from '@/components/common';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { EmptyOrders } from './EmptyOrders';
@@ -18,15 +17,6 @@ export function MyOrders() {
   const [page, setPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [mounted, setMounted] = useState(false);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader('Loading your orders...');
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   const limit = PAGE_SIZE_5;
   const total = orders.length;
@@ -57,7 +47,11 @@ export function MyOrders() {
   }, []);
 
   if (loading) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <GlobalLoader label="Loading your orders..." />
+      </div>
+    );
   }
 
   if (error) {

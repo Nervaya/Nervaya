@@ -24,7 +24,7 @@ const BottomNavigation = () => {
   const isProfessional = hasRole(user, ROLES.ADMIN) || hasRole(user, ROLES.THERAPIST);
   const isAuthPage = (AUTH_ROUTES as readonly string[]).includes(pathname as string);
 
-  if (isAuthPage || isProfessional) {
+  if (isAuthPage || isProfessional || !isAuthenticated) {
     return null;
   }
 
@@ -36,8 +36,7 @@ const BottomNavigation = () => {
     );
   };
 
-  const showBadge = (path: string, title: string) =>
-    (path === '/supplements/cart' || title === 'Cart') && cartCount > 0;
+  const showBadge = (path: string, title: string) => (path === '/cart' || title === 'Cart') && cartCount > 0;
 
   const NavLinkItem = ({ item }: { item: BottomNavItem }) => {
     const active = isActive(item.path);

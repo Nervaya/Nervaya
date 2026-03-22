@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const razorpayOrder = await createRazorpayOrder(orderId, amount);
+    const razorpayOrder = await createRazorpayOrder(orderId, amount, authResult.user.userId);
 
     const responseData = {
       ...razorpayOrder,

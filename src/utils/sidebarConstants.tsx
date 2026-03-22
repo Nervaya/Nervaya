@@ -15,8 +15,9 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   {
     title: 'GENERAL',
     items: [
-      { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
+      { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie', activePaths: ['/dashboard', '/'] },
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
+      { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
     ],
   },
   {
@@ -24,17 +25,22 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaUsers' }],
   },
   {
-    title: 'DRIFT OFF',
+    title: 'DEEP REST',
     items: [
-      { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
-      { title: 'My Sessions', path: '/drift-off/sessions', icon: 'FaCalendarCheck' },
+      { title: 'Deep Rest', path: '/deep-rest', icon: 'FaBed' },
+      { title: 'My Sessions', path: '/deep-rest/sessions', icon: 'FaCalendarCheck' },
     ],
   },
   {
     title: 'SHOP',
     items: [
       { title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' },
-      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
+      {
+        title: 'Shopping Cart',
+        path: '/cart',
+        icon: 'FaCartShopping',
+        activePaths: ['/cart', '/checkout', '/order-success'],
+      },
     ],
   },
   {
@@ -57,7 +63,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         path: '/admin/sleep-assessment',
         icon: 'FaClipboardList',
       },
-      { title: 'Drift Off', path: '/admin/drift-off', icon: 'FaBed' },
+      { title: 'Deep Rest', path: '/admin/deep-rest', icon: 'FaBed' },
       { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
       { title: 'Orders', path: '/admin/orders', icon: 'FaBoxOpen' },
       { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },

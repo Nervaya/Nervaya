@@ -10,12 +10,12 @@ export async function createDriftOffRazorpayOrder(driftOffOrderId: string) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(driftOffOrderId)) {
-      throw new ValidationError('Invalid Drift Off Order ID');
+      throw new ValidationError('Invalid Deep Rest Order ID');
     }
 
     const order = await DriftOffOrder.findById(driftOffOrderId);
     if (!order) {
-      throw new NotFoundError('Drift Off order not found');
+      throw new NotFoundError('Deep Rest order not found');
     }
 
     if (order.paymentStatus === 'paid') {
@@ -45,11 +45,11 @@ export async function createDriftOffRazorpayOrder(driftOffOrderId: string) {
 export async function verifyDriftOffPayment(driftOffOrderId: string, paymentId: string, razorpaySignature: string) {
   await connectDB();
   if (!Types.ObjectId.isValid(driftOffOrderId)) {
-    throw new ValidationError('Invalid Drift Off Order ID');
+    throw new ValidationError('Invalid Deep Rest Order ID');
   }
   const order = await DriftOffOrder.findById(driftOffOrderId);
   if (!order) {
-    throw new NotFoundError('Drift Off order not found');
+    throw new NotFoundError('Deep Rest order not found');
   }
   if (!order.razorpayOrderId) {
     throw new ValidationError('Razorpay order ID not found');

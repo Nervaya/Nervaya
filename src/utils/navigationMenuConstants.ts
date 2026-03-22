@@ -14,7 +14,7 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
     title: 'GENERAL',
     items: [
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaBed' },
-      { title: 'Shopping Cart', path: '/supplements/cart', icon: 'FaShoppingCart' },
+      { title: 'Shopping Cart', path: '/cart', icon: 'FaShoppingCart' },
     ],
   },
   {
@@ -22,8 +22,8 @@ export const BASE_MENU_ITEMS: NavigationMenuGroup[] = [
     items: [{ title: 'Therapy Corner', path: '/therapy-corner', icon: 'FaHeartbeat' }],
   },
   {
-    title: 'DRIFT OFF',
-    items: [{ title: 'Deep Rest Sessions', path: '/drift-off', icon: 'FaBed' }],
+    title: 'DEEP REST',
+    items: [{ title: 'Deep Rest Sessions', path: '/deep-rest', icon: 'FaBed' }],
   },
   {
     title: 'HELP',

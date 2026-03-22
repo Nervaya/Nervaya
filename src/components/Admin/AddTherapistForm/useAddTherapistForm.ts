@@ -128,12 +128,9 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
 
     // Safety guard: only allow submission on the final step
     if (currentStep < totalSteps) {
-      console.warn(`[Form] Step ${currentStep}/${totalSteps}: Navigating instead of submitting.`);
       nextStep();
       return;
     }
-
-    console.warn(`[Form] Final Step ${currentStep}/${totalSteps}: Processing API call.`);
 
     setLoading(true);
     setError(null);

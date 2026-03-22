@@ -34,8 +34,7 @@ export default function AdminSleepAssessmentPage() {
       if (result.success && result.data) {
         setQuestions(result.data as ISleepAssessmentQuestion[]);
       }
-    } catch (error) {
-      console.error('Failed to fetch questions', error);
+    } catch {
     } finally {
       setLoading(false);
     }
@@ -119,11 +118,8 @@ export default function AdminSleepAssessmentPage() {
       if (result.success) {
         fetchQuestions();
         setDeleteConfirmation(null);
-      } else {
-        console.error('Failed to delete question');
       }
-    } catch (error) {
-      console.error('Error deleting question', error);
+    } catch {
     } finally {
       setDeleting(false);
     }

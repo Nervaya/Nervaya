@@ -4,8 +4,7 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Supplement } from '@/types/supplement.types';
 import SupplementToolbar, { type ViewMode, type SortOption } from '../SupplementToolbar';
 import SupplementProductGrid from '../SupplementProductGrid';
-import { Pagination } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { Pagination, GlobalLoader } from '@/components/common';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import type { PriceRange } from '../SupplementFilters';
 import styles from './SupplementCatalog.module.css';
@@ -22,15 +21,8 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [page, setPage] = useState(1);
-  const { showLoader, hideLoader } = useLoading();
 
-  React.useEffect(() => {
-    if (loading) {
-      showLoader('Loading supplement catalog...');
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
+  // We no longer use global showLoader() here to keep it 'inside the page'
 
   const handleSearchChange = useCallback((q: string) => {
     setSearchQuery(q);
@@ -107,7 +99,11 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
   }, []);
 
   if (loading) {
-    return null;
+    return (
+      <div className={styles.catalog}>
+        <GlobalLoader label="Loading supplement catalog..." />
+      </div>
+    );
   }
 
   return (
@@ -126,7 +122,7 @@ const SupplementCatalog: React.FC<SupplementCatalogProps> = ({ supplements, load
       <div className={styles.main}>
         <SupplementProductGrid supplements={paginatedSupplements} viewMode={viewMode} onAddToCart={onAddToCart} />
       </div>
-      {total >= 0 && (
+      {total > 0 && (
         <div className={styles.paginationWrap}>
           <Pagination
             page={page}

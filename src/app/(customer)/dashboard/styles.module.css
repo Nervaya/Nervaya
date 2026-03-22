@@ -90,6 +90,10 @@
   transform: translateY(-1px);
 }
 
+.assessmentRow {
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
 .tilesGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -67,7 +67,6 @@ async function sendCalendarInvite(lead: {
   const appPassword = process.env.OTP_EMAIL_APP_PASSWORD;
 
   if (!user?.trim() || !appPassword?.trim()) {
-    console.warn('[Consultation] Missing email credentials, skipping invite.');
     return;
   }
 
@@ -111,9 +110,7 @@ async function sendCalendarInvite(lead: {
         },
       ],
     });
-  } catch (error) {
-    console.error('[Consultation Email] Failed to send invite:', error);
-  }
+  } catch {}
 }
 
 export async function createConsultationLead(data: {
@@ -142,7 +139,7 @@ export async function createConsultationLead(data: {
     const lead = await ConsultationLead.create(data);
 
     // Fire and forget email invite
-    sendCalendarInvite(lead).catch((err) => console.error('Background invite error:', err));
+    sendCalendarInvite(lead).catch(() => undefined);
 
     return lead;
   } catch (error) {

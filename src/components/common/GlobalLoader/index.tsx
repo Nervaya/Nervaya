@@ -20,7 +20,10 @@ function isInlineSize(value: number | string): boolean {
 }
 
 export function GlobalLoader({ width = 120, height = 120, className = '', label, centerPage }: GlobalLoaderProps) {
-  const shouldCenterPage = centerPage ?? !(isInlineSize(width) && isInlineSize(height));
+  // centerPage = true means it takes up full width/height of parent and centers content
+  // if width/height are small, we treat it as an inline spinner
+  const isInline = isInlineSize(width) && isInlineSize(height) && !centerPage;
+
   const loaderStyle = {
     '--loader-width': toCssSize(width),
     '--loader-height': toCssSize(height),
@@ -28,7 +31,7 @@ export function GlobalLoader({ width = 120, height = 120, className = '', label,
 
   return (
     <div
-      className={`${styles.root} ${shouldCenterPage ? styles.page : styles.inline}${className ? ` ${className}` : ''}`}
+      className={`${styles.root} ${isInline ? styles.inline : styles.container}${className ? ` ${className}` : ''}`}
       style={loaderStyle}
       role="status"
       aria-live="polite"

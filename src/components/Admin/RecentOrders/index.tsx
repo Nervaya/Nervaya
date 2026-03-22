@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { formatPrice } from '@/utils/cart.util';
+import { Badge } from '@/components/common';
 import styles from './styles.module.css';
 
 interface OrderRow {
@@ -48,7 +49,9 @@ export default function RecentOrders({ orders, emptyMessage = 'No recent orders.
               </td>
               <td>{formatPrice(order.totalAmount)}</td>
               <td>
-                <span className={styles.badge}>{order.orderStatus ?? order.paymentStatus ?? '—'}</span>
+                <Badge size="xs" variant="neutral">
+                  {order.orderStatus ?? order.paymentStatus ?? '—'}
+                </Badge>
               </td>
               <td className={styles.date}>{new Date(order.createdAt).toLocaleDateString()}</td>
             </tr>

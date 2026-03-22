@@ -8,11 +8,11 @@ export const primaryNavItems: BottomNavItem[] = [
   { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie' },
   { title: 'Questionnaire', path: '/sleep-assessment', icon: 'FaClipboardList' },
   { title: 'Therapy', path: '/therapy-corner', icon: 'FaUsers' },
-  { title: 'Cart', path: '/supplements/cart', icon: 'FaCartShopping' },
+  { title: 'Cart', path: '/cart', icon: 'FaCartShopping' },
 ];
 
 export const moreNavItems: BottomNavItem[] = [
-  { title: 'Drift Off', path: '/drift-off', icon: 'FaBed' },
+  { title: 'Deep Rest', path: '/deep-rest', icon: 'FaBed' },
   { title: 'Supplements', path: '/supplements', icon: 'FaPills' },
   { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
 ];

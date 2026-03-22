@@ -51,7 +51,7 @@ export async function getDriftOffQuestionById(identifier: string): Promise<IDrif
   await connectDB();
   const question = await findDriftOffQuestion(identifier);
   if (!question) {
-    throw new NotFoundError('Drift Off question not found');
+    throw new NotFoundError('Deep Rest question not found');
   }
   return question.toObject() as IDriftOffQuestion;
 }
@@ -74,7 +74,7 @@ export async function updateDriftOffQuestion(
   const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
   const question = await DriftOffQuestion.findOneAndUpdate(query, { $set: input }, { new: true, runValidators: true });
   if (!question) {
-    throw new NotFoundError('Drift Off question not found');
+    throw new NotFoundError('Deep Rest question not found');
   }
   return question.toObject() as IDriftOffQuestion;
 }
@@ -84,6 +84,6 @@ export async function deleteDriftOffQuestion(identifier: string): Promise<void> 
   const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
   const question = await DriftOffQuestion.findOneAndDelete(query);
   if (!question) {
-    throw new NotFoundError('Drift Off question not found');
+    throw new NotFoundError('Deep Rest question not found');
   }
 }

@@ -2,11 +2,18 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { useLoading } from '@/context/LoadingContext';
 import { useTherapists } from '@/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import BookingModal from '@/components/Booking/BookingModal';
-import { Pagination, StatusState, type BreadcrumbItem, CustomDropdown, MultiSelect } from '@/components/common';
+import {
+  Pagination,
+  StatusState,
+  GlobalLoader,
+  type BreadcrumbItem,
+  CustomDropdown,
+  MultiSelect,
+  Badge,
+} from '@/components/common';
 import { type Option } from '@/components/common/CustomDropdown';
 import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { GENDER_OPTIONS } from '@/lib/constants/enums';
@@ -14,6 +21,9 @@ import { scheduleApi } from '@/lib/api/schedule';
 import { Therapist } from '@/types/therapist.types';
 import { trackViewTherapistProfile, trackStartBooking } from '@/utils/analytics';
 import { getDateKey, getNextAvailableSlotDateTime, formatNextSlot, formatExperienceYears } from '@/utils/therapyUtils';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/utils/routesConstants';
 import styles from './styles.module.css';
 
 export interface FilterState {
@@ -55,15 +65,6 @@ export default function TherapyCornerPage() {
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [page, setPage] = useState(1);
   const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   const error = fetchError instanceof Error ? fetchError.message : '';
 
@@ -196,7 +197,15 @@ export default function TherapyCornerPage() {
     setIsFilterModalOpen(false);
   };
 
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const handleBookAppointment = (therapist: Therapist) => {
+    if (!isAuthenticated) {
+      router.push(`${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(pathname)}`);
+      return;
+    }
     trackStartBooking({ therapist_id: therapist._id, therapist_name: therapist.name });
     setSelectedTherapist(therapist);
   };
@@ -215,7 +224,11 @@ export default function TherapyCornerPage() {
             title="Finding the right therapist is not easy."
             subtitle="Based on your needs, we curated a shortlist tailored for you."
             breadcrumbs={breadcrumbs}
-            actions={<p className={styles.sectionMeta}>{activeCount} Verified Experts Available</p>}
+            actions={
+              <Badge variant="purple" size="sm" className={styles.sectionMeta}>
+                {activeCount} Verified Experts Available
+              </Badge>
+            }
           />
 
           <div className={styles.toolbar}>
@@ -267,6 +280,11 @@ export default function TherapyCornerPage() {
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
+          {loading && (
+            <div className={styles.loadingContainer}>
+              <GlobalLoader label="Loading therapists..." />
+            </div>
+          )}
           {!loading && !error && (
             <>
               {therapists.length === 0 ? (
