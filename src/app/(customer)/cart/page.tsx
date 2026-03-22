@@ -14,6 +14,7 @@ import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { cartApi } from '@/lib/api/cart';
 import { useCart } from '@/context/CartContext';
 import StatusState from '@/components/common/StatusState';
+import type { BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 
@@ -133,7 +134,7 @@ export default function CartPage() {
     void initializeCart();
   }, [initializeCart]);
 
-  const breadcrumbs = [{ label: 'Home', href: '/' }, { label: 'Cart' }];
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Cart' }];
   const total = cart?.items.length || 0;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE_3));
   const start = (page - 1) * PAGE_SIZE_3;

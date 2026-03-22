@@ -106,7 +106,7 @@ const BottomNavigation = () => {
                   <span className={`${styles.moreIcon} ${styles.logoutIcon}`}>
                     <Icon icon={iconMap['FaRightFromBracket']} />
                   </span>
-                  <span className={`${styles.logoutLabel}`}>Logout</span>
+                  <span className={`${styles.label} ${styles.logoutLabel}`}>Logout</span>
                 </button>
               </li>
             )}

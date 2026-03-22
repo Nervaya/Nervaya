@@ -162,7 +162,7 @@ a {
   margin-left: 0 !important;
 }
 
-/* Shared breadcrumb position: static, fixed top-left, closer to sidebar (same on every page) */
+/* Shared breadcrumb slot: base spacing. Horizontal alignment inside PageHeader is in PageHeader/styles.module.css (.breadcrumbsWrapper). */
 .breadcrumbs-slot {
   position: static;
   text-align: left;
@@ -172,15 +172,9 @@ a {
   padding-left: 16px;
 }
 
-/* Direct child of main (Sidebar global breadcrumbs): pull to left edge of content area */
+/* Direct child of main (Sidebar RouteBreadcrumbs): pull to left edge of content area */
 .main-content > .breadcrumbs-slot {
   margin-left: -40px;
-}
-
-/* Inside PageHeader or container (e.g. admin, support): cancel main + container padding so same visual position */
-.main-content .header .breadcrumbs-slot,
-.main-content .container > .breadcrumbs-slot {
-  margin-left: -56px;
 }
 
 @media (max-width: 770px) {
@@ -196,11 +190,6 @@ a {
     margin-left: 0;
     margin-top: 0;
     padding-left: 0;
-  }
-
-  .main-content .header .breadcrumbs-slot,
-  .main-content .container > .breadcrumbs-slot {
-    margin-left: 0;
   }
 }
 

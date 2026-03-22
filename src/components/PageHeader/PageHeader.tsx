@@ -11,6 +11,8 @@ interface PageHeaderProps {
 }
 
 const PageHeader = ({ title, subtitle, description, actions, breadcrumbs }: PageHeaderProps) => {
+  const hasMainBlock = Boolean(title || subtitle || description || actions);
+
   return (
     <div className={styles.header}>
       {breadcrumbs && breadcrumbs.length > 0 && (
@@ -18,14 +20,16 @@ const PageHeader = ({ title, subtitle, description, actions, breadcrumbs }: Page
           <Breadcrumbs items={breadcrumbs} />
         </div>
       )}
-      <div className={styles.mainRow}>
-        <div className={styles.titleSection}>
-          {title && <h1 className={styles.title}>{title}</h1>}
-          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-          {description && <p className={styles.description}>{description}</p>}
+      {hasMainBlock && (
+        <div className={styles.mainRow}>
+          <div className={styles.titleSection}>
+            {title && <h1 className={styles.title}>{title}</h1>}
+            {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+            {description && <p className={styles.description}>{description}</p>}
+          </div>
+          {actions && <div className={styles.actions}>{actions}</div>}
         </div>
-        {actions && <div className={styles.actions}>{actions}</div>}
-      </div>
+      )}
     </div>
   );
 };

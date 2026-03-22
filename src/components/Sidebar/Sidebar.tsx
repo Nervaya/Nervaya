@@ -170,12 +170,7 @@ const Sidebar = ({
                         }}
                       >
                         <span className={styles.icon}>
-                          <Icon
-                            icon={iconMap['FaRightFromBracket']}
-                            width={20}
-                            height={20}
-                            className={styles.logoutIcon}
-                          />
+                          <Icon icon={iconMap['FaRightFromBracket']} width={20} height={20} />
                         </span>
                         <span className={styles.title}>Logout</span>
                       </button>
