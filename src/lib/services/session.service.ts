@@ -2,10 +2,16 @@ import Session from '@/lib/models/session.model';
 import { bookSlot, releaseSlot } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { SESSION_STATUS, SessionStatus } from '@/lib/constants/enums';
 
-export async function createSession(userId: string, therapistId: string, date: string, startTime: string) {
+export async function createSession(
+  userId: string,
+  therapistId: string,
+  date: string,
+  startTime: string,
+  mongooseSession?: mongoose.ClientSession,
+) {
   await connectDB();
 
   try {
@@ -28,20 +34,27 @@ export async function createSession(userId: string, therapistId: string, date: s
       date,
       startTime,
       status: { $ne: SESSION_STATUS.CANCELLED },
-    });
+    }).session(mongooseSession || null);
 
     if (existingSession) {
       throw new ValidationError('Slot is already booked');
     }
 
-    const session = await Session.create({
-      userId,
-      therapistId,
-      date,
-      startTime,
-      endTime,
-      status: SESSION_STATUS.PENDING,
-    });
+    const sessionRes = await Session.create(
+      [
+        {
+          userId,
+          therapistId,
+          date,
+          startTime,
+          endTime,
+          status: SESSION_STATUS.PENDING,
+        },
+      ],
+      { session: mongooseSession },
+    );
+
+    const session = Array.isArray(sessionRes) ? sessionRes[0] : sessionRes;
 
     try {
       await bookSlot(therapistId, date, startTime, session._id.toString());

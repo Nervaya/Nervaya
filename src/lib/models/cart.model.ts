@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
-import { ITEM_TYPE, type ItemType } from '@/lib/constants/enums';
+import { type ItemType } from '@/lib/constants/enums';
 
 export interface ICartItem {
   itemType: ItemType;
@@ -9,6 +9,7 @@ export interface ICartItem {
   image?: string;
   quantity: number;
   price: number;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ICart extends Document {
@@ -23,9 +24,9 @@ const cartItemSchema = new Schema<ICartItem>(
   {
     itemType: {
       type: String,
-      enum: Object.values(ITEM_TYPE),
+      enum: ['Supplement', 'DriftOff', 'Therapy'],
       required: [true, 'Item Type is required'],
-      default: ITEM_TYPE.SUPPLEMENT,
+      default: 'Supplement',
     },
     itemId: {
       type: Schema.Types.Mixed,
@@ -46,6 +47,10 @@ const cartItemSchema = new Schema<ICartItem>(
       type: Number,
       required: [true, 'Price is required'],
       min: [0, 'Price must be non-negative'],
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {},
     },
   },
   { _id: false },
@@ -77,6 +82,11 @@ const cartSchema = new Schema<ICart>(
 cartSchema.pre('save', function () {
   this.totalAmount = this.items.reduce((total, item) => total + item.price * item.quantity, 0);
 });
+
+// Force Mongoose to use the updated schema in development
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Cart;
+}
 
 const Cart: Model<ICart> = mongoose.models.Cart || mongoose.model<ICart>('Cart', cartSchema);
 

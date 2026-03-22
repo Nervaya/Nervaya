@@ -111,6 +111,7 @@ export const GENDER_OPTIONS = [
 export const ITEM_TYPE = {
   SUPPLEMENT: 'Supplement',
   DRIFT_OFF: 'DriftOff',
+  THERAPY: 'Therapy',
 } as const;
 
 export type ItemType = (typeof ITEM_TYPE)[keyof typeof ITEM_TYPE];

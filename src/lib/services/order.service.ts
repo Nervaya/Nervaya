@@ -1,9 +1,11 @@
 import Order, { IOrder, IOrderItem } from '@/lib/models/order.model';
 import Cart from '@/lib/models/cart.model';
 import Supplement from '@/lib/models/supplement.model';
+import Therapist from '@/lib/models/therapist.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
+import Session from '@/lib/models/session.model';
 import {
   PAYMENT_STATUS,
   ORDER_STATUS,
@@ -11,9 +13,11 @@ import {
   PAYMENT_STATUS_VALUES,
   OrderStatus,
   ITEM_TYPE,
+  type ItemType,
 } from '@/lib/constants/enums';
 import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
 import { getShippingCost } from '@/utils/shipping.util';
+import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 
 export interface CreateOrderParams {
   shippingAddress?: IOrder['shippingAddress'];
@@ -70,6 +74,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
           quantity: cartItem.quantity,
           price: cartItem.price,
           image: cartItem.image || '',
+          metadata: cartItem.metadata,
         });
       }
     }
@@ -98,6 +103,102 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
     // [MOVED] clearCart is now handled in payment.service.ts AFTER successful payment verification
     // to ensure items stay in cart if payment is cancelled or fails.
     // await clearCart(userId);
+
+    return await Order.findById(order._id);
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
+export interface DirectOrderParams {
+  itemId: string;
+  itemType: string; // Using string to bypass strict enums, but validated internally
+  quantity: number;
+  name?: string;
+  price?: number;
+  image?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export async function createDirectOrder(userId: string, params: DirectOrderParams) {
+  await connectDB();
+  try {
+    if (!userId || typeof userId !== 'string') {
+      throw new ValidationError('Invalid User ID');
+    }
+    if (params.quantity < 1) {
+      throw new ValidationError('Quantity must be at least 1');
+    }
+
+    let finalPrice = params.price || 0;
+    let finalName = params.name || '';
+    let resolvedImage = params.image || '';
+
+    if (params.itemType === ITEM_TYPE.SUPPLEMENT) {
+      if (!Types.ObjectId.isValid(params.itemId)) throw new ValidationError('Invalid Supplement ID');
+      const supplement = await Supplement.findById(params.itemId);
+      if (!supplement) throw new ValidationError('Supplement not found');
+      if (!supplement.isActive) throw new ValidationError('Supplement is not available');
+      if (supplement.stock < params.quantity) throw new ValidationError('Insufficient stock');
+
+      finalPrice = supplement.price;
+      finalName = supplement.name;
+      resolvedImage = supplement.image || '';
+
+      supplement.stock -= params.quantity;
+      await supplement.save();
+    } else if (params.itemType === ITEM_TYPE.DRIFT_OFF) {
+      if (!finalPrice || finalPrice <= 0) throw new ValidationError('Price is required for Deep Rest items');
+      if (!finalName) finalName = 'Deep Rest Session';
+      resolvedImage = DRIFT_OFF_SESSION_IMAGE;
+    } else if (params.itemType === ITEM_TYPE.THERAPY) {
+      if (!Types.ObjectId.isValid(params.itemId)) throw new ValidationError('Invalid Therapist ID');
+      const therapist = await Therapist.findById(params.itemId);
+      if (!therapist) throw new ValidationError('Therapist not found');
+      if (!therapist.isAvailable) throw new ValidationError('Therapist is not available');
+
+      const { date, slot } = params.metadata || {};
+      if (date && slot) {
+        const existingSession = await Session.findOne({
+          therapistId: therapist._id,
+          date,
+          startTime: slot,
+          status: { $ne: 'cancelled' },
+        });
+        if (existingSession) {
+          throw new ValidationError('Slot is already booked');
+        }
+      }
+
+      finalPrice = therapist.sessionFee || 0;
+      finalName = `Therapy Session with ${therapist.name}`;
+      resolvedImage = therapist.image || '';
+    }
+
+    const isObjectId = params.itemType === ITEM_TYPE.SUPPLEMENT || params.itemType === ITEM_TYPE.THERAPY;
+
+    const orderItem: IOrderItem = {
+      itemType: params.itemType as ItemType,
+      itemId: isObjectId ? new Types.ObjectId(params.itemId) : params.itemId,
+      name: finalName,
+      quantity: params.quantity,
+      price: finalPrice,
+      image: resolvedImage,
+      metadata: params.metadata,
+    };
+
+    const isDigitalOnly = params.itemType === ITEM_TYPE.DRIFT_OFF || params.itemType === ITEM_TYPE.THERAPY;
+    const shipping = isDigitalOnly ? 0 : 0; // Direct supplement orders not handling complex shipping yet
+    const totalAmount = finalPrice * params.quantity + shipping;
+
+    const order = await Order.create({
+      userId,
+      items: [orderItem],
+      totalAmount,
+      paymentStatus: PAYMENT_STATUS.PENDING,
+      orderStatus: ORDER_STATUS.PENDING,
+      shippingAddress: undefined,
+    });
 
     return await Order.findById(order._id);
   } catch (error) {

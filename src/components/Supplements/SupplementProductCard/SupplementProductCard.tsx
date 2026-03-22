@@ -3,9 +3,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Supplement } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import { StarRating } from '@/components/common';
+import { ITEM_TYPE } from '@/lib/constants/enums';
+import { cartApi } from '@/lib/api/cart';
 import styles from './SupplementProductCard.module.css';
 
 interface SupplementProductCardProps {
@@ -16,6 +19,9 @@ interface SupplementProductCardProps {
 
 const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplement, onAddToCart, variant = 'grid' }) => {
   const [adding, setAdding] = useState(false);
+  const [buying, setBuying] = useState(false);
+  const router = useRouter();
+
   const imageUrl = supplement.images?.length ? supplement.images[0] : supplement.image;
   const originalPrice = supplement.originalPrice;
   const hasDiscount = originalPrice != null && originalPrice > supplement.price;
@@ -27,12 +33,35 @@ const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplemen
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isOutOfStock || !onAddToCart) return;
+    if (isOutOfStock) return;
+
     setAdding(true);
     try {
-      await onAddToCart(supplement._id, 1);
+      if (onAddToCart) {
+        await onAddToCart(supplement._id, 1);
+      } else {
+        await cartApi.add(supplement._id, 1, ITEM_TYPE.SUPPLEMENT);
+      }
     } finally {
       setAdding(false);
+    }
+  };
+
+  const handleBuyNow = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isOutOfStock) return;
+
+    setBuying(true);
+    try {
+      if (onAddToCart) {
+        await onAddToCart(supplement._id, 1);
+      } else {
+        await cartApi.add(supplement._id, 1, ITEM_TYPE.SUPPLEMENT);
+      }
+      router.push('/checkout');
+    } finally {
+      setBuying(false);
     }
   };
 
@@ -72,14 +101,15 @@ const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplemen
           <span className={styles.price}>{formatPrice(supplement.price)}</span>
         </div>
         <div className={styles.actions}>
-          {!isOutOfStock && onAddToCart ? (
-            <button type="button" onClick={handleAddToCart} disabled={adding} className={styles.addButton}>
-              {adding ? 'Adding...' : 'ADD TO CART'}
-            </button>
-          ) : !isOutOfStock ? (
-            <Link href={`/supplements/${supplement._id}`} className={styles.addButton}>
-              ADD TO CART
-            </Link>
+          {!isOutOfStock ? (
+            <div className={styles.buttonGroup}>
+              <button type="button" onClick={handleBuyNow} disabled={adding || buying} className={styles.buyNowButton}>
+                {buying ? 'Processing...' : 'BUY NOW'}
+              </button>
+              <button type="button" onClick={handleAddToCart} disabled={adding || buying} className={styles.addButton}>
+                {adding ? 'Adding...' : 'ADD TO CART'}
+              </button>
+            </div>
           ) : (
             <span className={styles.outOfStock}>Out of Stock</span>
           )}

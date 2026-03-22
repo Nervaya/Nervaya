@@ -1,18 +1,22 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import TimeSlotGrid from '../TimeSlotGrid';
 import DatePicker from '../DatePicker';
 import { ICON_LOADING } from '@/constants/icons';
 import { Icon } from '@iconify/react';
 import { BookingModalHeader } from './BookingModalHeader';
-import { BookingModalFooter } from './BookingModalFooter';
+import { BookingModalFooter } from '../BookingModalFooter';
 // import { sessionsApi } from '@/lib/api/sessions';
 import { useBookingSlots } from './useBookingSlots';
 import { useTherapist } from '@/queries/therapists/useTherapist';
 import { cartApi } from '@/lib/api/cart';
+import { ITEM_TYPE } from '@/lib/constants/enums';
 import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
+import { RazorpayCheckoutScript } from '@/components/common';
+import { useAuth } from '@/hooks/useAuth';
 import styles from './styles.module.css';
 
 interface BookingModalProps {
@@ -41,12 +45,14 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
   const [booking, setBooking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [buyMode, setBuyMode] = useState<'checkout' | 'cart'>('checkout');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const bookingCompletedRef = useRef(false);
+  const router = useRouter();
 
   const handleMonthChange = useCallback((monthStart: Date) => setVisibleMonth(monthStart), []);
 
   const { data: therapist } = useTherapist(therapistId);
+  const { user } = useAuth();
 
   const {
     schedule,
@@ -132,6 +138,22 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       setSelectedSlot(null);
       return;
     }
+    setBuyMode('checkout');
+    setShowConfirm(true);
+  };
+
+  const handleAddToCart = async () => {
+    if (!selectedSlot || !schedule) {
+      setError('Please select a time slot');
+      return;
+    }
+    const slot = schedule.slots.find((s) => s.startTime === selectedSlot);
+    if (!slot || !slot.isAvailable) {
+      setError('This slot has been booked. Please select another.');
+      setSelectedSlot(null);
+      return;
+    }
+    setBuyMode('cart');
     setShowConfirm(true);
   };
 
@@ -144,23 +166,107 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     setBooking(true);
     setError(null);
     try {
-      // await sessionsApi.create(therapistId, schedule.date, slot.startTime);
+      if (buyMode === 'checkout') {
+        const orderRes = await fetch('/api/orders/direct', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            itemType: ITEM_TYPE.THERAPY,
+            itemId: therapistId,
+            quantity: 1,
+            metadata: { date: schedule.date, slot: slot.startTime },
+          }),
+        });
+        const orderData = await orderRes.json();
+        if (!orderRes.ok || !orderData.success) throw new Error(orderData.message || 'Failed to create order');
 
-      // Integrating with cartApi
-      await cartApi.add(therapistId, 1); // Mocking for now, need to ensure cart supports therapy types
+        const orderId = orderData.data._id;
+        const amount = orderData.data.totalAmount;
 
-      bookingCompletedRef.current = true;
-      trackTherapyBooked({
-        therapy_type: therapist?.specializations?.[0] || 'General Therapy',
-        therapist_id: therapistId,
-        therapist_name: therapistName,
-        slot_datetime: `${schedule.date} ${slot.startTime}`,
-        price: therapist?.sessionFee ?? 0,
-        currency: 'INR',
-      });
-      setSuccessMessage('Added to cart successfully!');
-      onSuccess?.();
-      setTimeout(() => onClose(), 1200);
+        const rzpRes = await fetch('/api/payments/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, amount }),
+        });
+        const rzpData = await rzpRes.json();
+        if (!rzpRes.ok || !rzpData.success) throw new Error(rzpData.message || 'Failed to initialize payment');
+
+        if (!window.Razorpay) throw new Error('Payment gateway not loaded. Please try again.');
+
+        const options = {
+          key: rzpData.data.key_id,
+          amount: Math.round(amount * 100),
+          currency: 'INR',
+          name: 'Nervaya',
+          description: `Therapy Booking for ${therapistName}`,
+          order_id: rzpData.data.id,
+          prefill: { name: user?.name || '', email: user?.email || '', contact: '' },
+          theme: { color: '#7c3aed' },
+          handler: async (response: {
+            razorpay_payment_id: string;
+            razorpay_order_id: string;
+            razorpay_signature: string;
+          }) => {
+            try {
+              const verifyRes = await fetch('/api/payments/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  orderId,
+                  paymentId: response.razorpay_payment_id,
+                  razorpaySignature: response.razorpay_signature,
+                }),
+              });
+              const verifyData = await verifyRes.json();
+              if (verifyRes.ok && verifyData.success) {
+                // Payment successful
+                trackTherapyBooked({
+                  therapy_type: therapist?.specializations?.[0] || 'General Therapy',
+                  therapist_id: therapistId,
+                  therapist_name: therapistName,
+                  slot_datetime: `${schedule.date} ${slot.startTime}`,
+                  price: therapist?.sessionFee ?? 0,
+                  currency: 'INR',
+                });
+                router.push(`/order-success/${orderId}`);
+              } else {
+                throw new Error(verifyData.message || 'Verification failed');
+              }
+            } catch (err) {
+              const error = err as Error;
+              setError(error.message || 'Payment verification failed');
+            }
+          },
+          modal: {
+            ondismiss: () => {
+              setBooking(false);
+              setError('Payment cancelled.');
+            },
+          },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } else {
+        // Add to cart flow
+        await cartApi.add(therapistId, 1, ITEM_TYPE.THERAPY, undefined, undefined, undefined, {
+          date: schedule.date,
+          slot: slot.startTime,
+        });
+
+        trackTherapyBooked({
+          therapy_type: therapist?.specializations?.[0] || 'General Therapy',
+          therapist_id: therapistId,
+          therapist_name: therapistName,
+          slot_datetime: `${schedule.date} ${slot.startTime}`,
+          price: therapist?.sessionFee ?? 0,
+          currency: 'INR',
+        });
+
+        setSuccessMessage('Added to cart successfully!');
+        onSuccess?.();
+        setTimeout(() => onClose(), 1200);
+      }
     } catch (err) {
       const errorMessage =
         (err as { message?: string })?.message ||
@@ -169,8 +275,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
       if (errorMessage.includes('not available') || errorMessage.includes('already booked')) {
         fetchSlots();
       }
-    } finally {
-      setBooking(false);
+      setBooking(false); // Only reset if an error occurred before Razorpay opened
     }
   };
 
@@ -198,6 +303,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
 
   const modalContent = (
     <div className={styles.overlay} onClick={handleClose}>
+      <RazorpayCheckoutScript />
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <BookingModalHeader therapistName={therapistName} onClose={handleClose} />
         <div className={styles.content}>
@@ -251,7 +357,8 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           <div className={styles.confirmOverlay}>
             <div className={styles.confirmDialog}>
               <p>
-                Confirm booking for <strong>{therapistName}</strong> on {schedule.date} at {selectedSlot}?
+                Confirm {buyMode === 'checkout' ? 'booking & checkout' : 'adding to cart'} for{' '}
+                <strong>{therapistName}</strong> on {schedule.date} at {selectedSlot}?
               </p>
               <div className={styles.confirmActions}>
                 <button type="button" className={styles.confirmCancel} onClick={() => setShowConfirm(false)}>
@@ -269,6 +376,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           booking={booking}
           loading={loading}
           onBook={handleBookSession}
+          onAddToCart={handleAddToCart}
           sessionFee={therapist?.sessionFee}
           therapistId={therapistId}
           therapistName={therapist?.name}

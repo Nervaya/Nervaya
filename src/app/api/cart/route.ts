@@ -33,22 +33,27 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+
     const itemId = body.itemId || body.supplementId;
     const itemType: ItemType = body.itemType || ITEM_TYPE.SUPPLEMENT;
     const quantity = body.quantity;
     const name = body.name;
     const price = body.price;
     const image = body.image;
+    const metadata = body.metadata;
 
     if (!itemId || !quantity) {
+      console.warn('[API/CART/POST] Missing required fields:', { itemId, quantity });
       return NextResponse.json(errorResponse('Item ID and quantity are required', null, 400), { status: 400 });
     }
 
-    const cart = await addToCart(authResult.user.userId, itemId, quantity, itemType, name, price, image);
+    const cart = await addToCart(authResult.user.userId, itemId, quantity, itemType, name, price, image, metadata);
+
     return NextResponse.json(successResponse('Item added to cart', cart, 201), {
       status: 201,
     });
   } catch (error) {
+    console.error('[API/CART/POST] Error:', error);
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), {
       status: statusCode,

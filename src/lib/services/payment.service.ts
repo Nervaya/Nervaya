@@ -4,6 +4,7 @@ import Cart from '@/lib/models/cart.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service';
 import connectDB from '@/lib/db/mongodb';
+import { createSession } from '@/lib/services/session.service';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import mongoose, { Types } from 'mongoose';
 import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY, ITEM_TYPE } from '@/lib/constants/enums';
@@ -139,12 +140,18 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
                 await createDriftOffResponse(currentOrder.userId.toString(), newDriftOffOrder._id.toString(), session);
               }
             }
+          } else if (item.itemType === ITEM_TYPE.THERAPY) {
+            const date = item.metadata?.date as string;
+            const slot = item.metadata?.slot as string;
+            if (date && slot) {
+              await createSession(currentOrder.userId.toString(), item.itemId.toString(), date, slot, session);
+            }
           }
         }
       });
 
-      const order = await Order.findById(orderId);
-      return { verified: true, order };
+      const orderResult = await Order.findById(orderId);
+      return { verified: true, order: orderResult };
     } finally {
       await session.endSession();
     }
@@ -196,6 +203,12 @@ export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: s
                   await createDriftOffResponse(order.userId.toString(), newDriftOffOrder._id.toString(), session);
                 }
               }
+            } else if (item.itemType === ITEM_TYPE.THERAPY) {
+              const date = item.metadata?.date as string;
+              const slot = item.metadata?.slot as string;
+              if (date && slot) {
+                await createSession(order.userId.toString(), item.itemId.toString(), date, slot, session);
+              }
             }
           }
         } else if (event === 'payment.failed') {
@@ -211,4 +224,8 @@ export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: s
   } catch (error) {
     throw handleError(error);
   }
+}
+
+export function calculateTotal(items: { price: number; quantity: number }[]): number {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
 }

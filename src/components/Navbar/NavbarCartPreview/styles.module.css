@@ -204,6 +204,12 @@
   gap: 10px;
 }
 
+.cartPreviewState .cartPreviewActions {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .cartPreviewPrimary,
 .cartPreviewSecondary {
   display: inline-flex;

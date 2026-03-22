@@ -20,8 +20,11 @@ export const cartApi = {
     name?: string,
     price?: number,
     image?: string,
+    metadata?: Record<string, unknown>,
   ): Promise<ApiResponse<Cart>> => {
-    return api.post('/cart', { itemId, quantity, itemType, name, price, image }) as Promise<ApiResponse<Cart>>;
+    return api.post('/cart', { itemId, quantity, itemType, name, price, image, metadata }) as Promise<
+      ApiResponse<Cart>
+    >;
   },
 
   update: (itemId: string, quantity: number, itemType: ItemType = ITEM_TYPE.SUPPLEMENT): Promise<ApiResponse<Cart>> => {

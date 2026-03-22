@@ -1,10 +1,12 @@
 import Cart, { ICartItem } from '@/lib/models/cart.model';
 import Supplement from '@/lib/models/supplement.model';
+import Therapist from '@/lib/models/therapist.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { ITEM_TYPE, type ItemType } from '@/lib/constants/enums';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
+import Session from '@/lib/models/session.model';
 
 export async function getCartByUserId(userId: string) {
   await connectDB();
@@ -18,17 +20,29 @@ export async function getCartByUserId(userId: string) {
       cart = await Cart.create({ userId, items: [], totalAmount: 0 });
     }
 
-    // Manually populate Supplement items to handle mixed types gracefully
+    // Manually populate Supplement and Therapist items to handle mixed types gracefully
     const cartObj = JSON.parse(JSON.stringify(cart));
     const supplementIds = cartObj.items
       .filter((i: ICartItem) => i.itemType === ITEM_TYPE.SUPPLEMENT)
       .map((i: ICartItem) => i.itemId);
-    const supplements = await Supplement.find({ _id: { $in: supplementIds } }).lean();
+    const therapyIds = cartObj.items
+      .filter((i: ICartItem) => i.itemType === ITEM_TYPE.THERAPY)
+      .map((i: ICartItem) => i.itemId);
+
+    const [supplements, therapists] = await Promise.all([
+      Supplement.find({ _id: { $in: supplementIds } }).lean(),
+      Therapist.find({ _id: { $in: therapyIds } }).lean(),
+    ]);
+
     const supplementMap = new Map(supplements.map((s) => [s._id.toString(), s]));
+    const therapyMap = new Map(therapists.map((t) => [t._id.toString(), t]));
 
     cartObj.items = cartObj.items.map((item: ICartItem) => {
       if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
         return { ...item, itemId: supplementMap.get(item.itemId?.toString()) || item.itemId };
+      }
+      if (item.itemType === ITEM_TYPE.THERAPY) {
+        return { ...item, itemId: therapyMap.get(item.itemId?.toString()) || item.itemId };
       }
       return item;
     });
@@ -47,6 +61,7 @@ export async function addToCart(
   name?: string,
   price?: number,
   image?: string,
+  metadata?: Record<string, unknown>,
 ) {
   await connectDB();
   try {
@@ -83,6 +98,38 @@ export async function addToCart(
       }
       // Always use the canonical thumbnail for Deep Rest items
       resolvedImage = DRIFT_OFF_SESSION_IMAGE;
+    } else if (itemType === ITEM_TYPE.THERAPY) {
+      if (!Types.ObjectId.isValid(itemId)) {
+        console.error('[CartService/addToCart] Invalid Therapist ID:', itemId);
+        throw new ValidationError('Invalid Therapist ID');
+      }
+      const therapist = await Therapist.findById(itemId);
+      if (!therapist) {
+        console.error('[CartService/addToCart] Therapist not found:', itemId);
+        throw new ValidationError('Therapist not found');
+      }
+      if (!therapist.isAvailable) {
+        console.warn('[CartService/addToCart] Therapist not available:', itemId);
+        throw new ValidationError('Therapist is not available');
+      }
+
+      const { date, slot } = metadata || {};
+      if (date && slot) {
+        const existingSession = await Session.findOne({
+          therapistId: therapist._id,
+          date,
+          startTime: slot,
+          status: { $ne: 'cancelled' },
+        });
+        if (existingSession) {
+          console.warn('[CartService/addToCart] Slot already booked:', itemId, date, slot);
+          throw new ValidationError('Slot is already booked');
+        }
+      }
+
+      finalPrice = therapist.sessionFee || 0;
+      finalName = `Therapy Session with ${therapist.name}`;
+      resolvedImage = therapist.image || '';
     }
 
     let cart = await Cart.findOne({ userId });
@@ -104,20 +151,26 @@ export async function addToCart(
         }
       }
       cart.items[existingItemIndex].quantity = newQuantity;
+      if (metadata) {
+        cart.items[existingItemIndex].metadata = metadata;
+      }
     } else {
       cart.items.push({
         itemType,
-        itemId: itemType === ITEM_TYPE.SUPPLEMENT ? new Types.ObjectId(itemId) : itemId,
+        itemId:
+          itemType === ITEM_TYPE.SUPPLEMENT || itemType === ITEM_TYPE.THERAPY ? new Types.ObjectId(itemId) : itemId,
         quantity,
         price: finalPrice,
         name: finalName,
         ...(resolvedImage ? { image: resolvedImage } : {}),
+        metadata,
       });
     }
 
     await cart.save();
     return await getCartByUserId(userId);
   } catch (error) {
+    console.error('[CartService/addToCart] Error caught:', error);
     throw handleError(error);
   }
 }

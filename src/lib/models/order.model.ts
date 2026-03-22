@@ -7,7 +7,6 @@ import {
   DELIVERY_METHOD_VALUES,
   PaymentStatus,
   OrderStatus,
-  ITEM_TYPE,
   type ItemType,
 } from '@/lib/constants/enums';
 
@@ -18,6 +17,7 @@ export interface IOrderItem {
   quantity: number;
   price: number;
   image: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface IShippingAddress {
@@ -52,9 +52,9 @@ const orderItemSchema = new Schema<IOrderItem>(
   {
     itemType: {
       type: String,
-      enum: Object.values(ITEM_TYPE),
+      enum: ['Supplement', 'DriftOff', 'Therapy'],
       required: true,
-      default: ITEM_TYPE.SUPPLEMENT,
+      default: 'Supplement',
     },
     itemId: {
       type: Schema.Types.Mixed,
@@ -77,6 +77,10 @@ const orderItemSchema = new Schema<IOrderItem>(
     image: {
       type: String,
       default: '',
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {},
     },
   },
   { _id: false },
@@ -175,6 +179,11 @@ const orderSchema = new Schema<IOrder>(
     timestamps: true,
   },
 );
+
+// Force Mongoose to use the updated schema in development
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Order;
+}
 
 const Order: Model<IOrder> = mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema);
 

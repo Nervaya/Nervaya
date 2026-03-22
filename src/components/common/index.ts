@@ -16,3 +16,4 @@ export { default as StatusState } from './StatusState';
 export { TagInput } from './TagInput';
 export { default as Badge } from './Badge';
 export type { BadgeProps } from './Badge';
+export { default as RazorpayCheckoutScript } from './RazorpayCheckoutScript';
