@@ -42,11 +42,11 @@ export default function AssessmentContainer({ questions, onHydrated }: Assessmen
   }
 
   if (isComplete) {
-    return <CompletionView completedResponse={completedResponse} />;
+    return <CompletionView completedResponse={completedResponse} questions={questions} />;
   }
 
   if (hasAlreadyCompleted) {
-    return <CompletionView completedResponse={latestCompletedResponse} />;
+    return <CompletionView completedResponse={latestCompletedResponse} questions={questions} />;
   }
 
   if (!currentQuestion) {
