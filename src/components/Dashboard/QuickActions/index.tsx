@@ -19,7 +19,7 @@ export function QuickActions() {
           <Icon icon={ICON_USER} width={20} height={20} aria-hidden />
           Browse supplements
         </Link>
-        <Link className={styles.action} href="/sleep-assessment">
+        <Link className={styles.action} href="/sleep-assessment" prefetch={true}>
           <Icon icon={ICON_CLIPBOARD} width={20} height={20} aria-hidden />
           Take sleep assessment
         </Link>

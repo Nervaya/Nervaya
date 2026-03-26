@@ -51,7 +51,10 @@ body {
   overflow-y: auto;
   padding-top: var(--navbar-height);
   color: var(--foreground);
-  background: #ffffff;
+  background: var(--bg-main);
+  background-color: #09021d;
+  background-size: cover;
+  background-position: center top;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

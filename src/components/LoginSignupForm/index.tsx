@@ -58,18 +58,24 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
 
   const onLoginSubmit = useCallback(
     async (e: React.FormEvent) => {
-      const response = await handleLoginSubmit(e);
-      if (
-        response?.success &&
-        response?.data &&
-        typeof response.data === 'object' &&
-        'requireOtp' in response.data &&
-        response.data.requireOtp &&
-        'email' in response.data
-      ) {
-        clearAuthError();
-        setOtpPurpose(OTP_PURPOSE.LOGIN);
-        setAuthStep(AUTH_STEP.OTP);
+      try {
+        const response = await handleLoginSubmit(e);
+        if (
+          response?.success &&
+          response?.data &&
+          typeof response.data === 'object' &&
+          'requireOtp' in response.data &&
+          response.data.requireOtp &&
+          'email' in response.data
+        ) {
+          clearAuthError();
+          setOtpPurpose(OTP_PURPOSE.LOGIN);
+          setAuthStep(AUTH_STEP.OTP);
+        }
+        // If login succeeds without OTP, handleAuthSuccess in AuthContext handles navigation
+      } catch {
+        // Error is already set in AuthContext by the login function
+        // The error will be displayed via the error prop passed to LoginForm
       }
     },
     [handleLoginSubmit, clearAuthError],
@@ -77,18 +83,24 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
 
   const onSignupSubmit = useCallback(
     async (e: React.FormEvent) => {
-      const response = await handleSignupSubmit(e);
-      if (
-        response?.success &&
-        response?.data &&
-        typeof response.data === 'object' &&
-        'requireOtp' in response.data &&
-        response.data.requireOtp &&
-        'email' in response.data
-      ) {
-        clearAuthError();
-        setOtpPurpose(OTP_PURPOSE.SIGNUP);
-        setAuthStep(AUTH_STEP.OTP);
+      try {
+        const response = await handleSignupSubmit(e);
+        if (
+          response?.success &&
+          response?.data &&
+          typeof response.data === 'object' &&
+          'requireOtp' in response.data &&
+          response.data.requireOtp &&
+          'email' in response.data
+        ) {
+          clearAuthError();
+          setOtpPurpose(OTP_PURPOSE.SIGNUP);
+          setAuthStep(AUTH_STEP.OTP);
+        }
+        // If signup succeeds without OTP, handleAuthSuccess in AuthContext handles navigation
+      } catch {
+        // Error is already set in AuthContext by the signup function
+        // The error will be displayed via the error prop passed to SignupForm
       }
     },
     [handleSignupSubmit, clearAuthError],

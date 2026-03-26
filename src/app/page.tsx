@@ -22,10 +22,10 @@ const HomePage = () => {
           </p>
 
           <div className={styles.buttonGroup}>
-            <Link href="/sleep-assessment" className={styles.primaryButton}>
+            <Link href="/sleep-assessment" className={styles.primaryButton} prefetch={true}>
               Free Sleep Assessment
             </Link>
-            <Link href="/support" className={styles.secondaryButton}>
+            <Link href="/support" className={styles.secondaryButton} prefetch={true}>
               Get Free Assistance
             </Link>
           </div>
