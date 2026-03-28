@@ -10,16 +10,20 @@ const REQUIRE_OTP = process.env.REQUIRE_OTP_FOR_LOGIN === 'true';
 
 export async function POST(request: NextRequest) {
   try {
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const body = await request.json();
+    const { email, password } = body;
 
-    if (!checkLoginRateLimit(ip)) {
+    // Use IP+email as composite key so each user gets their own rate-limit bucket.
+    // Without this, all requests with no proxy (ip='unknown') share one bucket and
+    // hit the 5-attempt limit almost instantly, blocking everyone with a 429.
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const rateLimitKey = `${ip}:${typeof email === 'string' ? email.trim().toLowerCase() : 'unknown'}`;
+
+    if (!checkLoginRateLimit(rateLimitKey)) {
       return NextResponse.json(errorResponse('Too many login attempts. Please try again later.', null, 429), {
         status: 429,
       });
     }
-
-    const body = await request.json();
-    const { email, password } = body;
 
     if (!email || !password) {
       return NextResponse.json(errorResponse('Email and password are required', null, 400), { status: 400 });
