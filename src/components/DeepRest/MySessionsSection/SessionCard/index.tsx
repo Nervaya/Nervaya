@@ -82,7 +82,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
 
       <div className={styles.cardFooter}>
         {isPendingAssessment && (
-          <Link href={`/deep-rest/assessment?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
+          <Link href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
             Complete Assessment
           </Link>
         )}
@@ -92,7 +92,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
             {(!hasRequestedReSession || isRequesting) && (
               <Link
-                href={`/deep-rest/assessment?orderId=${session.driftOffOrderId}&mode=re-session`}
+                href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
                 className={styles.requestBtn}
                 style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}
               >

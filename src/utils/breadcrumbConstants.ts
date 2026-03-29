@@ -11,6 +11,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   'sleep-assessment': 'Sleep Assessment',
   'deep-rest': 'Deep Rest',
   'drift-off': 'Deep Rest',
+  questionnaire: 'Questionnaire',
   'therapy-corner': 'Therapy Corner',
   support: 'Support',
   blog: 'Blog',

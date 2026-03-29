@@ -58,7 +58,7 @@ export default function DriftOffAssessmentContainer({
   }, [isComplete, router]);
 
   if (!isHydrated) {
-    return <GlobalLoader label="Loading your assessment..." />;
+    return <GlobalLoader label="Loading your questionnaire..." />;
   }
 
   if (isComplete) {
@@ -76,7 +76,7 @@ export default function DriftOffAssessmentContainer({
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Deep Rest Session Assessment</h1>
+        <h1 className={styles.title}>Deep Rest Audio Questionnaire</h1>
         <span className={styles.stepCounter} aria-hidden>
           {currentQuestionIndex + 1}/{totalQuestions}
         </span>

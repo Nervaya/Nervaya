@@ -11,7 +11,7 @@ import type { ApiResponse } from '@/lib/utils/response.util';
 import type { IDriftOffAnswer, IDriftOffOrder } from '@/types/driftOff.types';
 import styles from './styles.module.css';
 
-export default function DriftOffAssessmentPage() {
+export default function DriftOffQuestionnairePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderId = searchParams.get('orderId');
@@ -36,7 +36,7 @@ export default function DriftOffAssessmentPage() {
 
       if (!questionsRes.success) {
         if (attempt === maxAttempts) {
-          throw new Error('Failed to load assessment questions');
+          throw new Error('Failed to load questionnaire questions');
         }
       } else {
         const nextQuestions = questionsRes.data || [];
@@ -106,13 +106,13 @@ export default function DriftOffAssessmentPage() {
 
         const loadedQuestions = await fetchQuestionsWithRetry();
         if (loadedQuestions.length === 0) {
-          setError('Unable to load assessment questions right now. Please try again in a few seconds.');
+          setError('Unable to load questionnaire questions right now. Please try again in a few seconds.');
           return;
         }
 
         setQuestions(loadedQuestions);
       } catch {
-        setError('Failed to load the assessment. Please try again.');
+        setError('Failed to load the questionnaire. Please try again.');
       } finally {
         setIsLoading(false);
         setIsRedirecting(false);
@@ -142,7 +142,7 @@ export default function DriftOffAssessmentPage() {
         if (ordersRes.success && ordersRes.data) {
           const paidOrder = ordersRes.data.find((order) => order.paymentStatus === 'paid');
           if (paidOrder) {
-            const newUrl = `/deep-rest/assessment?orderId=${paidOrder._id}`;
+            const newUrl = `/deep-rest/questionnaire?orderId=${paidOrder._id}`;
             if (url.includes(`orderId=${paidOrder._id}`)) {
               return await loadOrderData(paidOrder._id);
             }
@@ -166,12 +166,12 @@ export default function DriftOffAssessmentPage() {
   return (
     <Sidebar>
       <div className={styles.wrapper}>
-        {isLoading && <GlobalLoader label="Preparing your assessment..." />}
+        {isLoading && <GlobalLoader label="Preparing your questionnaire..." />}
 
         {!isLoading && error && (
           <div className={styles.error}>
             <div className={styles.errorContent}>
-              <h3 className={styles.errorTitle}>Unable to Load Assessment</h3>
+              <h3 className={styles.errorTitle}>Unable to Load Questionnaire</h3>
               <p className={styles.errorMessage}>{error}</p>
               <div className={styles.errorActions}>
                 <button type="button" className={styles.retryBtn} onClick={() => window.location.reload()}>

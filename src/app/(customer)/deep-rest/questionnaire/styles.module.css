@@ -1,7 +1,8 @@
 .wrapper {
   width: 100%;
-  max-width: 800px;
-  padding: 1.5rem 1.5rem 3rem;
+  max-width: 1180px;
+  padding: 1.5rem 1rem 2rem;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -106,6 +107,12 @@
   padding: 2rem 1rem;
 }
 
+@media (max-width: 768px) {
+  .optionsContainer {
+    padding: 1rem;
+  }
+}
+
 .optionsCard {
   background: var(--color-glass-bg);
   border: 1px solid var(--color-glass-border);
@@ -118,6 +125,12 @@
   -webkit-backdrop-filter: blur(var(--color-glass-blur));
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .optionsCard {
+    padding: 2rem 1.5rem;
+  }
 }
 
 .optionsCard::before {
@@ -212,6 +225,12 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .optionsActions {
+    flex-direction: column;
+  }
+}
+
 .keepBtn {
   flex: 1;
   min-width: 200px;
@@ -232,6 +251,12 @@
   box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
 }
 
+@media (max-width: 768px) {
+  .keepBtn {
+    min-width: auto;
+  }
+}
+
 .optionsNote {
   background: var(--color-accent-dim);
   border: 1px solid var(--color-glass-border);
@@ -244,22 +269,4 @@
   font-size: 0.85rem;
   color: var(--color-accent);
   line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .optionsContainer {
-    padding: 1rem;
-  }
-
-  .optionsCard {
-    padding: 2rem 1.5rem;
-  }
-
-  .optionsActions {
-    flex-direction: column;
-  }
-
-  .keepBtn {
-    min-width: auto;
-  }
 }

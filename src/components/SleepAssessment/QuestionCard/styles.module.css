@@ -11,20 +11,20 @@
 
   .questionLabel {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     color: var(--qc-accent);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .questionText {
-    margin: 0 0 32px 0;
+    margin: 0 0 10px 0;
     color: #0f172a;
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-size: clamp(1.14rem, 2vw, 1.38rem);
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.2;
   }
 
   .optionsList {
@@ -33,18 +33,18 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 3px;
 
     .optionCard {
       width: 100%;
       display: flex;
       align-items: center;
-      padding: 18px 24px;
+      padding: 10px 12px;
       border-radius: var(--radius-button, 8px);
       border: 1px solid var(--qc-border);
       background: var(--qc-bg);
       color: var(--qc-text);
-      font-size: 1.05rem;
+      font-size: 0.96rem;
       font-weight: 500;
       text-align: left;
       cursor: pointer;
@@ -85,19 +85,19 @@
       }
 
       .radio {
-        width: 20px;
-        height: 20px;
+        width: 17px;
+        height: 17px;
         border-radius: 50%;
         border: 2px solid var(--qc-radio-border);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-right: 16px;
+        margin-right: 12px;
         transition: all 0.2s ease;
 
         .radioDot {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           background: transparent;
           transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -106,14 +106,14 @@
       }
 
       .checkbox {
-        width: 20px;
-        height: 20px;
+        width: 17px;
+        height: 17px;
         border-radius: 6px;
         border: 2px solid var(--qc-radio-border);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-right: 16px;
+        margin-right: 12px;
         transition: all 0.2s ease;
 
         svg {
@@ -125,7 +125,7 @@
 
       .optionLabel {
         flex: 1;
-        line-height: 1.4;
+        line-height: 1.3;
       }
     }
   }

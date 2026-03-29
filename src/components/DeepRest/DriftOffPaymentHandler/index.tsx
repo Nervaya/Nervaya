@@ -48,7 +48,7 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
             value: amount,
             currency: 'INR',
           });
-          router.replace(`/deep-rest/assessment?orderId=${driftOffOrderId}`);
+          router.replace(`/deep-rest/questionnaire?orderId=${driftOffOrderId}`);
         } else {
           onError?.(result.message || 'Payment verification failed');
         }
