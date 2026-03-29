@@ -22,6 +22,8 @@ export interface IUser extends Document {
   password: string;
   name: string;
   role: Role;
+  /** Direct mobile number on the user profile. Populated when user provides it. */
+  phone?: string;
   /** Set when role is THERAPIST: links to the Therapist profile for this user. */
   therapistId?: mongoose.Types.ObjectId;
   emailVerified?: boolean;
@@ -62,6 +64,12 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Name is required'],
       trim: true,
+    },
+    phone: {
+      type: String,
+      trim: true,
+      default: null,
+      required: false,
     },
     emailVerified: {
       type: Boolean,

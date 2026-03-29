@@ -11,6 +11,7 @@ import TimeSlotGrid from '@/components/Booking/TimeSlotGrid';
 import { trackLeadSubmitted } from '@/utils/analytics';
 import axios from 'axios';
 import { TherapistSlot } from '@/types/session.types';
+import { useZohoLead } from '@/hooks/useZohoLead';
 
 interface AboutUsConsultationProps {
   centerCard?: boolean;
@@ -58,6 +59,7 @@ const DYNAMIC_SLOTS = generateWorkingHourSlots();
 
 const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) => {
   const pathname = usePathname();
+  const { pushLead } = useZohoLead();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -196,6 +198,16 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
         lead_type: 'free_1_on_1_assistance',
         source_page: pathname,
         connection_type: formData.connectionType,
+      });
+
+      // Push to Zoho CRM — fire-and-forget
+      pushLead({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email || undefined,
+        phone: formData.mobile || undefined,
+        source: 'Free Consultation',
+        message: `Consultation scheduled for ${formData.date.toISOString().split('T')[0]} at ${formData.time} via ${formData.connectionType}`,
       });
 
       // Reset form

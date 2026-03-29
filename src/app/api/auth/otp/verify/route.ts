@@ -73,6 +73,10 @@ export async function POST(request: NextRequest) {
       const { sendWelcomeEmail } = await import('@/lib/services/email/welcome-email.service');
       sendWelcomeEmail(pendingData.email, pendingData.name).catch(() => undefined);
 
+      // Push the new user to Zoho CRM as a Lead (fire-and-forget — never blocks signup)
+      const { pushSignupLeadToZoho } = await import('@/lib/zoho/zoho-crm.service');
+      pushSignupLeadToZoho(pendingData.name, pendingData.email).catch(() => undefined);
+
       const response = NextResponse.json(successResponse('Email verified successfully', session, 200), { status: 200 });
       response.cookies.set(COOKIE_NAMES.AUTH_TOKEN, session.token, getSecureCookieOptions());
       return response;

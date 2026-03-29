@@ -43,6 +43,21 @@ export async function POST(req: NextRequest) {
       time,
     });
 
+    // Push to Zoho CRM — fire-and-forget, redundant to the frontend push
+    (async () => {
+      try {
+        const { pushSupportLeadToZoho } = await import('@/lib/zoho/zoho-crm.service');
+        await pushSupportLeadToZoho(
+          `${firstName} ${lastName}`,
+          connectionType === 'Google Meet' ? email : 'no-email@nervaya.com',
+          `Automated consultation request via ${connectionType} at ${date} ${time}`,
+          mobile,
+        );
+      } catch {
+        // Silently swallow errors
+      }
+    })();
+
     return NextResponse.json(successResponse('Consultation scheduled successfully', lead, 201), { status: 201 });
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

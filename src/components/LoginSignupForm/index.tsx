@@ -18,6 +18,7 @@ import { SignupForm } from './SignupForm';
 import styles from './styles.module.css';
 import { IMAGES } from '@/utils/imageConstants';
 import { useLoading } from '@/context/LoadingContext';
+import { useZohoLead } from '@/hooks/useZohoLead';
 
 export interface LoginSignupFormProps {
   initialMode?: AuthFormMode;
@@ -30,6 +31,7 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
   const [otpPurpose, setOtpPurpose] = useState<OtpPurpose>(OTP_PURPOSE.LOGIN);
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const { pushLead } = useZohoLead();
 
   const {
     isRightPanelActive,
@@ -96,6 +98,14 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
           clearAuthError();
           setOtpPurpose(OTP_PURPOSE.SIGNUP);
           setAuthStep(AUTH_STEP.OTP);
+
+          // Push to Zoho CRM — captures the lead even if they abandon here
+          pushLead({
+            name: name,
+            email: email,
+            source: 'Nervaya Signup',
+            message: 'User initiated signup and is at the OTP verification step.',
+          });
         }
         // If signup succeeds without OTP, handleAuthSuccess in AuthContext handles navigation
       } catch {
@@ -103,7 +113,7 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
         // The error will be displayed via the error prop passed to SignupForm
       }
     },
-    [handleSignupSubmit, clearAuthError],
+    [handleSignupSubmit, clearAuthError, email, name, pushLead],
   );
 
   const onOtpSuccess = useCallback(
