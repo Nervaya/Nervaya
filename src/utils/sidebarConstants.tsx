@@ -17,7 +17,12 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     items: [
       { title: 'Dashboard', path: '/dashboard', icon: 'FaChartPie', activePaths: ['/dashboard', '/'] },
       { title: 'Sleep Assessment', path: '/sleep-assessment', icon: 'FaClipboardList' },
-      { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
+      {
+        title: 'Shopping Cart',
+        path: '/cart',
+        icon: 'FaCartShopping',
+        activePaths: ['/cart', '/checkout', '/order-success'],
+      },
     ],
   },
   {
@@ -33,20 +38,13 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
   },
   {
     title: 'SHOP',
-    items: [
-      { title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' },
-      {
-        title: 'Shopping Cart',
-        path: '/cart',
-        icon: 'FaCartShopping',
-        activePaths: ['/cart', '/checkout', '/order-success'],
-      },
-    ],
+    items: [{ title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' }],
   },
   {
     title: 'HELP',
     items: [
       { title: 'Support', path: '/support', icon: 'FaHeadset' },
+      { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
       { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
     ],
   },

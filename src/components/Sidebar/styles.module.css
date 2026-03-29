@@ -84,7 +84,7 @@
 }
 
 .nav {
-  padding-top: 10px;
+  padding-top: 3px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -109,6 +109,19 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
+
+@media (max-height: 760px) {
+  .navList {
+    gap: 1px;
+  }
+}
+
+@media (min-height: 1080px) {
+  .navList {
+    gap: 3px;
+  }
 }
 
 .navItem {
@@ -116,9 +129,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding: 10px 14px;
+  padding: 6px 12px;
   margin: 2px 8px;
-  min-height: 44px;
+  min-height: 35px;
   box-sizing: border-box;
   color: #ffffff;
   font-weight: 400;
@@ -129,7 +142,23 @@
   transition: all 0.14s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: transparent;
-  gap: 12px;
+  gap: 11px;
+}
+
+@media (max-height: 760px) {
+  .navItem {
+    padding: 5px 11px;
+    margin: 1px 7px;
+    min-height: 32px;
+  }
+}
+
+@media (min-height: 1080px) {
+  .navItem {
+    padding: 7px 13px;
+    margin: 3px 9px;
+    min-height: 36px;
+  }
 }
 
 /* Collapsed: center the row in the rail; fixed width so <button> matches <a> (no width:100% + margin overflow) */
@@ -143,13 +172,20 @@
 .collapsed .navItem {
   justify-content: center;
   align-items: center;
-  padding: 10px 0;
-  margin: 4px 0;
+  padding: 7px 0;
+  margin: 5px 0;
   gap: 0;
   width: 48px;
   min-width: 48px;
   max-width: 48px;
   box-sizing: border-box;
+}
+
+@media (max-height: 760px) {
+  .collapsed .navItem {
+    padding: 6px 0;
+    margin: 4px 0;
+  }
 }
 
 .navItem:hover {
@@ -191,14 +227,20 @@
 }
 
 .bottomMenu {
-  padding: 12px 0 24px;
+  padding: 7px 0 13px;
   flex-shrink: 0;
+}
+
+@media (max-height: 760px) {
+  .bottomMenu {
+    padding: 6px 0 10px;
+  }
 }
 
 .icon {
   font-size: 1.25rem;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,6 +248,20 @@
   flex-shrink: 0;
   position: relative;
   transition: transform 0.14s ease;
+}
+
+@media (max-height: 760px) {
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (min-height: 1080px) {
+  .icon {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .collapsed .icon {
@@ -254,10 +310,16 @@
   font-weight: 700;
   color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0.1em;
-  padding: 24px 16px 8px;
+  padding: 12px 14px 6px;
   text-transform: uppercase;
   text-align: left;
   transition: opacity 0.12s ease;
+}
+
+@media (max-height: 760px) {
+  .groupTitle {
+    padding: 10px 13px 5px;
+  }
 }
 
 .collapsed .groupTitle {
@@ -271,11 +333,68 @@
 .separator {
   height: 1px;
   background: rgba(255, 255, 255, 0.08);
-  margin: 12px 0;
+  margin: 6px 0;
+}
+
+@media (max-height: 760px) {
+  .separator {
+    margin: 5px 0;
+  }
 }
 
 .collapsed .separator {
   margin: 12px auto;
   width: 32px;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+/* Admin layout: slightly roomier spacing to reach logout comfortably */
+.admin .navList {
+  gap: 7px;
+}
+
+@media (max-height: 760px) {
+  .admin .navList {
+    gap: 3px;
+  }
+}
+
+.admin .navItem {
+  padding: 9px 15px;
+  margin: 5px 11px;
+  min-height: 42px;
+}
+
+@media (max-height: 760px) {
+  .admin .navItem {
+    padding: 7px 13px;
+    margin: 3px 9px;
+    min-height: 36px;
+  }
+}
+
+.admin.collapsed .navItem {
+  padding: 9px 0;
+  margin: 8px 0;
+}
+
+@media (max-height: 760px) {
+  .admin.collapsed .navItem {
+    padding: 7px 0;
+    margin: 5px 0;
+  }
+}
+
+.admin .groupTitle {
+  padding: 17px 17px 9px;
+}
+
+.admin .bottomMenu {
+  padding: 10px 0 20px;
+}
+
+@media (max-height: 760px) {
+  .admin .bottomMenu {
+    padding: 8px 0 14px;
+  }
 }

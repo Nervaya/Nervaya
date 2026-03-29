@@ -68,7 +68,7 @@ const Sidebar = ({
         <AnimatePresence mode="wait">
           {isAuthenticated && isDesktop && (
             <m.aside
-              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}
+              className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''} ${isAdmin ? styles.admin : ''}`}
               id="app-sidebar"
               initial={false}
               animate={{ width: sidebarWidth }}
