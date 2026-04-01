@@ -58,7 +58,11 @@ export async function createSession(
 
     try {
       await bookSlot(therapistId, date, startTime, session._id.toString());
-    } catch {}
+    } catch (bookSlotError) {
+      // If slot booking fails, the session was still created via the unique index.
+      // Log the error but don't block — the session record is authoritative.
+      console.error('Failed to mark slot as booked in therapist schedule:', bookSlotError);
+    }
 
     return session;
   } catch (error) {
@@ -211,6 +215,13 @@ export async function cancelSession(sessionId: string, userId: string) {
   }
 }
 
+const VALID_STATUS_TRANSITIONS: Record<string, string[]> = {
+  [SESSION_STATUS.PENDING]: [SESSION_STATUS.CONFIRMED, SESSION_STATUS.CANCELLED],
+  [SESSION_STATUS.CONFIRMED]: [SESSION_STATUS.COMPLETED, SESSION_STATUS.CANCELLED],
+  [SESSION_STATUS.COMPLETED]: [],
+  [SESSION_STATUS.CANCELLED]: [],
+};
+
 export async function updateSessionStatus(sessionId: string, status: SessionStatus) {
   await connectDB();
   try {
@@ -218,10 +229,22 @@ export async function updateSessionStatus(sessionId: string, status: SessionStat
       throw new ValidationError('Invalid Session ID');
     }
 
-    const session = await Session.findByIdAndUpdate(sessionId, { status }, { new: true, runValidators: true });
-
+    const session = await Session.findById(sessionId);
     if (!session) {
       throw new ValidationError('Session not found');
+    }
+
+    const allowedNext = VALID_STATUS_TRANSITIONS[session.status] ?? [];
+    if (!allowedNext.includes(status)) {
+      throw new ValidationError(`Cannot transition from '${session.status}' to '${status}'`);
+    }
+
+    session.status = status;
+    await session.save();
+
+    // Release slot if session is cancelled
+    if (status === SESSION_STATUS.CANCELLED) {
+      await releaseSlot(session.therapistId.toString(), session.date, session.startTime);
     }
 
     return session;

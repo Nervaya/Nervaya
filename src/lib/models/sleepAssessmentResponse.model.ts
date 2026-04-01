@@ -11,7 +11,7 @@ export interface ISleepAssessmentRecommendation {
   description: string;
   buttonText: string;
   href: string;
-  priority: 'primary' | 'secondary';
+  priority: 'primary' | 'secondary' | 'none';
 }
 
 export interface ISleepAssessmentResultFlags {
@@ -24,7 +24,7 @@ export interface ISleepAssessmentResultFlags {
 
 export interface ISleepAssessmentResult {
   severityScore: number;
-  severityBand: 'mild' | 'moderate' | 'severe';
+  severityBand: 'mild' | 'moderate' | 'severe' | 'none';
   severityLabel: string;
   explanation: string;
   reasoning: string[];
@@ -83,7 +83,7 @@ const sleepAssessmentRecommendationSchema = new Schema<ISleepAssessmentRecommend
     },
     priority: {
       type: String,
-      enum: ['primary', 'secondary'],
+      enum: ['primary', 'secondary', 'none'],
       required: true,
     },
   },
@@ -124,7 +124,7 @@ const sleepAssessmentResultSchema = new Schema<ISleepAssessmentResult>(
     },
     severityBand: {
       type: String,
-      enum: ['mild', 'moderate', 'severe'],
+      enum: ['mild', 'moderate', 'severe', 'none'],
       required: true,
     },
     severityLabel: {

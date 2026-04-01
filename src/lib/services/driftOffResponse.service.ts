@@ -47,6 +47,9 @@ export async function saveAnswer(
     >;
   }
   if (!response) throw new Error('Failed to create or find Deep Rest response');
+  if (response.completedAt) {
+    throw new ValidationError('Cannot modify answers after assessment is completed');
+  }
   const idx = response.answers.findIndex((a) => String(a.questionId) === input.questionId);
   if (idx >= 0) {
     response.answers[idx].answer = input.answer;
@@ -64,6 +67,9 @@ export async function completeDriftOffResponse(
   const response = await DriftOffResponse.findOne({ userId, driftOffOrderId });
   if (!response) {
     throw new NotFoundError('Deep Rest response not found');
+  }
+  if (response.completedAt) {
+    throw new ValidationError('This assessment has already been completed');
   }
   if (response.answers.length === 0) {
     throw new ValidationError('At least one answer is required');

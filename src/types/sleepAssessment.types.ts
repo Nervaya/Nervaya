@@ -24,7 +24,7 @@ export interface IQuestionAnswer {
   answer: string | string[];
 }
 
-export type SleepAssessmentSeverityBand = 'mild' | 'moderate' | 'severe';
+export type SleepAssessmentSeverityBand = 'mild' | 'moderate' | 'severe' | 'none';
 
 export type SleepAssessmentRecommendationKey =
   | 'guided_audio'
@@ -38,7 +38,7 @@ export interface SleepAssessmentRecommendation {
   description: string;
   buttonText: string;
   href: string;
-  priority: 'primary' | 'secondary';
+  priority: 'primary' | 'secondary' | 'none';
 }
 
 export interface SleepAssessmentResultFlags {

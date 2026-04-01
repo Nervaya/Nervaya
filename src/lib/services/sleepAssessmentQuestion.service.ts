@@ -1,6 +1,7 @@
 import SleepAssessmentQuestion, { ISleepAssessmentQuestion } from '@/lib/models/sleepAssessmentQuestion.model';
+import SleepAssessmentResponse from '@/lib/models/sleepAssessmentResponse.model';
 import connectDB from '@/lib/db/mongodb';
-import { NotFoundError } from '@/lib/utils/error.util';
+import { NotFoundError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import type { CreateQuestionInput, UpdateQuestionInput } from '@/types/sleepAssessment.types';
 
@@ -88,6 +89,10 @@ export async function createQuestion(input: CreateQuestionInput): Promise<ISleep
   }
 }
 
+// Scoring questions (order 3-11) use 0-indexed option positions for scoring.
+// Reordering or removing options after users have answered would corrupt scores.
+const SCORING_QUESTION_ORDERS = [3, 4, 5, 6, 7, 8, 9, 10, 11];
+
 export async function updateQuestion(
   identifier: string,
   input: UpdateQuestionInput,
@@ -96,6 +101,37 @@ export async function updateQuestion(
 
   try {
     const query = Types.ObjectId.isValid(identifier) ? { _id: identifier } : { questionId: identifier };
+    const existing = await SleepAssessmentQuestion.findOne(query);
+
+    if (!existing) {
+      throw new NotFoundError('Question not found');
+    }
+
+    // Guard: prevent option changes on scoring questions that have existing responses
+    if (input.options && SCORING_QUESTION_ORDERS.includes(existing.order)) {
+      const hasResponses = await SleepAssessmentResponse.exists({
+        'answers.questionId': existing._id,
+      });
+
+      if (hasResponses) {
+        const existingValues = existing.options.map((o) => o.value);
+        const newValues = input.options.map((o) => o.value);
+
+        // Check if option values were removed or reordered
+        const valuesRemoved = existingValues.some((v) => !newValues.includes(v));
+        const orderChanged = existingValues.some((v, i) => {
+          const newIdx = newValues.indexOf(v);
+          return newIdx !== -1 && newIdx !== i;
+        });
+
+        if (valuesRemoved || orderChanged) {
+          throw new ValidationError(
+            'Cannot reorder or remove options on scoring questions (Q3-Q11) that have existing responses. ' +
+              'You may only add new options at the end or update option labels.',
+          );
+        }
+      }
+    }
 
     const question = await SleepAssessmentQuestion.findOneAndUpdate(
       query,

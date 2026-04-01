@@ -1,12 +1,28 @@
 /*
  * Domain-Based Scoring System for Sleep Assessment
- * Logic provided:
+ * Based on the product specification:
  * 1. Calculate B (Onset), R (Quality), G (Anxiety/Stress) from Q3-Q10.
- * 2. Apply adjustments from Q11.
- * 3. Priority check for Healthy edge cases.
- * 4. Categorize based on domains >= 2.
+ * 2. Apply single-select adjustment from Q11.
+ * 3. Classify into segment based on domain thresholds.
+ * 4. Map segment to status label, dynamic text, and service recommendations.
  */
 
+// ─── Question Config (single source of truth for option counts) ───
+export const QUESTION_CONFIG = {
+  Q3: { options: 4 }, // max value = 3
+  Q4: { options: 4 }, // max value = 3
+  Q5: { options: 4 }, // max value = 3
+  Q6: { options: 3 }, // max value = 2
+  Q7: { options: 5 }, // max value = 4
+  Q8: { options: 3 }, // max value = 2
+  Q9: { options: 4 }, // max value = 3
+  Q10: { options: 5 }, // max value = 4
+} as const;
+
+// ─── Classification threshold ───
+const DOMAIN_THRESHOLD = 2;
+
+// ─── Types ───
 export interface AssessmentAnswers {
   q3: number;
   q4: number;
@@ -17,153 +33,244 @@ export interface AssessmentAnswers {
   q9: number;
   q10: number;
   /**
-   * Q11 options:
-   * 'A' - Falling asleep faster
-   * 'B' - Reducing anxiety before bed
-   * 'C' - Staying asleep through the night
-   * 'D' - Waking up more refreshed
+   * Q11 options (can be single or multi-select):
+   * 'A' - Falling asleep faster       → B + 1
+   * 'B' - Reducing anxiety before bed  → G + 1
+   * 'C' - Staying asleep through night → R + 1
+   * 'D' - Waking up more refreshed     → R + 1
+   * Each selected option adds +1 to its domain.
    */
   q11: string[];
 }
 
-export type SleepCategory =
-  | 'ONSET_ONLY'
-  | 'QUALITY_ONLY'
-  | 'ANXIETY_ONLY'
+export type SleepSegment =
+  | 'ALL_THREE'
   | 'QUALITY_ONSET'
   | 'ONSET_ANXIETY'
   | 'QUALITY_ANXIETY'
-  | 'ALL_THREE'
-  | 'HEALTHY';
+  | 'QUALITY_ONLY'
+  | 'ONSET_ONLY'
+  | 'ANXIETY_ONLY'
+  | 'NO_DOMAIN';
+
+export type SeverityLevel = 'mild' | 'moderate' | 'severe' | 'none';
+
+export type ServicePriority = 'High' | 'Low' | 'None';
+
+export interface ServiceRecommendation {
+  name: 'Supplement' | 'Therapy' | 'Guided Audio';
+  priority: ServicePriority;
+  title: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+  href: string;
+  icon: string;
+}
 
 export interface AssessmentResult {
   scores: {
-    onset: number;
-    quality: number;
-    anxiety: number;
+    B: number;
+    R: number;
+    G: number;
   };
-  category: SleepCategory;
+  segment: SleepSegment;
+  status: string;
+  severityLevel: SeverityLevel;
   headline: string;
   insight: string;
   reassurance: string;
   actionFraming: string;
+  services: ServiceRecommendation[];
 }
 
-const CATEGORY_CONTENT: Record<SleepCategory, Omit<AssessmentResult, 'scores' | 'category'>> = {
+// ─── Status Labels ───
+const STATUS_LABELS: Record<SleepSegment, string> = {
+  ONSET_ONLY: 'Mild Sleep Issues Detected',
+  QUALITY_ONLY: 'Mild Sleep Issues Detected',
+  ANXIETY_ONLY: 'Mild Sleep Issues Detected',
+  QUALITY_ONSET: 'Moderate Sleep Issues Detected',
+  ONSET_ANXIETY: 'Moderate Sleep Issues Detected',
+  QUALITY_ANXIETY: 'Moderate Sleep Issues Detected',
+  ALL_THREE: 'Severe Sleep Issues Detected',
+  NO_DOMAIN: 'No Major Sleep Issues Detected',
+};
+
+const SEVERITY_LEVELS: Record<SleepSegment, SeverityLevel> = {
+  ONSET_ONLY: 'mild',
+  QUALITY_ONLY: 'mild',
+  ANXIETY_ONLY: 'mild',
+  QUALITY_ONSET: 'moderate',
+  ONSET_ANXIETY: 'moderate',
+  QUALITY_ANXIETY: 'moderate',
+  ALL_THREE: 'severe',
+  NO_DOMAIN: 'none',
+};
+
+// ─── Dynamic Text per Segment ───
+const SEGMENT_CONTENT: Record<
+  SleepSegment,
+  {
+    headline: string;
+    insight: string;
+    reassurance: string;
+    actionFraming: string;
+  }
+> = {
   ONSET_ONLY: {
     headline: 'Falling asleep might be taking longer than it should',
     insight: 'You are probably able to sleep through the night, but getting there might take some time',
     reassurance: 'This is quite common and usually responds well to small changes',
-    actionFraming: 'We’ll help you ease into sleep more naturally',
+    actionFraming: "We'll help you ease into sleep more naturally",
   },
   QUALITY_ONLY: {
     headline: 'Your sleep may not feel as restorative as it could be',
     insight: 'You are maybe falling asleep without much trouble, but the depth or continuity of sleep might be lacking',
-    reassurance: 'Improving sleep quality often doesn’t require more time in bed, just better cycles',
-    actionFraming: 'We’ll help you wake up feeling more refreshed and recovered',
+    reassurance: "Improving sleep quality often doesn't require more time in bed, just better cycles",
+    actionFraming: "We'll help you wake up feeling more refreshed and recovered",
   },
   ANXIETY_ONLY: {
     headline: 'Your mind might be staying a little active at night',
     insight: 'There could be some level of stress or overthinking that shows up around bedtime',
-    reassurance: 'This doesn’t mean something is wrong, it just means your system hasn’t fully unwound yet',
-    actionFraming: 'We’ll help you settle your mind and ease into rest',
+    reassurance: "This doesn't mean something is wrong, it just means your system hasn't fully unwound yet",
+    actionFraming: "We'll help you settle your mind and ease into rest",
   },
   QUALITY_ONSET: {
     headline: 'Both falling asleep and staying in deep sleep might need support',
     insight: 'It seems like it takes time to fall asleep, and the sleep itself may not feel fully restorative',
     reassurance: 'When both are addressed together, improvements tend to compound quickly',
-    actionFraming: 'We’ll help you transition into sleep smoothly and improve its depth',
+    actionFraming: "We'll help you transition into sleep smoothly and improve its depth",
   },
   ONSET_ANXIETY: {
     headline: 'A busy mind might be delaying your sleep',
     insight: 'You may notice thoughts or restlessness that makes it harder to drift off',
     reassurance: 'This pattern is quite responsive to calming and grounding routines',
-    actionFraming: 'We’ll help you slow things down and fall asleep with less effort',
+    actionFraming: "We'll help you slow things down and fall asleep with less effort",
   },
   QUALITY_ANXIETY: {
     headline: 'Stress might be affecting how deeply you sleep',
     insight: 'Even if you fall asleep, your system may not fully switch into deeper, restorative states',
     reassurance: 'As your mind relaxes, sleep quality often improves alongside it',
-    actionFraming: 'We’ll help you unwind more deeply and improve recovery during sleep',
+    actionFraming: "We'll help you unwind more deeply and improve recovery during sleep",
   },
   ALL_THREE: {
     headline: 'Your sleep might feel a bit off across multiple areas',
     insight: 'Falling asleep, staying asleep, and mental calmness may all be interacting here',
-    reassurance: 'This can feel layered, but it also means there’s room for meaningful improvement',
-    actionFraming: 'We’ll guide you through a more complete reset of your sleep patterns',
+    reassurance: "This can feel layered, but it also means there's room for meaningful improvement",
+    actionFraming: "We'll guide you through a more complete reset of your sleep patterns",
   },
-  HEALTHY: {
+  NO_DOMAIN: {
     headline: 'Your sleep seems to be in a fairly good place',
     insight: 'There are no strong signs of disruption based on your responses',
     reassurance: 'Maintaining this is just as important as fixing issues',
-    actionFraming: 'We’ll help you protect and further optimize your sleep',
+    actionFraming: "We'll help you protect and further optimize your sleep",
   },
 };
 
+// ─── Service Definitions ───
+const SERVICE_DEFS: Record<'Supplement' | 'Therapy' | 'Guided Audio', Omit<ServiceRecommendation, 'priority'>> = {
+  Supplement: {
+    name: 'Supplement',
+    title: 'Sleep Elixir',
+    description: 'Fast-absorbing formula for deep, restorative sleep.',
+    primaryCta: 'Buy Now',
+    secondaryCta: 'Add to Cart',
+    href: '/supplements',
+    icon: 'solar:pill-bold',
+  },
+  Therapy: {
+    name: 'Therapy',
+    title: 'Therapy Corner',
+    description: 'One-on-one support to address the root of your sleep patterns.',
+    primaryCta: 'Book Session',
+    secondaryCta: 'Add to Cart',
+    href: '/therapy-corner',
+    icon: 'solar:user-speak-bold',
+  },
+  'Guided Audio': {
+    name: 'Guided Audio',
+    title: 'Deep Rest',
+    description: 'Guided audio sessions tailored to help you unwind and fall asleep.',
+    primaryCta: 'Start Listening',
+    secondaryCta: 'Add to Cart',
+    href: '/deep-rest',
+    icon: 'solar:headphones-round-bold',
+  },
+};
+
+function makeService(
+  name: 'Supplement' | 'Therapy' | 'Guided Audio',
+  priority: ServicePriority,
+): ServiceRecommendation {
+  return { ...SERVICE_DEFS[name], priority };
+}
+
+// ─── Service Recommendation per Segment (order matters: left to right) ───
+const SEGMENT_SERVICES: Record<SleepSegment, ServiceRecommendation[]> = {
+  QUALITY_ONLY: [makeService('Supplement', 'High'), makeService('Therapy', 'High'), makeService('Guided Audio', 'Low')],
+  ONSET_ONLY: [makeService('Supplement', 'High'), makeService('Guided Audio', 'High'), makeService('Therapy', 'Low')],
+  ANXIETY_ONLY: [makeService('Therapy', 'High'), makeService('Guided Audio', 'High'), makeService('Supplement', 'Low')],
+  QUALITY_ONSET: [
+    makeService('Supplement', 'High'),
+    makeService('Guided Audio', 'High'),
+    makeService('Therapy', 'Low'),
+  ],
+  ONSET_ANXIETY: [
+    makeService('Therapy', 'High'),
+    makeService('Supplement', 'High'),
+    makeService('Guided Audio', 'Low'),
+  ],
+  QUALITY_ANXIETY: [
+    makeService('Supplement', 'High'),
+    makeService('Therapy', 'High'),
+    makeService('Guided Audio', 'Low'),
+  ],
+  ALL_THREE: [makeService('Supplement', 'High'), makeService('Therapy', 'High'), makeService('Guided Audio', 'High')],
+  NO_DOMAIN: [makeService('Supplement', 'None'), makeService('Therapy', 'None'), makeService('Guided Audio', 'None')],
+};
+
+// ─── Main Calculation ───
 export function calculateSleepAssessment(answers: AssessmentAnswers): AssessmentResult {
   const { q3, q4, q5, q6, q7, q8, q9, q10, q11 } = answers;
 
-  // 1. Scoring Domains & Questions
-  // Evaluate the user's sleep based on three domains using questions Q3 to Q11.
-  // The options for each question are sorted from least severe (Index 0 = score 0) to most severe (Index 3 or 4).
-  let bScore = q3 + q9 + q10; // Sleep Onset (B)
-  let rScore = q4 + q6 + q8; // Sleep Quality (R)
-  let gScore = q5 + q7; // Anxiety/Stress (G)
+  // Step 1 — Base domain scores
+  let B = q3 + q9 + q10; // Sleep Onset
+  let R = q4 + q6 + q8; // Sleep Quality
+  let G = q5 + q7; // Anxiety/Stress
 
-  // Adjustment logic for Q11
-  if (q11.includes('A')) bScore += 1;
-  if (q11.includes('C') || q11.includes('D')) rScore += 1;
-  if (q11.includes('B')) gScore += 1;
+  // Step 2 — Q11 adjustment (each selected option adds +1 to its domain)
+  if (q11.includes('A')) B += 1;
+  if (q11.includes('B')) G += 1;
+  if (q11.includes('C')) R += 1;
+  if (q11.includes('D')) R += 1;
 
-  // 2. Edge Cases (Strict Priority)
-  const totalScore = bScore + rScore + gScore;
+  // Step 3 — Segment classification (sequential if-else, first match wins)
+  let segment: SleepSegment;
 
-  // Edge Case 1: R + B + G = 1
-  const isEC1 = totalScore === 1;
-  // Edge Case 2: R + B + G = 2 (where R, B, and G are individually NOT 2)
-  const isEC2 = totalScore === 2 && bScore < 2 && rScore < 2 && gScore < 2;
-  // Edge Case 3: R = 1, B = 1, and G = 1
-  const isEC3 = bScore === 1 && rScore === 1 && gScore === 1;
-
-  // If any edge cases are met, status is "No major sleep issues detected" (HEALTHY)
-  // Also implicitly, if all scores are < 2, it's a healthy case.
-  if (isEC1 || isEC2 || isEC3 || (bScore < 2 && rScore < 2 && gScore < 2)) {
-    return {
-      scores: { onset: bScore, quality: rScore, anxiety: gScore },
-      category: 'HEALTHY',
-      ...CATEGORY_CONTENT.HEALTHY,
-    };
-  }
-
-  // 3. Domain Logic & Dynamic Text
-  const isOnset = bScore >= 2;
-  const isQuality = rScore >= 2;
-  const isAnxiety = gScore >= 2;
-
-  let category: SleepCategory;
-
-  if (isOnset && isQuality && isAnxiety) {
-    category = 'ALL_THREE';
-  } else if (isQuality && isOnset) {
-    category = 'QUALITY_ONSET';
-  } else if (isOnset && isAnxiety) {
-    category = 'ONSET_ANXIETY';
-  } else if (isQuality && isAnxiety) {
-    category = 'QUALITY_ANXIETY';
-  } else if (isOnset) {
-    category = 'ONSET_ONLY';
-  } else if (isQuality) {
-    category = 'QUALITY_ONLY';
-  } else if (isAnxiety) {
-    category = 'ANXIETY_ONLY';
+  if (R >= DOMAIN_THRESHOLD && B >= DOMAIN_THRESHOLD && G >= DOMAIN_THRESHOLD) {
+    segment = 'ALL_THREE';
+  } else if (R >= DOMAIN_THRESHOLD && B >= DOMAIN_THRESHOLD) {
+    segment = 'QUALITY_ONSET';
+  } else if (B >= DOMAIN_THRESHOLD && G >= DOMAIN_THRESHOLD) {
+    segment = 'ONSET_ANXIETY';
+  } else if (R >= DOMAIN_THRESHOLD && G >= DOMAIN_THRESHOLD) {
+    segment = 'QUALITY_ANXIETY';
+  } else if (R >= DOMAIN_THRESHOLD) {
+    segment = 'QUALITY_ONLY';
+  } else if (B >= DOMAIN_THRESHOLD) {
+    segment = 'ONSET_ONLY';
+  } else if (G >= DOMAIN_THRESHOLD) {
+    segment = 'ANXIETY_ONLY';
   } else {
-    // Fallback (redundant due to EC check above)
-    category = 'HEALTHY';
+    segment = 'NO_DOMAIN';
   }
 
   return {
-    scores: { onset: bScore, quality: rScore, anxiety: gScore },
-    category,
-    ...CATEGORY_CONTENT[category],
+    scores: { B, R, G },
+    segment,
+    status: STATUS_LABELS[segment],
+    severityLevel: SEVERITY_LEVELS[segment],
+    ...SEGMENT_CONTENT[segment],
+    services: SEGMENT_SERVICES[segment],
   };
 }

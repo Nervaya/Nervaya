@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import Order from '@/lib/models/order.model';
 import Cart from '@/lib/models/cart.model';
+import Supplement from '@/lib/models/supplement.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import Session from '@/lib/models/session.model';
 import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service';
@@ -10,6 +11,7 @@ import { handleError, ValidationError } from '@/lib/utils/error.util';
 import mongoose, { Types } from 'mongoose';
 import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY, ITEM_TYPE } from '@/lib/constants/enums';
 import { getRazorpayInstance } from '@/lib/utils/razorpay.util';
+import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
 
 export interface RazorpayOrderResponse {
   id: string;
@@ -105,13 +107,13 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
       throw new ValidationError('Razorpay order ID not found');
     }
 
-    const webhookSecret = process.env.RAZORPAY_KEY_SECRET || '';
-    if (!webhookSecret) {
-      throw new Error('RAZORPAY Secret Credential is not defined');
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || '';
+    if (!keySecret) {
+      throw new Error('RAZORPAY_KEY_SECRET is not defined');
     }
 
     const text = `${order.razorpayOrderId}|${paymentId}`;
-    const generatedSignature = crypto.createHmac('sha256', webhookSecret).update(text).digest('hex');
+    const generatedSignature = crypto.createHmac('sha256', keySecret).update(text).digest('hex');
 
     if (generatedSignature !== razorpaySignature) {
       throw new ValidationError('Invalid payment signature');
@@ -124,7 +126,21 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
         if (!currentOrder) throw new ValidationError('Order not found');
 
         if (currentOrder.paymentStatus === PAYMENT_STATUS.PAID) {
-          return; // Already processed
+          return; // Already processed (idempotent)
+        }
+
+        // Deduct stock atomically for supplements now that payment is confirmed
+        for (const item of currentOrder.items) {
+          if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
+            const result = await Supplement.findOneAndUpdate(
+              { _id: item.itemId, stock: { $gte: item.quantity } },
+              { $inc: { stock: -item.quantity } },
+              { new: true, session },
+            );
+            if (!result) {
+              throw new ValidationError(`Insufficient stock for ${item.name}. Payment will be refunded.`);
+            }
+          }
         }
 
         await Order.findByIdAndUpdate(orderId, {
@@ -136,9 +152,14 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
         // Clear the user's cart now that payment is confirmed
         await Cart.findOneAndUpdate({ userId: currentOrder.userId }, { items: [] }).session(session);
 
+        // Increment promo code usage after payment success
+        if (currentOrder.promoCode) {
+          const promo = await getPromoCodeByCode(currentOrder.promoCode);
+          if (promo) await incrementUsage(promo._id.toString());
+        }
+
         for (const item of currentOrder.items) {
           if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
-            // Check if DriftOffOrders already created for this Razorpay Order ID to avoid duplicates
             const existingCount = await DriftOffOrder.countDocuments({
               razorpayOrderId: currentOrder.razorpayOrderId,
             }).session(session);
@@ -194,6 +215,20 @@ export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: s
         if (event === 'payment.captured' || event === 'payment.authorized') {
           if (order.paymentStatus === PAYMENT_STATUS.PAID) return;
 
+          // Deduct stock atomically for supplements
+          for (const item of order.items) {
+            if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
+              const result = await Supplement.findOneAndUpdate(
+                { _id: item.itemId, stock: { $gte: item.quantity } },
+                { $inc: { stock: -item.quantity } },
+                { new: true, session },
+              );
+              if (!result) {
+                throw new ValidationError(`Insufficient stock for ${item.name}`);
+              }
+            }
+          }
+
           await Order.findByIdAndUpdate(order._id, {
             paymentId,
             paymentStatus: PAYMENT_STATUS.PAID,
@@ -202,6 +237,12 @@ export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: s
 
           // Clear the user's cart now that payment is confirmed
           await Cart.findOneAndUpdate({ userId: order.userId }, { items: [] }).session(session);
+
+          // Increment promo code usage after payment success
+          if (order.promoCode) {
+            const promo = await getPromoCodeByCode(order.promoCode);
+            if (promo) await incrementUsage(promo._id.toString());
+          }
 
           for (const item of order.items) {
             if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
@@ -236,6 +277,7 @@ export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: s
         } else if (event === 'payment.failed') {
           await Order.findByIdAndUpdate(order._id, {
             paymentStatus: PAYMENT_STATUS.FAILED,
+            orderStatus: ORDER_STATUS.CANCELLED,
           }).session(session);
         }
       });

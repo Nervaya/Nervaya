@@ -78,6 +78,16 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Validate date format (YYYY-MM-DD)
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date).getTime())) {
+      return NextResponse.json(errorResponse('Invalid date format. Expected YYYY-MM-DD', null, 400), { status: 400 });
+    }
+
+    // Validate time format (e.g. "9:00 AM", "12:00 PM")
+    if (typeof startTime !== 'string' || !/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(startTime)) {
+      return NextResponse.json(errorResponse('Invalid time format. Expected "H:MM AM/PM"', null, 400), { status: 400 });
+    }
+
     const session = await createSession(authResult.user.userId, therapistId, date, startTime);
 
     return NextResponse.json(successResponse('Session booked successfully', session, 201), { status: 201 });

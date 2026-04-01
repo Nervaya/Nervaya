@@ -1,9 +1,11 @@
 import TherapistSchedule, { ITimeSlot } from '@/lib/models/therapistSchedule.model';
 import Therapist from '@/lib/models/therapist.model';
+import Session from '@/lib/models/session.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { formatDate, timeToMinutes, minutesToTime, generateTimeSlotsBetween } from '@/lib/utils/scheduleTime.util';
 import { Types } from 'mongoose';
+import { SESSION_STATUS } from '@/lib/constants/enums';
 
 export async function generateSlotsFromConsultingHours(
   therapistId: string,
@@ -63,23 +65,41 @@ export async function generateSlotsFromConsultingHours(
 
     if (schedules.length > 0) {
       const dateStrings = schedules.map((s) => s.date);
-      await TherapistSchedule.deleteMany({
+
+      // Find active sessions for these dates to preserve booked slots
+      const activeSessions = await Session.find({
         therapistId: new Types.ObjectId(therapistId),
         date: { $in: dateStrings },
-      });
-      const bulkOps = schedules.map((schedule) => ({
-        updateOne: {
-          filter: { therapistId: schedule.therapistId, date: schedule.date },
-          update: {
-            $set: {
-              therapistId: schedule.therapistId,
-              date: schedule.date,
-              slots: schedule.slots,
+        status: { $nin: [SESSION_STATUS.CANCELLED] },
+      }).lean();
+
+      const bookedSlotKeys = new Set(activeSessions.map((s) => `${s.date}|${s.startTime}`));
+
+      const bulkOps = schedules.map((schedule) => {
+        // Merge new slots with preserved booked slots
+        const mergedSlots = schedule.slots.map((slot) => {
+          const key = `${schedule.date}|${slot.startTime}`;
+          if (bookedSlotKeys.has(key)) {
+            return { ...slot, isAvailable: false };
+          }
+          return slot;
+        });
+
+        return {
+          updateOne: {
+            filter: { therapistId: schedule.therapistId, date: schedule.date },
+            update: {
+              $set: {
+                therapistId: schedule.therapistId,
+                date: schedule.date,
+                slots: mergedSlots,
+              },
             },
+            upsert: true,
           },
-          upsert: true,
-        },
-      }));
+        };
+      });
+
       if (bulkOps.length > 0) {
         const result = await TherapistSchedule.bulkWrite(bulkOps);
         return {

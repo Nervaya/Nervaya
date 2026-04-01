@@ -15,7 +15,6 @@ import {
   ITEM_TYPE,
   type ItemType,
 } from '@/lib/constants/enums';
-import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
 import { getShippingCost } from '@/utils/shipping.util';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 
@@ -60,12 +59,9 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
           itemId: supplement._id,
           name: supplement.name,
           quantity: cartItem.quantity,
-          price: cartItem.price,
+          price: supplement.price,
           image: supplement.image,
         });
-
-        supplement.stock -= cartItem.quantity;
-        await supplement.save();
       } else {
         if (cartItem.itemType === ITEM_TYPE.THERAPY) {
           if (!Types.ObjectId.isValid(cartItem.itemId)) {
@@ -106,7 +102,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       }
     }
 
-    const subtotal = cart.totalAmount;
+    const subtotal = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const isDigitalOnly = cart.items.every(
       (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
     );
@@ -124,12 +120,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       ...(deliveryMethod && { deliveryMethod }),
     });
 
-    if (promoCode) {
-      const promo = await getPromoCodeByCode(promoCode);
-      if (promo) await incrementUsage(promo._id.toString());
-    }
-
-    // [MOVED] clearCart is now handled in payment.service.ts AFTER successful payment verification
+    // Promo usage is incremented in payment.service.ts AFTER successful payment verification
     // to ensure items stay in cart if payment is cancelled or fails.
     // await clearCart(userId);
 
@@ -173,9 +164,6 @@ export async function createDirectOrder(userId: string, params: DirectOrderParam
       finalPrice = supplement.price;
       finalName = supplement.name;
       resolvedImage = supplement.image || '';
-
-      supplement.stock -= params.quantity;
-      await supplement.save();
     } else if (params.itemType === ITEM_TYPE.DRIFT_OFF) {
       if (!finalPrice || finalPrice <= 0) throw new ValidationError('Price is required for Deep Rest items');
       if (!finalName) finalName = 'Deep Rest Session';

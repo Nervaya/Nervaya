@@ -360,7 +360,7 @@ export function trackFeedbackSubmitted(params: FeedbackParams): void {
 // 26. sleep_score_generated
 export interface SleepScoreParams {
   sleep_score: number;
-  score_band: 'mild' | 'moderate' | 'severe';
+  score_band: 'mild' | 'moderate' | 'severe' | 'none';
   assessment_version: string;
   [key: string]: unknown;
 }

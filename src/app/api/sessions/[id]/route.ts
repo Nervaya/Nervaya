@@ -11,7 +11,7 @@ interface RouteParams {
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
-    const authResult = await requireAuth(req, [ROLES.CUSTOMER, ROLES.ADMIN]);
+    const authResult = await requireAuth(req, [ROLES.CUSTOMER, ROLES.ADMIN, ROLES.THERAPIST]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -19,6 +19,16 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
     const { id } = await params;
     const session = await getSessionById(id);
+
+    // Ownership check: customers can only view their own sessions
+    if (authResult.user.role === ROLES.CUSTOMER && session.userId.toString() !== authResult.user.userId) {
+      return NextResponse.json(errorResponse('Not authorized to view this session', null, 403), { status: 403 });
+    }
+
+    // Therapists can only view sessions assigned to them
+    if (authResult.user.role === ROLES.THERAPIST && session.therapistId.toString() !== authResult.user.userId) {
+      return NextResponse.json(errorResponse('Not authorized to view this session', null, 403), { status: 403 });
+    }
 
     return NextResponse.json(successResponse('Session fetched successfully', session));
   } catch (error) {
@@ -31,7 +41,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
   try {
-    const authResult = await requireAuth(req, [ROLES.CUSTOMER, ROLES.ADMIN]);
+    const authResult = await requireAuth(req, [ROLES.CUSTOMER, ROLES.ADMIN, ROLES.THERAPIST]);
 
     if (authResult instanceof NextResponse) {
       return authResult;
@@ -40,9 +50,29 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const body = await req.json();
 
-    if (body.status === 'cancelled') {
+    // Customers can only cancel their own sessions
+    if (authResult.user.role === ROLES.CUSTOMER) {
+      if (body.status !== 'cancelled') {
+        return NextResponse.json(errorResponse('Customers can only cancel sessions', null, 403), { status: 403 });
+      }
       const session = await cancelSession(id, authResult.user.userId);
       return NextResponse.json(successResponse('Session cancelled successfully', session));
+    }
+
+    // Only admin and therapist can update status to other values
+    if (body.status === 'cancelled') {
+      // Admin/therapist can cancel any session — use admin path
+      const session = await updateSessionStatus(id, body.status);
+      return NextResponse.json(successResponse('Session cancelled successfully', session));
+    }
+
+    // Validate state transitions: only confirmed and completed are allowed targets
+    const allowedStatuses = ['confirmed', 'completed'];
+    if (!allowedStatuses.includes(body.status)) {
+      return NextResponse.json(
+        errorResponse(`Invalid status transition. Allowed: ${allowedStatuses.join(', ')}`, null, 400),
+        { status: 400 },
+      );
     }
 
     const session = await updateSessionStatus(id, body.status);

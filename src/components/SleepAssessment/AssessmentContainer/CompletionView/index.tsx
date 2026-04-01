@@ -1,11 +1,17 @@
 'use client';
 
-import { useMemo } from 'react';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import { useMemo, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import type { ISleepAssessmentResponse, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
-import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
-import { calculateSleepAssessment, type AssessmentAnswers } from '@/utils/sleepAssessment';
+import { calculateSleepAssessment, type SleepSegment, type ServiceRecommendation } from '@/utils/sleepAssessment';
+import { cartApi } from '@/lib/api/cart';
+import { ITEM_TYPE } from '@/lib/constants/enums';
+import { DRIFT_OFF_SESSION_PRICE, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
+import { useCart } from '@/context/CartContext';
+import { StatusBanner } from './StatusBanner';
+import { InsightBlock } from './InsightBlock';
+import { ServiceCard } from './ServiceCard';
+import { HealthyExplore } from './HealthyExplore';
 import styles from './styles.module.css';
 
 interface CompletionViewProps {
@@ -13,9 +19,22 @@ interface CompletionViewProps {
   questions?: ISleepAssessmentQuestion[];
 }
 
-export function CompletionView({ completedResponse = null, questions = [] }: CompletionViewProps) {
-  // Use useMemo to avoid recalculating on every render
-  const resultData = useMemo(() => {
+const SEGMENT_DISPLAY: Record<SleepSegment, { label: string; dotColor: string; reason: string }> = {
+  QUALITY_ONLY: { label: 'QUALITY ONLY', dotColor: '#ef4444', reason: 'Sleep Quality' },
+  ONSET_ONLY: { label: 'ONSET ONLY', dotColor: '#3b82f6', reason: 'Sleep Onset' },
+  ANXIETY_ONLY: { label: 'ANXIETY ONLY', dotColor: '#22c55e', reason: 'Anxiety / Stress' },
+  QUALITY_ONSET: { label: 'QUALITY + ONSET', dotColor: '#6366f1', reason: 'Quality & Onset' },
+  ONSET_ANXIETY: { label: 'ONSET + ANXIETY', dotColor: '#22c55e', reason: 'Onset & Anxiety' },
+  QUALITY_ANXIETY: { label: 'QUALITY + ANXIETY', dotColor: '#f59e0b', reason: 'Quality & Anxiety' },
+  ALL_THREE: { label: 'ALL THREE DOMAINS', dotColor: '#8b5cf6', reason: 'Overall Sleep Health' },
+  NO_DOMAIN: { label: 'HEALTHY', dotColor: '#10b981', reason: '' },
+};
+
+function useAssessmentResult(
+  completedResponse: ISleepAssessmentResponse | null,
+  questions: ISleepAssessmentQuestion[],
+) {
+  return useMemo(() => {
     if (!completedResponse?.answers || questions.length === 0) return null;
 
     const answersMap = new Map<number, string | string[]>();
@@ -27,7 +46,7 @@ export function CompletionView({ completedResponse = null, questions = [] }: Com
       if (q) answersMap.set(q.order, a.answer);
     });
 
-    const getIdx = (order: number) => {
+    const getIdx = (order: number): number => {
       const q = questionsByOrder.get(order);
       const a = answersMap.get(order);
       if (!q || a === undefined || Array.isArray(a)) return 0;
@@ -35,19 +54,20 @@ export function CompletionView({ completedResponse = null, questions = [] }: Com
       return idx >= 0 ? idx : 0;
     };
 
-    const getQ11 = () => {
+    const getQ11 = (): string[] => {
       const q = questionsByOrder.get(11);
       const a = answersMap.get(11);
-      if (!q || !a || !Array.isArray(a)) return [];
-      return a
+      if (!q || !a) return [];
+      const values = Array.isArray(a) ? a : [a];
+      return values
         .map((val) => {
           const idx = q.options.findIndex((opt) => opt.value === val || opt.label === val);
-          return String.fromCharCode(65 + idx); // 0 -> A, 1 -> B, etc.
+          return idx >= 0 ? String.fromCharCode(65 + idx) : '';
         })
-        .filter((val) => ['A', 'B', 'C', 'D'].includes(val));
+        .filter((letter) => ['A', 'B', 'C', 'D'].includes(letter));
     };
 
-    const assessmentAnswers: AssessmentAnswers = {
+    return calculateSleepAssessment({
       q3: getIdx(3),
       q4: getIdx(4),
       q5: getIdx(5),
@@ -57,111 +77,88 @@ export function CompletionView({ completedResponse = null, questions = [] }: Com
       q9: getIdx(9),
       q10: getIdx(10),
       q11: getQ11(),
-    };
-
-    return calculateSleepAssessment(assessmentAnswers);
+    });
   }, [completedResponse, questions]);
+}
 
-  const scoreLabel = getSleepScoreLabel(completedResponse);
+export function CompletionView({ completedResponse = null, questions = [] }: CompletionViewProps) {
+  const router = useRouter();
+  const { refreshCart } = useCart();
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const resultData = useAssessmentResult(completedResponse, questions);
 
-  const domains = [
-    {
-      label: 'Sleep Onset',
-      score: resultData?.scores.onset ?? 0,
-      color: '#3b82f6', // Blue
-      icon: 'solar:moon-sleep-bold',
-      active: (resultData?.scores.onset ?? 0) >= 2,
+  const handleAddToCart = useCallback(
+    async (svc: ServiceRecommendation) => {
+      setAddingToCart(svc.name);
+      try {
+        if (svc.name === 'Guided Audio') {
+          await cartApi.add(
+            'drift-off-session',
+            1,
+            ITEM_TYPE.DRIFT_OFF,
+            'Deep Rest Session',
+            DRIFT_OFF_SESSION_PRICE,
+            DRIFT_OFF_SESSION_IMAGE,
+          );
+          await refreshCart();
+          router.push('/checkout');
+        } else if (svc.name === 'Supplement') {
+          router.push('/supplements');
+        } else if (svc.name === 'Therapy') {
+          router.push('/therapy-corner');
+        }
+      } catch {
+        // User will see the navigated page
+      } finally {
+        setAddingToCart(null);
+      }
     },
-    {
-      label: 'Sleep Quality',
-      score: resultData?.scores.quality ?? 0,
-      color: '#ef4444', // Red
-      icon: 'solar:star-fall-minimalistic-bold',
-      active: (resultData?.scores.quality ?? 0) >= 2,
-    },
-    {
-      label: 'Mental Calm',
-      score: resultData?.scores.anxiety ?? 0,
-      color: '#10b981', // Green
-      icon: 'solar:wind-bold',
-      active: (resultData?.scores.anxiety ?? 0) >= 2,
-    },
-  ];
+    [refreshCart, router],
+  );
 
   if (!resultData) {
     return (
-      <div className={styles.loadingContainer}>
+      <div className={styles.loading}>
         <p>Analyzing your sleep patterns...</p>
       </div>
     );
   }
 
+  const seg = SEGMENT_DISPLAY[resultData.segment];
+  const isHealthy = resultData.segment === 'NO_DOMAIN';
+
   return (
-    <div className={styles.resultsContainer}>
-      <header className={styles.resultHeader}>
-        <div className={styles.categoryBadge}>{scoreLabel}</div>
-        <h1 className={styles.headline}>{resultData.headline}</h1>
-        <p className={styles.insight}>{resultData.insight}</p>
-      </header>
+    <div className={styles.page}>
+      <StatusBanner status={resultData.status} severityLevel={resultData.severityLevel} />
 
-      <section className={styles.domainSection}>
-        <h2 className={styles.sectionTitle}>Sleep Analysis Domains</h2>
-        <div className={styles.domainGrid}>
-          {domains.map((domain) => (
-            <div
-              key={domain.label}
-              className={`${styles.domainCard} ${domain.active ? styles.activeDomain : ''}`}
-              style={{ '--domain-color': domain.color } as React.CSSProperties}
-            >
-              <div className={styles.domainIcon}>
-                <Icon icon={domain.icon} />
-              </div>
-              <div className={styles.domainInfo}>
-                <h3 className={styles.domainLabel}>{domain.label}</h3>
-                <div className={styles.scoreWrapper}>
-                  <div className={styles.scoreBar}>
-                    <div
-                      className={styles.scoreFill}
-                      style={{ width: `${Math.min((domain.score / 6) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                  <span className={styles.scoreText}>Score: {domain.score}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <InsightBlock
+        segmentLabel={seg.label}
+        dotColor={seg.dotColor}
+        headline={resultData.headline}
+        insight={resultData.insight}
+        reassurance={resultData.reassurance}
+        actionFraming={resultData.actionFraming}
+      />
 
-      <div className={styles.guidanceGrid}>
-        <section className={styles.guidanceCard}>
-          <div className={`${styles.iconCircle} ${styles.reassuranceIcon}`}>
-            <Icon icon="solar:heart-bold" />
-          </div>
-          <h3 className={styles.guidanceTitle}>Our Perspective</h3>
-          <p className={styles.guidanceText}>{resultData.reassurance}</p>
+      {isHealthy ? (
+        <HealthyExplore services={resultData.services} />
+      ) : (
+        <section className={styles.cardsWrap}>
+          <h2 className={styles.cardsHeading}>Recommended for You</h2>
+          <ul className={styles.cardGrid} aria-label="Service recommendations">
+            {resultData.services.map((svc) => (
+              <ServiceCard
+                key={svc.name}
+                service={svc}
+                reason={seg.reason}
+                dotColor={seg.dotColor}
+                isAdding={addingToCart === svc.name}
+                onAddToCart={() => handleAddToCart(svc)}
+              />
+            ))}
+          </ul>
         </section>
-
-        <section className={styles.guidanceCard}>
-          <div className={`${styles.iconCircle} ${styles.actionIcon}`}>
-            <Icon icon="solar:globus-bold" />
-          </div>
-          <h3 className={styles.guidanceTitle}>The Path Forward</h3>
-          <p className={styles.guidanceText}>{resultData.actionFraming}</p>
-        </section>
-      </div>
-
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaTitle}>Ready to improve your sleep?</h2>
-        <div className={styles.ctaButtons}>
-          <Link href="/deep-rest" className={styles.primaryCta}>
-            Explore Deep Rest
-          </Link>
-          <Link href="/therapy-corner" className={styles.secondaryCta}>
-            Supportive Counselling
-          </Link>
-        </div>
-      </section>
+      )}
     </div>
   );
 }

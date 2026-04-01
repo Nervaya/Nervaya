@@ -414,23 +414,29 @@ export async function completeAssessment(userId: string): Promise<ISleepAssessme
       throw new ValidationError('Invalid User ID');
     }
 
-    await assertAssessmentNotCompleted(userId);
-
-    const assessment = await SleepAssessmentResponse.findOne({
-      userId: new Types.ObjectId(userId),
-      completedAt: null,
-    }).sort({ updatedAt: -1 });
+    // Atomic: find an in-progress assessment and mark it completed in one operation
+    // This prevents race conditions where two requests both pass the check
+    const assessment = await SleepAssessmentResponse.findOneAndUpdate(
+      {
+        userId: new Types.ObjectId(userId),
+        completedAt: null,
+        'answers.0': { $exists: true }, // Must have at least one answer
+      },
+      { $set: { completedAt: new Date() } },
+      { new: true, sort: { updatedAt: -1 } },
+    );
 
     if (!assessment) {
-      throw new NotFoundError('No in-progress assessment found for this user');
+      // Distinguish between "already completed" and "no assessment found"
+      const hasCompleted = await hasCompletedAssessment(userId);
+      if (hasCompleted) {
+        throw new ValidationError('Sleep assessment has already been completed.');
+      }
+      throw new NotFoundError('No in-progress assessment with answers found for this user');
     }
 
-    if (!assessment.answers || assessment.answers.length === 0) {
-      throw new ValidationError('At least one answer is required to complete the assessment');
-    }
-
+    // Build result after atomic completion
     assessment.result = await buildResultFromAnswers(assessment.answers as PersistedAnswer[]);
-    assessment.completedAt = new Date();
     await assessment.save();
 
     return (await hydrateAssessment(castHydratableAssessment(assessment.toObject()))) as ISleepAssessmentResponse;
