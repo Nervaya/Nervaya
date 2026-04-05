@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import NextImage from 'next/image';
 import { SupplementFormData } from '@/types/supplement.types';
 import { Input, Button } from '@/components/common';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import { Icon } from '@iconify/react';
-import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA } from '@/constants/icons';
+import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA, ICON_INFO } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface SupplementFormProps {
@@ -34,8 +35,6 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     shortDescription: initialData?.shortDescription || '',
     suggestedUse: initialData?.suggestedUse || '',
     images: initialData?.images || [],
-    capsuleCount: initialData?.capsuleCount,
-    unitLabel: initialData?.unitLabel || '',
   });
 
   const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
@@ -66,7 +65,16 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     }
 
     if (formData.originalPrice != null && formData.originalPrice > 0 && formData.originalPrice < formData.price) {
-      newErrors.originalPrice = 'Original price must be greater than or equal to price';
+      newErrors.originalPrice = 'Original price must exceed selling price';
+    }
+
+    const imageExtRegex = /\.(jpg|jpeg|png|webp|avif)$/i;
+    if (
+      formData.image &&
+      !imageExtRegex.test(formData.image) &&
+      !formData.image.startsWith('https://res.cloudinary.com')
+    ) {
+      newErrors.image = 'Invalid image URL or extension';
     }
 
     setErrors(newErrors);
@@ -96,8 +104,6 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         .filter(Boolean),
       images: galleryUrls.length > 0 ? galleryUrls : undefined,
       originalPrice: formData.originalPrice != null && formData.originalPrice > 0 ? formData.originalPrice : undefined,
-      capsuleCount: formData.capsuleCount != null && formData.capsuleCount > 0 ? formData.capsuleCount : undefined,
-      unitLabel: formData.unitLabel?.trim() || undefined,
       shortDescription: formData.shortDescription?.trim() || undefined,
       suggestedUse: formData.suggestedUse?.trim() || undefined,
     };
@@ -126,7 +132,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           </div>
           <div>
             <h3 className={styles.sectionTitle}>Basic Information</h3>
-            <p className={styles.sectionSubtitle}>Product name and description</p>
+            <p className={styles.sectionSubtitle}>Define the core identity of this supplement</p>
           </div>
         </div>
         <div className={styles.formGrid}>
@@ -136,16 +142,33 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             onChange={(e) => handleChange('name', e.target.value)}
             error={errors.name}
             required
+            showRequiredIndicator
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>The official name of the product seen by customers</span>
+              </div>
+            }
           />
           <Input
             label="Short Description"
             value={formData.shortDescription || ''}
             onChange={(e) => handleChange('shortDescription', e.target.value)}
-            placeholder="One-line tagline for product page"
+            placeholder="One-line tagline (e.g. For better sleep)"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Displayed under the product name on listing pages</span>
+              </div>
+            }
           />
           <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
             <label className={styles.label} htmlFor="supplement-description">
               Full Description
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Detailed product information, benefits, and stories</span>
+              </div>
               {errors.description && <span className={styles.errorText}> — {errors.description}</span>}
             </label>
             <textarea
@@ -153,9 +176,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
               className={`${styles.textarea} ${errors.description ? styles.textareaError : ''}`}
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Detailed product description..."
+              placeholder="Provide a professional description..."
               required
-              rows={3}
+              rows={4}
             />
           </div>
         </div>
@@ -169,7 +192,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           </div>
           <div>
             <h3 className={styles.sectionTitle}>Pricing & Inventory</h3>
-            <p className={styles.sectionSubtitle}>Set pricing, stock levels, and packaging</p>
+            <p className={styles.sectionSubtitle}>Manage costs and availability</p>
           </div>
         </div>
         <div className={`${styles.formGrid} ${styles.threeCol}`}>
@@ -182,6 +205,12 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             required
             min="0"
             step="0.01"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>The final price customers will pay</span>
+              </div>
+            }
           />
           <Input
             label="Original Price (₹)"
@@ -191,6 +220,12 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             error={errors.originalPrice}
             min="0"
             step="0.01"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Optional: Show a &quot;slashed&quot; price for discounts</span>
+              </div>
+            }
           />
           <Input
             label="Stock Quantity"
@@ -200,20 +235,12 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             error={errors.stock}
             required
             min="0"
-          />
-          <Input
-            label="Capsule Count"
-            type="number"
-            value={formData.capsuleCount != null ? formData.capsuleCount.toString() : ''}
-            onChange={(e) => handleChange('capsuleCount', e.target.value ? parseInt(e.target.value, 10) : undefined)}
-            min="0"
-            placeholder="e.g. 60"
-          />
-          <Input
-            label="Unit Label"
-            value={formData.unitLabel || ''}
-            onChange={(e) => handleChange('unitLabel', e.target.value)}
-            placeholder="e.g. 60 capsules total"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Total number of units available in warehouse</span>
+              </div>
+            }
           />
         </div>
       </section>
@@ -226,7 +253,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           </div>
           <div>
             <h3 className={styles.sectionTitle}>Product Details</h3>
-            <p className={styles.sectionSubtitle}>Ingredients, benefits, and usage instructions</p>
+            <p className={styles.sectionSubtitle}>Specific product attributes and instructions</p>
           </div>
         </div>
         <div className={styles.formGrid}>
@@ -234,65 +261,139 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             label="Ingredients"
             value={ingredientsText}
             onChange={(e) => setIngredientsText(e.target.value)}
-            placeholder="Vitamin D, Calcium, Magnesium"
+            placeholder="e.g. Ashwagandha, Melatonin"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Comma-separated list of ingredients</span>
+              </div>
+            }
           />
           <Input
             label="Benefits"
             value={benefitsText}
             onChange={(e) => setBenefitsText(e.target.value)}
-            placeholder="Better sleep, Reduced anxiety"
+            placeholder="e.g. Calm mind, Better sleep"
+            labelIcon={
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>Comma-separated list of key benefits</span>
+              </div>
+            }
           />
           <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
             <label className={styles.label} htmlFor="supplement-suggestedUse">
               Suggested Use
+              <div className={styles.tooltipRoot}>
+                <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                <span className={styles.tooltipText}>How should customers use this product?</span>
+              </div>
             </label>
             <textarea
               id="supplement-suggestedUse"
               className={styles.textarea}
               value={formData.suggestedUse || ''}
               onChange={(e) => handleChange('suggestedUse', e.target.value)}
-              placeholder="e.g. Take one capsule daily before bed with water"
+              placeholder="e.g. Take 1-2 capsules 30 minutes before bed"
               rows={2}
             />
           </div>
         </div>
       </section>
 
-      {/* ── Media ── */}
+      {/* ── Media & Visuals ── */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <div className={`${styles.sectionIcon} ${styles.sectionIconMedia}`}>
             <Icon icon={ICON_CAMERA} width={18} height={18} />
           </div>
           <div>
-            <h3 className={styles.sectionTitle}>Media</h3>
-            <p className={styles.sectionSubtitle}>Product image and gallery</p>
+            <h3 className={styles.sectionTitle}>Media & Visuals</h3>
+            <p className={styles.sectionSubtitle}>Photos and gallery images</p>
           </div>
         </div>
         <div className={styles.mediaGrid}>
-          <div className={styles.fieldGroup}>
-            <label className={styles.label}>Product Image</label>
-            <ImageUpload
-              onUpload={(url) => handleChange('image', url)}
-              onLoadingChange={handleImageLoading}
-              initialUrl={formData.image}
-              label="Upload Product Image"
-            />
+          <div className={styles.mediaPrimary}>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>
+                Featured Image
+                <div className={styles.tooltipRoot}>
+                  <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                  <span className={styles.tooltipText}>Primary image shown on all listings (Upload or URL)</span>
+                </div>
+              </label>
+              <div className={styles.imageSelector}>
+                <ImageUpload
+                  onUpload={(url) => handleChange('image', url)}
+                  onLoadingChange={handleImageLoading}
+                  initialUrl={formData.image}
+                  label="Upload Photo"
+                  tone="light"
+                />
+                <div className={styles.urlInputGroup}>
+                  <div className={styles.separatorText}>
+                    <span>OR PROVIDE URL</span>
+                  </div>
+                  <Input
+                    label=""
+                    placeholder="Enter image URL..."
+                    value={formData.image}
+                    onChange={(e) => handleChange('image', e.target.value)}
+                    className={styles.urlInput}
+                    containerClassName={styles.urlInputContainer}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div className={styles.mediaSecondary}>
             <div className={styles.fieldGroup}>
               <label className={styles.label} htmlFor="supplement-galleryUrls">
-                Gallery Image URLs
+                Additional Gallery URLs
+                {imagesText.split(',').filter((url) => url.trim()).length > 0 && (
+                  <span className={styles.countBadge}>
+                    ({imagesText.split(',').filter((url) => url.trim()).length} images)
+                  </span>
+                )}
+                <div className={styles.tooltipRoot}>
+                  <Icon icon={ICON_INFO} className={styles.infoIcon} />
+                  <span className={styles.tooltipText}>
+                    Provide multiple URLs separated by commas; thumbnails will appear below for verification
+                  </span>
+                </div>
               </label>
-              <input
+              <textarea
                 id="supplement-galleryUrls"
-                type="text"
-                className={styles.input}
+                className={styles.textarea}
                 value={imagesText}
                 onChange={(e) => setImagesText(e.target.value)}
-                placeholder="Comma-separated image URLs"
+                placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
+                rows={4}
               />
-              <p className={styles.fieldHint}>Add multiple image URLs separated by commas for the product gallery</p>
+              <p className={styles.fieldHint}>Ensure URLs end in .jpg, .png, .webp, or .avif</p>
+
+              {/* Gallery Preview Grid */}
+              {imagesText.split(',').filter((url) => url.trim().length > 0).length > 0 && (
+                <div className={styles.galleryPreviewGrid}>
+                  {imagesText.split(',').map((url, idx) => {
+                    const trimmedUrl = url.trim();
+                    if (!trimmedUrl) return null;
+                    return (
+                      <div key={trimmedUrl} className={styles.galleryPreviewItem}>
+                        <div className={styles.galleryPreviewThumbWrapper}>
+                          <NextImage
+                            src={trimmedUrl}
+                            alt={`Gallery ${idx + 1}`}
+                            fill
+                            className={styles.galleryPreviewThumb}
+                            unoptimized
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>

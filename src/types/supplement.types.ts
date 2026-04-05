@@ -72,8 +72,6 @@ export interface SupplementFormData {
   shortDescription?: string;
   suggestedUse?: string;
   images?: string[];
-  capsuleCount?: number;
-  unitLabel?: string;
 }
 
 export interface CartItem {

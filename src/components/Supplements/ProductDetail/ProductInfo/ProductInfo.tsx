@@ -56,7 +56,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         </div>
         {savings > 0 && <span className={styles.savings}>Save {formatPrice(savings)} today!</span>}
       </div>
-      <p className={styles.description}>{supplement.description}</p>
       {!isOutOfStock && (
         <>
           <div className={styles.quantityActionsRow}>
@@ -68,11 +67,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 max={maxQuantity}
                 disabled={adding}
               />
-              {(supplement.capsuleCount != null || supplement.unitLabel) && (
-                <span className={styles.unitLabel}>
-                  {supplement.capsuleCount != null ? `${supplement.capsuleCount} capsules total` : supplement.unitLabel}
-                </span>
-              )}
             </div>
             <div className={styles.actions}>
               <Button
@@ -94,6 +88,19 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         </>
       )}
       {error && <div className={styles.error}>{error}</div>}
+      {supplement.benefits && supplement.benefits.length > 0 && (
+        <div className={styles.highlights}>
+          <h3 className={styles.highlightsTitle}>Product Highlights</h3>
+          <ul className={styles.highlightsList}>
+            {supplement.benefits.map((benefit) => (
+              <li key={benefit} className={styles.highlightItem}>
+                <span className={styles.checkIcon}>•</span>
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className={styles.trustBadges}>
         {TRUST_BADGES.map((b) => (
           <span key={b.label} className={styles.badge}>

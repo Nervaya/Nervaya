@@ -39,9 +39,11 @@
 }
 
 .light {
-  border-color: rgba(124, 58, 237, 0.24);
-  background: linear-gradient(180deg, #ffffff 0%, #f8f7ff 100%);
-  color: #0f172a;
+  border: 2px dashed rgba(124, 58, 237, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 243, 255, 0.5) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #1e293b;
 }
 
 .light::before {
@@ -51,7 +53,8 @@
 .light:hover {
   border-color: rgba(124, 58, 237, 0.4);
   background: linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%);
-  box-shadow: 0 10px 28px rgba(124, 58, 237, 0.16);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.12);
+  transform: translateY(-3px);
 }
 
 .light p {
