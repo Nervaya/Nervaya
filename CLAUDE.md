@@ -93,3 +93,71 @@ Signup always requires email OTP. Login OTP is optional (`REQUIRE_OTP_FOR_LOGIN=
 **Required:** `MONGODB_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CLOUDINARY_CLOUD_NAME`/`API_KEY`/`API_SECRET`, `RAZORPAY_KEY_ID`/`KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID`, `OTP_EMAIL_USER`/`OTP_EMAIL_APP_PASSWORD`/`OTP_EMAIL_FROM_NAME`
 
 **Optional:** `REQUIRE_OTP_FOR_LOGIN`, `RAZORPAY_WEBHOOK_SECRET`, `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GTM_ID`, `ZOHO_CLIENT_ID`/`ZOHO_CLIENT_SECRET`/`ZOHO_REFRESH_TOKEN`
+
+## Code Review Tools
+
+Two static analysis tools are configured for this project: **Semgrep** (security) and **SonarQube** (code quality).
+
+### Semgrep (Security Scanner)
+
+Semgrep scans for security vulnerabilities, injection risks, and unsafe patterns.
+
+```bash
+# Install (one-time)
+brew install semgrep
+
+# Run security scan on entire codebase
+semgrep --config auto .
+
+# Run quietly (findings only)
+semgrep --config auto --quiet .
+```
+
+### SonarQube (Code Quality Scanner)
+
+SonarQube scans for bugs, code smells, duplication, and cognitive complexity. Requires Docker.
+
+```bash
+# 1. Start SonarQube server (one-time, or whenever you need it)
+docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+
+# If container already exists but is stopped:
+docker start sonarqube
+
+# 2. Install the scanner CLI (one-time)
+brew install sonar-scanner
+
+# 3. Create sonar-project.properties in project root (not committed — in .gitignore)
+cat > sonar-project.properties <<EOF
+sonar.projectKey=nervaya
+sonar.projectName=Nervaya
+sonar.sources=src
+sonar.host.url=http://localhost:9000
+sonar.token=<YOUR_TOKEN>
+sonar.sourceEncoding=UTF-8
+sonar.exclusions=**/node_modules/**,**/.next/**,**/public/**,**/*.css
+EOF
+
+# 4. Generate a token:
+#    - Open http://localhost:9000 (default login: admin/admin, you'll be asked to change it)
+#    - Go to My Account → Security → Generate Token
+#    - Paste the token into sonar.token in sonar-project.properties
+
+# 5. Run the scan
+sonar-scanner
+
+# 6. View results at http://localhost:9000/dashboard?id=nervaya
+```
+
+### Known Issues (as of 2026-04-05)
+
+**Security (Semgrep):**
+
+- Path traversal risk in `src/app/api/admin/deep-rest/upload-video/route.ts` — user input in `path.join()`
+- ReDoS risk in `src/lib/services/blog.service.ts` — `new RegExp()` with user-supplied search input
+
+**Code Quality (SonarQube):**
+
+- 39 bugs, 718 code smells, 6.3% duplication across 37,907 lines
+- High cognitive complexity in: `cart.service.ts` (50), `order.service.ts` (44), `payment.service.ts` (39), `proxy.ts` (32)
+- Multiple click handlers missing keyboard listeners (accessibility)
