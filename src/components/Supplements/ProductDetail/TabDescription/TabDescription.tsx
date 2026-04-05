@@ -23,8 +23,8 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
         <h3 className={styles.heading}>Product Overview</h3>
         {descriptionPoints.length > 1 ? (
           <ul className={styles.list}>
-            {descriptionPoints.map((point, idx) => (
-              <li key={idx} className={styles.listItem}>
+            {descriptionPoints.map((point) => (
+              <li key={point} className={styles.listItem}>
                 <span className={styles.bulletDot} />
                 {point}
               </li>
@@ -50,13 +50,13 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
       )}
 
       {/* Dynamic Custom Sections */}
-      {supplement.additionalSections?.map((section, idx) => (
-        <div key={idx} className={styles.customSection}>
+      {supplement.additionalSections?.map((section) => (
+        <div key={section.title} className={styles.customSection}>
           <h3 className={styles.heading}>{section.title}</h3>
           {section.content.length > 0 ? (
             <ul className={styles.list}>
-              {section.content.map((point, pIdx) => (
-                <li key={pIdx} className={styles.listItem}>
+              {section.content.map((point) => (
+                <li key={point} className={styles.listItem}>
                   <span className={styles.bulletDot} />
                   {point}
                 </li>

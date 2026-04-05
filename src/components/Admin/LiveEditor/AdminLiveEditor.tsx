@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import NextImage from 'next/image';
 import { SupplementFormData, AdditionalSection } from '@/types/supplement.types';
 import { ProductImageGallery } from '@/components/Supplements/ProductDetail';
 import { EditableField } from './EditableField';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import MultiImageUpload from '@/components/ImageUpload/MultiImageUpload';
 import { Icon } from '@iconify/react';
 import { ICON_SAVE_FANCY, ICON_TRASH, ICON_CAMERA, ICON_INFO, ICON_PLUS_CIRCLE } from '@/constants/icons';
 import styles from './AdminLiveEditor.module.css';
@@ -50,14 +50,6 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
       newSections[index] = { ...newSections[index], title: value };
     }
     handleChange('additionalSections', newSections);
-  };
-
-  const handleGalleryChange = (text: string) => {
-    const arrayValue = text
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-    handleChange('images', arrayValue);
   };
 
   const handleAddBenefit = () => {
@@ -135,7 +127,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                 </h4>
                 <div className={styles.tooltipRoot}>
                   <Icon icon={ICON_INFO} className={styles.infoIcon} />
-                  <span className={styles.tooltipText}>Upload images or paste URLs directly</span>
+                  <span className={styles.tooltipText}>Upload images to Cloudinary</span>
                 </div>
               </div>
 
@@ -147,40 +139,18 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                   label="Upload Primary"
                   tone="light"
                 />
-
-                {!formData.image && (
-                  <div className={styles.urlInputBlock}>
-                    <input
-                      type="text"
-                      placeholder="Primary Image URL"
-                      value={formData.image}
-                      onChange={(e) => handleChange('image', e.target.value)}
-                      className={styles.inlineUrlInput}
-                    />
-                    <p className={styles.mediaHintInline}>Primary image shown on listing</p>
-                  </div>
-                )}
               </div>
 
               <div className={styles.galleryManagement}>
-                <label className={styles.mediaLabel}>Additional Gallery (URLs Separated by Comma)</label>
-                <textarea
-                  className={styles.galleryTextPad}
-                  value={formData.images?.join(', ') || ''}
-                  onChange={(e) => handleGalleryChange(e.target.value)}
-                  placeholder="https://img1.jpg, https://img2.jpg..."
-                  rows={3}
+                <label className={styles.mediaLabel}>Gallery Images</label>
+                <MultiImageUpload
+                  urls={formData.images || []}
+                  onChange={(urls) => handleChange('images', urls)}
+                  label="Upload Gallery Images"
+                  tone="light"
+                  onLoadingChange={setMediaUploading}
+                  maxImages={5}
                 />
-
-                {formData.images && formData.images.length > 0 && (
-                  <div className={styles.galleryThumbGrid}>
-                    {formData.images.map((url, i) => (
-                      <div key={i} className={styles.galleryThumbItem}>
-                        <NextImage src={url} alt={`Preview ${i}`} fill className={styles.previewThumb} unoptimized />
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -252,7 +222,8 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
 
                 <div className={styles.benefitList}>
                   {(formData.benefits.length > 0 ? formData.benefits : ['']).map((benefit, idx) => (
-                    <div key={idx} className={styles.benefitItem}>
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div key={`benefit-${idx}`} className={styles.benefitItem}>
                       <span className={styles.bulletDot} />
                       <input
                         type="text"
@@ -341,7 +312,8 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                   <div className={styles.customSectionsList}>
                     <h4 className={styles.customSectionsLabel}>Extra Information Sections</h4>
                     {formData.additionalSections.map((section, idx) => (
-                      <div key={idx} className={styles.customSectionCard}>
+                      // eslint-disable-next-line react/no-array-index-key
+                      <div key={`section-${section.title}-${idx}`} className={styles.customSectionCard}>
                         <div className={styles.flexBetween}>
                           <EditableField
                             value={section.title}

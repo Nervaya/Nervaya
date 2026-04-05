@@ -45,8 +45,8 @@ const ConfirmSaveModal: React.FC<ConfirmSaveModalProps> = ({ isOpen, onClose, on
             Overview of updates:
           </div>
           <ul className={styles.changeList}>
-            {changedFields.map((field, idx) => (
-              <li key={idx} className={styles.changeItem}>
+            {changedFields.map((field) => (
+              <li key={field.label} className={styles.changeItem}>
                 <span className={styles.fieldName}>{field.label}:</span>
                 <span className={styles.fieldValue}>{field.value}</span>
               </li>

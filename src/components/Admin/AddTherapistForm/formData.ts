@@ -11,6 +11,7 @@ export interface TherapistFormData {
   languages: string;
   specializations: string;
   image: string;
+  galleryImages: string[];
   introVideoUrl: string;
   bio: string;
   bioLong: string;
@@ -43,6 +44,7 @@ export const INITIAL_THERAPIST_FORM_DATA: TherapistFormData = {
   languages: '',
   specializations: '',
   image: '',
+  galleryImages: [],
   introVideoUrl: '',
   bio: '',
   bioLong: '',
