@@ -9,19 +9,17 @@
 /* ── Section cards ── */
 .section {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: none;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
   transition: all 0.2s ease;
   margin-bottom: 1.5rem;
 }
 
 .section:hover {
-  border-color: #d1d5db;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .sectionHeader {
@@ -152,6 +150,75 @@
 
 .fullWidth {
   grid-column: 1 / -1;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.additionalSectionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.additionalSectionCard {
+  background: #f9fafb;
+  border: none;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.additionalSectionCard:hover {
+  border-color: #7c3aed;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.sectionItemHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.sectionTitleInput {
+  flex: 1;
+}
+
+.removeSectionBtn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 2rem;
+}
+
+.removeSectionBtn:hover {
+  background: #fecaca;
+  transform: scale(1.05);
+}
+
+.emptyState {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px dashed #d1d5db;
 }
 
 .label {
@@ -334,7 +401,7 @@
   margin-top: 1rem;
   padding: 1.5rem;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: none;
   border-radius: 12px;
   display: flex;
   justify-content: space-between;

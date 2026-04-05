@@ -51,4 +51,38 @@ api.interceptors.response.use(
   },
 );
 
+export const apiUpload = axios.create({
+  baseURL: '/api',
+  withCredentials: true,
+  // No default Content-Type for uploads to allow automatic boundary setting
+});
+
+// Copy interceptors
+apiUpload.interceptors.response.use(
+  (response) => response.data,
+  (error: unknown) => {
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as {
+        response?: { status?: number; data?: unknown };
+      };
+      if (axiosError.response?.status === 401) {
+        if (typeof window !== 'undefined') {
+          const pathname = window.location.pathname;
+          const isAuthPage = pathname.startsWith(ROUTES.LOGIN) || pathname.startsWith(ROUTES.SIGNUP);
+
+          if (!isAuthPage) {
+            clearAuthStorageOnClient();
+            if (isProtectedPath(pathname)) {
+              fetch(`/api${AUTH_API.LOGOUT}`, { method: 'POST', credentials: 'include' }).catch(() => {});
+              window.location.href = `${ROUTES.LOGIN}?returnUrl=${encodeURIComponent(pathname)}`;
+            }
+          }
+        }
+      }
+      return Promise.reject(axiosError.response?.data || error);
+    }
+    return Promise.reject(error);
+  },
+);
+
 export default api;

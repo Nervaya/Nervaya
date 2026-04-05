@@ -261,3 +261,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+.breadcrumbWrapper {
+  padding: 20px 4% 0 4%;
+  width: 100%;
+}
+
+/* Ensure the breadcrumbs-slot inside our wrapper doesn't use the global negative margins */
+.breadcrumbWrapper :global(.breadcrumbs-slot) {
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  padding-left: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .breadcrumbWrapper {
+    padding: 16px 16px 0 16px;
+  }
+}

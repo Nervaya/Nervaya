@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
+import AdminLiveEditor from '@/components/Admin/LiveEditor/AdminLiveEditor';
+import ConfirmSaveModal from '@/components/Admin/ConfirmSaveModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { type BreadcrumbItem } from '@/components/common';
+import { type BreadcrumbItem, Button } from '@/components/common';
 import api from '@/lib/axios';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
@@ -16,11 +16,37 @@ import styles from './styles.module.css';
 export default function AddSupplementPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [editMode, setEditMode] = useState<'form' | 'live'>('live');
 
-  const handleSubmit = async (data: SupplementFormData) => {
+  const [formData, setFormData] = useState<SupplementFormData | null>({
+    name: '',
+    description: '',
+    price: 0,
+    image: '',
+    stock: 0,
+    ingredients: [],
+    benefits: [],
+    isActive: true,
+    originalPrice: 0,
+    shortDescription: '',
+    suggestedUse: '',
+    images: [],
+    additionalSections: [],
+  });
+
+  const handleOpenConfirm = () => {
+    if (!formData) return;
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleFinalSave = async () => {
+    if (!formData) return;
     try {
+      setIsSaving(true);
       setError(null);
-      const response = (await api.post('/supplements', data)) as { success: boolean };
+      const response = (await api.post('/supplements', formData)) as { success: boolean };
       if (response.success) {
         toast.success('Supplement created successfully');
         router.push('/admin/supplements');
@@ -29,7 +55,9 @@ export default function AddSupplementPage() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create supplement');
-      throw err;
+    } finally {
+      setIsSaving(false);
+      setIsConfirmModalOpen(false);
     }
   };
 
@@ -39,21 +67,58 @@ export default function AddSupplementPage() {
     { label: 'Add New' },
   ];
 
+  const headerActions = (
+    <div className={styles.headerActions}>
+      <Button
+        variant={editMode === 'live' ? 'secondary' : 'primary'}
+        onClick={() => setEditMode(editMode === 'live' ? 'form' : 'live')}
+        className={styles.toggleButton}
+      >
+        <Icon icon={editMode === 'live' ? 'solar:settings-bold' : 'solar:eye-bold'} />
+        {editMode === 'live' ? 'Switch to Standard Form' : 'Switch to Live Editor'}
+      </Button>
+    </div>
+  );
+
+  if (!formData) return null;
+
   return (
     <div className={styles.container}>
       <PageHeader
         title="Add New Supplement"
         subtitle="Create a new supplement entry for your store"
         breadcrumbs={breadcrumbs}
-        actions={
-          <Link href="/admin/supplements" className={styles.backLink}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Supplements
-          </Link>
-        }
+        actions={headerActions}
       />
+
       {error && <div className={styles.error}>{error}</div>}
-      <SupplementForm key="create" onSubmit={handleSubmit} submitLabel="Create Supplement" />
+
+      {editMode === 'form' ? (
+        <SupplementForm
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={async () => handleOpenConfirm()}
+          submitLabel="Create Supplement"
+          loading={isSaving}
+        />
+      ) : (
+        <AdminLiveEditor
+          formData={formData}
+          setFormData={setFormData}
+          onSave={() => handleOpenConfirm()}
+          loading={isSaving}
+        />
+      )}
+
+      {isConfirmModalOpen && (
+        <ConfirmSaveModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleFinalSave}
+          data={formData}
+          loading={isSaving}
+        />
+      )}
     </div>
   );
 }

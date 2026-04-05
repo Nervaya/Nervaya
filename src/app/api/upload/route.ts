@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(successResponse('File uploaded successfully', { url }));
   } catch (error) {
+    console.error('[Upload API Error]:', error);
     const errorMessage = error instanceof Error ? error.message : 'Upload failed';
     return NextResponse.json(errorResponse(errorMessage, error as ApiError, 500), { status: 500 });
   }

@@ -63,4 +63,5 @@
   line-height: 1.6;
   color: var(--color-text-slate-300, #cbd5e1);
   margin: 0;
+  white-space: pre-line;
 }

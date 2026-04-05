@@ -14,6 +14,10 @@ export interface StarDistribution {
   4: number;
   5: number;
 }
+export interface AdditionalSection {
+  title: string;
+  content: string[];
+}
 
 export interface Supplement {
   _id: string;
@@ -34,6 +38,7 @@ export interface Supplement {
   averageRating?: number;
   reviewCount?: number;
   starDistribution?: StarDistribution;
+  additionalSections?: AdditionalSection[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,6 +77,7 @@ export interface SupplementFormData {
   shortDescription?: string;
   suggestedUse?: string;
   images?: string[];
+  additionalSections?: AdditionalSection[];
 }
 
 export interface CartItem {

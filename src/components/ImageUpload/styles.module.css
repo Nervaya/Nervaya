@@ -17,6 +17,12 @@
   overflow: hidden;
 }
 
+.hasPreview {
+  padding: 0 !important;
+  border-style: solid !important;
+  min-height: auto !important;
+}
+
 .container::before {
   content: '';
   position: absolute;
@@ -118,21 +124,23 @@
 }
 
 .preview {
-  width: 160px;
-  height: 160px;
-  border-radius: 12px;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border: none !important;
 }
 
 .previewCompact {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border: none !important;
 }
 
 @media (max-width: 480px) {

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
+import AdminLiveEditor from '@/components/Admin/LiveEditor/AdminLiveEditor';
+import ConfirmSaveModal from '@/components/Admin/ConfirmSaveModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { StatusState, type BreadcrumbItem } from '@/components/common';
+import { StatusState, type BreadcrumbItem, Button } from '@/components/common';
 import { useLoading } from '@/context/LoadingContext';
 import api from '@/lib/axios';
 import { toast } from 'sonner';
@@ -18,8 +18,12 @@ export default function EditSupplementPage() {
   const params = useParams();
   const router = useRouter();
   const [supplement, setSupplement] = useState<Supplement | null>(null);
+  const [formData, setFormData] = useState<SupplementFormData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState<'form' | 'live'>('live');
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { showLoader, hideLoader } = useLoading();
 
   useEffect(() => {
@@ -29,22 +33,6 @@ export default function EditSupplementPage() {
       hideLoader();
     }
   }, [loading, showLoader, hideLoader]);
-
-  const handleSubmit = async (data: SupplementFormData) => {
-    try {
-      setError(null);
-      const response = (await api.put(`/supplements/${params.id}`, data)) as { success: boolean };
-      if (response.success) {
-        toast.success('Supplement updated successfully');
-        router.push('/admin/supplements');
-      } else {
-        setError('Failed to update supplement');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update supplement');
-      throw err;
-    }
-  };
 
   useEffect(() => {
     const fetchSupplement = async () => {
@@ -57,6 +45,21 @@ export default function EditSupplementPage() {
         };
         if (response.success && response.data) {
           setSupplement(response.data);
+          setFormData({
+            name: response.data.name,
+            description: response.data.description,
+            price: response.data.price,
+            image: response.data.image,
+            stock: response.data.stock,
+            ingredients: response.data.ingredients,
+            benefits: response.data.benefits,
+            isActive: response.data.isActive,
+            originalPrice: response.data.originalPrice,
+            shortDescription: response.data.shortDescription,
+            suggestedUse: response.data.suggestedUse,
+            images: response.data.images,
+            additionalSections: response.data.additionalSections || [],
+          });
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load supplement');
@@ -68,7 +71,32 @@ export default function EditSupplementPage() {
     if (params.id) {
       fetchSupplement();
     }
-  }, [params.id]);
+  }, [params.id, showLoader, hideLoader]);
+
+  const handleOpenConfirm = (data?: SupplementFormData) => {
+    if (data) setFormData(data);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleFinalSave = async () => {
+    if (!formData) return;
+    try {
+      setIsSaving(true);
+      setError(null);
+      const response = (await api.put(`/supplements/${params.id}`, formData)) as { success: boolean };
+      if (response.success) {
+        toast.success('Supplement updated successfully');
+        router.push('/admin/supplements');
+      } else {
+        setError('Failed to update supplement');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update supplement');
+    } finally {
+      setIsSaving(false);
+      setIsConfirmModalOpen(false);
+    }
+  };
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
@@ -77,17 +105,23 @@ export default function EditSupplementPage() {
   ];
 
   const backAction = (
-    <Link href="/admin/supplements" className={styles.backLink}>
-      <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-      Back to Supplements
-    </Link>
+    <div className={styles.headerActions}>
+      <Button
+        variant={editMode === 'live' ? 'secondary' : 'primary'}
+        onClick={() => setEditMode(editMode === 'live' ? 'form' : 'live')}
+        className={styles.toggleButton}
+      >
+        <Icon icon={editMode === 'live' ? 'solar:settings-bold' : 'solar:eye-bold'} />
+        {editMode === 'live' ? 'Switch to Standard Form' : 'Switch to Live Editor'}
+      </Button>
+    </div>
   );
 
   if (loading) {
     return null;
   }
 
-  if (error || !supplement) {
+  if (error || !supplement || !formData) {
     return (
       <div className={styles.container}>
         <PageHeader
@@ -119,12 +153,33 @@ export default function EditSupplementPage() {
         actions={backAction}
       />
       {error && <div className={styles.error}>{error}</div>}
-      <SupplementForm
-        key={supplement._id}
-        onSubmit={handleSubmit}
-        initialData={supplement}
-        submitLabel="Update Supplement"
-      />
+      {editMode === 'form' ? (
+        <SupplementForm
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={async () => handleOpenConfirm()}
+          initialData={supplement}
+          submitLabel="Update Supplement"
+          loading={isSaving}
+        />
+      ) : (
+        <AdminLiveEditor
+          formData={formData}
+          setFormData={setFormData}
+          onSave={async () => handleOpenConfirm()}
+          loading={isSaving}
+        />
+      )}
+
+      {isConfirmModalOpen && (
+        <ConfirmSaveModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleFinalSave}
+          data={formData}
+          loading={isSaving}
+        />
+      )}
     </div>
   );
 }

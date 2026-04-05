@@ -113,6 +113,10 @@ export const ICON_BRIEFCASE = 'lucide:briefcase';
 export const ICON_FILE_TEXT = 'lucide:file-text';
 export const ICON_CAMERA = 'lucide:camera';
 export const ICON_PENCIL = 'lucide:pencil';
+export const ICON_TICK_ROUND = 'solar:check-read-bold';
+export const ICON_EDIT_FANCY = 'solar:pen-new-square-outline';
+export const ICON_INFO_FANCY = 'solar:info-circle-bold';
+export const ICON_SAVE_FANCY = 'solar:diskette-bold-duotone';
 
 // Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;

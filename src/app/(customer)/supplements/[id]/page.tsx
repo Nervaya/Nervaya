@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { GlobalLoader, StatusState } from '@/components/common';
+import { GlobalLoader, StatusState, RouteBreadcrumbs } from '@/components/common';
 import { ProductImageGallery, ProductInfo, ProductTabs } from '@/components/Supplements/ProductDetail';
 import { Supplement } from '@/types/supplement.types';
 import { supplementsApi } from '@/lib/api/supplements';
@@ -122,7 +122,7 @@ export default function SupplementDetailPage() {
 
   if (loading) {
     return (
-      <Sidebar>
+      <Sidebar hideGlobalBreadcrumbs>
         <div className={styles.container}>
           <div className={styles.loading}>
             <GlobalLoader label="Loading supplement details..." />
@@ -134,7 +134,7 @@ export default function SupplementDetailPage() {
 
   if (error && !supplement) {
     return (
-      <Sidebar>
+      <Sidebar hideGlobalBreadcrumbs>
         <div className={styles.container}>
           <StatusState
             type="error"
@@ -158,7 +158,7 @@ export default function SupplementDetailPage() {
 
   if (!supplement) {
     return (
-      <Sidebar>
+      <Sidebar hideGlobalBreadcrumbs>
         <div className={styles.container}>
           <StatusState
             type="empty"
@@ -184,8 +184,11 @@ export default function SupplementDetailPage() {
   const mainImage = supplement.images?.length ? supplement.images[0] : supplement.image;
 
   return (
-    <Sidebar>
+    <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
+        <div className={styles.breadcrumbWrapper}>
+          <RouteBreadcrumbs />
+        </div>
         <div className={styles.content}>
           <div className={styles.imageSection}>
             <ProductImageGallery

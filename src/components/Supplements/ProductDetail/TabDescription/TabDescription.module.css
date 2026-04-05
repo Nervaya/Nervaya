@@ -6,13 +6,13 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 var(--spacing-md, 16px) 0;
-  color: var(--color-foreground, #ededed);
+  color: var(--color-foreground, #0f172a);
 }
 
 .paragraph {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--color-text-slate-300, #cbd5e1);
+  color: var(--color-text-slate-400, #475569);
   margin: 0 0 var(--margin-lg, 24px) 0;
 }
 
@@ -39,11 +39,22 @@
   margin-bottom: var(--spacing-sm, 8px);
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--color-text-slate-300, #cbd5e1);
+  color: var(--color-text-slate-400, #475569);
 }
 
-.check {
+.tickIcon {
   color: var(--color-emerald-400, #34d399);
-  font-weight: 600;
   flex-shrink: 0;
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+}
+
+.bulletDot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--color-emerald-400, #34d399);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 8px;
 }

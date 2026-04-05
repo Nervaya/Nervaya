@@ -26,6 +26,7 @@ export interface ISupplement extends Document {
   averageRating?: number;
   reviewCount: number;
   starDistribution?: IStarDistribution;
+  additionalSections?: { title: string; content: string[] }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -83,6 +84,15 @@ const supplementSchema = new Schema<ISupplement>(
     starDistribution: {
       type: Schema.Types.Mixed,
       default: undefined,
+    },
+    additionalSections: {
+      type: [
+        {
+          title: { type: String, required: true },
+          content: { type: [String], default: [] },
+        },
+      ],
+      default: [],
     },
   },
   {

@@ -1,0 +1,508 @@
+.liveEditor {
+  background: transparent;
+  color: var(--color-foreground, #0f172a);
+  min-height: 100vh;
+  padding-bottom: 100px;
+  /* Space for floating button */
+}
+
+.multimediaStudio {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--color-background-soft, #f8fafc);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 16px;
+}
+
+.studioTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-foreground, #0f172a);
+  margin: 0;
+}
+
+.imageSelectorInline {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+.urlInputBlock {
+  flex: 1;
+}
+
+.inlineUrlInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.inlineUrlInput:focus {
+  border-color: var(--color-primary-500);
+}
+
+.mediaHintInline {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.galleryManagement {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.mediaLabel {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.galleryTextPad {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.galleryTextPad:focus {
+  border-color: var(--color-primary-500, #7c3aed);
+}
+
+.galleryThumbGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.galleryThumbItem {
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-light);
+}
+
+.previewThumb {
+  object-fit: cover;
+}
+
+.titleEdit :global(.displayValue) {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-foreground, #0f172a);
+  line-height: 1.2;
+}
+
+.taglineEdit :global(.displayValue) {
+  font-size: 1.1rem;
+  color: var(--color-text-slate-400, #94a3b8);
+  font-style: italic;
+}
+
+.priceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.priceColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-slate-500, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.priceValue :global(.displayValue) {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-emerald-400, #34d399);
+}
+
+.textPadSection {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--color-card-bg-light, #f8fafc);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.textPad {
+  width: 100%;
+  min-height: 200px;
+  background: var(--color-background, #ffffff);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 8px;
+  color: var(--color-text-primary, #0f172a);
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.textPad:hover {
+  border-color: var(--color-primary-300, #c4b5fd);
+}
+
+.textPad:focus {
+  border-color: var(--color-primary-500, #7c3aed);
+}
+
+.benefitList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.benefitItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 8px;
+  background: var(--color-background-subtle, #f8fafc);
+  transition: all 0.2s;
+}
+
+.benefitItem:hover {
+  border-color: var(--color-primary-200, #ddd6fe);
+  background: var(--color-white, #ffffff);
+}
+
+.bulletDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-primary-400, #a78bfa);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+.benefitInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  font-size: 0.95rem;
+  color: var(--color-foreground, #0f172a);
+  outline: none;
+}
+
+.benefitRemoveBtn {
+  opacity: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-error, #ef4444);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefitItem:hover .benefitRemoveBtn {
+  opacity: 1;
+}
+
+.benefitRemoveBtn:hover {
+  background: #fee2e2;
+}
+
+.addPointInline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px dashed var(--color-border, #e2e8f0);
+  color: var(--color-primary-500, #7c3aed);
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  margin-top: 0.25rem;
+}
+
+.addPointInline:hover {
+  background: var(--color-primary-50, #f5f3ff);
+  border-color: var(--color-primary-300, #c4b5fd);
+  border-style: solid;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--color-primary-600, #7c3aed);
+  font-style: italic;
+  margin: 0;
+}
+
+.helperHeader {
+  margin-bottom: 0.5rem;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sectionHeadingEdit {
+  flex: 1;
+}
+
+.removeSectionInline {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.removeSectionInline:hover {
+  background: #fecaca;
+  transform: scale(1.1);
+}
+
+.customSectionsList {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--color-background-soft, #f8fafc);
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.customSectionsLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary-600, #7c3aed);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.customSectionCard {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.customSectionCard:last-child {
+  margin-bottom: 0;
+}
+
+.addSectionBtn {
+  width: 100%;
+  padding: 1.25rem;
+  margin: 2.5rem 0;
+  background: var(--color-primary-50, #f5f3ff);
+  border: 2px dashed var(--color-primary-300, #c4b5fd);
+  border-radius: 12px;
+  color: var(--color-primary-600, #7c3aed);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.05);
+}
+
+.addSectionBtn:hover {
+  background: var(--color-primary-100, #ede9fe);
+  border-color: var(--color-primary-500, #7c3aed);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.2);
+}
+
+.addSectionBtn svg {
+  font-size: 24px;
+}
+
+.tabsSection {
+  margin-top: 3rem;
+  border-top: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.tabList {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: var(--color-text-slate-400, #94a3b8);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.activeTab {
+  color: var(--color-primary-400, #a78bfa);
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-primary-400, #a78bfa);
+}
+
+.tabContent {
+  padding: 2rem 0;
+}
+
+.editableTabSection {
+  margin-bottom: 2.5rem;
+}
+
+.staticContent {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-text-muted, #64748b);
+  background: var(--color-card-bg-light, #f8fafc);
+  border-radius: 12px;
+  border: 1px dashed var(--color-border-light, #e2e8f0);
+}
+
+.saveButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--color-primary-600, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  background: var(--color-primary-500, #8b5cf6);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.4),
+    0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+.saveButton:active {
+  transform: translateY(0);
+}
+
+.saveButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tooltipRoot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.infoIcon {
+  color: var(--color-primary-300, #c4b5fd);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: 220px;
+  background-color: var(--color-foreground, #0f172a);
+  color: var(--color-background, #ffffff);
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.75rem;
+  font-weight: normal;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  box-shadow: var(--color-card-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  pointer-events: none;
+}
+
+.tooltipRoot:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}

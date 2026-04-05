@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter, usePathname } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { GlobalLoader } from '@/components/common';
+import { GlobalLoader, RouteBreadcrumbs } from '@/components/common';
 import BookingModal from '@/components/Booking/BookingModal';
 import { therapistsApi } from '@/lib/api/therapists';
 import StatusState from '@/components/common/StatusState';
@@ -56,11 +56,14 @@ export default function TherapistProfilePage() {
   const embedUrl = therapist?.introVideoUrl ? getEmbedUrl(therapist.introVideoUrl) : null;
 
   return (
-    <Sidebar className={styles.pageContentWhite}>
+    <Sidebar hideGlobalBreadcrumbs className={styles.pageContentWhite}>
       <div className={containerStyles.container} style={{ padding: 0, maxWidth: '100%', overflowX: 'hidden' }}>
         <section
           style={{ display: 'flex', flexDirection: 'column', width: '100%', background: '#faf5ff', minHeight: '100vh' }}
         >
+          <div className={styles.breadcrumbWrapper}>
+            <RouteBreadcrumbs />
+          </div>
           {loading && (
             <div className={styles.loadingWrap}>
               <GlobalLoader label="Loading therapist profile..." />

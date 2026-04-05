@@ -88,7 +88,7 @@ const ImageUpload = ({
 
   return (
     <div
-      className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''} ${tone === 'light' ? styles.light : ''}`}
+      className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''} ${tone === 'light' ? styles.light : ''} ${preview ? styles.hasPreview : ''}`}
       onClick={handleClick}
     >
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
@@ -100,8 +100,7 @@ const ImageUpload = ({
           <Image
             src={preview}
             alt="Preview"
-            width={200}
-            height={200}
+            fill
             className={compact ? styles.previewCompact : styles.preview}
             unoptimized
           />

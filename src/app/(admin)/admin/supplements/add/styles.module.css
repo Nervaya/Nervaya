@@ -3,45 +3,11 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0;
-}
-
-.backLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 40px;
-  padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid #d8e0ee;
+  padding: 24px;
   background: #ffffff;
-  color: #475569;
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 600;
-  white-space: nowrap;
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-@media (max-width: 768px) {
-  .backLink {
-    width: 100%;
-  }
-}
-
-.backLink:hover {
-  border-color: rgba(124, 58, 237, 0.45);
-  color: #5b21b6;
-  transform: translateX(-1px);
-}
-
-.backLink svg {
-  width: 17px;
-  height: 17px;
+  min-height: calc(100vh - 100px);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .error {

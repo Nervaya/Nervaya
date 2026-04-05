@@ -2,46 +2,42 @@
 
 import React, { useState } from 'react';
 import NextImage from 'next/image';
-import { SupplementFormData } from '@/types/supplement.types';
+import { SupplementFormData, AdditionalSection } from '@/types/supplement.types';
 import { Input, Button } from '@/components/common';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import { Icon } from '@iconify/react';
-import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA, ICON_INFO } from '@/constants/icons';
+import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA, ICON_INFO, ICON_TRASH } from '@/constants/icons';
 import styles from './styles.module.css';
 
 interface SupplementFormProps {
-  onSubmit: (data: SupplementFormData) => Promise<void>;
+  formData: SupplementFormData;
+  setFormData: React.Dispatch<React.SetStateAction<SupplementFormData | null>>;
+  onSubmit: () => void;
   initialData?: Partial<SupplementFormData>;
   loading?: boolean;
   submitLabel?: string;
 }
 
 const SupplementForm: React.FC<SupplementFormProps> = ({
+  formData,
+  setFormData,
   onSubmit,
-  initialData,
   loading = false,
   submitLabel = 'Create Supplement',
 }) => {
-  const [formData, setFormData] = useState<SupplementFormData>({
-    name: initialData?.name || '',
-    description: initialData?.description || '',
-    price: initialData?.price ?? 0,
-    image: initialData?.image || '',
-    stock: initialData?.stock ?? 0,
-    ingredients: initialData?.ingredients || [],
-    benefits: initialData?.benefits || [],
-    isActive: initialData?.isActive !== undefined ? initialData.isActive : true,
-    originalPrice: initialData?.originalPrice,
-    shortDescription: initialData?.shortDescription || '',
-    suggestedUse: initialData?.suggestedUse || '',
-    images: initialData?.images || [],
-  });
-
-  const [ingredientsText, setIngredientsText] = useState(initialData?.ingredients?.join(', ') || '');
-  const [benefitsText, setBenefitsText] = useState(initialData?.benefits?.join(', ') || '');
-  const [imagesText, setImagesText] = useState(initialData?.images?.join(', ') || '');
+  const [ingredientsText, setIngredientsText] = useState(formData.ingredients?.join(', ') || '');
+  const [benefitsText, setBenefitsText] = useState(formData.benefits?.join(', ') || '');
+  const [imagesText, setImagesText] = useState(formData.images?.join(', ') || '');
   const [imageUploading, setImageUploading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
+
+  // Sync internal text pads with formData changes (from Live Editor)
+  const ingredientsKey = formData.ingredients?.join(', ') || '';
+  const benefitsKey = formData.benefits?.join(', ') || '';
+  const imagesKey = formData.images?.join(', ') || '';
+  if (ingredientsText !== ingredientsKey) setIngredientsText(ingredientsKey);
+  if (benefitsText !== benefitsKey) setBenefitsText(benefitsKey);
+  if (imagesText !== imagesKey) setImagesText(imagesKey);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};
@@ -68,54 +64,61 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
       newErrors.originalPrice = 'Original price must exceed selling price';
     }
 
-    const imageExtRegex = /\.(jpg|jpeg|png|webp|avif)$/i;
-    if (
-      formData.image &&
-      !imageExtRegex.test(formData.image) &&
-      !formData.image.startsWith('https://res.cloudinary.com')
-    ) {
-      newErrors.image = 'Invalid image URL or extension';
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       return;
     }
+    onSubmit();
+  };
 
-    const galleryUrls = imagesText
+  const handleChange = (field: keyof SupplementFormData, value: SupplementFormData[keyof SupplementFormData]) => {
+    setFormData((prev) => (prev ? { ...prev, [field]: value } : prev));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleTextPadChange = (field: 'ingredients' | 'benefits' | 'images', textValue: string) => {
+    const arrayValue = textValue
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const submitData: SupplementFormData = {
-      ...formData,
-      ingredients: ingredientsText
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean),
-      benefits: benefitsText
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean),
-      images: galleryUrls.length > 0 ? galleryUrls : undefined,
-      originalPrice: formData.originalPrice != null && formData.originalPrice > 0 ? formData.originalPrice : undefined,
-      shortDescription: formData.shortDescription?.trim() || undefined,
-      suggestedUse: formData.suggestedUse?.trim() || undefined,
-    };
+    if (field === 'ingredients') setIngredientsText(textValue);
+    if (field === 'benefits') setBenefitsText(textValue);
+    if (field === 'images') setImagesText(textValue);
 
-    await onSubmit(submitData);
+    handleChange(field, arrayValue);
   };
 
-  const handleChange = (field: keyof SupplementFormData, value: string | number | boolean | undefined) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+  const handleAddSection = () => {
+    const newSections = [...(formData.additionalSections || []), { title: 'New Section', content: [] }];
+    handleChange('additionalSections', newSections);
+  };
+
+  const handleRemoveSection = (index: number) => {
+    const newSections = (formData.additionalSections || []).filter((_, i) => i !== index);
+    handleChange('additionalSections', newSections);
+  };
+
+  const handleSectionChange = (index: number, field: keyof AdditionalSection, value: string) => {
+    const newSections = [...(formData.additionalSections || [])];
+    if (field === 'content') {
+      // Treat text pad as newline or comma separated
+      const arrayValue = value
+        .split('\n')
+        .map((s: string) => s.trim())
+        .filter(Boolean);
+      newSections[index] = { ...newSections[index], content: arrayValue };
+    } else {
+      newSections[index] = { ...newSections[index], title: value };
     }
+    handleChange('additionalSections', newSections);
   };
 
   const handleImageLoading = (isLoading: boolean) => {
@@ -123,7 +126,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form} noValidate>
+    <form onSubmit={handleFormSubmit} className={styles.form} noValidate>
       {/* ── Basic Information ── */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
@@ -164,10 +167,12 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           />
           <div className={`${styles.fieldGroup} ${styles.fullWidth}`}>
             <label className={styles.label} htmlFor="supplement-description">
-              Full Description
+              Full Description (Points - One per line)
               <div className={styles.tooltipRoot}>
                 <Icon icon={ICON_INFO} className={styles.infoIcon} />
-                <span className={styles.tooltipText}>Detailed product information, benefits, and stories</span>
+                <span className={styles.tooltipText}>
+                  Each new line will be shown as a bullet point to the customer
+                </span>
               </div>
               {errors.description && <span className={styles.errorText}> — {errors.description}</span>}
             </label>
@@ -176,9 +181,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
               className={`${styles.textarea} ${errors.description ? styles.textareaError : ''}`}
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Provide a professional description..."
+              placeholder="Point 1: Amazing benefit&#10;Point 2: Professional overview..."
               required
-              rows={4}
+              rows={6}
             />
           </div>
         </div>
@@ -258,9 +263,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         </div>
         <div className={styles.formGrid}>
           <Input
-            label="Ingredients"
+            label="Ingredients (Text Pad)"
             value={ingredientsText}
-            onChange={(e) => setIngredientsText(e.target.value)}
+            onChange={(e) => handleTextPadChange('ingredients', e.target.value)}
             placeholder="e.g. Ashwagandha, Melatonin"
             labelIcon={
               <div className={styles.tooltipRoot}>
@@ -270,9 +275,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
             }
           />
           <Input
-            label="Benefits"
+            label="Benefits (Text Pad)"
             value={benefitsText}
-            onChange={(e) => setBenefitsText(e.target.value)}
+            onChange={(e) => handleTextPadChange('benefits', e.target.value)}
             placeholder="e.g. Calm mind, Better sleep"
             labelIcon={
               <div className={styles.tooltipRoot}>
@@ -298,6 +303,68 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
               rows={2}
             />
           </div>
+        </div>
+      </section>
+
+      {/* ── Additional Sections ── */}
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <div
+            className={`${styles.sectionIcon} ${styles.sectionIconDetails}`}
+            style={{ backgroundColor: 'var(--color-primary-100)' }}
+          >
+            <Icon
+              icon="solar:checklist-minimalistic-bold"
+              width={18}
+              height={18}
+              style={{ color: 'var(--color-primary-600)' }}
+            />
+          </div>
+          <div className={styles.flexBetween}>
+            <div>
+              <h3 className={styles.sectionTitle}>Custom Sections</h3>
+              <p className={styles.sectionSubtitle}>Add specialized headings like Safety, Usage, etc.</p>
+            </div>
+            <Button variant="secondary" onClick={handleAddSection} type="button">
+              <Icon icon="solar:add-circle-bold" /> Add New Section
+            </Button>
+          </div>
+        </div>
+
+        <div className={styles.additionalSectionsList}>
+          {formData.additionalSections?.map((section, idx) => (
+            <div key={idx} className={styles.additionalSectionCard}>
+              <div className={styles.sectionItemHeader}>
+                <Input
+                  label={`Section ${idx + 1} Heading`}
+                  value={section.title}
+                  onChange={(e) => handleSectionChange(idx, 'title', e.target.value)}
+                  className={styles.sectionTitleInput}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSection(idx)}
+                  className={styles.removeSectionBtn}
+                  title="Remove Section"
+                >
+                  <Icon icon={ICON_TRASH} />
+                </button>
+              </div>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Section Content (Points - One per line)</label>
+                <textarea
+                  className={styles.textarea}
+                  value={section.content.join('\n')}
+                  onChange={(e) => handleSectionChange(idx, 'content', e.target.value)}
+                  placeholder="Point 1&#10;Point 2..."
+                  rows={3}
+                />
+              </div>
+            </div>
+          ))}
+          {(!formData.additionalSections || formData.additionalSections.length === 0) && (
+            <p className={styles.emptyState}>No custom sections added yet.</p>
+          )}
         </div>
       </section>
 
@@ -366,7 +433,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
                 id="supplement-galleryUrls"
                 className={styles.textarea}
                 value={imagesText}
-                onChange={(e) => setImagesText(e.target.value)}
+                onChange={(e) => handleTextPadChange('images', e.target.value)}
                 placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
                 rows={4}
               />

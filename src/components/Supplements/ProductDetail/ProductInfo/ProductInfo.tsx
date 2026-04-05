@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { QuantitySelector, Button, StarRating } from '@/components/common';
 import { formatPrice } from '@/utils/cart.util';
 import type { Supplement } from '@/types/supplement.types';
@@ -17,12 +18,6 @@ interface ProductInfoProps {
   maxQuantity: number;
   error: string | null;
 }
-
-const TRUST_BADGES = [
-  { label: 'FSSAI Approved', icon: '✓' },
-  { label: '100% Herbal', icon: '✓' },
-  { label: 'No Side Effects', icon: '✓' },
-];
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
   supplement,
@@ -88,25 +83,25 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         </>
       )}
       {error && <div className={styles.error}>{error}</div>}
-      {supplement.benefits && supplement.benefits.length > 0 && (
-        <div className={styles.highlights}>
-          <h3 className={styles.highlightsTitle}>Product Highlights</h3>
-          <ul className={styles.highlightsList}>
-            {supplement.benefits.map((benefit) => (
-              <li key={benefit} className={styles.highlightItem}>
-                <span className={styles.checkIcon}>•</span>
-                {benefit}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+
       <div className={styles.trustBadges}>
-        {TRUST_BADGES.map((b) => (
-          <span key={b.label} className={styles.badge}>
-            <span className={styles.badgeIcon}>{b.icon}</span>
-            {b.label}
-          </span>
+        {[
+          { src: '/fssai.png', label: 'FSSAI Approved', width: 42, height: 42 },
+          { src: '/badge.png', label: 'Quality Pure', width: 42, height: 42 },
+          { src: '/safety.png', label: 'No Side Effects', width: 42, height: 42 },
+        ].map((item, idx) => (
+          <div key={idx} className={styles.trustBadgeItem}>
+            <div className={styles.trustIconContainer}>
+              <NextImage
+                src={item.src}
+                alt={item.label}
+                width={item.width}
+                height={item.height}
+                className={styles.trustImage}
+              />
+            </div>
+            <span className={styles.trustLabelText}>{item.label}</span>
+          </div>
         ))}
       </div>
     </div>
