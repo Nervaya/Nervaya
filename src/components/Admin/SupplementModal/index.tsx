@@ -31,7 +31,7 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
   };
 
   return (
-    <AdminModal isOpen={isOpen} onClose={onClose} title={title} maxWidth="540px">
+    <AdminModal isOpen={isOpen} onClose={onClose} title={title} maxWidth="720px">
       <div className={styles.modalContent}>
         <p className={styles.subtitle}>Fill in the details below</p>
         <SupplementForm
@@ -40,7 +40,6 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
           initialData={initialData}
           loading={loading}
           submitLabel={submitLabel}
-          compact
         />
       </div>
     </AdminModal>
