@@ -3,15 +3,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
-import SlotManager from '@/components/Admin/SlotManager';
-import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
+import { WeekCalendar } from '@/components/WeekCalendar';
 import { Therapist } from '@/types/therapist.types';
 import { useLoading } from '@/context/LoadingContext';
-import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
-import { type BreadcrumbItem } from '@/components/common';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -23,20 +20,9 @@ export default function TherapistSlotsPage() {
   const { showLoader, hideLoader } = useLoading();
 
   useEffect(() => {
-    if (loading) {
-      showLoader('Loading therapist information...');
-    } else {
-      hideLoader();
-    }
+    if (loading) showLoader('Loading therapist information...');
+    else hideLoader();
   }, [loading, showLoader, hideLoader]);
-
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Admin', href: '/admin/dashboard' },
-    { label: 'Therapists', href: '/admin/therapists' },
-    { label: 'Manage Slots' },
-  ];
-
-  const handleSlotUpdate = useCallback(() => {}, []);
 
   const fetchTherapist = useCallback(async () => {
     try {
@@ -59,11 +45,12 @@ export default function TherapistSlotsPage() {
 
   if (error || !therapist) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>
+      <div className={styles.errorWrap}>
+        <div className={styles.errorBox}>
+          <Icon icon="solar:danger-triangle-bold" width={32} height={32} />
           <p>{error || 'Therapist not found'}</p>
-          <button onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} />
+          <button onClick={() => router.push('/admin/therapists')} className={styles.errorBtn}>
+            <Icon icon={ICON_ARROW_LEFT} width={14} height={14} />
             Back to Therapists
           </button>
         </div>
@@ -72,22 +59,14 @@ export default function TherapistSlotsPage() {
   }
 
   return (
-    <div className={styles.container}>
-      <PageHeader
-        title="Manage Slots"
-        subtitle={`Therapist: ${therapist.name}`}
-        breadcrumbs={breadcrumbs}
-        actions={
-          <button type="button" onClick={() => router.push('/admin/therapists')} className={styles.backButton}>
-            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-            Back to Therapists
-          </button>
-        }
+    <div className={styles.fullPage}>
+      <WeekCalendar
+        therapistId={therapistId}
+        role="admin"
+        therapistName={therapist.name}
+        sessionDurationMins={therapist.sessionDurationMins || 60}
+        onBack={() => router.push('/admin/therapists')}
       />
-
-      <ConsultingHoursManager therapistId={therapistId} onUpdate={handleSlotUpdate} />
-
-      <SlotManager therapistId={therapistId} onSlotUpdate={handleSlotUpdate} />
     </div>
   );
 }

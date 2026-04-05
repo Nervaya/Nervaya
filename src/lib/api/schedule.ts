@@ -6,6 +6,9 @@ export interface TimeSlot {
   endTime: string;
   isAvailable: boolean;
   isCustomized?: boolean;
+  sessionId?: string;
+  sessionStatus?: 'pending' | 'confirmed' | 'completed' | null;
+  meetLink?: string;
 }
 
 export interface ScheduleByDate {

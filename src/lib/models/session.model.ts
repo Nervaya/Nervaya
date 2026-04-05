@@ -8,6 +8,7 @@ export interface ISession extends Document {
   startTime: string;
   endTime: string;
   status: SessionStatus;
+  meetLink?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,6 +44,10 @@ const sessionSchema = new Schema<ISession>(
       enum: SESSION_STATUS_VALUES,
       default: SESSION_STATUS.PENDING,
       required: true,
+    },
+    meetLink: {
+      type: String,
+      default: '',
     },
   },
   {

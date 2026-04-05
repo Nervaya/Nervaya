@@ -24,13 +24,12 @@ export function minutesToTime(minutes: number): string {
   return `${displayHour}:${String(min).padStart(2, '0')} ${period}`;
 }
 
-export function generateTimeSlotsBetween(startTime: string, endTime: string): string[] {
+export function generateTimeSlotsBetween(startTime: string, endTime: string, slotDuration = 60): string[] {
   const slots: string[] = [];
   const startMinutes = timeToMinutes(startTime);
   const endMinutes = timeToMinutes(endTime);
   const lunchStart = timeToMinutes('12:00 PM');
   const lunchEnd = timeToMinutes('02:00 PM');
-  const slotDuration = 60;
   let minutes = startMinutes;
   while (minutes < endMinutes) {
     const slotEnd = minutes + slotDuration;

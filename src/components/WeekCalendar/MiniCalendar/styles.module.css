@@ -1,0 +1,97 @@
+/* ── Google Calendar mini month picker ── */
+.miniCal {
+  user-select: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted, #64748b);
+  cursor: pointer;
+}
+
+.navBtn:hover {
+  background: var(--color-accent-dim, rgba(124, 58, 237, 0.1));
+}
+
+.monthLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #0f172a);
+}
+
+.dayNames {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 1px;
+}
+
+.dayNameCell {
+  font-size: 0.5625rem;
+  font-weight: 500;
+  color: var(--color-text-dim, #94a3b8);
+  padding: 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.emptyCell {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.dateCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--color-text-primary, #0f172a);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.dateCell:hover {
+  background: var(--color-card-bg-light, #f8fafc);
+}
+
+.today {
+  font-weight: 700;
+  color: var(--color-accent, #7c3aed);
+}
+
+.selected {
+  background: var(--color-accent, #7c3aed) !important;
+  color: #fff !important;
+  font-weight: 500;
+}

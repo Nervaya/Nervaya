@@ -1,0 +1,31 @@
+/* ── Google Calendar time gutter ── */
+.gutter {
+  width: 52px;
+  flex-shrink: 0;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--color-background, #fff);
+}
+
+.gutterHeader {
+  height: 56px;
+  border-bottom: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.hourRow {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 6px;
+}
+
+.hourLabel {
+  font-size: 0.625rem;
+  color: var(--color-text-dim, #94a3b8);
+  transform: translateY(-6px);
+  white-space: nowrap;
+  user-select: none;
+  font-weight: 400;
+}

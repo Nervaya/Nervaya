@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Session from '@/lib/models/session.model';
 import { getSessionById, cancelSession, updateSessionStatus } from '@/lib/services/session.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
@@ -49,6 +50,20 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
     const { id } = await params;
     const body = await req.json();
+
+    // Handle meetLink update (admin/therapist only)
+    if (
+      body.meetLink !== undefined &&
+      (authResult.user.role === ROLES.ADMIN || authResult.user.role === ROLES.THERAPIST)
+    ) {
+      const updated = await Session.findByIdAndUpdate(id, { meetLink: body.meetLink }, { new: true });
+      if (!updated) {
+        return NextResponse.json(errorResponse('Session not found', null, 404), { status: 404 });
+      }
+      if (!body.status) {
+        return NextResponse.json(successResponse('Meet link updated successfully', updated));
+      }
+    }
 
     // Customers can only cancel their own sessions
     if (authResult.user.role === ROLES.CUSTOMER) {

@@ -25,6 +25,8 @@ export async function generateSlotsFromConsultingHours(
     if (consultingHours.length === 0) {
       return { insertedCount: 0, modifiedCount: 0 };
     }
+    const sessionDuration =
+      therapist.sessionDurationMins && therapist.sessionDurationMins > 0 ? therapist.sessionDurationMins : 60;
     const schedules: Array<{
       therapistId: Types.ObjectId;
       date: string;
@@ -39,12 +41,12 @@ export async function generateSlotsFromConsultingHours(
       const dayHours = consultingHours.find((ch) => ch.dayOfWeek === dayOfWeek && ch.isEnabled);
 
       if (dayHours) {
-        const timeSlots = generateTimeSlotsBetween(dayHours.startTime, dayHours.endTime);
+        const timeSlots = generateTimeSlotsBetween(dayHours.startTime, dayHours.endTime, sessionDuration);
         const slots: ITimeSlot[] = [];
         for (let i = 0; i < timeSlots.length; i++) {
           const startTime = timeSlots[i];
           const startMinutes = timeToMinutes(startTime);
-          const endMinutes = startMinutes + 60;
+          const endMinutes = startMinutes + sessionDuration;
           const endTime = minutesToTime(endMinutes);
           slots.push({
             startTime,

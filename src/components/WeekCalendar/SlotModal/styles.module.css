@@ -1,0 +1,244 @@
+/* ── Slot detail / create modal ── */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 2px 0;
+}
+
+.dateDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #0f172a);
+  padding: 8px 12px;
+  background: var(--color-card-bg-light, #f8fafc);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #64748b);
+}
+
+.select {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-text-primary, #0f172a);
+  background: var(--color-background, #fff);
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-accent, #7c3aed);
+  box-shadow: 0 0 0 2px var(--color-accent-dim, rgba(124, 58, 237, 0.1));
+}
+
+.slotInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.timeRange {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #0f172a);
+}
+
+.statusBadge {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.customBadge {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background: var(--color-accent-dim, rgba(124, 58, 237, 0.1));
+  color: var(--color-accent, #7c3aed);
+  border: 1px solid var(--color-indigo-border-light, rgba(79, 70, 229, 0.1));
+}
+
+.lockNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 10px 12px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--color-text-slate-400, #475569);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.primaryBtn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-accent, #7c3aed);
+  cursor: pointer;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  background: var(--color-accent-hover, #6d28d9);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 18px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #0f172a);
+  background: var(--color-background, #fff);
+  cursor: pointer;
+}
+
+.secondaryBtn:hover:not(:disabled) {
+  background: var(--color-card-bg-light, #f8fafc);
+  border-color: var(--color-border-light-hover, #cbd5e1);
+}
+
+.secondaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dangerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 18px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-destructive, #ef4444);
+  background: rgba(239, 68, 68, 0.04);
+  cursor: pointer;
+}
+
+.dangerBtn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.dangerBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bookedNote {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #64748b);
+  padding: 8px 12px;
+  background: var(--color-card-bg-light, #f8fafc);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Meet link section ── */
+.meetLinkSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meetLinkRow {
+  display: flex;
+  gap: 6px;
+}
+
+.meetLinkInput {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-text-primary, #0f172a);
+  background: var(--color-background, #fff);
+}
+
+.meetLinkInput:focus {
+  outline: none;
+  border-color: var(--color-accent, #7c3aed);
+  box-shadow: 0 0 0 2px var(--color-accent-dim, rgba(124, 58, 237, 0.1));
+}
+
+.meetLinkSaveBtn {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-accent, #7c3aed);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.meetLinkSaveBtn:hover:not(:disabled) {
+  background: var(--color-accent-hover, #6d28d9);
+}
+
+.meetLinkSaveBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.meetLinkPreview {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--color-accent, #7c3aed);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.meetLinkPreview:hover {
+  text-decoration: underline;
+}

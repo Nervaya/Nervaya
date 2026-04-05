@@ -1,0 +1,118 @@
+/* ── Synchco-style day column ── */
+.column {
+  flex: 1;
+  min-width: 0;
+  border-left: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.column:first-child {
+  border-left: none;
+}
+
+.dayHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 6px 2px 4px;
+  border-bottom: 1px solid #f0f0f0;
+  height: 56px;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  background: var(--color-background, #fff);
+  z-index: 2;
+}
+
+.dayName {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-text-dim, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.today .dayName {
+  color: var(--color-accent, #7c3aed);
+}
+
+.dayNum {
+  font-size: 1.375rem;
+  font-weight: 400;
+  color: var(--color-text-primary, #0f172a);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.todayNum {
+  background: var(--color-accent, #7c3aed) !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.slotsArea {
+  position: relative;
+  cursor: pointer;
+  flex: 1;
+}
+
+.slotsArea:focus-visible {
+  outline: 2px solid var(--color-accent, #7c3aed);
+  outline-offset: -2px;
+}
+
+.hourLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #f0f0f0;
+  pointer-events: none;
+}
+
+.halfHourLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #f0f0f0;
+  opacity: 0.35;
+  pointer-events: none;
+  border-top: 1px dashed #e5e5e5;
+  background: none;
+}
+
+.currentTime {
+  position: absolute;
+  left: -1px;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.currentTimeDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-destructive, #ef4444);
+  margin-left: -5px;
+  flex-shrink: 0;
+}
+
+.currentTimeLine {
+  height: 2px;
+  flex: 1;
+  background: var(--color-destructive, #ef4444);
+}
