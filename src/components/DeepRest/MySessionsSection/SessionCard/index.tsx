@@ -5,7 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
-import { ICON_HEADPHONES, ICON_CLOCK } from '@/constants/icons';
+import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
 import { Badge } from '@/components/common';
 import styles from './SessionCard.module.css';
@@ -21,9 +21,14 @@ interface SessionCardProps {
   requestError?: string;
 }
 
+function isDriveUrl(url: string): boolean {
+  return /drive\.google\.com/i.test(url);
+}
+
 export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, isRequesting, requestError }) => {
   const videoUrl = session.assignedVideoUrl;
   const isReady = Boolean(videoUrl);
+  const isExternalLink = videoUrl ? isDriveUrl(videoUrl) : false;
   const isPendingAssessment = !session.completedAt;
   const isPreparing = session.completedAt && !session.assignedVideoUrl;
   const hasRequestedReSession = Boolean(session.reSessionRequestedAt);
@@ -51,7 +56,13 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
       </div>
 
       <div className={styles.cardContent}>
-        {isReady ? (
+        {isReady && isExternalLink ? (
+          <a href={videoUrl ?? ''} target="_blank" rel="noopener noreferrer" className={styles.externalSessionLink}>
+            <Icon icon={ICON_PLAY} width={48} height={48} className={styles.externalSessionIcon} />
+            <span className={styles.externalSessionText}>Open Your Session</span>
+            <span className={styles.externalSessionHint}>Opens in a new tab</span>
+          </a>
+        ) : isReady ? (
           <div className={styles.videoContainer}>
             {hasMounted && (
               <VideoPlayerDynamic

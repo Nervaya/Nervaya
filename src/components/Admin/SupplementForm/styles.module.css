@@ -19,6 +19,13 @@
   transition: box-shadow 0.25s ease;
 }
 
+@media (max-width: 768px) {
+  .section {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+}
+
 .section:hover {
   box-shadow:
     0 2px 6px rgba(15, 23, 42, 0.06),
@@ -91,6 +98,13 @@
   align-items: start;
 }
 
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+}
+
 .threeCol {
   grid-template-columns: repeat(3, 1fr);
 }
@@ -102,11 +116,6 @@
 }
 
 @media (max-width: 768px) {
-  .formGrid {
-    grid-template-columns: 1fr;
-    gap: 0.875rem;
-  }
-
   .threeCol {
     grid-template-columns: 1fr;
   }
@@ -125,6 +134,12 @@
   align-items: start;
 }
 
+@media (max-width: 768px) {
+  .mediaGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .mediaSecondary {
   display: flex;
   flex-direction: column;
@@ -138,12 +153,6 @@
   color: #94a3b8;
   margin: 4px 0 0 0;
   line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-  .mediaGrid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ── Field group ── */
@@ -277,28 +286,7 @@
   }
 }
 
-/* ── Checkbox ── */
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-  color: #0f172a;
-  user-select: none;
-}
-
-.checkbox {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  accent-color: #7c3aed;
-  cursor: pointer;
-}
-
-/* ── Toggle switch (optional upgrade from checkbox) ── */
+/* ── Toggle switch ── */
 
 .toggleWrapper {
   display: flex;
@@ -396,11 +384,4 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none !important;
-}
-
-@media (max-width: 768px) {
-  .section {
-    padding: 1.25rem;
-    border-radius: 12px;
-  }
 }

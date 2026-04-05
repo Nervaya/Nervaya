@@ -2,12 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { Supplement, SupplementFormData } from '@/types/supplement.types';
 import SupplementForm from '@/components/Admin/SupplementForm';
-import { type BreadcrumbItem, StatusState } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import { StatusState, type BreadcrumbItem } from '@/components/common';
+import { useLoading } from '@/context/LoadingContext';
 import api from '@/lib/axios';
+import { toast } from 'sonner';
 import styles from './styles.module.css';
 
 export default function EditSupplementPage() {
@@ -26,19 +30,12 @@ export default function EditSupplementPage() {
     }
   }, [loading, showLoader, hideLoader]);
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Admin', href: '/admin/dashboard' },
-    { label: 'Supplements', href: '/admin/supplements' },
-    { label: 'Edit' },
-  ];
-
   const handleSubmit = async (data: SupplementFormData) => {
     try {
       setError(null);
-      const response = (await api.put(`/supplements/${params.id}`, data)) as {
-        success: boolean;
-      };
+      const response = (await api.put(`/supplements/${params.id}`, data)) as { success: boolean };
       if (response.success) {
+        toast.success('Supplement updated successfully');
         router.push('/admin/supplements');
       } else {
         setError('Failed to update supplement');
@@ -73,6 +70,19 @@ export default function EditSupplementPage() {
     }
   }, [params.id]);
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Supplements', href: '/admin/supplements' },
+    { label: 'Edit' },
+  ];
+
+  const backAction = (
+    <Link href="/admin/supplements" className={styles.backLink}>
+      <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+      Back to Supplements
+    </Link>
+  );
+
   if (loading) {
     return null;
   }
@@ -80,7 +90,12 @@ export default function EditSupplementPage() {
   if (error || !supplement) {
     return (
       <div className={styles.container}>
-        <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
+        <PageHeader
+          title="Edit Supplement"
+          subtitle="Update supplement information"
+          breadcrumbs={breadcrumbs}
+          actions={backAction}
+        />
         <StatusState
           type="error"
           title={error ? 'Error' : 'Not Found'}
@@ -97,7 +112,12 @@ export default function EditSupplementPage() {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="Edit Supplement" subtitle="Update supplement information" breadcrumbs={breadcrumbs} />
+      <PageHeader
+        title="Edit Supplement"
+        subtitle="Update supplement information"
+        breadcrumbs={breadcrumbs}
+        actions={backAction}
+      />
       {error && <div className={styles.error}>{error}</div>}
       <SupplementForm
         key={supplement._id}

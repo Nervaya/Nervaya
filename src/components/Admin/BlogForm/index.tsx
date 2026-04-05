@@ -1,24 +1,33 @@
 'use client';
 
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
+import { ICON_LOADING } from '@/constants/icons';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
-import { quillModules, quillFormats } from '@/lib/constants/blogEditor.constants';
+import { BasicInfoSection } from './BasicInfoSection';
+import { CtaSection } from './CtaSection';
+import { BlogRecommendationPicker } from '@/components/Admin/BlogRecommendationPicker';
+import { ContentEditor } from './ContentEditor';
+import { SeoSection } from './SeoSection';
+import { TagInput } from './TagInput';
 import styles from './styles.module.css';
 
 export interface BlogFormState {
   title: string;
+  description: string;
   author: string;
   coverImage: string;
+  metaTitle: string;
+  metaDescription: string;
+  metaImage: string;
+  ctaText: string;
+  ctaLink: string;
   isPublished: boolean;
 }
 
 interface BlogFormProps {
   formData: BlogFormState;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   content: string;
   onContentChange: (value: string) => void;
   tags: string[];
@@ -29,6 +38,10 @@ interface BlogFormProps {
   onTagKeyDown: (e: React.KeyboardEvent) => void;
   onImageUpload: (url: string) => void;
   onImageLoadingChange?: (loading: boolean) => void;
+  onMetaImageUpload: (url: string) => void;
+  recommendedBlogs: string[];
+  onRecommendedChange: (ids: string[]) => void;
+  currentBlogId?: string;
   onSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
   submitLabel: string;
@@ -49,21 +62,16 @@ export default function BlogForm({
   onTagKeyDown,
   onImageUpload,
   onImageLoadingChange,
+  onMetaImageUpload,
+  recommendedBlogs,
+  onRecommendedChange,
+  currentBlogId,
   onSubmit,
   isSubmitting,
   submitLabel,
   error,
   showPublished = false,
 }: BlogFormProps) {
-  const ReactQuill = useMemo(
-    () =>
-      dynamic(() => import('react-quill-new'), {
-        ssr: false,
-        loading: () => <div className={styles.editorLoading}>Loading editor...</div>,
-      }) as typeof import('react-quill-new').default,
-    [],
-  );
-
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       {error && (
@@ -72,123 +80,78 @@ export default function BlogForm({
         </div>
       )}
 
-      <div className={styles.formGrid}>
-        <div className={styles.mainColumn}>
-          <div className={styles.formGroup}>
-            <label htmlFor="title" className={styles.label}>
-              Title <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={onInputChange}
-              className={styles.input}
-              placeholder="Enter blog title..."
-              required
-            />
-          </div>
+      <BasicInfoSection
+        title={formData.title}
+        author={formData.author}
+        description={formData.description}
+        onInputChange={onInputChange}
+      />
 
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
-              Content <span className={styles.required}>*</span>
-            </label>
-            <p className={styles.contentTip}>
-              <strong>Tip:</strong> Press <kbd>Enter</kbd> to start a new paragraph. Keep paragraphs short (3–5
-              sentences) so readers get a clear break. The editor width matches the blog view so you see where lines
-              end.
-            </p>
-            <div className={styles.editorReadingWidth}>
-              <div className={styles.editorWrapper}>
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={onContentChange}
-                  modules={quillModules}
-                  formats={quillFormats}
-                  placeholder="Write your blog content..."
-                  className={styles.editor}
-                />
-              </div>
-            </div>
-          </div>
+      {/* Row 3: Cover Image + Tags + Published */}
+      <div className={styles.metaRow}>
+        <div className={styles.metaBlock}>
+          <label className={styles.label}>Cover Image</label>
+          <ImageUpload
+            onUpload={onImageUpload}
+            onLoadingChange={onImageLoadingChange}
+            initialUrl={formData.coverImage}
+            label="Upload Cover"
+            compact
+            tone="light"
+          />
         </div>
-
-        <div className={styles.sideColumn}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Cover Image</label>
-            <ImageUpload
-              onUpload={onImageUpload}
-              onLoadingChange={onImageLoadingChange}
-              initialUrl={formData.coverImage}
-              label="Upload Cover"
-              compact
-              tone="light"
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="author" className={styles.label}>
-              Author <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={onInputChange}
-              className={styles.input}
-              placeholder="Author name..."
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Tags</label>
-            <div className={styles.tagInputWrapper}>
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => onTagInputChange(e.target.value)}
-                onKeyDown={onTagKeyDown}
-                className={styles.input}
-                placeholder="Add a tag..."
-              />
-              <button type="button" onClick={onAddTag} className={styles.addTagButton}>
-                <Icon icon={ICON_ADD} width={20} height={20} />
-              </button>
-            </div>
-            {tags.length > 0 && (
-              <div className={styles.tagsList}>
-                {tags.map((tag) => (
-                  <span key={tag} className={styles.tag}>
-                    {tag}
-                    <button type="button" onClick={() => onRemoveTag(tag)} className={styles.removeTagButton}>
-                      <Icon icon={ICON_X} width={16} height={16} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
+        <div className={styles.metaBlock}>
+          <label className={styles.label}>Tags</label>
+          <TagInput
+            tags={tags}
+            tagInput={tagInput}
+            onTagInputChange={onTagInputChange}
+            onAddTag={onAddTag}
+            onRemoveTag={onRemoveTag}
+            onTagKeyDown={onTagKeyDown}
+          />
           {showPublished && (
-            <div className={styles.formGroup}>
-              <label className={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  name="isPublished"
-                  checked={formData.isPublished}
-                  onChange={onInputChange}
-                  className={styles.checkbox}
-                />
-                <span>Published</span>
-              </label>
-            </div>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="isPublished"
+                checked={formData.isPublished}
+                onChange={onInputChange}
+                className={styles.checkbox}
+              />
+              <span>Published</span>
+            </label>
           )}
         </div>
       </div>
+
+      {/* Row 4: Recommended Blogs */}
+      <div className={styles.formGroup}>
+        <label className={styles.label}>Recommended Blogs</label>
+        <BlogRecommendationPicker
+          selectedIds={recommendedBlogs}
+          onChange={onRecommendedChange}
+          currentBlogId={currentBlogId}
+        />
+      </div>
+
+      {/* Row 5: Content Editor (full width) */}
+      <ContentEditor content={content} onChange={onContentChange} />
+
+      {/* Row 6: CTA Settings */}
+      <CtaSection ctaText={formData.ctaText} ctaLink={formData.ctaLink} onInputChange={onInputChange} />
+
+      {/* Row 7: SEO Settings (collapsible) */}
+      <SeoSection
+        metaTitle={formData.metaTitle}
+        metaDescription={formData.metaDescription}
+        metaImage={formData.metaImage}
+        blogTitle={formData.title}
+        blogDescription={formData.description}
+        coverImage={formData.coverImage}
+        onInputChange={onInputChange}
+        onMetaImageUpload={onMetaImageUpload}
+      />
 
       <div className={styles.formActions}>
         <Link href="/admin/blogs" className={styles.cancelButton}>

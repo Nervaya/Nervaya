@@ -7,9 +7,10 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
 import BlogForm from '@/components/Admin/BlogForm';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import { type BreadcrumbItem } from '@/components/common';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
-import 'react-quill-new/dist/quill.snow.css';
 
 export default function AddBlogPage() {
   const router = useRouter();
@@ -18,15 +19,22 @@ export default function AddBlogPage() {
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
+    description: '',
     author: '',
     coverImage: '',
+    metaTitle: '',
+    metaDescription: '',
+    metaImage: '',
+    ctaText: '',
+    ctaLink: '',
     isPublished: false,
   });
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
+  const [recommendedBlogs, setRecommendedBlogs] = useState<string[]>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -36,6 +44,10 @@ export default function AddBlogPage() {
 
   const handleImageUpload = (url: string) => {
     setFormData((prev) => ({ ...prev, coverImage: url }));
+  };
+
+  const handleMetaImageUpload = (url: string) => {
+    setFormData((prev) => ({ ...prev, metaImage: url }));
   };
 
   const addTag = () => {
@@ -66,7 +78,7 @@ export default function AddBlogPage() {
       if (!content.trim() || content === '<p><br></p>') throw new Error('Content is required');
       if (!formData.author.trim()) throw new Error('Author is required');
 
-      const result = await blogsApi.create({ ...formData, content, tags });
+      const result = await blogsApi.create({ ...formData, content, tags, recommendedBlogs });
       if (!result.success) throw new Error(result.message || 'Failed to create blog');
       toast.success('Blog created successfully');
       router.push('/admin/blogs');
@@ -79,18 +91,25 @@ export default function AddBlogPage() {
     }
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Blogs', href: '/admin/blogs' },
+    { label: 'Create New' },
+  ];
+
   return (
     <div className={styles.container}>
-      <section className={styles.header}>
-        <div className={styles.headerText}>
-          <h1 className={styles.title}>Create New Blog</h1>
-          <p className={styles.subtitle}>Add a new blog post to your platform.</p>
-        </div>
-        <Link href="/admin/blogs" className={styles.backLink}>
-          <Icon icon={ICON_ARROW_LEFT} aria-hidden />
-          Back to Blogs
-        </Link>
-      </section>
+      <PageHeader
+        title="Create New Blog"
+        subtitle="Add a new blog post to your platform."
+        breadcrumbs={breadcrumbs}
+        actions={
+          <Link href="/admin/blogs" className={styles.backLink}>
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            Back to Blogs
+          </Link>
+        }
+      />
 
       <BlogForm
         formData={formData}
@@ -105,6 +124,9 @@ export default function AddBlogPage() {
         onTagKeyDown={handleTagKeyDown}
         onImageUpload={handleImageUpload}
         onImageLoadingChange={setIsImageUploading}
+        onMetaImageUpload={handleMetaImageUpload}
+        recommendedBlogs={recommendedBlogs}
+        onRecommendedChange={setRecommendedBlogs}
         onSubmit={handleSubmit}
         isSubmitting={isSubmitting || isImageUploading}
         submitLabel="Create Blog"

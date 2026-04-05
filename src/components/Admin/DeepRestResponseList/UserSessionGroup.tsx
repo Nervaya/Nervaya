@@ -191,7 +191,7 @@ const UserSessionGroup = ({
                         rel="noopener noreferrer"
                         className={styles.videoLink}
                       >
-                        <span className={styles.videoIcon}>📹</span> View Assigned Video
+                        <span className={styles.videoIcon}>📹</span> View Assigned Session
                       </a>
                     </div>
                   )}

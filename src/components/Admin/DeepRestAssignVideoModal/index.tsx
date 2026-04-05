@@ -70,13 +70,13 @@ const DeepRestAssignVideoModal = ({
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <label htmlFor="video-url" className={styles.label}>
-            Video URL (YouTube, Vimeo, or direct link)
+            Session URL (Google Drive, YouTube, Vimeo, or direct link)
           </label>
           <input
             id="video-url"
             type="url"
             className={styles.input}
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder="https://drive.google.com/file/d/... or YouTube link"
             value={videoUrl ?? ''}
             onChange={(e) => setVideoUrl(e.target.value ?? '')}
             required

@@ -7,6 +7,7 @@ import { type BreadcrumbItem } from '@/components/common';
 import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
 import { blogsApi } from '@/lib/api/blogs';
+import { getPlainExcerpt } from '@/lib/utils/string.util';
 import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
@@ -96,10 +97,7 @@ export default function BlogListPage() {
     });
   };
 
-  const getExcerpt = (content: string, maxLength: number = 150) => {
-    const plainText = content.replace(/<[^>]*>/g, '');
-    return plainText.length > maxLength ? `${plainText.substring(0, maxLength)}...` : plainText;
-  };
+  const getExcerpt = (content: string, maxLength?: number) => getPlainExcerpt(content, maxLength);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Blog' }];
 

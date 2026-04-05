@@ -1,36 +1,48 @@
 .container {
-  padding: 0;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 2rem 0;
-  color: var(--color-foreground);
-}
-
-.loading,
-.error {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--color-text-muted);
-  font-size: 1.1rem;
-}
-
-.error {
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 10px;
-}
-
-.loaderWrapper {
+  width: 100%;
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+
+.backLink {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #d8e0ee;
+  background: #ffffff;
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.backLink:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  color: #5b21b6;
+  transform: translateX(-1px);
+}
+
+.backLink svg {
+  width: 17px;
+  height: 17px;
+}
+
+.error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .backButton {
@@ -53,7 +65,7 @@
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 0;
+  .backLink {
+    width: 100%;
   }
 }

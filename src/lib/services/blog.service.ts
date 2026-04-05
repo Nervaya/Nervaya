@@ -6,22 +6,36 @@ import { Types } from 'mongoose';
 
 export interface CreateBlogData {
   title: string;
+  description?: string;
   content: string;
   coverImage?: string;
   author: string;
   tags?: string[];
+  recommendedBlogs?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaImage?: string;
   readTime?: number;
+  ctaText?: string;
+  ctaLink?: string;
   isPublished?: boolean;
   slug?: string;
 }
 
 export interface UpdateBlogData {
   title?: string;
+  description?: string;
   content?: string;
   coverImage?: string;
   author?: string;
   tags?: string[];
+  recommendedBlogs?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaImage?: string;
   readTime?: number;
+  ctaText?: string;
+  ctaLink?: string;
   isPublished?: boolean;
   slug?: string;
 }

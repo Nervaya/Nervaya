@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import { Pagination, StatusState } from '@/components/common';
+import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import { useLoading } from '@/context/LoadingContext';
 import { BlogListCard } from '@/components/Admin/BlogList';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
@@ -108,6 +109,8 @@ export default function AdminBlogsPage() {
     });
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Blogs' }];
+
   return (
     <div className={styles.container}>
       <ConfirmDeleteDialog
@@ -117,20 +120,21 @@ export default function AdminBlogsPage() {
         onClose={() => setConfirmDelete(null)}
         isDeleting={isDeleting}
       />
-      <section className={styles.header}>
-        <div className={styles.headerText}>
-          <h1 className={styles.title}>Blogs</h1>
-          <p className={styles.subtitle}>Manage blog posts, drafts, and publishing workflow.</p>
-          <div className={styles.stats}>
-            <span className={styles.statPill}>{pagination.total} total posts</span>
-            {searchQuery ? <span className={styles.statHint}>Filtering: &quot;{searchQuery}&quot;</span> : null}
-          </div>
-        </div>
-        <Link href="/admin/blogs/add" className={styles.addButton}>
-          <Icon icon={ICON_ADD} aria-hidden />
-          New Blog
-        </Link>
-      </section>
+      <PageHeader
+        title="Blogs"
+        subtitle="Manage blog posts, drafts, and publishing workflow."
+        breadcrumbs={breadcrumbs}
+        actions={
+          <Link href="/admin/blogs/add" className={styles.addButton}>
+            <Icon icon={ICON_ADD} aria-hidden />
+            New Blog
+          </Link>
+        }
+      />
+      <div className={styles.stats}>
+        <span className={styles.statPill}>{pagination.total} total posts</span>
+        {searchQuery ? <span className={styles.statHint}>Filtering: &quot;{searchQuery}&quot;</span> : null}
+      </div>
       {error && <div className={styles.error}>{error}</div>}
       <form onSubmit={handleSearchSubmit} className={styles.filters}>
         <label className={styles.searchField}>
