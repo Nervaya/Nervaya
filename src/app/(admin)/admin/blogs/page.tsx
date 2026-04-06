@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import { GlobalLoader, Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { useLoading } from '@/context/LoadingContext';
 import { BlogListCard } from '@/components/Admin/BlogList';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import { toast } from 'sonner';
@@ -36,16 +35,6 @@ export default function AdminBlogsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; title: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader('Loading blogs');
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   const fetchBlogs = useCallback(async (page: number, search: string) => {
     try {
       setLoading(true);
@@ -110,6 +99,25 @@ export default function AdminBlogsPage() {
   };
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Blogs' }];
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <PageHeader
+          title="Blogs"
+          subtitle="Manage blog posts, drafts, and publishing workflow."
+          breadcrumbs={breadcrumbs}
+          actions={
+            <Link href="/admin/blogs/add" className={styles.addButton}>
+              <Icon icon={ICON_ADD} aria-hidden />
+              New Blog
+            </Link>
+          }
+        />
+        <GlobalLoader label="Loading blogs..." />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

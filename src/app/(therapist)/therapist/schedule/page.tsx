@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
-import { type BreadcrumbItem } from '@/components/common';
+import { type BreadcrumbItem, GlobalLoader } from '@/components/common';
 import { useTherapist } from '@/context/TherapistContext';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
@@ -14,15 +12,6 @@ import styles from './styles.module.css';
 export default function TherapistSchedulePage() {
   const router = useRouter();
   const { profile, loading, error } = useTherapist();
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
   const therapistId = profile?._id?.toString() || null;
 
   const breadcrumbs: BreadcrumbItem[] = [
@@ -30,6 +19,17 @@ export default function TherapistSchedulePage() {
     { label: 'Dashboard', href: '/therapist/dashboard' },
     { label: 'Set your dates' },
   ];
+
+  if (loading) {
+    return (
+      <Sidebar hideGlobalBreadcrumbs>
+        <div className={containerStyles.container}>
+          <PageHeader title="Set your dates" subtitle="Manage your availability" breadcrumbs={breadcrumbs} />
+          <GlobalLoader label="Loading schedule..." />
+        </div>
+      </Sidebar>
+    );
+  }
 
   if (error || !therapistId) {
     return (

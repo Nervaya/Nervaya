@@ -6,8 +6,6 @@ import { ICON_DISCOUNT } from '@/constants/icons';
 import { therapistsApi } from '@/lib/api/therapists';
 import PromoCodeInput from '../PromoCodeInput';
 import styles from './styles.module.css';
-import { Therapist } from '@/types/therapist.types';
-
 export interface BookingModalFooterProps {
   selectedSlot: string | null;
   booking: boolean;
@@ -34,7 +32,6 @@ export function BookingModalFooter({
   const [showPromo, setShowPromo] = useState(false);
   const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount: number } | null>(null);
   const [promoError, setPromoError] = useState<string | null>(null);
-  const [_therapist, setTherapist] = useState<Therapist | null>(null);
   const [sessionFee, setSessionFee] = useState<number>(propSessionFee || 0);
 
   useEffect(() => {
@@ -43,7 +40,6 @@ export function BookingModalFooter({
         try {
           const response = await therapistsApi.getById(therapistId);
           if (response.success && response.data) {
-            setTherapist(response.data);
             setSessionFee(response.data.sessionFee || 0);
           }
         } catch {

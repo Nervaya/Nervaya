@@ -7,8 +7,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import BlogForm from '@/components/Admin/BlogForm';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { type BreadcrumbItem } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader, type BreadcrumbItem } from '@/components/common';
 import { blogsApi } from '@/lib/api/blogs';
 import { toast } from 'sonner';
 import styles from '../../add/styles.module.css';
@@ -40,18 +39,6 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [recommendedBlogs, setRecommendedBlogs] = useState<string[]>([]);
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isLoading) {
-      showLoader('Loading blog details...');
-    } else if (isSubmitting || isImageUploading) {
-      showLoader(isImageUploading ? 'Uploading image...' : 'Saving changes...');
-    } else {
-      hideLoader();
-    }
-  }, [isLoading, isSubmitting, isImageUploading, showLoader, hideLoader]);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -141,15 +128,30 @@ export default function EditBlogPage({ params }: EditBlogPageProps) {
     }
   };
 
-  if (isLoading) {
-    return null;
-  }
-
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
     { label: 'Blogs', href: '/admin/blogs' },
     { label: 'Edit' },
   ];
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <PageHeader
+          title="Edit Blog"
+          subtitle="Update blog post content and settings."
+          breadcrumbs={breadcrumbs}
+          actions={
+            <Link href="/admin/blogs" className={styles.backLink}>
+              <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+              Back to Blogs
+            </Link>
+          }
+        />
+        <GlobalLoader label="Loading blog details..." />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

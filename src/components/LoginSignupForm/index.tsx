@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
 import {
   AUTH_FORM_MODE,
@@ -17,7 +17,6 @@ import { LoginForm } from './LoginForm';
 import { SignupForm } from './SignupForm';
 import styles from './styles.module.css';
 import { IMAGES } from '@/utils/imageConstants';
-import { useLoading } from '@/context/LoadingContext';
 import { useZohoLead } from '@/hooks/useZohoLead';
 
 export interface LoginSignupFormProps {
@@ -47,16 +46,6 @@ const LoginSignupForm: React.FC<LoginSignupFormProps> = ({ initialMode = AUTH_FO
     handleSignupSubmit,
     handleInputChange,
   } = useAuthForm({ initialMode, returnUrl });
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   const onLoginSubmit = useCallback(
     async (e: React.FormEvent) => {

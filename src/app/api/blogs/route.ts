@@ -89,6 +89,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
+    const { title, content, author } = body;
+    if (!title || typeof title !== 'string' || !title.trim()) {
+      return NextResponse.json(errorResponse('Title is required', null, 400), { status: 400 });
+    }
+    if (!content || typeof content !== 'string' || !content.trim()) {
+      return NextResponse.json(errorResponse('Content is required', null, 400), { status: 400 });
+    }
+    if (!author || typeof author !== 'string' || !author.trim()) {
+      return NextResponse.json(errorResponse('Author is required', null, 400), { status: 400 });
+    }
+
     const blog = await createBlog(body);
     return NextResponse.json(successResponse('Blog created successfully', blog, 201), { status: 201 });
   } catch (error) {

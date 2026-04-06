@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import type { PromoCode } from '@/types/supplement.types';
 import StatusState from '@/components/common/StatusState';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import styles from './styles.module.css';
 
@@ -40,15 +40,6 @@ const PromoCodeList: React.FC<PromoCodeListProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; code: string } | null>(null);
-  const { showLoader, hideLoader } = useLoading();
-
-  React.useEffect(() => {
-    if (loading) {
-      showLoader('Loading promo codes...');
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   const filtered = promoCodes.filter((p) => p.code.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -60,7 +51,7 @@ const PromoCodeList: React.FC<PromoCodeListProps> = ({
   };
 
   if (loading) {
-    return null;
+    return <GlobalLoader label="Loading promo codes..." />;
   }
 
   return (

@@ -66,9 +66,9 @@ const sleepAssessmentQuestionSchema = new Schema<ISleepAssessmentQuestion>(
       type: [questionOptionSchema],
       default: [],
       validate: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        validator: function (this: any, options: IQuestionOption[]) {
-          if (this.questionType === 'text') {
+        validator: function (this: unknown, options: IQuestionOption[]) {
+          const doc = this as Record<string, unknown>;
+          if (doc.questionType === 'text') {
             return true;
           }
           return options.length >= 2;

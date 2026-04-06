@@ -111,8 +111,11 @@ export async function getAllBlogsPaginated(
     const filter: Record<string, unknown> = {};
 
     if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim().replace(/\s+/g, ' '), 'i');
-      filter.$or = [{ title: searchRegex }, { author: searchRegex }];
+      const escaped = search
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      filter.$or = [{ title: { $regex: escaped, $options: 'i' } }, { author: { $regex: escaped, $options: 'i' } }];
     }
 
     const skip = (Math.max(1, page) - 1) * limit;
@@ -172,8 +175,15 @@ export async function getPublishedBlogsPaginated(
     }
 
     if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim().replace(/\s+/g, ' '), 'i');
-      filter.$or = [{ title: searchRegex }, { author: searchRegex }, { content: searchRegex }];
+      const escaped = search
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      filter.$or = [
+        { title: { $regex: escaped, $options: 'i' } },
+        { author: { $regex: escaped, $options: 'i' } },
+        { content: { $regex: escaped, $options: 'i' } },
+      ];
     }
 
     const skip = (Math.max(1, page) - 1) * limit;

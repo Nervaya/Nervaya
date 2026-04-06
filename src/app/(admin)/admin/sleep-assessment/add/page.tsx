@@ -7,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import { Dropdown } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType } from '@/types/sleepAssessment.types';
 
@@ -26,16 +25,6 @@ export default function AddQuestionPage() {
     questionType: 'single_choice' as QuestionType,
     order: 1,
   });
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isSubmitting) {
-      showLoader('Creating question...');
-    } else {
-      hideLoader();
-    }
-  }, [isSubmitting, showLoader, hideLoader]);
 
   const [options, setOptions] = useState<IQuestionOption[]>([
     { id: '1', label: '', value: '' },

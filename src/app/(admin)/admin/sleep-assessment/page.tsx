@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -18,16 +18,6 @@ export default function AdminSleepAssessmentPage() {
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   const fetchQuestions = useCallback(async () => {
     try {
       const result = await sleepAssessmentApi.getQuestions(true);
@@ -142,6 +132,14 @@ export default function AdminSleepAssessmentPage() {
   };
 
   const currentQuestion = questions[currentIndex];
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <GlobalLoader label="Loading questions..." />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container} ref={containerRef}>

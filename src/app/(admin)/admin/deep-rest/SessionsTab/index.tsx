@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import DeepRestResponseList from '@/components/Admin/DeepRestResponseList';
 import { deepRestQuestionsApi } from '@/lib/api/deepRestQuestions';
 import { useAdminDeepRestResponses, useAssignDeepRestVideo } from '@/queries/deepRest/useDeepRest';
@@ -15,16 +15,7 @@ export default function SessionsTab() {
   const [responseQuestions, setResponseQuestions] = useState<ISleepAssessmentQuestion[]>([]);
   const [responseQuestionsLoading, setResponseQuestionsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const { showLoader, hideLoader } = useLoading();
   const isLoadingData = isLoading || responseQuestionsLoading;
-
-  useEffect(() => {
-    if (isLoadingData) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [isLoadingData, showLoader, hideLoader]);
 
   const loadResponseQuestions = useCallback(async () => {
     try {
@@ -68,39 +59,45 @@ export default function SessionsTab() {
 
   return (
     <div>
-      {!isLoadingData && !error && (
-        <div className={styles.controlsContainer}>
-          <div className={styles.searchWrapper}>
-            <Input
-              label="Search Users"
-              placeholder="Search by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              compact
-              variant="light"
-            />
-          </div>
-        </div>
-      )}
+      {isLoadingData ? (
+        <GlobalLoader label="Loading sessions..." />
+      ) : (
+        <>
+          {!error && (
+            <div className={styles.controlsContainer}>
+              <div className={styles.searchWrapper}>
+                <Input
+                  label="Search Users"
+                  placeholder="Search by name or email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  compact
+                  variant="light"
+                />
+              </div>
+            </div>
+          )}
 
-      {!isLoadingData && error && (
-        <div className={styles.errorState}>
-          <p className={styles.errorText}>Failed to load responses.</p>
-          <button
-            type="button"
-            className={styles.retryBtn}
-            onClick={() => {
-              refetch();
-              loadResponseQuestions();
-            }}
-          >
-            Retry
-          </button>
-        </div>
-      )}
+          {error && (
+            <div className={styles.errorState}>
+              <p className={styles.errorText}>Failed to load responses.</p>
+              <button
+                type="button"
+                className={styles.retryBtn}
+                onClick={() => {
+                  refetch();
+                  loadResponseQuestions();
+                }}
+              >
+                Retry
+              </button>
+            </div>
+          )}
 
-      {!isLoadingData && !error && (
-        <DeepRestResponseList responses={filteredResponses} questions={responseQuestions} onAssign={handleAssign} />
+          {!error && (
+            <DeepRestResponseList responses={filteredResponses} questions={responseQuestions} onAssign={handleAssign} />
+          )}
+        </>
       )}
     </div>
   );

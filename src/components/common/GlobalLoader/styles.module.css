@@ -30,35 +30,6 @@
   min-height: 0;
 }
 
-/* For absolute blocking overlay if needed - we'll only use this for global blocking operations */
-.fixedOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: rgba(248, 250, 252, 0.75);
-  backdrop-filter: blur(2px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: all; /* Blocking interaction during overlay */
-}
-
-/* Sidebar aware positioning for fixed overlay if used */
-:global(body.sidebar-layout) .fixedOverlay {
-  left: 280px;
-  width: calc(100% - 280px);
-}
-
-:global(body.sidebar-layout.sidebar-collapsed) .fixedOverlay {
-  left: 88px;
-  width: calc(100% - 88px);
-}
-
 .shell {
   width: var(--loader-size);
   height: var(--loader-size);

@@ -66,9 +66,9 @@ const driftOffQuestionSchema = new Schema<IDriftOffQuestion>(
       type: [driftOffQuestionOptionSchema],
       default: [],
       validate: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        validator: function (this: any, options: IDriftOffQuestionOption[]) {
-          if (this.questionType === 'text') {
+        validator: function (this: unknown, options: IDriftOffQuestionOption[]) {
+          const doc = this as Record<string, unknown>;
+          if (doc.questionType === 'text') {
             return true;
           }
           return options.length >= 2;

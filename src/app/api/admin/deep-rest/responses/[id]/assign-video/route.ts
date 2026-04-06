@@ -18,7 +18,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json(errorResponse('videoUrl is required', null, 400), { status: 400 });
     }
 
-    const updated = await assignVideo(id, videoUrl.trim());
+    const trimmedUrl = videoUrl.trim();
+    if (!/^https?:\/\//i.test(trimmedUrl)) {
+      return NextResponse.json(errorResponse('videoUrl must be a valid HTTP or HTTPS URL', null, 400), { status: 400 });
+    }
+
+    const updated = await assignVideo(id, trimmedUrl);
     return NextResponse.json(successResponse('Video assigned successfully', updated));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);

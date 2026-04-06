@@ -9,7 +9,6 @@ import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import { Toaster } from 'sonner';
 
 import { SidebarProvider } from '@/context/SidebarContext';
-import { LoadingProvider } from '@/context/LoadingContext';
 
 const Navbar = dynamic(() => import('@/components/Navbar'), {
   ssr: true,
@@ -24,26 +23,24 @@ export default function Providers({ children }: ProvidersProps) {
     <AuthProvider>
       <AuthGuard>
         <CartProvider>
-          <LoadingProvider>
-            <SidebarProvider>
-              <ScrollToTop />
-              <Navbar />
-              {children}
-              <Toaster
-                position="top-center"
-                closeButton
-                toastOptions={{
-                  className: 'sonner-toast',
-                  style: {
-                    borderRadius: '12px',
-                    fontFamily: 'var(--font-sans)',
-                    boxShadow: 'var(--color-card-shadow)',
-                    padding: '12px 16px',
-                  },
-                }}
-              />
-            </SidebarProvider>
-          </LoadingProvider>
+          <SidebarProvider>
+            <ScrollToTop />
+            <Navbar />
+            {children}
+            <Toaster
+              position="top-center"
+              closeButton
+              toastOptions={{
+                className: 'sonner-toast',
+                style: {
+                  borderRadius: '12px',
+                  fontFamily: 'var(--font-sans)',
+                  boxShadow: 'var(--color-card-shadow)',
+                  padding: '12px 16px',
+                },
+              }}
+            />
+          </SidebarProvider>
         </CartProvider>
       </AuthGuard>
     </AuthProvider>

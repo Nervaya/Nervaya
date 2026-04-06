@@ -82,6 +82,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(errorResponse('Invalid request body', null, 400), { status: 400 });
     }
 
+    const { name, description, price } = body;
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return NextResponse.json(errorResponse('Name is required', null, 400), { status: 400 });
+    }
+    if (!description || typeof description !== 'string' || !description.trim()) {
+      return NextResponse.json(errorResponse('Description is required', null, 400), { status: 400 });
+    }
+    if (price === undefined || typeof price !== 'number' || price < 0) {
+      return NextResponse.json(errorResponse('Price must be a non-negative number', null, 400), { status: 400 });
+    }
+
     const supplement = await createSupplement(body);
     return NextResponse.json(successResponse('Supplement created successfully', supplement, 201), { status: 201 });
   } catch (error) {

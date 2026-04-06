@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
-import { type BreadcrumbItem } from '@/components/common';
+import { type BreadcrumbItem, GlobalLoader } from '@/components/common';
 import Pagination from '@/components/common/Pagination';
 import { BlogFilters, BlogGrid } from '@/components/Blog';
 import { blogsApi } from '@/lib/api/blogs';
@@ -29,25 +28,13 @@ export default function BlogListPage() {
     total: 0,
     totalPages: 0,
   });
-  const [loading, setLoading] = useState(true);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   const fetchBlogs = useCallback(async (page: number, tags: string[], search: string) => {
     try {
-      setLoading(true);
       setError(null);
       const response = await blogsApi.getAll({
         page,
@@ -63,7 +50,6 @@ export default function BlogListPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load blogs');
     } finally {
-      setLoading(false);
       setIsInitialLoading(false);
     }
   }, []);
@@ -111,16 +97,20 @@ export default function BlogListPage() {
         />
 
         {!isInitialLoading && (
-          <>
-            <BlogFilters
-              searchInput={searchInput}
-              onSearchInputChange={setSearchInput}
-              onSearchSubmit={handleSearchSubmit}
-              allTags={allTags}
-              selectedTags={selectedTags}
-              onFilterChange={handleFilterChange}
-            />
+          <BlogFilters
+            searchInput={searchInput}
+            onSearchInputChange={setSearchInput}
+            onSearchSubmit={handleSearchSubmit}
+            allTags={allTags}
+            selectedTags={selectedTags}
+            onFilterChange={handleFilterChange}
+          />
+        )}
 
+        {isInitialLoading ? (
+          <GlobalLoader label="Loading blogs..." />
+        ) : (
+          <>
             {error ? (
               <div className={styles.error}>
                 <p>{error}</p>
