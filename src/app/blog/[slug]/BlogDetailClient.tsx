@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { ICON_USER, ICON_CHEVRON_LEFT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { BlogRecommendations } from '@/components/Blog/BlogRecommendations';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import { blogsApi } from '@/lib/api/blogs';
 import { decodeHtmlEntities } from '@/lib/utils/string.util';
 import type { Blog } from '@/types/blog.types';
@@ -23,13 +23,6 @@ export default function BlogDetailClient({ params }: BlogDetailClientProps) {
   const [recommendations, setRecommendations] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) showLoader();
-    else hideLoader();
-  }, [loading, showLoader, hideLoader]);
-
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -90,7 +83,13 @@ export default function BlogDetailClient({ params }: BlogDetailClientProps) {
     }
   };
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <Sidebar>
+        <GlobalLoader label="Loading article..." />
+      </Sidebar>
+    );
+  }
 
   if (error || !blog) {
     return (

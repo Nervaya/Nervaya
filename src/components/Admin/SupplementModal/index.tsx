@@ -10,17 +10,20 @@ const DEFAULT_FORM_DATA: SupplementFormData = {
   name: '',
   description: '',
   price: 0,
-  image: '',
+  originalPrice: 0,
   stock: 0,
+  image: '',
   ingredients: [],
   benefits: [],
   isActive: true,
+  images: [],
+  additionalSections: [],
 };
 
 interface SupplementModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => Promise<void>;
+  onSubmit: (data: SupplementFormData) => Promise<void>;
   initialData?: Partial<SupplementFormData>;
   loading?: boolean;
   title: string;
@@ -36,33 +39,60 @@ const SupplementModal: React.FC<SupplementModalProps> = ({
   title,
   submitLabel = 'Create Supplement',
 }) => {
-  const [formData, setFormData] = useState<SupplementFormData | null>({
-    ...DEFAULT_FORM_DATA,
-    ...initialData,
-  });
+  const formKey = (initialData as { _id?: string })?._id ?? (isOpen ? 'new' : 'closed');
+
+  return (
+    <AdminModal isOpen={isOpen} onClose={onClose} title={title} maxWidth="720px">
+      <div className={styles.modalContent}>
+        <p className={styles.subtitle}>Fill in the details below</p>
+        <SupplementFormInner
+          key={formKey}
+          initialData={initialData}
+          onSubmit={onSubmit}
+          onClose={onClose}
+          loading={loading}
+          submitLabel={submitLabel}
+        />
+      </div>
+    </AdminModal>
+  );
+};
+
+interface SupplementFormInnerProps {
+  initialData?: Partial<SupplementFormData>;
+  onSubmit: (data: SupplementFormData) => Promise<void>;
+  onClose: () => void;
+  loading: boolean;
+  submitLabel: string;
+}
+
+const SupplementFormInner: React.FC<SupplementFormInnerProps> = ({
+  initialData,
+  onSubmit,
+  onClose,
+  loading,
+  submitLabel,
+}) => {
+  const [formData, setFormData] = useState<SupplementFormData | null>(
+    () => ({ ...DEFAULT_FORM_DATA, ...initialData }) as SupplementFormData,
+  );
 
   const handleSubmit = async () => {
-    await onSubmit();
+    if (!formData) return;
+    await onSubmit(formData);
     onClose();
   };
 
   if (!formData) return null;
 
   return (
-    <AdminModal isOpen={isOpen} onClose={onClose} title={title} maxWidth="720px">
-      <div className={styles.modalContent}>
-        <p className={styles.subtitle}>Fill in the details below</p>
-        <SupplementForm
-          key={(initialData as { _id?: string })?._id ?? (isOpen ? 'new' : 'closed')}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleSubmit}
-          initialData={initialData}
-          loading={loading}
-          submitLabel={submitLabel}
-        />
-      </div>
-    </AdminModal>
+    <SupplementForm
+      formData={formData}
+      setFormData={setFormData}
+      onSubmit={handleSubmit}
+      loading={loading}
+      submitLabel={submitLabel}
+    />
   );
 };
 

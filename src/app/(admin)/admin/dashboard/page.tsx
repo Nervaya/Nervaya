@@ -8,24 +8,27 @@ import StatsCard from '@/components/Admin/StatsCard';
 import RecentOrders from '@/components/Admin/RecentOrders';
 import UpcomingSessions from '@/components/Admin/UpcomingSessions';
 import { useAdmin } from '@/context/AdminContext';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import { formatPrice } from '@/utils/cart.util';
-import { useEffect } from 'react';
 import styles from './styles.module.css';
 
 export default function AdminDashboardPage() {
   const { stats, loading: isLoading, error, refreshStats: refetch } = useAdmin();
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isLoading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [isLoading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Dashboard' }];
+
+  if (isLoading) {
+    return (
+      <div className={styles.dashboardStack}>
+        <PageHeader
+          title="Admin Dashboard"
+          subtitle="Orders, revenue, sessions, and customers at a glance."
+          breadcrumbs={breadcrumbs}
+        />
+        <GlobalLoader label="Loading dashboard..." />
+      </div>
+    );
+  }
 
   if (error) {
     return (

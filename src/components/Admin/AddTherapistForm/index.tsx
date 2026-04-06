@@ -53,6 +53,7 @@ export default function AddTherapistForm({
     formData,
     handleChange,
     handleImageUpload,
+    handleGalleryImagesChange,
     handleTagChange,
     handleSubmit,
     handleVideoUpload,
@@ -88,6 +89,7 @@ export default function AddTherapistForm({
                 onVideoUpload={handleVideoUpload}
                 videoInputRef={videoInputRef}
                 videoUploading={videoUploading}
+                onGalleryImagesChange={handleGalleryImagesChange}
               />
             </div>
             <ProfileImageSidebar

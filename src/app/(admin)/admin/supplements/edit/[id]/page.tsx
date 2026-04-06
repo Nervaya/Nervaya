@@ -8,8 +8,7 @@ import SupplementForm from '@/components/Admin/SupplementForm';
 import AdminLiveEditor from '@/components/Admin/LiveEditor/AdminLiveEditor';
 import ConfirmSaveModal from '@/components/Admin/ConfirmSaveModal';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { StatusState, type BreadcrumbItem, Button } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader, StatusState, type BreadcrumbItem, Button } from '@/components/common';
 import api from '@/lib/axios';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
@@ -24,15 +23,6 @@ export default function EditSupplementPage() {
   const [editMode, setEditMode] = useState<'form' | 'live'>('live');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader('Loading supplement details...');
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
 
   useEffect(() => {
     const fetchSupplement = async () => {
@@ -71,7 +61,7 @@ export default function EditSupplementPage() {
     if (params.id) {
       fetchSupplement();
     }
-  }, [params.id, showLoader, hideLoader]);
+  }, [params.id]);
 
   const handleOpenConfirm = (data?: SupplementFormData) => {
     if (data) setFormData(data);
@@ -118,7 +108,17 @@ export default function EditSupplementPage() {
   );
 
   if (loading) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <PageHeader
+          title="Edit Supplement"
+          subtitle="Update supplement information"
+          breadcrumbs={breadcrumbs}
+          actions={backAction}
+        />
+        <GlobalLoader label="Loading supplement details..." />
+      </div>
+    );
   }
 
   if (error || !supplement || !formData) {

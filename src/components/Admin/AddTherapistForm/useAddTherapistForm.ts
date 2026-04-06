@@ -20,6 +20,7 @@ function therapistToFormData(data: Therapist): TherapistFormData {
     languages: Array.isArray(data.languages) ? data.languages.join(', ') : '',
     specializations: Array.isArray(data.specializations) ? data.specializations.join(', ') : '',
     image: data.image || '',
+    galleryImages: Array.isArray(data.galleryImages) ? data.galleryImages : [],
     introVideoUrl: data.introVideoUrl || '',
     bio: data.bio || '',
     bioLong: data.bioLong || '',
@@ -86,6 +87,10 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
     setField('image', url);
   };
 
+  const handleGalleryImagesChange = (urls: string[]) => {
+    setFormData((prev) => ({ ...prev, galleryImages: urls }));
+  };
+
   const handleImageLoading = (isLoading: boolean) => {
     setImageUploading(isLoading);
   };
@@ -143,6 +148,7 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
         languages: parseCommaSeparated(formData.languages),
         specializations: parseCommaSeparated(formData.specializations),
         experience: Number(formData.experience) || 0,
+        galleryImages: formData.galleryImages,
         sessionModes: ['Online'],
         testimonials: parseTestimonials(formData.testimonials),
         sessionFee: formData.sessionFee ? Number(formData.sessionFee) : 0,
@@ -175,6 +181,7 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
     formData,
     handleChange,
     handleImageUpload,
+    handleGalleryImagesChange,
     handleTagChange,
     handleSubmit,
     handleVideoUpload,

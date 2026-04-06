@@ -5,10 +5,11 @@ import { useParams, useRouter } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
 import { WeekCalendar } from '@/components/WeekCalendar';
 import { Therapist } from '@/types/therapist.types';
-import { useLoading } from '@/context/LoadingContext';
+import PageHeader from '@/components/PageHeader/PageHeader';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT } from '@/constants/icons';
 import styles from './styles.module.css';
+import { GlobalLoader, type BreadcrumbItem } from '@/components/common';
 
 export default function TherapistSlotsPage() {
   const params = useParams();
@@ -17,12 +18,14 @@ export default function TherapistSlotsPage() {
   const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { showLoader, hideLoader } = useLoading();
 
-  useEffect(() => {
-    if (loading) showLoader('Loading therapist information...');
-    else hideLoader();
-  }, [loading, showLoader, hideLoader]);
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Admin', href: '/admin/dashboard' },
+    { label: 'Therapists', href: '/admin/therapists' },
+    { label: 'Manage Slots' },
+  ];
+
+  const handleSlotUpdate = useCallback(() => {}, []);
 
   const fetchTherapist = useCallback(async () => {
     try {
@@ -42,6 +45,15 @@ export default function TherapistSlotsPage() {
   useEffect(() => {
     fetchTherapist();
   }, [fetchTherapist]);
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <PageHeader title="Manage Slots" subtitle="Loading therapist..." breadcrumbs={breadcrumbs} />
+        <GlobalLoader label="Loading therapist information..." />
+      </div>
+    );
+  }
 
   if (error || !therapist) {
     return (
@@ -66,6 +78,7 @@ export default function TherapistSlotsPage() {
         therapistName={therapist.name}
         sessionDurationMins={therapist.sessionDurationMins || 60}
         onBack={() => router.push('/admin/therapists')}
+        onSlotChange={handleSlotUpdate}
       />
     </div>
   );

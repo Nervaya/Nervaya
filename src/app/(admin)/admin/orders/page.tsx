@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import OrderFilters from '@/components/Admin/OrderFilters';
 import { useAdminOrders } from '@/queries/orders/useOrders';
 import type { OrderFiltersParams } from '@/lib/api/orders';
 import { formatPrice } from '@/utils/cart.util';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
-import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 function countActiveFilters(f: OrderFiltersParams): number {
@@ -29,15 +29,6 @@ export default function AdminOrdersPage() {
   const limit = PAGE_SIZE_10;
   const { data: orders, meta, isLoading, error, refetch } = useAdminOrders(page, limit, filters);
   const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isLoading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [isLoading, showLoader, hideLoader]);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Orders' }];
 
@@ -50,6 +41,15 @@ export default function AdminOrdersPage() {
     setFilters({});
     setPage(1);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div>
+        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
+        <GlobalLoader label="Loading orders..." />
+      </div>
+    );
+  }
 
   if (error) {
     return (

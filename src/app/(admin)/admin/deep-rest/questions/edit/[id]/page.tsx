@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { deepRestQuestionsApi, type DeepRestQuestion } from '@/lib/api/deepRestQuestions';
 import { Dropdown } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import styles from './styles.module.css';
 
 type QuestionType = 'single_choice' | 'multiple_choice' | 'scale';
@@ -36,18 +36,6 @@ export default function EditDeepRestQuestionPage({ params }: { params: Promise<{
     questionType: 'single_choice' as QuestionType,
     order: 1,
   });
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isLoading) {
-      showLoader('Loading question details...');
-    } else if (isSubmitting) {
-      showLoader('Saving changes...');
-    } else {
-      hideLoader();
-    }
-  }, [isLoading, isSubmitting, showLoader, hideLoader]);
 
   const [options, setOptions] = useState<QuestionOption[]>([
     { id: '1', label: '', value: '' },
@@ -157,7 +145,17 @@ export default function EditDeepRestQuestionPage({ params }: { params: Promise<{
   };
 
   if (isLoading) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <div className={styles.topActions}>
+          <Link href="/admin/deep-rest?tab=questions" className={styles.backLink}>
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            Back to Questions
+          </Link>
+        </div>
+        <GlobalLoader label="Loading question details..." />
+      </div>
+    );
   }
 
   return (

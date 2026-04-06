@@ -24,7 +24,7 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
         {descriptionPoints.length > 1 ? (
           <ul className={styles.list}>
             {descriptionPoints.map((point) => (
-              <li key={`desc-pt-${point.substring(0, 50)}`} className={styles.listItem}>
+              <li key={point} className={styles.listItem}>
                 <span className={styles.bulletDot} />
                 {point}
               </li>

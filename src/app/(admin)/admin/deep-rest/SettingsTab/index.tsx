@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { configApi } from '@/lib/api/config';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import { Icon } from '@iconify/react';
 import { ICON_LOADING, ICON_SAVE_FILLED } from '@/constants/icons';
 import type { ISystemConfig } from '@/types/systemConfig.types';
@@ -15,16 +15,6 @@ export default function SettingsTab() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   useEffect(() => {
     fetchConfigs();
   }, []);
@@ -70,55 +60,59 @@ export default function SettingsTab() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <h3 className={styles.cardTitle}>Deep Rest Configuration</h3>
-          <p className={styles.cardSubtitle}>Manage global settings for the Deep Rest sessions.</p>
-        </div>
+      {loading ? (
+        <GlobalLoader label="Loading settings..." />
+      ) : (
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>Deep Rest Configuration</h3>
+            <p className={styles.cardSubtitle}>Manage global settings for the Deep Rest sessions.</p>
+          </div>
 
-        <form onSubmit={handleSave} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="price" className={styles.label}>
-              Session Price (₹)
-            </label>
-            <div className={styles.inputWrapper}>
-              <span className={styles.inputPrefix}>₹</span>
-              <input
-                id="price"
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className={styles.input}
-                placeholder="999"
-                required
-                min="0"
-              />
+          <form onSubmit={handleSave} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="price" className={styles.label}>
+                Session Price (₹)
+              </label>
+              <div className={styles.inputWrapper}>
+                <span className={styles.inputPrefix}>₹</span>
+                <input
+                  id="price"
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className={styles.input}
+                  placeholder="999"
+                  required
+                  min="0"
+                />
+              </div>
+              <p className={styles.helpText}>
+                This price will be displayed on the landing page and applied during checkout.
+              </p>
             </div>
-            <p className={styles.helpText}>
-              This price will be displayed on the landing page and applied during checkout.
-            </p>
-          </div>
 
-          {error && <div className={styles.errorMessage}>{error}</div>}
-          {success && <div className={styles.successMessage}>{success}</div>}
+            {error && <div className={styles.errorMessage}>{error}</div>}
+            {success && <div className={styles.successMessage}>{success}</div>}
 
-          <div className={styles.formActions}>
-            <button type="submit" className={styles.saveBtn} disabled={saving}>
-              {saving ? (
-                <>
-                  <Icon icon={ICON_LOADING} className={styles.btnIcon} />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Icon icon={ICON_SAVE_FILLED} className={styles.btnIcon} />
-                  Save Settings
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.saveBtn} disabled={saving}>
+                {saving ? (
+                  <>
+                    <Icon icon={ICON_LOADING} className={styles.btnIcon} />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Icon icon={ICON_SAVE_FILLED} className={styles.btnIcon} />
+                    Save Settings
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

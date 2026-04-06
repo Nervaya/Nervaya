@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
       await mkdir(uploadsDir, { recursive: true });
     }
     const timestamp = Date.now();
-    const fileExtension = video.name.split('.').pop() || 'mp4';
+    const allowedExtensions = ['mp4', 'webm', 'mov'];
+    const rawExtension = (video.name.split('.').pop() || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const fileExtension = allowedExtensions.includes(rawExtension) ? rawExtension : 'mp4';
     const fileName = `${userId}_${responseId}_${timestamp}.${fileExtension}`;
     const filePath = join(uploadsDir, fileName);
     const bytes = await video.arrayBuffer();

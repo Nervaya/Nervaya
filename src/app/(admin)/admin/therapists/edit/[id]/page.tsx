@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { therapistsApi } from '@/lib/api/therapists';
-import { type BreadcrumbItem } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader, type BreadcrumbItem } from '@/components/common';
 import AddTherapistForm from '@/components/Admin/AddTherapistForm';
 import type { Therapist } from '@/types/therapist.types';
 
@@ -14,16 +13,6 @@ export default function EditTherapistPage() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [initialData, setInitialData] = useState<Therapist | null>(null);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (initialLoading) {
-      showLoader('Loading therapist details...');
-    } else {
-      hideLoader();
-    }
-  }, [initialLoading, showLoader, hideLoader]);
-
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Admin', href: '/admin/dashboard' },
     { label: 'Therapists', href: '/admin/therapists' },
@@ -55,6 +44,10 @@ export default function EditTherapistPage() {
 
     fetchTherapist();
   }, [params.id]);
+
+  if (initialLoading) {
+    return <GlobalLoader label="Loading therapist details..." />;
+  }
 
   if (error || !initialData) {
     return (

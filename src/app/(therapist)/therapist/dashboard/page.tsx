@@ -1,15 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_ALERT } from '@/constants/icons';
 import Sidebar from '@/components/Sidebar/LazySidebar';
-import { useLoading } from '@/context/LoadingContext';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { useAuth } from '@/hooks/useAuth';
 import { useTherapist } from '@/context/TherapistContext';
-import { type BreadcrumbItem } from '@/components/common';
+import { type BreadcrumbItem, GlobalLoader } from '@/components/common';
 import type { TherapistSession } from '@/lib/api/therapistApi';
 import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
 import styles from './styles.module.css';
@@ -44,18 +42,19 @@ function formatSessionDate(dateStr: string) {
 export default function TherapistDashboardPage() {
   const { user } = useAuth();
   const { profile, sessions, loading, error } = useTherapist();
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   const welcomeName = user?.name?.trim() ? user.name : 'there';
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Therapist', href: '/therapist/dashboard' }, { label: 'Dashboard' }];
+
+  if (loading) {
+    return (
+      <Sidebar hideGlobalBreadcrumbs>
+        <div className={containerStyles.container}>
+          <PageHeader title={`Welcome, ${welcomeName}`} subtitle="Therapist dashboard" breadcrumbs={breadcrumbs} />
+          <GlobalLoader label="Loading dashboard..." />
+        </div>
+      </Sidebar>
+    );
+  }
 
   if (error && !profile) {
     return (

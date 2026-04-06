@@ -1,6 +1,7 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_UPLOAD } from '@/constants/icons';
+import MultiImageUpload from '@/components/ImageUpload/MultiImageUpload';
 import { FormSection } from '../FormSection';
 import fieldStyles from '../../fieldStyles.module.css';
 import styles from './styles.module.css';
@@ -10,6 +11,7 @@ interface PricingMediaSectionProps extends TherapistFormFieldsProps {
   videoInputRef: RefObject<HTMLInputElement | null>;
   videoUploading: boolean;
   onVideoUpload: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  onGalleryImagesChange: (urls: string[]) => void;
 }
 
 export function PricingMediaSection({
@@ -18,6 +20,7 @@ export function PricingMediaSection({
   onVideoUpload,
   videoInputRef,
   videoUploading,
+  onGalleryImagesChange,
 }: PricingMediaSectionProps) {
   return (
     <FormSection>
@@ -87,6 +90,17 @@ export function PricingMediaSection({
               </span>
             </button>
           </div>
+        </div>
+
+        <div className={fieldStyles.formGroup}>
+          <label className={fieldStyles.label}>Gallery Images</label>
+          <MultiImageUpload
+            urls={formData.galleryImages}
+            onChange={onGalleryImagesChange}
+            label="Upload Gallery Images"
+            tone="light"
+            maxImages={5}
+          />
         </div>
       </div>
     </FormSection>

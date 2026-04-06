@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import { Dropdown } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
+import { GlobalLoader } from '@/components/common/GlobalLoader';
 import styles from './styles.module.css';
 import type { IQuestionOption, QuestionType, ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -29,18 +29,6 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     questionType: 'single_choice' as QuestionType,
     order: 1,
   });
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isLoading) {
-      showLoader('Loading question details...');
-    } else if (isSubmitting) {
-      showLoader('Saving changes...');
-    } else {
-      hideLoader();
-    }
-  }, [isLoading, isSubmitting, showLoader, hideLoader]);
 
   const [options, setOptions] = useState<IQuestionOption[]>([
     { id: '1', label: '', value: '' },
@@ -152,7 +140,17 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   };
 
   if (isLoading) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <div className={styles.topActions}>
+          <Link href="/admin/sleep-assessment" className={styles.backLink}>
+            <Icon icon={ICON_ARROW_LEFT} aria-hidden />
+            Back to Questions
+          </Link>
+        </div>
+        <GlobalLoader label="Loading question details..." />
+      </div>
+    );
   }
 
   return (

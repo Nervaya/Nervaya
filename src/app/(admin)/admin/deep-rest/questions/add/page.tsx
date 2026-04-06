@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ARROW_LEFT, ICON_ADD, ICON_X, ICON_LOADING } from '@/constants/icons';
 import { deepRestQuestionsApi } from '@/lib/api/deepRestQuestions';
 import { Dropdown } from '@/components/common';
-import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 
 type QuestionType = 'single_choice' | 'multiple_choice' | 'scale';
@@ -34,16 +33,6 @@ export default function AddDeepRestQuestionPage() {
     questionType: 'single_choice' as QuestionType,
     order: 1,
   });
-
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (isSubmitting) {
-      showLoader('Creating question...');
-    } else {
-      hideLoader();
-    }
-  }, [isSubmitting, showLoader, hideLoader]);
 
   const [options, setOptions] = useState<QuestionOption[]>([
     { id: '1', label: '', value: '' },

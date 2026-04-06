@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import NextImage from 'next/image';
 import { SupplementFormData, AdditionalSection } from '@/types/supplement.types';
 import { Input, Button } from '@/components/common';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import MultiImageUpload from '@/components/ImageUpload/MultiImageUpload';
 import { Icon } from '@iconify/react';
 import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA, ICON_INFO, ICON_TRASH } from '@/constants/icons';
 import styles from './styles.module.css';
+import NextImage from 'next/image';
 
 interface SupplementFormProps {
   formData: SupplementFormData;
@@ -27,17 +28,14 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 }) => {
   const [ingredientsText, setIngredientsText] = useState(formData.ingredients?.join(', ') || '');
   const [benefitsText, setBenefitsText] = useState(formData.benefits?.join(', ') || '');
-  const [imagesText, setImagesText] = useState(formData.images?.join(', ') || '');
   const [imageUploading, setImageUploading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
 
   // Sync internal text pads with formData changes (from Live Editor)
   const ingredientsKey = formData.ingredients?.join(', ') || '';
   const benefitsKey = formData.benefits?.join(', ') || '';
-  const imagesKey = formData.images?.join(', ') || '';
   if (ingredientsText !== ingredientsKey) setIngredientsText(ingredientsKey);
   if (benefitsText !== benefitsKey) setBenefitsText(benefitsKey);
-  if (imagesText !== imagesKey) setImagesText(imagesKey);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};
@@ -83,7 +81,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
     }
   };
 
-  const handleTextPadChange = (field: 'ingredients' | 'benefits' | 'images', textValue: string) => {
+  const handleTextPadChange = (field: 'ingredients' | 'benefits', textValue: string) => {
     const arrayValue = textValue
       .split(',')
       .map((s) => s.trim())
@@ -91,7 +89,6 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 
     if (field === 'ingredients') setIngredientsText(textValue);
     if (field === 'benefits') setBenefitsText(textValue);
-    if (field === 'images') setImagesText(textValue);
 
     handleChange(field, arrayValue);
   };
@@ -333,7 +330,8 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 
         <div className={styles.additionalSectionsList}>
           {formData.additionalSections?.map((section, idx) => (
-            <div key={`form-section-${section.title || idx}-${idx}`} className={styles.additionalSectionCard}>
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={`form-section-${idx}-${section.title}`} className={styles.additionalSectionCard}>
               <div className={styles.sectionItemHeader}>
                 <Input
                   label={`Section ${idx + 1} Heading`}
@@ -386,79 +384,56 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
                 Featured Image
                 <div className={styles.tooltipRoot}>
                   <Icon icon={ICON_INFO} className={styles.infoIcon} />
-                  <span className={styles.tooltipText}>Primary image shown on all listings (Upload or URL)</span>
+                  <span className={styles.tooltipText}>Primary image shown on all listings</span>
                 </div>
               </label>
-              <div className={styles.imageSelector}>
-                <ImageUpload
-                  onUpload={(url) => handleChange('image', url)}
-                  onLoadingChange={handleImageLoading}
-                  initialUrl={formData.image}
-                  label="Upload Photo"
-                  tone="light"
-                />
-                <div className={styles.urlInputGroup}>
-                  <div className={styles.separatorText}>
-                    <span>OR PROVIDE URL</span>
-                  </div>
-                  <Input
-                    label=""
-                    placeholder="Enter image URL..."
-                    value={formData.image}
-                    onChange={(e) => handleChange('image', e.target.value)}
-                    className={styles.urlInput}
-                    containerClassName={styles.urlInputContainer}
-                  />
-                </div>
-              </div>
+              <ImageUpload
+                onUpload={(url) => handleChange('image', url)}
+                onLoadingChange={handleImageLoading}
+                initialUrl={formData.image}
+                label="Upload Photo"
+                tone="light"
+              />
             </div>
           </div>
           <div className={styles.mediaSecondary}>
             <div className={styles.fieldGroup}>
-              <label className={styles.label} htmlFor="supplement-galleryUrls">
-                Additional Gallery URLs
-                {imagesText.split(',').filter((url) => url.trim()).length > 0 && (
-                  <span className={styles.countBadge}>
-                    ({imagesText.split(',').filter((url) => url.trim()).length} images)
-                  </span>
+              <label className={styles.label}>
+                Gallery Images
+                {(formData.images?.length ?? 0) > 0 && (
+                  <span className={styles.countBadge}>({(formData.images ?? []).length} images)</span>
                 )}
                 <div className={styles.tooltipRoot}>
                   <Icon icon={ICON_INFO} className={styles.infoIcon} />
-                  <span className={styles.tooltipText}>
-                    Provide multiple URLs separated by commas; thumbnails will appear below for verification
-                  </span>
+                  <span className={styles.tooltipText}>Upload multiple gallery images for the product</span>
                 </div>
               </label>
-              <textarea
-                id="supplement-galleryUrls"
-                className={styles.textarea}
-                value={imagesText}
-                onChange={(e) => handleTextPadChange('images', e.target.value)}
-                placeholder="https://example.com/img1.jpg, https://example.com/img2.jpg"
-                rows={4}
+              <MultiImageUpload
+                urls={formData.images || []}
+                onChange={(urls) => handleChange('images', urls)}
+                label="Upload Gallery Images"
+                tone="light"
+                onLoadingChange={handleImageLoading}
+                maxImages={5}
               />
               <p className={styles.fieldHint}>Ensure URLs end in .jpg, .png, .webp, or .avif</p>
 
               {/* Gallery Preview Grid */}
-              {imagesText.split(',').filter((url) => url.trim().length > 0).length > 0 && (
+              {formData.images && formData.images.length > 0 && (
                 <div className={styles.galleryPreviewGrid}>
-                  {imagesText.split(',').map((url, idx) => {
-                    const trimmedUrl = url.trim();
-                    if (!trimmedUrl) return null;
-                    return (
-                      <div key={`gallery-preview-${trimmedUrl}`} className={styles.galleryPreviewItem}>
-                        <div className={styles.galleryPreviewThumbWrapper}>
-                          <NextImage
-                            src={trimmedUrl}
-                            alt={`Gallery ${idx + 1}`}
-                            fill
-                            className={styles.galleryPreviewThumb}
-                            unoptimized
-                          />
-                        </div>
+                  {formData.images.map((url, idx) => (
+                    <div key={`gallery-preview-${url}`} className={styles.galleryPreviewItem}>
+                      <div className={styles.galleryPreviewThumbWrapper}>
+                        <NextImage
+                          src={url}
+                          alt={`Gallery ${idx + 1}`}
+                          fill
+                          className={styles.galleryPreviewThumb}
+                          unoptimized
+                        />
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

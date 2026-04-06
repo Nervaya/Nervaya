@@ -3,14 +3,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import { GlobalLoader, Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_USERS_GROUP, ICON_GLOBE, ICON_VIDEO } from '@/constants/icons';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { therapistsApi } from '@/lib/api/therapists';
 import { Therapist } from '@/types/therapist.types';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
-import { useLoading } from '@/context/LoadingContext';
 import styles from './styles.module.css';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
 import { toast } from 'sonner';
@@ -19,20 +18,9 @@ export default function AdminTherapistsPage() {
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [_deleteError, setDeleteError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [page, setPage] = useState(1);
-  const { showLoader, hideLoader } = useLoading();
-
-  useEffect(() => {
-    if (loading) {
-      showLoader();
-    } else {
-      hideLoader();
-    }
-  }, [loading, showLoader, hideLoader]);
-
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Therapists' }];
 
   const limit = PAGE_SIZE_10;
@@ -65,7 +53,6 @@ export default function AdminTherapistsPage() {
 
   const handleDeleteClick = (id: string, name: string) => {
     setConfirmDelete({ id, name });
-    setDeleteError(null);
   };
 
   const handleDeleteConfirm = async () => {
@@ -87,6 +74,24 @@ export default function AdminTherapistsPage() {
       setIsDeleting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div>
+        <PageHeader
+          title="Therapists"
+          subtitle="Manage therapist profiles and information"
+          breadcrumbs={breadcrumbs}
+          actions={
+            <Link href="/admin/therapists/add" className={styles.addButton}>
+              Add New Therapist
+            </Link>
+          }
+        />
+        <GlobalLoader label="Loading therapists..." />
+      </div>
+    );
+  }
 
   return (
     <div>
