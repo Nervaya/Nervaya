@@ -27,7 +27,6 @@ export default function CheckoutPage() {
     error,
     creatingOrder,
     savedAddresses,
-    showSavedAddresses,
     selectedAddress,
     isAddressModalOpen,
     handleCloseAddressModal,
@@ -138,13 +137,11 @@ export default function CheckoutPage() {
               </div>
             ) : (
               <>
-                {showSavedAddresses && (
-                  <CheckoutSavedAddresses
-                    addresses={savedAddresses}
-                    onUseAddress={handleUseAddress}
-                    onAddNew={handleAddNewAddress}
-                  />
-                )}
+                <CheckoutSavedAddresses
+                  addresses={savedAddresses}
+                  onUseAddress={handleUseAddress}
+                  onAddNew={handleAddNewAddress}
+                />
 
                 {selectedAddress && (
                   <div className={styles.selectedAddressWrapper}>

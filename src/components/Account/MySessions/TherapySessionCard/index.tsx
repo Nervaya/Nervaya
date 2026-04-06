@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 interface TherapySessionCardProps {
   session: Session;
   onViewDetails: (session: Session) => void;
+  onReschedule?: (session: Session) => void;
 }
 
 function getStatusLabel(status: string): string {
@@ -19,7 +20,7 @@ function getStatusLabel(status: string): string {
   return status || 'Upcoming';
 }
 
-const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onViewDetails }) => {
+const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onViewDetails, onReschedule }) => {
   const therapist = session.therapistId as unknown as Therapist;
   const statusLabel = getStatusLabel(session.status || '');
   const canReschedule = ['pending', 'confirmed'].includes((session.status || '').toLowerCase());
@@ -96,7 +97,7 @@ const TherapySessionCard: React.FC<TherapySessionCardProps> = ({ session, onView
             <Icon icon={ICON_CALENDAR} className={styles.btnIcon} /> View Session Details
           </button>
           {canReschedule && (
-            <button className={styles.secondaryActionBtn}>
+            <button className={styles.secondaryActionBtn} onClick={() => onReschedule?.(session)}>
               Reschedule Appointment <Icon icon={ICON_CHEVRON_RIGHT} />
             </button>
           )}

@@ -10,13 +10,11 @@ interface CheckoutSavedAddressesProps {
 }
 
 export function CheckoutSavedAddresses({ addresses, onUseAddress, onAddNew }: CheckoutSavedAddressesProps) {
-  if (addresses.length === 0) return null;
-
   return (
     <div className={styles.savedAddresses}>
       <div className={styles.sectionHeader}>
         <div className={styles.headerLeft}>
-          <span className={styles.sectionHeaderIcon} aria-hidden>
+          <span className={styles.sectionHeaderSymbol} aria-hidden>
             <Icon icon={ICON_BOOK_USER} width={20} height={20} />
           </span>
           <h3 className={styles.sectionTitle}>Saved Addresses</h3>
@@ -26,38 +24,45 @@ export function CheckoutSavedAddresses({ addresses, onUseAddress, onAddNew }: Ch
           Add New
         </button>
       </div>
-      <ul className={styles.addressList} aria-label="Saved addresses">
-        {addresses.map((addr) => (
-          <li
-            key={addr._id}
-            className={styles.addressItem}
-            onClick={() => onUseAddress(addr)}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={styles.selectionIndicator}>
-              <div className={styles.radioOutline}>
-                <div className={styles.radioInner} />
+
+      {addresses.length > 0 ? (
+        <ul className={styles.addressList} aria-label="Saved addresses">
+          {addresses.map((addr) => (
+            <li
+              key={addr._id}
+              className={styles.addressItem}
+              onClick={() => onUseAddress(addr)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className={styles.selectionIndicator}>
+                <div className={styles.radioOutline}>
+                  <div className={styles.radioInner} />
+                </div>
               </div>
-            </div>
-            <div className={styles.addressInfo}>
-              <div className={styles.addressMain}>
-                <span className={styles.addressName}>{addr.name}</span>
-                <span className={styles.addressLabel}>{addr.label}</span>
-                {addr.isDefault && <span className={styles.defaultBadge}>Default</span>}
+              <div className={styles.addressInfo}>
+                <div className={styles.addressMain}>
+                  <span className={styles.addressName}>{addr.name}</span>
+                  <span className={styles.addressLabel}>{addr.label}</span>
+                  {addr.isDefault && <span className={styles.defaultBadge}>Default</span>}
+                </div>
+                <p className={styles.addressDetails}>
+                  {addr.addressLine1}, {addr.addressLine2 ? `${addr.addressLine2}, ` : ''}
+                  {addr.city}, {addr.state} {addr.zipCode}
+                </p>
               </div>
-              <p className={styles.addressDetails}>
-                {addr.addressLine1}, {addr.addressLine2 ? `${addr.addressLine2}, ` : ''}
-                {addr.city}, {addr.state} {addr.zipCode}
-              </p>
-            </div>
-            <div className={styles.phoneInfo}>
-              <span className={styles.phoneLabel}>Phone:</span>
-              <span className={styles.phoneText}>{addr.phone}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className={styles.phoneInfo}>
+                <span className={styles.phoneLabel}>Phone:</span>
+                <span className={styles.phoneText}>{addr.phone}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className={styles.emptyAddresses}>
+          <p>No saved addresses found. Please add a new shipping address to proceed.</p>
+        </div>
+      )}
     </div>
   );
 }

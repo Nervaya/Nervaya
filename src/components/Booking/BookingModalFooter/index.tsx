@@ -18,6 +18,7 @@ export interface BookingModalFooterProps {
   therapistName?: string;
   selectedDate?: string;
   sessionFee?: number;
+  isRescheduling?: boolean;
 }
 
 export function BookingModalFooter({
@@ -30,6 +31,7 @@ export function BookingModalFooter({
   therapistName: _therapistName,
   selectedDate: _selectedDate,
   sessionFee: propSessionFee,
+  isRescheduling,
 }: BookingModalFooterProps) {
   const [showPromo, setShowPromo] = useState(false);
   const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount: number } | null>(null);
@@ -93,73 +95,89 @@ export function BookingModalFooter({
 
   return (
     <div className={styles.footer}>
-      {showPromo ? (
-        <PromoCodeInput
-          onPromoApply={handlePromoApply}
-          onPromoRemove={handlePromoRemove}
-          disabled={loading}
-          error={promoError}
-          discount={appliedPromo?.discount}
-          originalPrice={originalPrice}
-        />
-      ) : (
-        <button
-          className={styles.promoToggle}
-          onClick={() => setShowPromo(true)}
-          disabled={loading}
-          aria-label="Add promo code"
-        >
-          <Icon icon={ICON_DISCOUNT} width={16} height={16} />
-          <span>Add Promo Code</span>
-        </button>
-      )}
+      {!isRescheduling && (
+        <>
+          {showPromo ? (
+            <PromoCodeInput
+              onPromoApply={handlePromoApply}
+              onPromoRemove={handlePromoRemove}
+              disabled={loading}
+              error={promoError}
+              discount={appliedPromo?.discount}
+              originalPrice={originalPrice}
+            />
+          ) : (
+            <button
+              className={styles.promoToggle}
+              onClick={() => setShowPromo(true)}
+              disabled={loading}
+              aria-label="Add promo code"
+            >
+              <Icon icon={ICON_DISCOUNT} width={16} height={16} />
+              <span>Add Promo Code</span>
+            </button>
+          )}
 
-      {appliedPromo && (
-        <div className={styles.promoSummary}>
-          <span className={styles.promoText}>
-            Promo <span className={styles.promoCode}>{appliedPromo.code}</span> applied
-          </span>
-          <span className={styles.savings}>Save {formatPrice(appliedPromo.discount)}</span>
-        </div>
-      )}
+          {appliedPromo && (
+            <div className={styles.promoSummary}>
+              <span className={styles.promoText}>
+                Promo <span className={styles.promoCode}>{appliedPromo.code}</span> applied
+              </span>
+              <span className={styles.savings}>Save {formatPrice(appliedPromo.discount)}</span>
+            </div>
+          )}
 
-      <div className={styles.priceSection}>
-        <div className={styles.priceRow}>
-          <span className={styles.priceLabel}>Session Fee</span>
-          <div className={styles.priceDisplay}>
-            {appliedPromo ? (
-              <>
-                <span className={styles.originalPrice}>{formatPrice(originalPrice)}</span>
-                <span className={styles.finalPrice}>{formatPrice(finalPrice)}</span>
-              </>
-            ) : (
-              <span className={styles.finalPrice}>{formatPrice(originalPrice)}</span>
-            )}
+          <div className={styles.priceSection}>
+            <div className={styles.priceRow}>
+              <span className={styles.priceLabel}>Session Fee</span>
+              <div className={styles.priceDisplay}>
+                {appliedPromo ? (
+                  <>
+                    <span className={styles.originalPrice}>{formatPrice(originalPrice)}</span>
+                    <span className={styles.finalPrice}>{formatPrice(finalPrice)}</span>
+                  </>
+                ) : (
+                  <span className={styles.finalPrice}>{formatPrice(originalPrice)}</span>
+                )}
+              </div>
+            </div>
           </div>
+        </>
+      )}
+
+      {isRescheduling && (
+        <div className={styles.rescheduleNotice}>
+          <Icon icon="solar:info-circle-bold" width={16} height={16} />
+          <span>Rescheduling will replace your existing appointment.</span>
         </div>
+      )}
+
+      <div className={styles.buttonGroup}>
+        {!isRescheduling && (
+          <button
+            className={styles.cartBtn}
+            onClick={onAddToCart}
+            disabled={!selectedSlot || booking || loading}
+            aria-label="Add session to cart"
+          >
+            Add to Cart
+          </button>
+        )}
+        <button
+          className={`${styles.primaryBtn} ${isRescheduling ? styles.rescheduleBtn : ''}`}
+          onClick={onBook}
+          disabled={!selectedSlot || booking || loading}
+          aria-label={isRescheduling ? 'Confirm rescheduling' : 'Book selected session'}
+        >
+          {booking ? 'Processing...' : isRescheduling ? 'Confirm Reschedule' : 'Book Session'}
+        </button>
+      </div>
+
+      {!isRescheduling && (
         <p className={styles.helpText}>
           Trouble finding a slot? <a href="/support">Let Us Help You</a>
         </p>
-      </div>
-
-      <div className={styles.buttonGroup}>
-        <button
-          className={styles.cartBtn}
-          onClick={onAddToCart}
-          disabled={!selectedSlot || booking || loading}
-          aria-label="Add session to cart"
-        >
-          Add to Cart
-        </button>
-        <button
-          className={styles.primaryBtn}
-          onClick={onBook}
-          disabled={!selectedSlot || booking || loading}
-          aria-label="Book selected session"
-        >
-          {booking ? 'Booking...' : 'Book Session'}
-        </button>
-      </div>
+      )}
     </div>
   );
 }

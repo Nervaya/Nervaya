@@ -168,10 +168,17 @@ export default function DashboardPage() {
                     : 'Book your next appointment anytime.'
                 }
                 icon={<Icon icon={ICON_CALENDAR} aria-hidden />}
-                cta={[
-                  { label: 'Book Session', href: '/therapy-corner', variant: 'primary' },
-                  { label: 'Add to Cart', href: '/therapy-corner', variant: 'secondary' },
-                ]}
+                cta={
+                  nextSession?.session.meetLink
+                    ? [
+                        { label: 'Join Meeting', href: nextSession.session.meetLink, variant: 'primary' },
+                        { label: 'Book Another', href: '/therapy-corner', variant: 'secondary' },
+                      ]
+                    : [
+                        { label: 'Book Session', href: '/therapy-corner', variant: 'primary' },
+                        { label: 'Add to Cart', href: '/therapy-corner', variant: 'secondary' },
+                      ]
+                }
                 iconColor="var(--color-tile-indigo)"
               />
 

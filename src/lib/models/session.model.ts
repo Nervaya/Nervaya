@@ -9,6 +9,7 @@ export interface ISession extends Document {
   endTime: string;
   status: SessionStatus;
   meetLink?: string;
+  googleEventId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,6 +47,10 @@ const sessionSchema = new Schema<ISession>(
       required: true,
     },
     meetLink: {
+      type: String,
+      default: '',
+    },
+    googleEventId: {
       type: String,
       default: '',
     },

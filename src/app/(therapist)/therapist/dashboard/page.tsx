@@ -104,10 +104,17 @@ export default function TherapistDashboardPage() {
                 <ul className={styles.sessionList}>
                   {upcoming.map((s) => (
                     <li key={s._id} className={styles.sessionItem}>
-                      <span className={styles.sessionDate}>{formatSessionDate(s.date)}</span>
-                      <span className={styles.sessionTime}>{s.startTime}</span>
-                      <span className={styles.sessionMeta}>Client ID: {s.userId}</span>
-                      <span className={styles.sessionBadge}>{s.status}</span>
+                      <div className={styles.sessionInfo}>
+                        <span className={styles.sessionDate}>{formatSessionDate(s.date)}</span>
+                        <span className={styles.sessionTime}>{s.startTime}</span>
+                        <span className={styles.sessionMeta}>Client ID: {s.userId}</span>
+                        <span className={styles.sessionBadge}>{s.status}</span>
+                      </div>
+                      {s.meetLink && (
+                        <a href={s.meetLink} target="_blank" rel="noopener noreferrer" className={styles.joinButton}>
+                          Join Meet
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>

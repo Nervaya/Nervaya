@@ -23,8 +23,8 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
         <h3 className={styles.heading}>Product Overview</h3>
         {descriptionPoints.length > 1 ? (
           <ul className={styles.list}>
-            {descriptionPoints.map((point, idx) => (
-              <li key={`desc-pt-${idx}-${point.substring(0, 10)}`} className={styles.listItem}>
+            {descriptionPoints.map((point) => (
+              <li key={`desc-pt-${point.substring(0, 50)}`} className={styles.listItem}>
                 <span className={styles.bulletDot} />
                 {point}
               </li>
@@ -51,12 +51,15 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
 
       {/* Dynamic Custom Sections */}
       {supplement.additionalSections?.map((section, idx) => (
-        <div key={`section-${section.title}-${idx}`} className={styles.customSection}>
+        <div key={`section-${section.title || idx}-${idx}`} className={styles.customSection}>
           <h3 className={styles.heading}>{section.title}</h3>
           {section.content.length > 0 ? (
             <ul className={styles.list}>
               {section.content.map((point, pIdx) => (
-                <li key={`sec-item-${pIdx}-${point.substring(0, 10)}`} className={styles.listItem}>
+                <li
+                  key={`sec-item-${section.title || 'section'}-${pIdx}-${point.substring(0, 30)}`}
+                  className={styles.listItem}
+                >
                   <span className={styles.bulletDot} />
                   {point}
                 </li>

@@ -10,6 +10,7 @@ export interface TherapistSession {
   startTime: string;
   endTime: string;
   status: string;
+  meetLink?: string;
   createdAt: string;
   updatedAt: string;
 }

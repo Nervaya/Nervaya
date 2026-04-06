@@ -333,7 +333,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 
         <div className={styles.additionalSectionsList}>
           {formData.additionalSections?.map((section, idx) => (
-            <div key={`form-section-${section.title}-${idx}`} className={styles.additionalSectionCard}>
+            <div key={`form-section-${section.title || idx}-${idx}`} className={styles.additionalSectionCard}>
               <div className={styles.sectionItemHeader}>
                 <Input
                   label={`Section ${idx + 1} Heading`}

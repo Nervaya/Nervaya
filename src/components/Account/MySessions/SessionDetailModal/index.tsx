@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { ICON_X } from '@/constants/icons';
+import { ICON_X, ICON_LOADING } from '@/constants/icons';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
 import styles from './styles.module.css';
@@ -11,11 +11,29 @@ const ICON_VIDEO = 'solar:video-library-bold';
 interface SessionDetailModalProps {
   session: Session;
   onClose: () => void;
+  onCancel?: (session: Session) => void;
+  onJoin?: (session: Session) => void;
   calculateDuration: (startTime: string, endTime: string) => string;
+  isCancelling?: boolean;
 }
 
-const SessionDetailModal: React.FC<SessionDetailModalProps> = ({ session, onClose, calculateDuration }) => {
+const SessionDetailModal: React.FC<SessionDetailModalProps> = ({
+  session,
+  onClose,
+  onCancel,
+  onJoin,
+  calculateDuration,
+  isCancelling = false,
+}) => {
   const therapist = session.therapistId as unknown as Therapist;
+
+  const handleJoin = () => {
+    if (onJoin) {
+      onJoin(session);
+    } else if (session.meetLink) {
+      window.open(session.meetLink, '_blank');
+    }
+  };
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -114,11 +132,25 @@ const SessionDetailModal: React.FC<SessionDetailModalProps> = ({ session, onClos
             <div className={styles.modalActionGroup}>
               {session.status === 'pending' || session.status === 'confirmed' ? (
                 <>
-                  <button className={styles.primaryActionBtnFull}>
-                    <Icon icon={ICON_VIDEO} className={styles.btnIcon} /> Join Session
+                  <button
+                    className={styles.primaryActionBtnFull}
+                    disabled={!session.meetLink || isCancelling}
+                    onClick={handleJoin}
+                  >
+                    <Icon icon={ICON_VIDEO} className={styles.btnIcon} />
+                    {!session.meetLink ? 'Meet Link Generating...' : 'Join Session'}
                   </button>
-                  <button className={styles.dangerActionBtnOutline}>
-                    <Icon icon={ICON_X} className={styles.btnIcon} /> Cancel Appointment
+                  <button
+                    className={styles.dangerActionBtnOutline}
+                    disabled={isCancelling}
+                    onClick={() => onCancel?.(session)}
+                  >
+                    {isCancelling ? (
+                      <Icon icon={ICON_LOADING} className={styles.btnIcon} />
+                    ) : (
+                      <Icon icon={ICON_X} className={styles.btnIcon} />
+                    )}
+                    {isCancelling ? 'Cancelling...' : 'Cancel Appointment'}
                   </button>
                 </>
               ) : null}

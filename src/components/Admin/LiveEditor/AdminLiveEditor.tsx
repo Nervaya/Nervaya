@@ -252,7 +252,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
 
                 <div className={styles.benefitList}>
                   {(formData.benefits.length > 0 ? formData.benefits : ['']).map((benefit, idx) => (
-                    <div key={`highlight-${idx}-${benefit}`} className={styles.benefitItem}>
+                    <div key={`highlight-${idx}-${benefit || 'empty'}`} className={styles.benefitItem}>
                       <span className={styles.bulletDot} />
                       <input
                         type="text"
@@ -341,7 +341,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                   <div className={styles.customSectionsList}>
                     <h4 className={styles.customSectionsLabel}>Extra Information Sections</h4>
                     {formData.additionalSections.map((section, idx) => (
-                      <div key={`editor-section-${section.title}-${idx}`} className={styles.customSectionCard}>
+                      <div key={`editor-section-${section.title || idx}-${idx}`} className={styles.customSectionCard}>
                         <div className={styles.flexBetween}>
                           <EditableField
                             value={section.title}

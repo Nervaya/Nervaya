@@ -81,11 +81,12 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ selectedDate, onDate
       </div>
 
       <div className={styles.dayNames}>
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((dayName, index) => (
-          <span key={`dayname-${dayName}-${index}`} className={styles.dayNameCell}>
-            {dayName}
+        {['S_sun', 'M_mon', 'T_tue', 'W_wed', 'T_thu', 'F_fri', 'S_sat'].map((dayKey) => (
+          <span key={`dayname-${dayKey}`} className={styles.dayNameCell}>
+            {dayKey.split('_')[0]}
           </span>
         ))}
+        {/* We use unique suffixes to differentiate between identical day letters like 'S' or 'T' */}
       </div>
 
       <div className={styles.grid}>
@@ -96,7 +97,7 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ selectedDate, onDate
             <div key={weekKey} className={styles.weekRow}>
               {week.map((day, dayIndex) => {
                 if (!day) {
-                  return <span key={`empty-${weekKey}-${dayIndex}`} className={styles.emptyCell} />;
+                  return <span key={`empty-day-${weekKey}-${dayIndex}`} className={styles.emptyCell} />;
                 }
                 const isToday = isSameDay(day, today);
                 const isSelected = isSameDay(day, selectedDate);
