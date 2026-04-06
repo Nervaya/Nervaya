@@ -49,7 +49,8 @@
   transform: translateY(0);
 }
 
-.sectionHeaderIcon {
+.sectionHeaderIcon,
+.sectionHeaderSymbol {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,4 +207,23 @@
   .addressDetails {
     white-space: normal;
   }
+}
+
+.emptyAddresses {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  text-align: center;
+  color: var(--color-text-primary);
+  opacity: 0.8;
+  font-size: var(--font-size-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.emptyAddresses p {
+  margin: 0;
+  max-width: 300px;
+  line-height: 1.5;
 }

@@ -12,6 +12,7 @@ import styles from './AdminLiveEditor.module.css';
 import detailStyles from '@/app/(customer)/supplements/[id]/styles.module.css';
 import infoStyles from '@/components/Supplements/ProductDetail/ProductInfo/ProductInfo.module.css';
 import tabStyles from '@/components/Supplements/ProductDetail/TabDescription/TabDescription.module.css';
+import NextImage from 'next/image';
 
 interface AdminLiveEditorProps {
   formData: SupplementFormData;
@@ -151,6 +152,15 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                   onLoadingChange={setMediaUploading}
                   maxImages={5}
                 />
+                {formData.images && formData.images.length > 0 && (
+                  <div className={styles.galleryThumbGrid}>
+                    {formData.images.map((url) => (
+                      <div key={`gallery-thumb-${url}`} className={styles.galleryThumbItem}>
+                        <NextImage src={url} alt="Gallery Preview" fill className={styles.previewThumb} unoptimized />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -223,7 +233,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                 <div className={styles.benefitList}>
                   {(formData.benefits.length > 0 ? formData.benefits : ['']).map((benefit, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <div key={`benefit-${idx}`} className={styles.benefitItem}>
+                    <div key={`benefit-${idx}-${benefit.substring(0, 10)}`} className={styles.benefitItem}>
                       <span className={styles.bulletDot} />
                       <input
                         type="text"
@@ -313,7 +323,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                     <h4 className={styles.customSectionsLabel}>Extra Information Sections</h4>
                     {formData.additionalSections.map((section, idx) => (
                       // eslint-disable-next-line react/no-array-index-key
-                      <div key={`section-${section.title}-${idx}`} className={styles.customSectionCard}>
+                      <div key={`section-${idx}-${section.title}`} className={styles.customSectionCard}>
                         <div className={styles.flexBetween}>
                           <EditableField
                             value={section.title}

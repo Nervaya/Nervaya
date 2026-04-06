@@ -1,234 +1,187 @@
 .container {
-  width: 100%;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-family: var(--font-inter, 'Inter', sans-serif);
 }
 
 .periodNav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-  width: 100%;
-  min-width: 0;
-}
-
-.periodNavButton {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  padding: 0.5rem;
   background: #f8fafc;
-  color: #1f2937;
-  cursor: pointer;
-  transition:
-    border-color 0.2s,
-    background 0.2s,
-    color 0.2s;
-}
-
-.periodNavButton:hover:not(:disabled) {
-  border-color: #8b5cf6;
-  background: rgba(139, 92, 246, 0.15);
-  color: #a78bfa;
-}
-
-.periodNavButton:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .periodNavLabel {
-  flex: 0 1 auto;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
+  gap: 0.75rem;
   font-weight: 600;
-  color: #1f2937;
-  min-width: 0;
-  overflow: hidden;
+  color: #1e293b;
+  font-size: 0.95rem;
 }
 
-.periodNavLabel .periodIcon {
-  font-size: 1.25rem;
-  flex-shrink: 0;
+.periodIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.periodNavLabel .periodCount {
-  flex-shrink: 0;
-  white-space: nowrap;
+.periodCount {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.periodNavButton {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.periodNavButton:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: var(--color-primary-light, #7c3aed);
+  color: var(--color-primary, #7c3aed);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
+  transform: translateY(-1px);
+}
+
+.periodNavButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.slot {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.time {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.timeRange {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Hover State */
+.slot:hover:not(.booked):not(.selected) {
+  border-color: var(--color-primary-light, #7c3aed);
+  background: #fdfaff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+}
+
+/* Selected State */
+.selected {
+  background: var(--color-primary, #7c3aed) !important;
+  border-color: var(--color-primary, #7c3aed) !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.selected .time,
+.selected .timeRange {
+  color: #ffffff !important;
+}
+
+/* Booked State */
+.booked {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.booked .time,
+.booked .timeRange {
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+/* Customized State */
+.customized {
+  border-style: dashed;
+  border-color: #f59e0b;
+}
+
+.customizedBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 0.8rem;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .emptyState {
-  padding: 3rem 2rem;
+  padding: 3rem 1rem;
   text-align: center;
   background: #f8fafc;
   border-radius: 12px;
-  border: 2px dashed #e2e8f0;
+  border: 1px dashed #e2e8f0;
 }
 
 .emptyText {
-  font-size: 1.0625rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #475569;
   margin-bottom: 0.5rem;
 }
 
 .emptySubtext {
-  font-size: 0.875rem;
-  color: #9ca3af;
-}
-
-.periodGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.periodTitle {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.periodIcon {
-  font-size: 1.375rem;
-}
-
-.periodCount {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #8b5cf6;
-  margin-left: auto;
-  background: rgba(139, 92, 246, 0.1);
-  padding: 0.25rem 0.625rem;
-  border-radius: 6px;
-}
-
-.grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.125rem;
-  }
+  font-size: 0.85rem;
+  color: #94a3b8;
 }
 
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
   }
-}
-
-.slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #1f2937;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  position: relative;
-  min-height: 80px;
-}
-
-@media (max-width: 768px) {
-  .slot {
-    padding: 0.75rem;
-    min-height: 70px;
-  }
-}
-
-.slot:hover:not(:disabled) {
-  border-color: #8b5cf6;
-  background: rgba(139, 92, 246, 0.05);
-}
-
-.slot.selected {
-  background: #8b5cf6;
-  color: #ffffff;
-  border-color: #7c3aed;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-}
-
-.slot.selected:hover {
-  background: #7c3aed;
-  border-color: #6d28d9;
-}
-
-.slot.booked {
-  background: #f8fafc;
-  color: #94a3b8;
-  border-color: #e2e8f0;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.slot.booked::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 20%;
-  right: 20%;
-  height: 1px;
-  background: #cbd5e1;
-  transform: translateY(-50%);
-}
-
-.slot.customized {
-  background: rgba(59, 130, 246, 0.05);
-  border-color: #3b82f6;
-  color: #1e40af;
-}
-
-.time {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.timeRange {
-  font-size: 0.8125rem;
-  opacity: 0.8;
-  font-weight: 400;
-}
-
-.slot.selected .time,
-.slot.selected .timeRange {
-  color: #ffffff;
-}
-
-.customizedBadge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 0.75rem;
 }

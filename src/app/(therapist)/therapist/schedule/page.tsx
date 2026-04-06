@@ -3,10 +3,10 @@
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import ConsultingHoursManager from '@/components/Admin/ConsultingHoursManager';
+import { WeekCalendar } from '@/components/WeekCalendar';
 import { type BreadcrumbItem, GlobalLoader } from '@/components/common';
 import { useTherapist } from '@/context/TherapistContext';
-import containerStyles from '@/app/(customer)/dashboard/styles.module.css';
+import { Icon } from '@iconify/react';
 import styles from './styles.module.css';
 
 export default function TherapistSchedulePage() {
@@ -14,16 +14,12 @@ export default function TherapistSchedulePage() {
   const { profile, loading, error } = useTherapist();
   const therapistId = profile?._id?.toString() || null;
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Therapist', href: '/therapist/dashboard' },
-    { label: 'Dashboard', href: '/therapist/dashboard' },
-    { label: 'Set your dates' },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Therapist', href: '/therapist/dashboard' }, { label: 'Schedule' }];
 
   if (loading) {
     return (
       <Sidebar hideGlobalBreadcrumbs>
-        <div className={containerStyles.container}>
+        <div className={styles.container}>
           <PageHeader title="Set your dates" subtitle="Manage your availability" breadcrumbs={breadcrumbs} />
           <GlobalLoader label="Loading schedule..." />
         </div>
@@ -34,9 +30,9 @@ export default function TherapistSchedulePage() {
   if (error || !therapistId) {
     return (
       <Sidebar hideGlobalBreadcrumbs>
-        <div className={containerStyles.container}>
-          <PageHeader title="Set your dates" subtitle="Manage your availability" breadcrumbs={breadcrumbs} />
-          <div className={styles.error}>
+        <div className={styles.errorWrap}>
+          <div className={styles.errorBox}>
+            <Icon icon="solar:danger-triangle-bold" width={32} height={32} />
             <p>{error || 'Therapist profile not found.'}</p>
             <button type="button" onClick={() => router.push('/therapist/dashboard')} className={styles.backBtn}>
               Back to Dashboard
@@ -49,13 +45,13 @@ export default function TherapistSchedulePage() {
 
   return (
     <Sidebar hideGlobalBreadcrumbs>
-      <div className={containerStyles.container}>
-        <PageHeader
-          title="Set your dates"
-          subtitle="Configure when you are available for sessions. Save hours then generate slots."
-          breadcrumbs={breadcrumbs}
+      <div className={styles.fullPage}>
+        <WeekCalendar
+          therapistId={therapistId}
+          role="therapist"
+          therapistName={profile?.name}
+          sessionDurationMins={profile?.sessionDurationMins || 60}
         />
-        <ConsultingHoursManager therapistId={therapistId} onUpdate={() => {}} />
       </div>
     </Sidebar>
   );

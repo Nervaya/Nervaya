@@ -10,6 +10,7 @@ export interface Session {
   startTime: string;
   endTime: string;
   status: SessionStatus;
+  meetLink?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -8,6 +8,7 @@ import MultiImageUpload from '@/components/ImageUpload/MultiImageUpload';
 import { Icon } from '@iconify/react';
 import { ICON_PEN, ICON_WALLET, ICON_CLIPBOARD, ICON_CAMERA, ICON_INFO, ICON_TRASH } from '@/constants/icons';
 import styles from './styles.module.css';
+import NextImage from 'next/image';
 
 interface SupplementFormProps {
   formData: SupplementFormData;
@@ -330,7 +331,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
         <div className={styles.additionalSectionsList}>
           {formData.additionalSections?.map((section, idx) => (
             // eslint-disable-next-line react/no-array-index-key
-            <div key={`section-${section.title}-${idx}`} className={styles.additionalSectionCard}>
+            <div key={`form-section-${idx}-${section.title}`} className={styles.additionalSectionCard}>
               <div className={styles.sectionItemHeader}>
                 <Input
                   label={`Section ${idx + 1} Heading`}
@@ -415,6 +416,26 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
                 onLoadingChange={handleImageLoading}
                 maxImages={5}
               />
+              <p className={styles.fieldHint}>Ensure URLs end in .jpg, .png, .webp, or .avif</p>
+
+              {/* Gallery Preview Grid */}
+              {formData.images && formData.images.length > 0 && (
+                <div className={styles.galleryPreviewGrid}>
+                  {formData.images.map((url, idx) => (
+                    <div key={`gallery-preview-${url}`} className={styles.galleryPreviewItem}>
+                      <div className={styles.galleryPreviewThumbWrapper}>
+                        <NextImage
+                          src={url}
+                          alt={`Gallery ${idx + 1}`}
+                          fill
+                          className={styles.galleryPreviewThumb}
+                          unoptimized
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

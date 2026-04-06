@@ -60,7 +60,7 @@ export function useCheckout() {
   const [editingAddress, setEditingAddress] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
-  const [showSavedAddresses, setShowSavedAddresses] = useState(false);
+  const [showSavedAddresses, setShowSavedAddresses] = useState(true);
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<DeliveryMethod>('standard');
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
@@ -99,11 +99,13 @@ export function useCheckout() {
   const fetchSavedAddresses = useCallback(async () => {
     try {
       const response = (await api.get('/users/address')) as { success: boolean; data: SavedAddress[] };
-      if (response.success && response.data?.length) {
+      if (response.success && response.data) {
         setSavedAddresses(response.data);
-        setShowSavedAddresses(true);
       }
-    } catch {}
+      setShowSavedAddresses(true);
+    } catch {
+      setShowSavedAddresses(true);
+    }
   }, []);
 
   useEffect(() => {

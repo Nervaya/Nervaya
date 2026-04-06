@@ -1,18 +1,21 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { sessionsApi } from '@/lib/api/sessions';
 import { Session } from '@/types/session.types';
+import { Therapist } from '@/types/therapist.types';
 import { Pagination, GlobalLoader } from '@/components/common';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR } from '@/constants/icons';
+import { toast } from 'sonner';
 
 // Sub-components
 import TherapySessionCard from './TherapySessionCard';
 import SessionDetailModal from './SessionDetailModal';
+import BookingModal from '@/components/Booking/BookingModal';
 
 export function MySessions() {
   const [therapySessions, setTherapySessions] = useState<Session[]>([]);
@@ -20,6 +23,8 @@ export function MySessions() {
   const [errorTherapy, setErrorTherapy] = useState('');
   const [page, setPage] = useState(1);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [reschedulingSession, setReschedulingSession] = useState<Session | null>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const limit = PAGE_SIZE_3;
@@ -42,8 +47,8 @@ export function MySessions() {
       setLoadingTherapy(true);
       const result = await sessionsApi.getForUser();
       setTherapySessions(result.data || []);
-    } catch (err) {
-      setErrorTherapy(err instanceof Error ? err.message : 'Error loading therapy sessions');
+    } catch (_err) {
+      setErrorTherapy(_err instanceof Error ? _err.message : 'Error loading therapy sessions');
     } finally {
       setLoadingTherapy(false);
     }
@@ -53,7 +58,33 @@ export function MySessions() {
     return '60 minutes';
   };
 
-  if (loadingTherapy) {
+  const handleCancelSession = async (session: Session) => {
+    if (!window.confirm('Are you sure you want to cancel this session? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setIsCancelling(true);
+      const response = await sessionsApi.cancel(session._id);
+      if (response.success) {
+        toast.success('Session cancelled successfully');
+        setSelectedSession(null);
+        fetchTherapySessions();
+      } else {
+        toast.error(response.message || 'Failed to cancel session');
+      }
+    } catch (_err) {
+      toast.error('Error cancelling session');
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
+  const handleRescheduleClick = useCallback((session: Session) => {
+    setReschedulingSession(session);
+  }, []);
+
+  if (loadingTherapy && !mounted) {
     return (
       <div className={styles.container}>
         <GlobalLoader label="Loading your sessions..." />
@@ -86,7 +117,12 @@ export function MySessions() {
         ) : (
           <div className={styles.sessionsList}>
             {paginatedTherapy.map((session) => (
-              <TherapySessionCard key={session._id} session={session} onViewDetails={setSelectedSession} />
+              <TherapySessionCard
+                key={session._id}
+                session={session}
+                onViewDetails={setSelectedSession}
+                onReschedule={handleRescheduleClick}
+              />
             ))}
           </div>
         )}
@@ -111,10 +147,28 @@ export function MySessions() {
           <SessionDetailModal
             session={selectedSession}
             onClose={() => setSelectedSession(null)}
+            onCancel={handleCancelSession}
             calculateDuration={calculateDuration}
+            isCancelling={isCancelling}
           />,
           document.body,
         )}
+
+      {mounted && reschedulingSession && (
+        <BookingModal
+          therapistId={
+            (reschedulingSession.therapistId as unknown as Therapist)._id ||
+            (reschedulingSession.therapistId as unknown as string)
+          }
+          therapistName={(reschedulingSession.therapistId as unknown as Therapist).name || 'Therapist'}
+          rescheduleSessionId={reschedulingSession._id}
+          onClose={() => setReschedulingSession(null)}
+          onSuccess={() => {
+            fetchTherapySessions();
+            setReschedulingSession(null);
+          }}
+        />
+      )}
     </div>
   );
 }

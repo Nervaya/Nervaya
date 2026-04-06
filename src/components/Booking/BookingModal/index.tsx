@@ -24,9 +24,16 @@ interface BookingModalProps {
   therapistName: string;
   onClose: () => void;
   onSuccess: () => void;
+  rescheduleSessionId?: string; // New prop for rescheduling
 }
 
-export default function BookingModal({ therapistId, therapistName, onClose, onSuccess }: BookingModalProps) {
+export default function BookingModal({
+  therapistId,
+  therapistName,
+  onClose,
+  onSuccess,
+  rescheduleSessionId,
+}: BookingModalProps) {
   const today = useMemo(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -165,7 +172,26 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
     setBooking(true);
     setError(null);
     try {
-      if (buyMode === 'checkout') {
+      if (rescheduleSessionId) {
+        // --- RESCHEDULING FLOW ---
+        const res = await fetch(`/api/sessions/${rescheduleSessionId}/reschedule`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            date: schedule.date,
+            startTime: slot.startTime,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.message || 'Failed to reschedule');
+
+        toast.info('Session rescheduled successfully!', {
+          style: { background: '#7c3aed', color: '#fff', border: 'none' },
+        });
+        onSuccess?.();
+        setTimeout(() => onClose(), 1200);
+      } else if (buyMode === 'checkout') {
+        // --- NORMAL BOOKING FLOW ---
         const orderRes = await fetch('/api/orders/direct', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -356,8 +382,10 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           <div className={styles.confirmOverlay}>
             <div className={styles.confirmDialog}>
               <p>
-                Confirm {buyMode === 'checkout' ? 'booking & checkout' : 'adding to cart'} for{' '}
-                <strong>{therapistName}</strong> on {schedule.date} at {selectedSlot}?
+                {rescheduleSessionId
+                  ? 'Confirm rescheduling'
+                  : `Confirm ${buyMode === 'checkout' ? 'booking & checkout' : 'adding to cart'}`}{' '}
+                for <strong>{therapistName}</strong> on {schedule.date} at {selectedSlot}?
               </p>
               <div className={styles.confirmActions}>
                 <button type="button" className={styles.confirmCancel} onClick={() => setShowConfirm(false)}>
@@ -380,6 +408,7 @@ export default function BookingModal({ therapistId, therapistName, onClose, onSu
           therapistId={therapistId}
           therapistName={therapist?.name}
           selectedDate={schedule?.date}
+          isRescheduling={!!rescheduleSessionId}
         />
       </div>
     </div>
