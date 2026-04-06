@@ -1,27 +1,27 @@
-/* ── Synchco-style top bar ── */
+/* ── Google Calendar-style top bar ── */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  height: 52px;
-  border-bottom: 1px solid #eee;
+  padding: 0 12px;
+  height: 64px;
+  border-bottom: 1px solid var(--color-border-light, #e2e8f0);
   background: var(--color-background, #fff);
   flex-shrink: 0;
-  gap: 12px;
+  gap: 8px;
 }
 
 .leftGroup {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
   min-width: 0;
 }
 
 .rightGroup {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
@@ -31,7 +31,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border-light, #e2e8f0);
   border-radius: 8px;
   background: var(--color-background, #fff);
   color: var(--color-text-muted, #64748b);
@@ -39,17 +39,16 @@
 }
 
 .backBtn:hover {
-  background: var(--color-accent-dim, rgba(124, 58, 237, 0.1));
+  background: var(--color-background-muted, #f1f5f9);
   color: var(--color-accent, #7c3aed);
-  border-color: var(--color-accent, #7c3aed);
 }
 
 .iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: transparent;
@@ -58,47 +57,42 @@
 }
 
 .iconBtn:hover {
-  background: var(--color-accent-dim, rgba(124, 58, 237, 0.1));
-  color: var(--color-accent, #7c3aed);
+  background: var(--color-background-muted, #f1f5f9);
 }
 
 .navArrows {
   display: flex;
   align-items: center;
-  gap: 0;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 4px;
 }
 
 .arrowBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: none;
-  background: var(--color-background, #fff);
+  border-radius: 50%;
+  background: transparent;
   color: var(--color-text-muted, #64748b);
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .arrowBtn:hover {
-  background: var(--color-card-bg-light, #f8fafc);
-  color: var(--color-accent, #7c3aed);
-}
-
-.arrowBtn:first-child {
-  border-right: 1px solid #eee;
+  background: var(--color-background-muted, #f1f5f9);
+  color: var(--color-text-primary, #0f172a);
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.375rem;
+  font-weight: 400;
   color: var(--color-text-primary, #0f172a);
   margin: 0;
   white-space: nowrap;
-  padding: 0 4px;
+  padding: 0;
+  margin-left: 8px;
 }
 
 .therapistChip {
@@ -138,30 +132,56 @@
 }
 
 .todayBtn {
-  padding: 6px 16px;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  border-radius: 4px;
   background: var(--color-background, #fff);
   color: var(--color-text-primary, #0f172a);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .todayBtn:hover {
-  border-color: var(--color-accent, #7c3aed);
-  color: var(--color-accent, #7c3aed);
+  background: var(--color-background-muted, #f8fafc);
 }
 
-.viewBadge {
-  padding: 5px 14px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  font-size: 0.75rem;
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--color-border-light, #e2e8f0);
+}
+
+.viewToggleGroup {
+  display: flex;
+  align-items: center;
+  background: var(--color-background-muted, #f1f5f9);
+  border-radius: 4px;
+  padding: 2px;
+  border: 1px solid var(--color-border-light, #e2e8f0);
+}
+
+.toggleBtn {
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-size: 0.875rem;
   font-weight: 500;
+  color: var(--color-text-muted, #64748b);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggleBtn:hover {
   color: var(--color-text-primary, #0f172a);
+}
+
+.toggleBtnActive {
   background: var(--color-background, #fff);
-  user-select: none;
+  color: var(--color-accent, #7c3aed);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 900px) {

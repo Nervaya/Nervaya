@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import styles from './styles.module.css';
 
 interface CalendarHeaderProps {
-  weekLabel: string;
+  headerLabel: string;
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
@@ -13,6 +13,8 @@ interface CalendarHeaderProps {
   sidebarOpen?: boolean;
   therapistName?: string;
   onBack?: () => void;
+  viewMode: 'day' | 'week';
+  onViewModeChange: (mode: 'day' | 'week') => void;
 }
 
 const LEGEND = [
@@ -24,13 +26,14 @@ const LEGEND = [
 ];
 
 export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
-  weekLabel,
+  headerLabel,
   onPrev,
   onNext,
   onToday,
   onToggleSidebar,
-  therapistName,
   onBack,
+  viewMode,
+  onViewModeChange,
 }) => {
   return (
     <div className={styles.header}>
@@ -47,23 +50,17 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           </button>
         )}
         <div className={styles.navArrows}>
-          <button type="button" className={styles.arrowBtn} onClick={onPrev} aria-label="Previous week">
+          <button type="button" className={styles.arrowBtn} onClick={onPrev} aria-label="Previous">
             <Icon icon="solar:alt-arrow-left-linear" width={18} height={18} />
           </button>
-          <button type="button" className={styles.arrowBtn} onClick={onNext} aria-label="Next week">
+          <button type="button" className={styles.arrowBtn} onClick={onNext} aria-label="Next">
             <Icon icon="solar:alt-arrow-right-linear" width={18} height={18} />
           </button>
         </div>
-        <h2 className={styles.title}>{weekLabel}</h2>
-        {therapistName && (
-          <span className={styles.therapistChip}>
-            <Icon icon="solar:user-circle-bold" width={14} height={14} />
-            {therapistName}
-          </span>
-        )}
+        <h2 className={styles.title}>{headerLabel}</h2>
       </div>
 
-      {/* Right: legend + today + badge */}
+      {/* Right: legend + today + view toggle */}
       <div className={styles.rightGroup}>
         <div className={styles.legend}>
           {LEGEND.map((item) => (
@@ -73,10 +70,26 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             </span>
           ))}
         </div>
+        <div className={styles.divider} />
+        <div className={styles.viewToggleGroup}>
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${viewMode === 'day' ? styles.toggleBtnActive : ''}`}
+            onClick={() => onViewModeChange('day')}
+          >
+            Day
+          </button>
+          <button
+            type="button"
+            className={`${styles.toggleBtn} ${viewMode === 'week' ? styles.toggleBtnActive : ''}`}
+            onClick={() => onViewModeChange('week')}
+          >
+            Week
+          </button>
+        </div>
         <button type="button" className={styles.todayBtn} onClick={onToday}>
           Today
         </button>
-        <span className={styles.viewBadge}>Week</span>
       </div>
     </div>
   );

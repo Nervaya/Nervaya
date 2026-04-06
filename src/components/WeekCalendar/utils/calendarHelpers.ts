@@ -63,6 +63,11 @@ export function formatWeekLabel(weekStart: Date): string {
   return `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${year}`;
 }
 
+/** Format a day label like "Monday, Apr 7, 2026", useful for Day View. */
+export function formatDayLabel(date: Date): string {
+  return date.toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 /** Check if two dates are the same calendar day. */
 export function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -71,8 +76,11 @@ export function isSameDay(a: Date, b: Date): boolean {
 /** Generate hour labels for the time grid. */
 export function getHourLabels(): string[] {
   const labels: string[] = [];
-  for (let h = DAY_START_HOUR; h <= DAY_END_HOUR; h++) {
-    labels.push(minutesToTime(h * 60));
+  // Skip the first hour (7 AM) to avoid overlap with the header circle top part
+  for (let h = DAY_START_HOUR + 1; h <= DAY_END_HOUR; h++) {
+    const period = h >= 12 ? 'PM' : 'AM';
+    const displayHour = h > 12 ? h - 12 : h === 0 ? 12 : h;
+    labels.push(`${displayHour} ${period}`);
   }
   return labels;
 }
@@ -87,26 +95,27 @@ export interface SlotColors {
  * Nervaya-branded slot color scheme.
  * Purple = confirmed (brand accent), Emerald = available,
  * Amber = pending, Rose = blocked, Slate = completed.
+ * Updated to use vibrant, high-contrast colors typical of professional SaaS applications (e.g., Google Calendar).
  */
 export function getSlotColors(slot: TimeSlot): SlotColors {
   // Completed — muted slate
   if (slot.sessionStatus === 'completed') {
-    return { bg: '#f1f5f9', border: '#94a3b8', text: '#475569' };
+    return { bg: '#f1f5f9', border: '#cbd5e1', text: '#475569' };
   }
   // Confirmed — Nervaya purple
   if (slot.sessionStatus === 'confirmed') {
-    return { bg: 'rgba(124, 58, 237, 0.08)', border: '#7c3aed', text: '#5b21b6' };
+    return { bg: 'rgba(124, 58, 237, 0.15)', border: '#7c3aed', text: '#5b21b6' };
   }
   // Pending — amber/warm
   if (slot.sessionStatus === 'pending') {
-    return { bg: 'rgba(245, 158, 11, 0.08)', border: '#f59e0b', text: '#92400e' };
+    return { bg: 'rgba(245, 158, 11, 0.15)', border: '#d97706', text: '#92400e' };
   }
   // Blocked — rose/red
   if (!slot.isAvailable && !slot.sessionId) {
-    return { bg: 'rgba(239, 68, 68, 0.06)', border: '#ef4444', text: '#991b1b' };
+    return { bg: 'rgba(239, 68, 68, 0.12)', border: '#f87171', text: '#b91c1c' };
   }
   // Available — emerald/green
-  return { bg: 'rgba(16, 185, 129, 0.08)', border: '#10b981', text: '#065f46' };
+  return { bg: 'rgba(16, 185, 129, 0.15)', border: '#10b981', text: '#065f46' };
 }
 
 /** Get a human-readable label for slot status. */

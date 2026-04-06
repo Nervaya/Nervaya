@@ -13,23 +13,22 @@ import {
 } from '../utils/calendarHelpers';
 import styles from './styles.module.css';
 
-const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const totalHours = DAY_END_HOUR - DAY_START_HOUR;
 
 interface DayColumnProps {
   date: Date;
-  dayIndex: number;
   slots: TimeSlot[];
   role: 'admin' | 'therapist';
   onSlotClick: (date: string, slot: TimeSlot) => void;
   onEmptyClick: (date: string, time: string) => void;
 }
 
-export const DayColumn: React.FC<DayColumnProps> = ({ date, dayIndex, slots, role, onSlotClick, onEmptyClick }) => {
+export const DayColumn: React.FC<DayColumnProps> = ({ date, slots, role, onSlotClick, onEmptyClick }) => {
   const dateStr = toDateStr(date);
   const isToday = isSameDay(date, new Date());
   const dayNum = date.getDate();
-  const monthShort = date.toLocaleString('en-US', { month: 'short' });
+  const dayOfWeek = date.getDay(); // 0 is Sunday, 1 is Monday...
 
   const handleEmptyClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -62,12 +61,10 @@ export const DayColumn: React.FC<DayColumnProps> = ({ date, dayIndex, slots, rol
 
   return (
     <div className={styles.column}>
-      {/* Day header */}
+      {/* Day header: Standard Google Calendar Style */}
       <div className={`${styles.dayHeader} ${isToday ? styles.today : ''}`}>
-        <span className={styles.dayName}>{DAY_NAMES[dayIndex]}</span>
-        <span className={`${styles.dayNum} ${isToday ? styles.todayNum : ''}`}>
-          {dayNum === 1 ? `${monthShort} ${dayNum}` : dayNum}
-        </span>
+        <span className={styles.dayName}>{DAY_NAMES[dayOfWeek]}</span>
+        <span className={`${styles.dayNum} ${isToday ? styles.todayNum : ''}`}>{dayNum}</span>
       </div>
 
       {/* Slot grid area */}
@@ -78,20 +75,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({ date, dayIndex, slots, rol
         role="button"
         tabIndex={0}
         aria-label={`Add slot on ${dateStr}`}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') onEmptyClick(dateStr, '9:00 AM');
-        }}
       >
-        {/* Hour grid lines */}
-        {Array.from({ length: totalHours + 1 }, (_, i) => (
-          <div key={i} className={styles.hourLine} style={{ top: i * HOUR_HEIGHT }} />
-        ))}
-
-        {/* Half-hour dashed lines */}
-        {Array.from({ length: totalHours }, (_, i) => (
-          <div key={`half-${i}`} className={styles.halfHourLine} style={{ top: i * HOUR_HEIGHT + HOUR_HEIGHT / 2 }} />
-        ))}
-
         {/* Current time indicator */}
         {currentTimeTop !== null && (
           <div className={styles.currentTime} style={{ top: currentTimeTop }}>

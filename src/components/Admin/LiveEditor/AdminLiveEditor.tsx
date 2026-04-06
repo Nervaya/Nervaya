@@ -174,9 +174,9 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
 
                 {formData.images && formData.images.length > 0 && (
                   <div className={styles.galleryThumbGrid}>
-                    {formData.images.map((url, i) => (
-                      <div key={i} className={styles.galleryThumbItem}>
-                        <NextImage src={url} alt={`Preview ${i}`} fill className={styles.previewThumb} unoptimized />
+                    {formData.images.map((url) => (
+                      <div key={`gallery-thumb-${url}`} className={styles.galleryThumbItem}>
+                        <NextImage src={url} alt="Gallery Preview" fill className={styles.previewThumb} unoptimized />
                       </div>
                     ))}
                   </div>
@@ -252,7 +252,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
 
                 <div className={styles.benefitList}>
                   {(formData.benefits.length > 0 ? formData.benefits : ['']).map((benefit, idx) => (
-                    <div key={idx} className={styles.benefitItem}>
+                    <div key={`highlight-${idx}-${benefit}`} className={styles.benefitItem}>
                       <span className={styles.bulletDot} />
                       <input
                         type="text"
@@ -341,7 +341,7 @@ const AdminLiveEditor: React.FC<AdminLiveEditorProps> = ({ formData, setFormData
                   <div className={styles.customSectionsList}>
                     <h4 className={styles.customSectionsLabel}>Extra Information Sections</h4>
                     {formData.additionalSections.map((section, idx) => (
-                      <div key={idx} className={styles.customSectionCard}>
+                      <div key={`editor-section-${section.title}-${idx}`} className={styles.customSectionCard}>
                         <div className={styles.flexBetween}>
                           <EditableField
                             value={section.title}

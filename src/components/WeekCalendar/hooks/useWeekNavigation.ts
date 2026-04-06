@@ -1,31 +1,52 @@
 import { useState, useMemo, useCallback } from 'react';
-import { getMonday, getWeekDates, formatWeekLabel } from '../utils/calendarHelpers';
+import { getMonday, getWeekDates, formatWeekLabel, formatDayLabel } from '../utils/calendarHelpers';
 
-export function useWeekNavigation() {
-  const [weekStart, setWeekStart] = useState<Date>(() => getMonday(new Date()));
+export function useWeekNavigation(viewMode: 'day' | 'week' = 'week') {
+  // We keep the state as the currently selected single date (even if it's the start of the week),
+  // which defaults to today.  When selecting dates from MiniCalendar, it jumps straight there.
+  const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
 
   const goNext = useCallback(() => {
-    setWeekStart((prev) => {
+    setCurrentDate((prev) => {
       const next = new Date(prev);
-      next.setDate(next.getDate() + 7);
+      next.setDate(next.getDate() + (viewMode === 'day' ? 1 : 7));
       return next;
     });
-  }, []);
+  }, [viewMode]);
 
   const goPrev = useCallback(() => {
-    setWeekStart((prev) => {
+    setCurrentDate((prev) => {
       const next = new Date(prev);
-      next.setDate(next.getDate() - 7);
+      next.setDate(next.getDate() - (viewMode === 'day' ? 1 : 7));
       return next;
     });
-  }, []);
+  }, [viewMode]);
 
   const goToday = useCallback(() => {
-    setWeekStart(getMonday(new Date()));
+    setCurrentDate(new Date());
   }, []);
 
-  const weekDates = useMemo(() => getWeekDates(weekStart), [weekStart]);
-  const weekLabel = useMemo(() => formatWeekLabel(weekStart), [weekStart]);
+  // weekStart is primarily used by MiniCalendar and week views to anchor starting days.
+  const weekStart = useMemo(() => getMonday(currentDate), [currentDate]);
 
-  return { weekStart, setWeekStart, weekDates, weekLabel, goNext, goPrev, goToday };
+  const viewDates = useMemo(() => {
+    if (viewMode === 'day') return [currentDate];
+    return getWeekDates(weekStart);
+  }, [viewMode, currentDate, weekStart]);
+
+  const headerLabel = useMemo(() => {
+    if (viewMode === 'day') return formatDayLabel(currentDate);
+    return formatWeekLabel(weekStart);
+  }, [viewMode, currentDate, weekStart]);
+
+  return {
+    currentDate,
+    setCurrentDate,
+    weekStart, // Keep exposing weekStart for components that explicitly need the bounded Monday
+    viewDates,
+    headerLabel,
+    goNext,
+    goPrev,
+    goToday,
+  };
 }

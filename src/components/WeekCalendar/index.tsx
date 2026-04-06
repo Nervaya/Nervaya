@@ -10,7 +10,7 @@ import { DayColumn } from './DayColumn';
 import { SlotModal } from './SlotModal';
 import { useWeekNavigation } from './hooks/useWeekNavigation';
 import { useWeekSchedule } from './hooks/useWeekSchedule';
-import { toDateStr, getMonday } from './utils/calendarHelpers';
+import { toDateStr } from './utils/calendarHelpers';
 import styles from './WeekCalendar.module.css';
 
 interface WeekCalendarProps {
@@ -46,10 +46,23 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   onBack,
   onSlotChange,
 }) => {
-  const { weekStart, setWeekStart, weekDates, weekLabel, goNext, goPrev, goToday } = useWeekNavigation();
-  const { scheduleMap, loading, error, refetch } = useWeekSchedule(therapistId, weekDates[0]);
+  const [viewMode, setViewMode] = useState<'day' | 'week'>('week');
+  const { currentDate, setCurrentDate, weekStart, viewDates, headerLabel, goNext, goPrev, goToday } =
+    useWeekNavigation(viewMode);
+  // useWeekSchedule fetches the whole week based on weekStart, which is fine since we cache it.
+  const { scheduleMap, loading, error, refetch } = useWeekSchedule(therapistId, weekStart);
+
   const [modal, setModal] = useState<ModalState>(INITIAL_MODAL);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to morning hours (start of day) on initial load
+  React.useLayoutEffect(() => {
+    if (scrollContainerRef.current) {
+      // Scroll to 8:30 AM (1.5 hours after 7:00 AM start, 1.5 * 60 = 90px)
+      scrollContainerRef.current.scrollTop = 90;
+    }
+  }, []);
 
   const handleSlotClick = useCallback((date: string, slot: TimeSlot) => {
     setModal({ isOpen: true, mode: 'edit', date, slot, defaultTime: slot.startTime });
@@ -70,9 +83,10 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
 
   const handleDateSelect = useCallback(
     (date: Date) => {
-      setWeekStart(getMonday(date));
+      setCurrentDate(date);
+      setViewMode('day');
     },
-    [setWeekStart],
+    [setCurrentDate],
   );
 
   const toggleSidebar = useCallback(() => {
@@ -82,7 +96,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   return (
     <div className={styles.calendarApp}>
       <CalendarHeader
-        weekLabel={weekLabel}
+        headerLabel={headerLabel}
         onPrev={goPrev}
         onNext={goNext}
         onToday={goToday}
@@ -90,6 +104,8 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
         sidebarOpen={sidebarOpen}
         therapistName={therapistName}
         onBack={onBack}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
 
       <div className={styles.body}>
@@ -97,10 +113,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
           <CalendarSidebar
             therapistId={therapistId}
             role={role}
-            selectedDate={weekStart}
+            selectedDate={currentDate}
             onDateSelect={handleDateSelect}
             onSlotsGenerated={handleSuccess}
             sessionDurationMins={sessionDurationMins}
+            therapistName={therapistName}
           />
         )}
 
@@ -119,10 +136,10 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
               <span>Loading schedule...</span>
             </div>
           ) : (
-            <div className={styles.gridScroll}>
+            <div className={styles.gridScroll} ref={scrollContainerRef}>
               <TimeGrid />
               <div className={styles.daysRow}>
-                {weekDates.map((date, i) => {
+                {viewDates.map((date, i) => {
                   const dateStr = toDateStr(date);
                   return (
                     <DayColumn

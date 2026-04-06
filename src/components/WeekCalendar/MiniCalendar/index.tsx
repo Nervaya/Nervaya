@@ -81,35 +81,39 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ selectedDate, onDate
       </div>
 
       <div className={styles.dayNames}>
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-          <span key={`${d}-${i}`} className={styles.dayNameCell}>
-            {d}
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((dayName, index) => (
+          <span key={`dayname-${dayName}-${index}`} className={styles.dayNameCell}>
+            {dayName}
           </span>
         ))}
       </div>
 
       <div className={styles.grid}>
-        {weeks.map((week, wi) => (
-          <div key={`w-${toDateStr(week.find((d) => d !== null) || today)}-${wi}`} className={styles.weekRow}>
-            {week.map((day, di) => {
-              if (!day) {
-                return <span key={`empty-${wi}-${di}`} className={styles.emptyCell} />;
-              }
-              const isToday = isSameDay(day, today);
-              const isSelected = isSameDay(day, selectedDate);
-              return (
-                <button
-                  key={toDateStr(day)}
-                  type="button"
-                  className={`${styles.dateCell} ${isToday ? styles.today : ''} ${isSelected ? styles.selected : ''}`}
-                  onClick={() => onDateSelect(day)}
-                >
-                  {day.getDate()}
-                </button>
-              );
-            })}
-          </div>
-        ))}
+        {weeks.map((week, weekIndex) => {
+          const firstDay = week.find((d) => d !== null);
+          const weekKey = firstDay ? toDateStr(firstDay) : `week-${weekIndex}`;
+          return (
+            <div key={weekKey} className={styles.weekRow}>
+              {week.map((day, dayIndex) => {
+                if (!day) {
+                  return <span key={`empty-${weekKey}-${dayIndex}`} className={styles.emptyCell} />;
+                }
+                const isToday = isSameDay(day, today);
+                const isSelected = isSameDay(day, selectedDate);
+                return (
+                  <button
+                    key={toDateStr(day)}
+                    type="button"
+                    className={`${styles.dateCell} ${isToday ? styles.today : ''} ${isSelected ? styles.selected : ''}`}
+                    onClick={() => onDateSelect(day)}
+                  >
+                    {day.getDate()}
+                  </button>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

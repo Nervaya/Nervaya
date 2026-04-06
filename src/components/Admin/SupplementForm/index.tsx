@@ -333,7 +333,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 
         <div className={styles.additionalSectionsList}>
           {formData.additionalSections?.map((section, idx) => (
-            <div key={idx} className={styles.additionalSectionCard}>
+            <div key={`form-section-${section.title}-${idx}`} className={styles.additionalSectionCard}>
               <div className={styles.sectionItemHeader}>
                 <Input
                   label={`Section ${idx + 1} Heading`}
@@ -446,7 +446,7 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
                     const trimmedUrl = url.trim();
                     if (!trimmedUrl) return null;
                     return (
-                      <div key={trimmedUrl} className={styles.galleryPreviewItem}>
+                      <div key={`gallery-preview-${trimmedUrl}`} className={styles.galleryPreviewItem}>
                         <div className={styles.galleryPreviewThumbWrapper}>
                           <NextImage
                             src={trimmedUrl}

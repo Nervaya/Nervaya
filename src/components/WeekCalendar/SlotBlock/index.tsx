@@ -59,8 +59,8 @@ export const SlotBlock: React.FC<SlotBlockProps> = ({ slot, date, role, onClick 
               className={styles.meetLink}
               onClick={(e) => e.stopPropagation()}
             >
-              <Icon icon="solar:link-circle-bold" width={10} height={10} />
-              <span>Meet Link</span>
+              <Icon icon="solar:videocamera-bold" width={11} height={11} />
+              <span>Join Meet</span>
             </a>
           )}
         </>

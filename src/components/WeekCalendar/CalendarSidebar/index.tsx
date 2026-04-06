@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 import { MiniCalendar } from '../MiniCalendar';
 import { convert12To24, convert24To12 } from '@/lib/utils/time.util';
@@ -24,6 +24,7 @@ interface CalendarSidebarProps {
   onDateSelect: (date: Date) => void;
   onSlotsGenerated: () => void;
   sessionDurationMins: number;
+  therapistName?: string;
 }
 
 export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
@@ -33,6 +34,7 @@ export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
   onDateSelect,
   onSlotsGenerated,
   sessionDurationMins,
+  therapistName,
 }) => {
   const [duration, setDuration] = useState(sessionDurationMins);
   const [savingDuration, setSavingDuration] = useState(false);
@@ -42,11 +44,9 @@ export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
     saving,
     generating,
     error,
-    success,
     generationStatus,
     hasEnabledDays,
     hasUnsavedChanges,
-    isSaved,
     handleUpdate,
     generateSlots,
     updateDayHours,
@@ -59,6 +59,7 @@ export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
     try {
       await therapistsApi.update(therapistId, { sessionDurationMins: newDuration });
       toast.success(`Session duration updated to ${newDuration} min`);
+      generateSlots(30); // auto generate slots on duration change
     } catch {
       toast.error('Failed to update session duration');
       setDuration(sessionDurationMins);
@@ -67,17 +68,35 @@ export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
     }
   };
 
-  const handleGenerate = async () => {
-    await generateSlots(30);
-  };
-
-  const handleSaveAndGenerate = async () => {
+  const handleSaveAndGenerate = useCallback(async () => {
     await handleUpdate();
     await generateSlots(30);
-  };
+  }, [handleUpdate, generateSlots]);
+
+  // Debounced Auto-Save
+  useEffect(() => {
+    if (!hasUnsavedChanges || !hasEnabledDays) return;
+    const timer = setTimeout(() => {
+      handleSaveAndGenerate();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [consultingHours, hasUnsavedChanges, hasEnabledDays, handleSaveAndGenerate]);
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${role === 'admin' ? styles.adminSidebarMode : styles.therapistSidebarMode}`}>
+      {/* Therapist Profile Pill (Moved from Header) */}
+      {therapistName && (
+        <>
+          <div className={styles.section}>
+            <div className={styles.therapistPill}>
+              <Icon icon="solar:user-circle-bold" width={18} height={18} className={styles.therapistIcon} />
+              <span className={styles.therapistName}>{therapistName}</span>
+            </div>
+          </div>
+          <div className={styles.divider} />
+        </>
+      )}
+
       {/* Session Duration (admin only) */}
       {role === 'admin' && (
         <>
@@ -152,33 +171,8 @@ export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({
         </div>
 
         {error && <p className={styles.errorMsg}>{error}</p>}
-        {success && <p className={styles.successMsg}>{success}</p>}
         {generationStatus && <p className={generating ? styles.infoMsg : styles.successMsg}>{generationStatus}</p>}
-
-        <div className={styles.actions}>
-          {hasUnsavedChanges && (
-            <button
-              type="button"
-              className={styles.saveBtn}
-              onClick={handleSaveAndGenerate}
-              disabled={saving || generating || !hasEnabledDays}
-            >
-              <Icon icon="solar:diskette-bold" width={13} height={13} />
-              {saving ? 'Saving...' : 'Save & Generate'}
-            </button>
-          )}
-          {isSaved && (
-            <button
-              type="button"
-              className={styles.generateBtn}
-              onClick={handleGenerate}
-              disabled={generating || !hasEnabledDays}
-            >
-              <Icon icon="solar:calendar-add-bold" width={13} height={13} />
-              {generating ? 'Generating...' : 'Generate Slots'}
-            </button>
-          )}
-        </div>
+        {saving && <p className={styles.infoMsg}>Saving timings...</p>}
       </div>
     </aside>
   );

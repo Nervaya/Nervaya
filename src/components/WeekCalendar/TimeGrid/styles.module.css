@@ -1,15 +1,20 @@
 /* ── Google Calendar time gutter ── */
 .gutter {
-  width: 52px;
+  width: 72px; /* Increased slightly for 12px text */
   flex-shrink: 0;
   position: sticky;
   left: 0;
   z-index: 3;
-  background: var(--color-background, #fff);
+  background-color: var(--color-background, #fff);
+  border-right: 1px solid var(--color-border-light, #e2e8f0);
+  /* Matching the grid lines from DayColumn */
+  background-image: linear-gradient(var(--color-border-light, #e2e8f0) 1px, transparent 1px);
+  background-size: 100% 60px;
+  background-position: 0 64px; /* Offset by header height */
 }
 
 .gutterHeader {
-  height: 56px;
+  height: 64px; /* Matches day header height */
   border-bottom: 1px solid var(--color-border-light, #e2e8f0);
 }
 
@@ -18,14 +23,15 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding-right: 6px;
+  padding-right: 10px;
 }
 
 .hourLabel {
-  font-size: 0.625rem;
-  color: var(--color-text-dim, #94a3b8);
-  transform: translateY(-6px);
+  font-size: 0.75rem; /* ~12px for better legibility */
+  color: #5f6368; /* Accurate Google Calendar grey */
+  transform: translateY(-50%); /* Centered on the horizontal grid line */
   white-space: nowrap;
   user-select: none;
   font-weight: 400;
+  font-family: 'Roboto', 'Inter', sans-serif;
 }

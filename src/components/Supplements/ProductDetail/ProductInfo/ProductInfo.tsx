@@ -89,8 +89,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           { src: '/fssai.png', label: 'FSSAI Approved', width: 42, height: 42 },
           { src: '/badge.png', label: 'Quality Pure', width: 42, height: 42 },
           { src: '/safety.png', label: 'No Side Effects', width: 42, height: 42 },
-        ].map((item, idx) => (
-          <div key={idx} className={styles.trustBadgeItem}>
+        ].map((item) => (
+          <div key={item.label} className={styles.trustBadgeItem}>
             <div className={styles.trustIconContainer}>
               <NextImage
                 src={item.src}
