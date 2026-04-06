@@ -95,9 +95,10 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({ selectedDate, onDate
           const weekKey = firstDay ? toDateStr(firstDay) : `week-${weekIndex}`;
           return (
             <div key={weekKey} className={styles.weekRow}>
-              {week.map((day, dayIndex) => {
+              {week.map((day, dayIdx) => {
+                const emptyKey = `empty-${weekKey}-${dayIdx}`;
                 if (!day) {
-                  return <span key={`empty-day-${weekKey}-${dayIndex}`} className={styles.emptyCell} />;
+                  return <span key={emptyKey} className={styles.emptyCell} />;
                 }
                 const isToday = isSameDay(day, today);
                 const isSelected = isSameDay(day, selectedDate);

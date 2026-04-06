@@ -59,6 +59,7 @@ export function MySessions() {
   };
 
   const handleCancelSession = async (session: Session) => {
+    // eslint-disable-next-line no-alert
     if (!window.confirm('Are you sure you want to cancel this session? This action cannot be undone.')) {
       return;
     }

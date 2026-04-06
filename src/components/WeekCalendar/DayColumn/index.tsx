@@ -20,6 +20,7 @@ interface DayColumnProps {
   date: Date;
   slots: TimeSlot[];
   role: 'admin' | 'therapist';
+  _dayIndex: number;
   onSlotClick: (date: string, slot: TimeSlot) => void;
   onEmptyClick: (date: string, time: string) => void;
 }

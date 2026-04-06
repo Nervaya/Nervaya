@@ -281,3 +281,12 @@ export async function getSessionById(sessionId: string) {
   await connectDB();
   return Session.findById(sessionId).populate('therapistId');
 }
+
+export async function getSessionsByTherapistId(therapistId: string, statusFilter?: string) {
+  await connectDB();
+  const filter: Record<string, unknown> = {
+    therapistId: new Types.ObjectId(therapistId),
+  };
+  if (statusFilter) filter.status = statusFilter;
+  return Session.find(filter).sort({ date: -1, startTime: -1 });
+}

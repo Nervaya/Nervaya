@@ -50,16 +50,13 @@ const TabDescription: React.FC<TabDescriptionProps> = ({ supplement }) => {
       )}
 
       {/* Dynamic Custom Sections */}
-      {supplement.additionalSections?.map((section, idx) => (
-        <div key={`section-${section.title || idx}-${idx}`} className={styles.customSection}>
+      {supplement.additionalSections?.map((section) => (
+        <div key={`section-${section.title}`} className={styles.customSection}>
           <h3 className={styles.heading}>{section.title}</h3>
           {section.content.length > 0 ? (
             <ul className={styles.list}>
-              {section.content.map((point, pIdx) => (
-                <li
-                  key={`sec-item-${section.title || 'section'}-${pIdx}-${point.substring(0, 30)}`}
-                  className={styles.listItem}
-                >
+              {section.content.map((point) => (
+                <li key={`sec-item-${section.title}-${point.substring(0, 30)}`} className={styles.listItem}>
                   <span className={styles.bulletDot} />
                   {point}
                 </li>

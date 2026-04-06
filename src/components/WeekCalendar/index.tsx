@@ -145,7 +145,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                     <DayColumn
                       key={dateStr}
                       date={date}
-                      dayIndex={i}
+                      _dayIndex={i}
                       slots={scheduleMap.get(dateStr) || []}
                       role={role}
                       onSlotClick={handleSlotClick}

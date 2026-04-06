@@ -21,6 +21,10 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const session = await getSessionById(id);
 
+    if (!session) {
+      return NextResponse.json(errorResponse('Session not found', null, 404), { status: 404 });
+    }
+
     // Ownership check: customers can only view their own sessions
     if (authResult.user.role === ROLES.CUSTOMER && session.userId.toString() !== authResult.user.userId) {
       return NextResponse.json(errorResponse('Not authorized to view this session', null, 403), { status: 403 });
