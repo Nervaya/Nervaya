@@ -9,3 +9,11 @@ export const getRazorpayInstance = (): Razorpay => {
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
 };
+
+export async function initiateRefund(paymentId: string, amountInPaisa?: number): Promise<{ id: string }> {
+  const razorpay = getRazorpayInstance();
+  const refundOptions: { amount?: number } = {};
+  if (amountInPaisa) refundOptions.amount = amountInPaisa;
+  const refund = await razorpay.payments.refund(paymentId, refundOptions);
+  return refund;
+}
