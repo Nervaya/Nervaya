@@ -143,6 +143,11 @@
   position: relative;
   background: transparent;
   gap: 11px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+  width: calc(100% - 16px);
 }
 
 @media (max-height: 760px) {
@@ -208,17 +213,8 @@
 
 /* Button reset; width 100% for expanded row — collapsed .navItem overrides with fixed 48px */
 .logoutButton {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  max-width: 100%;
-  cursor: pointer;
   text-align: left;
-  border: none;
-  background: transparent;
   color: rgba(255, 255, 255, 0.9);
-  font: inherit;
-  font-weight: 400;
 }
 
 .logoutButton::-moz-focus-inner {

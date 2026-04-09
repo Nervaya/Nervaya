@@ -21,6 +21,8 @@ export const ICON_SHOPPING_CART = 'solar:cart-bold';
 export const ICON_HEADSET = 'solar:airbuds-case-bold';
 export const ICON_HEADPHONES = 'solar:headphones-round-bold-duotone';
 export const ICON_CHAT = 'solar:chat-square-bold';
+export const ICON_CHAT_DOTS = 'solar:chat-round-dots-bold-duotone';
+export const ICON_SUPPORT = 'streamline-plump:customer-support-3-remix';
 export const ICON_MENU = 'solar:hamburger-menu-bold-duotone';
 export const ICON_SETTINGS = 'solar:settings-bold';
 export const ICON_BELL = 'solar:bell-bold';
@@ -134,10 +136,10 @@ export const SIDEBAR_ICON_MAP: SidebarIconMap = {
   FaFileMedical: ICON_FILE,
   FaMoneyBillWave: ICON_WALLET,
   FaBoxOpen: ICON_BOX,
-  FaHeadset: ICON_CHAT,
+  FaHeadset: ICON_SUPPORT,
   FaHeadphones: ICON_HEADPHONES,
-  FaCommentDots: ICON_CHAT,
-  FaRegCommentDots: ICON_CHAT,
+  FaCommentDots: ICON_CHAT_DOTS,
+  FaRegCommentDots: ICON_CHAT_DOTS,
   FaBars: ICON_MENU,
   FaUserDoctor: ICON_USER,
   FaGear: ICON_SETTINGS,

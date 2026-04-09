@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
     }[] = [];
 
     for (const order of orders) {
+      if (!Array.isArray(order.items)) continue;
       for (const item of order.items) {
         const itemId = item.itemId.toString();
         const itemType = item.itemType;
@@ -48,7 +49,7 @@ export async function GET(req: NextRequest) {
             name: item.name,
             image: item.image,
             orderId: order._id.toString(),
-            orderDate: order.createdAt.toISOString(),
+            orderDate: order.createdAt ? order.createdAt.toISOString() : new Date().toISOString(),
           });
           reviewedKeys.add(key);
         }

@@ -126,7 +126,7 @@ const Sidebar = ({
                               <li key={`${item.path}-${item.title}`}>
                                 <button
                                   type="button"
-                                  className={`${styles.navItem} ${styles.secondaryItem}`}
+                                  className={styles.navItem}
                                   onClick={() => window.dispatchEvent(new CustomEvent('open-feedback-widget'))}
                                 >
                                   <span className={styles.icon}>

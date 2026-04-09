@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/middleware/auth.middleware';
 import { ROLES } from '@/lib/constants/roles';
-import { getAllFeedback } from '@/lib/services/adminFeedback.service';
+import { getAllFeedback, getFeedbackByUser, getFeedbackStats } from '@/lib/services/adminFeedback.service';
 import { successResponse, errorResponse } from '@/lib/utils/response.util';
 import { handleError } from '@/lib/utils/error.util';
 
@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
     if (authResult instanceof NextResponse) return authResult;
 
     const { searchParams } = new URL(req.url);
+    const view = searchParams.get('view');
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
 
@@ -25,6 +26,16 @@ export async function GET(req: NextRequest) {
     if (dateTo) filters.dateTo = dateTo;
     const search = searchParams.get('search');
     if (search) filters.search = search;
+
+    if (view === 'stats') {
+      const stats = await getFeedbackStats();
+      return NextResponse.json(successResponse('Feedback stats fetched', stats));
+    }
+
+    if (view === 'grouped') {
+      const result = await getFeedbackByUser(page, limit, filters);
+      return NextResponse.json(successResponse('Feedback grouped by user fetched', result));
+    }
 
     const result = await getAllFeedback(page, limit, filters);
     return NextResponse.json(successResponse('Feedback fetched', result));

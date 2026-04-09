@@ -1,14 +1,18 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, Fragment } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
 import FeedbackFilters from '@/components/Admin/FeedbackFilters';
-import { useAdminFeedback } from '@/queries/feedback/useAdminFeedback';
-import type { AdminFeedback, AdminFeedbackFiltersParams } from '@/lib/api/adminFeedback';
+import { useAdminFeedbackGrouped } from '@/queries/feedback/useAdminFeedbackGrouped';
+import { useUserFeedbackHistory } from '@/queries/feedback/useUserFeedbackHistory';
+import { adminFeedbackApi, type AdminFeedbackFiltersParams, type FeedbackStats } from '@/lib/api/adminFeedback';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
+import { Icon } from '@iconify/react';
 import styles from './styles.module.css';
+
+const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Feedback' }];
 
 function countActiveFilters(f: AdminFeedbackFiltersParams): number {
   let n = 0;
@@ -25,58 +29,133 @@ function getScoreClass(score: number): string {
   return styles.promoter;
 }
 
-function getUserName(feedback: AdminFeedback): string {
-  if (typeof feedback.userId === 'object' && feedback.userId !== null) {
-    return feedback.userId.name || 'Unknown User';
-  }
-  return String(feedback.userId);
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
 }
 
-function getUserEmail(feedback: AdminFeedback): string {
-  if (typeof feedback.userId === 'object' && feedback.userId !== null) {
-    return feedback.userId.email || '';
-  }
-  return '';
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
 }
 
 export default function AdminFeedbackPage() {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<AdminFeedbackFiltersParams>({});
+  const [expandedUsers, setExpandedUsers] = useState<Set<string>>(new Set());
+  const [stats, setStats] = useState<FeedbackStats | null>(null);
   const limit = PAGE_SIZE_10;
-  const { data: feedback, meta, isLoading, error, refetch } = useAdminFeedback(page, limit, filters);
+
+  const { data: users, meta, isLoading, error, refetch } = useAdminFeedbackGrouped(page, limit, filters);
+  const { cache: historyCache, loadingUserId, fetchForUser } = useUserFeedbackHistory();
   const paginationMeta = meta ?? { page: 1, limit, total: 0, totalPages: 1 };
 
-  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Feedback' }];
+  useEffect(() => {
+    adminFeedbackApi
+      .getStats()
+      .then((res) => {
+        if (res.success && res.data) setStats(res.data);
+      })
+      .catch(() => undefined);
+  }, []);
 
   const handleFiltersApply = useCallback((newFilters: AdminFeedbackFiltersParams) => {
     setFilters(newFilters);
     setPage(1);
+    setExpandedUsers(new Set());
   }, []);
 
   const handleFiltersReset = useCallback(() => {
     setFilters({});
     setPage(1);
+    setExpandedUsers(new Set());
   }, []);
 
-  if (isLoading) {
-    return (
-      <div>
-        <PageHeader title="Feedback" subtitle="View all user feedback (read-only)." breadcrumbs={breadcrumbs} />
-        <GlobalLoader label="Loading feedback..." />
-      </div>
-    );
-  }
+  const toggleUser = useCallback(
+    (userId: string) => {
+      setExpandedUsers((prev) => {
+        const next = new Set(prev);
+        if (next.has(userId)) {
+          next.delete(userId);
+        } else {
+          next.add(userId);
+          fetchForUser(userId);
+        }
+        return next;
+      });
+    },
+    [fetchForUser],
+  );
 
-  if (error) {
-    return (
-      <div>
-        <PageHeader title="Feedback" subtitle="View all user feedback (read-only)." breadcrumbs={breadcrumbs} />
-        <FeedbackFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
+  return (
+    <div>
+      <PageHeader title="Feedback" subtitle="View all user feedback grouped by user." breadcrumbs={breadcrumbs} />
+
+      {/* ── NPS Stats Bar ── */}
+      {stats && (
+        <div className={styles.statsBar}>
+          <div className={styles.statCard}>
+            <span className={styles.statValue}>{stats.total}</span>
+            <span className={styles.statLabel}>Total Responses</span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statCard}>
+            <span className={`${styles.statValue} ${styles.statAvg}`}>
+              {stats.avgScore.toFixed(1)}
+              <span className={styles.statMax}>/10</span>
+            </span>
+            <span className={styles.statLabel}>Avg Score</span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statCard}>
+            <span className={`${styles.statValue} ${styles.promoterColor}`}>{stats.promoters}</span>
+            <span className={styles.statLabel}>
+              Promoters
+              {stats.total > 0 && (
+                <span className={styles.statPct}> ({Math.round((stats.promoters / stats.total) * 100)}%)</span>
+              )}
+            </span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statCard}>
+            <span className={`${styles.statValue} ${styles.passiveColor}`}>{stats.passives}</span>
+            <span className={styles.statLabel}>
+              Passives
+              {stats.total > 0 && (
+                <span className={styles.statPct}> ({Math.round((stats.passives / stats.total) * 100)}%)</span>
+              )}
+            </span>
+          </div>
+          <div className={styles.statDivider} />
+          <div className={styles.statCard}>
+            <span className={`${styles.statValue} ${styles.detractorColor}`}>{stats.detractors}</span>
+            <span className={styles.statLabel}>
+              Detractors
+              {stats.total > 0 && (
+                <span className={styles.statPct}> ({Math.round((stats.detractors / stats.total) * 100)}%)</span>
+              )}
+            </span>
+          </div>
+        </div>
+      )}
+
+      <FeedbackFilters
+        initialFilters={filters}
+        onApply={handleFiltersApply}
+        onReset={handleFiltersReset}
+        activeCount={countActiveFilters(filters)}
+      />
+
+      {isLoading && <GlobalLoader label="Loading feedback..." />}
+
+      {!isLoading && error && (
         <StatusState
           type="error"
           message={error}
@@ -86,73 +165,129 @@ export default function AdminFeedbackPage() {
             </button>
           }
         />
-      </div>
-    );
-  }
+      )}
 
-  if (!feedback?.length) {
-    return (
-      <div>
-        <PageHeader title="Feedback" subtitle="View all user feedback (read-only)." breadcrumbs={breadcrumbs} />
-        <FeedbackFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
-        <StatusState type="empty" message="No feedback found." />
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={paginationMeta.page}
-            limit={paginationMeta.limit}
-            total={paginationMeta.total}
-            totalPages={paginationMeta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Feedback pagination"
-          />
-        </div>
-      </div>
-    );
-  }
+      {!isLoading && !error && !users?.length && <StatusState type="empty" message="No feedback found." />}
 
-  return (
-    <div>
-      <PageHeader title="Feedback" subtitle="View all user feedback (read-only)." breadcrumbs={breadcrumbs} />
-      <FeedbackFilters
-        initialFilters={filters}
-        onApply={handleFiltersApply}
-        onReset={handleFiltersReset}
-        activeCount={countActiveFilters(filters)}
-      />
-      <ul className={styles.list} aria-label="All feedback">
-        {feedback.map((item) => (
-          <li key={item._id} className={styles.card}>
-            <div className={styles.cardHeader}>
-              <div>
-                <h3 className={styles.userName}>{getUserName(item)}</h3>
-                {getUserEmail(item) && <p className={styles.userEmail}>{getUserEmail(item)}</p>}
-              </div>
-              <span className={`${styles.scoreBadge} ${getScoreClass(item.score)}`}>{item.score}</span>
-            </div>
-            {item.comment && <p className={styles.comment}>{item.comment}</p>}
-            <div className={styles.cardFooter}>
-              {item.pageUrl && <span className={styles.pageUrlChip}>{item.pageUrl}</span>}
-              <p className={styles.date}>{new Date(item.createdAt).toLocaleDateString()}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-      {meta && (
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={meta.page}
-            limit={meta.limit}
-            total={meta.total}
-            totalPages={meta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Feedback pagination"
-          />
-        </div>
+      {!isLoading && !error && users && users.length > 0 && (
+        <>
+          {/* ── Grouped Table ── */}
+          <div className={styles.tableWrap}>
+            <table className={styles.table} aria-label="Feedback grouped by user">
+              <thead>
+                <tr>
+                  <th className={styles.thUser}>User</th>
+                  <th className={styles.thCenter}>Feedbacks</th>
+                  <th className={styles.thCenter}>Avg Score</th>
+                  <th className={styles.thComment}>Latest Comment</th>
+                  <th className={styles.thDate}>Last Submitted</th>
+                  <th className={styles.thAction} />
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((row) => {
+                  const uid = row.userId._id;
+                  const isExpanded = expandedUsers.has(uid);
+                  const isLoadingHistory = loadingUserId === uid;
+                  const history = historyCache[uid];
+
+                  return (
+                    <Fragment key={uid}>
+                      {/* ── User Row ── */}
+                      <tr
+                        className={`${styles.userRow} ${isExpanded ? styles.userRowExpanded : ''}`}
+                        onClick={() => toggleUser(uid)}
+                        aria-expanded={isExpanded}
+                      >
+                        <td className={styles.tdUser}>
+                          <div className={styles.userCell}>
+                            <div className={styles.avatar}>{getInitials(row.userId.name)}</div>
+                            <div>
+                              <p className={styles.userName}>{row.userId.name}</p>
+                              {row.userId.email && <p className={styles.userEmail}>{row.userId.email}</p>}
+                            </div>
+                          </div>
+                        </td>
+                        <td className={styles.tdCenter}>
+                          <span className={styles.countBadge}>{row.totalFeedbacks}</span>
+                        </td>
+                        <td className={styles.tdCenter}>
+                          <span className={`${styles.scoreBadge} ${getScoreClass(row.avgScore)}`}>
+                            {row.avgScore.toFixed(1)}
+                          </span>
+                        </td>
+                        <td className={styles.tdComment}>
+                          <p className={styles.commentPreview}>
+                            {row.latestComment || <span className={styles.noComment}>No comment</span>}
+                          </p>
+                        </td>
+                        <td className={styles.tdDate}>{formatDate(row.latestDate)}</td>
+                        <td className={styles.tdAction}>
+                          <button
+                            type="button"
+                            className={styles.expandBtn}
+                            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleUser(uid);
+                            }}
+                          >
+                            <Icon
+                              icon={isExpanded ? 'solar:alt-arrow-up-bold' : 'solar:alt-arrow-down-bold'}
+                              width={18}
+                              height={18}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+
+                      {/* ── Accordion Row ── */}
+                      {isExpanded && (
+                        <tr className={styles.accordionRow}>
+                          <td colSpan={6} className={styles.accordionCell}>
+                            {isLoadingHistory && <p className={styles.accordionLoading}>Loading history…</p>}
+                            {!isLoadingHistory && history && history.length === 0 && (
+                              <p className={styles.accordionEmpty}>No entries found.</p>
+                            )}
+                            {!isLoadingHistory && history && history.length > 0 && (
+                              <ul className={styles.historyList}>
+                                {history.map((entry) => (
+                                  <li key={entry._id} className={styles.historyEntry}>
+                                    <div className={styles.historyLeft}>
+                                      <span className={`${styles.historyScore} ${getScoreClass(entry.score)}`}>
+                                        {entry.score}
+                                      </span>
+                                      <span className={styles.historyDate}>{formatDate(entry.createdAt)}</span>
+                                      {entry.pageUrl && <span className={styles.pageChip}>{entry.pageUrl}</span>}
+                                    </div>
+                                    <p className={styles.historyComment}>
+                                      {entry.comment || <span className={styles.noComment}>No comment</span>}
+                                    </p>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={paginationMeta.page}
+              limit={paginationMeta.limit}
+              total={paginationMeta.total}
+              totalPages={paginationMeta.totalPages}
+              onPageChange={setPage}
+              ariaLabel="Feedback pagination"
+            />
+          </div>
+        </>
       )}
     </div>
   );

@@ -49,3 +49,130 @@ export async function getAllFeedback(page = 1, limit = 10, filters?: AdminFeedba
     meta: { total, page, limit: safeLimit, totalPages: Math.ceil(total / safeLimit) },
   };
 }
+
+export interface UserFeedbackSummary {
+  userId: { _id: string; name: string; email: string };
+  totalFeedbacks: number;
+  avgScore: number;
+  latestComment: string;
+  latestDate: string;
+}
+
+export async function getFeedbackStats() {
+  await connectDB();
+
+  const result = await Feedback.aggregate([
+    {
+      $group: {
+        _id: null,
+        total: { $sum: 1 },
+        avgScore: { $avg: '$score' },
+        promoters: { $sum: { $cond: [{ $gte: ['$score', 9] }, 1, 0] } },
+        passives: { $sum: { $cond: [{ $and: [{ $gte: ['$score', 7] }, { $lte: ['$score', 8] }] }, 1, 0] } },
+        detractors: { $sum: { $cond: [{ $lte: ['$score', 6] }, 1, 0] } },
+      },
+    },
+  ]);
+
+  if (!result.length) {
+    return { total: 0, avgScore: 0, promoters: 0, passives: 0, detractors: 0 };
+  }
+
+  const { total, avgScore, promoters, passives, detractors } = result[0] as {
+    total: number;
+    avgScore: number;
+    promoters: number;
+    passives: number;
+    detractors: number;
+  };
+
+  return { total, avgScore: Math.round(avgScore * 10) / 10, promoters, passives, detractors };
+}
+
+export async function getFeedbackByUser(page = 1, limit = 20, filters?: AdminFeedbackFilters) {
+  await connectDB();
+
+  const safeLimit = Math.min(Math.max(limit, 1), 100);
+
+  const matchStage: Record<string, unknown> = {};
+  if (filters?.dateFrom || filters?.dateTo) {
+    matchStage.createdAt = {};
+    if (filters.dateFrom) (matchStage.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
+    if (filters.dateTo) (matchStage.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+  }
+
+  const pipeline = [
+    ...(Object.keys(matchStage).length ? [{ $match: matchStage }] : []),
+    {
+      $group: {
+        _id: '$userId',
+        totalFeedbacks: { $sum: 1 },
+        avgScore: { $avg: '$score' },
+        latestComment: { $last: '$comment' },
+        latestDate: { $max: '$createdAt' },
+      },
+    },
+    ...(filters?.minScore !== undefined || filters?.maxScore !== undefined
+      ? [
+          {
+            $match: {
+              avgScore: {
+                ...(filters.minScore !== undefined ? { $gte: filters.minScore } : {}),
+                ...(filters.maxScore !== undefined ? { $lte: filters.maxScore } : {}),
+              },
+            },
+          },
+        ]
+      : []),
+    { $sort: { latestDate: -1 as const } },
+    {
+      $facet: {
+        data: [
+          { $skip: (page - 1) * safeLimit },
+          { $limit: safeLimit },
+          {
+            $lookup: {
+              from: 'users',
+              localField: '_id',
+              foreignField: '_id',
+              as: 'userInfo',
+            },
+          },
+          { $unwind: { path: '$userInfo', preserveNullAndEmptyArrays: true } },
+          {
+            $project: {
+              _id: 0,
+              userId: {
+                _id: '$_id',
+                name: { $ifNull: ['$userInfo.name', 'Unknown User'] },
+                email: { $ifNull: ['$userInfo.email', ''] },
+              },
+              totalFeedbacks: 1,
+              avgScore: { $round: ['$avgScore', 1] },
+              latestComment: 1,
+              latestDate: 1,
+            },
+          },
+        ],
+        totalCount: [{ $count: 'count' }],
+      },
+    },
+  ];
+
+  const result = await Feedback.aggregate(pipeline);
+  const data = (result[0]?.data as UserFeedbackSummary[]) ?? [];
+  const total: number = (result[0]?.totalCount as { count: number }[])?.[0]?.count ?? 0;
+
+  return {
+    data,
+    meta: { total, page, limit: safeLimit, totalPages: Math.ceil(total / safeLimit) },
+  };
+}
+
+export async function getFeedbackForUser(userId: string) {
+  await connectDB();
+
+  const feedback = await Feedback.find({ userId }).sort({ createdAt: -1 }).limit(100).lean();
+
+  return feedback;
+}
