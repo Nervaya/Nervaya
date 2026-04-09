@@ -4,14 +4,16 @@ import Cart from '@/lib/models/cart.model';
 import Supplement from '@/lib/models/supplement.model';
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import Session from '@/lib/models/session.model';
+import User from '@/lib/models/user.model';
 import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service';
 import connectDB from '@/lib/db/mongodb';
 import { createSession } from '@/lib/services/session.service';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import mongoose, { Types } from 'mongoose';
 import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY, ITEM_TYPE } from '@/lib/constants/enums';
-import { getRazorpayInstance } from '@/lib/utils/razorpay.util';
+import { getRazorpayInstance, initiateRefund } from '@/lib/utils/razorpay.util';
 import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
+import { sendRefundNotificationEmail } from '@/lib/services/email/refund-notification.service';
 
 export interface RazorpayOrderResponse {
   id: string;
@@ -91,6 +93,127 @@ export async function createRazorpayOrder(orderId: string, amount: number, userI
   }
 }
 
+/**
+ * Shared payment success processor — called by both verifyPayment and handlePaymentWebhook.
+ * Uses optimistic locking (findOneAndUpdate with paymentStatus: PENDING) to prevent
+ * the race condition where both verify and webhook process the same order simultaneously.
+ */
+class StockError extends Error {
+  itemName: string;
+  orderAmount: number;
+  constructor(itemName: string, orderAmount: number) {
+    super(`Insufficient stock for ${itemName}`);
+    this.itemName = itemName;
+    this.orderAmount = orderAmount;
+  }
+}
+
+async function processPaymentSuccess(orderId: string, paymentId: string) {
+  const session = await mongoose.startSession();
+  try {
+    await session.withTransaction(async () => {
+      // Optimistic lock: only one caller can claim the order from PENDING → PAID
+      const lockedOrder = await Order.findOneAndUpdate(
+        { _id: orderId, paymentStatus: PAYMENT_STATUS.PENDING },
+        { paymentId, paymentStatus: PAYMENT_STATUS.PAID, orderStatus: ORDER_STATUS.CONFIRMED },
+        { new: true, session },
+      );
+
+      if (!lockedOrder) return; // Already processed or not found — idempotent exit
+
+      // Deduct stock atomically for supplements — throws StockError to roll back entire transaction
+      for (const item of lockedOrder.items) {
+        if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
+          const result = await Supplement.findOneAndUpdate(
+            { _id: item.itemId, stock: { $gte: item.quantity } },
+            { $inc: { stock: -item.quantity } },
+            { new: true, session },
+          );
+          if (!result) {
+            throw new StockError(item.name || 'Unknown item', lockedOrder.totalAmount);
+          }
+        }
+      }
+
+      // Clear the user's cart
+      await Cart.findOneAndUpdate({ userId: lockedOrder.userId }, { items: [] }).session(session);
+
+      // Increment promo code usage
+      if (lockedOrder.promoCode) {
+        const promo = await getPromoCodeByCode(lockedOrder.promoCode);
+        if (promo) await incrementUsage(promo._id.toString());
+      }
+
+      // Fulfill digital items
+      for (const item of lockedOrder.items) {
+        if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
+          const existingCount = await DriftOffOrder.countDocuments({
+            razorpayOrderId: lockedOrder.razorpayOrderId,
+          }).session(session);
+
+          if (existingCount === 0) {
+            const quantity = item.quantity || 1;
+            for (let i = 0; i < quantity; i++) {
+              const [newDriftOffOrder] = await DriftOffOrder.create(
+                [
+                  {
+                    userId: lockedOrder.userId,
+                    amount: item.price,
+                    paymentStatus: PAYMENT_STATUS.PAID,
+                    razorpayOrderId: lockedOrder.razorpayOrderId,
+                    paymentId,
+                  },
+                ],
+                { session },
+              );
+
+              await createDriftOffResponse(lockedOrder.userId.toString(), newDriftOffOrder._id.toString(), session);
+            }
+          }
+        } else if (item.itemType === ITEM_TYPE.THERAPY) {
+          const date = item.metadata?.date as string;
+          const slot = item.metadata?.slot as string;
+          if (date && slot) {
+            await createSession(lockedOrder.userId.toString(), item.itemId.toString(), date, slot, session);
+          }
+        }
+      }
+    });
+
+    return { success: true };
+  } catch (error) {
+    // Stock failure: transaction rolled back all changes. Now mark order as refunded and initiate refund.
+    if (error instanceof StockError) {
+      try {
+        await Order.findByIdAndUpdate(orderId, {
+          paymentStatus: PAYMENT_STATUS.REFUNDED,
+          orderStatus: ORDER_STATUS.CANCELLED,
+        });
+        await initiateRefund(paymentId);
+        const order = await Order.findById(orderId);
+        if (order) {
+          const user = await User.findById(order.userId).select('email name');
+          if (user) {
+            await sendRefundNotificationEmail({
+              email: user.email,
+              name: user.name,
+              orderId,
+              amount: error.orderAmount,
+              reason: `Insufficient stock for ${error.itemName}`,
+            });
+          }
+        }
+      } catch (refundError) {
+        console.error('Failed to initiate refund for stock failure:', refundError);
+      }
+      return { success: true, refunded: true, reason: error.message };
+    }
+    throw error;
+  } finally {
+    await session.endSession();
+  }
+}
+
 export async function verifyPayment(orderId: string, paymentId: string, razorpaySignature: string, userId: string) {
   await connectDB();
   try {
@@ -119,85 +242,10 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
       throw new ValidationError('Invalid payment signature');
     }
 
-    const session = await mongoose.startSession();
-    try {
-      await session.withTransaction(async () => {
-        const currentOrder = await Order.findById(orderId).session(session);
-        if (!currentOrder) throw new ValidationError('Order not found');
+    await processPaymentSuccess(orderId, paymentId);
 
-        if (currentOrder.paymentStatus === PAYMENT_STATUS.PAID) {
-          return; // Already processed (idempotent)
-        }
-
-        // Deduct stock atomically for supplements now that payment is confirmed
-        for (const item of currentOrder.items) {
-          if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
-            const result = await Supplement.findOneAndUpdate(
-              { _id: item.itemId, stock: { $gte: item.quantity } },
-              { $inc: { stock: -item.quantity } },
-              { new: true, session },
-            );
-            if (!result) {
-              throw new ValidationError(`Insufficient stock for ${item.name}. Payment will be refunded.`);
-            }
-          }
-        }
-
-        await Order.findByIdAndUpdate(orderId, {
-          paymentId,
-          paymentStatus: PAYMENT_STATUS.PAID,
-          orderStatus: ORDER_STATUS.CONFIRMED,
-        }).session(session);
-
-        // Clear the user's cart now that payment is confirmed
-        await Cart.findOneAndUpdate({ userId: currentOrder.userId }, { items: [] }).session(session);
-
-        // Increment promo code usage after payment success
-        if (currentOrder.promoCode) {
-          const promo = await getPromoCodeByCode(currentOrder.promoCode);
-          if (promo) await incrementUsage(promo._id.toString());
-        }
-
-        for (const item of currentOrder.items) {
-          if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
-            const existingCount = await DriftOffOrder.countDocuments({
-              razorpayOrderId: currentOrder.razorpayOrderId,
-            }).session(session);
-
-            if (existingCount === 0) {
-              const quantity = item.quantity || 1;
-              for (let i = 0; i < quantity; i++) {
-                const [newDriftOffOrder] = await DriftOffOrder.create(
-                  [
-                    {
-                      userId: currentOrder.userId,
-                      amount: item.price,
-                      paymentStatus: 'paid',
-                      razorpayOrderId: currentOrder.razorpayOrderId,
-                      paymentId,
-                    },
-                  ],
-                  { session },
-                );
-
-                await createDriftOffResponse(currentOrder.userId.toString(), newDriftOffOrder._id.toString(), session);
-              }
-            }
-          } else if (item.itemType === ITEM_TYPE.THERAPY) {
-            const date = item.metadata?.date as string;
-            const slot = item.metadata?.slot as string;
-            if (date && slot) {
-              await createSession(currentOrder.userId.toString(), item.itemId.toString(), date, slot, session);
-            }
-          }
-        }
-      });
-
-      const orderResult = await Order.findById(orderId);
-      return { verified: true, order: orderResult };
-    } finally {
-      await session.endSession();
-    }
+    const orderResult = await Order.findById(orderId);
+    return { verified: true, order: orderResult };
   } catch (error) {
     throw handleError(error);
   }
@@ -206,85 +254,18 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
 export async function handlePaymentWebhook(razorpayOrderId: string, paymentId: string, event: string) {
   await connectDB();
   try {
-    const session = await mongoose.startSession();
-    try {
-      await session.withTransaction(async () => {
-        const order = await Order.findOne({ razorpayOrderId }).session(session);
-        if (!order) throw new ValidationError('Order not found');
+    if (event === 'payment.captured' || event === 'payment.authorized') {
+      const order = await Order.findOne({ razorpayOrderId });
+      if (!order) throw new ValidationError('Order not found');
 
-        if (event === 'payment.captured' || event === 'payment.authorized') {
-          if (order.paymentStatus === PAYMENT_STATUS.PAID) return;
-
-          // Deduct stock atomically for supplements
-          for (const item of order.items) {
-            if (item.itemType === ITEM_TYPE.SUPPLEMENT) {
-              const result = await Supplement.findOneAndUpdate(
-                { _id: item.itemId, stock: { $gte: item.quantity } },
-                { $inc: { stock: -item.quantity } },
-                { new: true, session },
-              );
-              if (!result) {
-                throw new ValidationError(`Insufficient stock for ${item.name}`);
-              }
-            }
-          }
-
-          await Order.findByIdAndUpdate(order._id, {
-            paymentId,
-            paymentStatus: PAYMENT_STATUS.PAID,
-            orderStatus: ORDER_STATUS.CONFIRMED,
-          }).session(session);
-
-          // Clear the user's cart now that payment is confirmed
-          await Cart.findOneAndUpdate({ userId: order.userId }, { items: [] }).session(session);
-
-          // Increment promo code usage after payment success
-          if (order.promoCode) {
-            const promo = await getPromoCodeByCode(order.promoCode);
-            if (promo) await incrementUsage(promo._id.toString());
-          }
-
-          for (const item of order.items) {
-            if (item.itemType === ITEM_TYPE.DRIFT_OFF) {
-              const existingCount = await DriftOffOrder.countDocuments({ razorpayOrderId }).session(session);
-              if (existingCount === 0) {
-                const quantity = item.quantity || 1;
-                for (let i = 0; i < quantity; i++) {
-                  const [newDriftOffOrder] = await DriftOffOrder.create(
-                    [
-                      {
-                        userId: order.userId,
-                        amount: item.price,
-                        paymentStatus: 'paid',
-                        razorpayOrderId,
-                        paymentId,
-                      },
-                    ],
-                    { session },
-                  );
-
-                  await createDriftOffResponse(order.userId.toString(), newDriftOffOrder._id.toString(), session);
-                }
-              }
-            } else if (item.itemType === ITEM_TYPE.THERAPY) {
-              const date = item.metadata?.date as string;
-              const slot = item.metadata?.slot as string;
-              if (date && slot) {
-                await createSession(order.userId.toString(), item.itemId.toString(), date, slot, session);
-              }
-            }
-          }
-        } else if (event === 'payment.failed') {
-          await Order.findByIdAndUpdate(order._id, {
-            paymentStatus: PAYMENT_STATUS.FAILED,
-            orderStatus: ORDER_STATUS.CANCELLED,
-          }).session(session);
-        }
-      });
-      return { success: true };
-    } finally {
-      await session.endSession();
+      await processPaymentSuccess(order._id.toString(), paymentId);
+    } else if (event === 'payment.failed') {
+      await Order.findOneAndUpdate(
+        { razorpayOrderId },
+        { paymentStatus: PAYMENT_STATUS.FAILED, orderStatus: ORDER_STATUS.CANCELLED },
+      );
     }
+    return { success: true };
   } catch (error) {
     throw handleError(error);
   }

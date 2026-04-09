@@ -1,15 +1,21 @@
 import TherapistSchedule, { ITimeSlot } from '@/lib/models/therapistSchedule.model';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
+import { Types, ClientSession } from 'mongoose';
 
-export async function bookSlot(therapistId: string, date: string, startTime: string, sessionId: string) {
+export async function bookSlot(
+  therapistId: string,
+  date: string,
+  startTime: string,
+  sessionId: string,
+  mongooseSession?: ClientSession,
+) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId) || !Types.ObjectId.isValid(sessionId)) {
       throw new ValidationError('Invalid Therapist ID or Session ID');
     }
-    const schedule = await TherapistSchedule.findOne({ therapistId, date });
+    const schedule = await TherapistSchedule.findOne({ therapistId, date }).session(mongooseSession || null);
     if (!schedule) {
       throw new ValidationError('Schedule not found for this date');
     }
@@ -23,20 +29,25 @@ export async function bookSlot(therapistId: string, date: string, startTime: str
     slot.isAvailable = false;
     slot.sessionId = new Types.ObjectId(sessionId);
     schedule.markModified('slots');
-    await schedule.save();
+    await schedule.save({ session: mongooseSession });
     return slot;
   } catch (error) {
     throw handleError(error);
   }
 }
 
-export async function releaseSlot(therapistId: string, date: string, startTime: string) {
+export async function releaseSlot(
+  therapistId: string,
+  date: string,
+  startTime: string,
+  mongooseSession?: ClientSession,
+) {
   await connectDB();
   try {
     if (!Types.ObjectId.isValid(therapistId)) {
       throw new ValidationError('Invalid Therapist ID');
     }
-    const schedule = await TherapistSchedule.findOne({ therapistId, date });
+    const schedule = await TherapistSchedule.findOne({ therapistId, date }).session(mongooseSession || null);
     if (!schedule) {
       throw new ValidationError('Schedule not found for this date');
     }
@@ -47,7 +58,7 @@ export async function releaseSlot(therapistId: string, date: string, startTime: 
     slot.isAvailable = true;
     slot.sessionId = undefined;
     schedule.markModified('slots');
-    await schedule.save();
+    await schedule.save({ session: mongooseSession });
     return slot;
   } catch (error) {
     throw handleError(error);

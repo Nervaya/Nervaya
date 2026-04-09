@@ -39,63 +39,70 @@ export async function createSession(
       throw new ValidationError('Slot is already booked');
     }
 
-    const sessionRes = await Session.create(
-      [
-        {
-          userId,
-          therapistId,
-          date,
-          startTime,
-          endTime,
-          status: SESSION_STATUS.PENDING,
-        },
-      ],
-      { session: mongooseSession },
-    );
+    // When called from payment.service (with mongooseSession), run inside the existing transaction.
+    // When called standalone, create our own transaction for atomicity.
+    const needsOwnTransaction = !mongooseSession;
+    const txnSession = mongooseSession || (await mongoose.startSession());
 
-    const session = Array.isArray(sessionRes) ? sessionRes[0] : sessionRes;
-
-    // --- Google Meet & Email Integration ---
-    (async () => {
-      try {
-        const [user, therapist] = await Promise.all([
-          User.findById(userId).select('email name'),
-          Therapist.findById(therapistId).select('name email'),
-        ]);
-
-        if (user) {
-          const { meetLink, eventId } = await generateMeetLink(
-            date,
-            startTime,
-            `Therapy Session: ${user.name} & ${therapist?.name || 'Therapist'}`,
-            `Your scheduled therapy session on Nervaya.\nCustomer: ${user.name}\nTherapist: ${therapist?.name || 'N/A'}`,
-          );
-
-          if (meetLink) {
-            await Session.findByIdAndUpdate(session._id, { meetLink, googleEventId: eventId });
-          }
-
-          await sendSessionConfirmationEmail({
-            email: user.email,
-            name: user.name,
-            therapistName: therapist?.name || 'your Therapist',
-            date,
-            startTime,
-            meetLink: meetLink || '',
-          });
-        }
-      } catch (integrationError) {
-        console.error('Error in post-booking integration:', integrationError);
-      }
-    })();
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let createdSession: any;
     try {
-      await bookSlot(therapistId, date, startTime, session._id.toString());
-    } catch (bookSlotError) {
-      console.error('Failed to mark slot as booked:', bookSlotError);
+      const executeAtomicCreation = async () => {
+        const sessionRes = await Session.create(
+          [{ userId, therapistId, date, startTime, endTime, status: SESSION_STATUS.PENDING }],
+          { session: txnSession },
+        );
+        createdSession = Array.isArray(sessionRes) ? sessionRes[0] : sessionRes;
+
+        await bookSlot(therapistId, date, startTime, createdSession._id.toString(), txnSession);
+      };
+
+      if (needsOwnTransaction) {
+        await txnSession.withTransaction(executeAtomicCreation);
+      } else {
+        await executeAtomicCreation();
+      }
+    } finally {
+      if (needsOwnTransaction) {
+        await txnSession.endSession();
+      }
     }
 
-    return session;
+    // --- Google Meet & Email Integration (awaited inline) ---
+    try {
+      const [user, therapist] = await Promise.all([
+        User.findById(userId).select('email name'),
+        Therapist.findById(therapistId).select('name email'),
+      ]);
+
+      if (user) {
+        const { meetLink, eventId } = await generateMeetLink(
+          date,
+          startTime,
+          `Therapy Session: ${user.name} & ${therapist?.name || 'Therapist'}`,
+          `Your scheduled therapy session on Nervaya.\nCustomer: ${user.name}\nTherapist: ${therapist?.name || 'N/A'}`,
+        );
+
+        if (meetLink) {
+          await Session.findByIdAndUpdate(createdSession._id, { meetLink, googleEventId: eventId });
+          createdSession.meetLink = meetLink;
+          createdSession.googleEventId = eventId;
+        }
+
+        await sendSessionConfirmationEmail({
+          email: user.email,
+          name: user.name,
+          therapistName: therapist?.name || 'your Therapist',
+          date,
+          startTime,
+          meetLink: meetLink || '',
+        });
+      }
+    } catch (integrationError) {
+      console.error('Error in post-booking integration:', integrationError);
+    }
+
+    return createdSession;
   } catch (error) {
     throw handleError(error);
   }
@@ -170,40 +177,39 @@ export async function rescheduleSession(sessionId: string, userId: string, newDa
     await releaseSlot(session.therapistId.toString(), oldDate, oldStartTime);
     await bookSlot(session.therapistId.toString(), newDate, newStartTime, session._id.toString());
 
-    // 4. Update Google Calendar
-    (async () => {
-      try {
-        if (oldEventId) await deleteMeeting(oldEventId);
+    // 4. Update Google Calendar (awaited inline)
+    try {
+      if (oldEventId) await deleteMeeting(oldEventId);
 
-        const [user, therapist] = await Promise.all([
-          User.findById(userId).select('email name'),
-          Therapist.findById(session.therapistId).select('name'),
-        ]);
+      const [user, therapist] = await Promise.all([
+        User.findById(userId).select('email name'),
+        Therapist.findById(session.therapistId).select('name'),
+      ]);
 
-        if (user) {
-          const { meetLink, eventId } = await generateMeetLink(
-            newDate,
-            newStartTime,
-            `Rescheduled: ${user.name} & ${therapist?.name || 'Therapist'}`,
-            `Your rescheduled therapy session on Nervaya.\nCustomer: ${user.name}\nTherapist: ${therapist?.name || 'N/A'}`,
-          );
+      if (user) {
+        const { meetLink, eventId } = await generateMeetLink(
+          newDate,
+          newStartTime,
+          `Rescheduled: ${user.name} & ${therapist?.name || 'Therapist'}`,
+          `Your rescheduled therapy session on Nervaya.\nCustomer: ${user.name}\nTherapist: ${therapist?.name || 'N/A'}`,
+        );
 
-          await Session.findByIdAndUpdate(session._id, { meetLink, googleEventId: eventId });
+        await Session.findByIdAndUpdate(session._id, { meetLink, googleEventId: eventId });
+        session.meetLink = meetLink ?? undefined;
+        session.googleEventId = eventId ?? undefined;
 
-          // Send rescheduled email (can reuse template or add special flag)
-          await sendSessionConfirmationEmail({
-            email: user.email,
-            name: user.name,
-            therapistName: therapist?.name || 'your Therapist',
-            date: newDate,
-            startTime: newStartTime,
-            meetLink: meetLink || '',
-          });
-        }
-      } catch (err) {
-        console.error('Error updating Google Meet during reschedule:', err);
+        await sendSessionConfirmationEmail({
+          email: user.email,
+          name: user.name,
+          therapistName: therapist?.name || 'your Therapist',
+          date: newDate,
+          startTime: newStartTime,
+          meetLink: meetLink || '',
+        });
       }
-    })();
+    } catch (err) {
+      console.error('Error updating Google Meet during reschedule:', err);
+    }
 
     return session;
   } catch (error) {

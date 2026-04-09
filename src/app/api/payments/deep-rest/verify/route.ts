@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await verifyDriftOffPayment(driftOffOrderId, paymentId, razorpaySignature);
+    const result = await verifyDriftOffPayment(driftOffOrderId, paymentId, razorpaySignature, authResult.user.userId);
 
     return NextResponse.json(successResponse('Payment verified successfully', result));
   } catch (error) {

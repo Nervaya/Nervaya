@@ -23,6 +23,7 @@
 # Cursor IDE (rules, skills, local state)
 .cursor/
 .antigravity/
+.claude/
 .agent/
 .zed/
 
