@@ -35,4 +35,10 @@ export const reviewsApi = {
   getReviewableItems: (): Promise<ApiResponse<ReviewableItem[]>> => {
     return api.get('/reviews/reviewable-items') as Promise<ApiResponse<ReviewableItem[]>>;
   },
+
+  getByItemType: (itemType: string, itemId: string, page = 1, limit = 20): Promise<ApiResponse<ReviewsResponse>> => {
+    return api.get(`/reviews/${itemType}/${itemId}`, {
+      params: { page, limit },
+    }) as Promise<ApiResponse<ReviewsResponse>>;
+  },
 };

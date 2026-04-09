@@ -33,6 +33,27 @@ export async function getByProductId(productId: string, page = 1, limit = 10) {
   }
 }
 
+export async function getByItemType(itemId: string, itemType: string, page = 1, limit = 10) {
+  await connectDB();
+  try {
+    if (!Types.ObjectId.isValid(itemId)) {
+      throw new ValidationError('Invalid item ID');
+    }
+    const filter = { productId: new Types.ObjectId(itemId), itemType, isVisible: true };
+    const skip = (page - 1) * limit;
+    const [reviews, total] = await Promise.all([
+      Review.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Review.countDocuments(filter),
+    ]);
+    return {
+      data: reviews,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
+  } catch (error) {
+    throw handleError(error);
+  }
+}
+
 export async function create(
   productId: string,
   userId: string,
