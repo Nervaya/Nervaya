@@ -23,10 +23,12 @@ export const reviewsApi = {
     }) as Promise<ApiResponse<ReviewsResponse>>;
   },
 
-  create: (productId: string, rating: number, comment?: string): Promise<ApiResponse<Review>> => {
-    return api.post(`/supplements/${productId}/reviews`, {
+  create: (productId: string, rating: number, comment?: string, itemType?: string): Promise<ApiResponse<Review>> => {
+    return api.post('/reviews', {
+      productId,
       rating,
       comment: comment ?? '',
+      itemType: itemType ?? 'Supplement',
     }) as Promise<ApiResponse<Review>>;
   },
 

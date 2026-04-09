@@ -39,6 +39,7 @@ export async function create(
   rating: number,
   comment?: string,
   userDisplayName?: string,
+  itemType: string = 'Supplement',
 ) {
   await connectDB();
   try {
@@ -48,20 +49,25 @@ export async function create(
     if (rating < 1 || rating > 5) {
       throw new ValidationError('Rating must be between 1 and 5');
     }
-    const supplement = await Supplement.findById(productId);
-    if (!supplement) {
-      throw new ValidationError('Supplement not found');
+    if (itemType === 'Supplement') {
+      const supplement = await Supplement.findById(productId);
+      if (!supplement) {
+        throw new ValidationError('Supplement not found');
+      }
     }
     const review = await Review.findOneAndUpdate(
-      { productId: new Types.ObjectId(productId), userId },
+      { productId: new Types.ObjectId(productId), userId, itemType },
       {
         rating,
         comment: comment ?? '',
         userDisplayName: userDisplayName ?? '',
+        itemType,
       },
       { new: true, upsert: true, runValidators: true },
     );
-    await updateSupplementAggregates(productId);
+    if (itemType === 'Supplement') {
+      await updateSupplementAggregates(productId);
+    }
     return review;
   } catch (error) {
     throw handleError(error);
