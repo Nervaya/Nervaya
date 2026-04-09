@@ -12,12 +12,12 @@ export async function getByProductId(productId: string, page = 1, limit = 10) {
     }
     const skip = (page - 1) * limit;
     const [reviews, total] = await Promise.all([
-      Review.find({ productId: new Types.ObjectId(productId) })
+      Review.find({ productId: new Types.ObjectId(productId), isVisible: true })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
-      Review.countDocuments({ productId: new Types.ObjectId(productId) }),
+      Review.countDocuments({ productId: new Types.ObjectId(productId), isVisible: true }),
     ]);
     return {
       data: reviews,
@@ -91,6 +91,7 @@ export async function deleteReview(reviewId: string, userId: string) {
 export async function updateSupplementAggregates(productId: string) {
   const reviews = await Review.find({
     productId: new Types.ObjectId(productId),
+    isVisible: true,
   }).lean();
   const count = reviews.length;
   if (count === 0) {
