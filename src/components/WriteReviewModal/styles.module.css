@@ -1,0 +1,438 @@
+/* Floating button — positioned ABOVE the feedback button */
+.floatingButton {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  font-family: var(--font-sans);
+}
+
+.floatingButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay);
+  animation: fadeIn 0.2s ease;
+}
+
+/* Modal */
+.modal {
+  background: var(--color-card-bg);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.closeButton:hover {
+  background: var(--color-white-dim);
+}
+
+/* Body */
+.body {
+  padding: 20px 24px;
+}
+
+/* Step 1: Item selection */
+.stepLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px;
+}
+
+.loadingText {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 24px 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.emptyHint {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.itemCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 12px;
+  background: var(--color-card-bg);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+
+.itemCard:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-dim);
+}
+
+.itemImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-card-bg-light);
+}
+
+.itemImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itemImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent-dim);
+}
+
+.itemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemMeta {
+  font-size: 12px;
+  color: var(--color-accent);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--color-text-dim);
+}
+
+/* Step 2: Write review */
+.selectedProduct {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: var(--color-card-bg-light);
+}
+
+.selectedProductLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.selectedProductImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.selectedProductName {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.selectedProductType {
+  display: block;
+  font-size: 12px;
+  color: var(--color-accent);
+}
+
+.changeButton {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.changeButton:hover {
+  text-decoration: underline;
+}
+
+.ratingLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px;
+}
+
+.starRow {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.starButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.15s;
+}
+
+.starButton:hover {
+  transform: scale(1.15);
+}
+
+.tapToRate {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-dim);
+  margin: 4px 0 0;
+}
+
+/* Textarea */
+.textareaLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 20px 0 8px;
+}
+
+.textarea {
+  width: 100%;
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background: var(--color-card-bg-light);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-dim);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.helperText {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 8px 0 0;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 20px;
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 12px;
+  border: 1.5px solid var(--color-border-light);
+  border-radius: 10px;
+  background: var(--color-card-bg);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.15s;
+}
+
+.cancelButton:hover {
+  background: var(--color-card-bg-light);
+}
+
+.submitButton {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--gradient-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: opacity 0.15s;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitButton:not(:disabled):hover {
+  background: var(--gradient-accent-hover);
+}
+
+/* Success state */
+.successContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.successIcon {
+  margin-bottom: 16px;
+}
+
+.successTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px;
+}
+
+.successText {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile: move floating button above both bottom nav and feedback button */
+@media (max-width: 768px) {
+  .floatingButton {
+    bottom: 136px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .modal {
+    width: 95%;
+  }
+}

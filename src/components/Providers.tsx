@@ -10,6 +10,7 @@ import { Toaster } from 'sonner';
 
 import { SidebarProvider } from '@/context/SidebarContext';
 import { FeedbackWidget } from '@/components/FeedbackWidget';
+import { WriteReviewModal } from '@/components/WriteReviewModal';
 
 const Navbar = dynamic(() => import('@/components/Navbar'), {
   ssr: true,
@@ -41,6 +42,7 @@ export default function Providers({ children }: ProvidersProps) {
                 },
               }}
             />
+            <WriteReviewModal />
             <FeedbackWidget />
           </SidebarProvider>
         </CartProvider>
