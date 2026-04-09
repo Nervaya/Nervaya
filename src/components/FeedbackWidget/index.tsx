@@ -1,11 +1,18 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { ROLES } from '@/lib/constants/roles';
 import { feedbackApi } from '@/lib/api/feedback';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
+
+const FEEDBACK_GIVEN_KEY = 'nervaya_feedback_given';
+
+function getInitialFeedbackState(): boolean {
+  if (typeof window === 'undefined') return true;
+  return localStorage.getItem(FEEDBACK_GIVEN_KEY) === 'true';
+}
 
 type WidgetState = 'idle' | 'open' | 'submitting' | 'success';
 
@@ -14,6 +21,7 @@ export function FeedbackWidget() {
   const [state, setState] = useState<WidgetState>('idle');
   const [score, setScore] = useState<number | null>(null);
   const [comment, setComment] = useState('');
+  const [hasGivenFeedback, setHasGivenFeedback] = useState(getInitialFeedbackState);
 
   const isCustomer = user?.role === ROLES.CUSTOMER;
 
@@ -36,6 +44,8 @@ export function FeedbackWidget() {
         comment: comment.trim() || undefined,
         pageUrl: window.location.pathname,
       });
+      localStorage.setItem(FEEDBACK_GIVEN_KEY, 'true');
+      setHasGivenFeedback(true);
       setState('success');
       setTimeout(() => setState('idle'), 2000);
     } catch {
@@ -44,11 +54,17 @@ export function FeedbackWidget() {
     }
   }, [score, comment]);
 
+  useEffect(() => {
+    const handler = () => handleOpen();
+    window.addEventListener('open-feedback-widget', handler);
+    return () => window.removeEventListener('open-feedback-widget', handler);
+  }, [handleOpen]);
+
   if (!isCustomer) return null;
 
   return (
     <>
-      {state === 'idle' && (
+      {state === 'idle' && !hasGivenFeedback && (
         <button className={styles.floatingButton} onClick={handleOpen} aria-label="Share feedback">
           <svg
             width="22"

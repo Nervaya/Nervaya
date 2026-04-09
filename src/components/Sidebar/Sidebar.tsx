@@ -121,6 +121,22 @@ const Sidebar = ({
                                 item.path,
                                 group.items.map((i) => i.path),
                               );
+                          if (item.path === '#feedback') {
+                            return (
+                              <li key={`${item.path}-${item.title}`}>
+                                <button
+                                  type="button"
+                                  className={`${styles.navItem} ${styles.secondaryItem}`}
+                                  onClick={() => window.dispatchEvent(new CustomEvent('open-feedback-widget'))}
+                                >
+                                  <span className={styles.icon}>
+                                    <Icon icon={iconMap[item.icon] || iconMap['FaHouse']} width={20} height={20} />
+                                  </span>
+                                  <span className={styles.title}>{item.title}</span>
+                                </button>
+                              </li>
+                            );
+                          }
                           return (
                             <li key={`${item.path}-${item.title}`}>
                               <Link href={item.path} className={`${styles.navItem} ${isActive ? styles.active : ''}`}>

@@ -45,6 +45,7 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     items: [
       { title: 'Support', path: '/support', icon: 'FaHeadset' },
       { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
+      { title: 'Feedback', path: '#feedback', icon: 'FaCommentDots' },
       { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
     ],
   },
