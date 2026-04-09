@@ -50,6 +50,8 @@ export interface Review {
   userDisplayName?: string;
   rating: number;
   comment?: string;
+  isVisible?: boolean;
+  itemType?: 'Supplement' | 'DriftOff' | 'Therapy';
   createdAt: string;
   updatedAt: string;
 }

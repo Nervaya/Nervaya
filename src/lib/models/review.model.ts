@@ -6,6 +6,8 @@ export interface IReview extends Document {
   userDisplayName?: string;
   rating: number;
   comment?: string;
+  isVisible: boolean;
+  itemType: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,6 +37,8 @@ const reviewSchema = new Schema<IReview>(
       trim: true,
       default: '',
     },
+    isVisible: { type: Boolean, default: true },
+    itemType: { type: String, enum: ['Supplement', 'DriftOff', 'Therapy'], default: 'Supplement' },
   },
   {
     timestamps: true,
@@ -42,7 +46,7 @@ const reviewSchema = new Schema<IReview>(
 );
 
 reviewSchema.index({ productId: 1, createdAt: -1 });
-reviewSchema.index({ userId: 1, productId: 1 }, { unique: true });
+reviewSchema.index({ userId: 1, productId: 1, itemType: 1 }, { unique: true });
 
 const Review: Model<IReview> = mongoose.models.Review || mongoose.model<IReview>('Review', reviewSchema);
 
