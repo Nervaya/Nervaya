@@ -5,6 +5,7 @@ export interface AdminFeedbackFiltersParams {
   maxScore?: number;
   dateFrom?: string;
   dateTo?: string;
+  search?: string;
 }
 
 export interface PaginationMeta {
@@ -48,6 +49,7 @@ export const adminFeedbackApi = {
     if (filters?.maxScore !== undefined) params.set('maxScore', String(filters.maxScore));
     if (filters?.dateFrom) params.set('dateFrom', filters.dateFrom);
     if (filters?.dateTo) params.set('dateTo', filters.dateTo);
+    if (filters?.search) params.set('search', filters.search);
     return api.get(`/admin/feedback?${params.toString()}`) as Promise<ApiResponse<AdminFeedbackResponse>>;
   },
 };

@@ -23,6 +23,8 @@ export async function GET(req: NextRequest) {
     if (dateFrom) filters.dateFrom = dateFrom;
     const dateTo = searchParams.get('dateTo');
     if (dateTo) filters.dateTo = dateTo;
+    const search = searchParams.get('search');
+    if (search) filters.search = search;
 
     const result = await getAllFeedback(page, limit, filters);
     return NextResponse.json(successResponse('Feedback fetched', result));

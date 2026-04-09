@@ -24,6 +24,10 @@ export async function GET(req: NextRequest) {
     if (dateFrom) filters.dateFrom = dateFrom;
     const dateTo = searchParams.get('dateTo');
     if (dateTo) filters.dateTo = dateTo;
+    const search = searchParams.get('search');
+    if (search) filters.search = search;
+    const itemType = searchParams.get('itemType');
+    if (itemType) filters.itemType = itemType;
 
     const result = await getAllReviews(page, limit, filters);
     return NextResponse.json(successResponse('Reviews fetched', result));

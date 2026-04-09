@@ -1,5 +1,6 @@
 import connectDB from '@/lib/db/mongodb';
 import Review, { IReview } from '@/lib/models/review.model';
+import User from '@/lib/models/user.model';
 import { ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import { updateSupplementAggregates } from '@/lib/services/review.service';
@@ -9,6 +10,8 @@ interface AdminReviewFilters {
   isVisible?: boolean;
   dateFrom?: string;
   dateTo?: string;
+  search?: string;
+  itemType?: string;
 }
 
 export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewFilters) {
@@ -29,6 +32,19 @@ export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewF
     query.createdAt = {};
     if (filters.dateFrom) (query.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
     if (filters.dateTo) (query.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+  }
+  if (filters?.search) {
+    const searchRegex = new RegExp(filters.search, 'i');
+    const matchingUsers = await User.find({
+      $or: [{ name: searchRegex }, { email: searchRegex }, { phone: searchRegex }],
+    })
+      .select('_id')
+      .lean();
+    const userIds = matchingUsers.map((u) => u._id.toString());
+    query.userId = { $in: userIds };
+  }
+  if (filters?.itemType) {
+    query.itemType = filters.itemType;
   }
 
   const [reviews, total] = await Promise.all([

@@ -17,6 +17,7 @@ export default function FeedbackFilters({
   onReset,
   activeCount = 0,
 }: FeedbackFiltersProps) {
+  const [search, setSearch] = useState(initialFilters.search ?? '');
   const [minScore, setMinScore] = useState(initialFilters.minScore?.toString() ?? '');
   const [maxScore, setMaxScore] = useState(initialFilters.maxScore?.toString() ?? '');
   const [dateFrom, setDateFrom] = useState(initialFilters.dateFrom ?? '');
@@ -24,6 +25,7 @@ export default function FeedbackFilters({
 
   const handleApply = useCallback(() => {
     const filters: AdminFeedbackFiltersParams = {};
+    if (search) filters.search = search;
     const min = minScore ? Number(minScore) : undefined;
     const max = maxScore ? Number(maxScore) : undefined;
     if (min != null && !Number.isNaN(min)) filters.minScore = min;
@@ -31,9 +33,10 @@ export default function FeedbackFilters({
     if (dateFrom) filters.dateFrom = dateFrom;
     if (dateTo) filters.dateTo = dateTo;
     onApply(filters);
-  }, [minScore, maxScore, dateFrom, dateTo, onApply]);
+  }, [search, minScore, maxScore, dateFrom, dateTo, onApply]);
 
   const handleReset = useCallback(() => {
+    setSearch('');
     setMinScore('');
     setMaxScore('');
     setDateFrom('');
@@ -43,6 +46,17 @@ export default function FeedbackFilters({
 
   return (
     <div className={styles.bar} role="search" aria-label="Filter feedback">
+      <div className={styles.field}>
+        <label htmlFor="feedback-search">Search</label>
+        <input
+          id="feedback-search"
+          type="text"
+          placeholder="Name, email or phone"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search"
+        />
+      </div>
       <div className={styles.field}>
         <label htmlFor="feedback-min-score">Min Score</label>
         <input

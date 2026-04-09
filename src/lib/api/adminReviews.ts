@@ -5,6 +5,8 @@ export interface AdminReviewFiltersParams {
   isVisible?: boolean;
   dateFrom?: string;
   dateTo?: string;
+  search?: string;
+  itemType?: string;
 }
 
 export interface PaginationMeta {
@@ -51,6 +53,8 @@ export const adminReviewsApi = {
     if (filters?.isVisible !== undefined) params.set('isVisible', String(filters.isVisible));
     if (filters?.dateFrom) params.set('dateFrom', filters.dateFrom);
     if (filters?.dateTo) params.set('dateTo', filters.dateTo);
+    if (filters?.search) params.set('search', filters.search);
+    if (filters?.itemType) params.set('itemType', filters.itemType);
     return api.get(`/admin/reviews?${params.toString()}`) as Promise<ApiResponse<AdminReviewsResponse>>;
   },
 

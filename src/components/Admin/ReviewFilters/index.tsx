@@ -19,6 +19,13 @@ const VISIBILITY_OPTIONS = [
   { value: 'false', label: 'Hidden' },
 ];
 
+const ITEM_TYPE_OPTIONS = [
+  { value: '', label: 'All types' },
+  { value: 'Supplement', label: 'Supplement' },
+  { value: 'DriftOff', label: 'Deep Rest' },
+  { value: 'Therapy', label: 'Therapy' },
+];
+
 export interface ReviewFiltersProps {
   initialFilters?: AdminReviewFiltersParams;
   onApply: (filters: AdminReviewFiltersParams) => void;
@@ -27,25 +34,31 @@ export interface ReviewFiltersProps {
 }
 
 export default function ReviewFilters({ initialFilters = {}, onApply, onReset, activeCount = 0 }: ReviewFiltersProps) {
+  const [search, setSearch] = useState(initialFilters.search ?? '');
   const [rating, setRating] = useState(initialFilters.rating?.toString() ?? '');
   const [visibility, setVisibility] = useState(
     initialFilters.isVisible !== undefined ? String(initialFilters.isVisible) : '',
   );
+  const [itemType, setItemType] = useState(initialFilters.itemType ?? '');
   const [dateFrom, setDateFrom] = useState(initialFilters.dateFrom ?? '');
   const [dateTo, setDateTo] = useState(initialFilters.dateTo ?? '');
 
   const handleApply = useCallback(() => {
     const filters: AdminReviewFiltersParams = {};
+    if (search) filters.search = search;
     if (rating) filters.rating = Number(rating);
     if (visibility) filters.isVisible = visibility === 'true';
+    if (itemType) filters.itemType = itemType;
     if (dateFrom) filters.dateFrom = dateFrom;
     if (dateTo) filters.dateTo = dateTo;
     onApply(filters);
-  }, [rating, visibility, dateFrom, dateTo, onApply]);
+  }, [search, rating, visibility, itemType, dateFrom, dateTo, onApply]);
 
   const handleReset = useCallback(() => {
+    setSearch('');
     setRating('');
     setVisibility('');
+    setItemType('');
     setDateFrom('');
     setDateTo('');
     onReset();
@@ -53,6 +66,32 @@ export default function ReviewFilters({ initialFilters = {}, onApply, onReset, a
 
   return (
     <div className={styles.bar} role="search" aria-label="Filter reviews">
+      <div className={styles.field}>
+        <label htmlFor="review-search">Search</label>
+        <input
+          id="review-search"
+          type="text"
+          placeholder="Name, email or phone"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search"
+        />
+      </div>
+      <div className={styles.field}>
+        <label htmlFor="review-item-type">Type</label>
+        <select
+          id="review-item-type"
+          value={itemType}
+          onChange={(e) => setItemType(e.target.value)}
+          aria-label="Item type"
+        >
+          {ITEM_TYPE_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className={styles.field}>
         <label htmlFor="review-rating">Rating</label>
         <select id="review-rating" value={rating} onChange={(e) => setRating(e.target.value)} aria-label="Rating">

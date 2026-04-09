@@ -1,11 +1,13 @@
 import connectDB from '@/lib/db/mongodb';
 import Feedback from '@/lib/models/feedback.model';
+import User from '@/lib/models/user.model';
 
 interface AdminFeedbackFilters {
   minScore?: number;
   maxScore?: number;
   dateFrom?: string;
   dateTo?: string;
+  search?: string;
 }
 
 export async function getAllFeedback(page = 1, limit = 10, filters?: AdminFeedbackFilters) {
@@ -25,6 +27,16 @@ export async function getAllFeedback(page = 1, limit = 10, filters?: AdminFeedba
     query.createdAt = {};
     if (filters.dateFrom) (query.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
     if (filters.dateTo) (query.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+  }
+  if (filters?.search) {
+    const searchRegex = new RegExp(filters.search, 'i');
+    const matchingUsers = await User.find({
+      $or: [{ name: searchRegex }, { email: searchRegex }, { phone: searchRegex }],
+    })
+      .select('_id')
+      .lean();
+    const userIds = matchingUsers.map((u) => u._id.toString());
+    query.userId = { $in: userIds };
   }
 
   const [feedback, total] = await Promise.all([

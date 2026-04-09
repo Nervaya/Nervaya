@@ -15,6 +15,8 @@ import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { getEmbedUrl } from '@/lib/utils/video.utils';
 import { ICON_QUOTES } from '@/constants/icons';
+import { TestimonialsCarousel, type TestimonialItem } from '@/components/common/TestimonialsCarousel';
+import { reviewsApi } from '@/lib/api/reviews';
 
 export default function TherapistProfilePage() {
   const params = useParams<{ id: string }>();
@@ -24,6 +26,7 @@ export default function TherapistProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [openBooking, setOpenBooking] = useState(false);
+  const [therapistReviews, setTherapistReviews] = useState<TestimonialItem[]>([]);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -40,6 +43,22 @@ export default function TherapistProfilePage() {
         const response = await therapistsApi.getById(therapistId);
         if (response.success && response.data) {
           setTherapist(response.data);
+
+          reviewsApi
+            .getByItemType('Therapy', therapistId, 1, 20)
+            .then((res) => {
+              if (res.success && res.data?.data) {
+                setTherapistReviews(
+                  res.data.data.map((r) => ({
+                    name: r.userDisplayName || 'Anonymous',
+                    rating: r.rating,
+                    comment: r.comment || '',
+                    initials: (r.userDisplayName || 'A').slice(0, 2).toUpperCase(),
+                  })),
+                );
+              }
+            })
+            .catch(() => {});
         } else {
           setError('Therapist not found');
         }
@@ -303,76 +322,43 @@ export default function TherapistProfilePage() {
                   margin: '20px 4%',
                 }}
               >
-                <h2 style={{ margin: 0, color: '#9333ea', fontSize: '1.1rem', fontWeight: 500 }}>Testimonials</h2>
-
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: '24px',
-                    width: '100%',
-                    maxWidth: '1200px',
-                  }}
-                >
-                  {(therapist.testimonials?.length
-                    ? therapist.testimonials
-                    : [
-                        {
-                          name: 'Sarah M.',
-                          clientSince: 'Client since 2023',
-                          message:
-                            'Anu helped me navigate through the darkest period of my life. Her compassionate approach and practical strategies made all the difference.',
-                        },
-                        {
-                          name: 'James K.',
-                          clientSince: 'Client since 2022',
-                          message:
-                            "I was skeptical about therapy, but Anu's warm demeanor and professional expertise changed my perspective. Highly recommended!",
-                        },
-                        {
-                          name: 'Maria L.',
-                          clientSince: 'Client since 2024',
-                          message:
-                            "The tools and insights I gained from my sessions with Anu have been life-changing. She truly cares about her clients' well-being.",
-                        },
-                      ]
-                  ).map((testimonial) => (
-                    <div
-                      key={`${testimonial.name}-${testimonial.clientSince}`}
-                      style={{
-                        background: '#ffffff',
-                        borderRadius: '20px',
-                        padding: '36px',
-                        boxShadow: '0 12px 36px rgba(139, 92, 246, 0.06)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '24px',
-                        border: '1px solid rgba(216, 180, 254, 0.3)',
-                      }}
-                    >
-                      <Icon icon={ICON_QUOTES} style={{ color: '#c084fc', fontSize: '3rem' }} />
-
-                      <p style={{ margin: 0, color: '#475569', lineHeight: '1.8', fontSize: '1.05rem', flex: 1 }}>
-                        &quot;{testimonial.message}&quot;
-                      </p>
-
-                      <div
-                        style={{
-                          borderTop: '1px solid #f1f5f9',
-                          paddingTop: '20px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '6px',
-                        }}
-                      >
-                        <span style={{ color: '#9333ea', fontWeight: 500, fontSize: '1rem' }}>{testimonial.name}</span>
-                        <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-                          {testimonial.clientSince || 'Client'}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <TestimonialsCarousel
+                  reviews={(() => {
+                    const existingTestimonials: TestimonialItem[] = (therapist.testimonials || []).map((t) => ({
+                      name: t.name,
+                      rating: 5,
+                      comment: t.message,
+                      initials: t.name.slice(0, 2).toUpperCase(),
+                    }));
+                    const merged = [...therapistReviews, ...existingTestimonials];
+                    return merged.length > 0
+                      ? merged
+                      : [
+                          {
+                            name: 'Sarah M.',
+                            initials: 'SM',
+                            rating: 5,
+                            comment:
+                              'Anu helped me navigate through the darkest period of my life. Her compassionate approach and practical strategies made all the difference.',
+                          },
+                          {
+                            name: 'James K.',
+                            initials: 'JK',
+                            rating: 5,
+                            comment:
+                              "I was skeptical about therapy, but Anu's warm demeanor and professional expertise changed my perspective. Highly recommended!",
+                          },
+                          {
+                            name: 'Maria L.',
+                            initials: 'ML',
+                            rating: 5,
+                            comment:
+                              "The tools and insights I gained from my sessions with Anu have been life-changing. She truly cares about her clients' well-being.",
+                          },
+                        ];
+                  })()}
+                  title="Testimonials"
+                />
               </div>
             </>
           )}
