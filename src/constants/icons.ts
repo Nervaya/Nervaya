@@ -151,4 +151,5 @@ export const SIDEBAR_ICON_MAP: SidebarIconMap = {
   FaNewspaper: ICON_FILE,
   FaTag: ICON_TAG,
   FaRightFromBracket: ICON_LOGOUT,
+  FaStar: ICON_STAR,
 };

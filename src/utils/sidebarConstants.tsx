@@ -67,6 +67,8 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
       { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },
       { title: 'Promo Codes', path: '/admin/promo-codes', icon: 'FaTag' },
       { title: 'Blogs', path: '/admin/blogs', icon: 'FaNewspaper' },
+      { title: 'Reviews', path: '/admin/reviews', icon: 'FaStar' },
+      { title: 'Feedback', path: '/admin/feedback', icon: 'FaCommentDots' },
     ],
   },
 ];
