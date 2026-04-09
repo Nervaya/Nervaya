@@ -9,6 +9,7 @@ import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import { Toaster } from 'sonner';
 
 import { SidebarProvider } from '@/context/SidebarContext';
+import { FeedbackWidget } from '@/components/FeedbackWidget';
 
 const Navbar = dynamic(() => import('@/components/Navbar'), {
   ssr: true,
@@ -40,6 +41,7 @@ export default function Providers({ children }: ProvidersProps) {
                 },
               }}
             />
+            <FeedbackWidget />
           </SidebarProvider>
         </CartProvider>
       </AuthGuard>
