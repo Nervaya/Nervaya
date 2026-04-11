@@ -6,12 +6,14 @@
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-light);
   margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
 }
 
 .cartItem:hover {
   border-color: var(--color-accent);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {

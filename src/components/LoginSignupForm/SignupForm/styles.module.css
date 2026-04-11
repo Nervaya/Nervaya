@@ -134,7 +134,7 @@
 .button {
   width: 100%;
   padding: 0.875rem;
-  background: var(--bg-gradient);
+  background: var(--gradient-accent);
   color: var(--white);
   border: none;
   border-radius: var(--radius-lg);
@@ -142,13 +142,14 @@
   font-weight: var(--weight-semibold);
   cursor: pointer;
   margin-top: 0.5rem;
+  box-shadow: var(--shadow-btn-primary);
   transition: all var(--transition-slow);
 }
 
 .button:hover {
-  background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.35);
+  background: var(--gradient-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-btn-primary-hover);
 }
 
 .button:disabled {

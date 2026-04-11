@@ -50,6 +50,20 @@
   padding: 0;
 }
 
+@media (max-width: 768px) {
+  .playlistGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .playlistGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
 .videoCard {
   background: var(--color-background);
   border: 1px solid var(--color-border-light);
@@ -72,7 +86,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: var(--space-6);
+  padding: var(--space-5);
   background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 60%, transparent 100%);
 }
 

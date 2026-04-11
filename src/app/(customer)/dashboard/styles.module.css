@@ -8,11 +8,24 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-4) var(--space-7);
+  }
+}
+
 .welcomeHero {
   margin-bottom: var(--space-8);
   padding: var(--space-9) 0 var(--space-8);
   border-bottom: 1px solid rgba(99, 102, 241, 0.1);
   position: relative;
+}
+
+@media (max-width: 480px) {
+  .welcomeHero {
+    margin-bottom: var(--space-6);
+    padding: var(--space-7) 0 var(--space-6);
+  }
 }
 
 .welcomeHero::before {
@@ -27,6 +40,13 @@
     radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
+}
+
+@media (max-width: 480px) {
+  .welcomeHero::before {
+    left: -20px;
+    right: -20px;
+  }
 }
 
 .loadingContainer {
@@ -62,8 +82,9 @@
   gap: var(--space-5);
   padding: 14px 18px;
   border-radius: var(--radius-lg);
-  background: var(--color-error-dim);
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: #fef2f2;
+  border: none;
+  border-left: 3px solid var(--color-error);
   color: #f87171;
   font-size: var(--text-body);
 }
@@ -115,6 +136,13 @@
   }
 }
 
+@media (max-width: 480px) {
+  .tilesGrid {
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+}
+
 .recentActivitySection {
   width: 100%;
 }
@@ -128,12 +156,25 @@
   text-align: center;
 }
 
+@media (max-width: 480px) {
+  .emptyNote {
+    margin-top: var(--space-6);
+    padding: var(--space-6);
+  }
+}
+
 .emptyNote p {
   margin: 0 0 var(--space-5) 0;
   color: var(--color-text-primary);
   font-size: var(--text-body-lg);
   font-weight: var(--weight-medium);
   line-height: var(--leading-relaxed);
+}
+
+@media (max-width: 480px) {
+  .emptyNote p {
+    font-size: var(--text-body);
+  }
 }
 
 .muted {

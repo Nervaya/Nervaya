@@ -75,7 +75,7 @@
   font-weight: 800;
   color: var(--color-text-primary);
   margin-bottom: var(--space-8);
-  letter-spacing: -0.04em;
+  letter-spacing: var(--tracking-h2);
   line-height: var(--leading-title);
   display: flex;
   align-items: center;

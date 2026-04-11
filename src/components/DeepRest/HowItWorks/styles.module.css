@@ -7,6 +7,20 @@
   margin-right: -2rem;
 }
 
+@media (max-width: 768px) {
+  .howItWorksSection {
+    padding: var(--space-6) var(--space-5);
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .howItWorksSection {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
 .stepsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -14,6 +28,13 @@
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+@media (max-width: 768px) {
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
 }
 
 .stepCard {
@@ -28,6 +49,18 @@
   text-align: center;
   position: relative;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .stepCard {
+    padding: var(--space-6) var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .stepCard {
+    padding: var(--space-5) var(--space-4);
+  }
 }
 
 .stepCard:hover {
@@ -48,7 +81,7 @@
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 16px rgba(109, 40, 217, 0.2);
+  box-shadow: var(--shadow-md);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -66,6 +99,11 @@
 }
 
 @media (max-width: 480px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
   .stepDescription {
     font-size: var(--font-size-sm);
   }

@@ -32,6 +32,22 @@
   }
 }
 
+@media (max-width: 768px) {
+  .content {
+    padding: var(--space-5);
+    gap: var(--space-5);
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: var(--space-4);
+    gap: var(--space-4);
+    border-radius: var(--radius);
+  }
+}
+
 .imageSection {
   width: 100%;
 }
@@ -64,6 +80,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .title {
+    font-size: var(--text-h4);
+  }
+}
+
 .category {
   font-size: var(--text-caption);
   color: var(--color-indigo-400);
@@ -79,11 +101,24 @@
   color: var(--color-emerald-400);
 }
 
+@media (max-width: 480px) {
+  .price {
+    font-size: var(--text-h3);
+  }
+}
+
 .description {
   font-size: 1rem;
   line-height: 1.7;
   color: var(--color-text-body);
   margin: 0;
+}
+
+@media (max-width: 480px) {
+  .description {
+    font-size: var(--text-caption);
+    line-height: 1.6;
+  }
 }
 
 .section {
@@ -95,6 +130,12 @@
   font-weight: var(--weight-semibold);
   margin: 0 0 var(--space-3) 0;
   color: var(--color-foreground);
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: 1rem;
+  }
 }
 
 .list {
@@ -145,6 +186,17 @@
 @media (max-width: 768px) {
   .addButton {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .retryButton,
+  .backLink {
+    min-width: 0;
+    width: 100%;
+    padding: 0.6rem 1.25rem;
+    font-size: var(--text-caption);
+    min-height: 44px;
   }
 }
 

@@ -19,7 +19,7 @@
 @media (max-width: 480px) {
   .whyChooseGrid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: var(--space-4);
   }
 }
 

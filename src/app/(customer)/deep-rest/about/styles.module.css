@@ -50,6 +50,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .section {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .sectionTitle {
   font-size: 1.75rem;
   font-weight: var(--weight-bold);
@@ -86,6 +92,15 @@
   box-shadow: var(--shadow-btn-primary-hover);
 }
 
+@media (max-width: 480px) {
+  .headerBtn {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-caption);
+    min-height: 44px;
+    border-radius: 10px;
+  }
+}
+
 .wrapper :global(.page-header_subtitle__B0hD1) {
   font-size: 1.125rem !important;
   font-weight: 450 !important;
@@ -99,5 +114,12 @@
   .sectionTitle {
     font-size: var(--text-h4);
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: var(--text-body-lg);
+    margin-bottom: var(--space-4);
   }
 }

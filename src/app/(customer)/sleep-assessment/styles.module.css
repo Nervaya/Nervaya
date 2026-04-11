@@ -109,3 +109,28 @@
     max-width: 280px;
   }
 }
+
+@media (max-width: 480px) {
+  .errorContainer,
+  .emptyContainer {
+    min-height: 240px;
+    padding: var(--space-6) var(--space-4);
+    margin: var(--space-4) auto;
+    border-radius: var(--radius-xl);
+  }
+
+  .emptyTitle {
+    font-size: var(--text-h4);
+  }
+
+  .errorText,
+  .emptyText {
+    font-size: var(--text-caption);
+  }
+
+  .retryButton {
+    min-height: 44px;
+    min-width: 140px;
+    font-size: var(--text-caption);
+  }
+}

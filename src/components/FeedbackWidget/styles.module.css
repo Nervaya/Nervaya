@@ -45,7 +45,7 @@
   border-radius: var(--radius-xl);
   width: 90%;
   max-width: 520px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl);
   animation: slideUp 0.25s ease;
   overflow: hidden;
 }
@@ -221,7 +221,10 @@
   font-weight: var(--weight-semibold);
   cursor: pointer;
   font-family: var(--font-sans);
-  transition: opacity var(--transition-fast);
+  box-shadow: var(--shadow-btn-primary);
+  transition:
+    opacity var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .submitButton:disabled {

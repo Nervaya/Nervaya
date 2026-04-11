@@ -47,6 +47,7 @@
   font-size: clamp(var(--text-h3), 1.8vw, var(--text-h2));
   font-weight: var(--weight-bold);
   line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-h2);
 }
 
 .sectionMeta {
@@ -62,6 +63,8 @@
   flex-wrap: wrap;
   gap: var(--space-4);
   margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .inlineFilters {
@@ -178,18 +181,23 @@
 
 .therapistCard {
   border-radius: 20px;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-border);
   background: var(--color-white-bright);
   padding: 0;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  transition: border-color var(--transition-base);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
 }
 
 .therapistCard:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-border-accent-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .cardBody {
@@ -460,9 +468,9 @@
   flex: 1;
   padding: 0 var(--space-5);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border-accent);
-  background: var(--color-background);
-  color: var(--color-accent);
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  color: var(--color-text-body);
   font-size: 0.9rem;
   font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
@@ -473,6 +481,7 @@
   transition:
     border-color var(--transition-base),
     background var(--transition-base),
+    color var(--transition-base),
     transform var(--transition-base);
 }
 
@@ -488,6 +497,7 @@
   font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
   cursor: pointer;
+  box-shadow: var(--shadow-btn-primary);
   transition:
     background var(--transition-base),
     transform var(--transition-base),
@@ -495,8 +505,9 @@
 }
 
 .secondaryBtn:hover {
-  border-color: rgba(124, 58, 237, 0.45);
+  border-color: var(--color-border-accent);
   background: var(--color-accent-dim-hover);
+  color: var(--color-accent);
   transform: translateY(-1px);
 }
 
@@ -764,5 +775,67 @@
   .secondaryBtn,
   .primaryBtn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    margin-left: var(--space-4);
+    margin-right: var(--space-4);
+  }
+
+  .toolbar {
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .therapistCard {
+    border-radius: var(--radius-lg);
+  }
+
+  .therapistInfo {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .therapistText h3 {
+    font-size: var(--text-h4);
+  }
+
+  .mediaCard {
+    height: 150px;
+  }
+
+  .cardMeta {
+    padding: var(--space-3);
+  }
+
+  .availabilitySection {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .actions {
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .secondaryBtn,
+  .primaryBtn {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+
+  .filterModal {
+    padding: var(--space-4);
+  }
+
+  .filterFields {
+    gap: var(--space-3);
+  }
+
+  .noResults {
+    padding: 20px var(--space-4);
+    font-size: var(--text-caption);
   }
 }

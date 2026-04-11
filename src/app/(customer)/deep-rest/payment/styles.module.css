@@ -76,6 +76,53 @@
   }
 }
 
+@media (max-width: 480px) {
+  .card {
+    gap: 0;
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .cardLeft {
+    padding: var(--space-5) var(--space-4);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .price {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardRight {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .subtitle {
+    font-size: var(--text-caption);
+  }
+}
+
+@media (max-width: 480px) {
+  .benefitItem {
+    font-size: var(--text-label);
+  }
+}
+
+@media (max-width: 480px) {
+  .payBtn,
+  .cartBtn {
+    padding: 0.7rem 1.5rem;
+    font-size: var(--text-caption);
+    min-height: 44px;
+  }
+}
+
 .subtitle {
   font-size: 1rem;
   color: var(--color-text-secondary);

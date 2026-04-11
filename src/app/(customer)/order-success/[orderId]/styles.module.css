@@ -10,6 +10,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: var(--space-4);
+  }
+}
+
 .successCard {
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));
@@ -26,10 +32,25 @@
   }
 }
 
+@media (max-width: 480px) {
+  .successCard {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+  }
+}
+
 .successAnimation {
   width: 160px;
   height: 160px;
   margin: 0 auto var(--space-6);
+}
+
+@media (max-width: 480px) {
+  .successAnimation {
+    width: 120px;
+    height: 120px;
+    margin-bottom: var(--space-5);
+  }
 }
 
 .successAnimation > div {
@@ -58,6 +79,12 @@
   text-align: center;
 }
 
+@media (max-width: 480px) {
+  .title {
+    font-size: var(--text-h3);
+  }
+}
+
 .message {
   font-size: var(--text-caption);
   color: var(--color-text-secondary);
@@ -80,6 +107,23 @@
   padding: var(--space-5) var(--space-6);
   background: var(--accent);
   color: var(--color-text-on-dark);
+}
+
+@media (max-width: 480px) {
+  .orderHeader {
+    padding: var(--space-4) var(--space-5);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .orderSection {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .financialSummary {
+    padding: var(--space-4) var(--space-5);
+  }
 }
 
 .orderHeaderGroup {
@@ -206,6 +250,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .nextSteps {
+    gap: var(--space-4);
+  }
+}
+
 .nextStepCard {
   padding: var(--space-5);
   background: var(--color-accent-dim);
@@ -232,6 +282,14 @@
   justify-content: center;
   margin: 0 auto var(--space-3);
   font-size: var(--text-h4);
+}
+
+@media (max-width: 480px) {
+  .stepIcon {
+    width: var(--space-7);
+    height: var(--space-7);
+    font-size: var(--text-body);
+  }
 }
 
 .actions {

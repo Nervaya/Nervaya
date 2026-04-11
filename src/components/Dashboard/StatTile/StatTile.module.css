@@ -1,6 +1,6 @@
 .tile {
   background: var(--color-background);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 24px;
   display: flex;
@@ -9,13 +9,14 @@
   min-width: 0;
   transition:
     border-color var(--transition-base),
-    box-shadow var(--transition-base);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .tile:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .topRow {
@@ -104,21 +105,28 @@
 }
 
 .cta {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--gradient-accent);
+  border-color: transparent;
   color: var(--color-text-on-dark);
+  box-shadow: var(--shadow-btn-primary);
+}
+
+.cta:hover {
+  box-shadow: var(--shadow-btn-primary-hover);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 .secondaryCta {
   background: transparent;
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-body);
 }
 
-.cta:hover,
 .secondaryCta:hover {
-  opacity: 0.92;
-  filter: brightness(1.05);
+  background: var(--color-accent-dim-hover);
+  border-color: var(--color-border-accent);
+  color: var(--color-accent);
 }
 
 @media (max-width: 768px) {

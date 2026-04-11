@@ -7,7 +7,13 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    gap: var(--space-4);
   }
 }
 
@@ -31,6 +37,12 @@
   .sectionTitle {
     font-size: var(--font-size-2xl);
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: var(--font-size-xl);
   }
 }
 
@@ -106,6 +118,13 @@
   .sessionCard {
     max-width: 100%;
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sessionCard {
+    padding: var(--space-5);
+    border-radius: var(--radius-xl);
   }
 }
 

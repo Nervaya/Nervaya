@@ -1,23 +1,24 @@
 .section {
-  padding: 40px 0;
+  padding: var(--space-8) 0;
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: var(--text-body-lg);
   font-weight: var(--weight-semibold);
   color: var(--color-accent);
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-6);
+  letter-spacing: var(--tracking-h4);
 }
 
 .track {
   display: flex;
-  gap: 20px;
+  gap: var(--space-5);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 4px 0;
+  padding: var(--space-2) 0;
 }
 
 .track::-webkit-scrollbar {
@@ -25,22 +26,39 @@
 }
 
 .card {
-  flex: 0 0 calc(50% - 10px);
+  flex: 0 0 calc(50% - 8px);
   min-width: 280px;
   scroll-snap-align: start;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border-light);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  box-shadow: var(--color-card-shadow);
+  box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-base);
 }
 
+@media (max-width: 768px) {
+  .card {
+    flex: 0 0 80%;
+    min-width: 240px;
+    padding: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 0 0 88%;
+    min-width: 200px;
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+}
+
 .card:hover {
-  box-shadow: var(--color-card-shadow-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .userRow {
@@ -92,13 +110,34 @@
   margin: 0;
   font-size: var(--text-caption);
   line-height: 1.7;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-style: italic;
 }
 
-@media (max-width: 768px) {
-  .card {
-    flex: 0 0 85%;
-    min-width: 260px;
-  }
+/* Pagination dots */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-border-light);
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-base);
+}
+
+.dot:hover {
+  background: var(--color-accent-soft);
+}
+
+.dotActive {
+  width: 24px;
+  background: var(--color-accent);
 }

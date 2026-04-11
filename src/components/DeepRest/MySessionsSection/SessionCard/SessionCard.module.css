@@ -23,6 +23,20 @@
   border-bottom: 1px solid var(--color-border-light);
 }
 
+@media (max-width: 768px) {
+  .cardHeader {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .cardHeader {
+    padding: var(--space-3);
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+}
+
 .dateInfo {
   display: flex;
   flex-direction: column;
@@ -77,6 +91,18 @@
   flex: 1;
 }
 
+@media (max-width: 768px) {
+  .cardContent {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .cardContent {
+    padding: var(--space-3);
+  }
+}
+
 .videoContainer {
   position: relative;
   width: 100%;
@@ -98,6 +124,7 @@
   justify-content: center;
   gap: 0.75rem;
   padding: 3rem 1.5rem;
+  min-height: 44px;
   background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
   border: 2px dashed rgba(124, 58, 237, 0.25);
   border-radius: var(--radius-xl);
@@ -142,6 +169,13 @@
   padding: var(--space-6);
 }
 
+@media (max-width: 480px) {
+  .placeholderBox {
+    height: 140px;
+    padding: var(--space-4);
+  }
+}
+
 .placeholderIcon {
   color: var(--color-accent);
   opacity: 0.5;
@@ -160,6 +194,18 @@
   border-top: 1px solid var(--color-border-light);
 }
 
+@media (max-width: 768px) {
+  .cardFooter {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .cardFooter {
+    padding: var(--space-3);
+  }
+}
+
 .actionBtn {
   display: flex;
   align-items: center;
@@ -172,6 +218,7 @@
   font-weight: var(--weight-semibold);
   text-decoration: none;
   transition: all var(--transition-base);
+  min-height: 44px;
 }
 
 .actionBtn:hover {

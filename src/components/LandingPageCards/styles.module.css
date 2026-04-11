@@ -54,20 +54,19 @@
   background: #34145f;
   border-radius: 22px;
   overflow: hidden;
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base);
+  transition: all var(--transition-base);
   display: flex;
   flex-direction: column;
-  border: none;
-  box-shadow: 0 12px 30px rgba(9, 2, 32, 0.42);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
   backdrop-filter: blur(6px);
   height: 100%;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 42px rgba(9, 2, 32, 0.5);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-accent-hover);
 }
 
 .cardImageWrapper {
@@ -135,7 +134,7 @@
   color: #f8f3ff;
   margin-bottom: var(--spacing-md);
   line-height: 1.2;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-h4);
 }
 
 @media (max-width: 768px) {
@@ -203,16 +202,15 @@
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, #8a4dff 0%, #6e2de5 100%);
+  background: var(--gradient-accent);
   color: var(--color-text-on-dark);
-  border-color: rgba(222, 208, 255, 0.4);
-  box-shadow: 0 10px 24px rgba(81, 33, 183, 0.46);
+  border: none;
+  box-shadow: var(--shadow-btn-primary);
 }
 
 .primaryButton:hover {
-  background: linear-gradient(135deg, #9962ff 0%, #7a3af3 100%);
-  box-shadow: 0 12px 28px rgba(96, 40, 210, 0.52);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn-primary-hover);
+  transform: translateY(-1px);
 }
 
 .primaryButton:active {
@@ -220,16 +218,16 @@
 }
 
 .secondaryButton {
-  background: rgba(169, 139, 233, 0.16);
+  background: transparent;
   color: #f4ecff;
-  border: 1px solid rgba(220, 201, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
 }
 
 .secondaryButton:hover {
-  background: rgba(193, 164, 250, 0.28);
-  border-color: rgba(233, 218, 255, 0.72);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
 }
 
 .secondaryButton:active {

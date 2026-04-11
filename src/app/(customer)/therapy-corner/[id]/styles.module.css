@@ -262,6 +262,59 @@
   }
 }
 
+@media (max-width: 480px) {
+  .section {
+    margin: var(--space-4);
+  }
+
+  .contentPane {
+    padding: var(--space-4);
+  }
+
+  .contentPane h1 {
+    font-size: 1.5rem;
+  }
+
+  .bio {
+    font-size: var(--text-body);
+  }
+
+  .quote {
+    font-size: 0.95rem;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+
+  .metaCard {
+    padding: var(--space-4);
+  }
+
+  .messageSection {
+    padding: var(--space-4);
+  }
+
+  .messageSection h2 {
+    font-size: 1.2rem;
+  }
+
+  .messageSection p {
+    font-size: 1rem;
+  }
+
+  .testimonialsSection h2 {
+    font-size: 1.2rem;
+  }
+
+  .testimonialCard {
+    padding: var(--space-4);
+  }
+}
+
 .breadcrumbWrapper {
   padding: 20px 4% 0 4%;
   width: 100%;

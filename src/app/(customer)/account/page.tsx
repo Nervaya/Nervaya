@@ -237,7 +237,7 @@ export default function AccountPage() {
                       {passwordSuccess}
                     </p>
                   )}
-                  <button type="submit" className={styles.saveBtn} disabled={passwordLoading}>
+                  <button type="submit" className={styles.passwordBtn} disabled={passwordLoading}>
                     <Icon icon={ICON_LOCK} /> {passwordLoading ? 'Updating…' : 'Change password'}
                   </button>
                 </form>

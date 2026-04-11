@@ -16,6 +16,7 @@
 .severe {
   background: #fef2f2;
   border-left-color: var(--color-error);
+  border-left-width: 3px;
 }
 .none {
   background: #f0fdf4;

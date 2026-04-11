@@ -11,6 +11,7 @@
   font-size: var(--text-body-lg);
   font-weight: var(--weight-bold);
   color: var(--color-foreground, #ededed);
+  letter-spacing: var(--tracking-h3);
 }
 
 .grid {
@@ -40,7 +41,7 @@
   border-color: var(--color-accent);
   color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--color-accent-dim);
+  box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 900px) {

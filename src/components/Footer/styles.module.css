@@ -2,8 +2,8 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  margin-top: var(--space-9);
-  padding: var(--space-9) 0 var(--space-7);
+  margin-top: var(--space-11);
+  padding: var(--space-11) 0 var(--space-7);
   background: var(--color-background-dark);
   background-image: linear-gradient(to bottom, var(--color-background-dark), #0d0428);
   border-top: 1px solid var(--color-border-accent-hover);
@@ -122,7 +122,7 @@
 }
 
 .footer-bottom {
-  margin-top: var(--space-9);
+  margin-top: var(--space-10);
   padding-top: 28px;
   border-top: 1px solid var(--color-border-accent);
   display: flex;

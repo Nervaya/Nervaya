@@ -20,14 +20,41 @@ interface TestimonialsCarouselProps {
 export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: TestimonialsCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [dotCount, setDotCount] = useState(reviews.length);
+
+  const updateDotCount = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cardEl = track.querySelector('[data-card]') as HTMLElement | null;
+    if (!cardEl) return;
+    const visible = Math.max(1, Math.round(track.clientWidth / (cardEl.clientWidth + 20)));
+    setDotCount(Math.max(1, reviews.length - visible + 1));
+  }, [reviews.length]);
+
+  const updateActiveIndex = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cardEl = track.querySelector('[data-card]') as HTMLElement | null;
+    if (!cardEl) return;
+    const cardWidth = cardEl.clientWidth + 20;
+    setActiveIndex(Math.round(track.scrollLeft / cardWidth));
+  }, []);
+
+  const scrollToIndex = useCallback((index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cardEl = track.querySelector('[data-card]') as HTMLElement | null;
+    if (!cardEl) return;
+    track.scrollTo({ left: index * (cardEl.clientWidth + 20), behavior: 'smooth' });
+  }, []);
 
   const scrollNext = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    const cardWidth = track.querySelector('[data-card]')?.clientWidth ?? 0;
-    const gap = 20;
-    const scrollAmount = cardWidth + gap;
+    const cardWidth = (track.querySelector('[data-card]') as HTMLElement | null)?.clientWidth ?? 0;
+    const scrollAmount = cardWidth + 20;
     const maxScroll = track.scrollWidth - track.clientWidth;
 
     if (track.scrollLeft >= maxScroll - 2) {
@@ -38,7 +65,20 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
   }, []);
 
   useEffect(() => {
-    if (reviews.length <= 2 || isPaused) return;
+    updateDotCount();
+    window.addEventListener('resize', updateDotCount);
+    return () => window.removeEventListener('resize', updateDotCount);
+  }, [updateDotCount]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.addEventListener('scroll', updateActiveIndex, { passive: true });
+    return () => track.removeEventListener('scroll', updateActiveIndex);
+  }, [updateActiveIndex]);
+
+  useEffect(() => {
+    if (reviews.length <= 1 || isPaused) return;
     const interval = setInterval(scrollNext, 4000);
     return () => clearInterval(interval);
   }, [reviews.length, isPaused, scrollNext]);
@@ -53,6 +93,8 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
         ref={trackRef}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
       >
         {reviews.map((review, idx) => (
           <div key={`${review.name}-${idx}`} className={styles.card} data-card>
@@ -77,6 +119,19 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
           </div>
         ))}
       </div>
+
+      {reviews.length > 1 && (
+        <div className={styles.dots}>
+          {Array.from({ length: dotCount }, (_, i) => (
+            <button
+              key={i}
+              className={`${styles.dot} ${i === activeIndex ? styles.dotActive : ''}`}
+              onClick={() => scrollToIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
