@@ -11,11 +11,11 @@
   align-items: center;
   gap: 8px;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--color-text-primary, #0f172a);
   padding: 8px 12px;
   background: var(--color-card-bg-light, #f8fafc);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border-light, #e2e8f0);
 }
 
@@ -26,8 +26,8 @@
 }
 
 .label {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: 1;
   color: var(--color-text-primary, #0f172a);
 }
@@ -42,14 +42,14 @@
   border: 1px solid var(--color-border-light, #e2e8f0);
   background-color: var(--color-background, #fff);
   padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-primary, #0f172a);
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 1rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   cursor: pointer;
 }
 
@@ -71,7 +71,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary, #0f172a);
 }
 
@@ -79,7 +79,7 @@
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   border: 1px solid;
 }
 
@@ -87,7 +87,7 @@
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 0.6875rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   background: var(--color-accent-dim, rgba(124, 58, 237, 0.1));
   color: var(--color-accent, #7c3aed);
   border: 1px solid var(--color-indigo-border-light, rgba(79, 70, 229, 0.1));
@@ -100,8 +100,8 @@
   padding: 10px 12px;
   background: rgba(245, 158, 11, 0.08);
   border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 6px;
-  font-size: 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: var(--text-label);
   color: var(--color-text-slate-400, #475569);
   line-height: 1.4;
 }
@@ -118,14 +118,14 @@
   justify-content: center;
   border-radius: 0.375rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   height: 2.25rem;
   padding: 0 1rem;
   color: #f8fafc;
   background-color: var(--color-text-primary, #0f172a);
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
   width: 100%;
 }
 
@@ -145,14 +145,14 @@
   gap: 0.5rem;
   border-radius: 0.375rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   height: 2.25rem;
   padding: 0 1rem;
   border: 1px solid var(--color-border-light, #e2e8f0);
   background-color: var(--color-background, #fff);
   color: var(--color-text-primary, #0f172a);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
 }
 
 .secondaryBtn:hover:not(:disabled) {
@@ -171,14 +171,14 @@
   gap: 0.5rem;
   border-radius: 0.375rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   height: 2.25rem;
   padding: 0 1rem;
   border: none;
   background-color: var(--color-destructive, #ef4444);
   color: #f8fafc;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .dangerBtn:hover:not(:disabled) {
@@ -237,7 +237,7 @@
   justify-content: center;
   border-radius: 0.375rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   height: 2.25rem;
   padding: 0 1rem;
   border: none;
@@ -245,7 +245,7 @@
   color: #f8fafc;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .meetLinkSaveBtn:hover:not(:disabled) {

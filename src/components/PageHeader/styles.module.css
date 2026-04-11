@@ -1,7 +1,7 @@
 .header {
   background: transparent;
-  padding: 16px 0 20px 0;
-  margin-bottom: 16px;
+  padding: var(--space-5) 0 20px 0;
+  margin-bottom: var(--space-5);
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -12,9 +12,9 @@
 
 @media (max-width: 768px) {
   .header {
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    border-radius: 12px;
+    padding: 20px var(--space-6);
+    margin-bottom: var(--space-6);
+    border-radius: var(--radius-lg);
   }
 }
 
@@ -34,14 +34,14 @@
   justify-content: space-between;
   align-items: flex-end;
   /* Better alignment for title and actions */
-  gap: 32px;
+  gap: var(--space-7);
 }
 
 @media (max-width: 640px) {
   .mainRow {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: var(--space-5);
   }
 }
 
@@ -53,7 +53,7 @@
   font-size: 2.125rem;
   /* Slightly larger for emphasis */
   margin: 0;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   /* Professional bold */
   color: var(--color-foreground);
   line-height: 1.1;
@@ -67,7 +67,7 @@
 }
 
 .subtitle {
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   font-size: 1rem;
   margin: 10px 0 0 0;
   color: var(--color-text-muted);
@@ -76,7 +76,7 @@
 
 .description {
   color: var(--color-text-muted);
-  font-size: 0.9375rem;
+  font-size: var(--text-body);
   line-height: 1.6;
   margin: 10px 0 0 0;
   max-width: 600px;
@@ -85,8 +85,8 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-bottom: 4px;
+  gap: var(--space-4);
+  padding-bottom: var(--space-2);
   /* Slight offset for optical alignment */
 }
 
@@ -101,5 +101,5 @@
 
 :global(body.route-home) .subtitle,
 :global(body.route-home) .description {
-  color: #64748b;
+  color: var(--color-text-secondary);
 }

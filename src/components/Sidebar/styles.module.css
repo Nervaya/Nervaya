@@ -9,7 +9,7 @@
   background-attachment: fixed;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  border-right: 1px solid rgba(124, 58, 237, 0.2);
+  border-right: 1px solid var(--color-border-accent);
   display: flex;
   flex-direction: column;
   z-index: 2500;
@@ -35,10 +35,10 @@
   right: -18px;
   width: 36px;
   height: 36px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid rgba(167, 139, 250, 0.28);
   background: rgba(9, 2, 29, 0.92);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@
 }
 
 .collapsed {
-  width: 72px;
+  width: var(--sidebar-width-collapsed);
 }
 
 .collapsed .edgeToggle {
@@ -129,16 +129,16 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding: 6px 12px;
-  margin: 2px 8px;
+  padding: 6px var(--space-4);
+  margin: var(--space-1) var(--space-3);
   min-height: 35px;
   box-sizing: border-box;
-  color: #ffffff;
-  font-weight: 400;
+  color: var(--color-text-on-dark);
+  font-weight: var(--weight-normal);
   font-size: 0.95rem;
   line-height: 1.25;
   text-decoration: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   transition: all 0.14s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   background: transparent;
@@ -147,7 +147,7 @@
   cursor: pointer;
   font-family: inherit;
   outline: none;
-  width: calc(100% - 16px);
+  width: calc(100% - var(--space-5));
 }
 
 @media (max-height: 760px) {
@@ -199,8 +199,8 @@
 
 .active {
   background: rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
-  font-weight: 500;
+  color: var(--color-text-on-dark) !important;
+  font-weight: var(--weight-medium);
 }
 
 .active::before {
@@ -234,7 +234,7 @@
 }
 
 .icon {
-  font-size: 1.25rem;
+  font-size: var(--text-h4);
   width: 24px;
   height: 24px;
   display: flex;
@@ -269,7 +269,7 @@
   top: -2px;
   right: -2px;
   background-color: #ff3b30;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: 0.65rem;
   font-weight: 800;
   min-width: 16px;
@@ -278,8 +278,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  padding: 0 4px;
-  border: 1.5px solid #09021d;
+  padding: 0 var(--space-2);
+  border: 1.5px solid var(--color-background-dark);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 10;
   line-height: 1;
@@ -303,7 +303,7 @@
 .groupTitle {
   display: block;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0.1em;
   padding: 12px 14px 6px;

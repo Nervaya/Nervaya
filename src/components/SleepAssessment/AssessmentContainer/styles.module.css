@@ -1,25 +1,25 @@
 .container {
   width: 100%;
   max-width: 800px;
-  margin: 40px auto;
+  margin: var(--space-8) auto;
   display: flex;
   flex-direction: column;
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(226, 232, 240, 0.8);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
-  padding: 48px;
+  padding: var(--space-8);
 
   .header {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-7);
 
     .title {
       margin: 0;
       color: #1e1b4b;
-      font-size: 2rem;
+      font-size: var(--text-h2);
       font-weight: 800;
-      line-height: 1.2;
+      line-height: var(--leading-heading);
       background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -28,7 +28,7 @@
   }
 
   .progressSection {
-    margin-bottom: 40px;
+    margin-bottom: var(--space-8);
   }
 
   .questionSection {
@@ -37,15 +37,15 @@
 }
 
 .errorMessage {
-  margin-top: 24px;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(239, 68, 68, 0.1);
-  background: rgba(239, 68, 68, 0.05);
-  color: #ef4444;
-  font-size: 0.95rem;
+  margin-top: var(--space-6);
+  padding: var(--space-5) 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-error-border);
+  background: var(--color-error-dim);
+  color: var(--color-error);
+  font-size: var(--text-body);
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .emptyState {
@@ -55,14 +55,14 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 16px;
-  padding: 40px;
+  gap: var(--space-5);
+  padding: var(--space-8);
 
   .emptyStateIcon {
     width: 64px;
     height: 64px;
-    color: #94a3b8;
-    margin-bottom: 8px;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-3);
 
     svg {
       width: 100%;
@@ -72,20 +72,20 @@
 
   .emptyStateText {
     margin: 0;
-    color: #64748b;
+    color: var(--color-text-secondary);
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    margin: 20px auto;
-    border-radius: 16px;
-    padding: 32px 20px;
+    margin: var(--space-5) auto;
+    border-radius: var(--radius-xl);
+    padding: var(--space-7) var(--space-5);
 
     .header .title {
-      font-size: 1.5rem;
+      font-size: var(--text-h3);
     }
   }
 }

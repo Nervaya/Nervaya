@@ -15,7 +15,7 @@
   justify-content: space-between;
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   border-radius: 20px 20px 0 0;
 }
 
@@ -32,12 +32,12 @@
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 6px 14px;
-  border-radius: 8px;
-  color: #ffffff;
+  border-radius: var(--radius);
+  color: var(--color-text-on-dark);
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .addNewButton:hover {
@@ -58,9 +58,9 @@
 
 .sectionTitle {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   margin: 0;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 .addressList {
@@ -76,7 +76,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   border-bottom: 1px solid var(--color-glass-border);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   user-select: none;
 }
 
@@ -100,7 +100,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .addressItem:hover .radioOutline {
@@ -114,7 +114,7 @@
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.5);
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .addressItem:active .radioInner {
@@ -138,29 +138,29 @@
 }
 
 .addressName {
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
   font-size: var(--font-size-base);
 }
 
 .addressLabel {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--accent);
   background: var(--color-accent-dim);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .defaultBadge {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
   background: var(--color-card-bg);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .addressDetails {
@@ -185,11 +185,11 @@
 .phoneLabel {
   color: var(--color-text-primary);
   opacity: 0.7;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .phoneText {
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 @media (max-width: 768px) {

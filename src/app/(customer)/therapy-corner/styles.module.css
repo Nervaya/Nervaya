@@ -1,5 +1,5 @@
 :global(body.route-non-home) .pageContentWhite {
-  background: #ffffff !important;
+  background: var(--color-background) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-left: none !important;
@@ -9,7 +9,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-md, 16px) var(--spacing-2xl);
+  padding: 0 var(--space-5) var(--space-9);
   width: 100%;
   box-sizing: border-box;
   position: relative;
@@ -17,18 +17,18 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 16px var(--spacing-xl);
+    padding: 0 var(--space-5) var(--space-8);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 12px var(--spacing-lg);
+    padding: 0 var(--space-4) var(--space-6);
   }
 }
 
 .section {
-  margin: 0 0 var(--spacing-2xl) 0;
+  margin: 0 0 var(--space-9) 0;
 }
 
 /* highlightBanner removed in favor of PageHeader */
@@ -37,16 +37,16 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-4);
   margin-bottom: 14px;
 }
 
 .sectionTitle {
   margin: 0;
-  color: #1f2937;
-  font-size: clamp(1.5rem, 1.8vw, 2rem);
-  font-weight: 700;
-  line-height: 1.2;
+  color: var(--color-text-primary);
+  font-size: clamp(var(--text-h3), 1.8vw, var(--text-h2));
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-heading);
 }
 
 .sectionMeta {
@@ -60,25 +60,25 @@
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .inlineFilters {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
   flex-wrap: nowrap;
   align-items: center;
 }
 
 .andSeparator {
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-label);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.6;
-  padding: 0 4px;
+  padding: 0 var(--space-2);
 }
 
 .inlineFilters > div {
@@ -99,37 +99,37 @@
   .mobileFilterTrigger {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-3);
     padding: 10px 14px;
     border-radius: 10px;
     border: 1px solid #d7dff0;
     background: #f8faff;
     color: #24364f;
-    font-size: 0.93rem;
-    font-weight: 700;
+    font-size: var(--text-body);
+    font-weight: var(--weight-bold);
     cursor: pointer;
   }
 
   .filterDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
+    width: var(--space-3);
+    height: var(--space-3);
+    border-radius: var(--radius-full);
     background: var(--color-accent);
   }
 }
 
 .clearFiltersBtn {
   border: 1px solid var(--color-border-light);
-  border-radius: 12px;
-  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-5);
   background: var(--color-white-bright);
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   min-height: 44px;
   display: flex;
   align-items: center;
@@ -139,7 +139,7 @@
 .clearFiltersBtn:hover {
   background: #fef2f2;
   border-color: #fca5a5;
-  color: #dc2626;
+  color: var(--color-error-hover);
 }
 
 .loadingContainer {
@@ -151,20 +151,20 @@
 }
 
 .error {
-  color: #dc2626;
-  font-size: 0.95rem;
-  margin-bottom: 12px;
+  color: var(--color-error-hover);
+  font-size: var(--text-body);
+  margin-bottom: var(--space-4);
 }
 
 .noResults {
   margin: 0;
   text-align: center;
   padding: 28px 14px;
-  color: #5f6b7a;
-  font-weight: 500;
-  border-radius: 12px;
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-lg);
   border: 1px dashed #cbd5e1;
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .therapistList {
@@ -182,10 +182,10 @@
   background: var(--color-white-bright);
   padding: 0;
   overflow: hidden;
-  box-shadow: var(--color-card-shadow);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .therapistCard:hover {
@@ -202,9 +202,9 @@
 .therapistInfo {
   display: grid;
   grid-template-columns: 38% 1fr;
-  gap: 12px;
+  gap: var(--space-4);
   align-items: start;
-  padding: 14px 14px 12px;
+  padding: 14px 14px var(--space-4);
 }
 
 .mediaCard {
@@ -239,12 +239,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
   align-items: center;
   justify-content: center;
-  color: var(--color-text-dim);
-  font-weight: 600;
-  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-caption);
 }
 
 .videoOverlay {
@@ -253,58 +253,58 @@
   bottom: 10px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  border-radius: 999px;
+  gap: var(--space-2);
+  padding: var(--space-3) 10px;
+  border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.9);
-  color: #111827;
+  color: var(--color-text-primary);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .therapistText {
   flex: 1;
   min-width: 0;
-  padding-left: 4px;
+  padding-left: var(--space-2);
 }
 
 .titleRow {
   display: flex;
   align-items: center;
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 .therapistText h3 {
   margin: 0;
   color: var(--color-text-primary);
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
   letter-spacing: -0.02em;
 }
 
 .credentials {
-  margin: 4px 0 8px;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin: var(--space-2) 0 var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: 1.4;
 }
 
 .experienceText {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-weight: 600;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .metaInfoRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: var(--space-3);
 }
 
 .feeText {
@@ -329,19 +329,19 @@
 }
 
 .expertiseLabel {
-  color: #585e69;
+  color: var(--color-text-body);
   font-size: 0.92rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .speaksLine {
-  margin: 12px 0 0;
+  margin: var(--space-4) 0 0;
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: center;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -357,7 +357,7 @@
 .tagsStatic {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .marqueeViewport {
@@ -372,50 +372,50 @@
 
 .marqueeTrack {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
   width: max-content;
   animation: chip-marquee 18s linear infinite;
 }
 
 .marqueeGroup {
   display: flex;
-  gap: 8px;
+  gap: var(--space-3);
   align-items: center;
   flex-shrink: 0;
 }
 
 .tag,
 .emptyTag {
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid #dde4ef;
   background: #f8fbff;
-  color: #4d5768;
-  padding: 6px 10px;
+  color: var(--color-text-body);
+  padding: var(--space-2) 10px;
   font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.2;
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
   white-space: nowrap;
 }
 
 .availabilitySection {
   border-top: 1px dashed var(--color-border-light);
   background: var(--color-dashboard-bg);
-  padding: 10px 16px;
+  padding: 10px var(--space-5);
 }
 
 .nextSlotLine {
   margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .statusDot {
-  width: 8px;
-  height: 8px;
+  width: var(--space-3);
+  height: var(--space-3);
   border-radius: 50%;
   background: var(--color-tile-emerald);
   box-shadow: 0 0 0 2px var(--color-emerald-dim);
@@ -423,11 +423,11 @@
 
 .nextSlotValue {
   color: var(--color-accent);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .nextSlotFallback {
-  color: #5f6671;
+  color: var(--color-text-secondary);
 }
 
 @keyframes chip-marquee {
@@ -448,62 +448,62 @@
 
 .actions {
   margin-top: auto;
-  padding: 16px;
-  background: #ffffff;
+  padding: var(--space-5);
+  background: var(--color-background);
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .secondaryBtn {
   min-height: 46px;
   flex: 1;
-  padding: 0 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(124, 58, 237, 0.28);
-  background: #ffffff;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-accent);
+  background: var(--color-background);
   color: var(--color-accent);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease;
+    border-color var(--transition-base),
+    background var(--transition-base),
+    transform var(--transition-base);
 }
 
 .primaryBtn {
   min-height: 46px;
   flex: 1;
-  padding: 0 16px;
+  padding: 0 var(--space-5);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--gradient-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
   cursor: pointer;
   transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    background var(--transition-base),
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .secondaryBtn:hover {
   border-color: rgba(124, 58, 237, 0.45);
-  background: rgba(124, 58, 237, 0.06);
+  background: var(--color-accent-dim-hover);
   transform: translateY(-1px);
 }
 
 .primaryBtn:hover {
   background: var(--gradient-accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.3);
+  box-shadow: var(--shadow-btn-primary-hover);
 }
 
 .paginationWrap {
@@ -527,10 +527,10 @@
 .filterModal,
 .videoModal {
   width: min(640px, 100%);
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--color-background);
+  border-radius: var(--radius-xl);
   border: 1px solid #d9e2f0;
-  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.12);
+  box-shadow: var(--shadow-xl);
   padding: 18px;
 }
 
@@ -542,15 +542,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .modalHeader h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #111827;
-  font-weight: 700;
+  color: var(--color-text-primary);
+  font-weight: var(--weight-bold);
 }
 
 .closeModalBtn {
@@ -558,8 +558,8 @@
   height: 34px;
   border-radius: 9px;
   border: 1px solid #d8e1ef;
-  background: #f8fafc;
-  color: #334155;
+  background: var(--color-background-alt);
+  color: var(--color-text-body);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -569,55 +569,55 @@
 .filterFields {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .filterField {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
   color: #6b7280;
   font-size: 0.83rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .filterSelect {
   width: auto;
   min-width: 150px;
   min-height: 44px;
-  padding: 8px 40px 8px 16px;
-  border-radius: 12px;
+  padding: var(--space-3) 40px var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-light);
   background: var(--color-white-bright);
   color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
+  background-position: right var(--space-5) center;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
   outline: none;
 }
 
 .filterSelect:hover {
   border-color: var(--color-border-light-hover);
   background-color: var(--color-white-bright);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
   /* Explicitly maintain background-position to prevent icon shift */
-  background-position: right 16px center;
+  background-position: right var(--space-5) center;
 }
 
 .filterSelect:focus {
   border-color: var(--color-accent);
-  background-position: right 16px center;
+  background-position: right var(--space-5) center;
 }
 
 .modalActions {
-  margin-top: 16px;
+  margin-top: var(--space-5);
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -628,33 +628,33 @@
   min-height: 40px;
   border-radius: 10px;
   border: none;
-  padding: 0 16px;
+  padding: 0 var(--space-5);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   cursor: pointer;
 }
 
 .modalSecondaryBtn {
   border: 1px solid #d8e1ef;
-  background: #ffffff;
+  background: var(--color-background);
   color: #475569;
 }
 
 .modalPrimaryBtn {
   background: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 .modalNumericInput {
   width: 100%;
   min-height: 44px;
-  padding: 8px 16px;
-  border-radius: 12px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-light);
   background: var(--color-white-bright);
   color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   outline: none;
 }
 
@@ -665,13 +665,13 @@
 .toolbarNumericInput {
   width: 120px !important;
   min-height: 44px;
-  padding: 8px 16px;
-  border-radius: 12px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-light);
   background: var(--color-white-bright);
   color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   outline: none;
 }
 
@@ -694,14 +694,14 @@
 .videoPlayer {
   width: 100%;
   max-height: 72vh;
-  border-radius: 12px;
-  background: #0f172a;
+  border-radius: var(--radius-lg);
+  background: var(--color-text-primary);
 }
 
 @media (max-width: 1200px) {
   .therapistInfo {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: var(--space-4);
   }
 
   .therapistText {
@@ -721,28 +721,28 @@
 
 @media (max-width: 768px) {
   .section {
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: var(--space-5);
+    margin-right: var(--space-5);
   }
 
   .highlightBanner p {
-    font-size: 1.2rem;
+    font-size: var(--text-h4);
   }
 
   .sectionHeader {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: var(--space-2);
   }
 
   .therapistCard {
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
   }
 
   .therapistInfo {
     grid-template-columns: 1fr;
     gap: 10px;
-    padding: 12px;
+    padding: var(--space-4);
   }
 
   .mediaCard {
@@ -752,8 +752,8 @@
   .cardMeta,
   .availabilitySection,
   .actions {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
   }
 
   .actions {

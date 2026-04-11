@@ -3,25 +3,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: var(--space-9) var(--space-7);
   text-align: center;
 }
 
 @media (max-width: 768px) {
   .emptyState {
-    padding: 3rem 1.5rem;
+    padding: var(--space-8) var(--space-6);
   }
 }
 
 .iconWrapper {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 @media (max-width: 768px) {
@@ -38,15 +38,15 @@
 
 @media (max-width: 768px) {
   .icon {
-    font-size: 2rem;
+    font-size: var(--text-h2);
   }
 }
 
 .emptyTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground, #ededed);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-3);
 }
 
 @media (max-width: 768px) {
@@ -58,24 +58,24 @@
 .emptyText {
   font-size: 1rem;
   color: var(--color-text-muted, #9ca3af);
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-5);
 }
 
 @media (max-width: 768px) {
   .emptyText {
-    font-size: 0.9rem;
+    font-size: var(--text-caption);
   }
 }
 
 .shopLink {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
+  padding: var(--space-4) var(--space-6);
   background: var(--color-accent, #7c3aed);
-  color: white;
+  color: var(--color-text-on-dark);
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  border-radius: var(--radius);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--transition-base) ease;
 }
 
 .shopLink:hover {

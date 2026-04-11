@@ -8,21 +8,21 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 16px 0 0;
+    padding: 0 var(--space-5) 0 0;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 12px 0 0;
+    padding: 0 var(--space-4) 0 0;
   }
 }
 
 .errorMessage {
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-error-dim);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius);
   color: #fca5a5;
   margin-bottom: 20px;
 }
@@ -30,16 +30,16 @@
 .backLink {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: #94a3b8;
+  gap: var(--space-3);
+  color: var(--color-text-tertiary);
   text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 16px;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-5);
   padding: 6px 0;
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+    color var(--transition-base),
+    transform var(--transition-base);
 }
 
 .backLink:hover {
@@ -49,7 +49,7 @@
 
 .backLink:focus-visible {
   outline: none;
-  color: #a78bfa;
+  color: var(--color-accent-soft);
 }
 
 .backLink svg {
@@ -63,15 +63,15 @@
   flex-direction: column;
   background: var(--color-white-bright);
   border: 1px solid var(--color-border-light);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 .formHeader {
-  padding: 24px 32px;
+  padding: var(--space-6) var(--space-7);
   background: #fcfdfe;
   border-bottom: 1px solid #edf2f7;
 }
@@ -92,7 +92,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: #f1f5f9;
+  background: var(--color-background-alt);
   z-index: 1;
 }
 
@@ -110,14 +110,14 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
+  background: var(--color-background);
+  border: 1.5px solid var(--color-border-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
-  font-weight: 700;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-text-tertiary);
+  font-weight: var(--weight-bold);
+  transition: all var(--transition-slow);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
@@ -129,7 +129,7 @@
 .step.active .stepCircle {
   background: var(--gradient-accent);
   border-color: transparent;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
   transform: scale(1.05);
 }
@@ -142,10 +142,10 @@
 
 .stepLabel {
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #64748b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
   text-align: center;
-  transition: color 0.3s ease;
+  transition: color var(--transition-slow);
 }
 
 .step.active .stepLabel {
@@ -154,7 +154,7 @@
 
 /* Form Content */
 .formBody {
-  padding: 32px;
+  padding: var(--space-7);
   min-height: 400px;
 }
 
@@ -186,8 +186,8 @@
 
 @media (max-width: 480px) {
   .form {
-    padding: 16px;
-    border-radius: 12px;
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
   }
 }
 
@@ -215,20 +215,20 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  padding: 20px 32px 24px;
-  background: #ffffff;
+  padding: 20px var(--space-7) var(--space-6);
+  background: var(--color-background);
   border-top: 1px solid #edf2f7;
 }
 
 .actionRight {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 @media (max-width: 768px) {
   .formActions {
     flex-direction: column-reverse;
-    gap: 12px;
+    gap: var(--space-4);
   }
 }
 
@@ -237,14 +237,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-3);
   min-width: 140px;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   text-decoration: none;
 }
 
@@ -252,7 +252,7 @@
   .cancelButton,
   .submitButton {
     width: 100%;
-    padding: 14px 24px;
+    padding: 14px var(--space-6);
   }
 }
 
@@ -260,24 +260,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-3);
   min-height: 46px;
   padding: 0 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(124, 58, 237, 0.28);
-  background: #ffffff;
+  background: var(--color-background);
   color: var(--color-accent);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   text-decoration: none;
 }
 
 .navButton:hover:not(:disabled) {
   border-color: rgba(124, 58, 237, 0.45);
-  background: rgba(124, 58, 237, 0.06);
+  background: var(--color-accent-dim-hover);
   transform: translateY(-1px);
 }
 
@@ -289,7 +289,7 @@
 .primaryButton {
   background: var(--gradient-accent);
   border: none;
-  color: #ffffff !important;
+  color: var(--color-text-on-dark) !important;
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
@@ -301,13 +301,13 @@
 
 .primaryButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.4);
+  box-shadow: var(--shadow-focus);
 }
 
 .submitButton {
   background: var(--gradient-accent);
   border: none;
-  color: #ffffff !important;
+  color: var(--color-text-on-dark) !important;
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.2);
   min-width: 180px;
 }
@@ -329,7 +329,7 @@
 .buttonContent {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .buttonContent svg {

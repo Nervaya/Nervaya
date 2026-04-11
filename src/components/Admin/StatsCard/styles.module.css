@@ -5,9 +5,9 @@
   padding: var(--spacing-lg);
   box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
   transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-base),
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .card:hover {
@@ -29,14 +29,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  background: rgba(124, 58, 237, 0.1);
+  background: var(--color-accent-dim);
   color: var(--color-accent);
   font-size: 1.35rem;
 }
 
 .cardTitle {
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -44,22 +44,22 @@
 
 .cardValue {
   font-size: 2.3rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   line-height: 1;
   margin: 0 0 0.55rem;
-  color: var(--color-foreground);
+  color: var(--color-text-primary);
 }
 
 .cardHint {
   font-size: 0.92rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 .trend {
   font-size: 0.82rem;
   margin: 0.85rem 0 0;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .trendUp {
@@ -71,5 +71,5 @@
 }
 
 .trendNeutral {
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }

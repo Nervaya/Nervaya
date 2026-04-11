@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
   padding: 0;
 }
 
@@ -15,20 +15,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-3);
   height: 40px;
   padding: 0 14px;
   border-radius: 10px;
   border: 1px solid #d8e0ee;
-  background: #ffffff;
-  color: #475569;
+  background: var(--color-background);
+  color: var(--color-text-slate-400);
   text-decoration: none;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--transition-base);
 }
 
 .backLink:hover {
@@ -48,58 +48,58 @@
   flex-direction: column;
   border-radius: 20px;
   border: 1px solid rgba(148, 163, 184, 0.24);
-  background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+  background: linear-gradient(180deg, var(--color-background) 0%, #fafbff 100%);
   box-shadow: 0 20px 42px rgba(15, 23, 42, 0.08);
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .errorMessage {
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4) 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-error-border);
   background: rgba(254, 242, 242, 0.95);
   color: #b91c1c;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .formRow {
   display: grid;
   grid-template-columns: minmax(160px, 260px) minmax(0, 1fr);
-  gap: 16px;
+  gap: var(--space-5);
   margin-bottom: 18px;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .label {
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: #1e293b;
 }
 
 .required {
-  color: #ef4444;
-  margin-left: 2px;
+  color: var(--color-error);
+  margin-left: var(--space-1);
 }
 
 .input,
 .textarea {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px solid #d9e2ee;
-  background: #ffffff;
-  color: #0f172a;
+  background: var(--color-background);
+  color: var(--color-text-primary);
   font-size: 0.94rem;
   font-family: inherit;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .input {
@@ -111,12 +111,12 @@
   min-height: 92px;
   resize: vertical;
   line-height: 1.55;
-  padding: 12px 14px;
+  padding: var(--space-4) 14px;
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
 }
 
 .input:focus,
@@ -133,7 +133,7 @@
 .optionsSection {
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .optionsHeader {
@@ -146,7 +146,7 @@
 
 .optionsTitle {
   margin: 0;
-  color: #0f172a;
+  color: var(--color-text-primary);
   font-size: 1.05rem;
 }
 
@@ -158,15 +158,15 @@
   gap: 6px;
   padding: 0 14px;
   border-radius: 10px;
-  border: 1px solid rgba(124, 58, 237, 0.32);
-  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--color-border-accent);
+  background: var(--color-accent-dim);
   color: #5b21b6;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   cursor: pointer;
   transition:
-    transform 0.2s ease,
-    background 0.2s ease;
+    transform var(--transition-base),
+    background var(--transition-base);
 }
 
 .addOptionButton:hover {
@@ -197,7 +197,7 @@
 .optionNumber {
   width: 30px;
   height: 30px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid rgba(124, 58, 237, 0.24);
   background: rgba(124, 58, 237, 0.09);
   color: #5b21b6;
@@ -205,7 +205,7 @@
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   flex-shrink: 0;
 }
 
@@ -223,16 +223,16 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid var(--color-error-border);
   background: rgba(239, 68, 68, 0.08);
-  color: #dc2626;
+  color: var(--color-error-hover);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition:
-    transform 0.2s ease,
-    background 0.2s ease;
+    transform var(--transition-base),
+    background var(--transition-base);
   flex-shrink: 0;
 }
 
@@ -249,10 +249,10 @@
 .formActions {
   margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border-light);
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .cancelButton,
@@ -262,23 +262,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-3);
   border-radius: 11px;
   padding: 0 18px;
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
   cursor: pointer;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    background var(--transition-base);
 }
 
 .cancelButton {
   border: 1px solid #d5deea;
-  background: #ffffff;
-  color: #475569;
+  background: var(--color-background);
+  color: var(--color-text-slate-400);
 }
 
 .cancelButton:hover {
@@ -288,8 +288,8 @@
 
 .submitButton {
   border: 1px solid rgba(109, 40, 217, 0.65);
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #5b21b6 100%);
+  color: var(--color-text-on-dark);
   box-shadow: 0 10px 24px rgba(124, 58, 237, 0.24);
 }
 
@@ -321,7 +321,7 @@
   }
 
   .form {
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     padding: 18px;
   }
 

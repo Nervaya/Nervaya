@@ -1,23 +1,23 @@
 .weekSummary {
   background: var(--color-white-dim);
   border: 1px solid var(--color-border-light);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-7);
 }
 
 .summaryTitle {
-  font-size: 1.0625rem;
-  font-weight: 700;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin: 0 0 16px 0;
+  margin: 0 0 var(--space-5) 0;
   font-family: var(--font-heading);
 }
 
 .summaryGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 @media (max-width: 768px) {
@@ -28,11 +28,11 @@
 
 .summaryDay {
   text-align: center;
-  padding: 14px 8px;
+  padding: 14px var(--space-3);
   border-radius: 14px;
   background: var(--color-white-bright);
   border: 1.5px solid var(--color-border-light);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
 }
 
 .summaryDayEnabled {
@@ -44,9 +44,9 @@
 
 .summaryDayName {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: #a0a0a0;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-2);
 }
 
 .summaryDayEnabled .summaryDayName {
@@ -56,7 +56,7 @@
 .summaryTime {
   font-size: 11px;
   color: var(--color-text-primary);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .summaryTimeDisabled {

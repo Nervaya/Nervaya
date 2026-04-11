@@ -21,13 +21,13 @@
   gap: 10px;
   padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  background: rgba(124, 58, 237, 0.06);
+  border: 1px solid var(--color-border-accent);
+  background: var(--color-accent-dim-hover);
 }
 
 .selectedTitle {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: #1e293b;
   white-space: nowrap;
   overflow: hidden;
@@ -44,7 +44,7 @@
   border-radius: 6px;
   border: none;
   background: transparent;
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.15s ease;
@@ -52,7 +52,7 @@
 
 .removeBtn:hover {
   background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  color: var(--color-error);
 }
 
 .searchBox {
@@ -63,17 +63,17 @@
   padding: 0 14px;
   border-radius: 10px;
   border: 1px solid #d9e2ee;
-  background: #ffffff;
-  transition: border-color 0.2s ease;
+  background: var(--color-background);
+  transition: border-color var(--transition-base);
 }
 
 .searchBox:focus-within {
   border-color: rgba(124, 58, 237, 0.55);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
+  box-shadow: var(--shadow-focus);
 }
 
 .searchIcon {
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
   flex-shrink: 0;
 }
 
@@ -82,21 +82,21 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 0.875rem;
-  color: #0f172a;
+  font-size: var(--text-caption);
+  color: var(--color-text-primary);
 }
 
 .searchInput::placeholder {
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
 }
 
 .dropdown {
   list-style: none;
   margin: 0;
   padding: 6px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  background: var(--color-background);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
   max-height: 240px;
   overflow-y: auto;
@@ -109,7 +109,7 @@
   gap: 12px;
   width: 100%;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -118,12 +118,12 @@
 }
 
 .dropdownItem:hover {
-  background: rgba(124, 58, 237, 0.08);
+  background: var(--color-accent-dim);
 }
 
 .dropdownTitle {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: #1e293b;
   white-space: nowrap;
   overflow: hidden;
@@ -133,8 +133,8 @@
 
 .dropdownMeta {
   font-size: 0.7rem;
-  font-weight: 700;
-  color: #94a3b8;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -144,8 +144,8 @@
   padding: 14px;
   text-align: center;
   font-size: 0.84rem;
-  color: #94a3b8;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
+  color: var(--color-text-tertiary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  background: var(--color-background);
 }

@@ -19,23 +19,23 @@
   width: 28px;
   height: 28px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: #f8fafc;
-  color: #64748b;
+  color: var(--color-text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .navBtn:hover {
-  background: #ffffff;
-  border-color: #e2e8f0;
+  background: var(--color-background);
+  border-color: var(--color-border-light);
   color: var(--color-accent, #7c3aed);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .monthLabel {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: #1e293b;
   letter-spacing: -0.01em;
 }
@@ -49,8 +49,8 @@
 
 .dayNameCell {
   font-size: 0.65rem;
-  font-weight: 600;
-  color: #94a3b8;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-tertiary);
   padding: 4px 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -83,22 +83,22 @@
   border-radius: 50%;
   background: transparent;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: #334155;
+  font-weight: var(--weight-medium);
+  color: var(--color-text-body);
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   position: relative;
 }
 
 .dateCell:hover:not(.selected) {
-  background: #f1f5f9;
+  background: var(--color-background-alt);
   color: var(--color-accent, #7c3aed);
 }
 
 .today {
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-accent, #7c3aed);
 }
 
@@ -114,13 +114,13 @@
 
 .selected {
   background: var(--color-accent, #7c3aed) !important;
-  color: #ffffff !important;
-  font-weight: 600;
+  color: var(--color-text-on-dark) !important;
+  font-weight: var(--weight-semibold);
   box-shadow: 0 4px 8px rgba(124, 58, 237, 0.25);
   transform: scale(1.1);
   z-index: 1;
 }
 
 .selected::after {
-  background: #ffffff !important;
+  background: var(--color-text-on-dark) !important;
 }

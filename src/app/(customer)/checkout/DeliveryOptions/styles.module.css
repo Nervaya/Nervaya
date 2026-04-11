@@ -13,9 +13,9 @@
   gap: var(--spacing-sm);
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .headerIcon {
@@ -26,7 +26,7 @@
 
 .headerTitle {
   margin: 0;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 .body {
@@ -44,9 +44,9 @@
   gap: var(--spacing-md);
   padding: var(--spacing-md);
   border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .option:hover {
@@ -76,7 +76,7 @@
 
 .optionLabel {
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
 }
 
@@ -87,12 +87,12 @@
 
 .optionCost {
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
 }
 
 .optionFree {
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-emerald-400);
 }

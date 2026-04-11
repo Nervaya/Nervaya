@@ -1,28 +1,28 @@
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md, 16px);
+  gap: var(--space-5);
 }
 
 .mainWrapper {
   position: relative;
   width: 100%;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--color-glass-border);
 }
 
 .badge {
   position: absolute;
-  top: var(--spacing-md, 16px);
-  left: var(--spacing-md, 16px);
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
+  top: var(--space-5);
+  left: var(--space-5);
+  background: linear-gradient(135deg, var(--color-error) 0%, var(--color-error-hover) 100%);
+  color: var(--color-text-on-dark);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   z-index: 2;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
@@ -36,27 +36,27 @@
 
 .thumbnails {
   display: flex;
-  gap: var(--spacing-sm, 8px);
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
 .thumb {
   padding: 0;
-  border: 2px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
+  border: 2px solid var(--color-glass-border);
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   background: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base) ease;
 }
 
 .thumb:hover {
-  border-color: var(--color-border-light-hover, rgba(255, 255, 255, 0.2));
+  border-color: var(--color-border-light-hover);
 }
 
 .thumb.active {
-  border-color: var(--color-accent, #7c3aed);
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
 }
 
 .thumbImage {

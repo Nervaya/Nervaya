@@ -13,7 +13,7 @@
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   border-radius: 20px 20px 0 0;
 }
 
@@ -23,8 +23,8 @@
   gap: var(--spacing-sm);
   margin: 0;
   font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: #ffffff;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-on-dark);
 }
 
 .titleIcon {
@@ -82,7 +82,7 @@
 
 .appliedCode {
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-emerald-400);
 }
 

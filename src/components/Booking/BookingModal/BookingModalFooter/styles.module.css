@@ -8,7 +8,7 @@
   flex-direction: column;
   gap: var(--spacing-sm);
   flex-shrink: 0;
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
 }
 
 @media (max-width: 768px) {
@@ -20,7 +20,7 @@
 
 .helpText {
   text-align: center;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   margin: 0;
 }
@@ -28,8 +28,8 @@
 .helpText a {
   color: var(--color-accent);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: var(--weight-medium);
+  transition: color var(--transition-base);
 }
 
 .helpText a:hover {
@@ -40,15 +40,15 @@
 .bookBtn {
   width: 100%;
   background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  color: white;
+  color: var(--color-text-on-dark);
   border: none;
   padding: 1rem 1.5rem;
-  border-radius: 12px;
-  font-size: 1.0625rem;
-  font-weight: 600;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px var(--color-accent-dim);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-btn-primary);
 }
 
 @media (max-width: 768px) {
@@ -59,9 +59,9 @@
 }
 
 .bookBtn:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #6d28d9 100%);
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent-hover) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px var(--color-accent-dim);
+  box-shadow: var(--shadow-btn-primary-hover);
 }
 
 .bookBtn:active:not(:disabled) {

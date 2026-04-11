@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nervaya Design System — Color & Typography</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fc; color: #0f172a; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, #09021d 0%, #1a0a3e 50%, #2d1566 100%); padding: 48px 40px; text-align: center; }
+  .header h1 { font-family: 'Outfit', sans-serif; font-size: 42px; font-weight: 300; color: #fff; letter-spacing: -1.4px; margin-bottom: 8px; }
+  .header p { color: rgba(255,255,255,0.6); font-size: 16px; font-weight: 400; }
+  .header .badge { display: inline-block; background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.3); color: #a78bfa; padding: 4px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 16px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 48px 32px; }
+  .section { margin-bottom: 64px; }
+  .section-title { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 600; color: #0f172a; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .section-sub { color: #64748b; font-size: 15px; margin-bottom: 32px; }
+
+  /* COLOR PALETTE */
+  .palette-group { margin-bottom: 32px; }
+  .palette-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 12px; }
+  .swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+  .swatch { width: 140px; border-radius: 12px; overflow: hidden; background: #fff;
+    box-shadow: rgba(124,58,237,0.08) 0px 4px 18px, rgba(0,0,0,0.04) 0px 2px 8px, rgba(0,0,0,0.02) 0px 0.8px 3px;
+  }
+  .swatch-color { height: 72px; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-name { font-size: 13px; font-weight: 600; color: #0f172a; }
+  .swatch-hex { font-size: 12px; color: #64748b; font-family: 'Courier New', monospace; }
+  .swatch-role { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  /* GRADIENT BAR */
+  .gradient-bar { height: 48px; border-radius: 12px; margin-bottom: 8px; }
+  .gradient-label { font-size: 13px; color: #64748b; margin-bottom: 24px; font-family: 'Courier New', monospace; }
+
+  /* TYPOGRAPHY */
+  .type-row { display: flex; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(0,0,0,0.06); gap: 32px; }
+  .type-sample { flex: 1; min-width: 300px; }
+  .type-meta { width: 320px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .type-tag { font-size: 11px; background: rgba(124,58,237,0.08); color: #7c3aed; padding: 3px 10px; border-radius: 6px; font-weight: 500; white-space: nowrap; }
+  .type-tag.neutral { background: rgba(0,0,0,0.05); color: #64748b; }
+
+  /* SHADOW DEMO */
+  .shadow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .shadow-card { background: #fff; border-radius: 12px; padding: 24px; text-align: center; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .shadow-card h4 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+  .shadow-card p { font-size: 12px; color: #64748b; }
+  .shadow-card code { font-size: 10px; color: #94a3b8; margin-top: 8px; display: block; line-height: 1.4; }
+
+  .level-0 { border: 1px solid rgba(0,0,0,0.06); }
+  .level-1 { box-shadow: rgba(124,58,237,0.04) 0px 1px 3px, rgba(0,0,0,0.02) 0px 1px 2px; }
+  .level-2 { box-shadow: rgba(124,58,237,0.08) 0px 4px 18px, rgba(0,0,0,0.04) 0px 2px 8px, rgba(0,0,0,0.02) 0px 0.8px 3px; }
+  .level-3 { box-shadow: rgba(124,58,237,0.1) 0px 8px 32px, rgba(0,0,0,0.05) 0px 4px 12px, rgba(0,0,0,0.03) 0px 2px 6px, rgba(0,0,0,0.01) 0px 0.5px 2px; }
+  .level-4 { box-shadow: rgba(124,58,237,0.12) 0px 16px 48px, rgba(0,0,0,0.06) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 10px, rgba(0,0,0,0.02) 0px 1px 4px; }
+
+  /* BORDER RADIUS */
+  .radius-grid { display: flex; gap: 20px; flex-wrap: wrap; align-items: end; }
+  .radius-item { text-align: center; }
+  .radius-box { width: 64px; height: 64px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); margin-bottom: 8px; }
+  .radius-val { font-size: 12px; font-weight: 600; color: #0f172a; }
+  .radius-use { font-size: 11px; color: #64748b; }
+
+  /* SPACING */
+  .spacing-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .spacing-bar { height: 24px; background: linear-gradient(90deg, rgba(124,58,237,0.15), rgba(124,58,237,0.08)); border-radius: 4px; border-left: 3px solid #7c3aed; }
+  .spacing-label { font-size: 12px; font-weight: 600; color: #0f172a; width: 60px; }
+  .spacing-val { font-size: 12px; color: #64748b; font-family: 'Courier New', monospace; width: 50px; }
+
+  @media (max-width: 768px) {
+    .type-row { flex-direction: column; gap: 12px; }
+    .type-meta { width: 100%; }
+    .swatches { gap: 8px; }
+    .swatch { width: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">DESIGN SYSTEM v2.0</div>
+  <h1>Nervaya Design System</h1>
+  <p>Inspired by Stripe's precision · Built on Nervaya's purple identity</p>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: COLORS -->
+  <div class="section">
+    <div class="section-title">1. Color Palette & Roles</div>
+    <div class="section-sub">Nervaya's purple identity preserved. Neutrals refined to slate with subtle cool undertones for a clinical-yet-warm feel.</div>
+
+    <div class="palette-group">
+      <div class="palette-label">🔒 Primary Brand (Locked)</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background: #7c3aed;"></div><div class="swatch-info"><div class="swatch-name">Nervaya Purple</div><div class="swatch-hex">#7c3aed</div><div class="swatch-role">Primary CTA, brand</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #6d28d9;"></div><div class="swatch-info"><div class="swatch-name">Purple Deep</div><div class="swatch-hex">#6d28d9</div><div class="swatch-role">Hover states</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #8b5cf6;"></div><div class="swatch-info"><div class="swatch-name">Purple Light</div><div class="swatch-hex">#8b5cf6</div><div class="swatch-role">Gradient start</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #a78bfa;"></div><div class="swatch-info"><div class="swatch-name">Purple Soft</div><div class="swatch-hex">#a78bfa</div><div class="swatch-role">Links on dark</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: rgba(124,58,237,0.1);"></div><div class="swatch-info"><div class="swatch-name">Purple Dim</div><div class="swatch-hex">rgba(124,58,237,0.1)</div><div class="swatch-role">Tinted surfaces</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Surfaces & Backgrounds</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background: #ffffff;"></div><div class="swatch-info"><div class="swatch-name">White</div><div class="swatch-hex">#ffffff</div><div class="swatch-role">Card surfaces</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #f8f9fc;"></div><div class="swatch-info"><div class="swatch-name">Ghost White</div><div class="swatch-hex">#f8f9fc</div><div class="swatch-role">Page background</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #f1f5f9;"></div><div class="swatch-info"><div class="swatch-name">Slate 100</div><div class="swatch-hex">#f1f5f9</div><div class="swatch-role">Alt sections</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #09021d;"></div><div class="swatch-info"><div class="swatch-name">Nervaya Dark</div><div class="swatch-hex">#09021d</div><div class="swatch-role">Hero / dark sections</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #1a0a3e;"></div><div class="swatch-info"><div class="swatch-name">Deep Purple</div><div class="swatch-hex">#1a0a3e</div><div class="swatch-role">Dark cards</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Text & Neutrals</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background: #0f172a;"></div><div class="swatch-info"><div class="swatch-name">Navy</div><div class="swatch-hex">#0f172a</div><div class="swatch-role">Headings</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #334155;"></div><div class="swatch-info"><div class="swatch-name">Slate 700</div><div class="swatch-hex">#334155</div><div class="swatch-role">Body text</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #64748b;"></div><div class="swatch-info"><div class="swatch-name">Slate 500</div><div class="swatch-hex">#64748b</div><div class="swatch-role">Secondary text</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #94a3b8;"></div><div class="swatch-info"><div class="swatch-name">Slate 400</div><div class="swatch-hex">#94a3b8</div><div class="swatch-role">Muted / placeholder</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #cbd5e1;"></div><div class="swatch-info"><div class="swatch-name">Slate 300</div><div class="swatch-hex">#cbd5e1</div><div class="swatch-role">Disabled text</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Semantic</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background: #10b981;"></div><div class="swatch-info"><div class="swatch-name">Emerald</div><div class="swatch-hex">#10b981</div><div class="swatch-role">Success</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #ef4444;"></div><div class="swatch-info"><div class="swatch-name">Red</div><div class="swatch-hex">#ef4444</div><div class="swatch-role">Error / destructive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #f59e0b;"></div><div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-hex">#f59e0b</div><div class="swatch-role">Warning</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #3b82f6;"></div><div class="swatch-info"><div class="swatch-name">Blue</div><div class="swatch-hex">#3b82f6</div><div class="swatch-role">Info / focus ring</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">🔒 Gradients (Locked)</div>
+      <div class="gradient-bar" style="background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);"></div>
+      <div class="gradient-label">Accent: linear-gradient(90deg, #8b5cf6, #7c3aed, #6d28d9)</div>
+      <div class="gradient-bar" style="background: linear-gradient(135deg, #09021d 0%, #1a0a3e 50%, #2d1566 100%);"></div>
+      <div class="gradient-label">Dark Hero: linear-gradient(135deg, #09021d, #1a0a3e, #2d1566)</div>
+    </div>
+
+    <div class="palette-group">
+      <div class="palette-label">Borders (New — Stripe-inspired)</div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background: rgba(0,0,0,0.06); border-bottom: 2px solid rgba(0,0,0,0.06);"></div><div class="swatch-info"><div class="swatch-name">Whisper</div><div class="swatch-hex">rgba(0,0,0,0.06)</div><div class="swatch-role">Default border</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: rgba(0,0,0,0.1);"></div><div class="swatch-info"><div class="swatch-name">Subtle</div><div class="swatch-hex">rgba(0,0,0,0.1)</div><div class="swatch-role">Card border</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: rgba(124,58,237,0.2);"></div><div class="swatch-info"><div class="swatch-name">Purple Ring</div><div class="swatch-hex">rgba(124,58,237,0.2)</div><div class="swatch-role">Focus / active</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: rgba(124,58,237,0.15);"></div><div class="swatch-info"><div class="swatch-name">Purple Whisper</div><div class="swatch-hex">rgba(124,58,237,0.15)</div><div class="swatch-role">Hover border</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-title">2. Typography System</div>
+    <div class="section-sub">Outfit for headlines (Stripe's weight-300 confidence), Inter for UI. Negative letter-spacing at display sizes. Consistent line-height ladder.</div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Outfit; font-size: 56px; font-weight: 300; letter-spacing: -1.8px; line-height: 1.05; color: #0f172a;">Display Hero</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Outfit 300</span>
+        <span class="type-tag neutral">56px / 3.5rem</span>
+        <span class="type-tag neutral">LH 1.05</span>
+        <span class="type-tag neutral">LS -1.8px</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Outfit; font-size: 44px; font-weight: 400; letter-spacing: -1.4px; line-height: 1.1; color: #0f172a;">Section Heading</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Outfit 400</span>
+        <span class="type-tag neutral">44px / 2.75rem</span>
+        <span class="type-tag neutral">LH 1.10</span>
+        <span class="type-tag neutral">LS -1.4px</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Outfit; font-size: 32px; font-weight: 500; letter-spacing: -0.8px; line-height: 1.2; color: #0f172a;">Sub-heading Large</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Outfit 500</span>
+        <span class="type-tag neutral">32px / 2rem</span>
+        <span class="type-tag neutral">LH 1.20</span>
+        <span class="type-tag neutral">LS -0.8px</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Outfit; font-size: 24px; font-weight: 600; letter-spacing: -0.4px; line-height: 1.25; color: #0f172a;">Sub-heading</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Outfit 600</span>
+        <span class="type-tag neutral">24px / 1.5rem</span>
+        <span class="type-tag neutral">LH 1.25</span>
+        <span class="type-tag neutral">LS -0.4px</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Outfit; font-size: 20px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.3; color: #0f172a;">Card Title</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Outfit 600</span>
+        <span class="type-tag neutral">20px / 1.25rem</span>
+        <span class="type-tag neutral">LH 1.30</span>
+        <span class="type-tag neutral">LS -0.2px</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Inter; font-size: 17px; font-weight: 400; line-height: 1.6; color: #334155;">Body text — the standard reading experience. Generous line-height for a comfortable, wellness-oriented reading pace. Long enough to see the rhythm of the text flow across multiple words.</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Inter 400</span>
+        <span class="type-tag neutral">17px / 1.06rem</span>
+        <span class="type-tag neutral">LH 1.60</span>
+        <span class="type-tag neutral">LS normal</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Inter; font-size: 15px; font-weight: 500; line-height: 1.4; color: #0f172a;">Navigation & Button Text</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Inter 500</span>
+        <span class="type-tag neutral">15px / 0.94rem</span>
+        <span class="type-tag neutral">LH 1.40</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Inter; font-size: 14px; font-weight: 400; line-height: 1.45; color: #64748b;">Caption & metadata text — descriptions, timestamps, secondary info</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Inter 400</span>
+        <span class="type-tag neutral">14px / 0.875rem</span>
+        <span class="type-tag neutral">LH 1.45</span>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-sample"><span style="font-family: Inter; font-size: 12px; font-weight: 600; line-height: 1.35; letter-spacing: 0.3px; color: #7c3aed; text-transform: uppercase;">Badge / Pill Label</span></div>
+      <div class="type-meta">
+        <span class="type-tag">Inter 600</span>
+        <span class="type-tag neutral">12px / 0.75rem</span>
+        <span class="type-tag neutral">LS +0.3px</span>
+        <span class="type-tag neutral">UPPERCASE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: SHADOWS -->
+  <div class="section">
+    <div class="section-title">3. Shadow & Depth System</div>
+    <div class="section-sub">Purple-tinted multi-layer shadows (Stripe technique). Each layer under 0.12 opacity — depth you feel, not see.</div>
+
+    <div class="shadow-grid">
+      <div class="shadow-card level-0">
+        <h4>Level 0 — Flat</h4>
+        <p>No shadow, whisper border</p>
+        <code>1px solid rgba(0,0,0,0.06)</code>
+      </div>
+      <div class="shadow-card level-1">
+        <h4>Level 1 — Subtle</h4>
+        <p>Resting cards, list items</p>
+        <code>purple(0.04) 0 1px 3px,<br>black(0.02) 0 1px 2px</code>
+      </div>
+      <div class="shadow-card level-2">
+        <h4>Level 2 — Card</h4>
+        <p>Interactive cards, buttons</p>
+        <code>purple(0.08) 0 4px 18px,<br>black(0.04) 0 2px 8px,<br>black(0.02) 0 0.8px 3px</code>
+      </div>
+      <div class="shadow-card level-3">
+        <h4>Level 3 — Elevated</h4>
+        <p>Dropdowns, popovers</p>
+        <code>purple(0.1) 0 8px 32px,<br>black(0.05) 0 4px 12px,<br>black(0.03) 0 2px 6px,<br>black(0.01) 0 0.5px 2px</code>
+      </div>
+      <div class="shadow-card level-4">
+        <h4>Level 4 — Modal</h4>
+        <p>Modals, dialogs, toasts</p>
+        <code>purple(0.12) 0 16px 48px,<br>black(0.06) 0 8px 24px,<br>black(0.04) 0 4px 10px,<br>black(0.02) 0 1px 4px</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: BORDER RADIUS -->
+  <div class="section">
+    <div class="section-title">4. Border Radius Scale</div>
+    <div class="section-sub">From sharp functional elements to fully rounded pills. Each step has a clear purpose.</div>
+
+    <div class="radius-grid">
+      <div class="radius-item"><div class="radius-box" style="border-radius: 4px;"></div><div class="radius-val">4px</div><div class="radius-use">Inputs, tags</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 6px;"></div><div class="radius-val">6px</div><div class="radius-use">Small buttons</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 8px;"></div><div class="radius-val">8px</div><div class="radius-use">Standard cards</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 12px;"></div><div class="radius-val">12px</div><div class="radius-use">Primary buttons</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 16px;"></div><div class="radius-val">16px</div><div class="radius-use">Featured cards</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 24px;"></div><div class="radius-val">24px</div><div class="radius-use">Hero containers</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius: 9999px; width: 96px;"></div><div class="radius-val">9999px</div><div class="radius-use">Pills / badges</div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: SPACING -->
+  <div class="section">
+    <div class="section-title">5. Spacing Scale</div>
+    <div class="section-sub">Extended 8px base grid with editorial-level section spacing. Sections breathe like chapters.</div>
+
+    <div class="spacing-row"><div class="spacing-label">2xs</div><div class="spacing-val">2px</div><div class="spacing-bar" style="width: 2px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">xs</div><div class="spacing-val">4px</div><div class="spacing-bar" style="width: 4px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">sm</div><div class="spacing-val">8px</div><div class="spacing-bar" style="width: 16px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">md</div><div class="spacing-val">16px</div><div class="spacing-bar" style="width: 32px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">lg</div><div class="spacing-val">24px</div><div class="spacing-bar" style="width: 48px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">xl</div><div class="spacing-val">32px</div><div class="spacing-bar" style="width: 64px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">2xl</div><div class="spacing-val">48px</div><div class="spacing-bar" style="width: 96px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">3xl</div><div class="spacing-val">64px</div><div class="spacing-bar" style="width: 128px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">4xl</div><div class="spacing-val">80px</div><div class="spacing-bar" style="width: 160px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">section</div><div class="spacing-val">96px</div><div class="spacing-bar" style="width: 192px;"></div></div>
+    <div class="spacing-row"><div class="spacing-label">hero</div><div class="spacing-val">120px</div><div class="spacing-bar" style="width: 240px;"></div></div>
+  </div>
+
+</div>
+
+</body>
+</html>

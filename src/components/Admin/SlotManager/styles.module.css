@@ -1,24 +1,24 @@
 .container {
   width: 100%;
-  background: var(--color-white-bright);
+  background: var(--color-background);
   border: 1px solid var(--color-border-light);
   border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 32px;
-  box-shadow: var(--color-card-shadow);
+  padding: var(--space-7);
+  margin-bottom: var(--space-7);
+  box-shadow: var(--shadow-sm);
   color: var(--color-text-primary);
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 20px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 16px;
+    padding: var(--space-5);
     border-radius: 14px;
   }
 }
@@ -27,10 +27,10 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  gap: 16px;
+  gap: var(--space-5);
   flex-wrap: wrap;
 }
 
@@ -40,8 +40,8 @@
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   margin: 0 0 6px 0;
   letter-spacing: -0.02em;
@@ -50,19 +50,19 @@
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.25rem;
+    font-size: var(--text-h4);
   }
 }
 
 .subtitle {
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 .legend {
   display: flex;
-  gap: 16px;
+  gap: var(--space-5);
   align-items: center;
 }
 
@@ -71,7 +71,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8125rem;
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
 }
 
 .legendDot {
@@ -94,14 +94,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.1);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-error-dim);
   border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   color: #fca5a5;
   margin-bottom: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .errorBanner svg {
@@ -118,13 +118,13 @@
 .calendarView {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .topRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: var(--space-6);
   align-items: stretch;
 }
 
@@ -138,13 +138,13 @@
   background: rgba(255, 255, 255, 0.03);
   padding: 20px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: border-color 0.2s ease;
+  border: 1px solid var(--color-border);
+  transition: border-color var(--transition-base);
 }
 
 @media (max-width: 768px) {
   .calendarSection {
-    padding: 16px;
+    padding: var(--space-5);
   }
 }
 
@@ -155,17 +155,17 @@
 }
 
 .calendarSection:hover {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-border-subtle);
 }
 
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin: 0 0 16px 0;
+  margin: 0 0 var(--space-5) 0;
   letter-spacing: -0.01em;
   font-family: var(--font-heading);
 }
@@ -173,12 +173,12 @@
 @media (max-width: 480px) {
   .sectionTitle {
     font-size: 1rem;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-4);
   }
 }
 
 .sectionIcon {
-  color: #a78bfa;
+  color: var(--color-accent-soft);
   font-size: 1rem;
 }
 
@@ -186,15 +186,15 @@
   background: rgba(255, 255, 255, 0.03);
   padding: 20px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 @media (max-width: 768px) {
   .slotsRight {
-    padding: 16px;
+    padding: var(--space-5);
   }
 }
 
@@ -205,7 +205,7 @@
 }
 
 .slotsRight:hover {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-border-subtle);
 }
 
 .slotsRightHeader {
@@ -213,23 +213,23 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 4px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 .addSlotButton {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
   padding: 10px 18px;
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   border: none;
   border-radius: 10px;
-  color: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 600;
+  color: var(--color-text-on-dark);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
 }
 
@@ -251,26 +251,24 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.4);
+  background: var(--color-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .modal {
-  background: var(--color-white-bright);
+  background: var(--color-background);
   border: 1px solid var(--color-border-light);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-7);
   width: 100%;
   max-width: 440px;
-  box-shadow:
-    0 20px 50px -12px rgba(0, 0, 0, 0.15),
-    0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xl);
   animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -297,24 +295,24 @@
 
 .modalDate {
   font-size: 0.95rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin: 0 0 20px;
 }
 
 .addSlotForm {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
 }
 
 .addSlotError {
-  padding: 12px 16px;
+  padding: var(--space-4) var(--space-5);
   background: #fef2f2;
   border: 1px solid #fee2e2;
-  border-radius: 12px;
-  color: var(--color-destructive);
-  font-size: 0.875rem;
-  font-weight: 500;
+  border-radius: var(--radius-lg);
+  color: var(--color-error);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .addSlotRow {
@@ -324,26 +322,26 @@
 }
 
 .addSlotLabel {
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 
 .addSlotSelect {
-  padding: 12px 16px;
-  background: var(--color-white-bright);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-background);
   border: 1.5px solid var(--color-border-light);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   color: var(--color-text-primary);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
+  background-position: right var(--space-5) center;
   background-size: 16px;
 }
 
@@ -359,27 +357,27 @@
 }
 
 .addSlotSelect option {
-  background: white;
+  background: var(--color-background);
   color: var(--color-text-primary);
 }
 
 .modalActions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .modalCancel {
-  padding: 12px 24px;
-  background: var(--color-white-bright);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-background);
   border: 1.5px solid var(--color-border-light);
-  border-radius: 12px;
-  color: var(--color-text-muted);
-  font-size: 0.9375rem;
-  font-weight: 700;
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
 }
 
 .modalCancel:hover:not(:disabled) {
@@ -394,15 +392,15 @@
 }
 
 .modalSubmit {
-  padding: 12px 28px;
+  padding: var(--space-4) 28px;
   background: var(--gradient-accent-vibrant, linear-gradient(135deg, #10b981 0%, #059669 100%));
   border: none;
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  font-weight: 700;
+  border-radius: var(--radius-lg);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
 
@@ -421,8 +419,8 @@
 .statsContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 @media (max-width: 600px) {
@@ -435,9 +433,9 @@
 .statCard {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 12px;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
   transition: all 0.25s ease;
 }
 
@@ -466,7 +464,7 @@
 }
 
 .statTotal .statIcon {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
 }
 
 .statTotal .statValue {
@@ -484,7 +482,7 @@
 }
 
 .statBooked .statIcon {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  background: linear-gradient(135deg, #34d399 0%, var(--color-success) 100%);
 }
 
 .statBooked .statValue {
@@ -516,7 +514,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-text-on-dark);
   font-size: 1rem;
   flex-shrink: 0;
 }
@@ -524,26 +522,26 @@
 .statInfo {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .statValue {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
   line-height: 1;
 }
 
 .statLabel {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
+  font-size: var(--text-label);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .progressSection {
-  margin-top: 24px;
-  padding-top: 24px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
   border-top: 1px solid var(--color-border-light);
 }
 
@@ -551,13 +549,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-4);
 }
 
 .progressLabel {
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
 }
 
 .progressPercent {
@@ -569,7 +567,7 @@
 .progressTrack {
   height: 10px;
   background: var(--color-white-dim);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--color-border-light);
 }
@@ -577,7 +575,7 @@
 .progressFill {
   height: 100%;
   background: var(--gradient-accent, linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%));
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -588,9 +586,9 @@
 }
 
 .timeSlotsSection {
-  background: var(--color-white-bright);
-  padding: 24px;
-  border-radius: 16px;
+  background: var(--color-background);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-light);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
@@ -598,24 +596,24 @@
 .timeSlotsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 @media (max-width: 480px) {
   .timeSlotsGrid {
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: var(--space-3);
   }
 }
 
 .timeSlot {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px 14px;
+  gap: var(--space-2);
+  padding: var(--space-4) 14px;
   border-radius: 10px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .timeSlot:hover {
@@ -665,17 +663,17 @@
 }
 
 .slotBooked .slotStatus {
-  color: #10b981;
+  color: var(--color-success);
 }
 
 .slotTime {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .slotStatus {
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -685,39 +683,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 24px;
+  padding: var(--space-9) var(--space-6);
   background: var(--color-white-dim);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px dashed var(--color-border-light);
   text-align: center;
 }
 
 .emptyIcon {
   font-size: 3rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   margin-bottom: 20px;
   opacity: 0.5;
 }
 
 .emptySlots p {
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-3);
 }
 
 .emptyHint {
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
 }
 
 .weekView {
-  background: var(--color-white-bright);
-  padding: 24px;
-  border-radius: 16px;
+  background: var(--color-background);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-light);
   width: 100%;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
@@ -727,7 +725,7 @@
 
 @media (max-width: 768px) {
   .weekView {
-    padding: 16px;
+    padding: var(--space-5);
   }
 }
 
@@ -741,7 +739,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
-  margin-top: 16px;
+  margin-top: var(--space-5);
 }
 
 @media (max-width: 900px) {
@@ -758,13 +756,13 @@
 
 .weekDay {
   background: var(--color-white-dim);
-  padding: 16px 14px;
+  padding: var(--space-5) 14px;
   border-radius: 14px;
   border: 1px solid var(--color-border-light);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .weekDay:hover {
@@ -795,7 +793,7 @@
 
 .weekDayToday .weekDayDate {
   background: var(--color-accent);
-  color: white;
+  color: var(--color-text-on-dark);
   box-shadow: 0 4px 10px var(--color-accent-dim);
 }
 
@@ -806,8 +804,8 @@
 }
 
 .weekDayName {
-  font-weight: 700;
-  color: #e2e8f0;
+  font-weight: var(--weight-bold);
+  color: var(--color-border-light);
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
 }
@@ -818,30 +816,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #94a3b8;
+  background: var(--color-border);
+  border-radius: var(--radius);
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-tertiary);
 }
 
 .weekDayStats {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .weekDayStat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .weekStatValue {
   font-size: 1rem;
-  font-weight: 700;
-  color: #e2e8f0;
+  font-weight: var(--weight-bold);
+  color: var(--color-border-light);
 }
 
 .weekStatBooked {
@@ -850,7 +848,7 @@
 
 .weekStatLabel {
   font-size: 0.625rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -862,15 +860,15 @@
 .weekProgressTrack {
   height: 4px;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
+  border-radius: var(--space-1);
   overflow: hidden;
 }
 
 .weekProgressFill {
   height: 100%;
-  background: linear-gradient(90deg, #34d399 0%, #10b981 100%);
-  border-radius: 2px;
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, #34d399 0%, var(--color-success) 100%);
+  border-radius: var(--space-1);
+  transition: width var(--transition-slow);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -884,7 +882,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: #475569;
   font-style: italic;
 }
@@ -893,6 +891,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: var(--space-8) var(--space-6);
   min-height: 200px;
 }

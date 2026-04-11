@@ -3,8 +3,8 @@
 }
 
 .heading {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
   margin: 0 0 var(--spacing-md, 16px) 0;
   color: var(--color-foreground, #0f172a);
 }
@@ -54,7 +54,7 @@
   width: 5px;
   height: 5px;
   background-color: var(--color-emerald-400, #34d399);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   flex-shrink: 0;
   margin-top: 8px;
 }

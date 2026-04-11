@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nervaya Design System — Components</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fc; color: #0f172a; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, #09021d 0%, #1a0a3e 50%, #2d1566 100%); padding: 40px; text-align: center; }
+  .header h1 { font-family: 'Outfit'; font-size: 36px; font-weight: 300; color: #fff; letter-spacing: -1.2px; }
+  .header p { color: rgba(255,255,255,0.5); font-size: 15px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 48px 32px; }
+  .section { margin-bottom: 72px; }
+  .section-title { font-family: 'Outfit'; font-size: 28px; font-weight: 600; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .section-sub { color: #64748b; font-size: 15px; margin-bottom: 32px; }
+  .sub-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 16px; margin-top: 32px; }
+
+  /* BUTTONS */
+  .btn-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 24px; }
+
+  .btn {
+    font-family: 'Inter'; font-size: 15px; font-weight: 500; line-height: 1.4;
+    border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+    color: #fff; padding: 12px 24px; border-radius: 12px;
+    box-shadow: rgba(124,58,237,0.25) 0px 4px 18px, rgba(0,0,0,0.04) 0px 2px 8px;
+  }
+  .btn-primary:hover {
+    box-shadow: rgba(124,58,237,0.35) 0px 8px 28px, rgba(0,0,0,0.06) 0px 4px 12px;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: #ffffff; color: #0f172a; padding: 12px 24px; border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: rgba(124,58,237,0.04) 0px 1px 3px, rgba(0,0,0,0.02) 0px 1px 2px;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(124,58,237,0.2);
+    box-shadow: rgba(124,58,237,0.08) 0px 4px 18px, rgba(0,0,0,0.04) 0px 2px 8px;
+  }
+
+  .btn-ghost {
+    background: transparent; color: #7c3aed; padding: 12px 24px; border-radius: 12px;
+    border: 1px solid rgba(124,58,237,0.2);
+  }
+  .btn-ghost:hover { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.3); }
+
+  .btn-text { background: none; border: none; color: #7c3aed; padding: 8px 4px; text-decoration: none; }
+  .btn-text:hover { text-decoration: underline; }
+
+  .btn-pill {
+    background: rgba(124,58,237,0.1); color: #7c3aed; padding: 6px 16px; border-radius: 9999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px; border: none;
+  }
+  .btn-pill:hover { background: rgba(124,58,237,0.15); }
+
+  .btn-dark {
+    background: #09021d; color: #a78bfa; padding: 12px 24px; border-radius: 12px;
+    border: 1px solid rgba(124,58,237,0.2);
+  }
+  .btn-dark:hover { border-color: rgba(124,58,237,0.4); color: #c4b5fd; }
+
+  .btn-destructive {
+    background: #fef2f2; color: #dc2626; padding: 12px 24px; border-radius: 12px;
+    border: 1px solid rgba(239,68,68,0.15);
+  }
+  .btn-destructive:hover { background: #fee2e2; border-color: rgba(239,68,68,0.3); }
+
+  .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+  .btn-lg { padding: 16px 32px; font-size: 17px; border-radius: 14px; }
+  .btn-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+  .card {
+    background: #fff; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: rgba(124,58,237,0.04) 0px 1px 3px, rgba(0,0,0,0.02) 0px 1px 2px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card:hover {
+    border-color: rgba(124,58,237,0.15);
+    box-shadow: rgba(124,58,237,0.08) 0px 4px 18px, rgba(0,0,0,0.04) 0px 2px 8px, rgba(0,0,0,0.02) 0px 0.8px 3px;
+    transform: translateY(-2px);
+  }
+  .card-img { height: 180px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; }
+  .card-body { padding: 24px; }
+  .card-body h3 { font-family: 'Outfit'; font-size: 20px; font-weight: 600; letter-spacing: -0.2px; color: #0f172a; margin-bottom: 8px; }
+  .card-body p { font-size: 15px; color: #64748b; line-height: 1.55; margin-bottom: 16px; }
+
+  /* DARK CARD */
+  .card-dark {
+    background: #1a0a3e; border-color: rgba(124,58,237,0.15);
+  }
+  .card-dark .card-img { background: linear-gradient(135deg, #2d1566, #1a0a3e); color: rgba(255,255,255,0.3); }
+  .card-dark .card-body h3 { color: #fff; }
+  .card-dark .card-body p { color: rgba(255,255,255,0.6); }
+  .card-dark:hover { border-color: rgba(124,58,237,0.3); }
+
+  /* FEATURED CARD */
+  .card-featured { border-radius: 16px; border: 1px solid rgba(124,58,237,0.12); }
+  .card-featured:hover { border-color: rgba(124,58,237,0.25); }
+
+  /* INPUTS */
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .input-group { margin-bottom: 0; }
+  .input-label { font-size: 14px; font-weight: 500; color: #334155; margin-bottom: 6px; display: block; }
+  .input-hint { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+
+  .input {
+    width: 100%; padding: 12px 16px; font-family: 'Inter'; font-size: 15px; color: #0f172a;
+    background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px;
+    outline: none; transition: all 0.2s;
+  }
+  .input::placeholder { color: #94a3b8; }
+  .input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+  .input-error { border-color: #ef4444; }
+  .input-error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
+  .input-success { border-color: #10b981; }
+  .error-text { font-size: 13px; color: #ef4444; margin-top: 4px; }
+  .success-text { font-size: 13px; color: #10b981; margin-top: 4px; }
+
+  /* NAVIGATION DEMO */
+  .nav-demo {
+    background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; overflow: hidden;
+    box-shadow: rgba(124,58,237,0.04) 0px 1px 3px, rgba(0,0,0,0.02) 0px 1px 2px;
+  }
+  .nav-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo { font-family: 'Outfit'; font-size: 22px; font-weight: 700; color: #7c3aed; letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-link { font-size: 15px; font-weight: 500; color: #64748b; text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .nav-link:hover { color: #0f172a; }
+  .nav-link.active { color: #7c3aed; }
+  .nav-content { padding: 32px 24px; color: #94a3b8; font-size: 14px; text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+
+  /* DARK NAV */
+  .nav-dark { background: #09021d; border-color: rgba(124,58,237,0.15); }
+  .nav-dark .nav-bar { border-bottom-color: rgba(124,58,237,0.1); }
+  .nav-dark .nav-link { color: rgba(255,255,255,0.5); }
+  .nav-dark .nav-link:hover { color: #fff; }
+  .nav-dark .nav-link.active { color: #a78bfa; }
+  .nav-dark .nav-content { color: rgba(255,255,255,0.3); }
+
+  /* BADGES */
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge {
+    padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .badge-purple { background: rgba(124,58,237,0.1); color: #7c3aed; }
+  .badge-green { background: rgba(16,185,129,0.1); color: #059669; }
+  .badge-red { background: rgba(239,68,68,0.1); color: #dc2626; }
+  .badge-amber { background: rgba(245,158,11,0.1); color: #d97706; }
+  .badge-blue { background: rgba(59,130,246,0.1); color: #2563eb; }
+  .badge-outline { background: transparent; border: 1px solid rgba(0,0,0,0.1); color: #64748b; }
+
+  /* ALERT */
+  .alert { padding: 16px 20px; border-radius: 10px; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; font-size: 14px; }
+  .alert-icon { font-size: 18px; flex-shrink: 0; }
+  .alert-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .alert-content p { font-size: 13px; opacity: 0.8; }
+  .alert-error { background: #fef2f2; border-left: 3px solid #ef4444; color: #991b1b; }
+  .alert-success { background: #f0fdf4; border-left: 3px solid #10b981; color: #166534; }
+  .alert-warning { background: #fffbeb; border-left: 3px solid #f59e0b; color: #92400e; }
+  .alert-info { background: rgba(124,58,237,0.05); border-left: 3px solid #7c3aed; color: #4c1d95; }
+
+  /* SIDEBAR DEMO */
+  .layout-demo { display: flex; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); box-shadow: rgba(124,58,237,0.04) 0px 1px 3px; height: 360px; }
+  .sidebar-demo {
+    width: 220px; background: #09021d; padding: 24px 0; flex-shrink: 0;
+    border-right: 1px solid rgba(124,58,237,0.1);
+  }
+  .sidebar-logo { font-family: 'Outfit'; font-size: 18px; font-weight: 700; color: #7c3aed; padding: 0 20px; margin-bottom: 24px; }
+  .sidebar-section { margin-bottom: 20px; }
+  .sidebar-section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); padding: 0 20px; margin-bottom: 8px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px;
+    color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.15s;
+  }
+  .sidebar-item:hover { color: rgba(255,255,255,0.8); background: rgba(124,58,237,0.08); }
+  .sidebar-item.active { color: #fff; background: rgba(124,58,237,0.15); border-left: 2px solid #7c3aed; }
+  .sidebar-icon { width: 16px; text-align: center; font-size: 13px; }
+  .content-demo { flex: 1; background: #f8f9fc; padding: 32px; overflow: auto; }
+  .content-demo h2 { font-family: 'Outfit'; font-size: 24px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .content-demo p { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+  .content-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .mini-card { background: #fff; border-radius: 8px; padding: 16px; border: 1px solid rgba(0,0,0,0.06); }
+  .mini-card h4 { font-family: 'Outfit'; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .mini-card p { font-size: 12px; color: #94a3b8; margin: 0; }
+  .mini-card .metric { font-family: 'Outfit'; font-size: 22px; font-weight: 600; color: #7c3aed; }
+
+  @media (max-width: 768px) {
+    .input-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+    .layout-demo { flex-direction: column; height: auto; }
+    .sidebar-demo { width: 100%; }
+    .content-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Nervaya Design System — Components</h1>
+  <p>Part 2: Buttons, Cards, Inputs, Navigation, Badges, Alerts, Layout</p>
+</div>
+
+<div class="container">
+
+  <!-- BUTTONS -->
+  <div class="section">
+    <div class="section-title">6. Button System</div>
+    <div class="section-sub">7 variants with consistent sizing, purple-tinted shadows on primary, rgba borders on secondary. Stripe-inspired hover lifts.</div>
+
+    <div class="sub-label">Standard Size</div>
+    <div class="btn-row">
+      <button class="btn btn-primary">Primary Action</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-ghost">Ghost / Outline</button>
+      <button class="btn btn-text">Text Link →</button>
+    </div>
+
+    <div class="sub-label">More Variants</div>
+    <div class="btn-row">
+      <button class="btn btn-dark">Dark Surface</button>
+      <button class="btn btn-destructive">Delete Account</button>
+      <button class="btn btn-pill">NEW</button>
+      <button class="btn btn-pill" style="background: rgba(16,185,129,0.1); color: #059669;">VERIFIED</button>
+      <button class="btn btn-pill" style="background: rgba(245,158,11,0.1); color: #d97706;">PENDING</button>
+    </div>
+
+    <div class="sub-label">Sizes</div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large CTA</button>
+    </div>
+
+    <div class="sub-label">States</div>
+    <div class="btn-row">
+      <button class="btn btn-primary">Normal</button>
+      <button class="btn btn-primary" style="box-shadow: rgba(124,58,237,0.35) 0px 8px 28px; transform: translateY(-1px);">Hover</button>
+      <button class="btn btn-primary" style="transform: scale(0.97); box-shadow: none;">Active</button>
+      <button class="btn btn-primary btn-disabled">Disabled</button>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="section">
+    <div class="section-title">7. Card System</div>
+    <div class="section-sub">Whisper border at rest, purple-tinted shadow + border on hover. -2px lift. Three variants: standard, dark, featured.</div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-img">Image / Illustration</div>
+        <div class="card-body">
+          <h3>Standard Card</h3>
+          <p>Whisper border (rgba 0.06), subtle shadow. Hover lifts -2px with purple-tinted shadow bloom.</p>
+          <button class="btn btn-primary btn-sm">Learn More</button>
+        </div>
+      </div>
+
+      <div class="card card-dark">
+        <div class="card-img">Image / Illustration</div>
+        <div class="card-body">
+          <h3>Dark Card</h3>
+          <p>For dark sections — hero, landing page. Purple border glow on hover.</p>
+          <button class="btn btn-ghost btn-sm" style="color: #a78bfa; border-color: rgba(167,139,250,0.3);">Explore</button>
+        </div>
+      </div>
+
+      <div class="card card-featured">
+        <div class="card-img" style="background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.03));">Featured Content</div>
+        <div class="card-body">
+          <div style="margin-bottom: 12px;"><span class="badge badge-purple">RECOMMENDED</span></div>
+          <h3>Featured Card</h3>
+          <p>16px radius, purple-tinted border. Used for highlighted content and recommendations.</p>
+          <button class="btn btn-primary btn-sm">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="section">
+    <div class="section-title">8. Input System</div>
+    <div class="section-sub">Clean inputs with purple focus ring (3px spread). Whisper border default, semantic states for validation.</div>
+
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="input-label">Email Address</label>
+        <input class="input" type="email" placeholder="you@example.com">
+        <div class="input-hint">We'll never share your email</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Full Name</label>
+        <input class="input" type="text" value="Bhanu Teja" style="border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1);">
+        <div class="input-hint" style="color: #7c3aed;">Focused state</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Password</label>
+        <input class="input input-error" type="password" value="123" placeholder="Minimum 8 characters">
+        <div class="error-text">Password must be at least 8 characters</div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Phone Number</label>
+        <input class="input input-success" type="tel" value="+91 9876543210">
+        <div class="success-text">Phone number verified</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BADGES -->
+  <div class="section">
+    <div class="section-title">9. Badges & Pills</div>
+    <div class="section-sub">9999px pill radius, tinted backgrounds at 10% opacity, 12px/600 uppercase labels with +0.3px tracking.</div>
+
+    <div class="badge-row">
+      <span class="badge badge-purple">PREMIUM</span>
+      <span class="badge badge-green">VERIFIED</span>
+      <span class="badge badge-red">URGENT</span>
+      <span class="badge badge-amber">PENDING</span>
+      <span class="badge badge-blue">NEW</span>
+      <span class="badge badge-outline">DRAFT</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge badge-purple" style="font-size: 11px; padding: 2px 8px;">● HIGH</span>
+      <span class="badge badge-green" style="font-size: 11px; padding: 2px 8px;">● ACTIVE</span>
+      <span class="badge badge-red" style="font-size: 11px; padding: 2px 8px;">● SEVERE</span>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="section">
+    <div class="section-title">10. Alert System</div>
+    <div class="section-sub">Left-border accent (3px), tinted background, rounded corners (10px). Four semantic variants.</div>
+
+    <div class="alert alert-error">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-content"><h4>Severe Sleep Issues Detected</h4><p>Based on your responses, we recommend booking a therapy session.</p></div>
+    </div>
+    <div class="alert alert-success">
+      <div class="alert-icon">✓</div>
+      <div class="alert-content"><h4>Session Booked Successfully</h4><p>Your Deep Rest session is confirmed for April 16 at 9:00 AM.</p></div>
+    </div>
+    <div class="alert alert-warning">
+      <div class="alert-icon">!</div>
+      <div class="alert-content"><h4>Assessment Expiring Soon</h4><p>Your sleep assessment results will expire in 3 days. Retake for updated recommendations.</p></div>
+    </div>
+    <div class="alert alert-info">
+      <div class="alert-icon">ℹ</div>
+      <div class="alert-content"><h4>New Playlists Available</h4><p>We've added 3 new guided meditation sessions to Deep Rest.</p></div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="section">
+    <div class="section-title">11. Navigation</div>
+    <div class="section-sub">Light and dark nav variants. Active link in purple, hover transitions to primary text color. Stripe-clean spacing.</div>
+
+    <div class="sub-label">Light Navigation</div>
+    <div class="nav-demo" style="margin-bottom: 24px;">
+      <div class="nav-bar">
+        <div class="nav-logo">Nervaya.</div>
+        <div class="nav-links">
+          <span class="nav-link active">Home</span>
+          <span class="nav-link">Products</span>
+          <span class="nav-link">Dashboard</span>
+          <span class="nav-link">About Us</span>
+          <button class="btn btn-primary btn-sm">Contact Us</button>
+        </div>
+      </div>
+      <div class="nav-content">Page content area</div>
+    </div>
+
+    <div class="sub-label">Dark Navigation (Hero sections)</div>
+    <div class="nav-demo nav-dark">
+      <div class="nav-bar">
+        <div class="nav-logo">Nervaya.</div>
+        <div class="nav-links">
+          <span class="nav-link active">Home</span>
+          <span class="nav-link">Products</span>
+          <span class="nav-link">Dashboard</span>
+          <span class="nav-link">About Us</span>
+          <button class="btn btn-ghost btn-sm" style="color: #a78bfa; border-color: rgba(167,139,250,0.25); padding: 8px 16px;">Contact Us</button>
+        </div>
+      </div>
+      <div class="nav-content">Dark hero content area</div>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="section">
+    <div class="section-title">12. Sidebar + Dashboard Layout</div>
+    <div class="section-sub">Dark sidebar (Nervaya Dark #09021d), ghost white content area (#f8f9fc). Active items get purple left-border + tinted background.</div>
+
+    <div class="layout-demo">
+      <div class="sidebar-demo">
+        <div class="sidebar-logo">Nervaya.</div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">General</div>
+          <div class="sidebar-item active"><span class="sidebar-icon">◉</span> Dashboard</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Sleep Assessment</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Shopping Cart</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Therapy</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Therapy Corner</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Deep Rest</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Deep Rest</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> My Sessions</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Help</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Support</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> Account</div>
+        </div>
+      </div>
+      <div class="content-demo">
+        <h2>Welcome back, Bhanu Teja!</h2>
+        <p>Here's your personalized overview.</p>
+        <div class="content-cards">
+          <div class="mini-card">
+            <h4>Next Session</h4>
+            <div class="metric">Apr 16</div>
+            <p>9:00 AM — Deep Rest</p>
+          </div>
+          <div class="mini-card">
+            <h4>Sessions</h4>
+            <div class="metric">6</div>
+            <p>Purchased sessions</p>
+          </div>
+          <div class="mini-card">
+            <h4>Assessment</h4>
+            <div class="metric" style="color: #ef4444;">Severe</div>
+            <p>Sleep quality score</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESPONSIVE -->
+  <div class="section">
+    <div class="section-title">13. Responsive Breakpoints</div>
+    <div class="section-sub">Five breakpoints with progressive typography scaling and layout collapsing.</div>
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+      <thead>
+        <tr style="border-bottom: 2px solid rgba(0,0,0,0.08);">
+          <th style="text-align: left; padding: 12px 16px; font-weight: 600;">Name</th>
+          <th style="text-align: left; padding: 12px 16px; font-weight: 600;">Width</th>
+          <th style="text-align: left; padding: 12px 16px; font-weight: 600;">Display Font</th>
+          <th style="text-align: left; padding: 12px 16px; font-weight: 600;">Layout</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+          <td style="padding: 12px 16px;"><span class="badge badge-purple">Mobile</span></td>
+          <td style="padding: 12px 16px; font-family: monospace; color: #64748b;">&lt; 480px</td>
+          <td style="padding: 12px 16px;">32px / -0.8px</td>
+          <td style="padding: 12px 16px;">Stacked, hamburger nav</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+          <td style="padding: 12px 16px;"><span class="badge badge-blue">Tablet SM</span></td>
+          <td style="padding: 12px 16px; font-family: monospace; color: #64748b;">480–768px</td>
+          <td style="padding: 12px 16px;">40px / -1.0px</td>
+          <td style="padding: 12px 16px;">2-column grids begin</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+          <td style="padding: 12px 16px;"><span class="badge badge-green">Tablet</span></td>
+          <td style="padding: 12px 16px; font-family: monospace; color: #64748b;">768–1024px</td>
+          <td style="padding: 12px 16px;">48px / -1.4px</td>
+          <td style="padding: 12px 16px;">Sidebar visible, full cards</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+          <td style="padding: 12px 16px;"><span class="badge badge-amber">Desktop</span></td>
+          <td style="padding: 12px 16px; font-family: monospace; color: #64748b;">1024–1440px</td>
+          <td style="padding: 12px 16px;">56px / -1.8px</td>
+          <td style="padding: 12px 16px;">Full layout, max 1200px</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px 16px;"><span class="badge badge-outline">Wide</span></td>
+          <td style="padding: 12px 16px; font-family: monospace; color: #64748b;">&gt; 1440px</td>
+          <td style="padding: 12px 16px;">56px / -1.8px</td>
+          <td style="padding: 12px 16px;">Centered, generous margins</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

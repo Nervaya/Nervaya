@@ -8,12 +8,12 @@
 
 /* ── Section cards ── */
 .section {
-  background: #ffffff;
+  background: var(--color-background);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   margin-bottom: 1.5rem;
 }
 
@@ -43,7 +43,7 @@
 
 .sectionIconInfo {
   background: #f5f3ff;
-  color: #7c3aed;
+  color: var(--color-accent);
 }
 
 .sectionIconPricing {
@@ -53,7 +53,7 @@
 
 .sectionIconDetails {
   background: #fef2f2;
-  color: #ef4444;
+  color: var(--color-error);
 }
 
 .sectionIconMedia {
@@ -62,14 +62,14 @@
 }
 
 .sectionTitle {
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
   color: #111827;
   margin: 0;
 }
 
 .sectionSubtitle {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: #6b7280;
   margin: 0;
 }
@@ -88,7 +88,7 @@
   color: #9ca3af;
   width: 14px;
   height: 14px;
-  transition: color 0.2s;
+  transition: color var(--transition-base);
 }
 
 .tooltipRoot:hover .infoIcon {
@@ -101,22 +101,22 @@
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ffffff;
+  background-color: var(--color-background);
   color: #1e293b;
   text-align: center;
   padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  border-radius: var(--radius);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
   white-space: nowrap;
   z-index: 100;
   opacity: 0;
   transition:
-    opacity 0.2s,
-    transform 0.2s;
+    opacity var(--transition-base),
+    transform var(--transition-base);
   text-transform: none;
   letter-spacing: normal;
-  border: 0.5px solid #7c3aed;
+  border: 0.5px solid var(--color-accent);
   cursor: pointer;
 }
 
@@ -128,7 +128,7 @@
   margin-left: -6px;
   border-width: 6px;
   border-style: solid;
-  border-color: #7c3aed transparent transparent transparent;
+  border-color: var(--color-accent) transparent transparent transparent;
 }
 
 .tooltipRoot:hover .tooltipText {
@@ -169,14 +169,14 @@
 .additionalSectionCard {
   background: #f9fafb;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .additionalSectionCard:hover {
-  border-color: #7c3aed;
+  border-color: var(--color-accent);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -193,16 +193,16 @@
 
 .removeSectionBtn {
   background: #fee2e2;
-  color: #dc2626;
+  color: var(--color-error-hover);
   border: none;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   margin-top: 2rem;
 }
 
@@ -217,13 +217,13 @@
   font-style: italic;
   padding: 2rem;
   background: #f9fafb;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px dashed #d1d5db;
 }
 
 .label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   color: #4b5563;
   margin-bottom: 0.375rem;
   display: flex;
@@ -235,11 +235,11 @@
 .countBadge {
   margin-left: 0.5rem;
   font-size: 0.65rem;
-  font-weight: 700;
-  color: #7c3aed;
-  background: rgba(124, 58, 237, 0.1);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   text-transform: none;
   letter-spacing: normal;
 }
@@ -247,12 +247,12 @@
 .input,
 .textarea {
   border: 1px solid rgba(124, 58, 237, 0.3);
-  background: #ffffff;
+  background: var(--color-background);
   border-radius: 5px;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  color: #0f172a;
-  transition: all 0.2s ease;
+  font-size: var(--text-caption);
+  color: var(--color-text-primary);
+  transition: all var(--transition-base);
   width: 100%;
   box-sizing: border-box;
 }
@@ -275,8 +275,8 @@
 }
 
 .errorText {
-  color: #ef4444;
-  font-size: 0.75rem;
+  color: var(--color-error);
+  font-size: var(--text-label);
   margin-top: 0.25rem;
 }
 
@@ -303,13 +303,13 @@
   gap: 1.25rem;
   background: rgba(124, 58, 237, 0.02);
   padding: 1.25rem;
-  border-radius: 12px;
-  border: 1px solid rgba(124, 58, 237, 0.1);
-  transition: all 0.3s ease;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-accent-dim);
+  transition: all var(--transition-slow);
 }
 
 .imageSelector:hover {
-  border-color: rgba(124, 58, 237, 0.2);
+  border-color: var(--color-border-accent);
   background: rgba(124, 58, 237, 0.04);
 }
 
@@ -321,8 +321,8 @@
 
 .separatorText {
   font-size: 0.625rem;
-  font-weight: 700;
-  color: #94a3b8;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-tertiary);
   text-align: center;
   position: relative;
   display: flex;
@@ -337,7 +337,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #e2e8f0;
+  background: var(--color-border-light);
 }
 
 .separatorText span {
@@ -349,8 +349,8 @@
 }
 
 .fieldHint {
-  font-size: 0.75rem;
-  color: #7c3aed;
+  font-size: var(--text-label);
+  color: var(--color-accent);
   font-style: italic;
   margin-top: 0.5rem;
   display: block;
@@ -373,9 +373,9 @@
   aspect-ratio: 1;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  background: white;
-  transition: all 0.2s ease;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-background);
+  transition: all var(--transition-base);
   cursor: pointer;
   position: relative;
 }
@@ -400,9 +400,9 @@
 .footer {
   margin-top: 1rem;
   padding: 1.5rem;
-  background: #ffffff;
+  background: var(--color-background);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -421,7 +421,7 @@
   background: #d1d5db;
   border-radius: 20px;
   position: relative;
-  transition: background 0.2s;
+  transition: background var(--transition-base);
 }
 
 .toggleTrackActive {
@@ -444,17 +444,17 @@
 }
 
 .toggleLabel {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   color: #374151;
 }
 
 .submitButton {
   background: var(--gradient-accent, linear-gradient(90deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)) !important;
-  color: white !important;
-  font-weight: 700 !important;
+  color: var(--color-text-on-dark) !important;
+  font-weight: var(--weight-bold) !important;
   padding: 0.875rem 2.5rem !important;
-  border-radius: 8px !important;
+  border-radius: var(--radius) !important;
   border: none !important;
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;

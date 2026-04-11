@@ -16,15 +16,15 @@
 }
 
 .table th {
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   letter-spacing: 0.08em;
 }
 
 .table td {
-  color: var(--color-foreground);
+  color: var(--color-text-primary);
 }
 
 .table tbody tr:last-child td {
@@ -34,7 +34,7 @@
 .link {
   color: var(--color-accent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .link:hover {
@@ -45,21 +45,21 @@
   display: inline-flex;
   align-items: center;
   padding: 0.28rem 0.62rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: var(--radius-full);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   background: rgba(124, 58, 237, 0.08);
   color: var(--color-accent);
   text-transform: capitalize;
 }
 
 .date {
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }
 
 .empty {
   padding: var(--spacing-lg);
   text-align: center;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
 }

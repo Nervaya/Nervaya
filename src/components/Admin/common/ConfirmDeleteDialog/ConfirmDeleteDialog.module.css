@@ -3,12 +3,12 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 8px 0;
+  padding: var(--space-3) 0;
 }
 
 .iconWrapper {
-  width: 48px;
-  height: 48px;
+  width: var(--space-8);
+  height: var(--space-8);
   border-radius: 50%;
   background: #fef2f2;
   display: flex;
@@ -18,26 +18,26 @@
 }
 
 .warningIcon {
-  width: 24px;
-  height: 24px;
-  color: #ef4444;
+  width: var(--space-6);
+  height: var(--space-6);
+  color: var(--color-error);
 }
 
 .textContent {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .modalTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .message {
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
@@ -45,36 +45,36 @@
 
 .cancelBtn {
   padding: 10px 20px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  color: #0f172a;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
+  background: var(--color-background);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius);
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-caption);
+  transition: all var(--transition-base);
   cursor: pointer;
 }
 
 .cancelBtn:hover {
-  background: #f8fafc;
+  background: var(--color-background-page);
   border-color: #cbd5e1;
 }
 
 .deleteBtn {
   padding: 10px 20px;
-  background: #ef4444;
-  border: 1px solid #ef4444;
-  border-radius: 8px;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
+  background: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius);
+  color: var(--color-text-on-dark);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-caption);
+  transition: all var(--transition-base);
   cursor: pointer;
 }
 
 .deleteBtn:hover {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: var(--color-error-hover);
+  border-color: var(--color-error-hover);
 }
 
 .deleteBtn:disabled,

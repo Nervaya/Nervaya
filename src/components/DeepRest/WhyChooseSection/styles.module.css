@@ -24,9 +24,9 @@
 }
 
 .whyChooseCard {
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
-  border-radius: 24px;
+  background: var(--color-background);
+  border: 1px solid var(--color-background-alt);
+  border-radius: var(--radius-2xl);
   padding: var(--spacing-xl);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
@@ -49,7 +49,7 @@
 @media (max-width: 480px) {
   .whyChooseCard {
     padding: var(--spacing-md);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
   }
 }
 
@@ -63,26 +63,26 @@
 .whyChooseIcon {
   width: 56px;
   height: 56px;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   background: #f5f3ff;
-  color: #7c3aed;
+  color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
   margin-bottom: var(--spacing-lg);
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 .whyChooseCard:hover .whyChooseIcon {
-  background: #7c3aed;
-  color: #ffffff;
+  background: var(--color-accent);
+  color: var(--color-text-on-dark);
   transform: scale(1.1) rotate(5deg);
 }
 
 .whyChooseTitle {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
   margin: 0 0 var(--spacing-sm) 0;
   overflow-wrap: break-word;
@@ -99,7 +99,7 @@
 .whyChooseText {
   margin: 0;
   font-size: var(--font-size-base);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   color: var(--color-text-muted);
   overflow-wrap: break-word;
   word-wrap: break-word;

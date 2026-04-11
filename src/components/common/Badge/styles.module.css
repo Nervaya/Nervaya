@@ -2,13 +2,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.03em;
   line-height: 1;
   white-space: nowrap;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .fullWidth {
@@ -18,7 +18,7 @@
 
 /* Shapes */
 .shape-pill {
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 }
 
 .shape-rectangle {
@@ -75,7 +75,7 @@
 
 .variant-purple {
   background: #f5f3ff;
-  color: #7c3aed;
+  color: var(--color-accent);
 }
 
 .variant-amber {

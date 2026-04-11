@@ -27,7 +27,7 @@
   background: linear-gradient(135deg, rgba(245, 243, 255, 0.9) 0%, rgba(237, 233, 254, 0.85) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(139, 92, 246, 0.15);
   box-shadow:
     0 12px 40px rgba(124, 58, 237, 0.08),
@@ -35,7 +35,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   box-sizing: border-box;
   animation: fadeInUp 0.8s ease-out;
 }
@@ -50,15 +50,15 @@
 
 @media (max-width: 480px) {
   .supportSection {
-    margin-bottom: 16px;
-    padding: 0 16px;
+    margin-bottom: var(--space-5);
+    padding: 0 var(--space-5);
     border-radius: 14px;
   }
 }
 
 @media (max-width: 380px) {
   .supportSection {
-    padding: 0 12px;
+    padding: 0 var(--space-4);
   }
 }
 
@@ -69,21 +69,21 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 24px 40px 28px;
-  gap: 12px;
+  padding: var(--space-6) 40px 28px;
+  gap: var(--space-4);
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .buttonContainer {
-    padding: 20px 24px 28px;
-    gap: 12px;
+    padding: 20px var(--space-6) 28px;
+    gap: var(--space-4);
   }
 }
 
 @media (max-width: 480px) {
   .buttonContainer {
-    padding: 20px 16px 24px;
+    padding: 20px var(--space-5) var(--space-6);
     gap: 10px;
   }
 }
@@ -91,11 +91,11 @@
 .chatBanner {
   background: rgba(139, 92, 246, 0.08);
   border-bottom: 1px solid rgba(139, 92, 246, 0.12);
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   padding: 28px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
@@ -103,13 +103,13 @@
 
 @media (max-width: 1024px) {
   .chatBanner {
-    padding: 28px 32px;
+    padding: 28px var(--space-7);
   }
 }
 
 @media (max-width: 768px) {
   .chatBanner {
-    padding: 24px 24px;
+    padding: var(--space-6);
     flex-direction: row;
     text-align: left;
     gap: 20px;
@@ -126,15 +126,15 @@
 
 @media (max-width: 480px) {
   .chatBanner {
-    padding: 20px 16px;
+    padding: 20px var(--space-5);
     border-radius: 14px 14px 0 0;
-    gap: 16px;
+    gap: var(--space-5);
   }
 }
 
 @media (max-width: 380px) {
   .chatBanner {
-    padding: 16px 12px;
+    padding: var(--space-5) var(--space-4);
     gap: 14px;
   }
 }
@@ -142,9 +142,9 @@
 .whatsappIconContainer {
   width: 72px;
   height: 72px;
-  padding: 8px;
+  padding: var(--space-3);
   background: rgba(37, 211, 102, 0.12);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(37, 211, 102, 0.2);
   display: flex;
   align-items: center;
@@ -156,7 +156,7 @@
   .whatsappIconContainer {
     width: 64px;
     height: 64px;
-    padding: 8px;
+    padding: var(--space-3);
   }
 }
 
@@ -164,7 +164,7 @@
   .whatsappIconContainer {
     width: 56px;
     height: 56px;
-    padding: 8px;
+    padding: var(--space-3);
   }
 }
 
@@ -186,7 +186,7 @@
 
 @media (max-width: 768px) {
   .whatsappIcon {
-    font-size: 2rem;
+    font-size: var(--text-h2);
   }
 }
 
@@ -202,17 +202,17 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: var(--space-2);
 }
 
 .bannerTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
   color: #1e1b4b;
   margin: 0;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  font-family: var(--font-sans);
+  font-family: var(--font-heading);
 }
 
 @media (max-width: 1024px) {
@@ -223,23 +223,23 @@
 
 @media (max-width: 768px) {
   .bannerTitle {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
+    font-size: var(--text-h3);
+    margin-bottom: var(--space-3);
   }
 }
 
 @media (max-width: 480px) {
   .bannerTitle {
-    font-size: 1.25rem;
+    font-size: var(--text-h4);
   }
 }
 
 .bannerSubtitle {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: #64748b;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
 }
 
 @media (max-width: 1024px) {
@@ -256,14 +256,14 @@
 
 @media (max-width: 480px) {
   .bannerSubtitle {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }
 
 .supportCard {
   background: rgba(255, 255, 255, 0.6);
   border-radius: 14px;
-  padding: 28px 32px;
+  padding: 28px var(--space-7);
   border: 1px solid rgba(139, 92, 246, 0.15);
   box-shadow: 0 4px 20px rgba(124, 58, 237, 0.08);
   max-width: 640px;
@@ -279,8 +279,8 @@
 
 @media (max-width: 768px) {
   .supportCard {
-    padding: 24px 24px;
-    margin: 16px 24px 0;
+    padding: var(--space-6);
+    margin: var(--space-5) var(--space-6) 0;
     margin-left: auto;
     margin-right: auto;
   }
@@ -289,7 +289,7 @@
 @media (max-width: 480px) {
   .supportCard {
     padding: 20px 18px;
-    margin: 16px 0 0;
+    margin: var(--space-5) 0 0;
     max-width: 100%;
   }
 }
@@ -304,7 +304,7 @@
 
 @media (max-width: 480px) {
   .cardHeader {
-    gap: 12px;
+    gap: var(--space-4);
     margin-bottom: 20px;
   }
 }
@@ -317,8 +317,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  font-size: 1.5rem;
+  color: var(--color-text-on-dark);
+  font-size: var(--text-h3);
   flex-shrink: 0;
 }
 
@@ -326,7 +326,7 @@
   .cardIcon {
     width: 48px;
     height: 48px;
-    font-size: 1.25rem;
+    font-size: var(--text-h4);
   }
 }
 
@@ -339,12 +339,12 @@
 }
 
 .cardTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-bold);
   color: #1e1b4b;
   margin: 0;
   line-height: 1.3;
-  font-family: var(--font-sans);
+  font-family: var(--font-heading);
 }
 
 @media (max-width: 1024px) {
@@ -355,7 +355,7 @@
 
 @media (max-width: 768px) {
   .cardTitle {
-    font-size: 1.25rem;
+    font-size: var(--text-h4);
   }
 }
 
@@ -366,11 +366,11 @@
 }
 
 .cardDescription {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: #64748b;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   width: 100%;
   text-align: left;
 }
@@ -378,13 +378,13 @@
 @media (max-width: 768px) {
   .cardDescription {
     font-size: 0.95rem;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
   }
 }
 
 @media (max-width: 480px) {
   .cardDescription {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
     margin-bottom: 20px;
   }
 }
@@ -395,22 +395,22 @@
   margin-left: auto;
   margin-right: auto;
   background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%) !important;
-  color: #ffffff !important;
+  color: var(--color-text-on-dark) !important;
   border: none !important;
   border-radius: 10px !important;
-  padding: 16px 24px !important;
+  padding: var(--space-5) var(--space-6) !important;
   font-size: 1rem !important;
-  font-weight: 600 !important;
-  font-family: var(--font-sans) !important;
+  font-weight: var(--weight-semibold) !important;
+  font-family: var(--font-body) !important;
   cursor: pointer;
   display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 10px;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    background var(--transition-base);
   box-shadow: 0 2px 12px rgba(120, 40, 200, 0.3) !important;
   margin: 0;
 }
@@ -427,8 +427,8 @@
 
 @media (max-width: 480px) {
   .whatsappButton {
-    padding: 12px 16px !important;
-    font-size: 0.875rem !important;
+    padding: var(--space-4) var(--space-5) !important;
+    font-size: var(--text-caption) !important;
     white-space: nowrap;
   }
 }
@@ -436,13 +436,13 @@
 @media (max-width: 360px) {
   .whatsappButton {
     font-size: 0.8125rem !important;
-    padding: 12px 12px !important;
+    padding: var(--space-4) var(--space-4) !important;
   }
 }
 
 .buttonIcon {
   font-size: 1.125rem;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   flex-shrink: 0;
 }
 
@@ -468,11 +468,11 @@
 
 .disclaimer {
   font-size: 0.8125rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
   text-align: left;
   line-height: 1.5;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   width: 100%;
 }
 
@@ -485,7 +485,7 @@
 .featuresGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: var(--space-5);
   margin: 0;
   width: 100%;
   padding: 0 40px 36px;
@@ -494,23 +494,23 @@
 
 @media (max-width: 768px) {
   .featuresGrid {
-    gap: 16px;
-    padding: 0 0 32px 0;
+    gap: var(--space-5);
+    padding: 0 0 var(--space-7) 0;
   }
 }
 
 @media (max-width: 480px) {
   .featuresGrid {
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 0 0 24px 0;
+    gap: var(--space-4);
+    padding: 0 0 var(--space-6) 0;
   }
 }
 
 .featureCard {
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 12px;
-  padding: 24px 16px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-5);
   border: 1px solid rgba(139, 92, 246, 0.12);
   text-align: center;
   min-height: 84px;
@@ -519,9 +519,9 @@
   align-items: center;
   justify-content: center;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    background var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base);
   animation: slideInUpMobile 0.5s ease-out;
   animation-fill-mode: both;
 }
@@ -551,25 +551,25 @@
 
 @media (max-width: 768px) {
   .featureCard {
-    padding: 24px 20px;
+    padding: var(--space-6) 20px;
     min-height: 80px;
   }
 }
 
 @media (max-width: 480px) {
   .featureCard {
-    padding: 20px 16px;
+    padding: 20px var(--space-5);
     min-height: 76px;
   }
 }
 
 .featureValue {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #7c3aed;
-  margin: 0 0 6px 0;
-  line-height: 1.2;
-  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+  margin: 0 0 var(--space-3) 0;
+  line-height: var(--leading-heading);
+  font-family: var(--font-heading);
 }
 
 @media (max-width: 1024px) {
@@ -580,8 +580,8 @@
 
 @media (max-width: 768px) {
   .featureValue {
-    font-size: 1.5rem;
-    margin-bottom: 6px;
+    font-size: var(--text-h3);
+    margin-bottom: var(--space-3);
   }
 }
 
@@ -593,15 +593,15 @@
 
 .featureLabel {
   font-size: 0.8125rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
   line-height: 1.4;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
 }
 
 @media (max-width: 768px) {
   .featureLabel {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }
 

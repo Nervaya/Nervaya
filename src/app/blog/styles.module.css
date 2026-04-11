@@ -19,7 +19,7 @@
 
 .title {
   font-size: var(--font-size-4xl);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary, #0f172a);
   margin: 0 0 var(--spacing-sm) 0;
   letter-spacing: -0.02em;
@@ -33,7 +33,7 @@
 
 .subtitle {
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--color-text-muted, #64748b);
   margin: 0;
   padding-left: var(--spacing-md, 16px);

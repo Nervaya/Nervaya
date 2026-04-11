@@ -40,8 +40,8 @@
   width: 100%;
   background: linear-gradient(135deg, rgba(245, 243, 255, 0.9) 0%, rgba(237, 233, 254, 0.85) 100%);
   backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent-hover);
   overflow: visible;
   box-sizing: border-box;
 }
@@ -83,8 +83,8 @@
 
 .teamTitle {
   font-size: clamp(2rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: #1e1b4b;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -99,7 +99,7 @@
 @media (max-width: 768px) {
   .teamTitle {
     font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: 16px;
+    margin-bottom: var(--space-5);
   }
 }
 
@@ -112,8 +112,8 @@
 
 .teamSubtitle {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
-  line-height: 1.6;
-  color: #64748b;
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
   max-width: 800px;
   margin: 0 auto;
 }
@@ -133,14 +133,14 @@
 
 @media (max-width: 480px) {
   .teamSubtitle {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }
 
 .teamContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+  gap: var(--space-7);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -150,14 +150,14 @@
 
 @media (max-width: 1024px) {
   .teamContainer {
-    gap: 24px;
+    gap: var(--space-6);
   }
 }
 
 @media (max-width: 768px) {
   .teamContainer {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: var(--space-6);
     max-width: 600px;
     margin: 0 auto;
   }
@@ -165,20 +165,20 @@
 
 .memberCard {
   background: rgba(255, 255, 255, 0.8);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid rgba(139, 92, 246, 0.12);
   box-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
-  padding: 24px;
+  padding: var(--space-6);
   display: grid;
   grid-template-columns: 100px 1fr;
   gap: 20px;
   align-items: flex-start;
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    transform var(--transition-slow) ease,
+    box-shadow var(--transition-slow) ease;
   cursor: pointer;
   overflow: visible;
-  scroll-margin-top: 120px;
+  scroll-margin-top: var(--space-12);
   animation: slideInUpMobile 0.5s ease-out;
   animation-fill-mode: both;
 }
@@ -210,7 +210,7 @@
 @media (max-width: 1024px) {
   .memberCard {
     padding: 20px;
-    gap: 16px;
+    gap: var(--space-5);
   }
 }
 
@@ -218,21 +218,21 @@
   .memberCard {
     grid-template-columns: 80px 1fr;
     padding: 20px;
-    gap: 16px;
+    gap: var(--space-5);
   }
 }
 
 @media (max-width: 480px) {
   .memberCard {
     grid-template-columns: 1fr;
-    padding: 24px;
+    padding: var(--space-6);
     gap: 20px;
   }
 }
 
 .cardImagePlaceholder {
   background: #f5f3ff;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   width: 100px;
   height: 100px;
   min-width: 100px;
@@ -264,19 +264,19 @@
 .cardContent {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 @media (max-width: 480px) {
   .cardContent {
-    gap: 8px;
+    gap: var(--space-3);
   }
 }
 
 .memberName {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e1b4b;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
   margin: 0;
   line-height: 1.3;
 }
@@ -289,7 +289,7 @@
 
 @media (max-width: 768px) {
   .memberName {
-    font-size: 1.0625rem;
+    font-size: var(--text-body-lg);
   }
 }
 
@@ -300,16 +300,16 @@
 }
 
 .memberTitle {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #818cf8;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-indigo-400);
   margin: 0;
   line-height: 1.4;
 }
 
 @media (max-width: 1024px) {
   .memberTitle {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }
 
@@ -326,15 +326,15 @@
 }
 
 .memberDescription {
-  font-size: 0.9375rem;
+  font-size: var(--text-body);
   line-height: 1.5;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 @media (max-width: 1024px) {
   .memberDescription {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }
 

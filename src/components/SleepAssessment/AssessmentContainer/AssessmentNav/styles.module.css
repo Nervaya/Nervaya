@@ -14,11 +14,11 @@
   min-height: 52px;
   padding: 0 2rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   font-family: inherit;
   border-radius: var(--radius-button, 8px);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all var(--transition-slow);
   border: 1px solid transparent;
   white-space: nowrap;
   text-decoration: none;
@@ -33,14 +33,14 @@
 }
 
 .prevButton {
-  background: #ffffff;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-light);
 
   &:not(:disabled):hover {
     background: #f8fafc;
     border-color: #cbd5e1;
-    color: #0f172a;
+    color: var(--color-text-primary);
     transform: translateX(-4px);
   }
 }
@@ -49,18 +49,18 @@
   background: #f1f5f9;
   color: #1e1b4b;
   margin-left: auto;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border-light);
 
   &:not(:disabled):hover {
-    background: #e2e8f0;
-    color: #0f172a;
+    background: var(--color-border-light);
+    color: var(--color-text-primary);
     transform: translateX(4px);
   }
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #6366f1 100%);
+  color: var(--color-text-on-dark);
   min-width: 200px;
   border: none;
   box-shadow: 0 8px 16px rgba(124, 58, 237, 0.2);
@@ -81,7 +81,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--radius-sm);
   line-height: 1;
 
   .loadingText {

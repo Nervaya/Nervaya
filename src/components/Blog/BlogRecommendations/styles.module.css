@@ -36,7 +36,7 @@
   background: var(--color-card-bg);
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .arrowBtn:hover:not(:disabled) {
@@ -52,7 +52,7 @@
 
 .pageIndicator {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-muted);
   min-width: 32px;
   text-align: center;
@@ -127,7 +127,7 @@
   background: linear-gradient(135deg, var(--color-accent-dim), var(--color-card-bg-light));
   color: var(--color-accent);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .recBody {
@@ -146,7 +146,7 @@
   background: var(--color-accent-dim);
   color: var(--color-accent);
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
@@ -154,7 +154,7 @@
 .recTitle {
   margin: 0;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
   line-height: 1.4;
   display: -webkit-box;
@@ -174,7 +174,7 @@
   gap: 5px;
   font-size: 0.75rem;
   color: var(--color-text-dim);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   margin-top: auto;
 }
 
@@ -189,12 +189,12 @@
   border-radius: 10px;
   border: none;
   background: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
 }
 
@@ -233,7 +233,7 @@
 .recEmptyTitle {
   margin: 0;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
 }
 
@@ -255,9 +255,9 @@
   background: var(--color-accent);
   color: var(--color-white-bright);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .recEmptyCta:hover {

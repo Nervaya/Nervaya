@@ -15,9 +15,9 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 0.9375rem;
+  font-size: var(--text-body);
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .item {
@@ -28,7 +28,7 @@
 .separator {
   color: var(--color-text-dim);
   margin: 0 10px;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   opacity: 0.5;
   user-select: none;
 }
@@ -36,11 +36,11 @@
 .link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
   color: var(--color-text-muted);
   text-decoration: none;
-  padding: 4px 0;
-  transition: all 0.2s ease;
+  padding: var(--space-2) 0;
+  transition: all var(--transition-base);
   border-bottom: 1px solid transparent;
 }
 
@@ -51,14 +51,14 @@
 
 .link[aria-current='page'] {
   color: var(--color-text-primary);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   border-bottom: none;
 }
 
 .current {
   color: var(--color-text-primary);
-  font-weight: 600;
-  padding: 4px 0;
+  font-weight: var(--weight-semibold);
+  padding: var(--space-2) 0;
   letter-spacing: -0.01em;
 }
 

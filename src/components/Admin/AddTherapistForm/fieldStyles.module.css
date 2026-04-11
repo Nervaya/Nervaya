@@ -1,7 +1,7 @@
 .formRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--space-5);
 }
 
 @media (max-width: 768px) {
@@ -18,10 +18,10 @@
 }
 
 .label {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-2);
 }
 
 .required {
@@ -33,18 +33,18 @@
   padding: 10px 14px;
   background: var(--color-white-bright);
   border: 1px solid var(--color-border-light);
-  border-radius: 8px;
+  border-radius: var(--radius);
   color: var(--color-foreground);
   font-size: 0.95rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
 }
 
 .input::placeholder {
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .input:hover {
-  border-color: #94a3b8;
+  border-color: var(--color-text-tertiary);
   background: var(--color-white-bright);
   cursor: text;
 }
@@ -63,15 +63,15 @@
 
 @media (max-width: 480px) {
   .input {
-    padding: 10px 12px;
-    font-size: 0.875rem;
-    border-radius: 8px;
+    padding: 10px var(--space-4);
+    font-size: var(--text-caption);
+    border-radius: var(--radius);
   }
 }
 
 .hint {
-  font-size: 0.75rem;
-  color: #64748b;
+  font-size: var(--text-label);
+  color: var(--color-text-secondary);
   margin-top: -2px;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }

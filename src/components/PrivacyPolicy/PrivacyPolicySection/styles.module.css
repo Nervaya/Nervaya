@@ -2,12 +2,12 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(124, 58, 237, 0.08);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  color: #0f172a;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-text-primary);
+  transition: all var(--transition-slow);
   padding: 32px;
   margin-bottom: 20px;
   position: relative;
@@ -34,12 +34,12 @@
     padding-bottom: 24px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
     padding: 24px 20px;
     margin-bottom: 20px;
     border: 1px solid rgba(124, 58, 237, 0.08);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-slow);
   }
 }
 
@@ -51,8 +51,8 @@
 
 .sectionNumber {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #7c3aed;
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
   margin-bottom: 16px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -74,7 +74,7 @@
   justify-content: space-between;
   align-items: flex-start;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   text-align: left;
   font-family: inherit;
   gap: 24px;
@@ -112,7 +112,7 @@ section h2.sectionTitle {
 .accordionIcon {
   width: 24px;
   height: 24px;
-  color: #7c3aed;
+  color: var(--color-accent);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   margin-top: 4px;
@@ -125,7 +125,7 @@ section h2.sectionTitle {
 }
 
 .accordionIcon:hover {
-  color: #6d28d9;
+  color: var(--color-accent-hover);
   opacity: 1;
 }
 
@@ -135,7 +135,7 @@ section h2.sectionTitle {
 
 .accordionIconOpen {
   transform: rotate(0deg);
-  color: #7c3aed;
+  color: var(--color-accent);
   opacity: 0.9;
 }
 
@@ -145,21 +145,21 @@ section h2.sectionTitle {
 
 .accordionIconOpen:hover {
   transform: translateY(-2px);
-  color: #6d28d9;
+  color: var(--color-accent-hover);
 }
 
 @media (max-width: 768px) {
   .accordionIcon {
     width: 28px;
     height: 28px;
-    color: #7c3aed;
+    color: var(--color-accent);
     opacity: 0.7;
   }
 }
 
 @media (max-width: 768px) {
   .accordionIconOpen {
-    color: #6d28d9;
+    color: var(--color-accent-hover);
     transform: rotate(0deg);
   }
 }
@@ -168,14 +168,14 @@ section h2.sectionTitle {
   .accordionIcon {
     width: 28px;
     height: 28px;
-    color: #7c3aed;
+    color: var(--color-accent);
     opacity: 0.8;
     background: transparent;
     border-radius: 0;
     padding: 0;
     margin-top: 2px;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-slow);
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -201,7 +201,7 @@ section h2.sectionTitle {
 
 @media (max-width: 480px) {
   .accordionIconOpen {
-    color: #6d28d9;
+    color: var(--color-accent-hover);
     transform: rotate(0deg);
   }
 }

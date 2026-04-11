@@ -8,7 +8,7 @@
   background-color: #fafbff;
   border-radius: 40px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-border);
 }
 
 @media (max-width: 900px) {
@@ -16,7 +16,7 @@
     flex-direction: column;
     gap: 3rem;
     padding: 3rem 2rem;
-    border-radius: 32px;
+    border-radius: var(--radius-2xl);
   }
 }
 
@@ -24,7 +24,7 @@
   .hero {
     padding: 2.5rem 1.5rem;
     gap: 2rem;
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
   }
 }
 
@@ -54,15 +54,15 @@
   display: inline-block;
   background: var(--color-accent-dim);
   color: var(--color-accent);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   letter-spacing: 0.03em;
   text-transform: uppercase;
   width: fit-content;
   border: 1px solid var(--color-accent-dim);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
 }
 
 .badge:hover {
@@ -72,10 +72,10 @@
 }
 
 .title {
-  font-size: 3.5rem;
+  font-size: var(--text-display);
   font-weight: 900;
-  color: #0f172a;
-  line-height: 1.05;
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
   margin: 0;
   letter-spacing: -0.05em;
 }
@@ -93,13 +93,13 @@
 }
 
 .description {
-  font-size: 1.25rem;
-  line-height: 1.6;
+  font-size: var(--text-h4);
+  line-height: var(--leading-relaxed);
   color: #475569;
   margin-top: 1.5rem;
   margin-bottom: 2.5rem;
   max-width: 580px;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .actions {
@@ -115,15 +115,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   color: var(--color-white-bright);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  padding: 12px 20px;
-  border-radius: 12px;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  padding: var(--space-4) 20px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
   white-space: nowrap;
   box-shadow: 0 10px 25px rgba(109, 40, 217, 0.25);
   border: none;
@@ -143,13 +143,13 @@
   gap: 6px;
   background: var(--color-white-bright);
   color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   padding: 10px 18px;
   border-radius: 10px;
   text-decoration: none;
   border: 1px solid var(--color-border-light);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
   white-space: nowrap;
   flex-shrink: 0;
   min-height: 44px;
@@ -158,8 +158,8 @@
 
 .btnOutline:hover {
   background: rgba(124, 58, 237, 0.05);
-  border-color: #7c3aed;
-  color: #7c3aed;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .heroRight {
@@ -177,7 +177,7 @@
 
 .videoCard {
   background: var(--color-white-bright);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--color-card-shadow);
   border: 1px solid var(--color-border-light);
@@ -211,7 +211,7 @@
   background: rgba(0, 0, 0, 0.3);
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-text-on-dark);
   width: 100%;
 }
 
@@ -223,7 +223,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: var(--space-5) 20px;
   background: var(--color-white-bright);
   border-top: 1px solid var(--color-border-light);
 }
@@ -238,7 +238,7 @@
 
 .videoTitle {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
 }
 

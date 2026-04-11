@@ -2,11 +2,11 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  margin-top: 64px;
-  padding: 64px 0 32px;
-  background: #09021d;
-  background-image: linear-gradient(to bottom, #09021d, #0d0428);
-  border-top: 1px solid rgba(124, 58, 237, 0.15);
+  margin-top: var(--space-9);
+  padding: var(--space-9) 0 var(--space-7);
+  background: var(--color-background-dark);
+  background-image: linear-gradient(to bottom, var(--color-background-dark), #0d0428);
+  border-top: 1px solid var(--color-border-accent-hover);
   color: #e2d8f0;
 }
 
@@ -14,13 +14,13 @@
 .footer-bottom {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 var(--space-7);
 }
 
 .footer-main {
   display: grid;
   grid-template-columns: 340px 1fr;
-  gap: 80px;
+  gap: var(--space-10);
 }
 
 .brand-column {
@@ -42,7 +42,7 @@
 
 .brand-copy {
   font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   color: rgba(226, 216, 240, 0.85);
   margin: 0;
   max-width: 90%;
@@ -50,10 +50,10 @@
 
 .social-links {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
   list-style: none;
   padding: 0;
-  margin: 8px 0 0 0;
+  margin: var(--space-3) 0 0 0;
 }
 
 .social-link {
@@ -62,18 +62,18 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: rgba(28, 15, 65, 0.6);
   border: 1px solid rgba(75, 45, 135, 0.8);
-  color: #fff;
-  transition: all 0.2s ease;
+  color: var(--color-text-on-dark);
+  transition: all var(--transition-base);
 }
 
 .social-link:hover {
   background: rgba(124, 58, 237, 0.25);
-  border-color: #7c3aed;
+  border-color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .links-grid {
@@ -91,10 +91,10 @@
 .link-title {
   font-family: var(--font-heading), serif;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   margin: 0;
 }
 
@@ -111,20 +111,20 @@
   color: rgba(226, 216, 240, 0.75);
   text-decoration: none;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   display: inline-block;
 }
 
 .link:hover {
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   transform: translateX(3px);
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .footer-bottom {
-  margin-top: 64px;
+  margin-top: var(--space-9);
   padding-top: 28px;
-  border-top: 1px solid rgba(124, 58, 237, 0.2);
+  border-top: 1px solid var(--color-border-accent);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -140,7 +140,7 @@
 
 .footer-bottom-links {
   display: flex;
-  gap: 32px;
+  gap: var(--space-7);
   flex-wrap: wrap;
 }
 
@@ -148,19 +148,19 @@
   font-size: 0.9rem;
   color: rgba(226, 216, 240, 0.6);
   text-decoration: none;
-  transition: color 0.2s ease;
-  padding: 4px 0;
+  transition: color var(--transition-base);
+  padding: var(--space-2) 0;
 }
 
 .bottom-link:hover {
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 /* Tablet Layout */
 @media (max-width: 992px) {
   .footer-main {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: var(--space-8);
   }
 
   .brand-column {
@@ -171,18 +171,18 @@
 /* Mobile Layout */
 @media (max-width: 768px) {
   .footer-container {
-    padding: 48px 0 100px; /* Large bottom padding to prevent overlap with floating widgets (like the 'N' button) */
-    margin-top: 48px;
+    padding: var(--space-8) 0 100px; /* Large bottom padding to prevent overlap with floating widgets (like the 'N' button) */
+    margin-top: var(--space-8);
   }
 
   .footer-main,
   .footer-bottom {
-    padding: 0 24px;
+    padding: 0 var(--space-6);
   }
 
   .links-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 48px 24px;
+    gap: var(--space-8) var(--space-6);
   }
 
   /* Make the 3rd column (RESOURCES) span full width for better flow */
@@ -195,18 +195,18 @@
   }
 
   .link {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 48px;
+    margin-top: var(--space-8);
     gap: 20px;
   }
 
   .footer-bottom-links {
-    gap: 16px 24px;
+    gap: var(--space-5) var(--space-6);
     width: 100%;
     /* Keep the bottom links neatly aligned to the left and wrapping gracefully */
     justify-content: flex-start;
@@ -222,7 +222,7 @@
 @media (max-width: 480px) {
   .links-grid {
     grid-template-columns: repeat(2, 1fr); /* Keep 2 columns for better space usage */
-    gap: 32px 12px;
+    gap: var(--space-7) var(--space-4);
   }
 
   .link-title {

@@ -6,16 +6,16 @@
 
 .categoryTag {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--color-indigo-400, #818cf8);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .title {
   font-size: 2.25rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   margin: 0;
   color: var(--color-foreground, #0f172a);
   letter-spacing: -0.02em;
@@ -46,7 +46,7 @@
 }
 
 .reviewCount {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted, #9ca3af);
 }
 
@@ -68,14 +68,14 @@
 }
 
 .originalPrice {
-  font-size: 1.25rem;
+  font-size: var(--text-h4);
   color: var(--color-text-muted, #9ca3af);
   text-decoration: line-through;
 }
 
 .price {
   font-size: 2.25rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-emerald-400, #34d399);
 }
 
@@ -86,9 +86,9 @@
 }
 
 .savings {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-emerald-400, #34d399);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   background: rgba(52, 211, 153, 0.15);
   padding: 4px 12px;
   border-radius: 20px;
@@ -115,7 +115,7 @@
 }
 
 .unitLabel {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted, #9ca3af);
 }
 
@@ -138,9 +138,9 @@
 
 .addButton {
   flex: 1;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%) !important;
   border: none !important;
-  font-weight: 700 !important;
+  font-weight: var(--weight-bold) !important;
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important;
   transition: all 0.25s ease !important;
 }
@@ -168,11 +168,11 @@
 
 .error {
   color: #f87171;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: var(--color-error-dim);
+  border: 1px solid var(--color-error-border);
   padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   border-radius: 10px;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
 }
 
 .success {
@@ -181,7 +181,7 @@
   color: var(--color-emerald-400, #34d399);
   padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   border-radius: 10px;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
 }
 
 .trustBadges {
@@ -198,7 +198,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xs, 4px);
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-slate-400, #475569);
 }
 
@@ -218,7 +218,7 @@
   align-items: center;
   justify-content: center;
   background: white;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: 1px solid var(--color-border-light, #e2e8f0);
 }
 
@@ -227,8 +227,8 @@
 }
 
 .trustLabelText {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: var(--color-text-slate-400, #475569);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   line-height: 1.2;
 }

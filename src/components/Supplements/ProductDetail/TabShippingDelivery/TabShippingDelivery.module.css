@@ -11,8 +11,8 @@
 }
 
 .heading {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
   margin: 0 0 var(--spacing-lg, 24px) 0;
   color: var(--color-foreground, #ededed);
 }
@@ -33,19 +33,19 @@
 }
 
 .optionIcon {
-  font-size: 1.5rem;
+  font-size: var(--text-h3);
   flex-shrink: 0;
 }
 
 .optionTitle {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   margin: 0 0 var(--spacing-xs, 4px) 0;
   color: var(--color-foreground, #ededed);
 }
 
 .optionDesc {
-  font-size: 0.9375rem;
+  font-size: var(--text-body);
   color: var(--color-text-muted, #9ca3af);
   margin: 0;
   line-height: 1.5;
@@ -54,12 +54,12 @@
 .policyBox {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.08));
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
 }
 
 .policyText {
-  font-size: 0.9375rem;
+  font-size: var(--text-body);
   line-height: 1.6;
   color: var(--color-text-slate-300, #cbd5e1);
   margin: 0;

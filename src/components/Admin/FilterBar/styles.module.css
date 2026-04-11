@@ -1,20 +1,20 @@
 .bar {
-  background: var(--color-white-bright);
+  background: var(--color-background);
   border: 1px solid var(--color-border-light);
   border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 32px;
+  padding: var(--space-6);
+  margin-bottom: var(--space-7);
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: var(--space-6);
   align-items: flex-end;
-  box-shadow: var(--color-card-shadow);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-slow);
 }
 
 @media (max-width: 1024px) {
   .bar {
-    gap: 16px;
+    gap: var(--space-5);
     padding: 20px;
   }
 }
@@ -23,15 +23,15 @@
   .bar {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    padding: 16px;
+    gap: var(--space-5);
+    padding: var(--space-5);
   }
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
   flex: 1;
   min-width: 180px;
 }
@@ -44,24 +44,24 @@
 
 .field label {
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-2);
 }
 
 .field input,
 .field select {
-  background: var(--color-white-bright);
+  background: var(--color-background);
   border: 1.5px solid var(--color-border-light);
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
   min-height: 40px;
   color: var(--color-text-primary);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  transition: all var(--transition-base);
 }
 
 .field input[type='date'] {
@@ -86,16 +86,16 @@
 }
 
 .field input::placeholder {
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
   align-items: center;
   margin-left: auto;
   flex-shrink: 0;
-  padding-bottom: 2px;
+  padding-bottom: var(--space-1);
 }
 
 @media (max-width: 1024px) {
@@ -104,8 +104,8 @@
     margin-left: 0;
     justify-content: flex-end;
     border-top: 1px solid var(--color-border-light);
-    padding-top: 16px;
-    margin-top: 8px;
+    padding-top: var(--space-5);
+    margin-top: var(--space-3);
   }
 }
 
@@ -117,15 +117,15 @@
 
 .applyButton {
   background: var(--color-accent);
-  color: white;
+  color: var(--color-text-on-dark);
   border: none;
-  padding: 0 32px;
+  padding: 0 var(--space-7);
   height: 40px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.9375rem;
+  border-radius: var(--radius);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-body);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   box-shadow: 0 4px 12px var(--color-accent-dim);
   display: flex;
   align-items: center;
@@ -147,13 +147,13 @@
   background: var(--color-accent-dim);
   color: var(--color-accent);
   border: 1px solid var(--color-accent-dim);
-  padding: 0 24px;
+  padding: 0 var(--space-6);
   height: 40px;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  border-radius: var(--radius);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,6 +172,6 @@
 }
 
 .badge {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+  font-size: var(--text-label);
+  color: var(--color-text-secondary);
 }

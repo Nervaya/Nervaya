@@ -1,10 +1,10 @@
 .noSessionsMessage {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 8rem 4rem;
-  background: #ffffff;
-  border-radius: 32px;
-  border: 1px solid #e2e8f0;
+  padding: var(--space-10) 4rem;
+  background: var(--color-background);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border-light);
   margin: 2rem 0;
   min-height: 480px;
   display: flex;
@@ -25,7 +25,7 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #7c3aed, #6366f1);
+  background: linear-gradient(90deg, var(--color-accent), #6366f1);
 }
 
 .noSessionsTitle {
@@ -38,10 +38,10 @@
 
 .noSessionsText {
   font-size: 1.125rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   max-width: 520px;
   margin-bottom: 3rem;
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
 }
 
 .btn {
@@ -52,18 +52,18 @@
   background: transparent;
   color: var(--color-accent);
   border: 2px solid var(--color-accent);
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.9375rem;
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-body);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
   cursor: pointer;
   white-space: nowrap;
 }
 
 .btn:hover {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-text-on-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }

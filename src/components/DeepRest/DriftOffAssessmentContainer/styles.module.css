@@ -6,8 +6,8 @@
   width: 100%;
   max-width: 920px;
   margin: 0 auto;
-  padding: 24px 22px 26px;
-  border-radius: 24px;
+  padding: var(--space-6) 22px 26px;
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(226, 232, 240, 0.8);
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -27,12 +27,12 @@
   --nav-prev-border: var(--color-glass-border);
   --nav-prev-bg-hover: var(--color-accent);
   --nav-prev-border-hover: var(--color-accent);
-  --nav-prev-color-hover: #ffffff;
+  --nav-prev-color-hover: var(--color-text-on-dark);
 
   --nav-next-bg: var(--color-glass-bg);
   --nav-next-color: var(--color-foreground);
   --nav-next-bg-hover: var(--color-accent);
-  --nav-next-color-hover: #ffffff;
+  --nav-next-color-hover: var(--color-text-on-dark);
 }
 
 .loading {
@@ -54,7 +54,7 @@
   text-align: center;
   color: var(--color-text-muted);
   padding: 3rem 1rem;
-  font-size: 0.95rem;
+  font-size: var(--text-body);
 }
 
 .header {
@@ -70,7 +70,7 @@
   color: #1e1b4b;
   font-size: 1.9rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: var(--leading-heading);
   background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -86,14 +86,14 @@
 .stepCounter {
   font-size: 0.82rem;
   color: var(--color-text-muted);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   flex-shrink: 0;
 }
 
 .oneTimeNote {
   background: var(--color-accent-dim);
   border: 1px solid var(--color-glass-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.6rem 0.8rem;
 }
 
@@ -118,7 +118,7 @@
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid var(--color-destructive);
   color: #fca5a5;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.65rem 1rem;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
 }

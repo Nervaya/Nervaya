@@ -1,12 +1,12 @@
 .questionCard {
   --qc-text: #334155;
-  --qc-bg: #ffffff;
+  --qc-bg: var(--color-background);
   --qc-bg-hover: #f8fafc;
   --qc-border: #f1f5f9;
-  --qc-border-hover: rgba(124, 58, 237, 0.2);
-  --qc-accent: #7c3aed;
-  --qc-placeholder: #94a3b8;
-  --qc-radio-border: #e2e8f0;
+  --qc-border-hover: var(--color-border-accent);
+  --qc-accent: var(--color-accent);
+  --qc-placeholder: var(--color-text-tertiary);
+  --qc-radio-border: var(--color-border-light);
   width: 100%;
 
   .questionLabel {
@@ -21,9 +21,9 @@
 
   .questionText {
     margin: 0 0 10px 0;
-    color: #0f172a;
+    color: var(--color-text-primary);
     font-size: clamp(1.14rem, 2vw, 1.38rem);
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     line-height: 1.2;
   }
 
@@ -45,10 +45,10 @@
       background: var(--qc-bg);
       color: var(--qc-text);
       font-size: 0.96rem;
-      font-weight: 500;
+      font-weight: var(--weight-medium);
       text-align: left;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: all var(--transition-slow);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
 
       &:hover {
@@ -60,7 +60,7 @@
       &:focus-visible {
         outline: none;
         border-color: var(--qc-accent);
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        box-shadow: var(--shadow-focus);
       }
 
       &[aria-checked='true'] {
@@ -70,7 +70,7 @@
 
         .radio {
           border-color: var(--qc-accent);
-          background: #ffffff;
+          background: var(--color-background);
 
           .radioDot {
             background: var(--qc-accent);
@@ -87,18 +87,18 @@
       .radio {
         width: 17px;
         height: 17px;
-        border-radius: 50%;
+        border-radius: var(--radius-full);
         border: 2px solid var(--qc-radio-border);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         margin-right: 12px;
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
 
         .radioDot {
           width: 6px;
           height: 6px;
-          border-radius: 50%;
+          border-radius: var(--radius-full);
           background: transparent;
           transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           transform: scale(0);
@@ -114,12 +114,12 @@
         align-items: center;
         justify-content: center;
         margin-right: 12px;
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
 
         svg {
           width: 12px;
           height: 12px;
-          color: #ffffff;
+          color: var(--color-text-on-dark);
         }
       }
 
@@ -146,12 +146,12 @@
       background: var(--qc-bg);
       color: var(--qc-text);
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: var(--weight-semibold);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all var(--transition-base);
 
       &:hover {
         background: var(--qc-bg-hover);
@@ -162,7 +162,7 @@
       &[aria-pressed='true'] {
         border-color: var(--qc-accent);
         background: var(--qc-accent);
-        color: #ffffff;
+        color: var(--color-text-on-dark);
         box-shadow: 0 8px 16px rgba(124, 58, 237, 0.2);
       }
     }
@@ -173,14 +173,14 @@
     min-height: 140px;
     border-radius: var(--radius-button, 8px);
     border: 1px solid var(--qc-border);
-    background: #ffffff;
-    color: #0f172a;
+    background: var(--color-background);
+    color: var(--color-text-primary);
     font-size: 1rem;
     line-height: 1.6;
     font-family: inherit;
     padding: 20px;
     resize: vertical;
-    transition: all 0.2s ease;
+    transition: all var(--transition-base);
 
     &::placeholder {
       color: var(--qc-placeholder);
@@ -189,7 +189,7 @@
     &:focus {
       outline: none;
       border-color: var(--qc-accent);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+      box-shadow: var(--shadow-focus);
     }
   }
 }
@@ -197,7 +197,7 @@
 @media (max-width: 768px) {
   .questionCard {
     .questionText {
-      font-size: 1.25rem;
+      font-size: var(--text-h4);
       margin-bottom: 24px;
     }
 

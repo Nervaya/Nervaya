@@ -1,5 +1,5 @@
 .banner {
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 24px 28px;
   border-left: 4px solid transparent;
   animation: up 0.4s ease-out;
@@ -15,7 +15,7 @@
 }
 .severe {
   background: #fef2f2;
-  border-left-color: #ef4444;
+  border-left-color: var(--color-error);
 }
 .none {
   background: #f0fdf4;
@@ -25,27 +25,27 @@
 .tag {
   display: block;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   margin: 6px 0 4px;
 }
 
 @media (max-width: 640px) {
   .title {
-    font-size: 1.25rem;
+    font-size: var(--text-h4);
   }
 }
 
 .sub {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-text-muted);
   margin: 0;
 }

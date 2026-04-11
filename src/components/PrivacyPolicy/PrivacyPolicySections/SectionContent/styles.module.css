@@ -1,9 +1,9 @@
 .paragraph {
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.7;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0 0 24px;
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   font-family: var(--font-sans);
 }
 
@@ -24,14 +24,14 @@
     font-size: 0.9375rem;
     line-height: 1.7;
     margin-bottom: 18px;
-    color: #64748b;
+    color: var(--color-text-secondary);
   }
 }
 
 @media (max-width: 480px) {
   .paragraph:first-of-type {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
 }
 
@@ -61,7 +61,7 @@
 
 .subsection h3.subsectionTitle {
   font-size: clamp(1.15rem, 1.6vw, 1.35rem);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: #334155;
   margin: 0 0 18px;
   letter-spacing: -0.02em;
@@ -102,10 +102,10 @@
 .list li {
   font-size: clamp(1rem, 1.2vw, 1.125rem);
   line-height: 1.7;
-  color: #64748b;
+  color: var(--color-text-secondary);
   padding-left: 28px;
   position: relative;
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   font-family: var(--font-sans);
 }
 
@@ -135,8 +135,8 @@
 }
 
 .list li strong {
-  color: #1e293b;
-  font-weight: 600;
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
   font-family: var(--font-sans);
 }
 
@@ -176,8 +176,8 @@
 .gridItem {
   background: rgba(255, 255, 255, 0.8);
   padding: 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -190,7 +190,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -199,7 +199,7 @@
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
-  border-color: rgba(124, 58, 237, 0.25);
+  border-color: var(--color-border-accent);
 }
 
 .gridItem:hover::before {
@@ -269,14 +269,14 @@
 .gridIcon {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 14px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -301,7 +301,7 @@
     height: 52px;
     font-size: 1.5rem;
     margin-bottom: 16px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
   }
 }
@@ -326,8 +326,8 @@
 
 .gridTitle {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e1b4b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
   margin: 0 0 12px;
   letter-spacing: -0.01em;
 }
@@ -341,8 +341,8 @@
 @media (max-width: 480px) {
   .gridTitle {
     font-size: 1.125rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    font-weight: var(--weight-bold);
+    background: var(--gradient-accent);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -352,7 +352,7 @@
 .gridText {
   font-size: 1rem;
   line-height: 1.6;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -392,8 +392,8 @@
 .securityCard {
   background: rgba(255, 255, 255, 0.8);
   padding: 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -406,7 +406,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -415,7 +415,7 @@
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
   transform: translateY(-4px);
-  border-color: rgba(124, 58, 237, 0.25);
+  border-color: var(--color-border-accent);
 }
 
 .securityCard:hover::before {
@@ -425,9 +425,9 @@
 .securityIcon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -505,8 +505,8 @@
 
 .securityTitle {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e1b4b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
   margin: 0 0 16px;
   letter-spacing: -0.01em;
 }
@@ -528,7 +528,7 @@
 .securityText {
   font-size: 1rem;
   line-height: 1.7;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -574,8 +574,8 @@
 .cookieCard {
   background: rgba(255, 255, 255, 0.8);
   padding: 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -588,7 +588,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -597,7 +597,7 @@
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
   transform: translateY(-4px);
-  border-color: rgba(124, 58, 237, 0.25);
+  border-color: var(--color-border-accent);
 }
 
 .cookieCard:hover::before {
@@ -607,9 +607,9 @@
 .cookieIcon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -685,8 +685,8 @@
 
 .cookieTitle {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e1b4b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
   margin: 0 0 16px;
   letter-spacing: -0.01em;
 }
@@ -708,7 +708,7 @@
 .cookieText {
   font-size: 1rem;
   line-height: 1.7;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -754,8 +754,8 @@
 .rightCard {
   background: rgba(255, 255, 255, 0.8);
   padding: 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent);
   box-shadow: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -769,7 +769,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -778,7 +778,7 @@
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
-  border-color: rgba(124, 58, 237, 0.25);
+  border-color: var(--color-border-accent);
 }
 
 .rightCard:hover::before {
@@ -788,9 +788,9 @@
 .rightIcon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -876,8 +876,8 @@
 
 .rightTitle {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e1b4b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
   margin: 0 0 16px;
   letter-spacing: -0.01em;
 }
@@ -899,7 +899,7 @@
 .rightText {
   font-size: 1rem;
   line-height: 1.7;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -919,12 +919,12 @@
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   padding: 40px;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   gap: 24px;
   margin: 32px 0;
-  border: 1px solid rgba(124, 58, 237, 0.15);
+  border: 1px solid var(--color-border-accent);
 }
 
 @media (max-width: 768px) {
@@ -948,9 +948,9 @@
   gap: 16px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--color-border-dark);
 }
 
 .contactItem:hover {
@@ -963,7 +963,7 @@
   .contactItem {
     gap: 12px;
     padding: 20px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
@@ -983,9 +983,9 @@
 .contactIcon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1020,9 +1020,9 @@
 .contactIcon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1049,8 +1049,8 @@
 
 .contactLabel {
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #64748b;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -1065,15 +1065,15 @@
   .contactLabel {
     font-size: 0.75rem;
     color: var(--color-accent, #7c3aed);
-    font-weight: 700;
+    font-weight: var(--weight-bold);
   }
 }
 
 .contactText {
   font-size: 1.125rem;
   line-height: 1.6;
-  color: #1e1b4b;
-  font-weight: 400;
+  color: var(--color-text-primary);
+  font-weight: var(--weight-normal);
 }
 
 @media (max-width: 768px) {
@@ -1085,27 +1085,27 @@
 @media (max-width: 480px) {
   .contactText {
     font-size: 1rem;
-    font-weight: 500;
-    color: #1e1b4b;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
   }
 }
 
 .link {
-  color: #7c3aed;
+  color: var(--color-accent);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: var(--weight-medium);
+  transition: color var(--transition-base);
   border-bottom: 1px solid transparent;
 }
 
 @media (max-width: 480px) {
   .link {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     font-size: 1rem;
   }
 }
 
 .link:hover {
-  color: #6d28d9;
-  border-bottom-color: #6d28d9;
+  color: var(--color-accent-hover);
+  border-bottom-color: var(--color-accent-hover);
 }

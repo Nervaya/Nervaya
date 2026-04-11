@@ -2,7 +2,7 @@
   position: absolute;
   left: 4px;
   right: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: none;
   border-left: 4px solid;
   padding: 4px 8px;
@@ -37,7 +37,7 @@
 
 .slotTitle {
   font-size: 0.8125rem; /* ~13px */
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,7 +46,7 @@
 
 .slotTime {
   font-size: 0.75rem; /* ~12px */
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   opacity: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -62,13 +62,13 @@
   font-size: 0.6875rem;
   color: inherit;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   background: rgba(255, 255, 255, 0.4);
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(0, 0, 0, 0.05);
   width: fit-content;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .meetLink:hover {
@@ -85,7 +85,7 @@
 
 .compactText {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

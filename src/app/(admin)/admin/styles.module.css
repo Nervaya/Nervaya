@@ -2,7 +2,7 @@
   padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-2xl, 64px);
   max-width: 1200px;
   margin: 0 auto;
-  color: #fff;
+  color: var(--color-text-on-dark);
   width: 100%;
   box-sizing: border-box;
 }

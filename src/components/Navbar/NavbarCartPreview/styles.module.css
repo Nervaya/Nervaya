@@ -11,21 +11,21 @@
   justify-content: center;
   box-sizing: border-box;
   min-height: 40px;
-  gap: 8px;
-  padding: 8px 18px;
+  gap: var(--space-3);
+  padding: var(--space-3) 18px;
   border: 1px solid var(--nav-pill-border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: var(--nav-pill-bg);
   color: var(--nav-pill-text);
   font-family: var(--font-sans);
   font-size: 0.96rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   line-height: 1.2;
   cursor: pointer;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.22s ease;
+    color var(--transition-base),
+    background-color var(--transition-base),
+    border-color var(--transition-base);
   overflow: visible;
 }
 
@@ -141,12 +141,12 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .cartPreviewEyebrow {
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-2);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -157,18 +157,18 @@
   margin: 0;
   font-size: 1.15rem;
   line-height: 1.1;
-  color: #fff;
+  color: var(--color-text-on-dark);
 }
 
 .cartPreviewCount {
   display: inline-flex;
   align-items: center;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   color: rgba(246, 242, 255, 0.9);
   white-space: nowrap;
 }
@@ -219,13 +219,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-3);
   min-height: 42px;
-  padding: 0 16px;
+  padding: 0 var(--space-5);
   border-radius: 14px;
   text-decoration: none;
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
@@ -233,8 +233,8 @@
 }
 
 .cartPreviewPrimary {
-  color: #fff;
-  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: var(--color-text-on-dark);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
   box-shadow: 0 14px 32px rgba(124, 58, 237, 0.28);
 }
 
@@ -269,7 +269,7 @@
 .cartPreviewItemLink {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: var(--space-4);
   align-items: center;
   padding: 10px;
   border-radius: 18px;
@@ -291,7 +291,7 @@
 .cartPreviewThumbWrap {
   width: 64px;
   height: 64px;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
 }
@@ -306,13 +306,13 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-2);
 }
 
 .cartPreviewItemName {
-  color: #fff;
+  color: var(--color-text-on-dark);
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -325,9 +325,9 @@
 }
 
 .cartPreviewItemPrice {
-  color: #fff;
+  color: var(--color-text-on-dark);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   white-space: nowrap;
 }
 
@@ -338,8 +338,8 @@
 }
 
 .cartPreviewFooter {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
@@ -350,20 +350,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-4);
   color: rgba(220, 210, 244, 0.8);
   font-size: 0.92rem;
 }
 
 .cartPreviewSubtotal strong {
-  color: #fff;
+  color: var(--color-text-on-dark);
   font-size: 1.08rem;
 }
 
 @media (max-width: 768px) {
   .cartTrigger {
     min-height: 44px;
-    padding: 12px 16px;
+    padding: var(--space-4) var(--space-5);
   }
 
   .cartTriggerText {

@@ -1,7 +1,7 @@
 .container {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .star {
@@ -22,11 +22,11 @@
 }
 
 .sm .star {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
 }
 
 .sm .value {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
 }
 
 .md .star {
@@ -34,11 +34,11 @@
 }
 
 .md .value {
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
 }
 
 .lg .star {
-  font-size: 1.25rem;
+  font-size: var(--text-h4);
 }
 
 .lg .value {
@@ -46,7 +46,7 @@
 }
 
 .value {
-  margin-left: 4px;
+  margin-left: var(--space-2);
   color: var(--foreground, #1a1a1a);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }

@@ -4,7 +4,7 @@
 
 .title {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-accent);
   margin: 0 0 20px;
 }
@@ -30,13 +30,13 @@
   scroll-snap-align: start;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border-light);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
   box-shadow: var(--color-card-shadow);
-  transition: box-shadow 0.2s;
+  transition: box-shadow var(--transition-base);
 }
 
 .card:hover {
@@ -46,38 +46,38 @@
 .userRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--color-accent-dim);
   color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
   flex-shrink: 0;
 }
 
 .userInfo {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .userName {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
 }
 
 .stars {
   display: flex;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .starFilled {
@@ -90,7 +90,7 @@
 
 .comment {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--text-caption);
   line-height: 1.7;
   color: var(--color-text-muted);
   font-style: italic;

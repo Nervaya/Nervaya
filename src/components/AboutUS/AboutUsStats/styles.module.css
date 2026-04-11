@@ -35,23 +35,23 @@
 }
 
 .statsContainer {
-  padding: 48px 60px;
+  padding: var(--space-8) 60px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  gap: 32px;
+  gap: var(--space-7);
   list-style: none;
   margin: 0;
   background: linear-gradient(135deg, rgba(245, 243, 255, 0.9) 0%, rgba(237, 233, 254, 0.85) 100%);
   backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-accent-hover);
 }
 
 @media (max-width: 1024px) {
   .statsContainer {
-    padding: 40px 48px;
-    gap: 24px;
+    padding: 40px var(--space-8);
+    gap: var(--space-6);
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -59,23 +59,23 @@
 @media (max-width: 768px) {
   .statsContainer {
     grid-template-columns: repeat(2, 1fr);
-    padding: 32px 24px;
-    gap: 24px;
+    padding: var(--space-7) var(--space-6);
+    gap: var(--space-6);
     text-align: center;
   }
 }
 
 @media (max-width: 480px) {
   .statsContainer {
-    padding: 24px 16px;
+    padding: var(--space-6) var(--space-5);
     gap: 20px;
   }
 }
 
 @media (max-width: 480px) {
   .statsContainer {
-    padding: 32px 24px;
-    gap: 24px;
+    padding: var(--space-7) var(--space-6);
+    gap: var(--space-6);
   }
 }
 
@@ -83,7 +83,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  gap: var(--space-7);
   width: 100%;
   animation: slideInUpMobile 0.5s ease-out;
   animation-fill-mode: both;
@@ -110,7 +110,7 @@
 
 @media (max-width: 1024px) {
   .statItem {
-    gap: 24px;
+    gap: var(--space-6);
   }
 }
 
@@ -127,7 +127,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 8px;
+  gap: var(--space-3);
   flex: 1;
 }
 
@@ -139,9 +139,9 @@
 
 .statValue {
   font-size: clamp(3rem, 5vw, 4rem);
-  font-weight: 700;
-  color: #7c3aed;
-  line-height: 1.2;
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+  line-height: var(--leading-heading);
 }
 
 @media (max-width: 1024px) {
@@ -164,8 +164,8 @@
 
 .statLabel {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
-  font-weight: 500;
-  color: #64748b;
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
   line-height: 1.4;
 }
 

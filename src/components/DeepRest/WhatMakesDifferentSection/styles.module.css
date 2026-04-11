@@ -1,7 +1,7 @@
 .whatAreCard {
   background: #f8f7ff;
   border: 1px solid #e9e3ff;
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   padding: 3rem;
   display: flex;
   gap: 3rem;
@@ -23,7 +23,7 @@
 @media (max-width: 768px) {
   .whatAreCard {
     padding: var(--spacing-lg);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     gap: var(--spacing-lg);
   }
 }
@@ -32,7 +32,7 @@
   .whatAreCard {
     flex-direction: column;
     padding: var(--spacing-md);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     gap: var(--spacing-md);
   }
 }
@@ -49,10 +49,10 @@
 
 .description {
   flex: 1;
-  font-size: 1.5rem;
+  font-size: var(--text-h3);
   line-height: 1.8;
   color: #475569;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   margin: 0;
 }
 
@@ -124,7 +124,7 @@
   align-items: center;
   gap: 1rem;
   font-size: var(--font-size-base);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   color: var(--color-foreground);
   text-align: left;
 }
@@ -132,22 +132,22 @@
 .whatMakesText {
   color: #1e293b;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   line-height: 1.4;
 }
 
 .whatMakesIcon {
-  color: #7c3aed;
+  color: var(--color-accent);
   flex-shrink: 0;
-  font-size: 1.25rem;
+  font-size: var(--text-h4);
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: var(--color-background);
   border: 1px solid #e9e3ff;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 }
 
 .whatMakesItem:hover .whatMakesIcon {

@@ -22,17 +22,17 @@
 
 .scoreLabel {
   font-size: 1rem;
-  font-weight: 500;
-  color: #64748b;
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
 }
 
 .scoreBadge {
   display: inline-block;
   padding: 0.4rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-on-dark);
   background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
 }
@@ -41,7 +41,7 @@
   margin: 0;
   font-size: 0.96rem;
   line-height: 1.65;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .sectionBlock {
@@ -52,8 +52,8 @@
 
 .sectionHeading {
   font-size: 1.125rem;
-  font-weight: 700;
-  color: #1e293b;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -73,38 +73,38 @@
 }
 
 .card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  background: var(--color-background-page);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
   padding: var(--spacing-lg, 20px);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm, 10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-sm);
 }
 
 .cardTitle {
   font-size: 1.125rem;
-  font-weight: 700;
-  color: #1e293b;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .priorityBadge {
   width: fit-content;
   padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(124, 58, 237, 0.1);
-  color: #7c3aed;
-  font-size: 0.75rem;
-  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .cardDescription {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0;
   flex: 1;
@@ -116,21 +116,21 @@
   justify-content: center;
   align-self: flex-start;
   padding: 0.6rem 1.25rem;
-  border: 1px solid #7c3aed;
+  border: 1px solid var(--color-accent);
   background: transparent;
-  color: #7c3aed;
+  color: var(--color-accent);
   border-radius: 10px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   transition:
-    background 0.2s,
-    border-color 0.2s;
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .cardButton:hover {
-  background: rgba(124, 58, 237, 0.05);
-  border-color: #7c3aed;
+  background: var(--color-accent-dim-hover);
+  border-color: var(--color-accent);
 }
 
 .actions {
@@ -142,15 +142,15 @@
   align-items: center;
   padding: 0.65rem 1.25rem;
   background: transparent;
-  color: var(--color-accent, #a78bfa);
+  color: var(--color-accent-soft);
   border: 1px solid rgba(167, 139, 250, 0.5);
   border-radius: 10px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   transition:
-    background 0.2s,
-    border-color 0.2s;
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .primaryLink:hover {

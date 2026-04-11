@@ -9,14 +9,14 @@
 
 .heading {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: #1e293b;
   margin: 0;
 }
 
 .subheading {
   font-size: 15px;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin: -24px 0 0 0;
 }
 
@@ -41,12 +41,12 @@
 .iconCircle {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background-color: #8d49f7;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-text-on-dark);
 }
 
 .sectionIcon {
@@ -55,7 +55,7 @@
 
 .sectionTitle {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: #1e293b;
   margin: 0;
 }
@@ -64,7 +64,7 @@
   background-color: #f3e8ff;
   color: #8d49f7;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   padding: 2px 10px;
   border-radius: 6px;
   margin-left: 4px;
@@ -77,7 +77,7 @@
 }
 
 .error {
-  color: #ef4444;
+  color: var(--color-error);
   padding: 24px;
   text-align: center;
 }
@@ -85,9 +85,9 @@
 .emptyState {
   padding: 40px;
   text-align: center;
-  color: #64748b;
+  color: var(--color-text-secondary);
   border: 1px dashed #cbd5e1;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
 }
 
 .paginationWrap {

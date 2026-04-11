@@ -1,7 +1,7 @@
 .whatAreCard {
   background: #fdfaff;
   border: 1px solid #e9e3ff;
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   padding: 2.5rem;
   display: flex;
   gap: 2.5rem;
@@ -23,7 +23,7 @@
 @media (max-width: 768px) {
   .whatAreCard {
     padding: var(--spacing-lg);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     gap: var(--spacing-lg);
   }
 }
@@ -32,7 +32,7 @@
   .whatAreCard {
     flex-direction: column;
     padding: var(--spacing-md);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     gap: var(--spacing-md);
   }
 }
@@ -40,7 +40,7 @@
 .whatAreIcon {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--color-accent-dim);
   color: var(--accent);
   display: flex;
@@ -101,17 +101,17 @@
 }
 
 .buttonPrimary {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: #fff;
-  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-text-on-dark);
+  padding: var(--space-4) 28px;
   min-height: 48px;
   border-radius: 14px;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   font-size: 1rem;
   border: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
   display: inline-flex;
   align-items: center;
   justify-content: center;

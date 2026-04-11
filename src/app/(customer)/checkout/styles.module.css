@@ -54,7 +54,7 @@
   color: var(--accent);
   font-size: var(--font-size-base);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .backToCartLink:hover {
@@ -67,14 +67,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: var(--space-6);
   padding: 80px 40px;
   min-height: 400px;
 }
 
 @media (max-width: 768px) {
   .loadingContainer {
-    padding: 60px 24px;
+    padding: 60px var(--space-6);
     gap: 20px;
   }
 }
@@ -82,7 +82,7 @@
 @media (max-width: 480px) {
   .loadingContainer {
     padding: 48px 20px;
-    gap: 16px;
+    gap: var(--space-5);
   }
 }
 
@@ -92,7 +92,7 @@
   color: var(--color-destructive);
   font-size: var(--font-size-base);
   background: var(--color-card-bg);
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-glass-border);
 }
 
@@ -103,7 +103,7 @@
   align-items: flex-start;
   background: var(--color-white-bright);
   border: 1px solid var(--color-border-light);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 28px;
   box-shadow: 0 4px 24px rgba(124, 58, 237, 0.07);
 }
@@ -112,19 +112,19 @@
   width: 180px;
   height: 180px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
 }
 
 .digitalSessionInfo {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 .digitalSessionTitle {
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   margin: 0;
   letter-spacing: -0.02em;
@@ -133,7 +133,7 @@
 .digitalSessionDesc {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   margin: 0;
 }
 
@@ -149,7 +149,7 @@
 .digitalSessionFeatures li {
   font-size: var(--font-size-sm);
   color: var(--color-accent);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 @media (max-width: 600px) {

@@ -13,7 +13,7 @@
   gap: var(--spacing-sm);
   padding: var(--spacing-md) var(--spacing-lg);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   border-radius: 20px 20px 0 0;
 }
 
@@ -25,9 +25,9 @@
 
 .summaryTitle {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   margin: 0;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 .summaryBody {
@@ -49,7 +49,7 @@
 
 .totalRow {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground);
   margin-top: var(--spacing-sm);
 }
@@ -62,9 +62,9 @@
   background: var(--color-emerald-dim);
   color: var(--color-emerald-400);
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: var(--font-size-base);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   text-align: center;
 }
 

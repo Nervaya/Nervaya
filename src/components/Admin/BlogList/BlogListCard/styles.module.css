@@ -5,11 +5,11 @@
   border-radius: 18px;
   border: 1px solid rgba(148, 163, 184, 0.25);
   background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-md);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .card:hover {
@@ -22,10 +22,10 @@
   flex-shrink: 0;
   width: 214px;
   height: 138px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.2);
-  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  background: linear-gradient(180deg, var(--color-border-light) 0%, #cbd5e1 100%);
 }
 
 .image {
@@ -38,9 +38,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 0.84rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .statusBadge {
@@ -52,9 +52,9 @@
   gap: 5px;
   height: 26px;
   padding: 0 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   border: 1px solid transparent;
   backdrop-filter: blur(8px);
 }
@@ -81,7 +81,7 @@
 
 .blogTitle {
   margin: 0;
-  color: #0f172a;
+  color: var(--color-text-primary);
   font-size: 1.35rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
@@ -95,9 +95,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px 12px;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 0.83rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .author,
@@ -112,16 +112,16 @@
   content: '';
   width: 4px;
   height: 4px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: rgba(148, 163, 184, 0.7);
-  margin-left: 12px;
+  margin-left: var(--space-4);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: var(--space-2);
 }
 
 .tag {
@@ -129,27 +129,27 @@
   align-items: center;
   height: 28px;
   padding: 0 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-accent);
   background: rgba(124, 58, 237, 0.09);
   color: #5b21b6;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .moreTag {
   display: inline-flex;
   align-items: center;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0 4px;
+  font-weight: var(--weight-semibold);
+  padding: 0 var(--space-2);
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
   flex-shrink: 0;
 }
 
@@ -164,25 +164,25 @@
   border-radius: 10px;
   border: 1px solid transparent;
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .editButton {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
   border-radius: 10px;
   background: #f5f3ff;
-  border: 1px solid rgba(124, 58, 237, 0.3);
+  border: 1px solid var(--color-border-accent);
   color: #5b21b6;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .editButton:hover {
@@ -191,8 +191,8 @@
 }
 
 .deleteButton {
-  background: rgba(239, 68, 68, 0.06);
-  color: #dc2626;
+  background: var(--color-error-dim);
+  color: var(--color-error-hover);
   border-color: rgba(239, 68, 68, 0.28);
 }
 

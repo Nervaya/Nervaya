@@ -29,13 +29,13 @@
 
 .addButton {
   background: var(--color-accent);
-  color: white;
+  color: var(--color-text-on-dark);
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9375rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-body);
+  transition: all var(--transition-slow);
   box-shadow: 0 4px 12px var(--color-accent-dim);
   border: none;
   cursor: pointer;
@@ -57,12 +57,12 @@
 }
 
 .error {
-  background: rgba(239, 68, 68, 0.15);
+  background: var(--color-error-dim);
   color: #f87171;
   padding: var(--spacing-md);
   border-radius: 10px;
   margin-bottom: var(--margin-lg);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid var(--color-error-border);
 }
 
 .paginationWrap {

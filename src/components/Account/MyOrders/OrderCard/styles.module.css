@@ -1,12 +1,12 @@
 .orderCard {
   background: var(--color-card-bg);
   border: 1px solid var(--color-border-light);
-  border-radius: 16px;
-  padding: 1.5rem;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
   box-shadow: var(--color-card-shadow);
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
 @media (max-width: 768px) {
@@ -18,8 +18,8 @@
 .orderImagePlaceholder {
   width: 160px;
   height: 160px;
-  background-color: #f3e8ff; /* Light purple */
-  border-radius: 12px;
+  background-color: #f3e8ff;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -41,49 +41,49 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--space-5);
   min-width: 0;
 }
 
 .orderHeaderMain {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-2);
 }
 
 .productTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   margin: 0;
 }
 
 .productSubtitle {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
   color: var(--color-accent);
   margin: 0;
 }
 
 .productDescription {
-  font-size: 0.9rem;
+  font-size: var(--text-caption);
   color: var(--color-text-slate-400);
-  margin: 0.25rem 0 0 0;
-  line-height: 1.5;
+  margin: var(--space-2) 0 0 0;
+  line-height: var(--leading-relaxed);
 }
 
 .infoChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--space-5);
 }
 
 .chip {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-4);
   background: var(--color-card-bg-light);
-  padding: 0.6rem 1rem;
+  padding: 0.6rem var(--space-5);
   border-radius: 10px;
   border: 1px solid var(--color-border-light);
   flex: 1;
@@ -93,7 +93,7 @@
 .chipIconWrapper {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--color-accent);
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@
 }
 
 .chipIcon {
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: 1rem;
 }
 
@@ -112,17 +112,17 @@
 }
 
 .chipLabel {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: var(--color-text-muted);
 }
 
 .chipValue {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-3);
 }
 
 .copyBtn {
@@ -131,11 +131,11 @@
   color: var(--color-accent);
   cursor: pointer;
   padding: 0;
-  font-size: 0.85rem;
+  font-size: var(--text-caption);
   display: flex;
   align-items: center;
   opacity: 0.8;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-base);
 }
 
 .copyBtn:hover {
@@ -144,22 +144,22 @@
 
 .orderActions {
   margin-top: auto;
-  padding-top: 0.5rem;
+  padding-top: var(--space-3);
 }
 
 .viewOrderLink {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: #ffffff;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-background);
   color: var(--color-accent);
   border: 1px solid var(--color-accent);
   border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-body);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base) ease;
   width: max-content;
   justify-content: center;
 }

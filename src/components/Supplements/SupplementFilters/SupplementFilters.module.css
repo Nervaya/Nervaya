@@ -13,8 +13,8 @@
 }
 
 .sectionTitle {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-foreground);
@@ -29,6 +29,6 @@
 
 @media (max-width: 480px) {
   .priceDisplay {
-    font-size: 0.875rem;
+    font-size: var(--text-caption);
   }
 }

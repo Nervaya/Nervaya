@@ -6,7 +6,7 @@
   padding: var(--spacing-xs, 4px);
   border: 1px solid transparent;
   border-radius: var(--radius-sm, 4px);
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   min-height: 2.5rem;
 }
 
@@ -27,12 +27,12 @@
   align-items: center;
   margin-bottom: var(--spacing-xs, 4px);
   /* opacity: 0; removed to make icons always visible */
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .editButton {
   opacity: 0.5;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .editableWrapper:hover .editButton,
@@ -71,7 +71,7 @@
   visibility: hidden;
   width: 220px;
   background-color: var(--color-slate-800, #1e293b);
-  color: #fff;
+  color: var(--color-text-on-dark);
   text-align: center;
   border-radius: 6px;
   padding: 8px;
@@ -81,9 +81,9 @@
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 0.75rem;
-  font-weight: normal;
+  transition: opacity var(--transition-slow);
+  font-size: var(--text-label);
+  font-weight: var(--weight-normal);
   border: 1px solid var(--color-slate-700, #334155);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   pointer-events: none;
@@ -150,7 +150,7 @@
   font-family: inherit;
   line-height: 1.6;
   outline: none;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .textPadArea:focus {
@@ -158,7 +158,7 @@
 }
 
 .hint {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: var(--color-text-slate-500, #64748b);
   margin-top: 4px;
 }

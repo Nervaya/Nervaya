@@ -1,7 +1,7 @@
 .datePicker {
   user-select: none;
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--color-background);
+  border-radius: var(--radius-xl);
   padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -22,7 +22,7 @@
 
 .monthDisplay {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: #1a1a1a;
   letter-spacing: -0.01em;
 }
@@ -34,24 +34,24 @@
 
 .navButton {
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1.25rem;
+  transition: all var(--transition-base);
+  font-size: var(--text-h4);
   line-height: 1;
 }
 
 .navButton:hover:not(:disabled) {
-  background: #ffffff;
-  border-color: var(--color-primary-light, #7c3aed);
-  color: var(--color-primary, #7c3aed);
+  background: var(--color-background);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
   box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
   transform: translateY(-1px);
 }
@@ -79,9 +79,9 @@
 
 .dayName {
   text-align: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #94a3b8;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -89,7 +89,7 @@
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: var(--radius-sm);
 }
 
 .day {
@@ -103,9 +103,9 @@
   cursor: pointer;
   border-radius: 10px;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: #334155;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
 }
@@ -117,14 +117,14 @@
 /* Hover State */
 .day:hover:not(.dayDisabled):not(.daySelected) {
   background: #f1f5f9;
-  color: var(--color-primary, #7c3aed);
+  color: var(--color-accent);
 }
 
 /* Selected State */
 .daySelected {
-  background: var(--color-primary, #7c3aed) !important;
-  color: #ffffff !important;
-  font-weight: 600;
+  background: var(--color-accent) !important;
+  color: var(--color-text-on-dark) !important;
+  font-weight: var(--weight-semibold);
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
   transform: scale(1.05);
   z-index: 1;
@@ -143,14 +143,14 @@
   bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+  width: var(--radius-sm);
+  height: var(--radius-sm);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
 }
 
 .daySelected::after {
-  background: #ffffff !important;
+  background: var(--color-text-on-dark) !important;
   opacity: 0.8;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .dateCritical::after {
-  background: #ef4444; /* Red */
+  background: var(--color-error); /* Red */
 }
 
 /* Fully Booked - shown as disabled by logic, handles separately if needed */
@@ -173,39 +173,39 @@
 
 /* Today Indicator */
 .dayToday {
-  color: var(--color-primary, #7c3aed);
-  font-weight: 700;
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
 }
 
 .dayToday::before {
   content: '';
   position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 4px;
-  height: 4px;
-  background: var(--color-primary, #7c3aed);
-  border-radius: 50%;
+  top: var(--radius-sm);
+  right: var(--radius-sm);
+  width: var(--radius-sm);
+  height: var(--radius-sm);
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
 }
 
 .daySelected.dayToday::before {
-  background: #ffffff;
+  background: var(--color-text-on-dark);
 }
 
 .selectedDateText {
   margin-top: 1.5rem;
   padding: 1rem;
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 0.9rem;
   color: #475569;
   text-align: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border-light);
 }
 
 .selectedDateText strong {
   color: #1a1a1a;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .errorBanner {
@@ -222,11 +222,11 @@
 }
 
 .errorIcon {
-  font-weight: 700;
-  background: #ef4444;
-  color: white;
+  font-weight: var(--weight-bold);
+  background: var(--color-error);
+  color: var(--color-text-on-dark);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 0.7rem;
   text-transform: uppercase;
 }
@@ -237,7 +237,7 @@
   border: none;
   color: #dc2626;
   text-decoration: underline;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
   padding: 0;
 }

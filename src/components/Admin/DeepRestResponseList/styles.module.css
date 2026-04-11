@@ -83,8 +83,8 @@
 .requestCountBadge {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #7c3aed;
-  background: rgba(124, 58, 237, 0.1);
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
   padding: 4px 12px;
   border-radius: 20px;
   text-transform: uppercase;
@@ -92,7 +92,7 @@
 
 .sessionCard:hover {
   border-color: var(--color-accent);
-  box-shadow: 0 12px 24px rgba(124, 58, 237, 0.08);
+  box-shadow: 0 12px 24px var(--color-accent-dim);
   transform: translateY(-4px);
 }
 
@@ -224,9 +224,9 @@
 }
 
 .requestAlert {
-  background: rgba(124, 58, 237, 0.08);
+  background: var(--color-accent-dim);
   border: 1px solid rgba(124, 58, 237, 0.14);
-  color: #6d28d9;
+  color: var(--color-accent-hover);
 }
 
 .requestResolvedNote {
@@ -348,14 +348,14 @@
   width: 100%;
   padding: 10px;
   background: var(--gradient-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+  transition: all var(--transition-slow);
+  box-shadow: 0 4px 12px var(--color-accent-dim);
 }
 
 .assignBtn:hover {
@@ -366,7 +366,7 @@
 
 .assignBtn:disabled {
   background: #e5e7eb;
-  color: #64748b;
+  color: var(--color-text-secondary);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
@@ -377,7 +377,7 @@
   display: flex;
   align-items: center;
   padding: 0 60px;
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .sessionCards {
@@ -392,8 +392,8 @@
 .sessionCard {
   width: 100%;
   max-width: 900px;
-  background: #ffffff;
-  border: 1px solid rgba(124, 58, 237, 0.12);
+  background: var(--color-background);
+  border: 1px solid var(--color-accent-dim);
   border-radius: 20px;
   padding: 16px;
   display: flex;
@@ -444,7 +444,7 @@
 .sideArrow:disabled {
   opacity: 0.3;
   cursor: not-allowed;
-  background: #f1f5f9;
+  background: var(--color-background-alt);
 }
 
 .sliderInfo {
@@ -454,7 +454,7 @@
   font-weight: 700;
   color: var(--color-text-muted);
   border-top: 1px dashed var(--color-border-light);
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 @media (max-width: 1400px) {

@@ -1,8 +1,8 @@
 .howItWorksSection {
   margin-bottom: var(--spacing-2xl);
   padding: 4rem 2rem;
-  background-color: #f8fafc;
-  border-radius: 32px;
+  background-color: var(--color-background-page);
+  border-radius: var(--radius-2xl);
   margin-left: -2rem;
   margin-right: -2rem;
 }
@@ -17,9 +17,9 @@
 }
 
 .stepCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 24px;
+  background: var(--color-background);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-2xl);
   padding: 3.5rem 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -33,12 +33,12 @@
 .stepCard:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-  border-color: #7c3aed;
+  border-color: var(--color-accent);
 }
 
 .stepNumber {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: #ffffff;
+  background: var(--gradient-accent);
+  color: var(--color-text-on-dark);
   width: 60px;
   height: 60px;
   border-radius: 20px;
@@ -59,10 +59,10 @@
 
 .stepDescription {
   margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.6;
-  color: #64748b;
-  font-weight: 500;
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
 }
 
 @media (max-width: 480px) {

@@ -29,7 +29,7 @@
 
 .dayName {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--color-text-dim, #94a3b8);
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -37,12 +37,12 @@
 
 .today .dayName {
   color: var(--color-accent, #7c3aed);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .dayNum {
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--color-text-primary, #0f172a);
   width: 36px;
   height: 36px;
@@ -52,7 +52,7 @@
   border-radius: 50%;
   white-space: nowrap;
   line-height: 1;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   margin-top: 4px;
 }
 
@@ -62,8 +62,8 @@
 
 .todayNum {
   background: var(--color-accent, #7c3aed) !important;
-  color: #fff !important;
-  font-weight: 600;
+  color: var(--color-text-on-dark) !important;
+  font-weight: var(--weight-semibold);
 }
 
 .slotsArea {

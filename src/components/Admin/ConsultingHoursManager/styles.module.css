@@ -1,9 +1,9 @@
 .container {
   background: var(--color-white-bright);
   border-radius: 20px;
-  padding: 32px;
-  margin-top: 24px;
-  margin-bottom: 32px;
+  padding: var(--space-7);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-7);
   border: 1px solid var(--color-border-light);
   box-shadow: var(--color-card-shadow);
 }
@@ -13,9 +13,9 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 40px;
-  padding: 24px;
+  padding: var(--space-6);
   background: var(--color-white-dim);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-light);
 }
 
@@ -29,7 +29,7 @@
 .step {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-4);
   flex: 1;
 }
 
@@ -46,20 +46,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   font-size: 18px;
   flex-shrink: 0;
 }
 
 .stepActive .stepNumber {
   background: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   box-shadow: 0 0 0 4px var(--color-accent-dim);
 }
 
 .stepCompleted .stepNumber {
-  background: #10b981;
-  color: #ffffff;
+  background: var(--color-success);
+  color: var(--color-text-on-dark);
 }
 
 .stepPending .stepNumber {
@@ -73,9 +73,9 @@
 
 .stepTitle {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin: 0 0 4px 0;
+  margin: 0 0 var(--space-2) 0;
 }
 
 .stepDescription {
@@ -100,7 +100,7 @@
   width: 40px;
   height: 2px;
   background: #3a3a3a;
-  margin: 0 8px;
+  margin: 0 var(--space-3);
   flex-shrink: 0;
 }
 
@@ -108,29 +108,29 @@
   .stepConnector {
     width: 2px;
     height: 20px;
-    margin: 8px 0 8px 19px;
+    margin: var(--space-3) 0 var(--space-3) 19px;
   }
 }
 
 .stepCompleted + .stepConnector {
-  background: #10b981;
+  background: var(--color-success);
 }
 
 .section {
   background: var(--color-white-bright);
   border: 1px solid var(--color-border-light);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 28px;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-5);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--space-4);
 }
 
 @media (max-width: 768px) {
@@ -141,34 +141,34 @@
 }
 
 .sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-4);
   font-family: var(--font-heading);
 }
 
 .unsavedBadge {
   background: #fef2f2;
-  color: #ef4444;
+  color: var(--color-error);
   padding: 6px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   border: 1px solid #fee2e2;
   box-shadow: 0 2px 4px rgba(239, 68, 68, 0.05);
 }
 
 .savedBadge {
   background: #f0fdf4;
-  color: #10b981;
+  color: var(--color-success);
   padding: 6px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   border: 1px solid #dcfce7;
   box-shadow: 0 2px 4px rgba(16, 185, 129, 0.05);
 }
@@ -177,7 +177,7 @@
 .generateSection {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-5);
 }
 
 .saveDescription,
@@ -190,7 +190,7 @@
 
 .generateButtons {
   display: flex;
-  gap: 12px;
+  gap: var(--space-4);
   flex-wrap: wrap;
 }
 
@@ -201,11 +201,11 @@
 }
 
 .header {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
+  gap: var(--space-5);
   flex-wrap: wrap;
 }
 
@@ -217,7 +217,7 @@
 
 .quickActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
@@ -232,11 +232,11 @@
   background: var(--color-white-bright);
   color: var(--color-text-muted);
   border: 1.5px solid var(--color-border-light);
-  border-radius: 12px;
-  font-size: 0.875rem;
-  font-weight: 700;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -255,10 +255,10 @@
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
   color: var(--color-text-primary);
-  margin: 0 0 8px 0;
+  margin: 0 0 var(--space-3) 0;
   font-family: var(--font-heading);
 }
 
@@ -272,17 +272,17 @@
 .successBanner {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius);
   margin-bottom: 20px;
   font-size: 14px;
 }
 
 .errorBanner {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: var(--color-error-dim);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
 }
 
 .successBanner {
@@ -301,27 +301,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: var(--space-8) var(--space-6);
   min-height: 200px;
 }
 
 .hoursList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .generateButton {
-  padding: 12px 24px;
+  padding: var(--space-4) var(--space-6);
   background: var(--color-white-bright);
   color: var(--color-text-muted);
   border: 1.5px solid var(--color-border-light);
-  border-radius: 12px;
-  font-size: 0.9375rem;
-  font-weight: 700;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -348,18 +348,18 @@
 .saveButton {
   padding: 14px 28px;
   background: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   box-shadow: 0 4px 12px var(--color-accent-dim);
 }
 
 .saveButton:hover:not(:disabled) {
-  background: #7c3aed;
+  background: var(--color-accent);
   transform: translateY(-1px);
 }
 

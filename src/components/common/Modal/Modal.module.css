@@ -17,7 +17,7 @@
 .modal {
   background: var(--color-background, #fff);
   border: 1px solid var(--color-border-light, #e2e8f0);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
@@ -54,14 +54,14 @@
 .title {
   margin: 0;
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   letter-spacing: -0.01em;
 }
 
 .closeButton {
   background: var(--color-background-muted, #f1f5f9);
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   width: 28px;
   height: 28px;
   color: var(--color-text-muted, #64748b);
@@ -69,7 +69,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .closeButton:hover {
@@ -93,7 +93,7 @@
 
 .content::-webkit-scrollbar-thumb {
   background: var(--color-glass-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 @media (max-width: 768px) {
@@ -102,7 +102,7 @@
     position: fixed;
     bottom: 0;
     max-height: 95vh;
-    animation: slideUp 0.3s ease-out;
+    animation: slideUp var(--transition-slow);
   }
 
   @keyframes slideUp {

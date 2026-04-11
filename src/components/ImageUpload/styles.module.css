@@ -1,6 +1,6 @@
 .container {
   border: 2px dashed rgba(139, 92, 246, 0.3);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
   text-align: center;
   cursor: pointer;
@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   overflow: hidden;
 }
 
@@ -45,11 +45,11 @@
 }
 
 .light {
-  border: 2px dashed rgba(124, 58, 237, 0.2);
+  border: 2px dashed var(--color-border-accent);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 243, 255, 0.5) 100%);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #1e293b;
+  color: var(--color-text-primary);
 }
 
 .light::before {
@@ -64,11 +64,11 @@
 }
 
 .light p {
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .light .label {
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .light .preview,
@@ -78,7 +78,7 @@
 }
 
 .light.uploading p {
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .container:focus-within {
@@ -100,7 +100,7 @@
   .container {
     padding: 24px 20px;
     min-height: 160px;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 }
 
@@ -115,7 +115,7 @@
 }
 
 .container p {
-  color: #cbd5e1;
+  color: var(--color-text-disabled);
   margin: 0;
 }
 
@@ -151,9 +151,9 @@
 }
 
 .label {
-  color: #94a3b8;
+  color: var(--color-text-tertiary);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   margin-top: 12px;
   line-height: 1.4;
 }
@@ -171,17 +171,17 @@
 }
 
 .uploading p {
-  color: #cbd5e1;
+  color: var(--color-text-disabled);
 }
 
 .error {
   color: #fca5a5;
   font-size: 0.8125rem;
   margin-top: 12px;
-  font-weight: 500;
-  background: rgba(239, 68, 68, 0.1);
+  font-weight: var(--weight-medium);
+  background: var(--color-error-dim);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
@@ -190,9 +190,9 @@
   top: 12px;
   right: 12px;
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -200,7 +200,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
 }
 

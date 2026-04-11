@@ -1,0 +1,63 @@
+<h2>Which structural improvements matter most?</h2>
+<p class="subtitle">Nervaya keeps its purple theme. Which design system structures should we adopt to make it more professional? Select all that apply.</p>
+
+<div style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); padding: 16px 24px; border-radius: 12px; margin-bottom: 32px; color: white; font-size: 14px;">
+  🔒 <strong>Locked:</strong> Purple accent (#7c3aed), gradients, dark navy backgrounds — these stay as-is.
+</div>
+
+<div class="options" data-multiselect>
+
+  <div class="option" data-choice="typography" onclick="toggleSelect(this)">
+    <div class="letter">1</div>
+    <div class="content">
+      <h3>Typography System</h3>
+      <p><strong>Current:</strong> Outfit + Inter fonts, basic size scale (0.75rem–3rem), no letter-spacing rules, inconsistent line-heights</p>
+      <p><strong>Upgrade:</strong> Proper hierarchy table with weight rules, negative letter-spacing at display sizes, consistent line-height scale (tight for headings, relaxed for body), micro-tracking on labels. Inspired by Stripe/Notion's precision typography.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="shadows" onclick="toggleSelect(this)">
+    <div class="letter">2</div>
+    <div class="content">
+      <h3>Shadow & Depth System</h3>
+      <p><strong>Current:</strong> Basic 2-layer shadows, inconsistent across components</p>
+      <p><strong>Upgrade:</strong> Multi-layer shadow stacks (4-5 layers, max 0.05 opacity each) for natural depth. Purple-tinted shadows for brand consistency. Clear elevation levels: Flat → Whisper → Card → Elevated → Modal. Inspired by Stripe's blue-tinted shadows + Notion's layered approach.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="components" onclick="toggleSelect(this)">
+    <div class="letter">3</div>
+    <div class="content">
+      <h3>Component Styling Rules</h3>
+      <p><strong>Current:</strong> Buttons, cards, inputs exist but styling varies per page</p>
+      <p><strong>Upgrade:</strong> Codified button variants (primary, secondary, ghost, pill badge) with exact specs. Card system with consistent border, radius, padding. Input focus states with purple ring shadows. Hover/active/disabled states for everything. Inspired by Claude's ring-shadow buttons + Stripe's component precision.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="spacing" onclick="toggleSelect(this)">
+    <div class="letter">4</div>
+    <div class="content">
+      <h3>Spacing & Layout Grid</h3>
+      <p><strong>Current:</strong> 8px base with 6 steps (4px–64px), basic breakpoints</p>
+      <p><strong>Upgrade:</strong> Extended spacing scale (4px–120px) with section-level breathing room. Defined container widths, editorial pacing between sections, consistent card grid gaps. Whitespace philosophy — sections breathe like chapters. Inspired by Claude's editorial pacing + Notion's generous rhythm.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="borders" onclick="toggleSelect(this)">
+    <div class="letter">5</div>
+    <div class="content">
+      <h3>Border & Radius System</h3>
+      <p><strong>Current:</strong> Mixed radius values (8px–24px), basic borders (#e2e8f0)</p>
+      <p><strong>Upgrade:</strong> Defined radius scale (4px sharp → 9999px pill) with clear usage rules. Whisper-weight borders (rgba-based, barely visible) for sophistication. Purple-tinted borders for interactive elements. Inspired by Notion's whisper borders + Claude's warm ring system.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="all" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>All of the Above</h3>
+      <p>Full professional design system overhaul — adopt best practices across typography, shadows, components, spacing, and borders. The complete package.</p>
+    </div>
+  </div>
+
+</div>

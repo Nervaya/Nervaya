@@ -1,7 +1,7 @@
 .container {
   position: relative;
   min-height: 100vh;
-  background-color: #09021d;
+  background-color: var(--color-background-dark);
   background-image: var(--bg-main);
   background-size: cover;
   background-position: center top;
@@ -59,8 +59,8 @@
   gap: 0.12em;
   font-family: var(--font-heading) !important;
   font-size: clamp(2rem, 4vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.1;
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
   color: #f8f3ff;
   margin-bottom: var(--spacing-lg, 1.5rem);
   letter-spacing: -0.018em;
@@ -79,7 +79,7 @@
 
   .heroTitle {
     font-size: clamp(2.2rem, 5.5vw, 3.5rem);
-    line-height: 1.15;
+    line-height: var(--leading-snug);
     align-items: center;
   }
 }
@@ -87,16 +87,16 @@
 @media (max-width: 768px) {
   .heroTitle {
     font-size: clamp(2rem, 8vw, 2.5rem);
-    line-height: 1.2;
+    line-height: var(--leading-heading);
     margin-bottom: var(--spacing-md, 1rem);
     letter-spacing: -0.02em;
   }
 }
 
 .heroSubtitle {
-  font-family: var(--font-sans) !important;
+  font-family: var(--font-body) !important;
   font-size: clamp(1.1rem, 1.8vw, 1.25rem);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   color: rgba(232, 225, 255, 0.88);
   margin-bottom: var(--spacing-xl, 2rem);
   max-width: 680px;
@@ -140,7 +140,7 @@
     flex-direction: column;
     max-width: 400px;
     margin: 0 auto;
-    gap: 12px;
+    gap: var(--space-4);
   }
 }
 
@@ -152,11 +152,11 @@
   min-height: 52px;
   padding: 0 1.75rem;
   font-size: 1.125rem;
-  font-weight: 600;
-  font-family: var(--font-sans) !important;
-  border-radius: 12px;
+  font-weight: var(--weight-semibold);
+  font-family: var(--font-body) !important;
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   border: 1px solid transparent;
   white-space: nowrap;
   text-decoration: none;
@@ -173,15 +173,15 @@
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, #8a4dff 0%, #6e2de5 100%);
-  color: #ffffff;
+  background: var(--gradient-accent);
+  color: var(--color-text-on-dark);
   border-color: rgba(222, 208, 255, 0.4);
-  box-shadow: 0 10px 24px rgba(81, 33, 183, 0.46);
+  box-shadow: var(--shadow-btn-primary);
 }
 
 .primaryButton:hover {
-  background: linear-gradient(135deg, #9962ff 0%, #7a3af3 100%);
-  box-shadow: 0 12px 28px rgba(96, 40, 210, 0.52);
+  background: var(--gradient-accent-hover);
+  box-shadow: var(--shadow-btn-primary-hover);
   transform: translateY(-2px);
 }
 

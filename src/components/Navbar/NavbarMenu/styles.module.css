@@ -29,13 +29,13 @@
     height: auto;
     background: rgba(14, 8, 30, 0.96);
     border: 1px solid rgba(215, 192, 255, 0.24);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
-    gap: 8px;
+    padding: var(--space-5);
+    gap: var(--space-3);
     transform: scale(0.95);
     opacity: 0;
     pointer-events: none;
@@ -72,16 +72,16 @@
   min-height: 40px;
   color: var(--nav-pill-text);
   font-size: 0.96rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: none;
-  padding: 8px 18px;
-  border-radius: 8px;
+  padding: var(--space-3) 18px;
+  border-radius: var(--radius);
   font-family: var(--font-sans);
   line-height: 1.2;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    color var(--transition-base),
+    background-color var(--transition-base),
+    border-color var(--transition-base);
   background: var(--nav-pill-bg);
   border: 1px solid var(--nav-pill-border);
   position: relative;
@@ -94,8 +94,8 @@
     width: 100%;
     justify-content: flex-start;
     align-items: center;
-    padding: 12px 16px;
-    border-radius: 8px;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius);
     text-align: left;
   }
 }
@@ -117,7 +117,7 @@
 
 .navbarMenu a[aria-current='page'] {
   color: var(--color-accent);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .navbarDropdown {
@@ -139,9 +139,9 @@
   border: 1px solid var(--nav-pill-border);
   color: var(--nav-pill-text);
   font-size: 0.96rem;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 8px;
+  font-weight: var(--weight-semibold);
+  padding: var(--space-3) 18px;
+  border-radius: var(--radius);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -152,9 +152,9 @@
   gap: 6px;
   font-family: inherit;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    color var(--transition-base),
+    background-color var(--transition-base),
+    border-color var(--transition-base);
   position: relative;
   overflow: visible;
 }
@@ -165,8 +165,8 @@
     width: 100%;
     justify-content: flex-start;
     align-items: center;
-    padding: 12px 16px;
-    border-radius: 8px;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius);
     text-align: left;
   }
 }
@@ -188,7 +188,7 @@
 
 .dropdownArrow {
   opacity: 0.7;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   display: inline-flex;
   align-items: center;
 }
@@ -198,17 +198,17 @@
 }
 
 .navbarCta {
-  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+  color: var(--color-text-on-dark);
   border: none;
-  padding: 12px 24px;
+  padding: var(--space-4) var(--space-6);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  border-radius: 12px;
-  margin-left: 8px;
-  margin-right: 4px;
-  transition: all 0.3s ease;
+  border-radius: var(--radius-lg);
+  margin-left: var(--space-3);
+  margin-right: var(--space-2);
+  transition: all var(--transition-slow);
   box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
   position: relative;
   overflow: hidden;
@@ -217,14 +217,14 @@
 @media (max-width: 768px) {
   .navbarCta {
     width: 100%;
-    margin: 12px 0 0;
+    margin: var(--space-4) 0 0;
     text-align: left;
-    padding: 12px 16px;
+    padding: var(--space-4) var(--space-5);
   }
 }
 
 .navbarCta:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent) 100%);
   transform: translateY(-3px);
   box-shadow: 0 12px 35px rgba(124, 58, 237, 0.45);
 }

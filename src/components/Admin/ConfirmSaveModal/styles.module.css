@@ -14,7 +14,7 @@
 
 .modal {
   background: var(--color-background, #ffffff);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 2rem;
   width: 90%;
   max-width: 500px;
@@ -37,13 +37,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
 }
 
 .title {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
   color: var(--color-foreground, #0f172a);
 }
 
@@ -56,14 +56,14 @@
 .summary {
   background: var(--color-card-bg-light, #f8fafc);
   border: 1px solid var(--color-border-light, #e2e8f0);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .summaryLabel {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   color: var(--color-primary-600, #7c3aed);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -98,13 +98,13 @@
 .fieldName {
   font-size: 0.95rem;
   color: var(--color-text-slate-400, #475569);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .fieldValue {
   font-size: 0.95rem;
   color: var(--color-text-primary, #0f172a);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .footer {

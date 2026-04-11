@@ -12,23 +12,23 @@
   backdrop-filter: blur(var(--color-glass-blur, 12px));
   -webkit-backdrop-filter: blur(var(--color-glass-blur, 12px));
   border: 1px solid var(--color-glass-border, rgba(0, 0, 0, 0.08));
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 3rem;
-  transition: all 0.3s ease;
-  box-shadow: var(--color-card-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.05));
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-sm);
 }
 
 .content:hover {
-  border-color: var(--color-accent, #7c3aed);
-  box-shadow: var(--color-card-shadow-hover, 0 10px 15px -3px rgba(0, 0, 0, 0.08));
-  background: #ffffff;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+  background: var(--color-background);
 }
 
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg, 24px);
-    padding: var(--spacing-lg, 24px);
+    gap: var(--space-6);
+    padding: var(--space-6);
   }
 }
 
@@ -39,87 +39,87 @@
 .image {
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   object-fit: cover;
 }
 
 .detailsSection {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md, 16px);
+  gap: var(--space-5);
 }
 
 .title {
-  font-size: var(--font-size-4xl);
-  font-weight: 700;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
   margin: 0;
-  color: var(--color-foreground, #ededed);
+  color: var(--color-foreground);
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: var(--leading-heading);
 }
 
 @media (max-width: 768px) {
   .title {
-    font-size: var(--font-size-3xl);
+    font-size: var(--text-h3);
   }
 }
 
 .category {
-  font-size: 0.875rem;
-  color: var(--color-indigo-400, #818cf8);
+  font-size: var(--text-caption);
+  color: var(--color-indigo-400);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .price {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-emerald-400, #34d399);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  color: var(--color-emerald-400);
 }
 
 .description {
-  font-size: var(--font-size-lg);
+  font-size: 1rem;
   line-height: 1.7;
-  color: var(--color-text-slate-300, #cbd5e1);
+  color: var(--color-text-body);
   margin: 0;
 }
 
 .section {
-  margin-top: var(--spacing-md, 16px);
+  margin-top: var(--space-5);
 }
 
 .sectionTitle {
   font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 var(--spacing-sm, 8px) 0;
-  color: var(--color-foreground, #ededed);
+  font-weight: var(--weight-semibold);
+  margin: 0 0 var(--space-3) 0;
+  color: var(--color-foreground);
 }
 
 .list {
   list-style: disc;
-  padding-left: var(--spacing-lg, 24px);
+  padding-left: var(--space-6);
   margin: 0;
-  color: var(--color-text-slate-300, #cbd5e1);
+  color: var(--color-text-body);
 }
 
 .list li {
-  margin-bottom: var(--spacing-sm, 8px);
+  margin-bottom: var(--space-3);
 }
 
 .stockInfo {
-  margin-top: var(--spacing-md, 16px);
+  margin-top: var(--space-5);
 }
 
 .inStock {
-  color: var(--color-emerald-400, #34d399);
-  font-weight: 500;
+  color: var(--color-emerald-400);
+  font-weight: var(--weight-medium);
 }
 
 .outOfStock {
   color: #f87171;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .actions {
@@ -153,7 +153,7 @@
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  color: var(--color-text-muted, #9ca3af);
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
 }
 
@@ -161,33 +161,33 @@
   color: #f87171;
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  padding: var(--spacing-md, 16px);
+  padding: var(--space-5);
   border-radius: 10px;
-  margin-bottom: var(--spacing-md, 16px);
+  margin-bottom: var(--space-5);
   text-align: center;
 }
 
 .success {
   background: rgba(52, 211, 153, 0.15);
   border: 1px solid rgba(52, 211, 153, 0.3);
-  color: var(--color-emerald-400, #34d399);
-  padding: var(--spacing-md, 16px);
+  color: var(--color-emerald-400);
+  padding: var(--space-5);
   border-radius: 10px;
-  margin-bottom: var(--spacing-md, 16px);
+  margin-bottom: var(--space-5);
   text-align: center;
 }
 
 .retryButton {
   padding: 0.75rem 2rem;
-  background: var(--color-accent, #7c3aed);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border-radius: var(--radius-lg);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-body);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-btn-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,9 +195,9 @@
 }
 
 .retryButton:hover {
-  background: var(--color-accent-hover, #6d28d9);
+  background: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+  box-shadow: var(--shadow-btn-primary-hover);
 }
 
 .retryButton:active {
@@ -206,14 +206,14 @@
 
 .backLink {
   padding: 0.75rem 2rem;
-  color: var(--color-accent, #7c3aed);
-  background: rgba(124, 58, 237, 0.08);
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-border-accent);
+  border-radius: var(--radius-lg);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-body);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -223,12 +223,12 @@
 .backLink:hover {
   background: rgba(124, 58, 237, 0.15);
   border-color: rgba(124, 58, 237, 0.4);
-  color: #8b5cf6;
+  color: var(--color-accent-light);
 }
 
 .breadcrumbWrapper {
   padding: 0;
-  margin-bottom: var(--spacing-sm, 8px);
+  margin-bottom: var(--space-3);
   width: 100%;
 }
 

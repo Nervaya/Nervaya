@@ -19,7 +19,7 @@
   align-items: center;
   gap: 8px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-foreground, #0f172a);
   margin: 0;
 }
@@ -65,7 +65,7 @@
 .mediaLabel {
   display: block;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
   margin-bottom: 0.75rem;
 }
@@ -107,7 +107,7 @@
 
 .titleEdit :global(.displayValue) {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-foreground, #0f172a);
   line-height: 1.2;
 }
@@ -131,7 +131,7 @@
 }
 
 .priceLabel {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   color: var(--color-text-slate-500, #64748b);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -139,8 +139,8 @@
 }
 
 .priceValue :global(.displayValue) {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
   color: var(--color-emerald-400, #34d399);
 }
 
@@ -254,11 +254,11 @@
   border: 1px dashed var(--color-border, #e2e8f0);
   color: var(--color-primary-500, #7c3aed);
   padding: 0.75rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-weight: var(--weight-medium);
+  transition: all var(--transition-base);
   margin-top: 0.25rem;
 }
 
@@ -292,16 +292,16 @@
 
 .removeSectionInline {
   background: #fee2e2;
-  color: #dc2626;
+  color: var(--color-error-hover);
   border: none;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   margin-left: 1rem;
 }
 
@@ -320,7 +320,7 @@
 
 .customSectionsLabel {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   color: var(--color-primary-600, #7c3aed);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -351,7 +351,7 @@
   border: 2px dashed var(--color-primary-300, #c4b5fd);
   border-radius: 12px;
   color: var(--color-primary-600, #7c3aed);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   font-size: 1rem;
   display: flex;
   align-items: center;
@@ -389,7 +389,7 @@
   background: none;
   border: none;
   color: var(--color-text-slate-400, #94a3b8);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
   padding: 8px 0;
   position: relative;
@@ -432,11 +432,11 @@
   bottom: 2rem;
   right: 2rem;
   background: var(--color-primary-600, #7c3aed);
-  color: #fff;
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 1rem 2.5rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   font-size: 1.1rem;
   display: flex;
   align-items: center;
@@ -445,7 +445,7 @@
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.3),
     0 4px 6px -4px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   z-index: 1000;
 }
 
@@ -484,7 +484,7 @@
   visibility: hidden;
   width: 220px;
   background-color: var(--color-foreground, #0f172a);
-  color: var(--color-background, #ffffff);
+  color: var(--color-text-on-dark);
   text-align: center;
   border-radius: 6px;
   padding: 8px;
@@ -494,9 +494,9 @@
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 0.75rem;
-  font-weight: normal;
+  transition: opacity var(--transition-slow);
+  font-size: var(--text-label);
+  font-weight: var(--weight-normal);
   border: 1px solid var(--color-border-light, #e2e8f0);
   box-shadow: var(--color-card-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
   pointer-events: none;

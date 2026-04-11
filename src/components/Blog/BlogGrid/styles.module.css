@@ -10,13 +10,13 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--space-5);
   }
 }
 
 @media (max-width: 480px) {
   .grid {
-    gap: 20px;
+    gap: var(--space-5);
   }
 }
 

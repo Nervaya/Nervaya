@@ -25,7 +25,7 @@
   border: 1px solid var(--color-glass-border);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-xl);
   backdrop-filter: blur(var(--color-glass-blur));
   -webkit-backdrop-filter: blur(var(--color-glass-blur));
 }
@@ -42,12 +42,12 @@
   padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--space-5);
 }
 
 @media (max-width: 768px) {
   .cardLeft {
-    padding: 1.75rem 1.25rem;
+    padding: 1.75rem var(--space-5);
   }
 }
 
@@ -55,30 +55,30 @@
   display: inline-block;
   background: var(--color-accent-dim);
   color: var(--color-accent);
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   padding: 0.3rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   width: fit-content;
 }
 
 .title {
-  font-size: var(--font-size-4xl);
-  font-weight: 700;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
   color: var(--color-foreground);
   margin: 0;
-  line-height: 1.2;
+  line-height: var(--leading-heading);
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: var(--font-size-3xl);
+    font-size: var(--text-h3);
   }
 }
 
 .subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-muted);
+  font-size: 1rem;
+  color: var(--color-text-secondary);
   margin: 0;
   line-height: 1.65;
 }
@@ -96,15 +96,15 @@
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  font-size: 0.875rem;
+  font-size: var(--text-caption);
   color: var(--color-foreground);
   line-height: 1.5;
 }
 
 .checkIcon {
-  color: #22c55e;
+  color: var(--color-success);
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   margin-top: 0.1rem;
   flex-shrink: 0;
 }
@@ -122,7 +122,7 @@
 @media (max-width: 768px) {
   .cardRight {
     width: 100%;
-    padding: 1.5rem 1.25rem;
+    padding: 1.5rem var(--space-5);
   }
 }
 
@@ -137,8 +137,8 @@
 
 .priceLabel {
   font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-on-dark-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0;
@@ -147,7 +147,7 @@
 .price {
   font-size: 2.75rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--color-text-on-dark);
   margin: 0;
   line-height: 1;
 }
@@ -162,12 +162,12 @@
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.4);
   color: #fca5a5;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;
   width: 100%;
   text-align: left;
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn var(--transition-slow) ease-out;
 }
 
 @keyframes slideIn {
@@ -203,10 +203,10 @@
 
 .loading::before {
   content: '';
-  width: 16px;
-  height: 16px;
+  width: var(--space-5);
+  height: var(--space-5);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid #fff;
+  border-top: 2px solid var(--color-text-on-dark);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -218,25 +218,25 @@
 }
 
 .payBtn {
-  background: #ffffff;
+  background: var(--color-background);
   color: var(--color-accent);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   padding: 0.8rem 2rem;
   border-radius: 10px;
   border: none;
   cursor: pointer;
   width: 100%;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .payBtn:hover:not(:disabled) {
   background: #f8faff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .payBtn:active:not(:disabled) {
@@ -275,20 +275,20 @@
 
 .cartBtn {
   background: transparent;
-  color: #ffffff;
+  color: var(--color-text-on-dark);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   padding: 0.8rem 2rem;
   border-radius: 10px;
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border: 1.5px solid var(--color-text-on-dark-muted);
   cursor: pointer;
   width: 100%;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 .cartBtn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
+  border-color: var(--color-text-on-dark);
   transform: translateY(-2px);
 }
 

@@ -12,7 +12,7 @@
   justify-content: center;
   padding: 3rem 1.5rem;
   background-color: var(--color-bg-secondary, #f9fafb);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   text-align: center;
 }
 
@@ -26,8 +26,8 @@
 }
 
 .errorTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
   color: var(--color-text-primary, #111827);
   margin: 0 0 0.5rem 0;
 }
@@ -41,14 +41,14 @@
 
 .retryButton {
   background-color: var(--color-accent, #7c3aed);
-  color: white;
+  color: var(--color-text-on-dark);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.75rem 2rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;

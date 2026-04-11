@@ -17,7 +17,7 @@
 }
 
 .paginationWrap {
-  margin-top: var(--spacing-xl, 32px);
+  margin-top: var(--space-7);
   display: flex;
   justify-content: center;
 }

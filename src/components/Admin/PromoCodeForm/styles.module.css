@@ -31,18 +31,18 @@
 
 .label {
   font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-foreground);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .input,
 .textarea {
   padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--color-glass-border);
+  border: 1px solid var(--color-border);
   background: var(--color-glass-bg);
   border-radius: 10px;
   font-size: var(--font-size-base);
-  color: var(--color-foreground);
+  color: var(--color-text-primary);
   width: 100%;
   box-sizing: border-box;
 }
@@ -50,8 +50,8 @@
 .input:focus,
 .textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-border-accent);
 }
 
 .textarea {
@@ -61,7 +61,7 @@
 
 .errorText {
   font-size: var(--font-size-sm);
-  color: var(--color-error, #f87171);
+  color: var(--color-error);
 }
 
 .radioGroup {
@@ -75,14 +75,14 @@
   align-items: center;
   gap: var(--spacing-sm);
   font-size: var(--font-size-base);
-  color: var(--color-foreground);
+  color: var(--color-text-primary);
   cursor: pointer;
 }
 
 .radio {
   width: 18px;
   height: 18px;
-  accent-color: var(--accent);
+  accent-color: var(--color-accent);
 }
 
 .checkLabel {
@@ -90,14 +90,14 @@
   align-items: center;
   gap: var(--spacing-sm);
   font-size: var(--font-size-base);
-  color: var(--color-foreground);
+  color: var(--color-text-primary);
   cursor: pointer;
 }
 
 .checkbox {
   width: 18px;
   height: 18px;
-  accent-color: var(--accent);
+  accent-color: var(--color-accent);
 }
 
 .actions {
