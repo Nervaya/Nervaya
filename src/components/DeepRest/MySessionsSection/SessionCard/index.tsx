@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
@@ -8,6 +8,7 @@ import { IDriftOffResponse } from '@/types/driftOff.types';
 import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
 import { Badge } from '@/components/common';
+import { ReviewForm } from '@/components/DeepRest/ReviewForm';
 import styles from './SessionCard.module.css';
 
 const VideoPlayerDynamic = dynamic(() => import('@/components/DeepRest/VideoPlayer'), {
@@ -26,6 +27,7 @@ function isDriveUrl(url: string): boolean {
 }
 
 export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, isRequesting, requestError }) => {
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const videoUrl = session.assignedVideoUrl;
   const isReady = Boolean(videoUrl);
   const isExternalLink = videoUrl ? isDriveUrl(videoUrl) : false;
@@ -104,8 +106,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
             {(!hasRequestedReSession || isRequesting) && (
               <Link
                 href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
-                className={styles.requestBtn}
-                style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}
+                className={styles.requestBtnLink}
               >
                 {isRequesting ? 'Requesting…' : 'Edit Answers & Re-Request'}
               </Link>
@@ -134,7 +135,34 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
           </p>
         )}
         {requestError && <p className={styles.requestError}>{requestError}</p>}
+
+        {isReady && (
+          <button type="button" className={styles.reviewBtn} onClick={() => setShowReviewForm(true)}>
+            Write a Review
+          </button>
+        )}
       </div>
+
+      {showReviewForm && (
+        <div
+          className={styles.modalOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Write a review"
+          onClick={() => setShowReviewForm(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setShowReviewForm(false);
+          }}
+        >
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <ReviewForm
+              responseId={session._id}
+              onSuccess={() => setShowReviewForm(false)}
+              onCancel={() => setShowReviewForm(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

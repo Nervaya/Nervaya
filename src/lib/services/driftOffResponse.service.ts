@@ -78,7 +78,14 @@ export async function completeDriftOffResponse(
   return response.save();
 }
 
-export async function getDriftOffResponsesByUser(userId: string): Promise<DriftOffResponseDocument[]> {
+export async function getDriftOffResponsesByUser(
+  userId: string,
+  page = 1,
+  limit = 10,
+): Promise<{
+  data: DriftOffResponseDocument[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+}> {
   await connectDB();
 
   // Fallback: Ensure all paid orders have a corresponding response
@@ -86,20 +93,23 @@ export async function getDriftOffResponsesByUser(userId: string): Promise<DriftO
   const existingResponses = await DriftOffResponse.find({ userId });
   const existingOrderIds = new Set(existingResponses.map((r) => r.driftOffOrderId.toString()));
 
-  let missingCount = 0;
   for (const order of paidOrders) {
     if (!existingOrderIds.has(order._id.toString())) {
       await DriftOffResponse.create({ userId, driftOffOrderId: order._id, answers: [] });
-      missingCount++;
     }
   }
 
-  // Refetch if we added any
-  if (missingCount > 0) {
-    return DriftOffResponse.find({ userId }).sort({ createdAt: -1 });
-  }
+  // Paginated query
+  const skip = (page - 1) * limit;
+  const [data, total] = await Promise.all([
+    DriftOffResponse.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    DriftOffResponse.countDocuments({ userId }),
+  ]);
 
-  return existingResponses.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  return {
+    data,
+    meta: { total, page, limit, totalPages: Math.ceil(total / limit) || 1 },
+  };
 }
 
 export async function getLatestDriftOffResponse(userId: string): Promise<DriftOffResponseDocument | null> {

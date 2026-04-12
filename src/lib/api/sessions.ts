@@ -1,13 +1,9 @@
 import api from '@/lib/axios';
 import type { ApiResponse } from '@/lib/api/types';
 import type { Session } from '@/types/session.types';
+import type { PaginationMeta } from '@/types/pagination.types';
 
-export interface PaginationMeta {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
+export type { PaginationMeta };
 
 export interface AdminSessionsResponse {
   data: Session[];

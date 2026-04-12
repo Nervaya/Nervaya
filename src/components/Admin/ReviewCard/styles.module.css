@@ -2,51 +2,49 @@
   background: var(--color-glass-bg);
   backdrop-filter: blur(var(--color-glass-blur));
   -webkit-backdrop-filter: blur(var(--color-glass-blur));
-  padding: var(--spacing-lg);
-  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
   border: 1px solid var(--color-glass-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease;
+  list-style: none;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 768px) {
   .card {
-    padding: var(--spacing-md);
+    padding: 1rem;
   }
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-glass-border);
+  align-items: center;
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
   .cardHeader {
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: flex-start;
   }
 }
 
-.productInfo {
+.leftGroup {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .productImage {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
@@ -59,55 +57,102 @@
   object-fit: cover;
 }
 
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .productName {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   margin: 0;
   color: var(--color-foreground);
 }
 
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.userName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.separator {
+  color: var(--color-text-tertiary);
+  font-size: 0.75rem;
+}
+
 .reviewDate {
   font-size: 0.8125rem;
   color: var(--color-text-muted);
-  margin: 0.25rem 0 0 0;
 }
 
 .headerRight {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.statusLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.statusApproved {
+  color: #34d399;
+}
+
+.statusHidden {
+  color: var(--color-text-muted);
 }
 
 .itemBadge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .badgeSupplement {
-  background: rgba(52, 211, 153, 0.2);
+  background: rgba(52, 211, 153, 0.15);
   color: #34d399;
 }
 
 .badgeDriftOff {
-  background: rgba(129, 140, 248, 0.2);
+  background: rgba(129, 140, 248, 0.15);
   color: #818cf8;
 }
 
 .badgeTherapy {
-  background: rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.15);
   color: #fbbf24;
 }
 
 /* Toggle switch */
 .toggle {
   position: relative;
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -131,16 +176,16 @@
 .toggleKnob {
   position: absolute;
   top: 2px;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: white;
   transition: left 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .toggleOn .toggleKnob {
-  left: 22px;
+  left: 20px;
 }
 
 .toggleOff .toggleKnob {
@@ -148,27 +193,23 @@
 }
 
 .cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-glass-border);
 }
 
-.reviewMeta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.userName {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--color-foreground);
+.comment {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
 }
 
 .stars {
   display: inline-flex;
-  gap: 2px;
-  font-size: 1rem;
+  gap: 1px;
+  font-size: 0.875rem;
 }
 
 .starFilled {
@@ -177,11 +218,4 @@
 
 .starEmpty {
   color: rgba(148, 163, 184, 0.4);
-}
-
-.comment {
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
-  margin: 0;
-  line-height: 1.5;
 }

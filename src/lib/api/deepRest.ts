@@ -27,8 +27,23 @@ export const deepRestApi = {
       razorpaySignature: body.razorpaySignature,
     }) as Promise<ApiResponse<{ verified: boolean; orderId: string }>>,
 
-  getResponses: (): Promise<ApiResponse<IDeepRestResponse[]>> =>
-    api.get(`/deep-rest/responses?t=${Date.now()}`) as Promise<ApiResponse<IDeepRestResponse[]>>,
+  getResponses: (
+    page?: number,
+    limit?: number,
+  ): Promise<
+    ApiResponse<{ data: IDeepRestResponse[]; meta: { total: number; page: number; limit: number; totalPages: number } }>
+  > => {
+    // Cache-bust: responses change after payment/assessment without URL change
+    const params = new URLSearchParams({ t: String(Date.now()) });
+    if (page) params.set('page', String(page));
+    if (limit) params.set('limit', String(limit));
+    return api.get(`/deep-rest/responses?${params.toString()}`) as Promise<
+      ApiResponse<{
+        data: IDeepRestResponse[];
+        meta: { total: number; page: number; limit: number; totalPages: number };
+      }>
+    >;
+  },
 
   saveAnswer: (body: {
     deepRestOrderId: string;
@@ -56,4 +71,23 @@ export const deepRestApi = {
 
   requestReSession: (responseId: string): Promise<ApiResponse<IDeepRestResponse>> =>
     api.post(`/deep-rest/responses/${responseId}/request-re-session`) as Promise<ApiResponse<IDeepRestResponse>>,
+
+  submitReview: (responseId: string, body: { rating: number; comment?: string }): Promise<ApiResponse<unknown>> =>
+    api.post(`/deep-rest/responses/${responseId}/reviews`, body) as Promise<ApiResponse<unknown>>,
+
+  getApprovedReviews: (
+    page = 1,
+    limit = 20,
+  ): Promise<
+    ApiResponse<{
+      data: { userDisplayName?: string; rating: number; comment: string }[];
+      meta: { total: number; page: number; limit: number; totalPages: number };
+    }>
+  > =>
+    api.get(`/reviews/DriftOff/approved?page=${page}&limit=${limit}`) as Promise<
+      ApiResponse<{
+        data: { userDisplayName?: string; rating: number; comment: string }[];
+        meta: { total: number; page: number; limit: number; totalPages: number };
+      }>
+    >,
 };

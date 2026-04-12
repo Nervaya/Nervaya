@@ -2,7 +2,8 @@ import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
 export interface IReview extends Document {
   productId: Types.ObjectId;
-  userId: string;
+  userId: Types.ObjectId;
+  responseId?: Types.ObjectId;
   userDisplayName?: string;
   rating: number;
   comment?: string;
@@ -21,7 +22,8 @@ const reviewSchema = new Schema<IReview>(
       index: true,
     },
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: [true, 'User ID is required'],
       index: true,
     },
@@ -39,6 +41,11 @@ const reviewSchema = new Schema<IReview>(
     },
     isVisible: { type: Boolean, default: true },
     itemType: { type: String, enum: ['Supplement', 'DriftOff', 'Therapy'], default: 'Supplement' },
+    responseId: {
+      type: Schema.Types.ObjectId,
+      ref: 'DriftOffResponse',
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -46,7 +53,13 @@ const reviewSchema = new Schema<IReview>(
 );
 
 reviewSchema.index({ productId: 1, createdAt: -1 });
-reviewSchema.index({ userId: 1, productId: 1, itemType: 1 }, { unique: true });
+reviewSchema.index({ productId: 1, isVisible: 1, createdAt: -1 });
+reviewSchema.index(
+  { userId: 1, productId: 1, itemType: 1 },
+  { unique: true, partialFilterExpression: { itemType: { $ne: 'DriftOff' } } },
+);
+reviewSchema.index({ itemType: 1, isVisible: 1, createdAt: -1 });
+reviewSchema.index({ responseId: 1 }, { sparse: true });
 
 const Review: Model<IReview> = mongoose.models.Review || mongoose.model<IReview>('Review', reviewSchema);
 

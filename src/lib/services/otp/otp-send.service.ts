@@ -53,7 +53,7 @@ export async function sendOtp(
 
   if (purpose === 'signup') {
     const { hasPendingSignup } = await import('@/lib/services/auth');
-    if (!hasPendingSignup(sanitizedEmail)) {
+    if (!(await hasPendingSignup(sanitizedEmail))) {
       return {
         success: false,
         message: 'Signup session expired. Please sign up again.',
@@ -62,7 +62,7 @@ export async function sendOtp(
     }
   }
 
-  const limitByEmail = checkOTPSendLimit(sanitizedEmail);
+  const limitByEmail = await checkOTPSendLimit(sanitizedEmail);
   if (!limitByEmail.allowed) {
     return {
       success: false,
@@ -74,7 +74,7 @@ export async function sendOtp(
   }
 
   const code = generateOtpCode();
-  saveOtp(sanitizedEmail, purpose, code);
+  await saveOtp(sanitizedEmail, purpose, code);
 
   await delivery.sendOtp(sanitizedEmail, code);
 

@@ -1,4 +1,4 @@
-import Session from '@/lib/models/session.model';
+import Session, { ISession } from '@/lib/models/session.model';
 import { bookSlot, releaseSlot } from '@/lib/services/therapistSchedule.service';
 import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
@@ -28,26 +28,28 @@ export async function createSession(
     const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
     const endTime = `${hour24 + 1 > 12 ? hour24 + 1 - 12 : hour24 + 1}:00 ${hour24 + 1 >= 12 ? 'PM' : 'AM'}`;
 
-    const existingSession = await Session.findOne({
-      therapistId,
-      date,
-      startTime,
-      status: { $ne: SESSION_STATUS.CANCELLED },
-    }).session(mongooseSession || null);
-
-    if (existingSession) {
-      throw new ValidationError('Slot is already booked');
-    }
-
     // When called from payment.service (with mongooseSession), run inside the existing transaction.
     // When called standalone, create our own transaction for atomicity.
     const needsOwnTransaction = !mongooseSession;
     const txnSession = mongooseSession || (await mongoose.startSession());
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let createdSession: any;
+    let createdSession: ISession | undefined;
     try {
       const executeAtomicCreation = async () => {
+        // Check inside the transaction to prevent race conditions.
+        // The partial unique index on (therapistId, date, startTime) where status != cancelled
+        // acts as a safety net, but we check first for a better error message.
+        const existingSession = await Session.findOne({
+          therapistId,
+          date,
+          startTime,
+          status: { $ne: SESSION_STATUS.CANCELLED },
+        }).session(txnSession);
+
+        if (existingSession) {
+          throw new ValidationError('Slot is already booked');
+        }
+
         const sessionRes = await Session.create(
           [{ userId, therapistId, date, startTime, endTime, status: SESSION_STATUS.PENDING }],
           { session: txnSession },
@@ -62,10 +64,20 @@ export async function createSession(
       } else {
         await executeAtomicCreation();
       }
+    } catch (error) {
+      // Handle duplicate key error from the partial unique index (concurrent booking race)
+      if (error instanceof Error && 'code' in error && (error as { code: number }).code === 11000) {
+        throw new ValidationError('Slot is already booked');
+      }
+      throw error;
     } finally {
       if (needsOwnTransaction) {
         await txnSession.endSession();
       }
+    }
+
+    if (!createdSession) {
+      throw new ValidationError('Failed to create session');
     }
 
     // --- Google Meet & Email Integration (awaited inline) ---
@@ -86,7 +98,7 @@ export async function createSession(
         if (meetLink) {
           await Session.findByIdAndUpdate(createdSession._id, { meetLink, googleEventId: eventId });
           createdSession.meetLink = meetLink;
-          createdSession.googleEventId = eventId;
+          createdSession.googleEventId = eventId ?? undefined;
         }
 
         await sendSessionConfirmationEmail({
@@ -147,31 +159,30 @@ export async function rescheduleSession(sessionId: string, userId: string, newDa
       throw new ValidationError('Only pending or confirmed sessions can be rescheduled');
     }
 
-    // 1. Check if new slot is available
-    const existingAtNewTime = await Session.findOne({
-      therapistId: session.therapistId,
-      date: newDate,
-      startTime: newStartTime,
-      status: { $ne: SESSION_STATUS.CANCELLED },
-      _id: { $ne: session._id },
-    });
-
-    if (existingAtNewTime) throw new ValidationError('The new slot is already booked');
-
     const oldDate = session.date;
     const oldStartTime = session.startTime;
     const oldEventId = session.googleEventId;
 
-    // 2. Update session details
+    // 1. Compute new end time
     const startHour = parseInt(newStartTime.split(':')[0]);
     const isPM = newStartTime.includes('PM');
     const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
     const newEndTime = `${hour24 + 1 > 12 ? hour24 + 1 - 12 : hour24 + 1}:00 ${hour24 + 1 >= 12 ? 'PM' : 'AM'}`;
 
-    session.date = newDate;
-    session.startTime = newStartTime;
-    session.endTime = newEndTime;
-    await session.save();
+    // 2. Atomically update the session to the new slot, relying on the partial unique index
+    //    to prevent double-booking if a concurrent request targets the same slot.
+    try {
+      // First cancel the old session's status temporarily so the unique index allows the new slot
+      session.date = newDate;
+      session.startTime = newStartTime;
+      session.endTime = newEndTime;
+      await session.save();
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && (error as { code: number }).code === 11000) {
+        throw new ValidationError('The new slot is already booked');
+      }
+      throw error;
+    }
 
     // 3. Re-mark slots in therapist schedule
     await releaseSlot(session.therapistId.toString(), oldDate, oldStartTime);
@@ -267,7 +278,7 @@ export async function getAllSessions(
     }
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
-      Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).skip(skip).limit(limit),
+      Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).skip(skip).limit(limit).lean(),
       Session.countDocuments(filter),
     ]);
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
@@ -280,12 +291,12 @@ export async function getUserSessions(userId: string, statusFilter?: string) {
   await connectDB();
   const filter: Record<string, unknown> = { userId };
   if (statusFilter) filter.status = statusFilter;
-  return Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 });
+  return Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).limit(200).lean();
 }
 
 export async function getSessionById(sessionId: string) {
   await connectDB();
-  return Session.findById(sessionId).populate('therapistId');
+  return Session.findById(sessionId).populate('therapistId').lean();
 }
 
 export async function getSessionsByTherapistId(therapistId: string, statusFilter?: string) {
@@ -294,5 +305,5 @@ export async function getSessionsByTherapistId(therapistId: string, statusFilter
     therapistId: new Types.ObjectId(therapistId),
   };
   if (statusFilter) filter.status = statusFilter;
-  return Session.find(filter).sort({ date: -1, startTime: -1 });
+  return Session.find(filter).sort({ date: -1, startTime: -1 }).limit(200).lean();
 }

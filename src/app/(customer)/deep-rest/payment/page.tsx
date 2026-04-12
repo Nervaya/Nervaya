@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
 import DriftOffPaymentHandler from '@/components/DeepRest/DriftOffPaymentHandler';
+import { PaymentSuccessScreen, type PaymentSuccessDetails } from '@/components/DeepRest/PaymentSuccessScreen';
 import { DRIFT_OFF_SESSION_PRICE, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 import { deepRestApi } from '@/lib/api/deepRest';
 import { configApi } from '@/lib/api/config';
@@ -33,6 +34,7 @@ export default function DriftOffPaymentPage() {
   const [initError, setInitError] = useState<string | null>(null);
   const [dynamicPrice, setDynamicPrice] = useState<number>(DRIFT_OFF_SESSION_PRICE);
   const [isAdding, setIsAdding] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState<PaymentSuccessDetails | null>(null);
   const { refreshCart } = useCart();
 
   const {
@@ -45,6 +47,7 @@ export default function DriftOffPaymentPage() {
     showPaymentHandler,
     initiatePayment,
     handleVerifyStart,
+    handleVerifyComplete,
     handlePaymentError,
   } = useDeepRestPayment();
 
@@ -71,18 +74,23 @@ export default function DriftOffPaymentPage() {
       try {
         setInitError(null);
         const [ordersRes, responsesRes] = await Promise.all([
-          axiosInstance.get<unknown, ApiResponse<IDriftOffOrder[]>>('/deep-rest/orders'),
-          deepRestApi.getResponses(),
+          axiosInstance.get<unknown, ApiResponse<{ data: IDriftOffOrder[]; meta: unknown }>>(
+            '/deep-rest/orders?page=1&limit=10',
+          ),
+          deepRestApi.getResponses(1, 10),
         ]);
 
-        if (ordersRes.success && ordersRes.data && ordersRes.data.length > 0) {
-          const sortedOrders = [...ordersRes.data].sort(
+        const orders = ordersRes.success && ordersRes.data ? ordersRes.data.data : [];
+        const responses = responsesRes.success && responsesRes.data ? responsesRes.data.data : [];
+
+        if (orders.length > 0) {
+          const sortedOrders = [...orders].sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           );
           const latestPaidOrder = sortedOrders.find((order) => order.paymentStatus === 'paid');
 
           if (latestPaidOrder) {
-            const responseForOrder = responsesRes.data?.find(
+            const responseForOrder = responses.find(
               (r: IDriftOffResponse) => r.driftOffOrderId === latestPaidOrder._id,
             );
 
@@ -130,6 +138,25 @@ export default function DriftOffPaymentPage() {
       setIsAdding(false);
     }
   };
+
+  const handlePaymentSuccess = (details: PaymentSuccessDetails) => {
+    handleVerifyComplete();
+    setPaymentSuccess(details);
+  };
+
+  if (paymentSuccess) {
+    return (
+      <>
+        <Sidebar>
+          <div className={styles.wrapper} />
+        </Sidebar>
+        <PaymentSuccessScreen
+          {...paymentSuccess}
+          onComplete={() => router.replace(`/deep-rest/questionnaire?orderId=${paymentSuccess.orderId}`)}
+        />
+      </>
+    );
+  }
 
   if (isVerifying || isChecking || authLoading || isAdding || isCreating) {
     let message = 'Checking status...';
@@ -215,6 +242,7 @@ export default function DriftOffPaymentPage() {
                       razorpayOrderId={razorpayOrderId}
                       razorpayKeyId={razorpayKeyId}
                       onVerifyStart={handleVerifyStart}
+                      onPaymentSuccess={handlePaymentSuccess}
                       onError={handlePaymentError}
                     />
                   )}

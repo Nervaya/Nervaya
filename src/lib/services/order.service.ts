@@ -238,7 +238,7 @@ export async function getOrderById(orderId: string) {
     if (!Types.ObjectId.isValid(orderId)) {
       throw new ValidationError('Invalid Order ID');
     }
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).lean();
     if (!order) {
       throw new ValidationError('Order not found');
     }
@@ -308,7 +308,7 @@ export async function getAllOrders(
     const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
     const safeLimit = Math.max(1, Math.min(limit, 100));
     const [data, total] = await Promise.all([
-      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit).lean(),
       Order.countDocuments(filter),
     ]);
     const totalPages = Math.max(1, Math.ceil(total / safeLimit));
@@ -324,7 +324,7 @@ export async function getUserOrders(userId: string) {
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
-    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 }).limit(200).lean();
     return orders;
   } catch (error) {
     throw handleError(error);

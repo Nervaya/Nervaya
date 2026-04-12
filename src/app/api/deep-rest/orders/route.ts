@@ -12,8 +12,12 @@ export async function GET(request: NextRequest) {
     const authResult = await requireAuth(request, [ROLES.CUSTOMER, ROLES.ADMIN]);
     if (authResult instanceof NextResponse) return authResult;
 
-    const orders = await getDriftOffOrdersByUser(authResult.user.userId);
-    return NextResponse.json(successResponse('Deep Rest orders retrieved', orders));
+    const { searchParams } = new URL(request.url);
+    const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
+    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '10', 10)));
+
+    const result = await getDriftOffOrdersByUser(authResult.user.userId, page, limit);
+    return NextResponse.json(successResponse('Deep Rest orders retrieved', result));
   } catch (error) {
     const { message, statusCode, error: errData } = handleError(error);
     return NextResponse.json(errorResponse(message, errData, statusCode), { status: statusCode });

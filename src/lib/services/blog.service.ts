@@ -87,7 +87,7 @@ export async function createBlog(data: CreateBlogData): Promise<IBlog> {
 export async function getAllBlogs(filter: Record<string, unknown> = {}): Promise<IBlog[]> {
   await connectDB();
   try {
-    const blogs = await Blog.find(filter).sort({ createdAt: -1 });
+    const blogs = await Blog.find(filter).sort({ createdAt: -1 }).limit(200).lean();
     return blogs;
   } catch (error) {
     throw handleError(error);
@@ -111,16 +111,14 @@ export async function getAllBlogsPaginated(
     const filter: Record<string, unknown> = {};
 
     if (search && search.trim()) {
-      const escaped = search
-        .trim()
-        .replace(/\s+/g, ' ')
-        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      filter.$or = [{ title: { $regex: escaped, $options: 'i' } }, { author: { $regex: escaped, $options: 'i' } }];
+      filter.$text = { $search: search.trim() };
     }
 
     const skip = (Math.max(1, page) - 1) * limit;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sortOption: any = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
     const [blogs, total] = await Promise.all([
-      Blog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean().exec(),
+      Blog.find(filter).sort(sortOption).skip(skip).limit(limit).lean().exec(),
       Blog.countDocuments(filter),
     ]);
 
@@ -146,7 +144,7 @@ export async function getPublishedBlogs(tag?: string): Promise<IBlog[]> {
     if (tag) {
       filter.tags = { $in: [tag] };
     }
-    const blogs = await Blog.find(filter).sort({ createdAt: -1 });
+    const blogs = await Blog.find(filter).sort({ createdAt: -1 }).limit(200).lean();
     return blogs;
   } catch (error) {
     throw handleError(error);
@@ -175,20 +173,14 @@ export async function getPublishedBlogsPaginated(
     }
 
     if (search && search.trim()) {
-      const escaped = search
-        .trim()
-        .replace(/\s+/g, ' ')
-        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      filter.$or = [
-        { title: { $regex: escaped, $options: 'i' } },
-        { author: { $regex: escaped, $options: 'i' } },
-        { content: { $regex: escaped, $options: 'i' } },
-      ];
+      filter.$text = { $search: search.trim() };
     }
 
     const skip = (Math.max(1, page) - 1) * limit;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sortOption: any = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
     const [blogs, total] = await Promise.all([
-      Blog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean().exec(),
+      Blog.find(filter).sort(sortOption).skip(skip).limit(limit).lean().exec(),
       Blog.countDocuments(filter),
     ]);
 
@@ -217,11 +209,11 @@ export async function getBlogById(id: string): Promise<IBlog> {
     if (!Types.ObjectId.isValid(id)) {
       throw new ValidationError('Invalid Blog ID');
     }
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(id).lean();
     if (!blog) {
       throw new NotFoundError('Blog not found');
     }
-    return blog;
+    return blog as IBlog;
   } catch (error) {
     throw handleError(error);
   }
@@ -230,11 +222,11 @@ export async function getBlogById(id: string): Promise<IBlog> {
 export async function getBlogBySlug(slug: string): Promise<IBlog> {
   await connectDB();
   try {
-    const blog = await Blog.findOne({ slug, isPublished: true });
+    const blog = await Blog.findOne({ slug, isPublished: true }).lean();
     if (!blog) {
       throw new NotFoundError('Blog not found');
     }
-    return blog;
+    return blog as IBlog;
   } catch (error) {
     throw handleError(error);
   }
@@ -297,7 +289,10 @@ export async function getBlogsByTag(tag: string): Promise<IBlog[]> {
     const blogs = await Blog.find({
       tags: { $in: [tag] },
       isPublished: true,
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .limit(200)
+      .lean();
     return blogs;
   } catch (error) {
     throw handleError(error);

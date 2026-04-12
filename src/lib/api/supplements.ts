@@ -1,17 +1,13 @@
 import api from '@/lib/axios';
 import type { Supplement } from '@/types/supplement.types';
+import type { PaginationMeta } from '@/types/pagination.types';
+
+export type { PaginationMeta };
 
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
   message?: string;
-}
-
-export interface PaginationMeta {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
 }
 
 export interface SupplementFiltersParams {

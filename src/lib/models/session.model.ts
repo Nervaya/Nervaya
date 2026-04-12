@@ -2,7 +2,7 @@ import mongoose, { Schema, Model, Document } from 'mongoose';
 import { SESSION_STATUS, SESSION_STATUS_VALUES, SessionStatus } from '@/lib/constants/enums';
 
 export interface ISession extends Document {
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   therapistId: mongoose.Types.ObjectId;
   date: string;
   startTime: string;
@@ -17,7 +17,8 @@ export interface ISession extends Document {
 const sessionSchema = new Schema<ISession>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: [true, 'User ID is required'],
       index: true,
     },
@@ -64,6 +65,8 @@ sessionSchema.index(
   { therapistId: 1, date: 1, startTime: 1 },
   { unique: true, partialFilterExpression: { status: { $ne: SESSION_STATUS.CANCELLED } } },
 );
+sessionSchema.index({ userId: 1, status: 1 });
+sessionSchema.index({ date: 1, status: 1 });
 
 const Session: Model<ISession> = mongoose.models.Session || mongoose.model<ISession>('Session', sessionSchema);
 

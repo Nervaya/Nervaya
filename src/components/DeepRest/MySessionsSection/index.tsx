@@ -8,15 +8,15 @@ import { ICON_PLUS_CIRCLE } from '@/constants/icons';
 import { Pagination, GlobalLoader } from '@/components/common';
 import { deepRestApi } from '@/lib/api/deepRest';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
-import { PAGE_SIZE_5 } from '@/lib/constants/pagination.constants';
 import { SessionCard } from './SessionCard';
 import { EmptySessions } from './EmptySessions';
-import { sortSessionsByDate } from './SessionUtils';
 import styles from './MySessionsSection.module.css';
 
 const emptySubscribe = () => () => {};
 const getClient = () => true;
 const getServer = () => false;
+
+const DEFAULT_LIMIT = 5;
 
 interface MySessionsSectionProps {
   className?: string;
@@ -28,18 +28,30 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit] = useState(DEFAULT_LIMIT);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // We no longer use showLoader() here to keep the loader 'inside the page'
-
-  const loadResponses = useCallback(async () => {
+  const loadResponses = useCallback(async (page: number, pageLimit: number) => {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await deepRestApi.getResponses();
+      const res = await deepRestApi.getResponses(page, pageLimit);
       if (res.success && res.data) {
-        setResponses(sortSessionsByDate(res.data));
+        const sorted = [...res.data.data].sort((a, b) => {
+          // Pending assessment (no completedAt) first
+          if (!a.completedAt && b.completedAt) return -1;
+          if (a.completedAt && !b.completedAt) return 1;
+          // Then by creation date descending
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+        setResponses(sorted);
+        setTotal(res.data.meta.total);
+        setTotalPages(res.data.meta.totalPages);
       } else {
         setResponses([]);
+        setTotal(0);
+        setTotalPages(1);
       }
     } catch {
       setError('Failed to load your sessions. Please try again.');
@@ -50,13 +62,13 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
   }, []);
 
   useEffect(() => {
-    loadResponses();
-  }, [loadResponses]);
+    loadResponses(currentPage, limit);
+  }, [loadResponses, currentPage, limit]);
 
   useEffect(() => {
     const handleEvents = () => {
       if ((document.visibilityState === 'visible' || window.name === 'focus') && !isLoading) {
-        loadResponses();
+        loadResponses(currentPage, limit);
       }
     };
 
@@ -67,9 +79,11 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
       document.removeEventListener('visibilitychange', handleEvents);
       window.removeEventListener('focus', handleEvents);
     };
-  }, [loadResponses, isLoading]);
+  }, [loadResponses, isLoading, currentPage, limit]);
 
-  const paginatedResponses = responses.slice((currentPage - 1) * PAGE_SIZE_5, currentPage * PAGE_SIZE_5);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section className={`${styles.section} ${className}`} aria-labelledby="my-sessions-heading">
@@ -80,15 +94,15 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
         ) : error ? (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
-            <button type="button" className={styles.btnRectangle} onClick={() => loadResponses()}>
+            <button type="button" className={styles.btnRectangle} onClick={() => loadResponses(currentPage, limit)}>
               Try Again
             </button>
           </div>
         ) : (
           <>
             <div className={styles.sessionsGrid}>
-              {responses.length === 0 && <EmptySessions />}
-              {paginatedResponses.map((session) => (
+              {responses.length === 0 && total === 0 && <EmptySessions />}
+              {responses.map((session) => (
                 <SessionCard
                   key={session._id}
                   session={session}
@@ -98,7 +112,7 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
                 />
               ))}
 
-              {responses.length > 0 && (
+              {total > 0 && (
                 <Link href="/deep-rest/payment" className={styles.addSessionCard}>
                   <div className={styles.addIcon}>
                     <Icon icon={ICON_PLUS_CIRCLE} width={48} height={48} />
@@ -113,10 +127,10 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
             <div className={styles.paginationWrapper}>
               <Pagination
                 page={currentPage}
-                limit={PAGE_SIZE_5}
-                total={responses.length}
-                totalPages={Math.max(1, Math.ceil(responses.length / PAGE_SIZE_5))}
-                onPageChange={setCurrentPage}
+                limit={limit}
+                total={total}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
               />
             </div>
           </>

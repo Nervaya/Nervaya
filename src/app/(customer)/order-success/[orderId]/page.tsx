@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import {
@@ -47,12 +47,14 @@ function formatOrderNumber(orderId: string): string {
 
 export default function OrderSuccessPage() {
   const params = useParams();
+  const router = useRouter();
   const orderId = typeof params.orderId === 'string' ? params.orderId : (params.orderId?.[0] ?? '');
   const { user } = useAuth();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [confettiData, setConfettiData] = useState<object | null>(null);
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
   const fetchOrder = useCallback(async () => {
     try {
@@ -108,6 +110,27 @@ export default function OrderSuccessPage() {
   }, []);
 
   const isDigitalOnly = order?.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF) ?? false;
+  const driftOffItem = order?.items.find((item) => item.itemType === ITEM_TYPE.DRIFT_OFF);
+  const driftOffOrderId = driftOffItem ? String(driftOffItem.itemId) : null;
+  const questionnaireUrl = driftOffOrderId
+    ? `/deep-rest/questionnaire?orderId=${driftOffOrderId}`
+    : '/deep-rest/sessions';
+
+  // Auto-redirect to questionnaire for Deep Rest orders
+  useEffect(() => {
+    if (!order || !isDigitalOnly) return;
+    setRedirectCountdown(5);
+  }, [order, isDigitalOnly]);
+
+  useEffect(() => {
+    if (redirectCountdown === null) return;
+    if (redirectCountdown <= 0) {
+      router.replace(questionnaireUrl);
+      return;
+    }
+    const timer = setTimeout(() => setRedirectCountdown((prev) => (prev !== null ? prev - 1 : null)), 1000);
+    return () => clearTimeout(timer);
+  }, [redirectCountdown, router, questionnaireUrl]);
 
   if (loading) {
     return (
@@ -253,7 +276,15 @@ export default function OrderSuccessPage() {
                   <div className={styles.stepIcon} aria-hidden>
                     <Icon icon={ICON_HEADPHONES} />
                   </div>
-                  <p>Your session is ready! Head over to your dashboard to start listening.</p>
+                  <p>
+                    Complete your assessment questionnaire so our specialists can craft your personalized session.
+                    {redirectCountdown !== null && redirectCountdown > 0 && (
+                      <>
+                        <br />
+                        <strong>Redirecting in {redirectCountdown}s...</strong>
+                      </>
+                    )}
+                  </p>
                 </div>
               ) : (
                 <>
@@ -275,9 +306,9 @@ export default function OrderSuccessPage() {
           </section>
 
           <div className={styles.actions}>
-            <Link href={isDigitalOnly ? '/dashboard' : '/supplements'} className={styles.primaryButton}>
-              <Icon icon={ICON_HOUSE} aria-hidden />
-              {isDigitalOnly ? 'Go to Dashboard' : 'Continue Shopping'}
+            <Link href={isDigitalOnly ? questionnaireUrl : '/supplements'} className={styles.primaryButton}>
+              <Icon icon={isDigitalOnly ? ICON_HEADPHONES : ICON_HOUSE} aria-hidden />
+              {isDigitalOnly ? 'Start Questionnaire' : 'Continue Shopping'}
             </Link>
             <p className={styles.supportText}>
               Need help with your order?{' '}

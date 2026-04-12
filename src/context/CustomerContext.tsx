@@ -42,14 +42,16 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
         dashboardApi.getOrders(),
         dashboardApi.getLatestAssessment(),
         dashboardApi.getInProgressAssessment(),
-        deepRestApi.getResponses().catch(() => ({ success: true, data: [] })),
+        deepRestApi
+          .getResponses(1, 50)
+          .catch(() => ({ success: true, data: { data: [], meta: { total: 0, page: 1, limit: 50, totalPages: 1 } } })),
       ]);
 
       setSessions(sessionsRes?.data || []);
       setOrders(ordersRes?.data || []);
       setLatestAssessment(latestRes?.data ?? null);
       setInProgressAssessment(inProgressRes?.data ?? null);
-      setDriftOffResponses(driftOffRes?.data ?? []);
+      setDriftOffResponses(driftOffRes?.data?.data ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load customer data');
     } finally {

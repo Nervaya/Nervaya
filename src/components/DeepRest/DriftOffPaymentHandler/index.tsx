@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import { deepRestApi } from '@/lib/api/deepRest';
 import type { RazorpayPaymentResponse } from '@/types/payment.types';
 import { useRazorpayCheckout } from '@/hooks/useRazorpayCheckout';
 import { RazorpayCheckoutScript } from '@/components/common';
 import { trackAudioPurchase } from '@/utils/analytics';
+import type { PaymentSuccessDetails } from '@/components/DeepRest/PaymentSuccessScreen';
 
 interface DriftOffPaymentHandlerProps {
   driftOffOrderId: string;
@@ -16,6 +16,7 @@ interface DriftOffPaymentHandlerProps {
   userName?: string;
   userEmail?: string;
   onVerifyStart?: () => void;
+  onPaymentSuccess?: (details: PaymentSuccessDetails) => void;
   onError?: (message: string) => void;
 }
 
@@ -27,9 +28,9 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
   userName,
   userEmail,
   onVerifyStart,
+  onPaymentSuccess,
   onError,
 }) => {
-  const router = useRouter();
   const prefill = useMemo(() => ({ name: userName, email: userEmail }), [userName, userEmail]);
   const handleDismiss = useCallback(() => onError?.('Payment cancelled'), [onError]);
 
@@ -48,7 +49,13 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
             value: amount,
             currency: 'INR',
           });
-          router.replace(`/deep-rest/questionnaire?orderId=${driftOffOrderId}`);
+          onPaymentSuccess?.({
+            paymentId: response.razorpay_payment_id,
+            razorpayOrderId,
+            orderId: driftOffOrderId,
+            amount,
+            date: new Date(),
+          });
         } else {
           onError?.(result.message || 'Payment verification failed');
         }
@@ -56,7 +63,7 @@ const DriftOffPaymentHandler: React.FC<DriftOffPaymentHandlerProps> = ({
         onError?.('Failed to verify payment');
       }
     },
-    [amount, driftOffOrderId, onError, onVerifyStart, router],
+    [amount, driftOffOrderId, onError, onPaymentSuccess, onVerifyStart, razorpayOrderId],
   );
 
   const { openPaymentModal } = useRazorpayCheckout({

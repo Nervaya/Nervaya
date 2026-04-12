@@ -3,7 +3,7 @@ import mongoose, { Schema, Model, Document } from 'mongoose';
 export type DriftOffPaymentStatus = 'pending' | 'paid' | 'failed';
 
 export interface IDriftOffOrder extends Document {
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   amount: number;
   paymentStatus: DriftOffPaymentStatus;
   razorpayOrderId?: string;
@@ -15,7 +15,8 @@ export interface IDriftOffOrder extends Document {
 const driftOffOrderSchema = new Schema<IDriftOffOrder>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: [true, 'User ID is required'],
       index: true,
     },

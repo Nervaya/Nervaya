@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const rateLimitKey = `${ip}:${typeof email === 'string' ? email.trim().toLowerCase() : 'unknown'}`;
 
-    if (!checkLoginRateLimit(rateLimitKey)) {
+    if (!(await checkLoginRateLimit(rateLimitKey))) {
       return NextResponse.json(errorResponse('Too many login attempts. Please try again later.', null, 429), {
         status: 429,
       });

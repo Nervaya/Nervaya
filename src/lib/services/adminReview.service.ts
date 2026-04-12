@@ -12,12 +12,13 @@ interface AdminReviewFilters {
   dateTo?: string;
   search?: string;
   itemType?: string;
+  responseId?: string;
 }
 
 export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewFilters) {
   await connectDB();
 
-  const safeLimit = Math.min(Math.max(limit, 1), 50);
+  const safeLimit = Math.max(limit, 1);
   const skip = (page - 1) * safeLimit;
 
   const query: Record<string, unknown> = {};
@@ -34,7 +35,8 @@ export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewF
     if (filters.dateTo) (query.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
   }
   if (filters?.search) {
-    const searchRegex = new RegExp(filters.search, 'i');
+    const escaped = filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const searchRegex = new RegExp(escaped, 'i');
     const matchingUsers = await User.find({
       $or: [{ name: searchRegex }, { email: searchRegex }, { phone: searchRegex }],
     })
@@ -45,6 +47,9 @@ export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewF
   }
   if (filters?.itemType) {
     query.itemType = filters.itemType;
+  }
+  if (filters?.responseId && Types.ObjectId.isValid(filters.responseId)) {
+    query.responseId = new Types.ObjectId(filters.responseId);
   }
 
   const [reviews, total] = await Promise.all([

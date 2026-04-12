@@ -107,6 +107,15 @@ const blogSchema = new Schema<IBlog>(
   },
 );
 
+blogSchema.index({ isPublished: 1, createdAt: -1 });
+blogSchema.index(
+  { title: 'text', author: 'text', description: 'text', content: 'text' },
+  {
+    weights: { title: 10, author: 5, description: 3, content: 1 },
+    name: 'blog_text_search',
+  },
+);
+
 const Blog: Model<IBlog> = mongoose.models.Blog || mongoose.model<IBlog>('Blog', blogSchema);
 
 export default Blog;

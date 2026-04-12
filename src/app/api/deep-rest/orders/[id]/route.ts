@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const order = await getDriftOffOrderById(id);
 
-    if (authResult.user.role !== ROLES.ADMIN && order.userId !== authResult.user.userId) {
+    if (authResult.user.role !== ROLES.ADMIN && order.userId.toString() !== authResult.user.userId) {
       return NextResponse.json(errorResponse('Insufficient permissions', null, 403), { status: 403 });
     }
 

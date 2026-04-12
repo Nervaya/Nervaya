@@ -32,7 +32,7 @@ export interface IShippingAddress {
 }
 
 export interface IOrder extends Document {
-  userId: string;
+  userId: Types.ObjectId;
   items: IOrderItem[];
   totalAmount: number;
   paymentId?: string;
@@ -135,7 +135,8 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
 const orderSchema = new Schema<IOrder>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: [true, 'User ID is required'],
       index: true,
     },
@@ -179,6 +180,10 @@ const orderSchema = new Schema<IOrder>(
     timestamps: true,
   },
 );
+
+orderSchema.index({ userId: 1, createdAt: -1 });
+orderSchema.index({ orderStatus: 1, createdAt: -1 });
+orderSchema.index({ paymentStatus: 1, createdAt: -1 });
 
 // Force Mongoose to use the updated schema in development
 if (process.env.NODE_ENV === 'development') {

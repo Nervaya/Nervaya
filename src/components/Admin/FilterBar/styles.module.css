@@ -1,117 +1,120 @@
 .bar {
-  background: var(--color-background);
-  border: 1px solid var(--color-border-light);
-  border-radius: 20px;
-  padding: var(--space-6);
-  margin-bottom: var(--space-7);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-6);
   align-items: flex-end;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-slow);
-}
-
-@media (max-width: 1024px) {
-  .bar {
-    gap: var(--space-5);
-    padding: 20px;
-  }
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
   .bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-5);
-    padding: var(--space-5);
+    gap: 0.5rem;
   }
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  flex: 1;
-  min-width: 180px;
+  gap: 0;
+  position: relative;
+  min-width: 0;
+  flex: 1 1 150px;
+  max-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .field {
+    flex: 1 1 calc(50% - 0.25rem);
+    max-width: none;
+  }
 }
 
 @media (max-width: 480px) {
   .field {
-    min-width: 100%;
+    flex: 1 1 100%;
   }
 }
 
 .field label {
-  font-size: 0.8125rem;
-  font-weight: var(--weight-bold);
-  color: var(--color-text-primary);
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-2);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1;
 }
 
 .field input,
 .field select {
+  width: 100%;
   background: var(--color-background);
   border: 1.5px solid var(--color-border-light);
-  border-radius: var(--radius);
-  padding: var(--space-3) var(--space-4);
-  min-height: 40px;
+  border-radius: 10px;
+  padding: 1.375rem 0.75rem 0.5rem;
+  height: 48px;
   color: var(--color-text-primary);
-  font-size: var(--text-body);
-  font-weight: var(--weight-medium);
-  transition: all var(--transition-base);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .field input[type='date'] {
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top: 1.375rem;
+  padding-bottom: 0.5rem;
 }
 
 .field select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.75rem center;
+  background-position: right 0.625rem center;
+  background-size: 14px;
   padding-right: 2rem;
+}
+
+.field input:hover,
+.field select:hover {
+  border-color: var(--color-border-light-hover);
 }
 
 .field input:focus,
 .field select:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 4px var(--color-accent-dim);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
 }
 
 .field input::placeholder {
-  color: var(--color-text-secondary);
+  color: var(--color-text-disabled);
+  font-size: 0.8125rem;
+  font-weight: 400;
 }
 
 .actions {
   display: flex;
-  gap: var(--space-4);
+  gap: 0.5rem;
   align-items: center;
-  margin-left: auto;
   flex-shrink: 0;
-  padding-bottom: var(--space-1);
-}
-
-@media (max-width: 1024px) {
-  .actions {
-    width: 100%;
-    margin-left: 0;
-    justify-content: flex-end;
-    border-top: 1px solid var(--color-border-light);
-    padding-top: var(--space-5);
-    margin-top: var(--space-3);
-  }
+  align-self: flex-end;
+  padding-bottom: 0.125rem;
 }
 
 @media (max-width: 768px) {
   .actions {
-    justify-content: stretch;
+    flex: 1 1 100%;
+    justify-content: flex-end;
+    padding-top: 0.25rem;
   }
 }
 
@@ -119,59 +122,55 @@
   background: var(--color-accent);
   color: var(--color-text-on-dark);
   border: none;
-  padding: 0 var(--space-7);
-  height: 40px;
-  border-radius: var(--radius);
-  font-weight: var(--weight-bold);
-  font-size: var(--text-body);
+  padding: 0 1.5rem;
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.8125rem;
   cursor: pointer;
-  transition: all var(--transition-base);
-  box-shadow: 0 4px 12px var(--color-accent-dim);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .applyButton {
-    flex: 1;
-  }
+  white-space: nowrap;
+  box-shadow: var(--shadow-btn-primary);
 }
 
 .applyButton:hover {
   background: var(--color-accent-hover);
-  box-shadow: 0 8px 16px var(--color-accent-dim);
+  box-shadow: var(--shadow-btn-primary-hover);
+  transform: translateY(-1px);
 }
 
 .resetButton {
-  background: var(--color-accent-dim);
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent-dim);
-  padding: 0 var(--space-6);
-  height: 40px;
-  border-radius: var(--radius);
-  font-size: var(--text-body);
-  font-weight: var(--weight-semibold);
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-border-light);
+  padding: 0 1.25rem;
+  height: 48px;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .resetButton {
-    flex: 1;
-  }
+  white-space: nowrap;
 }
 
 .resetButton:hover {
-  background: var(--color-white-dim);
+  background: var(--color-background-page);
   border-color: var(--color-border-light-hover);
   color: var(--color-text-primary);
 }
 
 .badge {
-  font-size: var(--text-label);
-  color: var(--color-text-secondary);
+  font-size: 0.6875rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--color-accent-dim);
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
 }

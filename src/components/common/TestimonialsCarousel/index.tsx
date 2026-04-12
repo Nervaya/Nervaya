@@ -17,7 +17,7 @@ interface TestimonialsCarouselProps {
   title?: string;
 }
 
-export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: TestimonialsCarouselProps) {
+export function TestimonialsCarousel({ reviews, title }: TestimonialsCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -87,7 +87,7 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>{title}</h2>
+      {title && <h2 className={styles.title}>{title}</h2>}
       <div
         className={styles.track}
         ref={trackRef}
@@ -96,8 +96,8 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setIsPaused(false)}
       >
-        {reviews.map((review, idx) => (
-          <div key={`${review.name}-${idx}`} className={styles.card} data-card>
+        {reviews.map((review) => (
+          <div key={`${review.name}-${review.comment.slice(0, 20)}`} className={styles.card} data-card>
             <div className={styles.userRow}>
               <div className={styles.avatar}>{review.initials}</div>
               <div className={styles.userInfo}>
