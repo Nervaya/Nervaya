@@ -14,7 +14,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const { id } = await params;
-    const assessment = await getAssessmentById(id);
+    const ownerFilter = authResult.user.role === ROLES.CUSTOMER ? authResult.user.userId : undefined;
+    const assessment = await getAssessmentById(id, ownerFilter);
 
     return NextResponse.json(successResponse('Assessment fetched successfully', assessment));
   } catch (error) {

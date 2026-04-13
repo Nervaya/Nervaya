@@ -4,7 +4,7 @@ import { COOKIE_NAMES } from '@/utils/cookieConstants';
 import { ROLES } from '@/lib/constants/enums';
 import { PUBLIC_ROUTES, THERAPIST_ROUTES, ADMIN_ROUTES, CUSTOMER_ONLY_ROUTES, ROUTES } from '@/utils/routesConstants';
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 1. Skip middleware for non-page requests (assets, api, etc.)

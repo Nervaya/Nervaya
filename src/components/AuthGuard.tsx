@@ -80,5 +80,28 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return <LoadingScreen />;
   }
 
+  // Hold the loader while a redirect is in flight so unauthenticated visitors
+  // never see the protected shell (nav + page body) between the useEffect
+  // firing router.replace() and React actually navigating.
+  const onProtectedPath = isProtectedPath(pathname);
+  if (onProtectedPath && !isAuthenticated) {
+    return <LoadingScreen />;
+  }
+  if (isAuthenticated) {
+    if (ADMIN_ROUTES.some((route) => pathname.startsWith(route)) && user?.role !== ROLES.ADMIN) {
+      return <LoadingScreen />;
+    }
+    if (THERAPIST_ROUTES.some((route) => pathname.startsWith(route)) && user?.role !== ROLES.THERAPIST) {
+      return <LoadingScreen />;
+    }
+    if (
+      (PROTECTED_ROUTES.some((route) => pathname.startsWith(route)) ||
+        CUSTOMER_ONLY_ROUTES.some((route) => pathname.startsWith(route))) &&
+      user?.role === ROLES.ADMIN
+    ) {
+      return <LoadingScreen />;
+    }
+  }
+
   return <>{children}</>;
 }

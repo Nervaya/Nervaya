@@ -477,7 +477,7 @@ export async function getLatestUserAssessment(userId: string): Promise<ISleepAss
   }
 }
 
-export async function getAssessmentById(assessmentId: string): Promise<ISleepAssessmentResponse> {
+export async function getAssessmentById(assessmentId: string, ownerUserId?: string): Promise<ISleepAssessmentResponse> {
   await connectDB();
 
   try {
@@ -485,7 +485,15 @@ export async function getAssessmentById(assessmentId: string): Promise<ISleepAss
       throw new ValidationError('Invalid Assessment ID');
     }
 
-    const assessment = await SleepAssessmentResponse.findById(assessmentId).lean();
+    const filter: Record<string, unknown> = { _id: new Types.ObjectId(assessmentId) };
+    if (ownerUserId) {
+      if (!Types.ObjectId.isValid(ownerUserId)) {
+        throw new ValidationError('Invalid User ID');
+      }
+      filter.userId = new Types.ObjectId(ownerUserId);
+    }
+
+    const assessment = await SleepAssessmentResponse.findOne(filter).lean();
 
     if (!assessment) {
       throw new NotFoundError('Assessment not found');
