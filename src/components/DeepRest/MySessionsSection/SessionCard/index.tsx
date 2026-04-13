@@ -157,12 +157,14 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
           role="dialog"
           aria-modal="true"
           aria-label="Write a review"
-          onClick={() => setShowReviewForm(false)}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowReviewForm(false);
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') setShowReviewForm(false);
           }}
         >
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent}>
             <ReviewForm
               responseId={session._id}
               onSuccess={() => setShowReviewForm(false)}
