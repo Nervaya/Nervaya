@@ -43,19 +43,19 @@
 
 /* Unified Card Theme: Lavender/Indigo */
 .supportCard {
-  background: #f5f3ff;
+  background: var(--color-accent-surface);
   border: 1px solid var(--color-border);
 }
 
 .supportCard .supportIcon {
   background: var(--color-background);
   color: var(--color-accent);
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--color-accent-surface-strong);
 }
 
 .supportCard:hover {
-  border-color: #c4b5fd;
-  background: #ede9fe;
+  border-color: var(--color-accent-surface-border-strong);
+  background: var(--color-accent-surface-hover);
 }
 
 .supportCard:hover {

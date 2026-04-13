@@ -55,16 +55,16 @@
 
 .whyChooseCard:hover {
   transform: translateY(-5px);
-  background: #fdfaff;
-  border-color: #ddd6fe;
-  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.08);
+  background: var(--color-accent-surface-soft);
+  border-color: var(--color-accent-surface-strong);
+  box-shadow: var(--shadow-lg);
 }
 
 .whyChooseIcon {
   width: 56px;
   height: 56px;
   border-radius: var(--radius-xl);
-  background: #f5f3ff;
+  background: var(--color-accent-surface);
   color: var(--color-accent);
   display: flex;
   align-items: center;

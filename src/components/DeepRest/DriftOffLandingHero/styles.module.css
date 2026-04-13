@@ -1,13 +1,13 @@
 .hero {
   display: flex;
   align-items: center;
-  gap: 4rem;
-  padding: 4rem;
+  gap: var(--space-12);
+  padding: var(--space-12);
   margin-bottom: var(--spacing-2xl);
   position: relative;
-  background-color: #fafbff;
-  border-radius: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  background-color: var(--color-accent-surface-soft);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
 }
 

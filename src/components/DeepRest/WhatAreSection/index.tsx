@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_HEADPHONES } from '@/constants/icons';
+import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 const WhatAreSection = () => {
@@ -19,9 +19,9 @@ const WhatAreSection = () => {
         </p>
       </div>
       <div className={styles.whatAreAction}>
-        <Link href="/deep-rest/payment" className={styles.buttonPrimary}>
+        <Button href="/deep-rest/payment" variant="primary" size="md" fullWidth={false}>
           Buy Session
-        </Link>
+        </Button>
       </div>
     </div>
   );

@@ -105,13 +105,13 @@
   max-width: 360px;
   display: flex;
   flex-direction: column;
-  background: #fdfaff;
-  border: 1px solid #e9e3ff;
+  background: var(--color-accent-surface-soft);
+  border: 1px solid var(--color-accent-surface-border);
   border-radius: var(--radius-2xl);
-  padding: 2rem;
+  padding: var(--space-7);
   text-align: left;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.05);
+  box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 768px) {

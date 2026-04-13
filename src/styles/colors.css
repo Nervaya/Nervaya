@@ -13,6 +13,16 @@
   --color-accent-dim: rgba(124, 58, 237, 0.1);
   --color-accent-dim-hover: rgba(124, 58, 237, 0.06);
 
+  /* Solid accent surface tints — for opaque card backgrounds where
+     a semi-transparent dim would composite incorrectly. Matches
+     indigo-50 / indigo-100 / indigo-200 in the Stripe-inspired palette. */
+  --color-accent-surface-soft: #fdfaff;
+  --color-accent-surface: #f5f3ff;
+  --color-accent-surface-hover: #ede9fe;
+  --color-accent-surface-strong: #ddd6fe;
+  --color-accent-surface-border: #e9e3ff;
+  --color-accent-surface-border-strong: #c4b5fd;
+
   /* ── Gradients (Locked) ── */
   --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
   --gradient-accent-hover: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
