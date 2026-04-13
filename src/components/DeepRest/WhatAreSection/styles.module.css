@@ -1,16 +1,16 @@
 .whatAreCard {
-  background: #fdfaff;
-  border: 1px solid #e9e3ff;
+  background: var(--color-accent-surface-soft);
+  border: 1px solid var(--color-accent-surface-border);
   border-radius: var(--radius-2xl);
-  padding: 2.5rem;
+  padding: var(--space-8);
   display: flex;
-  gap: 2.5rem;
+  gap: var(--space-8);
   align-items: center;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   text-align: left;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 1024px) {
@@ -98,27 +98,4 @@
   .whatAreAction > a {
     width: 100%;
   }
-}
-
-.buttonPrimary {
-  background: var(--gradient-accent);
-  color: var(--color-text-on-dark);
-  padding: var(--space-4) 28px;
-  min-height: 48px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: var(--weight-bold);
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-slow);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-btn-primary);
-}
-
-.buttonPrimary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-btn-primary-hover);
 }

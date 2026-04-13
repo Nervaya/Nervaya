@@ -13,7 +13,7 @@ export interface ICartItem {
 }
 
 export interface ICart extends Document {
-  userId: string;
+  userId: Types.ObjectId;
   items: ICartItem[];
   totalAmount: number;
   createdAt: Date;
@@ -59,7 +59,8 @@ const cartItemSchema = new Schema<ICartItem>(
 const cartSchema = new Schema<ICart>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: [true, 'User ID is required'],
       unique: true,
       index: true,

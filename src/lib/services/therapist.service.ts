@@ -82,7 +82,7 @@ export async function createTherapist(data: Partial<ITherapist>) {
 export async function getAllTherapists(filter: Record<string, unknown> = {}) {
   await connectDB();
   try {
-    const therapists = await Therapist.find(filter).sort({ createdAt: -1 });
+    const therapists = await Therapist.find(filter).sort({ createdAt: -1 }).limit(200).lean();
     return therapists;
   } catch (error) {
     throw handleError(error);
@@ -95,7 +95,7 @@ export async function getTherapistById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new ValidationError('Invalid Therapist ID');
     }
-    const therapist = await Therapist.findById(id);
+    const therapist = await Therapist.findById(id).lean();
     if (!therapist) {
       throw new ValidationError('Therapist not found');
     }

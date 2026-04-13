@@ -1,4 +1,7 @@
 import api from '@/lib/axios';
+import type { PaginationMeta } from '@/types/pagination.types';
+
+export type { PaginationMeta };
 
 export interface AdminFeedbackFiltersParams {
   minScore?: number;
@@ -6,13 +9,6 @@ export interface AdminFeedbackFiltersParams {
   dateFrom?: string;
   dateTo?: string;
   search?: string;
-}
-
-export interface PaginationMeta {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
 }
 
 export interface AdminFeedback {

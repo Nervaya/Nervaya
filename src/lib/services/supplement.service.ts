@@ -52,10 +52,7 @@ export async function getAllSupplementsPaginated(
       filter.isActive = filters.isActive;
     }
     if (filters?.search && filters.search.trim()) {
-      filter.$or = [
-        { name: { $regex: filters.search.trim(), $options: 'i' } },
-        { description: { $regex: filters.search.trim(), $options: 'i' } },
-      ];
+      filter.$text = { $search: filters.search.trim() };
     }
     if (filters?.minStock !== undefined && filters.minStock !== null) {
       const stockCond = (filter.stock as Record<string, number>) ?? {};
@@ -68,7 +65,7 @@ export async function getAllSupplementsPaginated(
     const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
     const safeLimit = Math.max(1, Math.min(limit, 100));
     const [data, total] = await Promise.all([
-      Supplement.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Supplement.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit).lean(),
       Supplement.countDocuments(filter),
     ]);
     const totalPages = Math.max(1, Math.ceil(total / safeLimit));
@@ -81,7 +78,7 @@ export async function getAllSupplementsPaginated(
 export async function getAllSupplements(filter: Record<string, unknown> = {}) {
   await connectDB();
   try {
-    const supplements = await Supplement.find(filter).sort({ createdAt: -1 });
+    const supplements = await Supplement.find(filter).sort({ createdAt: -1 }).limit(200).lean();
     return supplements;
   } catch (error) {
     throw handleError(error);
@@ -91,9 +88,12 @@ export async function getAllSupplements(filter: Record<string, unknown> = {}) {
 export async function getActiveSupplements() {
   await connectDB();
   try {
-    const supplements = await Supplement.find({ isActive: true }).sort({
-      createdAt: -1,
-    });
+    const supplements = await Supplement.find({ isActive: true })
+      .sort({
+        createdAt: -1,
+      })
+      .limit(200)
+      .lean();
     return supplements;
   } catch (error) {
     throw handleError(error);
@@ -106,7 +106,7 @@ export async function getSupplementById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new ValidationError('Invalid Supplement ID');
     }
-    const supplement = await Supplement.findById(id);
+    const supplement = await Supplement.findById(id).lean();
     if (!supplement) {
       throw new ValidationError('Supplement not found');
     }

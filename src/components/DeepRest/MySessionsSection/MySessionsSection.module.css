@@ -1,7 +1,7 @@
 .sessionsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
   width: 100%;
 }
 
@@ -32,15 +32,15 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .sessionsGrid {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .sessionsGrid {
+    grid-template-columns: 1fr;
     gap: var(--space-4);
   }
 }

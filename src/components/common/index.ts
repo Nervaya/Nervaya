@@ -16,4 +16,6 @@ export { default as StatusState } from './StatusState';
 export { TagInput } from './TagInput';
 export { default as Badge } from './Badge';
 export type { BadgeProps } from './Badge';
+export { default as DataTable } from './DataTable';
+export type { ColumnDef, ColumnAlign, DataTableProps, DataTablePagination } from './DataTable';
 export { default as RazorpayCheckoutScript } from './RazorpayCheckoutScript';

@@ -28,6 +28,8 @@ export async function GET(req: NextRequest) {
     if (search) filters.search = search;
     const itemType = searchParams.get('itemType');
     if (itemType) filters.itemType = itemType;
+    const responseId = searchParams.get('responseId');
+    if (responseId) filters.responseId = responseId;
 
     const result = await getAllReviews(page, limit, filters);
     return NextResponse.json(successResponse('Reviews fetched', result));

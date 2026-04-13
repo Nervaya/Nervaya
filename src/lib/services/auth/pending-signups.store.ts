@@ -1,4 +1,6 @@
 import { Role } from '@/lib/constants/roles';
+import PendingSignup from '@/lib/models/pendingSignup.model';
+import connectDB from '@/lib/db/mongodb';
 
 const PENDING_SIGNUP_TTL_MS = 10 * 60 * 1000;
 
@@ -10,70 +12,49 @@ export interface PendingSignupData {
   expiresAt: number;
 }
 
-const pendingSignups = new Map<string, PendingSignupData>();
+export async function savePendingSignup(email: string, password: string, name: string, role?: Role): Promise<void> {
+  await connectDB();
+  const normalizedEmail = email.toLowerCase().trim();
+  const expiresAt = new Date(Date.now() + PENDING_SIGNUP_TTL_MS);
 
-function keyForEmail(email: string): string {
-  return email.toLowerCase().trim();
+  await PendingSignup.findOneAndUpdate(
+    { email: normalizedEmail },
+    { password, name: name.trim(), role, expiresAt },
+    { upsert: true },
+  );
 }
 
-export function savePendingSignup(email: string, password: string, name: string, role?: Role): void {
-  const key = keyForEmail(email);
-  const expiresAt = Date.now() + PENDING_SIGNUP_TTL_MS;
+export async function consumePendingSignup(email: string): Promise<Omit<PendingSignupData, 'expiresAt'> | null> {
+  await connectDB();
+  const normalizedEmail = email.toLowerCase().trim();
+  const doc = await PendingSignup.findOneAndDelete({ email: normalizedEmail });
 
-  pendingSignups.set(key, {
-    email: email.toLowerCase().trim(),
-    password: password,
-    name: name.trim(),
-    role,
-    expiresAt,
-  });
-}
-
-export function consumePendingSignup(email: string): Omit<PendingSignupData, 'expiresAt'> | null {
-  const key = keyForEmail(email);
-  const data = pendingSignups.get(key);
-
-  if (!data) return null;
-
-  if (Date.now() > data.expiresAt) {
-    pendingSignups.delete(key);
-    return null;
-  }
-
-  pendingSignups.delete(key);
+  if (!doc) return null;
+  if (new Date() > doc.expiresAt) return null;
 
   return {
-    email: data.email,
-    password: data.password,
-    name: data.name,
-    role: data.role,
+    email: doc.email,
+    password: doc.password,
+    name: doc.name,
+    role: doc.role as Role | undefined,
   };
 }
 
-export function hasPendingSignup(email: string): boolean {
-  const key = keyForEmail(email);
-  const data = pendingSignups.get(key);
+export async function hasPendingSignup(email: string): Promise<boolean> {
+  await connectDB();
+  const normalizedEmail = email.toLowerCase().trim();
+  const doc = await PendingSignup.findOne({ email: normalizedEmail });
 
-  if (!data) return false;
-
-  if (Date.now() > data.expiresAt) {
-    pendingSignups.delete(key);
+  if (!doc) return false;
+  if (new Date() > doc.expiresAt) {
+    await PendingSignup.deleteOne({ email: normalizedEmail });
     return false;
   }
-
   return true;
 }
 
-export function clearPendingSignup(email: string): void {
-  const key = keyForEmail(email);
-  pendingSignups.delete(key);
-}
-
-export function cleanupExpiredSignups(): void {
-  const now = Date.now();
-  for (const [key, data] of pendingSignups.entries()) {
-    if (now > data.expiresAt) {
-      pendingSignups.delete(key);
-    }
-  }
+export async function clearPendingSignup(email: string): Promise<void> {
+  await connectDB();
+  const normalizedEmail = email.toLowerCase().trim();
+  await PendingSignup.deleteOne({ email: normalizedEmail });
 }

@@ -4,6 +4,24 @@
   gap: var(--space-1);
 }
 
+.interactive .star {
+  cursor: pointer;
+}
+
+.starButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+  color: inherit;
+  transition: transform 0.1s ease;
+}
+
+.starButton:hover {
+  transform: scale(1.12);
+}
+
 .star {
   color: var(--color-amber-400, #fbbf24);
 }

@@ -14,6 +14,7 @@ import { PAYMENT_STATUS, ORDER_STATUS, CURRENCY, ITEM_TYPE } from '@/lib/constan
 import { getRazorpayInstance, initiateRefund } from '@/lib/utils/razorpay.util';
 import { getPromoCodeByCode, incrementUsage } from '@/lib/services/promo.service';
 import { sendRefundNotificationEmail } from '@/lib/services/email/refund-notification.service';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export interface RazorpayOrderResponse {
   id: string;
@@ -35,7 +36,7 @@ export async function createRazorpayOrder(orderId: string, amount: number, userI
       throw new ValidationError('Invalid Order ID');
     }
 
-    const order = await Order.findOne({ _id: orderId, userId });
+    const order = await Order.findOne({ _id: orderId, userId: toObjectId(userId) });
     if (!order) {
       throw new ValidationError('Order not found or access denied');
     }
@@ -221,7 +222,7 @@ export async function verifyPayment(orderId: string, paymentId: string, razorpay
       throw new ValidationError('Invalid Order ID');
     }
 
-    const order = await Order.findOne({ _id: orderId, userId });
+    const order = await Order.findOne({ _id: orderId, userId: toObjectId(userId) });
     if (!order) {
       throw new ValidationError('Order not found or access denied');
     }

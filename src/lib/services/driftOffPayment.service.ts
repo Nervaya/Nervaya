@@ -6,6 +6,7 @@ import { createDriftOffResponse } from '@/lib/services/driftOffResponse.service'
 import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { CURRENCY, PAYMENT_STATUS } from '@/lib/constants/enums';
 import { getRazorpayInstance } from '@/lib/utils/razorpay.util';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export async function createDriftOffRazorpayOrder(driftOffOrderId: string) {
   await connectDB();
@@ -54,7 +55,7 @@ export async function verifyDriftOffPayment(
     if (!Types.ObjectId.isValid(driftOffOrderId)) {
       throw new ValidationError('Invalid Deep Rest Order ID');
     }
-    const order = await DriftOffOrder.findOne({ _id: driftOffOrderId, userId });
+    const order = await DriftOffOrder.findOne({ _id: driftOffOrderId, userId: toObjectId(userId) });
     if (!order) {
       throw new NotFoundError('Deep Rest order not found or access denied');
     }

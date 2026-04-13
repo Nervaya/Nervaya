@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   try {
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
 
-    if (!checkSignupRateLimit(ip)) {
+    if (!(await checkSignupRateLimit(ip))) {
       return NextResponse.json(errorResponse('Too many signup attempts. Please try again later.', null, 429), {
         status: 429,
       });
@@ -63,8 +63,8 @@ export async function POST(request: NextRequest) {
 
     const sanitizedRole: Role | undefined = role === 'ADMIN' ? ROLES.CUSTOMER : (role as Role | undefined);
 
-    clearPendingSignup(sanitizedEmail);
-    savePendingSignup(sanitizedEmail, sanitizedPassword, sanitizedName, sanitizedRole);
+    await clearPendingSignup(sanitizedEmail);
+    await savePendingSignup(sanitizedEmail, sanitizedPassword, sanitizedName, sanitizedRole);
 
     const { sendOtp } = await import('@/lib/services/otp/otp-send.service');
     const otpResult = await sendOtp(sanitizedEmail, 'signup', ip);

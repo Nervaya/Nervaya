@@ -57,35 +57,6 @@
   color: var(--color-text-primary);
 }
 
-.statusBadge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: var(--text-label);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.statusReady {
-  background: #ecfdf5;
-  color: #059669;
-}
-
-.statusRequested {
-  background: #f5f3ff;
-  color: var(--color-accent);
-}
-
-.statusPreparing {
-  background: #fffbeb;
-  color: #d97706;
-}
-
-.statusPending {
-  background: #fef2f2;
-  color: var(--color-error-hover);
-}
-
 .cardContent {
   padding: var(--space-6);
   flex: 1;
@@ -107,7 +78,7 @@
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  background: #000;
+  background: var(--color-background-dark);
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
@@ -122,22 +93,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 3rem 1.5rem;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-6);
   min-height: 44px;
-  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
-  border: 2px dashed rgba(124, 58, 237, 0.25);
+  background: var(--color-accent-dim);
+  border: 2px dashed var(--color-border-accent);
   border-radius: var(--radius-xl);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
 }
 
 .externalSessionLink:hover {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  border-color: rgba(124, 58, 237, 0.45);
+  background: var(--color-accent-dim-hover);
+  border-color: var(--color-border-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+  box-shadow: var(--shadow-btn-primary);
 }
 
 .externalSessionIcon {
@@ -206,26 +177,6 @@
   }
 }
 
-.actionBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background: var(--gradient-accent);
-  color: var(--color-text-on-dark);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  font-weight: var(--weight-semibold);
-  text-decoration: none;
-  transition: all var(--transition-base);
-  min-height: 44px;
-}
-
-.actionBtn:hover {
-  filter: brightness(1.1);
-  transform: scale(1.02);
-}
-
 .preparationNote,
 .readyNote {
   font-size: 0.8125rem;
@@ -236,7 +187,7 @@
 }
 
 .readyNote {
-  color: #059669;
+  color: var(--color-success);
 }
 
 .requestPendingNote,
@@ -254,43 +205,39 @@
 }
 
 .reassignedNote {
-  color: #2563eb;
+  color: var(--color-info);
 }
 
 .requestError {
   color: var(--color-error-hover);
 }
 
-.requestBtn {
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modalContent {
   width: 100%;
-  margin-top: var(--space-4);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border-accent);
-  border-radius: var(--radius-lg);
-  background: var(--color-background);
-  color: var(--color-accent);
-  font-size: var(--text-body);
-  font-weight: var(--weight-bold);
-  cursor: pointer;
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    border-color var(--transition-base),
-    background var(--transition-base);
+  max-width: 480px;
+  animation: modalFadeIn 0.2s ease-out;
 }
 
-.requestBtn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  border-color: rgba(124, 58, 237, 0.38);
-  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
-  background: rgba(124, 58, 237, 0.04);
-}
-
-.requestBtn:disabled {
-  background: var(--color-background-page);
-  border-color: var(--color-border-light);
-  color: var(--color-text-slate-400);
-  box-shadow: none;
-  opacity: 0.65;
-  cursor: not-allowed;
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

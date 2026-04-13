@@ -17,6 +17,7 @@ import {
 } from '@/lib/constants/enums';
 import { getShippingCost } from '@/utils/shipping.util';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export interface CreateOrderParams {
   shippingAddress?: IOrder['shippingAddress'];
@@ -33,7 +34,8 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       throw new ValidationError('Invalid User ID');
     }
 
-    const cart = await Cart.findOne({ userId });
+    const userObjectId = toObjectId(userId);
+    const cart = await Cart.findOne({ userId: userObjectId });
     if (!cart || cart.items.length === 0) {
       throw new ValidationError('Cart is empty');
     }
@@ -110,7 +112,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
     const totalAmount = Math.max(0, subtotal + shipping - promoDiscount);
 
     const order = await Order.create({
-      userId,
+      userId: userObjectId,
       items: orderItems,
       totalAmount,
       paymentStatus: PAYMENT_STATUS.PENDING,
@@ -209,7 +211,7 @@ export async function createDirectOrder(userId: string, params: DirectOrderParam
     const totalAmount = finalPrice * params.quantity + shipping;
 
     const order = await Order.create({
-      userId,
+      userId: toObjectId(userId),
       items: [orderItem],
       totalAmount,
       paymentStatus: PAYMENT_STATUS.PENDING,
@@ -225,7 +227,7 @@ export async function createDirectOrder(userId: string, params: DirectOrderParam
 
 export async function clearCart(userId: string) {
   await connectDB();
-  const cart = await Cart.findOne({ userId });
+  const cart = await Cart.findOne({ userId: toObjectId(userId) });
   if (cart) {
     cart.items = [];
     await cart.save();
@@ -238,7 +240,7 @@ export async function getOrderById(orderId: string) {
     if (!Types.ObjectId.isValid(orderId)) {
       throw new ValidationError('Invalid Order ID');
     }
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).lean();
     if (!order) {
       throw new ValidationError('Order not found');
     }
@@ -279,7 +281,7 @@ export async function getAllOrders(
     } else if (filters) {
       if (filters.orderStatus) filter.orderStatus = filters.orderStatus;
       if (filters.paymentStatus) filter.paymentStatus = filters.paymentStatus;
-      if (filters.userId && filters.userId.trim()) filter.userId = filters.userId.trim();
+      if (filters.userId && filters.userId.trim()) filter.userId = toObjectId(filters.userId.trim());
       if (filters.dateFrom || filters.dateTo) {
         filter.createdAt = {};
         if (filters.dateFrom) {
@@ -308,7 +310,7 @@ export async function getAllOrders(
     const skip = (Math.max(1, page) - 1) * Math.max(1, Math.min(limit, 100));
     const safeLimit = Math.max(1, Math.min(limit, 100));
     const [data, total] = await Promise.all([
-      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit),
+      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(safeLimit).lean(),
       Order.countDocuments(filter),
     ]);
     const totalPages = Math.max(1, Math.ceil(total / safeLimit));
@@ -324,7 +326,10 @@ export async function getUserOrders(userId: string) {
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
-    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    const orders = await Order.find({ userId: toObjectId(userId) })
+      .sort({ createdAt: -1 })
+      .limit(200)
+      .lean();
     return orders;
   } catch (error) {
     throw handleError(error);

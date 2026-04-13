@@ -14,11 +14,11 @@
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
   color: var(--color-foreground);
-  margin: 0 0 1rem 0;
-  line-height: 1.2;
+  margin: 0 0 var(--space-4) 0;
+  line-height: var(--leading-title);
 }
 
 .subtitle {

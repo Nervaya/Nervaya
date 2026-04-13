@@ -29,13 +29,13 @@
 }
 
 .cardHigh {
-  background: linear-gradient(145deg, rgba(124, 58, 237, 0.04) 0%, var(--color-glass-bg) 100%);
+  background: var(--color-accent-dim-hover);
   border-color: var(--color-border-accent-hover);
 }
 
 .cardHigh:hover {
   border-color: var(--color-border-accent);
-  box-shadow: 0 12px 32px var(--color-accent-dim);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Top row */
@@ -73,18 +73,18 @@
 }
 
 .pillHigh {
-  background: #14532d;
+  background: var(--color-success);
   color: var(--color-text-on-dark);
 }
 .pillHigh::before {
-  background: #4ade80;
+  background: var(--color-success-dim);
 }
 .pillLow {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--color-warning-dim);
+  color: var(--color-warning);
 }
 .pillLow::before {
-  background: #f59e0b;
+  background: var(--color-warning);
 }
 
 /* Icon + Title */

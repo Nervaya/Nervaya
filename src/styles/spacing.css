@@ -86,6 +86,13 @@
   --spacing-xl: var(--space-8);
   --spacing-2xl: var(--space-9);
 
+  /* Legacy margin aliases (used by admin list layouts — keep in sync with --spacing-*) */
+  --margin-xs: var(--space-2);
+  --margin-sm: var(--space-3);
+  --margin-md: var(--space-5);
+  --margin-lg: var(--space-6);
+  --margin-xl: var(--space-8);
+
   /* ── Border Radius Scale ── */
   --radius-sm: 4px; /* Tags, small elements */
   --radius-md: 6px; /* Small buttons */

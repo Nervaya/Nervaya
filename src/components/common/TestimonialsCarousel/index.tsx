@@ -6,6 +6,7 @@ import { ICON_STAR } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export interface TestimonialItem {
+  id?: string;
   name: string;
   rating: number;
   comment: string;
@@ -17,7 +18,7 @@ interface TestimonialsCarouselProps {
   title?: string;
 }
 
-export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: TestimonialsCarouselProps) {
+export function TestimonialsCarousel({ reviews, title }: TestimonialsCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -87,7 +88,7 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>{title}</h2>
+      {title && <h2 className={styles.title}>{title}</h2>}
       <div
         className={styles.track}
         ref={trackRef}
@@ -97,7 +98,7 @@ export function TestimonialsCarousel({ reviews, title = 'Testimonials' }: Testim
         onTouchEnd={() => setIsPaused(false)}
       >
         {reviews.map((review, idx) => (
-          <div key={`${review.name}-${idx}`} className={styles.card} data-card>
+          <div key={review.id ?? `testimonial-${idx}`} className={styles.card} data-card>
             <div className={styles.userRow}>
               <div className={styles.avatar}>{review.initials}</div>
               <div className={styles.userInfo}>

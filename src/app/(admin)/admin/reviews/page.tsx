@@ -13,6 +13,8 @@ import styles from './styles.module.css';
 
 function countActiveFilters(f: AdminReviewFiltersParams): number {
   let n = 0;
+  if (f.search) n++;
+  if (f.itemType) n++;
   if (f.rating) n++;
   if (f.isVisible !== undefined) n++;
   if (f.dateFrom) n++;

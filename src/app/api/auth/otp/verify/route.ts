@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(errorResponse('Purpose must be login or signup', null, 400), { status: 400 });
   }
 
-  const result = verifyOtp(email, code, purpose, ip);
+  const result = await verifyOtp(email, code, purpose, ip);
 
   if (!result.success) {
     return NextResponse.json(errorResponse(result.message ?? 'Verification failed', null, result.statusCode), {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       await connectDB();
 
       const { consumePendingSignup } = await import('@/lib/services/auth');
-      const pendingData = consumePendingSignup(sanitizedEmail);
+      const pendingData = await consumePendingSignup(sanitizedEmail);
 
       if (!pendingData) {
         return NextResponse.json(errorResponse('Signup session expired. Please sign up again.', null, 400), {

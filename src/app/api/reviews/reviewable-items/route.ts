@@ -6,6 +6,7 @@ import { handleError } from '@/lib/utils/error.util';
 import connectDB from '@/lib/db/mongodb';
 import Order from '@/lib/models/order.model';
 import Review from '@/lib/models/review.model';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,16 +15,16 @@ export async function GET(req: NextRequest) {
 
     await connectDB();
 
-    const userId = authResult.user.userId;
+    const userObjectId = toObjectId(authResult.user.userId);
 
     const orders = await Order.find({
-      userId,
+      userId: userObjectId,
       orderStatus: 'delivered',
     })
       .sort({ createdAt: -1 })
       .lean();
 
-    const existingReviews = await Review.find({ userId }).select('productId itemType').lean();
+    const existingReviews = await Review.find({ userId: userObjectId }).select('productId itemType').lean();
     const reviewedKeys = new Set(existingReviews.map((r) => `${r.productId.toString()}_${r.itemType || 'Supplement'}`));
 
     const reviewableItems: {

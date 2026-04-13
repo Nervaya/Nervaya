@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-
+import Button from '@/components/common/Button';
 import styles from './EmptySessions.module.css';
 
 export const EmptySessions: React.FC = () => {
@@ -13,9 +12,9 @@ export const EmptySessions: React.FC = () => {
         Experience a personalized Deep Rest session designed just for you. Once you purchase a session, it will appear
         here.
       </p>
-      <Link href="/deep-rest/payment" className={styles.btn}>
+      <Button href="/deep-rest/payment" variant="primary" size="md" fullWidth={false}>
         Buy Your First Session
-      </Link>
+      </Button>
     </div>
   );
 };

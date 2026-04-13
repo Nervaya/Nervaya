@@ -1,4 +1,7 @@
 import api from '@/lib/axios';
+import type { PaginationMeta } from '@/types/pagination.types';
+
+export type { PaginationMeta };
 
 export interface AdminReviewFiltersParams {
   rating?: number;
@@ -7,13 +10,6 @@ export interface AdminReviewFiltersParams {
   dateTo?: string;
   search?: string;
   itemType?: string;
-}
-
-export interface PaginationMeta {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
 }
 
 export interface AdminReview {

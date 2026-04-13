@@ -1,26 +1,26 @@
 .banner {
   border-radius: var(--radius-xl);
-  padding: 24px 28px;
+  padding: var(--space-6) var(--space-7);
   border-left: 4px solid transparent;
   animation: up 0.4s ease-out;
 }
 
 .mild {
-  background: #eff6ff;
-  border-left-color: #3b82f6;
+  background: var(--color-info-dim);
+  border-left-color: var(--color-info);
 }
 .moderate {
-  background: #fffbeb;
-  border-left-color: #f59e0b;
+  background: var(--color-warning-dim);
+  border-left-color: var(--color-warning);
 }
 .severe {
-  background: #fef2f2;
+  background: var(--color-error-dim);
   border-left-color: var(--color-error);
   border-left-width: 3px;
 }
 .none {
-  background: #f0fdf4;
-  border-left-color: #10b981;
+  background: var(--color-success-dim);
+  border-left-color: var(--color-success);
 }
 
 .tag {

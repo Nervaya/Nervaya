@@ -4,7 +4,7 @@ import DriftOffLandingHero from '@/components/DeepRest/DriftOffLandingHero';
 import HowItWorks from '@/components/DeepRest/HowItWorks';
 import PlaylistSection from '@/components/DeepRest/PlaylistSection';
 import SupportCards from '@/components/DeepRest/SupportCards';
-import Testimonials from '@/components/DeepRest/Testimonials';
+import TestimonialsWithData from '@/components/DeepRest/Testimonials/TestimonialsWithData';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { type BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
@@ -46,12 +46,7 @@ export default function DriftOffPage() {
             <SupportCards />
           </section>
 
-          <section className={styles.section} aria-labelledby="testimonials-heading">
-            <h2 id="testimonials-heading" className={styles.sectionTitle}>
-              Testimonials
-            </h2>
-            <Testimonials />
-          </section>
+          <TestimonialsWithData sectionClassName={styles.section} titleClassName={styles.sectionTitle} />
         </div>
       </div>
     </Sidebar>

@@ -100,6 +100,15 @@ const supplementSchema = new Schema<ISupplement>(
   },
 );
 
+supplementSchema.index({ isActive: 1, createdAt: -1 });
+supplementSchema.index(
+  { name: 'text', description: 'text' },
+  {
+    weights: { name: 10, description: 1 },
+    name: 'supplement_text_search',
+  },
+);
+
 const Supplement: Model<ISupplement> =
   mongoose.models.Supplement || mongoose.model<ISupplement>('Supplement', supplementSchema);
 

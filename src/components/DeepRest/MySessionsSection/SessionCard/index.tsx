@@ -1,13 +1,14 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
 import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
 import { Badge } from '@/components/common';
+import Button from '@/components/common/Button';
+import { ReviewForm } from '@/components/DeepRest/ReviewForm';
 import styles from './SessionCard.module.css';
 
 const VideoPlayerDynamic = dynamic(() => import('@/components/DeepRest/VideoPlayer'), {
@@ -26,6 +27,7 @@ function isDriveUrl(url: string): boolean {
 }
 
 export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, isRequesting, requestError }) => {
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const videoUrl = session.assignedVideoUrl;
   const isReady = Boolean(videoUrl);
   const isExternalLink = videoUrl ? isDriveUrl(videoUrl) : false;
@@ -93,22 +95,29 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
 
       <div className={styles.cardFooter}>
         {isPendingAssessment && (
-          <Link href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
+          <Button
+            href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}`}
+            variant="primary"
+            size="md"
+            fullWidth
+          >
             Complete Assessment
-          </Link>
+          </Button>
         )}
         {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
         {isReady && (
           <>
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
             {(!hasRequestedReSession || isRequesting) && (
-              <Link
+              <Button
                 href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
-                className={styles.requestBtn}
-                style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}
+                variant="ghost"
+                size="md"
+                fullWidth
+                loading={isRequesting}
               >
-                {isRequesting ? 'Requesting…' : 'Edit Answers & Re-Request'}
-              </Link>
+                Edit Answers & Re-Request
+              </Button>
             )}
             {hasPendingReSessionRequest && !isRequesting && (
               <Badge variant="purple" fullWidth>
@@ -134,7 +143,36 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
           </p>
         )}
         {requestError && <p className={styles.requestError}>{requestError}</p>}
+
+        {isReady && (
+          <Button type="button" variant="secondary" size="md" fullWidth onClick={() => setShowReviewForm(true)}>
+            Write a Review
+          </Button>
+        )}
       </div>
+
+      {showReviewForm && (
+        <div
+          className={styles.modalOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Write a review"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowReviewForm(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setShowReviewForm(false);
+          }}
+        >
+          <div className={styles.modalContent}>
+            <ReviewForm
+              responseId={session._id}
+              onSuccess={() => setShowReviewForm(false)}
+              onCancel={() => setShowReviewForm(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,21 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import Button from '@/components/common/Button';
 import DriftOffPaymentHandler from '@/components/DeepRest/DriftOffPaymentHandler';
-import { DRIFT_OFF_SESSION_PRICE, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
-import { deepRestApi } from '@/lib/api/deepRest';
-import { configApi } from '@/lib/api/config';
+import { PaymentSuccessScreen, type PaymentSuccessDetails } from '@/components/DeepRest/PaymentSuccessScreen';
+import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 import { cartApi } from '@/lib/api/cart';
 import { useCart } from '@/context/CartContext';
 import { useDeepRestPayment } from './useDeepRestPayment';
+import { useDeepRestPaymentInit } from '@/queries/deepRest/useDeepRestPaymentInit';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import axiosInstance from '@/lib/axios';
-import type { ApiResponse } from '@/lib/utils/response.util';
-import type { IDriftOffOrder, IDriftOffResponse } from '@/types/driftOff.types';
 import styles from './styles.module.css';
 
 const BENEFITS = [
@@ -29,10 +27,8 @@ const BENEFITS = [
 export default function DriftOffPaymentPage() {
   const router = useRouter();
   const { isAuthenticated, initializing: authLoading } = useAuth();
-  const [isChecking, setIsChecking] = useState(true);
-  const [initError, setInitError] = useState<string | null>(null);
-  const [dynamicPrice, setDynamicPrice] = useState<number>(DRIFT_OFF_SESSION_PRICE);
   const [isAdding, setIsAdding] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState<PaymentSuccessDetails | null>(null);
   const { refreshCart } = useCart();
 
   const {
@@ -45,61 +41,15 @@ export default function DriftOffPaymentPage() {
     showPaymentHandler,
     initiatePayment,
     handleVerifyStart,
+    handleVerifyComplete,
     handlePaymentError,
   } = useDeepRestPayment();
 
-  // We no longer call global showLoader() here to keep it 'inside the page'
-
-  useEffect(() => {
-    configApi.getPublic().then((res) => {
-      const sessionPrice = res.data?.driftOffSessionPrice;
-      if (res.success && typeof sessionPrice === 'number') {
-        setDynamicPrice(sessionPrice);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (authLoading) return;
-
-    const checkExistingPaidOrder = async () => {
-      if (!isAuthenticated) {
-        setIsChecking(false);
-        return;
-      }
-
-      try {
-        setInitError(null);
-        const [ordersRes, responsesRes] = await Promise.all([
-          axiosInstance.get<unknown, ApiResponse<IDriftOffOrder[]>>('/deep-rest/orders'),
-          deepRestApi.getResponses(),
-        ]);
-
-        if (ordersRes.success && ordersRes.data && ordersRes.data.length > 0) {
-          const sortedOrders = [...ordersRes.data].sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-          );
-          const latestPaidOrder = sortedOrders.find((order) => order.paymentStatus === 'paid');
-
-          if (latestPaidOrder) {
-            const responseForOrder = responsesRes.data?.find(
-              (r: IDriftOffResponse) => r.driftOffOrderId === latestPaidOrder._id,
-            );
-
-            if (!responseForOrder || !responseForOrder.completedAt) {
-              // Found a pending session - buy logic remains same
-            }
-          }
-        }
-        setIsChecking(false);
-      } catch {
-        setInitError('Failed to verify status. Please refresh.');
-        setIsChecking(false);
-      }
-    };
-
-    checkExistingPaidOrder();
-  }, [authLoading, isAuthenticated, router]);
+  const {
+    isLoading: isChecking,
+    error: initError,
+    dynamicPrice,
+  } = useDeepRestPaymentInit(!authLoading && isAuthenticated);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -130,6 +80,25 @@ export default function DriftOffPaymentPage() {
       setIsAdding(false);
     }
   };
+
+  const handlePaymentSuccess = (details: PaymentSuccessDetails) => {
+    handleVerifyComplete();
+    setPaymentSuccess(details);
+  };
+
+  if (paymentSuccess) {
+    return (
+      <>
+        <Sidebar>
+          <div className={styles.wrapper} />
+        </Sidebar>
+        <PaymentSuccessScreen
+          {...paymentSuccess}
+          onComplete={() => router.replace(`/deep-rest/questionnaire?orderId=${paymentSuccess.orderId}`)}
+        />
+      </>
+    );
+  }
 
   if (isVerifying || isChecking || authLoading || isAdding || isCreating) {
     let message = 'Checking status...';
@@ -187,24 +156,25 @@ export default function DriftOffPaymentPage() {
                   )}
 
                   {!initError && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
-                      <button
+                    <div className={styles.actionStack}>
+                      <Button
                         type="button"
-                        className={styles.payBtn}
+                        variant="primary"
                         onClick={initiatePayment}
                         disabled={isCreating || showPaymentHandler || isVerifying || isAdding}
                       >
-                        🔒 Pay Now
-                      </button>
+                        Pay Now
+                      </Button>
 
-                      <button
+                      <Button
                         type="button"
-                        className={styles.cartBtn}
+                        variant="ghost"
                         onClick={handleAddToCart}
                         disabled={isCreating || showPaymentHandler || isVerifying || isAdding}
+                        loading={isAdding}
                       >
-                        {isAdding ? 'Adding...' : 'Add to Cart'}
-                      </button>
+                        Add to Cart
+                      </Button>
                     </div>
                   )}
 
@@ -215,6 +185,7 @@ export default function DriftOffPaymentPage() {
                       razorpayOrderId={razorpayOrderId}
                       razorpayKeyId={razorpayKeyId}
                       onVerifyStart={handleVerifyStart}
+                      onPaymentSuccess={handlePaymentSuccess}
                       onError={handlePaymentError}
                     />
                   )}

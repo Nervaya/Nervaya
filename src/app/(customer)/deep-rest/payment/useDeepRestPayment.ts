@@ -89,6 +89,10 @@ export function useDeepRestPayment() {
     });
   }, []);
 
+  const handleVerifyComplete = useCallback(() => {
+    setState((prev) => ({ ...prev, isVerifying: false }));
+  }, []);
+
   const handlePaymentError = useCallback((message: string) => {
     setState((prev) => ({
       ...prev,
@@ -98,5 +102,5 @@ export function useDeepRestPayment() {
     }));
   }, []);
 
-  return { ...state, initiatePayment, handleVerifyStart, handlePaymentError };
+  return { ...state, initiatePayment, handleVerifyStart, handleVerifyComplete, handlePaymentError };
 }

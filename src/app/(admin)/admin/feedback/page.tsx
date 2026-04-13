@@ -10,6 +10,8 @@ import { useUserFeedbackHistory } from '@/queries/feedback/useUserFeedbackHistor
 import { adminFeedbackApi, type AdminFeedbackFiltersParams, type FeedbackStats } from '@/lib/api/adminFeedback';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import { Icon } from '@iconify/react';
+import { getInitials } from '@/utils/string.util';
+import { formatReviewDate } from '@/utils/date.util';
 import styles from './styles.module.css';
 
 const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Feedback' }];
@@ -29,22 +31,7 @@ function getScoreClass(score: number): string {
   return styles.promoter;
 }
 
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase();
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-}
+const formatDate = (dateStr: string): string => formatReviewDate(dateStr, 'en-IN');
 
 export default function AdminFeedbackPage() {
   const [page, setPage] = useState(1);

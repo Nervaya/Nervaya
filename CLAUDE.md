@@ -39,7 +39,7 @@ All API responses use `src/lib/utils/response.util.ts`: `{ success, message, dat
 
 Three roles: `ADMIN`, `CUSTOMER`, `THERAPIST` (defined in `src/lib/constants/enums.ts`).
 
-- **Edge middleware** (`src/proxy.ts`): reads `auth_token` httpOnly cookie, verifies JWT, enforces role-based redirects
+- **Edge middleware** (`src/middleware.ts`): reads `auth_token` httpOnly cookie, verifies JWT, enforces role-based redirects. Next.js requires this exact filename — renaming it will silently disable all edge-level route protection.
 - **API auth** (`src/lib/middleware/auth.middleware.ts`): `requireAuth(request, [ROLES.X])` on protected routes
 - **Client auth** (`src/context/AuthContext.tsx`): hydrates from localStorage with 7-day expiry; custom `auth-state-changed` DOM event syncs state across contexts
 
@@ -159,5 +159,5 @@ sonar-scanner
 **Code Quality (SonarQube):**
 
 - 39 bugs, 718 code smells, 6.3% duplication across 37,907 lines
-- High cognitive complexity in: `cart.service.ts` (50), `order.service.ts` (44), `payment.service.ts` (39), `proxy.ts` (32)
+- High cognitive complexity in: `cart.service.ts` (50), `order.service.ts` (44), `payment.service.ts` (39), `middleware.ts` (32)
 - Multiple click handlers missing keyboard listeners (accessibility)

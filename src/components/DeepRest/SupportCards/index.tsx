@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_CHAT } from '@/constants/icons';
+import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 const SupportCards = () => {
@@ -16,9 +16,9 @@ const SupportCards = () => {
             <p className={styles.cardParagraph}>You can request for an additional session free of charge</p>
           </div>
         </div>
-        <Link href="/deep-rest/sessions" className={styles.supportButton}>
+        <Button href="/deep-rest/sessions" variant="secondary" size="md" fullWidth={false}>
           Request Re-Session
-        </Link>
+        </Button>
       </div>
 
       <div className={styles.supportCard}>
@@ -31,7 +31,9 @@ const SupportCards = () => {
             <p className={styles.cardParagraph}>Our specialists are here to help you get started</p>
           </div>
         </div>
-        <button className={styles.supportButton}>Free 1 on 1 Assistance</button>
+        <Button type="button" variant="secondary" size="md" fullWidth={false}>
+          Free 1 on 1 Assistance
+        </Button>
       </div>
     </div>
   );

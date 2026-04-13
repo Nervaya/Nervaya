@@ -1,20 +1,21 @@
 .questionCard {
-  --qc-text: #334155;
+  --qc-text: var(--color-text-body);
   --qc-bg: var(--color-background);
-  --qc-bg-hover: #f8fafc;
-  --qc-border: #f1f5f9;
+  --qc-bg-hover: var(--color-accent-dim-hover);
+  --qc-border: var(--color-border-subtle);
   --qc-border-hover: var(--color-border-accent);
   --qc-accent: var(--color-accent);
   --qc-placeholder: var(--color-text-tertiary);
   --qc-radio-border: var(--color-border-light);
+  --qc-selected-bg: var(--color-accent-dim);
   width: 100%;
 
   .questionLabel {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--space-1);
     color: var(--qc-accent);
-    font-size: 0.7rem;
-    font-weight: 800;
+    font-size: var(--text-label);
+    font-weight: var(--weight-bold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -39,22 +40,22 @@
       width: 100%;
       display: flex;
       align-items: center;
-      padding: 10px 12px;
-      border-radius: var(--radius-button, 8px);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
       border: 1px solid var(--qc-border);
       background: var(--qc-bg);
       color: var(--qc-text);
-      font-size: 0.96rem;
+      font-size: var(--text-body);
       font-weight: var(--weight-medium);
       text-align: left;
       cursor: pointer;
-      transition: all var(--transition-slow);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-sm);
 
       &:hover {
         background: var(--qc-bg-hover);
         border-color: var(--qc-border-hover);
-        transform: translateX(4px);
+        transform: translateY(-1px);
       }
 
       &:focus-visible {
@@ -65,8 +66,8 @@
 
       &[aria-checked='true'] {
         border-color: var(--qc-accent);
-        background: rgba(124, 58, 237, 0.04);
-        box-shadow: 0 8px 16px rgba(124, 58, 237, 0.05);
+        background: var(--qc-selected-bg);
+        box-shadow: var(--shadow-btn-primary);
 
         .radio {
           border-color: var(--qc-accent);
@@ -141,29 +142,30 @@
     .scaleOption {
       min-width: 48px;
       height: 48px;
-      border-radius: var(--radius-button, 8px);
+      border-radius: var(--radius-lg);
       border: 1px solid var(--qc-border);
       background: var(--qc-bg);
       color: var(--qc-text);
-      font-size: 1.1rem;
+      font-size: var(--text-body);
       font-weight: var(--weight-semibold);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all var(--transition-base);
+      box-shadow: var(--shadow-sm);
 
       &:hover {
         background: var(--qc-bg-hover);
         border-color: var(--qc-border-hover);
-        transform: translateY(-2px);
+        transform: translateY(-1px);
       }
 
       &[aria-pressed='true'] {
         border-color: var(--qc-accent);
-        background: var(--qc-accent);
-        color: var(--color-text-on-dark);
-        box-shadow: 0 8px 16px rgba(124, 58, 237, 0.2);
+        background: var(--qc-selected-bg);
+        color: var(--qc-accent);
+        box-shadow: var(--shadow-btn-primary);
       }
     }
   }

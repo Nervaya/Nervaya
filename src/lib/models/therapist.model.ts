@@ -184,6 +184,8 @@ const therapistSchema = new Schema<ITherapist>(
   },
 );
 
+therapistSchema.index({ isAvailable: 1, createdAt: -1 });
+
 const Therapist: Model<ITherapist> =
   mongoose.models.Therapist || mongoose.model<ITherapist>('Therapist', therapistSchema);
 

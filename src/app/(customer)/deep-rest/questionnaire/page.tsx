@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import Button from '@/components/common/Button';
 import DriftOffAssessmentContainer from '@/components/DeepRest/DriftOffAssessmentContainer';
 import axiosInstance from '@/lib/axios';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
@@ -174,12 +175,24 @@ export default function DriftOffQuestionnairePage() {
               <h3 className={styles.errorTitle}>Unable to Load Questionnaire</h3>
               <p className={styles.errorMessage}>{error}</p>
               <div className={styles.errorActions}>
-                <button type="button" className={styles.retryBtn} onClick={() => window.location.reload()}>
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  fullWidth={false}
+                  onClick={() => window.location.reload()}
+                >
                   Try Again
-                </button>
-                <button type="button" className={styles.backBtn} onClick={() => router.replace('/deep-rest/payment')}>
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="md"
+                  fullWidth={false}
+                  onClick={() => router.replace('/deep-rest/payment')}
+                >
                   Back to Payment
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -1,13 +1,13 @@
 .hero {
   display: flex;
   align-items: center;
-  gap: 4rem;
-  padding: 4rem;
+  gap: var(--space-12);
+  padding: var(--space-12);
   margin-bottom: var(--spacing-2xl);
   position: relative;
-  background-color: #fafbff;
-  border-radius: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  background-color: var(--color-accent-surface-soft);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
 }
 
@@ -103,9 +103,9 @@
 .description {
   font-size: var(--text-h4);
   line-height: var(--leading-relaxed);
-  color: #475569;
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
+  color: var(--color-text-body);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-8);
   max-width: 580px;
   font-weight: var(--weight-medium);
 }
@@ -133,57 +133,6 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   row-gap: 0.75rem;
-}
-
-.btnPrimary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  color: var(--color-white-bright);
-  font-size: var(--text-body);
-  font-weight: var(--weight-semibold);
-  padding: var(--space-4) 20px;
-  border-radius: var(--radius-lg);
-  text-decoration: none;
-  transition: all var(--transition-slow);
-  white-space: nowrap;
-  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.25);
-  border: none;
-  flex-shrink: 0;
-  min-height: 44px;
-}
-
-.btnPrimary:hover {
-  background: var(--gradient-accent-hover);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-}
-
-.btnOutline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: var(--color-white-bright);
-  color: var(--color-text-primary);
-  font-size: var(--text-caption);
-  font-weight: var(--weight-semibold);
-  padding: 10px 18px;
-  border-radius: 10px;
-  text-decoration: none;
-  border: 1px solid var(--color-border-light);
-  transition: all var(--transition-slow);
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-height: 44px;
-  text-align: center;
-}
-
-.btnOutline:hover {
-  background: rgba(124, 58, 237, 0.05);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
 }
 
 .heroRight {
@@ -267,9 +216,9 @@
 }
 
 .dot {
-  color: #22c55e;
-  font-size: 0.6rem;
-  margin-left: 0.25rem;
+  color: var(--color-success);
+  font-size: var(--text-label);
+  margin-left: var(--space-1);
 }
 
 .videoAuthor {

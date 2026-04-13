@@ -1,7 +1,6 @@
 'use client';
 
-import { Icon } from '@iconify/react';
-import { ICON_LOADING } from '@/constants/icons';
+import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 interface AssessmentNavProps {
@@ -24,35 +23,32 @@ export function AssessmentNav({
   return (
     <footer className={styles.footer}>
       {!isFirstQuestion && (
-        <button
+        <Button
           type="button"
-          className={`${styles.navButton} ${styles.prevButton}`}
+          variant="secondary"
+          size="md"
+          fullWidth={false}
           onClick={onPrevious}
           disabled={isSubmitting}
           aria-label="Previous question"
         >
           Previous
-        </button>
+        </Button>
       )}
-      <button
-        type="button"
-        className={`${styles.navButton} ${styles.nextButton} ${isLastQuestion ? styles.submitButton : ''}`}
-        onClick={onNext}
-        disabled={!canProceed || isSubmitting}
-        aria-label={isLastQuestion ? 'Submit assessment' : 'Next Question'}
-        aria-busy={isSubmitting}
-      >
-        {isSubmitting ? (
-          <span className={styles.buttonContent}>
-            <Icon icon={ICON_LOADING} className={styles.loaderIcon} />
-            <span className={styles.loadingText}>Submitting…</span>
-          </span>
-        ) : isLastQuestion ? (
-          'Submit assessment'
-        ) : (
-          'Next Question'
-        )}
-      </button>
+      <div className={styles.nextWrapper}>
+        <Button
+          type="button"
+          variant="primary"
+          size="md"
+          fullWidth={false}
+          onClick={onNext}
+          disabled={!canProceed}
+          loading={isSubmitting}
+          aria-label={isLastQuestion ? 'Submit assessment' : 'Next Question'}
+        >
+          {isLastQuestion ? 'Submit assessment' : 'Next Question'}
+        </Button>
+      </div>
     </footer>
   );
 }
