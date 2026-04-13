@@ -274,7 +274,15 @@ export async function updateSessionStatus(sessionId: string, status: SessionStat
 export async function getAllSessions(
   page: number = 1,
   limit: number = 10,
-  filters?: { status?: string; userId?: string; therapistId?: string } | string,
+  filters?:
+    | {
+        status?: string;
+        search?: string;
+        therapistId?: string;
+        dateFrom?: string;
+        dateTo?: string;
+      }
+    | string,
 ) {
   await connectDB();
   try {
@@ -283,12 +291,33 @@ export async function getAllSessions(
       if (filters) filter.status = filters;
     } else if (filters) {
       if (filters.status) filter.status = filters.status;
-      if (filters.userId) filter.userId = toObjectId(filters.userId);
       if (filters.therapistId) filter.therapistId = new Types.ObjectId(filters.therapistId);
+      if (filters.dateFrom || filters.dateTo) {
+        const dateFilter: Record<string, string> = {};
+        if (filters.dateFrom) dateFilter.$gte = filters.dateFrom;
+        if (filters.dateTo) dateFilter.$lte = filters.dateTo;
+        filter.date = dateFilter;
+      }
+      if (filters.search && filters.search.trim()) {
+        const escaped = filters.search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const searchRegex = new RegExp(escaped, 'i');
+        const matchingUsers = await User.find({
+          $or: [{ name: searchRegex }, { email: searchRegex }],
+        })
+          .select('_id')
+          .lean();
+        filter.userId = { $in: matchingUsers.map((u) => u._id) };
+      }
     }
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
-      Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).skip(skip).limit(limit).lean(),
+      Session.find(filter)
+        .populate('therapistId')
+        .populate('userId', 'name email')
+        .sort({ date: -1, startTime: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       Session.countDocuments(filter),
     ]);
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };

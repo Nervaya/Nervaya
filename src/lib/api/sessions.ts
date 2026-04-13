@@ -15,7 +15,7 @@ export interface SessionFiltersParams {
   therapistId?: string;
   dateFrom?: string;
   dateTo?: string;
-  userId?: string;
+  search?: string;
 }
 
 export const sessionsApi = {
@@ -42,7 +42,7 @@ export const sessionsApi = {
     if (filters?.therapistId) params.set('therapistId', filters.therapistId);
     if (filters?.dateFrom) params.set('dateFrom', filters.dateFrom);
     if (filters?.dateTo) params.set('dateTo', filters.dateTo);
-    if (filters?.userId) params.set('userId', filters.userId);
+    if (filters?.search) params.set('search', filters.search);
     return api.get(`/sessions?${params.toString()}`) as Promise<ApiResponse<AdminSessionsResponse>>;
   },
 };

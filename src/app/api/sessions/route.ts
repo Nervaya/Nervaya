@@ -27,13 +27,13 @@ export async function GET(req: NextRequest) {
       const therapistId = searchParams.get('therapistId') || undefined;
       const dateFrom = searchParams.get('dateFrom') || undefined;
       const dateTo = searchParams.get('dateTo') || undefined;
-      const userId = searchParams.get('userId') || undefined;
+      const search = searchParams.get('search') || undefined;
       const filters = {
         ...(status && { status }),
         ...(therapistId && { therapistId }),
         ...(dateFrom && { dateFrom }),
         ...(dateTo && { dateTo }),
-        ...(userId && { userId }),
+        ...(search && { search }),
       };
       const result = await getAllSessions(page, limit, Object.keys(filters).length > 0 ? filters : undefined);
       return NextResponse.json(

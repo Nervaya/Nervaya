@@ -11,16 +11,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: var(--space-3);
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 14px;
+  padding: 0 var(--space-4);
+  min-height: 48px;
   background: var(--color-background);
-  border: 1px solid var(--border, #d9e2ee);
-  border-radius: var(--radius);
-  font-size: 0.95rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: normal;
-  font-family: inherit;
+  font-family: var(--font-body);
   color: var(--color-text-primary);
   cursor: pointer;
   outline: none;
@@ -28,7 +30,13 @@
 }
 
 .trigger:hover:not(:disabled) {
-  border-color: var(--color-text-tertiary);
+  border-color: var(--color-border-accent);
+}
+
+.trigger:focus-visible,
+.trigger[data-state='open'] {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
 }
 
 .trigger[data-state='open'] .chevron {
@@ -52,12 +60,12 @@
 }
 
 .content {
-  min-width: 180px;
+  min-width: 200px;
   background: var(--color-background);
-  border: 1px solid var(--color-glass-border);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-lg);
-  padding: 6px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-lg);
   z-index: 5000;
   outline: none;
   animation: slideDownAndFade var(--transition-base);
@@ -67,10 +75,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding: 10px 12px;
-  font-size: 0.9rem;
-  color: var(--color-foreground);
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-body);
   cursor: pointer;
   border-radius: var(--radius);
   outline: none;

@@ -32,7 +32,7 @@ export default function SessionFilters({
   const [therapistId, setTherapistId] = useState(initialFilters.therapistId ?? '');
   const [dateFrom, setDateFrom] = useState(initialFilters.dateFrom ?? '');
   const [dateTo, setDateTo] = useState(initialFilters.dateTo ?? '');
-  const [userId, setUserId] = useState(initialFilters.userId ?? '');
+  const [search, setSearch] = useState(initialFilters.search ?? '');
   const [therapists, setTherapists] = useState<Therapist[]>([]);
 
   useEffect(() => {
@@ -50,16 +50,16 @@ export default function SessionFilters({
     if (therapistId) filters.therapistId = therapistId;
     if (dateFrom) filters.dateFrom = dateFrom;
     if (dateTo) filters.dateTo = dateTo;
-    if (userId.trim()) filters.userId = userId.trim();
+    if (search.trim()) filters.search = search.trim();
     onApply(filters);
-  }, [status, therapistId, dateFrom, dateTo, userId, onApply]);
+  }, [status, therapistId, dateFrom, dateTo, search, onApply]);
 
   const handleReset = useCallback(() => {
     setStatus('');
     setTherapistId('');
     setDateFrom('');
     setDateTo('');
-    setUserId('');
+    setSearch('');
     onReset();
   }, [onReset]);
 
@@ -109,14 +109,14 @@ export default function SessionFilters({
         />
       </div>
       <div className={styles.field}>
-        <label htmlFor="session-user-id">User ID</label>
+        <label htmlFor="session-search">User</label>
         <input
-          id="session-user-id"
+          id="session-search"
           type="text"
-          placeholder="User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          aria-label="User ID"
+          placeholder="Name or email"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search by user name or email"
         />
       </div>
       <div className={styles.actions}>

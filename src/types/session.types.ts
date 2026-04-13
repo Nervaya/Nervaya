@@ -1,9 +1,15 @@
 import { Therapist } from './therapist.types';
 import { SessionStatus } from '@/lib/constants/enums';
 
+export interface SessionUserSummary {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface Session {
   _id: string;
-  userId: string;
+  userId: string | SessionUserSummary;
   therapistId: string | Therapist;
   therapist?: Therapist;
   date: string;
