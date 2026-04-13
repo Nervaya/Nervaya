@@ -5,6 +5,7 @@ import connectDB from '@/lib/db/mongodb';
 import { handleError, ValidationError } from '@/lib/utils/error.util';
 import { Types } from 'mongoose';
 import type { PaginationMeta } from '@/types/pagination.types';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export async function getByProductId(productId: string, page = 1, limit = 10) {
   await connectDB();
@@ -79,7 +80,7 @@ export async function create(
       }
     }
     const review = await Review.findOneAndUpdate(
-      { productId: new Types.ObjectId(productId), userId, itemType },
+      { productId: new Types.ObjectId(productId), userId: toObjectId(userId), itemType },
       {
         rating,
         comment: comment ?? '',
@@ -105,7 +106,7 @@ export async function deleteReview(reviewId: string, userId: string) {
     }
     const review = await Review.findOneAndDelete({
       _id: reviewId,
-      userId,
+      userId: toObjectId(userId),
     });
     if (!review) {
       throw new ValidationError('Review not found');
@@ -186,10 +187,20 @@ export async function createDriftOffReview(
       throw new ValidationError('You can only review sessions that have a video assigned');
     }
 
+    const responseObjectId = new Types.ObjectId(responseId);
+    const existing = await Review.findOne({
+      responseId: responseObjectId,
+      userId: new Types.ObjectId(userId),
+      itemType: 'DriftOff',
+    }).lean();
+    if (existing) {
+      throw new ValidationError('You have already submitted a review for this session');
+    }
+
     const review = await Review.create({
       productId: response.driftOffOrderId,
-      userId,
-      responseId: new Types.ObjectId(responseId),
+      userId: new Types.ObjectId(userId),
+      responseId: responseObjectId,
       rating,
       comment: comment ?? '',
       userDisplayName: userDisplayName ?? '',
@@ -212,7 +223,12 @@ export async function getApprovedDriftOffReviews(
     const filter = { itemType: 'DriftOff', isVisible: true };
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
-      Review.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Review.find(filter)
+        .select('rating comment userDisplayName itemType createdAt')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       Review.countDocuments(filter),
     ]);
     return {

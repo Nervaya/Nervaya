@@ -7,6 +7,7 @@ import { Types } from 'mongoose';
 import { ITEM_TYPE, type ItemType } from '@/lib/constants/enums';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 import Session from '@/lib/models/session.model';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export async function getCartByUserId(userId: string) {
   await connectDB();
@@ -15,9 +16,10 @@ export async function getCartByUserId(userId: string) {
       throw new ValidationError('Invalid User ID');
     }
 
-    let cart = await Cart.findOne({ userId });
+    const userObjectId = toObjectId(userId);
+    let cart = await Cart.findOne({ userId: userObjectId });
     if (!cart) {
-      cart = await Cart.create({ userId, items: [], totalAmount: 0 });
+      cart = await Cart.create({ userId: userObjectId, items: [], totalAmount: 0 });
     }
 
     // Manually populate Supplement and Therapist items to handle mixed types gracefully
@@ -132,9 +134,10 @@ export async function addToCart(
       resolvedImage = therapist.image || '';
     }
 
-    let cart = await Cart.findOne({ userId });
+    const userObjectId = toObjectId(userId);
+    let cart = await Cart.findOne({ userId: userObjectId });
     if (!cart) {
-      cart = await Cart.create({ userId, items: [], totalAmount: 0 });
+      cart = await Cart.create({ userId: userObjectId, items: [], totalAmount: 0 });
     }
 
     const existingItemIndex = cart.items.findIndex(
@@ -195,7 +198,7 @@ export async function updateCartItem(
       if (supplement.stock < quantity) throw new ValidationError('Insufficient stock');
     }
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId: toObjectId(userId) });
     if (!cart) throw new ValidationError('Cart not found');
 
     const itemIndex = cart.items.findIndex((item) => item.itemId.toString() === itemId && item.itemType === itemType);
@@ -217,7 +220,7 @@ export async function removeFromCart(userId: string, itemId: string, itemType: I
   try {
     if (!userId) throw new ValidationError('Invalid User ID');
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId: toObjectId(userId) });
     if (!cart) throw new ValidationError('Cart not found');
 
     cart.items = cart.items.filter((item) => !(item.itemId.toString() === itemId && item.itemType === itemType));
@@ -236,7 +239,7 @@ export async function clearCart(userId: string) {
       throw new ValidationError('Invalid User ID');
     }
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId: toObjectId(userId) });
     if (!cart) {
       throw new ValidationError('Cart not found');
     }

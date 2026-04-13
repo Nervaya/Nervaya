@@ -55,7 +55,7 @@ async function checkWindow(
 
   return {
     allowed: true,
-    remaining: maxAttempts - entry.count,
+    remaining: Math.max(0, maxAttempts - entry.count),
     resetTime: entry.expiresAt.getTime(),
   };
 }

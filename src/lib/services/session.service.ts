@@ -8,6 +8,7 @@ import User from '@/lib/models/user.model';
 import Therapist from '@/lib/models/therapist.model';
 import { generateMeetLink, deleteMeeting } from './googleCalendar.service';
 import { sendSessionConfirmationEmail } from './email/session-confirmation.service';
+import { toObjectId } from '@/lib/utils/objectId.util';
 
 export async function createSession(
   userId: string,
@@ -51,7 +52,16 @@ export async function createSession(
         }
 
         const sessionRes = await Session.create(
-          [{ userId, therapistId, date, startTime, endTime, status: SESSION_STATUS.PENDING }],
+          [
+            {
+              userId: toObjectId(userId),
+              therapistId: new Types.ObjectId(therapistId),
+              date,
+              startTime,
+              endTime,
+              status: SESSION_STATUS.PENDING,
+            },
+          ],
           { session: txnSession },
         );
         createdSession = Array.isArray(sessionRes) ? sessionRes[0] : sessionRes;
@@ -273,7 +283,7 @@ export async function getAllSessions(
       if (filters) filter.status = filters;
     } else if (filters) {
       if (filters.status) filter.status = filters.status;
-      if (filters.userId) filter.userId = filters.userId;
+      if (filters.userId) filter.userId = toObjectId(filters.userId);
       if (filters.therapistId) filter.therapistId = new Types.ObjectId(filters.therapistId);
     }
     const skip = (page - 1) * limit;
@@ -289,7 +299,7 @@ export async function getAllSessions(
 
 export async function getUserSessions(userId: string, statusFilter?: string) {
   await connectDB();
-  const filter: Record<string, unknown> = { userId };
+  const filter: Record<string, unknown> = { userId: toObjectId(userId) };
   if (statusFilter) filter.status = statusFilter;
   return Session.find(filter).populate('therapistId').sort({ date: -1, startTime: -1 }).limit(200).lean();
 }

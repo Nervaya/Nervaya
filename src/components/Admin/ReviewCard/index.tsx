@@ -4,23 +4,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { adminReviewsApi, type AdminReview } from '@/lib/api/adminReviews';
+import StarRating from '@/components/common/StarRating';
+import { formatReviewDate } from '@/utils/date.util';
 import styles from './styles.module.css';
 
 interface ReviewCardProps {
   review: AdminReview;
   onVisibilityToggled: () => void;
-}
-
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <span className={styles.stars} aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }, (_, i) => (
-        <span key={i} className={i < rating ? styles.starFilled : styles.starEmpty}>
-          {i < rating ? '\u2605' : '\u2606'}
-        </span>
-      ))}
-    </span>
-  );
 }
 
 function formatItemType(itemType: string): string {
@@ -34,11 +24,7 @@ export default function ReviewCard({ review, onVisibilityToggled }: ReviewCardPr
 
   const product = typeof review.productId === 'object' ? review.productId : null;
   const productName = product?.name ?? (review.itemType === 'DriftOff' ? 'Deep Rest Session' : 'Unknown Product');
-  const formattedDate = new Date(review.createdAt).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+  const formattedDate = formatReviewDate(review.createdAt);
 
   const handleToggleVisibility = async () => {
     try {
@@ -76,7 +62,7 @@ export default function ReviewCard({ review, onVisibilityToggled }: ReviewCardPr
             <div className={styles.metaRow}>
               <span className={styles.userName}>{review.userDisplayName ?? 'Anonymous'}</span>
               <span className={styles.separator}>·</span>
-              <StarRating rating={review.rating} />
+              <StarRating rating={review.rating} size="sm" />
               <span className={styles.separator}>·</span>
               <span className={styles.reviewDate}>{formattedDate}</span>
             </div>

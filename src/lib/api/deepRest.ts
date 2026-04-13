@@ -9,6 +9,19 @@ export const deepRestApi = {
   getOrder: (id: string): Promise<ApiResponse<IDeepRestOrder>> =>
     api.get(`/deep-rest/orders/${id}`) as Promise<ApiResponse<IDeepRestOrder>>,
 
+  getOrders: (
+    page = 1,
+    limit = 10,
+  ): Promise<
+    ApiResponse<{ data: IDeepRestOrder[]; meta: { total: number; page: number; limit: number; totalPages: number } }>
+  > =>
+    api.get(`/deep-rest/orders?page=${page}&limit=${limit}`) as Promise<
+      ApiResponse<{
+        data: IDeepRestOrder[];
+        meta: { total: number; page: number; limit: number; totalPages: number };
+      }>
+    >,
+
   createRazorpayOrder: (
     deepRestOrderId: string,
   ): Promise<ApiResponse<{ id: string; amount: number; currency: string; key_id: string }>> =>
@@ -80,13 +93,13 @@ export const deepRestApi = {
     limit = 20,
   ): Promise<
     ApiResponse<{
-      data: { userDisplayName?: string; rating: number; comment: string }[];
+      data: { _id: string; userDisplayName?: string; rating: number; comment: string }[];
       meta: { total: number; page: number; limit: number; totalPages: number };
     }>
   > =>
     api.get(`/reviews/DriftOff/approved?page=${page}&limit=${limit}`) as Promise<
       ApiResponse<{
-        data: { userDisplayName?: string; rating: number; comment: string }[];
+        data: { _id: string; userDisplayName?: string; rating: number; comment: string }[];
         meta: { total: number; page: number; limit: number; totalPages: number };
       }>
     >,

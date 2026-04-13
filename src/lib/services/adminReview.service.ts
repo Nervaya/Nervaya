@@ -18,7 +18,7 @@ interface AdminReviewFilters {
 export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewFilters) {
   await connectDB();
 
-  const safeLimit = Math.max(limit, 1);
+  const safeLimit = Math.min(Math.max(limit, 1), 50);
   const skip = (page - 1) * safeLimit;
 
   const query: Record<string, unknown> = {};
@@ -42,7 +42,7 @@ export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewF
     })
       .select('_id')
       .lean();
-    const userIds = matchingUsers.map((u) => u._id.toString());
+    const userIds = matchingUsers.map((u) => u._id);
     query.userId = { $in: userIds };
   }
   if (filters?.itemType) {

@@ -2,7 +2,9 @@ import Blog, { IBlog } from '@/lib/models/blog.model';
 import connectDB from '@/lib/db/mongodb';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import { handleError, ValidationError, NotFoundError } from '@/lib/utils/error.util';
-import { Types } from 'mongoose';
+import { Types, type SortOrder } from 'mongoose';
+
+type BlogSortOption = Record<string, SortOrder | { $meta: 'textScore' }>;
 
 export interface CreateBlogData {
   title: string;
@@ -115,8 +117,7 @@ export async function getAllBlogsPaginated(
     }
 
     const skip = (Math.max(1, page) - 1) * limit;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sortOption: any = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
+    const sortOption: BlogSortOption = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
     const [blogs, total] = await Promise.all([
       Blog.find(filter).sort(sortOption).skip(skip).limit(limit).lean().exec(),
       Blog.countDocuments(filter),
@@ -177,8 +178,7 @@ export async function getPublishedBlogsPaginated(
     }
 
     const skip = (Math.max(1, page) - 1) * limit;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sortOption: any = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
+    const sortOption: BlogSortOption = search?.trim() ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
     const [blogs, total] = await Promise.all([
       Blog.find(filter).sort(sortOption).skip(skip).limit(limit).lean().exec(),
       Blog.countDocuments(filter),

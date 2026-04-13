@@ -6,6 +6,7 @@ import { ICON_STAR } from '@/constants/icons';
 import styles from './styles.module.css';
 
 export interface TestimonialItem {
+  id?: string;
   name: string;
   rating: number;
   comment: string;
@@ -96,8 +97,8 @@ export function TestimonialsCarousel({ reviews, title }: TestimonialsCarouselPro
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setIsPaused(false)}
       >
-        {reviews.map((review) => (
-          <div key={`${review.name}-${review.comment.slice(0, 20)}`} className={styles.card} data-card>
+        {reviews.map((review, idx) => (
+          <div key={review.id ?? `testimonial-${idx}`} className={styles.card} data-card>
             <div className={styles.userRow}>
               <div className={styles.avatar}>{review.initials}</div>
               <div className={styles.userInfo}>

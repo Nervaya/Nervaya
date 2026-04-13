@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,10 +14,10 @@ import {
   ICON_HOUSE,
   ICON_HEADPHONES,
 } from '@/constants/icons';
-import { Order, OrderItem } from '@/types/supplement.types';
+import { OrderItem } from '@/types/supplement.types';
 import { ITEM_TYPE } from '@/lib/constants/enums';
 import { formatPrice } from '@/utils/cart.util';
-import { ordersApi } from '@/lib/api/orders';
+import { useOrderDetail } from '@/queries/orders/useOrderDetail';
 import { useAuth } from '@/hooks/useAuth';
 import { getShippingCost } from '@/utils/shipping.util';
 import { trackPurchase } from '@/utils/analytics';
@@ -50,60 +50,36 @@ export default function OrderSuccessPage() {
   const router = useRouter();
   const orderId = typeof params.orderId === 'string' ? params.orderId : (params.orderId?.[0] ?? '');
   const { user } = useAuth();
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { order, isLoading: loading, error } = useOrderDetail(orderId);
   const [confettiData, setConfettiData] = useState<object | null>(null);
   const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
-  const fetchOrder = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await ordersApi.getForUser();
-      if (response.success && response.data) {
-        const foundOrder = response.data.find((o) => o._id === orderId);
-        if (foundOrder) {
-          setOrder(foundOrder);
-          const subtotalForShipping = foundOrder.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-          const deliveryMethod = foundOrder.deliveryMethod ?? 'standard';
-          const shippingCost = getShippingCost(deliveryMethod, subtotalForShipping);
-          trackPurchase({
-            transaction_id: foundOrder._id,
-            order_id: foundOrder._id,
-            currency: 'INR',
-            value: foundOrder.totalAmount,
-            shipping: shippingCost,
-            ...(foundOrder.promoCode ? { coupon: foundOrder.promoCode } : {}),
-            items: foundOrder.items.map((item) => ({
-              item_id: typeof item.itemId === 'string' ? item.itemId : String(item.itemId),
-              item_name: item.name,
-              item_category: item.itemType === ITEM_TYPE.DRIFT_OFF ? 'Digital' : 'Supplements',
-              price: item.price,
-              quantity: item.quantity,
-              currency: 'INR',
-              page_type: 'order_success',
-            })),
-          });
-        } else {
-          setError('Order not found');
-        }
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load order');
-    } finally {
-      setLoading(false);
-    }
-  }, [orderId]);
+  useEffect(() => {
+    if (!order) return;
+    const subtotalForShipping = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const deliveryMethod = order.deliveryMethod ?? 'standard';
+    const shippingCost = getShippingCost(deliveryMethod, subtotalForShipping);
+    trackPurchase({
+      transaction_id: order._id,
+      order_id: order._id,
+      currency: 'INR',
+      value: order.totalAmount,
+      shipping: shippingCost,
+      ...(order.promoCode ? { coupon: order.promoCode } : {}),
+      items: order.items.map((item) => ({
+        item_id: typeof item.itemId === 'string' ? item.itemId : String(item.itemId),
+        item_name: item.name,
+        item_category: item.itemType === ITEM_TYPE.DRIFT_OFF ? 'Digital' : 'Supplements',
+        price: item.price,
+        quantity: item.quantity,
+        currency: 'INR',
+        page_type: 'order_success',
+      })),
+    });
+  }, [order]);
 
   useEffect(() => {
-    if (orderId) {
-      fetchOrder();
-    }
-  }, [orderId, fetchOrder]);
-
-  useEffect(() => {
-    fetch('/success confetti.json')
+    fetch('/success-confetti.json')
       .then((res) => res.json())
       .then(setConfettiData)
       .catch(() => {});
@@ -116,21 +92,25 @@ export default function OrderSuccessPage() {
     ? `/deep-rest/questionnaire?orderId=${driftOffOrderId}`
     : '/deep-rest/sessions';
 
-  // Auto-redirect to questionnaire for Deep Rest orders
+  // Auto-redirect countdown for Deep Rest orders
   useEffect(() => {
     if (!order || !isDigitalOnly) return;
-    setRedirectCountdown(5);
-  }, [order, isDigitalOnly]);
-
-  useEffect(() => {
-    if (redirectCountdown === null) return;
-    if (redirectCountdown <= 0) {
-      router.replace(questionnaireUrl);
-      return;
-    }
-    const timer = setTimeout(() => setRedirectCountdown((prev) => (prev !== null ? prev - 1 : null)), 1000);
-    return () => clearTimeout(timer);
-  }, [redirectCountdown, router, questionnaireUrl]);
+    let current = 5;
+    const tick = () => {
+      setRedirectCountdown(current);
+      current -= 1;
+      if (current < 0) {
+        clearInterval(interval);
+        router.replace(questionnaireUrl);
+      }
+    };
+    const interval = setInterval(tick, 1000);
+    const kickoff = setTimeout(tick, 0);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(kickoff);
+    };
+  }, [order, isDigitalOnly, router, questionnaireUrl]);
 
   if (loading) {
     return (

@@ -20,6 +20,7 @@ export default function TestimonialsWithData({ sectionClassName, titleClassName 
       .then((res) => {
         if (res.success && res.data?.data && res.data.data.length > 0) {
           const mapped: TestimonialItem[] = res.data.data.map((r) => ({
+            id: r._id,
             name: r.userDisplayName || 'Anonymous',
             rating: r.rating,
             comment: r.comment || '',

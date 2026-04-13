@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './styles.module.css';
 
 interface StarRatingProps {
@@ -9,6 +9,28 @@ interface StarRatingProps {
   size?: 'sm' | 'md' | 'lg';
   showValue?: boolean;
   className?: string;
+  interactive?: boolean;
+  onChange?: (value: number) => void;
+}
+
+type StarType = 'full' | 'half' | 'empty';
+
+function buildStarItems(rating: number, maxStars: number): { type: StarType; key: string }[] {
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating - fullStars >= 0.25 && rating - fullStars < 0.75;
+  const items: { type: StarType; key: string }[] = [];
+  let keyIndex = 0;
+  for (let i = 0; i < fullStars; i++) {
+    items.push({ type: 'full', key: `star-${keyIndex++}` });
+  }
+  if (hasHalf) {
+    items.push({ type: 'half', key: `star-${keyIndex++}` });
+  }
+  const emptyCount = maxStars - items.length;
+  for (let i = 0; i < emptyCount; i++) {
+    items.push({ type: 'empty', key: `star-${keyIndex++}` });
+  }
+  return items;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({
@@ -17,21 +39,43 @@ const StarRating: React.FC<StarRatingProps> = ({
   size = 'md',
   showValue = false,
   className = '',
+  interactive = false,
+  onChange,
 }) => {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating - fullStars >= 0.25 && rating - fullStars < 0.75;
-  const starItems: { type: 'full' | 'half' | 'empty'; key: string }[] = [];
-  let keyIndex = 0;
-  for (let i = 0; i < fullStars; i++) {
-    starItems.push({ type: 'full', key: `star-${keyIndex++}` });
+  const [hovered, setHovered] = useState(0);
+
+  if (interactive) {
+    const displayRating = hovered || rating;
+    return (
+      <div
+        className={`${styles.container} ${styles[size]} ${styles.interactive} ${className}`}
+        role="radiogroup"
+        aria-label={`Rate up to ${maxStars} stars`}
+      >
+        {Array.from({ length: maxStars }, (_, i) => {
+          const starValue = i + 1;
+          const active = starValue <= displayRating;
+          return (
+            <button
+              key={starValue}
+              type="button"
+              className={`${styles.star} ${active ? styles.full : styles.empty} ${styles.starButton}`}
+              onMouseEnter={() => setHovered(starValue)}
+              onMouseLeave={() => setHovered(0)}
+              onClick={() => onChange?.(starValue)}
+              aria-label={`${starValue} star${starValue > 1 ? 's' : ''}`}
+              aria-checked={starValue === rating}
+              role="radio"
+            >
+              ★
+            </button>
+          );
+        })}
+      </div>
+    );
   }
-  if (hasHalf) {
-    starItems.push({ type: 'half', key: `star-${keyIndex++}` });
-  }
-  const emptyCount = maxStars - starItems.length;
-  for (let i = 0; i < emptyCount; i++) {
-    starItems.push({ type: 'empty', key: `star-${keyIndex++}` });
-  }
+
+  const starItems = buildStarItems(rating, maxStars);
 
   return (
     <div

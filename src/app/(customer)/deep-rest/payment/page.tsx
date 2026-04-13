@@ -1,22 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
 import DriftOffPaymentHandler from '@/components/DeepRest/DriftOffPaymentHandler';
 import { PaymentSuccessScreen, type PaymentSuccessDetails } from '@/components/DeepRest/PaymentSuccessScreen';
-import { DRIFT_OFF_SESSION_PRICE, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
-import { deepRestApi } from '@/lib/api/deepRest';
-import { configApi } from '@/lib/api/config';
+import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 import { cartApi } from '@/lib/api/cart';
 import { useCart } from '@/context/CartContext';
 import { useDeepRestPayment } from './useDeepRestPayment';
+import { useDeepRestPaymentInit } from '@/queries/deepRest/useDeepRestPaymentInit';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import axiosInstance from '@/lib/axios';
-import type { ApiResponse } from '@/lib/utils/response.util';
-import type { IDriftOffOrder, IDriftOffResponse } from '@/types/driftOff.types';
 import styles from './styles.module.css';
 
 const BENEFITS = [
@@ -30,9 +26,6 @@ const BENEFITS = [
 export default function DriftOffPaymentPage() {
   const router = useRouter();
   const { isAuthenticated, initializing: authLoading } = useAuth();
-  const [isChecking, setIsChecking] = useState(true);
-  const [initError, setInitError] = useState<string | null>(null);
-  const [dynamicPrice, setDynamicPrice] = useState<number>(DRIFT_OFF_SESSION_PRICE);
   const [isAdding, setIsAdding] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState<PaymentSuccessDetails | null>(null);
   const { refreshCart } = useCart();
@@ -51,63 +44,11 @@ export default function DriftOffPaymentPage() {
     handlePaymentError,
   } = useDeepRestPayment();
 
-  // We no longer call global showLoader() here to keep it 'inside the page'
-
-  useEffect(() => {
-    configApi.getPublic().then((res) => {
-      const sessionPrice = res.data?.driftOffSessionPrice;
-      if (res.success && typeof sessionPrice === 'number') {
-        setDynamicPrice(sessionPrice);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (authLoading) return;
-
-    const checkExistingPaidOrder = async () => {
-      if (!isAuthenticated) {
-        setIsChecking(false);
-        return;
-      }
-
-      try {
-        setInitError(null);
-        const [ordersRes, responsesRes] = await Promise.all([
-          axiosInstance.get<unknown, ApiResponse<{ data: IDriftOffOrder[]; meta: unknown }>>(
-            '/deep-rest/orders?page=1&limit=10',
-          ),
-          deepRestApi.getResponses(1, 10),
-        ]);
-
-        const orders = ordersRes.success && ordersRes.data ? ordersRes.data.data : [];
-        const responses = responsesRes.success && responsesRes.data ? responsesRes.data.data : [];
-
-        if (orders.length > 0) {
-          const sortedOrders = [...orders].sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-          );
-          const latestPaidOrder = sortedOrders.find((order) => order.paymentStatus === 'paid');
-
-          if (latestPaidOrder) {
-            const responseForOrder = responses.find(
-              (r: IDriftOffResponse) => r.driftOffOrderId === latestPaidOrder._id,
-            );
-
-            if (!responseForOrder || !responseForOrder.completedAt) {
-              // Found a pending session - buy logic remains same
-            }
-          }
-        }
-        setIsChecking(false);
-      } catch {
-        setInitError('Failed to verify status. Please refresh.');
-        setIsChecking(false);
-      }
-    };
-
-    checkExistingPaidOrder();
-  }, [authLoading, isAuthenticated, router]);
+  const {
+    isLoading: isChecking,
+    error: initError,
+    dynamicPrice,
+  } = useDeepRestPaymentInit(!authLoading && isAuthenticated);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
