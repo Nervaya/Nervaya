@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_PLUS_CIRCLE } from '@/constants/icons';
 import { Pagination, GlobalLoader } from '@/components/common';
+import Button from '@/components/common/Button';
 import { deepRestApi } from '@/lib/api/deepRest';
 import type { IDriftOffResponse } from '@/types/driftOff.types';
 import { SessionCard } from './SessionCard';
@@ -94,9 +95,15 @@ export default function MySessionsSection({ className = '' }: MySessionsSectionP
         ) : error ? (
           <div className={styles.center}>
             <p className={styles.errorText}>{error}</p>
-            <button type="button" className={styles.btnRectangle} onClick={() => loadResponses(currentPage, limit)}>
+            <Button
+              type="button"
+              variant="primary"
+              size="md"
+              fullWidth={false}
+              onClick={() => loadResponses(currentPage, limit)}
+            >
               Try Again
-            </button>
+            </Button>
           </div>
         ) : (
           <>

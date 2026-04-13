@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar/LazySidebar';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import Button from '@/components/common/Button';
 import DriftOffPaymentHandler from '@/components/DeepRest/DriftOffPaymentHandler';
 import { PaymentSuccessScreen, type PaymentSuccessDetails } from '@/components/DeepRest/PaymentSuccessScreen';
 import { DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
@@ -155,24 +156,25 @@ export default function DriftOffPaymentPage() {
                   )}
 
                   {!initError && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
-                      <button
+                    <div className={styles.actionStack}>
+                      <Button
                         type="button"
-                        className={styles.payBtn}
+                        variant="primary"
                         onClick={initiatePayment}
                         disabled={isCreating || showPaymentHandler || isVerifying || isAdding}
                       >
-                        🔒 Pay Now
-                      </button>
+                        Pay Now
+                      </Button>
 
-                      <button
+                      <Button
                         type="button"
-                        className={styles.cartBtn}
+                        variant="ghost"
                         onClick={handleAddToCart}
                         disabled={isCreating || showPaymentHandler || isVerifying || isAdding}
+                        loading={isAdding}
                       >
-                        {isAdding ? 'Adding...' : 'Add to Cart'}
-                      </button>
+                        Add to Cart
+                      </Button>
                     </div>
                   )}
 

@@ -112,30 +112,3 @@
   font-weight: var(--weight-medium);
   margin: 0;
 }
-
-.supportButton {
-  background: var(--gradient-accent);
-  color: var(--color-text-on-dark);
-  padding: var(--space-4) 28px;
-  border-radius: var(--radius-lg);
-  border: none;
-  text-decoration: none;
-  font-weight: var(--weight-semibold);
-  font-size: var(--text-body);
-  transition: all var(--transition-slow);
-  box-shadow: var(--shadow-btn-primary);
-  cursor: pointer;
-}
-
-@media (max-width: 480px) {
-  .supportButton {
-    min-height: 44px;
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.supportButton:hover {
-  box-shadow: var(--shadow-btn-primary-hover);
-  transform: translateY(-1px);
-}

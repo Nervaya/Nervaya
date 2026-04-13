@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
 import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
 import { Badge } from '@/components/common';
+import Button from '@/components/common/Button';
 import { ReviewForm } from '@/components/DeepRest/ReviewForm';
 import styles from './SessionCard.module.css';
 
@@ -95,21 +95,29 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
 
       <div className={styles.cardFooter}>
         {isPendingAssessment && (
-          <Link href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}`} className={styles.actionBtn}>
+          <Button
+            href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}`}
+            variant="primary"
+            size="md"
+            fullWidth
+          >
             Complete Assessment
-          </Link>
+          </Button>
         )}
         {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
         {isReady && (
           <>
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
             {(!hasRequestedReSession || isRequesting) && (
-              <Link
+              <Button
                 href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
-                className={styles.requestBtnLink}
+                variant="ghost"
+                size="md"
+                fullWidth
+                loading={isRequesting}
               >
-                {isRequesting ? 'Requesting…' : 'Edit Answers & Re-Request'}
-              </Link>
+                Edit Answers & Re-Request
+              </Button>
             )}
             {hasPendingReSessionRequest && !isRequesting && (
               <Badge variant="purple" fullWidth>
@@ -137,9 +145,9 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
         {requestError && <p className={styles.requestError}>{requestError}</p>}
 
         {isReady && (
-          <button type="button" className={styles.reviewBtn} onClick={() => setShowReviewForm(true)}>
+          <Button type="button" variant="secondary" size="md" fullWidth onClick={() => setShowReviewForm(true)}>
             Write a Review
-          </button>
+          </Button>
         )}
       </div>
 

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useSyncExternalStore, useEffect } from 'react';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { ICON_PLAY } from '@/constants/icons';
@@ -11,6 +10,7 @@ import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { cartApi } from '@/lib/api/cart';
 import { toast } from 'sonner';
+import Button from '@/components/common/Button';
 import type { VideoPlayerProps } from '../VideoPlayer';
 import styles from './styles.module.css';
 
@@ -84,18 +84,25 @@ const DriftOffLandingHero = () => {
           min Deep Rest Session for you targeting your special mental needs.
         </p>
         <div className={styles.actions}>
-          <button onClick={handleAddToCart} className={styles.btnOutline} disabled={isAdding}>
-            Add to Cart
-          </button>
-          <Link href="/deep-rest/payment" className={styles.btnPrimary}>
+          <Button href="/deep-rest/payment" variant="primary" size="md" fullWidth={false}>
             Buy Audio
-          </Link>
-          <Link href="/deep-rest/sessions" className={styles.btnOutline}>
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="md"
+            fullWidth={false}
+            onClick={handleAddToCart}
+            loading={isAdding}
+          >
+            Add to Cart
+          </Button>
+          <Button href="/deep-rest/sessions" variant="secondary" size="md" fullWidth={false}>
             View My Sessions
-          </Link>
-          <Link href="/deep-rest/about" className={styles.btnOutline}>
+          </Button>
+          <Button href="/deep-rest/about" variant="secondary" size="md" fullWidth={false}>
             What are Deep Rest sessions?
-          </Link>
+          </Button>
         </div>
       </div>
 

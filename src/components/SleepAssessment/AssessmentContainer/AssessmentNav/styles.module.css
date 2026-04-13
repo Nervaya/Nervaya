@@ -1,107 +1,25 @@
 .footer {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 6px;
-  padding: 6px 0 8px;
-  border-top: 1px solid #f1f5f9;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  padding: var(--space-2) 0 var(--space-3);
+  border-top: 1px solid var(--color-border-subtle);
 }
 
-.navButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 2rem;
-  font-size: 1rem;
-  font-weight: var(--weight-semibold);
-  font-family: inherit;
-  border-radius: var(--radius-button, 8px);
-  cursor: pointer;
-  transition: all var(--transition-slow);
-  border: 1px solid transparent;
-  white-space: nowrap;
-  text-decoration: none;
-  box-sizing: border-box;
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-}
-
-.prevButton {
-  background: var(--color-background);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border-light);
-
-  &:not(:disabled):hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: var(--color-text-primary);
-    transform: translateX(-4px);
-  }
-}
-
-.nextButton {
-  background: #f1f5f9;
-  color: #1e1b4b;
+.nextWrapper {
   margin-left: auto;
-  border: 1px solid var(--color-border-light);
-
-  &:not(:disabled):hover {
-    background: var(--color-border-light);
-    color: var(--color-text-primary);
-    transform: translateX(4px);
-  }
-}
-
-.submitButton {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #6366f1 100%);
-  color: var(--color-text-on-dark);
-  min-width: 200px;
-  border: none;
-  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.2);
-
-  &:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 20px rgba(124, 58, 237, 0.3);
-    filter: brightness(1.1);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.buttonContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--radius-sm);
-  line-height: 1;
-
-  .loadingText {
-    font-size: 0.95rem;
-  }
 }
 
 @media (max-width: 768px) {
   .footer {
     flex-direction: column-reverse;
-    margin-top: 32px;
-    gap: 16px;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
   }
 
-  .navButton {
-    width: 100%;
-    min-height: 48px;
-  }
-
-  .nextButton {
+  .nextWrapper {
     margin-left: 0;
+    width: 100%;
   }
 }

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { deepRestApi } from '@/lib/api/deepRest';
 import StarRating from '@/components/common/StarRating';
+import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 interface ReviewFormProps {
@@ -71,18 +72,21 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ responseId, onSuccess, o
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.actions}>
-        <button
+        <Button
           type="button"
-          className={styles.submitBtn}
+          variant="primary"
+          size="md"
+          fullWidth={false}
           onClick={handleSubmit}
-          disabled={isSubmitting || rating === 0}
+          disabled={rating === 0}
+          loading={isSubmitting}
         >
-          {isSubmitting ? 'Submitting...' : 'Submit Review'}
-        </button>
+          Submit Review
+        </Button>
         {onCancel && (
-          <button type="button" className={styles.cancelBtn} onClick={onCancel}>
+          <Button type="button" variant="secondary" size="md" fullWidth={false} onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
         )}
       </div>
     </div>
