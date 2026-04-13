@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import { Badge, DataTable, StatusState, type BreadcrumbItem, type ColumnDef } from '@/components/common';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import Button from '@/components/common/Button';
 import SessionFilters from '@/components/Admin/SessionFilters';
 import { useAdminSessions } from '@/queries/sessions/useSessions';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
 import type { Therapist } from '@/types/therapist.types';
-import type { SessionUserSummary } from '@/types/session.types';
-import styles from './styles.module.css';
+import type { Session, SessionUserSummary } from '@/types/session.types';
 
 function countActiveFilters(f: SessionFiltersParams): number {
   let n = 0;
@@ -20,6 +20,23 @@ function countActiveFilters(f: SessionFiltersParams): number {
   if (f.dateTo) n++;
   if (f.search?.trim()) n++;
   return n;
+}
+
+type StatusVariant = 'success' | 'warning' | 'error' | 'info' | 'neutral';
+
+function statusVariant(status: string): StatusVariant {
+  switch (status) {
+    case 'completed':
+      return 'success';
+    case 'pending':
+      return 'warning';
+    case 'cancelled':
+      return 'error';
+    case 'confirmed':
+      return 'info';
+    default:
+      return 'neutral';
+  }
 }
 
 export default function AdminSessionsPage() {
@@ -40,6 +57,72 @@ export default function AdminSessionsPage() {
     setFilters({});
     setPage(1);
   }, []);
+
+  const columns = useMemo<ColumnDef<Session>[]>(
+    () => [
+      {
+        key: 'therapist',
+        header: 'Therapist',
+        sortable: true,
+        sortAccessor: (session) => (session.therapistId as unknown as Therapist)?.name ?? '',
+        cell: (session) => {
+          const therapist = session.therapistId as unknown as Therapist;
+          return therapist?.name ?? 'Unknown Therapist';
+        },
+      },
+      {
+        key: 'user',
+        header: 'User',
+        sortable: true,
+        sortAccessor: (session) => {
+          const userRef = session.userId;
+          const user = typeof userRef === 'object' && userRef !== null ? (userRef as SessionUserSummary) : null;
+          return user?.name ?? '';
+        },
+        cell: (session) => {
+          const userRef = session.userId;
+          const user = typeof userRef === 'object' && userRef !== null ? (userRef as SessionUserSummary) : null;
+          const userName = user?.name ?? 'Unknown user';
+          return (
+            <div>
+              <div>{userName}</div>
+              {user?.email && <div style={{ color: 'var(--color-text-secondary)' }}>{user.email}</div>}
+            </div>
+          );
+        },
+        hideOn: 'sm',
+      },
+      {
+        key: 'date',
+        header: 'Date',
+        sortable: true,
+        sortAccessor: (session) => new Date(session.date).getTime(),
+        cell: (session) => new Date(session.date).toLocaleDateString(),
+        width: '140px',
+      },
+      {
+        key: 'time',
+        header: 'Time',
+        cell: (session) => `${session.startTime} – ${session.endTime}`,
+        width: '180px',
+        hideOn: 'md',
+      },
+      {
+        key: 'status',
+        header: 'Status',
+        sortable: true,
+        sortAccessor: (session) => session.status,
+        cell: (session) => (
+          <Badge variant={statusVariant(session.status)} shape="pill" size="sm">
+            {session.status}
+          </Badge>
+        ),
+        align: 'right',
+        width: '120px',
+      },
+    ],
+    [],
+  );
 
   if (isLoading) {
     return (
@@ -64,36 +147,11 @@ export default function AdminSessionsPage() {
           type="error"
           message={error}
           action={
-            <button type="button" onClick={() => refetch()} className={styles.retryButton}>
+            <Button type="button" variant="primary" size="md" fullWidth={false} onClick={() => refetch()}>
               Retry
-            </button>
+            </Button>
           }
         />
-      </div>
-    );
-  }
-
-  if (!sessions?.length) {
-    return (
-      <div>
-        <PageHeader title="Sessions" subtitle="View all sessions (read-only)." breadcrumbs={breadcrumbs} />
-        <SessionFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
-        <StatusState type="empty" message="No sessions found." />
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={paginationMeta.page}
-            limit={paginationMeta.limit}
-            total={paginationMeta.total}
-            totalPages={paginationMeta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Sessions pagination"
-          />
-        </div>
       </div>
     );
   }
@@ -107,51 +165,24 @@ export default function AdminSessionsPage() {
         onReset={handleFiltersReset}
         activeCount={countActiveFilters(filters)}
       />
-      <ul className={styles.list} aria-label="All sessions">
-        {sessions.map((session) => {
-          const therapist = session.therapistId as unknown as Therapist;
-          const userRef = session.userId;
-          const user = typeof userRef === 'object' && userRef !== null ? (userRef as SessionUserSummary) : null;
-          const userName = user?.name ?? 'Unknown user';
-          const userEmail = user?.email;
-          return (
-            <li key={session._id} className={styles.card}>
-              <div className={styles.sessionHeader}>
-                <div>
-                  <h3 className={styles.therapistName}>{therapist?.name ?? 'Unknown Therapist'}</h3>
-                  <p className={styles.userId}>
-                    {userName}
-                    {userEmail ? ` · ${userEmail}` : ''}
-                  </p>
-                </div>
-                <span
-                  className={`${styles.statusBadge} ${styles[`status${session.status.charAt(0).toUpperCase()}${session.status.slice(1)}`] ?? ''}`}
-                >
-                  {session.status}
-                </span>
-              </div>
-              <div className={styles.sessionDetails}>
-                <p>Date: {new Date(session.date).toLocaleDateString()}</p>
-                <p>
-                  Time: {session.startTime} – {session.endTime}
-                </p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-      {meta && (
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={meta.page}
-            limit={meta.limit}
-            total={meta.total}
-            totalPages={meta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Sessions pagination"
-          />
-        </div>
-      )}
+      <DataTable<Session>
+        columns={columns}
+        data={sessions ?? []}
+        rowKey={(session) => session._id}
+        title="Sessions"
+        countLabel={(t) => `${t} Session${t === 1 ? '' : 's'}`}
+        total={paginationMeta.total}
+        emptyMessage="No sessions found."
+        ariaLabel="Sessions"
+        pagination={{
+          page: paginationMeta.page,
+          limit: paginationMeta.limit,
+          total: paginationMeta.total,
+          totalPages: paginationMeta.totalPages,
+          onPageChange: setPage,
+          ariaLabel: 'Sessions pagination',
+        }}
+      />
     </div>
   );
 }
