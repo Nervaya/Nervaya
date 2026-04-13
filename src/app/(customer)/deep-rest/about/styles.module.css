@@ -102,12 +102,12 @@
 }
 
 .wrapper :global(.page-header_subtitle__B0hD1) {
-  font-size: 1.125rem !important;
-  font-weight: 450 !important;
-  color: #475569 !important;
+  font-size: var(--text-body-lg) !important;
+  font-weight: var(--weight-normal) !important;
+  color: var(--color-text-body) !important;
   line-height: var(--leading-relaxed) !important;
   max-width: 800px !important;
-  margin-top: 14px !important;
+  margin-top: var(--space-3) !important;
 }
 
 @media (max-width: 768px) {

@@ -51,7 +51,7 @@
   flex: 1;
   font-size: var(--text-h3);
   line-height: 1.8;
-  color: #475569;
+  color: var(--color-text-body);
   font-weight: var(--weight-medium);
   margin: 0;
 }
@@ -130,8 +130,8 @@
 }
 
 .whatMakesText {
-  color: #1e293b;
-  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  font-size: var(--text-body-lg);
   font-weight: var(--weight-bold);
   line-height: 1.4;
 }

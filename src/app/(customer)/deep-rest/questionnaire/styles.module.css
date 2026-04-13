@@ -229,7 +229,7 @@
 }
 
 .statusCompleted {
-  color: #22c55e !important;
+  color: var(--color-success) !important;
 }
 
 .optionsActions {

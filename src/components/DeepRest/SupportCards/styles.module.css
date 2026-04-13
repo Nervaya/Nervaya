@@ -108,7 +108,7 @@
 .cardParagraph {
   font-size: var(--text-body-lg);
   line-height: 1.5;
-  color: #475569;
+  color: var(--color-text-body);
   font-weight: var(--weight-medium);
   margin: 0;
 }

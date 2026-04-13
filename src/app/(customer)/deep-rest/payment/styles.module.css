@@ -192,26 +192,26 @@
 }
 
 .price {
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
   color: var(--color-text-on-dark);
   margin: 0;
   line-height: 1;
 }
 
 .priceNote {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--text-caption);
+  color: var(--color-text-on-dark-muted);
   margin: 0;
 }
 
 .error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
+  background: var(--color-error-dim);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error);
   border-radius: var(--radius);
-  padding: 0.6rem 0.9rem;
-  font-size: 0.85rem;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-caption);
   width: 100%;
   text-align: left;
   animation: slideIn var(--transition-slow) ease-out;
@@ -232,9 +232,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9rem;
+  gap: var(--space-2);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-caption);
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -252,9 +252,9 @@
   content: '';
   width: var(--space-5);
   height: var(--space-5);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--color-text-on-dark-dim);
   border-top: 2px solid var(--color-text-on-dark);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   animation: spin 1s linear infinite;
 }
 
