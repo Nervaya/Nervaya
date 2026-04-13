@@ -12,10 +12,10 @@
 
   .questionLabel {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--space-1);
     color: var(--qc-accent);
-    font-size: 0.7rem;
-    font-weight: 800;
+    font-size: var(--text-label);
+    font-weight: var(--weight-bold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
