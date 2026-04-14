@@ -12,6 +12,9 @@
 
 # testing
 /coverage
+review-screenshots/
+.playwright-mcp/
+docs/
 
 # next.js
 /.next/
@@ -26,6 +29,7 @@
 .claude/
 .agent/
 .zed/
+.superpowers/
 
 #windsurf
 .windsurf/
