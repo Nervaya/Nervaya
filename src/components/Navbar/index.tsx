@@ -164,7 +164,9 @@ const Navbar = () => {
           </button>
         </div>
 
-        {isMobileMenuOpen && <div className={styles.mobileOverlay} onClick={closeMobileMenu}></div>}
+        {isMobileMenuOpen && (
+          <button type="button" className={styles.mobileOverlay} onClick={closeMobileMenu} aria-label="Close menu" />
+        )}
       </div>
     </nav>
   );

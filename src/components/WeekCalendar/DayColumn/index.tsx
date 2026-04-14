@@ -73,6 +73,12 @@ export const DayColumn: React.FC<DayColumnProps> = ({ date, slots, role, onSlotC
         className={styles.slotsArea}
         style={{ height: totalHours * HOUR_HEIGHT }}
         onClick={handleEmptyClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleEmptyClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+          }
+        }}
         role="button"
         tabIndex={0}
         aria-label={`Add slot on ${dateStr}`}

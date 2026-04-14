@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_X, ICON_LOADING } from '@/constants/icons';
 import { Session } from '@/types/session.types';
 import { Therapist } from '@/types/therapist.types';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './styles.module.css';
 
 const ICON_GLOBE = 'solar:global-bold';
@@ -26,6 +27,8 @@ const SessionDetailModal: React.FC<SessionDetailModalProps> = ({
   isCancelling = false,
 }) => {
   const therapist = session.therapistId as unknown as Therapist;
+  const modalRef = useRef<HTMLDivElement>(null);
+  useModalDismiss(true, modalRef, onClose);
 
   const handleJoin = () => {
     if (onJoin) {
@@ -36,8 +39,8 @@ const SessionDetailModal: React.FC<SessionDetailModalProps> = ({
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modalOverlay}>
+      <div ref={modalRef} className={styles.modalContent} role="dialog" aria-modal="true">
         <div className={styles.modalHeader}>
           <h3 className={styles.modalTitle}>Session Details</h3>
           <button className={styles.modalCloseBtn} onClick={onClose} aria-label="Close session details">

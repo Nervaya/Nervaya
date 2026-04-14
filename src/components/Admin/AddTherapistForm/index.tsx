@@ -137,20 +137,25 @@ export default function AddTherapistForm({
       >
         <div className={styles.formHeader}>
           <div className={styles.stepper}>
-            {STEPS.map((step) => (
-              <div
-                key={step.id}
-                className={`${styles.step} ${currentStep === step.id ? styles.active : ''} ${
-                  currentStep > step.id ? styles.completed : ''
-                }`}
-                onClick={() => step.id < currentStep && setCurrentStep(step.id)}
-              >
-                <div className={styles.stepCircle}>
-                  {currentStep > step.id ? <Icon icon={ICON_CHECK_SIMPLE} /> : <Icon icon={step.icon} />}
-                </div>
-                <span className={styles.stepLabel}>{step.label}</span>
-              </div>
-            ))}
+            {STEPS.map((step) => {
+              const isClickable = step.id < currentStep;
+              return (
+                <button
+                  type="button"
+                  key={step.id}
+                  className={`${styles.step} ${currentStep === step.id ? styles.active : ''} ${
+                    currentStep > step.id ? styles.completed : ''
+                  }`}
+                  onClick={() => isClickable && setCurrentStep(step.id)}
+                  disabled={!isClickable}
+                >
+                  <div className={styles.stepCircle}>
+                    {currentStep > step.id ? <Icon icon={ICON_CHECK_SIMPLE} /> : <Icon icon={step.icon} />}
+                  </div>
+                  <span className={styles.stepLabel}>{step.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

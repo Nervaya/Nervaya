@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { ICON_X, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 import { CustomDropdown } from '@/components/common/CustomDropdown';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from '../styles.module.css';
 
 import { FilterState } from '../page';
@@ -23,11 +25,14 @@ interface FilterModalProps {
 }
 
 export function FilterModal({ isOpen, onClose, options, state, onStateChange, onApply, onClear }: FilterModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useModalDismiss(isOpen, modalRef, onClose);
+
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.filterModal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modalOverlay}>
+      <div ref={modalRef} className={styles.filterModal} role="dialog" aria-modal="true">
         <div className={styles.modalHeader}>
           <h3>Filter Therapists</h3>
           <button type="button" className={styles.closeModalBtn} onClick={onClose} aria-label="Close filters">

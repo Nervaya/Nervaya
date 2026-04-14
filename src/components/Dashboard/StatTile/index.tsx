@@ -53,7 +53,11 @@ export function StatTile({ title, value, subtitle, icon, cta, iconColor, classNa
         </div>
       </div>
       {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-      {cta && <div className={styles.ctaWrapper}>{Array.isArray(cta) ? cta.map(renderCta) : renderCta(cta, 0)}</div>}
+      {cta && (
+        <div className={styles.ctaWrapper}>
+          {Array.isArray(cta) ? cta.map((item, idx) => renderCta(item, idx)) : renderCta(cta, 0)}
+        </div>
+      )}
     </article>
   );
 }

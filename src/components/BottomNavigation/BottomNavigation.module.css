@@ -126,7 +126,6 @@
   grid-template-columns: repeat(5, 1fr);
   list-style: none;
   margin: 0;
-  padding: 0;
   align-items: center;
   min-height: 68px;
   padding: 0 var(--space-2);

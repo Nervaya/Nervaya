@@ -81,18 +81,14 @@ const ReturnPolicyContent = () => {
         if (!openSections.has(sectionId)) {
           toggleSection(sectionId);
         } else {
-          if (isMobile) {
-            setActiveSection(sectionId);
-          } else {
-            setActiveSection(sectionId);
-          }
+          setActiveSection(sectionId);
         }
         setTimeout(() => {
           scrollLockRef.current.current = false;
         }, 1000);
       }
     },
-    [openSections, isMobile, toggleSection, setActiveSection],
+    [openSections, toggleSection, setActiveSection],
   );
 
   const sectionToggleHandlers = useMemo(() => {
