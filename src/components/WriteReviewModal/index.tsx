@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { ROLES } from '@/lib/constants/roles';
 import { reviewsApi, type ReviewableItem } from '@/lib/api/reviews';
 import { useReviewableItems } from '@/queries/reviews/useReviewableItems';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import styles from './styles.module.css';
@@ -18,6 +19,7 @@ export function WriteReviewModal() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const { data: reviewableItems, isLoading: itemsLoading, refetch } = useReviewableItems();
   const isCustomer = user?.role === ROLES.CUSTOMER;
@@ -34,6 +36,8 @@ export function WriteReviewModal() {
   const handleClose = useCallback(() => {
     setState('idle');
   }, []);
+
+  useModalDismiss(state !== 'idle', modalRef, handleClose);
 
   const handleSelectItem = useCallback((item: ReviewableItem) => {
     setSelectedItem(item);
@@ -78,8 +82,8 @@ export function WriteReviewModal() {
       )}
 
       {state !== 'idle' && (
-        <div className={styles.overlay} onClick={handleClose}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.overlay}>
+          <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true">
             {state === 'success' ? (
               <div className={styles.successContent}>
                 <div className={styles.successIcon}>

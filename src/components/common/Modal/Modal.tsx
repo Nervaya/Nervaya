@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 import { ICON_X } from '@/constants/icons';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -15,10 +16,9 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // We use a microtask to avoid the "synchronous setState in effect" warning
-    // while still ensuring we only render on the client to avoid hydration mismatch.
     const mountedTimer = setTimeout(() => {
       setMounted(true);
     }, 0);
@@ -36,11 +36,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     };
   }, [isOpen]);
 
+  useModalDismiss(isOpen, modalRef, onClose);
+
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true" aria-label={title}>
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
           <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">

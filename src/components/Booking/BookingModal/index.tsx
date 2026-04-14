@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import TimeSlotGrid from '../TimeSlotGrid';
@@ -16,6 +16,7 @@ import { ITEM_TYPE } from '@/lib/constants/enums';
 import { trackTherapySlotSelected, trackTherapyBooked } from '@/utils/analytics';
 import { RazorpayCheckoutScript } from '@/components/common';
 import { useAuth } from '@/hooks/useAuth';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
 
@@ -323,18 +324,21 @@ export default function BookingModal({
   );
 
   const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
   }, []);
 
+  useModalDismiss(mounted, modalRef, handleClose);
+
   if (!mounted) return null;
 
   const modalContent = (
-    <div className={styles.overlay} onClick={handleClose}>
+    <div className={styles.overlay}>
       <RazorpayCheckoutScript />
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true">
         <BookingModalHeader therapistName={therapistName} onClose={handleClose} />
         <div className={styles.content}>
           <div className={styles.dateSection}>

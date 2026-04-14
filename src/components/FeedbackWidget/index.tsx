@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { ROLES } from '@/lib/constants/roles';
 import { feedbackApi } from '@/lib/api/feedback';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import { toast } from 'sonner';
 import styles from './styles.module.css';
 
@@ -22,6 +23,7 @@ export function FeedbackWidget() {
   const [score, setScore] = useState<number | null>(null);
   const [comment, setComment] = useState('');
   const [hasGivenFeedback, setHasGivenFeedback] = useState(getInitialFeedbackState);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const isCustomer = user?.role === ROLES.CUSTOMER;
 
@@ -34,6 +36,8 @@ export function FeedbackWidget() {
   const handleClose = useCallback(() => {
     setState('idle');
   }, []);
+
+  useModalDismiss(state === 'open' || state === 'submitting' || state === 'success', modalRef, handleClose);
 
   const handleSubmit = useCallback(async () => {
     if (score === null) return;
@@ -83,8 +87,8 @@ export function FeedbackWidget() {
       )}
 
       {(state === 'open' || state === 'submitting' || state === 'success') && (
-        <div className={styles.overlay} onClick={handleClose}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.overlay}>
+          <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true">
             {state === 'success' ? (
               <div className={styles.successContent}>
                 <div className={styles.successIcon}>

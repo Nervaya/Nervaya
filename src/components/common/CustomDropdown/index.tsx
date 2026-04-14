@@ -69,7 +69,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
           >
             <div className={styles.optionsWrapper}>
               {options.map((option) => (
-                <div
+                <button
+                  type="button"
                   key={option.value}
                   className={[styles.option, value === option.value ? styles.optionSelected : ''].join(' ')}
                   onClick={() => {
@@ -81,7 +82,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 >
                   {option.label}
                   {value === option.value && <Icon icon={ICON_CHECK_SIMPLE} className={styles.checkIcon} />}
-                </div>
+                </button>
               ))}
             </div>
           </motion.div>

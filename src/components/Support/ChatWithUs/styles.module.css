@@ -392,8 +392,7 @@
 .whatsappButton {
   width: 100%;
   max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   background: linear-gradient(135deg, #7828c8 0%, #9333ea 100%) !important;
   color: var(--color-text-on-dark) !important;
   border: none !important;
@@ -412,7 +411,6 @@
     box-shadow var(--transition-base),
     background var(--transition-base);
   box-shadow: 0 2px 12px rgba(120, 40, 200, 0.3) !important;
-  margin: 0;
 }
 
 .whatsappButton:hover:not(:disabled) {

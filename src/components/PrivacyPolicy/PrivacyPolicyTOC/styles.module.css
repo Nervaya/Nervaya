@@ -24,7 +24,6 @@
 
 @media (max-width: 480px) {
   .tableOfContents {
-    padding-bottom: 32px;
     background: transparent;
     border-radius: 0;
     padding: 0;

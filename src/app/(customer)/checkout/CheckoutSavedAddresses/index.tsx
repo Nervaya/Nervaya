@@ -32,6 +32,12 @@ export function CheckoutSavedAddresses({ addresses, onUseAddress, onAddNew }: Ch
               key={addr._id}
               className={styles.addressItem}
               onClick={() => onUseAddress(addr)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onUseAddress(addr);
+                }
+              }}
               role="button"
               tabIndex={0}
             >

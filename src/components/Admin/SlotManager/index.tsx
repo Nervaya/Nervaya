@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import DatePicker from '@/components/Booking/DatePicker';
 import { scheduleApi } from '@/lib/api/schedule';
 import { Dropdown } from '@/components/common';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './styles.module.css';
 import { Icon } from '@iconify/react';
 import { ICON_CALENDAR, ICON_CHECK, ICON_CLOCK, ICON_X, ICON_ADD } from '@/constants/icons';
@@ -47,6 +48,13 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
   const [addEndTime, setAddEndTime] = useState('10:00 AM');
   const [addSubmitting, setAddSubmitting] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
+  const addSlotModalRef = useRef<HTMLDivElement>(null);
+
+  const handleCloseAddSlot = useCallback(() => {
+    if (!addSubmitting) setAddSlotOpen(false);
+  }, [addSubmitting]);
+
+  useModalDismiss(addSlotOpen, addSlotModalRef, handleCloseAddSlot);
 
   const fetchSchedule = useCallback(async () => {
     setLoading(true);
@@ -360,8 +368,8 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
       </div>
 
       {addSlotOpen && (
-        <div className={styles.modalOverlay} onClick={() => !addSubmitting && setAddSlotOpen(false)}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+          <div ref={addSlotModalRef} className={styles.modal} role="dialog" aria-modal="true">
             <h3 className={styles.modalTitle}>Add Slot</h3>
             <p className={styles.modalDate}>
               {selectedDate.toLocaleDateString('en-US', {

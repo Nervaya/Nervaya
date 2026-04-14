@@ -90,6 +90,15 @@ const ImageUpload = ({
     <div
       className={`${styles.container} ${loading ? styles.uploading : ''} ${compact ? styles.compact : ''} ${tone === 'light' ? styles.light : ''} ${preview ? styles.hasPreview : ''}`}
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label="Upload image"
     >
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className={styles.input} accept="image/*" />
 

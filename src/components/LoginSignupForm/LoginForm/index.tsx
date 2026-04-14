@@ -102,9 +102,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </form>
       <div className={[styles.authToggle, 'md:hidden'].join(' ')}>
         Don&apos;t have an account?{' '}
-        <span onClick={onSignupClick} className={styles.authToggleLink}>
+        <button type="button" onClick={onSignupClick} className={styles.authToggleLink}>
           Sign Up
-        </span>
+        </button>
       </div>
     </>
   );

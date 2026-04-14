@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 import { ICON_X } from '@/constants/icons';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './AdminModal.module.css';
 
 interface AdminModalProps {
@@ -26,6 +27,7 @@ export default function AdminModal({
   className = '',
 }: AdminModalProps) {
   const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = setTimeout(() => setMounted(true), 0);
@@ -38,16 +40,19 @@ export default function AdminModal({
     };
   }, [isOpen]);
 
+  useModalDismiss(isOpen, modalRef, onClose);
+
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay}>
       <div
+        ref={modalRef}
         className={`${styles.modal} ${className}`}
         style={{ maxWidth }}
-        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-label={title}
       >
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>

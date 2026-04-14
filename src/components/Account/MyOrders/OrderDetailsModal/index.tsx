@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 import { ICON_X, ICON_GLOBE, ICON_TRUCK } from '@/constants/icons';
 import { Order } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import { getShippingCost } from '@/utils/shipping.util';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './styles.module.css';
 
 interface OrderDetailsModalProps {
@@ -17,10 +18,12 @@ interface OrderDetailsModalProps {
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, onClose }) => {
   const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingCost = getShippingCost(order.deliveryMethod ?? 'standard', subtotal);
+  const modalRef = useRef<HTMLDivElement>(null);
+  useModalDismiss(true, modalRef, onClose);
 
   return createPortal(
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modalOverlay}>
+      <div ref={modalRef} className={styles.modalContent} role="dialog" aria-modal="true">
         <div className={styles.modalHeader}>
           <h3 className={styles.modalTitle}>Order Details</h3>
           <button className={styles.modalCloseBtn} onClick={onClose} aria-label="Close">

@@ -92,9 +92,9 @@ export default function TherapyCornerPage() {
       }
     });
     return {
-      languages: Array.from(languages).sort(),
-      specializations: Array.from(specializations).sort(),
-      genders: Array.from(genders).sort(),
+      languages: Array.from(languages).sort((a, b) => a.localeCompare(b)),
+      specializations: Array.from(specializations).sort((a, b) => a.localeCompare(b)),
+      genders: Array.from(genders).sort((a, b) => a.localeCompare(b)),
     };
   }, [allTherapists]);
 

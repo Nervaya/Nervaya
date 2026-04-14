@@ -206,9 +206,7 @@ export async function createDirectOrder(userId: string, params: DirectOrderParam
       metadata: params.metadata,
     };
 
-    const isDigitalOnly = params.itemType === ITEM_TYPE.DRIFT_OFF || params.itemType === ITEM_TYPE.THERAPY;
-    const shipping = isDigitalOnly ? 0 : 0; // Direct supplement orders not handling complex shipping yet
-    const totalAmount = finalPrice * params.quantity + shipping;
+    const totalAmount = finalPrice * params.quantity;
 
     const order = await Order.create({
       userId: toObjectId(userId),

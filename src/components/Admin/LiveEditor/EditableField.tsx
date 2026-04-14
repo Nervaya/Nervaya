@@ -92,9 +92,9 @@ export const EditableField: React.FC<EditableFieldProps> = ({
           />
         )
       ) : (
-        <div className={styles.displayValue} onClick={() => setIsEditing(true)}>
+        <button type="button" className={styles.displayValue} onClick={() => setIsEditing(true)}>
           {value || <span className={styles.placeholder}>Click to enter {label.toLowerCase()}...</span>}
-        </div>
+        </button>
       )}
     </div>
   );

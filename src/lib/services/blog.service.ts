@@ -188,7 +188,7 @@ export async function getPublishedBlogsPaginated(
     const currentPage = Math.min(Math.max(1, page), totalPages);
 
     const allTagsResult = await Blog.distinct('tags', { isPublished: true });
-    const allTags = (allTagsResult as string[]).filter(Boolean).sort();
+    const allTags = (allTagsResult as string[]).filter(Boolean).sort((a, b) => a.localeCompare(b));
 
     return {
       blogs: blogs as IBlog[],

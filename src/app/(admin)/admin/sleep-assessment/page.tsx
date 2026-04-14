@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { sleepAssessmentApi } from '@/lib/api/sleepAssessment';
 import { GlobalLoader } from '@/components/common';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './styles.module.css';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 
@@ -18,6 +19,7 @@ export default function AdminSleepAssessmentPage() {
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const deleteModalRef = useRef<HTMLDivElement>(null);
   const fetchQuestions = useCallback(async () => {
     try {
       const result = await sleepAssessmentApi.getQuestions(true);
@@ -120,6 +122,8 @@ export default function AdminSleepAssessmentPage() {
       setDeleteConfirmation(null);
     }
   };
+
+  useModalDismiss(!!deleteConfirmation, deleteModalRef, cancelDelete);
 
   const getQuestionTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
@@ -266,8 +270,8 @@ export default function AdminSleepAssessmentPage() {
         </div>
       )}
       {deleteConfirmation && (
-        <div className={styles.modalOverlay} onClick={cancelDelete}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+          <div ref={deleteModalRef} className={styles.modal} role="dialog" aria-modal="true">
             <h3 className={styles.modalTitle}>Delete Question</h3>
             <p className={styles.modalMessage}>
               Are you sure you want to delete this question?

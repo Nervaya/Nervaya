@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_DOCUMENT, ICON_ARROW_LEFT, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { deepRestQuestionsApi, type DeepRestQuestion } from '@/lib/api/deepRestQuestions';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './styles.module.css';
 
 export default function QuestionsTab() {
@@ -17,6 +18,7 @@ export default function QuestionsTab() {
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; text: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const deleteModalRef = useRef<HTMLDivElement>(null);
 
   const fetchQuestions = useCallback(async () => {
     setQuestionsLoading(true);
@@ -114,6 +116,8 @@ export default function QuestionsTab() {
   const cancelDelete = () => {
     if (!deleting) setDeleteConfirmation(null);
   };
+
+  useModalDismiss(!!deleteConfirmation, deleteModalRef, cancelDelete);
 
   const getQuestionTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
@@ -263,8 +267,8 @@ export default function QuestionsTab() {
           )}
           {/* Delete modal */}
           {deleteConfirmation && (
-            <div className={styles.modalOverlay} onClick={cancelDelete}>
-              <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalOverlay}>
+              <div ref={deleteModalRef} className={styles.modal} role="dialog" aria-modal="true">
                 <h3 className={styles.modalTitle}>Delete Question</h3>
                 <p className={styles.modalMessage}>
                   Are you sure you want to delete this question?
