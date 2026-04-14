@@ -11,8 +11,8 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
 
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
       user: user.trim(),
       pass: appPassword.trim(),

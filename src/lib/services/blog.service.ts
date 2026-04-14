@@ -52,7 +52,7 @@ function generateSlug(title: string): string {
 }
 
 function calculateReadTime(content: string): number {
-  const plainText = content.replace(/<[^>]*>/g, '');
+  const plainText = content.replace(/<[^>]{0,10000}>/g, '');
   const wordCount = plainText.split(/\s+/).filter((word) => word.length > 0).length;
   const readTime = Math.ceil(wordCount / 200);
   return Math.max(1, readTime);

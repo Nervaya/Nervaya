@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 export function formatAmountForRazorpay(amount: number): number {
   return Math.round(amount * 100);
 }
@@ -8,7 +10,7 @@ export function formatAmountFromRazorpay(amount: number): number {
 
 export function generateOrderId(prefix: string = 'ORD'): string {
   const timestamp = Date.now();
-  const random = Math.floor(Math.random() * 10000);
+  const random = randomBytes(2).toString('hex');
   return `${prefix}_${timestamp}_${random}`;
 }
 
