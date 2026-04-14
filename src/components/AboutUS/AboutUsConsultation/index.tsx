@@ -154,7 +154,7 @@ const AboutUsConsultation = ({ centerCard = false }: AboutUsConsultationProps) =
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{1,63}$/;
     if (formData.connectionType === 'Google Meet') {
       if (!formData.email.trim()) {
         setMessage({ type: 'error', text: 'Please enter your email address for Google Meet.' });

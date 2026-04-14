@@ -40,7 +40,7 @@ const userSchema = new Schema<IUser>(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
+      match: [/^\S{1,64}@\S{1,255}\.\S{1,63}$/, 'Please enter a valid email'],
     },
     role: {
       type: String,

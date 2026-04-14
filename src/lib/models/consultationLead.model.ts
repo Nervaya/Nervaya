@@ -30,7 +30,7 @@ const consultationLeadSchema = new Schema<IConsultationLead>(
     },
     email: {
       type: String,
-      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
+      match: [/^\S{1,64}@\S{1,255}\.\S{1,63}$/, 'Please enter a valid email address'],
       trim: true,
       lowercase: true,
     },

@@ -18,7 +18,7 @@ export function decodeHtmlEntities(text: string): string {
  */
 export function getPlainExcerpt(content: string, maxLength: number = 150): string {
   const plain = content
-    .replace(/<[^>]*>/g, '')
+    .replace(/<[^>]{0,10000}>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
