@@ -57,15 +57,12 @@
 
 /* Variants */
 .primary {
-  background: var(--gradient-accent);
+  background: var(--color-accent);
   color: var(--color-text-on-dark);
-  box-shadow: var(--shadow-btn-primary);
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--gradient-accent-hover);
-  box-shadow: var(--shadow-btn-primary-hover);
-  transform: translateY(-1px);
+  background: var(--color-accent-hover);
 }
 
 .secondary {

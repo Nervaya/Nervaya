@@ -2,19 +2,14 @@
   display: flex;
   gap: 20px;
   padding: 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  box-shadow: var(--shadow-md);
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    border-color var(--transition-base);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+  transition: border-color 0.18s ease;
 }
 
 .card:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+  border-color: var(--color-border-light-hover);
 }
 
 .imageWrapper {

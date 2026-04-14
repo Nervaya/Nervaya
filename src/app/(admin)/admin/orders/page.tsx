@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import PageHeader from '@/components/PageHeader/PageHeader';
-import { Badge, DataTable, StatusState, type BreadcrumbItem, type ColumnDef } from '@/components/common';
+import { Badge, Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
 import Button from '@/components/common/Button';
 import OrderFilters from '@/components/Admin/OrderFilters';
@@ -11,6 +11,7 @@ import type { OrderFiltersParams } from '@/lib/api/orders';
 import type { Order } from '@/types/supplement.types';
 import { formatPrice } from '@/utils/cart.util';
 import { PAGE_SIZE_10 } from '@/lib/constants/pagination.constants';
+import styles from './styles.module.css';
 
 function countActiveFilters(f: OrderFiltersParams): number {
   let n = 0;
@@ -56,6 +57,21 @@ function paymentStatusVariant(status: string): StatusVariant {
   }
 }
 
+function formatOrderId(id: string): string {
+  return `#${id.slice(-8).toUpperCase()}`;
+}
+
+function formatItems(order: Order): string {
+  const count = order.items.length;
+  const firstName = order.items[0]?.name ?? 'No items';
+  if (count <= 1) return firstName;
+  return `${firstName} +${count - 1} more`;
+}
+
+function formatDate(value: string | Date): string {
+  return new Date(value).toLocaleDateString();
+}
+
 export default function AdminOrdersPage() {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<OrderFiltersParams>({});
@@ -74,79 +90,6 @@ export default function AdminOrdersPage() {
     setFilters({});
     setPage(1);
   }, []);
-
-  const columns = useMemo<ColumnDef<Order>[]>(
-    () => [
-      {
-        key: 'id',
-        header: 'Order',
-        sortable: true,
-        sortAccessor: (order) => String(order._id),
-        cell: (order) => (
-          <span style={{ fontFamily: 'var(--font-mono)' }}>#{String(order._id).slice(-8).toUpperCase()}</span>
-        ),
-        width: '140px',
-      },
-      {
-        key: 'items',
-        header: 'Items',
-        cell: (order) => {
-          const count = order.items.length;
-          const firstName = order.items[0]?.name ?? 'No items';
-          if (count <= 1) return firstName;
-          return `${firstName} +${count - 1} more`;
-        },
-        hideOn: 'sm',
-      },
-      {
-        key: 'total',
-        header: 'Total',
-        sortable: true,
-        sortAccessor: (order) => order.totalAmount,
-        cell: (order) => formatPrice(order.totalAmount),
-        align: 'right',
-        width: '120px',
-      },
-      {
-        key: 'orderStatus',
-        header: 'Status',
-        sortable: true,
-        sortAccessor: (order) => order.orderStatus,
-        cell: (order) => (
-          <Badge variant={orderStatusVariant(order.orderStatus)} shape="pill" size="sm">
-            {order.orderStatus}
-          </Badge>
-        ),
-        align: 'right',
-        width: '130px',
-      },
-      {
-        key: 'paymentStatus',
-        header: 'Payment',
-        sortable: true,
-        sortAccessor: (order) => order.paymentStatus,
-        cell: (order) => (
-          <Badge variant={paymentStatusVariant(order.paymentStatus)} shape="pill" size="sm">
-            {order.paymentStatus}
-          </Badge>
-        ),
-        align: 'right',
-        width: '130px',
-        hideOn: 'md',
-      },
-      {
-        key: 'date',
-        header: 'Date',
-        sortable: true,
-        sortAccessor: (order) => new Date(order.createdAt).getTime(),
-        cell: (order) => new Date(order.createdAt).toLocaleDateString(),
-        align: 'right',
-        width: '140px',
-        hideOn: 'sm',
-      },
-    ],
-    [],
-  );
 
   if (isLoading) {
     return (
@@ -180,6 +123,8 @@ export default function AdminOrdersPage() {
     );
   }
 
+  const rows = orders ?? [];
+
   return (
     <div>
       <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
@@ -189,24 +134,48 @@ export default function AdminOrdersPage() {
         onReset={handleFiltersReset}
         activeCount={countActiveFilters(filters)}
       />
-      <DataTable<Order>
-        columns={columns}
-        data={orders ?? []}
-        rowKey={(order) => order._id}
-        title="Orders"
-        countLabel={(t) => `${t} Order${t === 1 ? '' : 's'}`}
-        total={paginationMeta.total}
-        emptyMessage="No orders found."
-        ariaLabel="Orders"
-        pagination={{
-          page: paginationMeta.page,
-          limit: paginationMeta.limit,
-          total: paginationMeta.total,
-          totalPages: paginationMeta.totalPages,
-          onPageChange: setPage,
-          ariaLabel: 'Orders pagination',
-        }}
-      />
+
+      {rows.length === 0 ? (
+        <StatusState type="empty" message="No orders found." />
+      ) : (
+        <section className={styles.list} aria-label="Orders">
+          {rows.map((order) => (
+            <article key={order._id} className={styles.card}>
+              <header className={styles.cardHeader}>
+                <span className={styles.orderId}>{formatOrderId(String(order._id))}</span>
+                <span className={styles.date}>{formatDate(order.createdAt)}</span>
+              </header>
+
+              <div className={styles.cardBody}>
+                <p className={styles.items}>{formatItems(order)}</p>
+                <p className={styles.total}>{formatPrice(order.totalAmount)}</p>
+              </div>
+
+              <footer className={styles.cardFooter}>
+                <Badge variant={orderStatusVariant(order.orderStatus)} shape="pill" size="sm">
+                  {order.orderStatus}
+                </Badge>
+                <Badge variant={paymentStatusVariant(order.paymentStatus)} shape="pill" size="sm">
+                  {order.paymentStatus}
+                </Badge>
+              </footer>
+            </article>
+          ))}
+        </section>
+      )}
+
+      {rows.length > 0 && (
+        <div className={styles.paginationWrap}>
+          <Pagination
+            page={paginationMeta.page}
+            limit={paginationMeta.limit}
+            total={paginationMeta.total}
+            totalPages={paginationMeta.totalPages}
+            onPageChange={setPage}
+            ariaLabel="Orders pagination"
+          />
+        </div>
+      )}
     </div>
   );
 }

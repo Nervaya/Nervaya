@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_SEARCH } from '@/constants/icons';
 import { blogsApi } from '@/lib/api/blogs';
-import { GlobalLoader, Pagination, StatusState, type BreadcrumbItem } from '@/components/common';
+import { GlobalLoader, Pagination, StatusState, Button, type BreadcrumbItem } from '@/components/common';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { BlogListCard } from '@/components/Admin/BlogList';
 import { ConfirmDeleteDialog } from '@/components/Admin/common';
@@ -108,10 +107,10 @@ export default function AdminBlogsPage() {
           subtitle="Manage blog posts, drafts, and publishing workflow."
           breadcrumbs={breadcrumbs}
           actions={
-            <Link href="/admin/blogs/add" className={styles.addButton}>
+            <Button href="/admin/blogs/add" variant="primary" size="md" fullWidth={false}>
               <Icon icon={ICON_ADD} aria-hidden />
               New Blog
-            </Link>
+            </Button>
           }
         />
         <GlobalLoader label="Loading blogs..." />
@@ -133,10 +132,10 @@ export default function AdminBlogsPage() {
         subtitle="Manage blog posts, drafts, and publishing workflow."
         breadcrumbs={breadcrumbs}
         actions={
-          <Link href="/admin/blogs/add" className={styles.addButton}>
+          <Button href="/admin/blogs/add" variant="primary" size="md" fullWidth={false}>
             <Icon icon={ICON_ADD} aria-hidden />
             New Blog
-          </Link>
+          </Button>
         }
       />
       <div className={styles.stats}>
@@ -156,9 +155,9 @@ export default function AdminBlogsPage() {
             aria-label="Search blogs"
           />
         </label>
-        <button type="submit" className={styles.searchButton}>
+        <Button type="submit" variant="primary" size="md" fullWidth={false}>
           Search
-        </button>
+        </Button>
       </form>{' '}
       {blogs.length === 0 ? (
         <StatusState
@@ -170,9 +169,9 @@ export default function AdminBlogsPage() {
               : 'Get started by creating your first blog post to share with your audience.'
           }
           action={
-            <Link href="/admin/blogs/add" className={styles.emptyAddButton}>
+            <Button href="/admin/blogs/add" variant="primary" size="md" fullWidth={false}>
               Create your first blog
-            </Link>
+            </Button>
           }
         />
       ) : (
