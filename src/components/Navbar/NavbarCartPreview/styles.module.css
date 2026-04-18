@@ -201,6 +201,22 @@
   gap: 12px;
 }
 
+.cartPreviewActionsRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cartPreviewActionsRow .cartPreviewPrimary,
+.cartPreviewActionsRow .cartPreviewSecondary {
+  padding: 0 var(--space-4);
+  min-height: 38px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
 .cartPreviewPrimary,
 .cartPreviewSecondary {
   display: inline-flex;

@@ -203,14 +203,17 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
               <Icon icon={ICON_CART} width={26} height={26} />
             </div>
             <p className={styles.cartPreviewMessage}>
-              Your cart is empty for now. Add a Deep Rest session or a supplement and it will glow up here.
+              Your cart is empty. Browse our Deep Rest audio sessions, supplements, or book a therapist to get started.
             </p>
-            <div className={styles.cartPreviewActions}>
+            <div className={styles.cartPreviewActionsRow}>
               <Link href={ROUTES.DEEP_REST} className={styles.cartPreviewPrimary} onClick={handlePreviewLinkClick}>
-                Start with Deep Rest
+                Get Deep Rest Audio
               </Link>
               <Link href={ROUTES.SUPPLEMENTS} className={styles.cartPreviewSecondary} onClick={handlePreviewLinkClick}>
-                Browse supplements
+                Buy Supplements
+              </Link>
+              <Link href="/therapy-corner" className={styles.cartPreviewSecondary} onClick={handlePreviewLinkClick}>
+                Book Therapist
               </Link>
             </div>
           </div>
