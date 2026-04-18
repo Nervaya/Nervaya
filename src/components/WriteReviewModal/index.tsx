@@ -21,8 +21,8 @@ export function WriteReviewModal() {
   const [comment, setComment] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const { data: reviewableItems, isLoading: itemsLoading, refetch } = useReviewableItems();
   const isCustomer = user?.role === ROLES.CUSTOMER;
+  const { data: reviewableItems, isLoading: itemsLoading, refetch } = useReviewableItems(isCustomer);
 
   const handleOpen = useCallback(() => {
     setState('selectItem');

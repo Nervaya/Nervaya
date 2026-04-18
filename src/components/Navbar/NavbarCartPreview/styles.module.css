@@ -160,19 +160,6 @@
   color: var(--color-text-on-dark);
 }
 
-.cartPreviewCount {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  font-size: var(--text-label);
-  font-weight: var(--weight-bold);
-  color: rgba(246, 242, 255, 0.9);
-  white-space: nowrap;
-}
-
 .cartPreviewState {
   display: flex;
   flex-direction: column;

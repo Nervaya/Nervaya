@@ -175,9 +175,7 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
         <div className={styles.cartPreviewHeader}>
           <div>
             <p className={styles.cartPreviewEyebrow}>{isAuthenticated ? 'Cart Preview' : 'Personal Cart'}</p>
-            <h3 className={styles.cartPreviewTitle}>
-              {isAuthenticated ? 'Your cart orbit' : 'Sign in to unlock your cart'}
-            </h3>
+            {!isAuthenticated && <h3 className={styles.cartPreviewTitle}>Sign in to unlock your cart</h3>}
           </div>
           {isAuthenticated && cartCount > 0 && <Badge size="sm">{cartCount} items</Badge>}
         </div>
@@ -185,14 +183,12 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
         {!isAuthenticated ? (
           <div className={styles.cartPreviewState}>
             <p className={styles.cartPreviewMessage}>
-              Sign in to save supplements and Deep Rest sessions, then preview everything here right from the navbar.
+              Sign in to save supplements, Deep Rest sessions, and therapist bookings, then preview everything here
+              right from the navbar.
             </p>
             <div className={styles.cartPreviewActions}>
               <Link href={cartLinkHref} className={styles.cartPreviewPrimary} onClick={handlePreviewLinkClick}>
                 Log in to view cart
-              </Link>
-              <Link href={ROUTES.DEEP_REST} className={styles.cartPreviewSecondary} onClick={handlePreviewLinkClick}>
-                Explore Deep Rest
               </Link>
             </div>
           </div>
@@ -240,7 +236,12 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
                     <div className={styles.cartPreviewItemInfo}>
                       <span className={styles.cartPreviewItemName}>{getCartItemName(item)}</span>
                       <span className={styles.cartPreviewItemMeta}>
-                        Qty {item.quantity} · {item.itemType === ITEM_TYPE.SUPPLEMENT ? 'Supplement' : 'Deep Rest'}
+                        Qty {item.quantity} ·{' '}
+                        {item.itemType === ITEM_TYPE.SUPPLEMENT
+                          ? 'Supplement'
+                          : item.itemType === ITEM_TYPE.THERAPY
+                            ? 'Therapist'
+                            : 'Deep Rest'}
                       </span>
                     </div>
                     <span className={styles.cartPreviewItemPrice}>{formatPrice(item.price * item.quantity)}</span>
@@ -257,7 +258,7 @@ export function NavbarCartPreview({ isAuthenticated, visible, onNavigate }: Navb
 
             <div className={styles.cartPreviewFooter}>
               <div className={styles.cartPreviewSubtotal}>
-                <span>Subtotal</span>
+                <span>Total</span>
                 <strong>{formatPrice(cart?.totalAmount ?? 0)}</strong>
               </div>
               <div className={styles.cartPreviewActions}>

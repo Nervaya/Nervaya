@@ -100,10 +100,9 @@ export default function DriftOffPaymentPage() {
     );
   }
 
-  if (isVerifying || isChecking || authLoading || isAdding || isCreating) {
+  if (isVerifying || isChecking || authLoading || isCreating) {
     let message = 'Checking status...';
     if (isVerifying) message = 'Verifying your payment...';
-    if (isAdding) message = 'Adding to cart...';
     if (isCreating) message = 'Preparing your session...';
 
     return (
@@ -171,7 +170,6 @@ export default function DriftOffPaymentPage() {
                         variant="ghost"
                         onClick={handleAddToCart}
                         disabled={isCreating || showPaymentHandler || isVerifying || isAdding}
-                        loading={isAdding}
                       >
                         Add to Cart
                       </Button>

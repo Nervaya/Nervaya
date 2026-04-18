@@ -73,38 +73,6 @@ export default function AdminSessionsPage() {
     setPage(1);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div>
-        <PageHeader title="Sessions" subtitle="View all sessions (read-only)." breadcrumbs={breadcrumbs} />
-        <GlobalLoader label="Loading sessions..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <PageHeader title="Sessions" subtitle="View all sessions (read-only)." breadcrumbs={breadcrumbs} />
-        <SessionFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
-        <StatusState
-          type="error"
-          message={error}
-          action={
-            <Button type="button" variant="primary" size="md" fullWidth={false} onClick={() => refetch()}>
-              Retry
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
-
   const rows = sessions ?? [];
 
   return (
@@ -117,53 +85,65 @@ export default function AdminSessionsPage() {
         activeCount={countActiveFilters(filters)}
       />
 
-      {rows.length === 0 ? (
+      {isLoading ? (
+        <GlobalLoader label="Loading sessions..." />
+      ) : error ? (
+        <StatusState
+          type="error"
+          message={error}
+          action={
+            <Button type="button" variant="primary" size="md" fullWidth={false} onClick={() => refetch()}>
+              Retry
+            </Button>
+          }
+        />
+      ) : rows.length === 0 ? (
         <StatusState type="empty" message="No sessions found." />
       ) : (
-        <section className={styles.list} aria-label="Sessions">
-          {rows.map((session) => {
-            const user = getUserSummary(session);
-            return (
-              <article key={session._id} className={styles.card}>
-                <header className={styles.cardHeader}>
-                  <h3 className={styles.therapistName}>{getTherapistName(session)}</h3>
-                  <div className={styles.schedule}>
-                    <span className={styles.date}>{formatDate(session.date)}</span>
-                    <span className={styles.dot} aria-hidden="true">
-                      ·
-                    </span>
-                    <span className={styles.time}>
-                      {session.startTime} – {session.endTime}
-                    </span>
-                  </div>
-                </header>
+        <>
+          <section className={styles.list} aria-label="Sessions">
+            {rows.map((session) => {
+              const user = getUserSummary(session);
+              return (
+                <article key={session._id} className={styles.card}>
+                  <header className={styles.cardHeader}>
+                    <h3 className={styles.therapistName}>{getTherapistName(session)}</h3>
+                    <div className={styles.schedule}>
+                      <span className={styles.date}>{formatDate(session.date)}</span>
+                      <span className={styles.dot} aria-hidden="true">
+                        ·
+                      </span>
+                      <span className={styles.time}>
+                        {session.startTime} – {session.endTime}
+                      </span>
+                    </div>
+                  </header>
 
-                <div className={styles.cardBody}>
-                  <div className={styles.userBlock}>
-                    <p className={styles.userName}>{user?.name ?? 'Unknown user'}</p>
-                    {user?.email && <p className={styles.userEmail}>{user.email}</p>}
+                  <div className={styles.cardBody}>
+                    <div className={styles.userBlock}>
+                      <p className={styles.userName}>{user?.name ?? 'Unknown user'}</p>
+                      {user?.email && <p className={styles.userEmail}>{user.email}</p>}
+                    </div>
+                    <Badge variant={statusVariant(session.status)} shape="pill" size="sm">
+                      {session.status}
+                    </Badge>
                   </div>
-                  <Badge variant={statusVariant(session.status)} shape="pill" size="sm">
-                    {session.status}
-                  </Badge>
-                </div>
-              </article>
-            );
-          })}
-        </section>
-      )}
+                </article>
+              );
+            })}
+          </section>
 
-      {rows.length > 0 && (
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={paginationMeta.page}
-            limit={paginationMeta.limit}
-            total={paginationMeta.total}
-            totalPages={paginationMeta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Sessions pagination"
-          />
-        </div>
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={paginationMeta.page}
+              limit={paginationMeta.limit}
+              total={paginationMeta.total}
+              totalPages={paginationMeta.totalPages}
+              onPageChange={setPage}
+              ariaLabel="Sessions pagination"
+            />
+          </div>
+        </>
       )}
     </div>
   );

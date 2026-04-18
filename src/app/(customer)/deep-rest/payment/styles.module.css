@@ -20,7 +20,7 @@
 
 .card {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.5rem;
   background: var(--color-glass-bg);
   border: 1px solid var(--color-glass-border);
   border-radius: 20px;
@@ -39,10 +39,10 @@
 
 .cardLeft {
   flex: 1;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 @media (max-width: 768px) {
@@ -114,15 +114,6 @@
   }
 }
 
-@media (max-width: 480px) {
-  .payBtn,
-  .cartBtn {
-    padding: 0.7rem 1.5rem;
-    font-size: var(--text-caption);
-    min-height: 44px;
-  }
-}
-
 .subtitle {
   font-size: 1rem;
   color: var(--color-text-secondary);
@@ -163,7 +154,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1.25rem;
 }
 
 @media (max-width: 768px) {
@@ -225,42 +216,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  color: var(--color-text-on-dark);
-  font-size: var(--text-caption);
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.loading::before {
-  content: '';
-  width: var(--space-5);
-  height: var(--space-5);
-  border: 2px solid var(--color-text-on-dark-dim);
-  border-top: 2px solid var(--color-text-on-dark);
-  border-radius: var(--radius-full);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 

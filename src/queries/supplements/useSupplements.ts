@@ -7,31 +7,44 @@ export function useAdminSupplements(page: number, limit: number, filters?: Suppl
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetchKey, setFetchKey] = useState(0);
 
-  const fetchSupplements = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await supplementsApi.getAllPaginated(page, limit, filters);
-      if (response.success && response.data) {
-        setData(response.data.data);
-        setMeta(response.data.meta);
-      } else {
-        setData([]);
-        setMeta(null);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load supplements');
-      setData([]);
-      setMeta(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [page, limit, filters]);
+  const filtersKey = JSON.stringify(filters ?? {});
 
   useEffect(() => {
-    fetchSupplements();
-  }, [fetchSupplements]);
+    let active = true;
 
-  return { data, meta, isLoading, error, refetch: fetchSupplements };
+    async function fetchSupplements() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const parsed: SupplementFiltersParams = JSON.parse(filtersKey);
+        const response = await supplementsApi.getAllPaginated(page, limit, parsed);
+        if (!active) return;
+        if (response.success && response.data) {
+          setData(response.data.data);
+          setMeta(response.data.meta);
+        } else {
+          setData([]);
+          setMeta(null);
+        }
+      } catch (err) {
+        if (!active) return;
+        setError(err instanceof Error ? err.message : 'Failed to load supplements');
+        setData([]);
+        setMeta(null);
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    }
+
+    void fetchSupplements();
+    return () => {
+      active = false;
+    };
+  }, [page, limit, filtersKey, fetchKey]);
+
+  const refetch = useCallback(() => setFetchKey((k) => k + 1), []);
+
+  return { data, meta, isLoading, error, refetch };
 }

@@ -91,38 +91,6 @@ export default function AdminOrdersPage() {
     setPage(1);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div>
-        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
-        <GlobalLoader label="Loading orders..." />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <PageHeader title="Orders" subtitle="View all orders (read-only)." breadcrumbs={breadcrumbs} />
-        <OrderFilters
-          initialFilters={filters}
-          onApply={handleFiltersApply}
-          onReset={handleFiltersReset}
-          activeCount={countActiveFilters(filters)}
-        />
-        <StatusState
-          type="error"
-          message={error}
-          action={
-            <Button type="button" variant="primary" size="md" fullWidth={false} onClick={() => refetch()}>
-              Retry
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
-
   const rows = orders ?? [];
 
   return (
@@ -135,46 +103,58 @@ export default function AdminOrdersPage() {
         activeCount={countActiveFilters(filters)}
       />
 
-      {rows.length === 0 ? (
+      {isLoading ? (
+        <GlobalLoader label="Loading orders..." />
+      ) : error ? (
+        <StatusState
+          type="error"
+          message={error}
+          action={
+            <Button type="button" variant="primary" size="md" fullWidth={false} onClick={() => refetch()}>
+              Retry
+            </Button>
+          }
+        />
+      ) : rows.length === 0 ? (
         <StatusState type="empty" message="No orders found." />
       ) : (
-        <section className={styles.list} aria-label="Orders">
-          {rows.map((order) => (
-            <article key={order._id} className={styles.card}>
-              <header className={styles.cardHeader}>
-                <span className={styles.orderId}>{formatOrderId(String(order._id))}</span>
-                <span className={styles.date}>{formatDate(order.createdAt)}</span>
-              </header>
+        <>
+          <section className={styles.list} aria-label="Orders">
+            {rows.map((order) => (
+              <article key={order._id} className={styles.card}>
+                <header className={styles.cardHeader}>
+                  <span className={styles.orderId}>{formatOrderId(String(order._id))}</span>
+                  <span className={styles.date}>{formatDate(order.createdAt)}</span>
+                </header>
 
-              <div className={styles.cardBody}>
-                <p className={styles.items}>{formatItems(order)}</p>
-                <p className={styles.total}>{formatPrice(order.totalAmount)}</p>
-              </div>
+                <div className={styles.cardBody}>
+                  <p className={styles.items}>{formatItems(order)}</p>
+                  <p className={styles.total}>{formatPrice(order.totalAmount)}</p>
+                </div>
 
-              <footer className={styles.cardFooter}>
-                <Badge variant={orderStatusVariant(order.orderStatus)} shape="pill" size="sm">
-                  {order.orderStatus}
-                </Badge>
-                <Badge variant={paymentStatusVariant(order.paymentStatus)} shape="pill" size="sm">
-                  {order.paymentStatus}
-                </Badge>
-              </footer>
-            </article>
-          ))}
-        </section>
-      )}
+                <footer className={styles.cardFooter}>
+                  <Badge variant={orderStatusVariant(order.orderStatus)} shape="pill" size="sm">
+                    {order.orderStatus}
+                  </Badge>
+                  <Badge variant={paymentStatusVariant(order.paymentStatus)} shape="pill" size="sm">
+                    {order.paymentStatus}
+                  </Badge>
+                </footer>
+              </article>
+            ))}
+          </section>
 
-      {rows.length > 0 && (
-        <div className={styles.paginationWrap}>
-          <Pagination
-            page={paginationMeta.page}
-            limit={paginationMeta.limit}
-            total={paginationMeta.total}
-            totalPages={paginationMeta.totalPages}
-            onPageChange={setPage}
-            ariaLabel="Orders pagination"
-          />
-        </div>
+          <div className={styles.paginationWrap}>
+            <Pagination
+              page={paginationMeta.page}
+              limit={paginationMeta.limit}
+              total={paginationMeta.total}
+              totalPages={paginationMeta.totalPages}
+              onPageChange={setPage}
+              ariaLabel="Orders pagination"
+            />
+          </div>
+        </>
       )}
     </div>
   );

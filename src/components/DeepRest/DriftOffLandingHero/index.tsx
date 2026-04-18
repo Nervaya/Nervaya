@@ -93,7 +93,7 @@ const DriftOffLandingHero = () => {
             size="md"
             fullWidth={false}
             onClick={handleAddToCart}
-            loading={isAdding}
+            disabled={isAdding}
           >
             Add to Cart
           </Button>

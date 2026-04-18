@@ -65,21 +65,25 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
+    let cancelled = false;
     const deferCartFetch = () => {
       if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
         window.requestIdleCallback(
           () => {
-            void refreshCart();
+            if (!cancelled) void refreshCart();
           },
           { timeout: 2000 },
         );
       } else {
         setTimeout(() => {
-          void refreshCart();
+          if (!cancelled) void refreshCart();
         }, 100);
       }
     };
     deferCartFetch();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, refreshCart]);
 
   useEffect(() => {

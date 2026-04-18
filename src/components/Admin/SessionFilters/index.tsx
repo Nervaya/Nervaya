@@ -56,12 +56,16 @@ export default function SessionFilters({
   const isResetting = useRef(false);
 
   useEffect(() => {
+    let active = true;
     therapistsApi
       .getAll()
       .then((res) => {
-        if (res.success && Array.isArray(res.data)) setTherapists(res.data);
+        if (active && res.success && Array.isArray(res.data)) setTherapists(res.data);
       })
       .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, []);
 
   const applyNow = useCallback(

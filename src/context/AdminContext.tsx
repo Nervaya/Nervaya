@@ -40,10 +40,34 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
-      refreshStats();
+    if (user?.role !== 'ADMIN') return;
+    let active = true;
+
+    async function fetchStats() {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await adminStatsApi.getDashboardStats();
+        if (!active) return;
+        if (response.success && response.data) {
+          setStats(response.data);
+        } else {
+          setStats(null);
+        }
+      } catch (err) {
+        if (!active) return;
+        setError(err instanceof Error ? err.message : 'Failed to load admin stats');
+        setStats(null);
+      } finally {
+        if (active) setLoading(false);
+      }
     }
-  }, [user, refreshStats]);
+
+    void fetchStats();
+    return () => {
+      active = false;
+    };
+  }, [user]);
 
   return (
     <AdminContext.Provider
