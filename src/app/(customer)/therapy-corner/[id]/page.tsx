@@ -16,6 +16,7 @@ import { Icon } from '@iconify/react';
 import { getEmbedUrl } from '@/lib/utils/video.utils';
 import { ICON_QUOTES } from '@/constants/icons';
 import { TestimonialsCarousel, type TestimonialItem } from '@/components/common/TestimonialsCarousel';
+import { ImageCarousel } from '@/components/common/ImageCarousel';
 import { reviewsApi } from '@/lib/api/reviews';
 
 export default function TherapistProfilePage() {
@@ -110,9 +111,6 @@ export default function TherapistProfilePage() {
                   gap: '60px',
                   padding: '60px 8%',
                   alignItems: 'center',
-                  background: '#ffffff',
-                  borderRadius: '12px',
-                  margin: '20px 4%',
                 }}
               >
                 <div
@@ -150,7 +148,7 @@ export default function TherapistProfilePage() {
                     <img
                       src={therapist.image}
                       alt={therapist.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   ) : (
                     <div
@@ -248,6 +246,25 @@ export default function TherapistProfilePage() {
                 </div>
               </div>
 
+              {therapist.galleryImages && therapist.galleryImages.length > 0 && (
+                <div
+                  style={{
+                    padding: '40px 8%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '32px',
+                  }}
+                >
+                  <h2 style={{ margin: 0, color: '#7c3aed', fontSize: '1.5rem', fontWeight: 600, textAlign: 'center' }}>
+                    Gallery
+                  </h2>
+                  <div style={{ width: '100%', maxWidth: '640px' }}>
+                    <ImageCarousel images={therapist.galleryImages} alt={`${therapist.name} gallery image`} />
+                  </div>
+                </div>
+              )}
+
               {/* Middle Section - Message to You */}
               <div
                 style={{
@@ -317,9 +334,6 @@ export default function TherapistProfilePage() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: '50px',
-                  background: '#faf5ff',
-                  borderRadius: '12px',
-                  margin: '20px 4%',
                 }}
               >
                 <TestimonialsCarousel

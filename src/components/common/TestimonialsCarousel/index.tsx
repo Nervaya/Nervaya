@@ -67,9 +67,17 @@ export function TestimonialsCarousel({ reviews, title }: TestimonialsCarouselPro
 
   useEffect(() => {
     updateDotCount();
-    window.addEventListener('resize', updateDotCount);
-    return () => window.removeEventListener('resize', updateDotCount);
-  }, [updateDotCount]);
+    const track = trackRef.current;
+    if (!track) return;
+    const observer = new ResizeObserver(() => {
+      updateDotCount();
+      const cardEl = track.querySelector('[data-card]') as HTMLElement | null;
+      if (!cardEl) return;
+      track.scrollTo({ left: activeIndex * (cardEl.clientWidth + 20), behavior: 'auto' });
+    });
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [updateDotCount, activeIndex]);
 
   useEffect(() => {
     const track = trackRef.current;

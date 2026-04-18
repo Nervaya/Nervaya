@@ -1,5 +1,5 @@
 .pageContentWhite {
-  background: var(--color-background) !important;
+  background: #faf5ff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }

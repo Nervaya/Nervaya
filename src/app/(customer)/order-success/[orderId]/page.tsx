@@ -85,16 +85,18 @@ export default function OrderSuccessPage() {
       .catch(() => {});
   }, []);
 
-  const isDigitalOnly = order?.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF) ?? false;
+  const isDigitalOnly =
+    order?.items.every((item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY) ?? false;
   const driftOffItem = order?.items.find((item) => item.itemType === ITEM_TYPE.DRIFT_OFF);
+  const hasDriftOff = Boolean(driftOffItem);
   const driftOffOrderId = driftOffItem ? String(driftOffItem.itemId) : null;
   const questionnaireUrl = driftOffOrderId
     ? `/deep-rest/questionnaire?orderId=${driftOffOrderId}`
     : '/deep-rest/sessions';
 
-  // Auto-redirect countdown for Deep Rest orders
+  // Auto-redirect countdown for Deep Rest orders (not therapy-only digital orders)
   useEffect(() => {
-    if (!order || !isDigitalOnly) return;
+    if (!order || !hasDriftOff) return;
     let current = 5;
     const tick = () => {
       setRedirectCountdown(current);
@@ -110,7 +112,7 @@ export default function OrderSuccessPage() {
       clearInterval(interval);
       clearTimeout(kickoff);
     };
-  }, [order, isDigitalOnly, router, questionnaireUrl]);
+  }, [order, hasDriftOff, router, questionnaireUrl]);
 
   if (loading) {
     return (
@@ -220,12 +222,12 @@ export default function OrderSuccessPage() {
                 <span>Subtotal</span>
                 <span>{formatPrice(subtotal)}</span>
               </div>
-              <div className={styles.summaryRow}>
-                <span>Shipment</span>
-                <span className={shipping === 0 ? styles.shipFree : undefined}>
-                  {shipping === 0 ? 'FREE' : formatPrice(shipping)}
-                </span>
-              </div>
+              {shipping > 0 && (
+                <div className={styles.summaryRow}>
+                  <span>Shipment</span>
+                  <span>{formatPrice(shipping)}</span>
+                </div>
+              )}
               {promoDiscount > 0 && (
                 <div className={styles.summaryRow}>
                   <span>Discount</span>
@@ -251,7 +253,7 @@ export default function OrderSuccessPage() {
                 <p>We&apos;ve sent a confirmation email to {userEmail}.</p>
               </div>
 
-              {isDigitalOnly ? (
+              {hasDriftOff && (
                 <div className={styles.nextStepCard}>
                   <div className={styles.stepIcon} aria-hidden>
                     <Icon icon={ICON_HEADPHONES} />
@@ -266,7 +268,8 @@ export default function OrderSuccessPage() {
                     )}
                   </p>
                 </div>
-              ) : (
+              )}
+              {!isDigitalOnly && (
                 <>
                   <div className={styles.nextStepCard}>
                     <div className={styles.stepIcon} aria-hidden>
@@ -286,9 +289,12 @@ export default function OrderSuccessPage() {
           </section>
 
           <div className={styles.actions}>
-            <Link href={isDigitalOnly ? questionnaireUrl : '/supplements'} className={styles.primaryButton}>
-              <Icon icon={isDigitalOnly ? ICON_HEADPHONES : ICON_HOUSE} aria-hidden />
-              {isDigitalOnly ? 'Start Questionnaire' : 'Continue Shopping'}
+            <Link
+              href={hasDriftOff ? questionnaireUrl : isDigitalOnly ? '/dashboard' : '/supplements'}
+              className={styles.primaryButton}
+            >
+              <Icon icon={hasDriftOff ? ICON_HEADPHONES : ICON_HOUSE} aria-hidden />
+              {hasDriftOff ? 'Start Questionnaire' : isDigitalOnly ? 'Back to Home' : 'Continue Shopping'}
             </Link>
             <p className={styles.supportText}>
               Need help with your order?{' '}

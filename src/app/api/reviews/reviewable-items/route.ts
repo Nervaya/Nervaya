@@ -7,6 +7,9 @@ import connectDB from '@/lib/db/mongodb';
 import Order from '@/lib/models/order.model';
 import Review from '@/lib/models/review.model';
 import { toObjectId } from '@/lib/utils/objectId.util';
+import { ITEM_TYPE, ORDER_STATUS, PAYMENT_STATUS } from '@/lib/constants/enums';
+
+const DIGITAL_ITEM_TYPES: string[] = [ITEM_TYPE.THERAPY, ITEM_TYPE.DRIFT_OFF];
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,7 +22,8 @@ export async function GET(req: NextRequest) {
 
     const orders = await Order.find({
       userId: userObjectId,
-      orderStatus: 'delivered',
+      paymentStatus: PAYMENT_STATUS.PAID,
+      orderStatus: { $ne: ORDER_STATUS.CANCELLED },
     })
       .sort({ createdAt: -1 })
       .lean();
@@ -39,8 +43,12 @@ export async function GET(req: NextRequest) {
     for (const order of orders) {
       if (!Array.isArray(order.items)) continue;
       for (const item of order.items) {
-        const itemId = item.itemId.toString();
         const itemType = item.itemType;
+        const isDigital = DIGITAL_ITEM_TYPES.includes(itemType);
+        const isReviewable = isDigital || order.orderStatus === ORDER_STATUS.DELIVERED;
+        if (!isReviewable) continue;
+
+        const itemId = item.itemId.toString();
         const key = `${itemId}_${itemType}`;
 
         if (!reviewedKeys.has(key)) {

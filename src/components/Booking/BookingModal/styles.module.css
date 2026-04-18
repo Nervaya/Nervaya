@@ -260,7 +260,7 @@
 }
 
 .confirmDialog strong {
-  color: var(--color-text-on-dark);
+  color: var(--color-text-primary);
 }
 
 .confirmActions {

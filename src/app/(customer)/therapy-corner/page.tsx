@@ -282,7 +282,7 @@ export default function TherapyCornerPage() {
 
             <div className={styles.inlineFilters}>
               <MultiSelect
-                placeholder="Qualification"
+                placeholder="Specializations"
                 values={filterState.specialization}
                 onChange={(vals) => handleFilterChange('specialization', vals)}
                 options={filterOptions.specializations.map((spec) => ({ value: spec, label: spec }))}

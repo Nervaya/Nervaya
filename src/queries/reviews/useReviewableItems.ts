@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { reviewsApi, type ReviewableItem } from '@/lib/api/reviews';
 
 export function useReviewableItems(enabled = true) {
+  const pathname = usePathname();
   const [data, setData] = useState<ReviewableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export function useReviewableItems(enabled = true) {
     if (!enabled) return;
     let active = true;
 
-    async function fetch() {
+    async function run() {
       try {
         setIsLoading(true);
         setError(null);
@@ -48,11 +50,23 @@ export function useReviewableItems(enabled = true) {
       }
     }
 
-    void fetch();
+    void run();
     return () => {
       active = false;
     };
-  }, [enabled]);
+  }, [enabled, pathname]);
+
+  useEffect(() => {
+    const handler = () => {
+      void fetchItems();
+    };
+    window.addEventListener('reviewable-items-updated', handler);
+    window.addEventListener('auth-state-changed', handler);
+    return () => {
+      window.removeEventListener('reviewable-items-updated', handler);
+      window.removeEventListener('auth-state-changed', handler);
+    };
+  }, [fetchItems]);
 
   return { data, isLoading, error, refetch: fetchItems };
 }
