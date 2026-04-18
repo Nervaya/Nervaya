@@ -51,6 +51,7 @@
   outline: none;
   color: var(--color-text-primary);
   width: 100%;
+  min-height: var(--input-height);
   box-sizing: border-box;
 }
 

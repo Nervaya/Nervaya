@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  min-height: 44px;
+  min-height: var(--input-height);
   padding: var(--space-3) 14px;
   border-radius: var(--radius);
   border: 1px solid var(--border, #d9e2ee);

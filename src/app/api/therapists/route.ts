@@ -26,8 +26,18 @@ export async function GET(req: NextRequest) {
     }
 
     const minExperience = searchParams.get('minExperience');
-    if (minExperience) {
-      filter.experience = { $gte: Number(minExperience) };
+    const maxExperience = searchParams.get('maxExperience');
+    if (minExperience || maxExperience) {
+      const expFilter: Record<string, number> = {};
+      if (minExperience && !Number.isNaN(Number(minExperience))) {
+        expFilter.$gte = Number(minExperience);
+      }
+      if (maxExperience && !Number.isNaN(Number(maxExperience))) {
+        expFilter.$lte = Number(maxExperience);
+      }
+      if (Object.keys(expFilter).length > 0) {
+        filter.experience = expFilter;
+      }
     }
 
     const therapists = await getAllTherapists(filter);

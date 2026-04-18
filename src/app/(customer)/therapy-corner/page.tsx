@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useTherapists } from '@/queries/therapists/useTherapists';
 import Sidebar from '@/components/Sidebar/LazySidebar';
@@ -24,6 +24,7 @@ import { getDateKey, getNextAvailableSlotDateTime, formatNextSlot, formatExperie
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/utils/routesConstants';
+import PriceRangeSlider from '@/components/Supplements/SupplementFilters/PriceRangeSlider';
 import styles from './styles.module.css';
 
 export interface FilterState {
@@ -31,6 +32,7 @@ export interface FilterState {
   specialization: string[];
   gender: string;
   minExperience: string;
+  maxExperience: string;
 }
 import { TherapistCard } from './components/TherapistCard';
 import { VideoPreviewModal } from './components/VideoPreviewModal';
@@ -47,38 +49,11 @@ export default function TherapyCornerPage() {
     specialization: [],
     gender: FILTER_ALL,
     minExperience: FILTER_ALL,
+    maxExperience: FILTER_ALL,
   });
 
-  const apiParams = useMemo(() => {
-    const params: Record<string, string> = {};
-    if (filterState.language) params.language = filterState.language;
-    if (filterState.specialization.length > 0) params.specializations = filterState.specialization.join(',');
-    if (filterState.gender) params.gender = filterState.gender;
-    if (filterState.minExperience) params.minExperience = filterState.minExperience;
-    return params;
-  }, [filterState]);
-
-  const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists(apiParams);
   // Separate call to get all options regardless of active filters
   const { data: allTherapists = [] } = useTherapists();
-
-  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
-  const [page, setPage] = useState(1);
-  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
-
-  const error = fetchError instanceof Error ? fetchError.message : '';
-
-  const [modalFilterState, setModalFilterState] = useState<FilterState>({
-    language: FILTER_ALL,
-    specialization: [],
-    gender: FILTER_ALL,
-    minExperience: FILTER_ALL,
-  });
-
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [videoPreviewTherapist, setVideoPreviewTherapist] = useState<Therapist | null>(null);
-
-  const limit = PAGE_SIZE_5;
 
   const filterOptions = useMemo(() => {
     const languages = new Set<string>();
@@ -98,6 +73,49 @@ export default function TherapyCornerPage() {
     };
   }, [allTherapists]);
 
+  const experienceBounds = useMemo(() => {
+    const values = allTherapists.map((t) => Number(t.experience)).filter((n) => Number.isFinite(n) && n >= 0);
+    const max = values.length ? Math.max(...values) : 30;
+    return { min: 0, max: Math.max(1, Math.ceil(max)) };
+  }, [allTherapists]);
+
+  const apiParams = useMemo(() => {
+    const params: Record<string, string> = {};
+    if (filterState.language) params.language = filterState.language;
+    if (filterState.specialization.length > 0) params.specializations = filterState.specialization.join(',');
+    if (filterState.gender) params.gender = filterState.gender;
+    const minExp = Number(filterState.minExperience);
+    const maxExp = Number(filterState.maxExperience);
+    if (filterState.minExperience && Number.isFinite(minExp) && minExp > 0) {
+      params.minExperience = String(minExp);
+    }
+    if (filterState.maxExperience && Number.isFinite(maxExp) && maxExp < experienceBounds.max) {
+      params.maxExperience = String(maxExp);
+    }
+    return params;
+  }, [filterState, experienceBounds.max]);
+
+  const { data: therapists = [], isLoading: loading, error: fetchError } = useTherapists(apiParams);
+
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
+  const [page, setPage] = useState(1);
+  const [nextSlotByTherapist, setNextSlotByTherapist] = useState<Record<string, string | null>>({});
+
+  const error = fetchError instanceof Error ? fetchError.message : '';
+
+  const [modalFilterState, setModalFilterState] = useState<FilterState>({
+    language: FILTER_ALL,
+    specialization: [],
+    gender: FILTER_ALL,
+    minExperience: FILTER_ALL,
+    maxExperience: FILTER_ALL,
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [videoPreviewTherapist, setVideoPreviewTherapist] = useState<Therapist | null>(null);
+
+  const limit = PAGE_SIZE_5;
+
   const genderOptions = useMemo<Option[]>(() => {
     const availableGenders = new Set(filterOptions.genders);
     return GENDER_OPTIONS.filter((opt) => availableGenders.has(opt.value)).map((opt) => ({
@@ -107,7 +125,30 @@ export default function TherapyCornerPage() {
   }, [filterOptions.genders]);
 
   const hasActiveFilters = Boolean(
-    filterState.language || filterState.specialization.length > 0 || filterState.gender || filterState.minExperience,
+    filterState.language ||
+    filterState.specialization.length > 0 ||
+    filterState.gender ||
+    filterState.minExperience ||
+    filterState.maxExperience,
+  );
+
+  const [sliderValues, setSliderValues] = useState<[number, number]>([experienceBounds.min, experienceBounds.max]);
+  const [lastFilterSyncKey, setLastFilterSyncKey] = useState<string>('');
+  const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const filterSyncKey = `${experienceBounds.min}|${experienceBounds.max}|${filterState.minExperience}|${filterState.maxExperience}`;
+  if (filterSyncKey !== lastFilterSyncKey) {
+    setLastFilterSyncKey(filterSyncKey);
+    const min = filterState.minExperience ? Number(filterState.minExperience) : experienceBounds.min;
+    const max = filterState.maxExperience ? Number(filterState.maxExperience) : experienceBounds.max;
+    setSliderValues([min, max]);
+  }
+
+  useEffect(
+    () => () => {
+      if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+    },
+    [],
   );
 
   const filteredTherapists = useMemo(() => {
@@ -190,6 +231,7 @@ export default function TherapyCornerPage() {
       specialization: [],
       gender: FILTER_ALL,
       minExperience: FILTER_ALL,
+      maxExperience: FILTER_ALL,
     };
     setFilterState(initialState);
     setModalFilterState(initialState);
@@ -262,14 +304,33 @@ export default function TherapyCornerPage() {
                 icon={ICON_USER_LUCIDE}
               />
 
-              <input
-                type="number"
-                min="0"
-                className={styles.toolbarNumericInput}
-                placeholder="Experience"
-                value={filterState.minExperience}
-                onChange={(e) => handleFilterChange('minExperience', e.target.value)}
-              />
+              <div className={styles.experienceFilter}>
+                <span className={styles.experienceFilterLabel}>Experience (yrs)</span>
+                <div className={styles.experienceFilterBody}>
+                  <span className={styles.experienceValuePill}>{sliderValues[0]}</span>
+                  <PriceRangeSlider
+                    min={experienceBounds.min}
+                    max={experienceBounds.max}
+                    valueMin={sliderValues[0]}
+                    valueMax={sliderValues[1]}
+                    onChange={(minV, maxV) => {
+                      setSliderValues([minV, maxV]);
+                      if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+                      commitTimerRef.current = setTimeout(() => {
+                        setFilterState((prev) => ({
+                          ...prev,
+                          minExperience: minV > experienceBounds.min ? String(minV) : FILTER_ALL,
+                          maxExperience: maxV < experienceBounds.max ? String(maxV) : FILTER_ALL,
+                        }));
+                        setPage(1);
+                      }, 400);
+                    }}
+                    ariaLabelMin="Minimum experience"
+                    ariaLabelMax="Maximum experience"
+                  />
+                  <span className={styles.experienceValuePill}>{sliderValues[1]}</span>
+                </div>
+              </div>
             </div>
 
             {hasActiveFilters && (
@@ -338,6 +399,7 @@ export default function TherapyCornerPage() {
           languages: filterOptions.languages,
           specializations: filterOptions.specializations,
           genders: genderOptions,
+          experienceBounds,
         }}
         state={modalFilterState}
         onStateChange={(key, value) => setModalFilterState((prev) => ({ ...prev, [key]: value }))}

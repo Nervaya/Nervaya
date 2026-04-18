@@ -19,7 +19,7 @@
   font-size: var(--text-body);
   color: #1f2937;
   gap: var(--space-3);
-  min-height: 44px;
+  min-height: var(--input-height);
 }
 
 .trigger:hover {
@@ -99,6 +99,11 @@
   transition: all var(--transition-fast);
   font-size: var(--text-caption);
   color: #4b5563;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
 }
 
 .option:hover {

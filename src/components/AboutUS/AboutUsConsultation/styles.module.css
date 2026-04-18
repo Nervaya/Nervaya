@@ -472,7 +472,7 @@
   background-position: right 16px center;
   background-size: 12px;
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--input-height);
 }
 
 @media (max-width: 480px) {

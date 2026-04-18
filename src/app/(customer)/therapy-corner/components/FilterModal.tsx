@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { ICON_X, ICON_LANGUAGES, ICON_USER_LUCIDE } from '@/constants/icons';
 import { CustomDropdown } from '@/components/common/CustomDropdown';
 import { useModalDismiss } from '@/hooks/useModalDismiss';
+import PriceRangeSlider from '@/components/Supplements/SupplementFilters/PriceRangeSlider';
 import styles from '../styles.module.css';
 
 import { FilterState } from '../page';
@@ -12,6 +13,7 @@ export interface FilterOptions {
   languages: string[];
   specializations: string[];
   genders: { label: string; value: string }[];
+  experienceBounds: { min: number; max: number };
 }
 
 interface FilterModalProps {
@@ -77,15 +79,27 @@ export function FilterModal({ isOpen, onClose, options, state, onStateChange, on
           </div>
 
           <div className={styles.filterField}>
-            <span>Min Experience (Years)</span>
-            <input
-              type="number"
-              min="0"
-              value={state.minExperience}
-              onChange={(e) => onStateChange('minExperience', e.target.value)}
-              className={styles.modalNumericInput}
-              placeholder="e.g. 5"
-            />
+            <span>Experience (yrs)</span>
+            <div className={styles.experienceFilterBody}>
+              <span className={styles.experienceValuePill}>
+                {state.minExperience ? Number(state.minExperience) : options.experienceBounds.min}
+              </span>
+              <PriceRangeSlider
+                min={options.experienceBounds.min}
+                max={options.experienceBounds.max}
+                valueMin={state.minExperience ? Number(state.minExperience) : options.experienceBounds.min}
+                valueMax={state.maxExperience ? Number(state.maxExperience) : options.experienceBounds.max}
+                onChange={(minV, maxV) => {
+                  onStateChange('minExperience', minV > options.experienceBounds.min ? String(minV) : '');
+                  onStateChange('maxExperience', maxV < options.experienceBounds.max ? String(maxV) : '');
+                }}
+                ariaLabelMin="Minimum experience"
+                ariaLabelMax="Maximum experience"
+              />
+              <span className={styles.experienceValuePill}>
+                {state.maxExperience ? Number(state.maxExperience) : options.experienceBounds.max}
+              </span>
+            </div>
           </div>
         </div>
 

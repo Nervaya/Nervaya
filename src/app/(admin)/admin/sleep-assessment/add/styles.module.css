@@ -151,8 +151,8 @@
 
 .select button,
 .select [role='button'] {
-  height: 44px;
-  min-height: 44px;
+  height: var(--input-height);
+  min-height: var(--input-height);
   box-sizing: border-box;
 }
 

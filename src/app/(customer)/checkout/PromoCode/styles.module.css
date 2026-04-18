@@ -55,7 +55,7 @@
 
 .inputWrap input {
   min-width: 140px;
-  height: 44px;
+  height: var(--input-height);
   padding: 0 var(--spacing-md);
 }
 

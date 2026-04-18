@@ -93,6 +93,9 @@
   --margin-lg: var(--space-6);
   --margin-xl: var(--space-8);
 
+  /* ── Form Control Sizing ── */
+  --input-height: 44px; /* Unified height for inputs, selects, dropdown triggers */
+
   /* ── Border Radius Scale ── */
   --radius-sm: 4px; /* Tags, small elements */
   --radius-md: 6px; /* Small buttons */

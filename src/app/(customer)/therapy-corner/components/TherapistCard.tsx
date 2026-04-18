@@ -90,6 +90,12 @@ export function TherapistCard({
         <div className={styles.cardMeta}>
           <div className={styles.expertiseRow}>
             <span className={styles.expertiseLabel}>Qualification</span>
+            <span className={styles.qualificationText}>
+              {therapist.qualifications?.length ? therapist.qualifications.join(', ') : '—'}
+            </span>
+          </div>
+          <div className={styles.expertiseRow}>
+            <span className={styles.expertiseLabel}>Specialization</span>
             <div className={styles.tags}>
               <SpecializationMarquee items={therapist.specializations || []} />
             </div>
@@ -114,7 +120,7 @@ export function TherapistCard({
             className={styles.secondaryBtn}
             onClick={() => onViewProfile(therapist)}
           >
-            Profile
+            View Profile
           </Link>
           <button className={styles.primaryBtn} onClick={() => onBookAppointment(therapist)}>
             Book Now
