@@ -26,8 +26,12 @@ const PromoCodeModal: React.FC<PromoCodeModalProps> = ({
   submitLabel = 'Create Promo Code',
 }) => {
   const handleSubmit = async (data: CreatePromoCodeDto) => {
-    await onSubmit(data);
-    onClose();
+    try {
+      await onSubmit(data);
+      onClose();
+    } catch {
+      // Error is handled by the parent's toast
+    }
   };
 
   return (

@@ -137,6 +137,19 @@ export function useAddTherapistForm(initialData?: Therapist | TherapistFormData 
       return;
     }
 
+    if (!formData.name?.trim()) {
+      toast.error('Therapist name is required');
+      return;
+    }
+    if (!formData.email?.trim()) {
+      toast.error('Email is required');
+      return;
+    }
+    if (!formData.sessionFee || Number(formData.sessionFee) <= 0) {
+      toast.error('Session fee must be greater than 0');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 

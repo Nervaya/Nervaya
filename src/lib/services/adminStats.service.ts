@@ -5,6 +5,7 @@ import '@/lib/models/therapist.model';
 import User from '@/lib/models/user.model';
 import { handleError } from '@/lib/utils/error.util';
 import { PAYMENT_STATUS } from '@/lib/constants/enums';
+import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import { ROLES } from '@/lib/constants/roles';
 
 const RECENT_ORDERS_LIMIT = 5;
@@ -158,7 +159,7 @@ export async function getRevenueStats(): Promise<RevenueStats> {
     const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
     const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
-    const [totalAgg, thisMonthAgg, lastMonthAgg] = await Promise.all([
+    const [totalAgg, thisMonthAgg, lastMonthAgg, drTotalAgg, drThisMonthAgg, drLastMonthAgg] = await Promise.all([
       Order.aggregate([
         { $match: { paymentStatus: PAYMENT_STATUS.PAID } },
         { $group: { _id: null, total: { $sum: '$totalAmount' } } },
@@ -176,10 +177,27 @@ export async function getRevenueStats(): Promise<RevenueStats> {
         },
         { $group: { _id: null, total: { $sum: '$totalAmount' } } },
       ]),
+      DriftOffOrder.aggregate([
+        { $match: { paymentStatus: 'paid' } },
+        { $group: { _id: null, total: { $sum: '$amount' } } },
+      ]),
+      DriftOffOrder.aggregate([
+        { $match: { paymentStatus: 'paid', createdAt: { $gte: thisMonthStart } } },
+        { $group: { _id: null, total: { $sum: '$amount' } } },
+      ]),
+      DriftOffOrder.aggregate([
+        {
+          $match: {
+            paymentStatus: 'paid',
+            createdAt: { $gte: lastMonthStart, $lte: lastMonthEnd },
+          },
+        },
+        { $group: { _id: null, total: { $sum: '$amount' } } },
+      ]),
     ]);
-    const total = totalAgg[0]?.total ?? 0;
-    const thisMonth = thisMonthAgg[0]?.total ?? 0;
-    const lastMonth = lastMonthAgg[0]?.total ?? 0;
+    const total = (totalAgg[0]?.total ?? 0) + (drTotalAgg[0]?.total ?? 0);
+    const thisMonth = (thisMonthAgg[0]?.total ?? 0) + (drThisMonthAgg[0]?.total ?? 0);
+    const lastMonth = (lastMonthAgg[0]?.total ?? 0) + (drLastMonthAgg[0]?.total ?? 0);
     const growthPercent =
       lastMonth > 0 ? Math.round(((thisMonth - lastMonth) / lastMonth) * 100) : thisMonth > 0 ? 100 : 0;
     return { total, thisMonth, lastMonth, growthPercent };

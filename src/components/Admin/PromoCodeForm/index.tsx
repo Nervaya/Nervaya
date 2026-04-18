@@ -67,7 +67,9 @@ const PromoCodeForm: React.FC<PromoCodeFormProps> = ({
       newErrors.expiryDate = 'Expiry date is required';
     } else {
       const expiry = new Date(formData.expiryDate);
-      if (expiry <= new Date()) newErrors.expiryDate = 'Expiry date must be in the future';
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (expiry < today) newErrors.expiryDate = 'Expiry date must be in the future';
     }
     if (formData.usageLimit != null && formData.usageLimit < 1) {
       newErrors.usageLimit = 'Usage limit must be at least 1';

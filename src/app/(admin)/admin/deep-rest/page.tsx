@@ -10,10 +10,12 @@ import styles from './styles.module.css';
 import { type BreadcrumbItem } from '@/components/common';
 
 type Tab = 'sessions' | 'questions' | 'settings';
+const VALID_TABS: Tab[] = ['sessions', 'questions', 'settings'];
 
 export default function AdminDeepRestPage() {
   const searchParams = useSearchParams();
-  const initialTab = (searchParams.get('tab') as Tab) || 'sessions';
+  const rawTab = searchParams.get('tab');
+  const initialTab: Tab = VALID_TABS.includes(rawTab as Tab) ? (rawTab as Tab) : 'sessions';
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Deep Rest' }];

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
@@ -34,6 +34,7 @@ export default function AddDeepRestQuestionPage() {
     order: 1,
   });
 
+  const nextOptionId = useRef(0);
   const [options, setOptions] = useState<QuestionOption[]>([
     { id: '1', label: '', value: '' },
     { id: '2', label: '', value: '' },
@@ -43,7 +44,7 @@ export default function AddDeepRestQuestionPage() {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : type === 'number' ? Number(value) : value,
     }));
   };
 
@@ -62,7 +63,7 @@ export default function AddDeepRestQuestionPage() {
   };
 
   const addOption = () => {
-    setOptions((prev) => [...prev, { id: String(prev.length + 1), label: '', value: '' }]);
+    setOptions((prev) => [...prev, { id: String(++nextOptionId.current), label: '', value: '' }]);
   };
 
   const removeOption = (index: number) => {
@@ -77,7 +78,7 @@ export default function AddDeepRestQuestionPage() {
 
     try {
       const validOptions = options.filter((opt) => opt.label.trim());
-      if (validOptions.length < 2) {
+      if (formData.questionType !== 'scale' && validOptions.length < 2) {
         throw new Error('Please add at least 2 options');
       }
 
@@ -179,43 +180,45 @@ export default function AddDeepRestQuestionPage() {
           />
         </div>
 
-        <div className={styles.optionsSection}>
-          <div className={styles.optionsHeader}>
-            <h3 className={styles.optionsTitle}>Options</h3>
-            <button type="button" onClick={addOption} className={styles.addOptionButton}>
-              <Icon icon={ICON_ADD} aria-hidden />
-              Add Option
-            </button>
-          </div>
+        {(formData.questionType === 'single_choice' || formData.questionType === 'multiple_choice') && (
+          <div className={styles.optionsSection}>
+            <div className={styles.optionsHeader}>
+              <h3 className={styles.optionsTitle}>Options</h3>
+              <button type="button" onClick={addOption} className={styles.addOptionButton}>
+                <Icon icon={ICON_ADD} aria-hidden />
+                Add Option
+              </button>
+            </div>
 
-          <ul className={styles.optionsList}>
-            {options.map((option, index) => (
-              <li key={option.id || `option-${index}`} className={styles.optionItem}>
-                <span className={styles.optionNumber}>{index + 1}</span>
-                <div className={styles.optionInputs}>
-                  <input
-                    type="text"
-                    value={option.label}
-                    onChange={(e) => handleOptionChange(index, e.target.value)}
-                    className={styles.input}
-                    placeholder="Option"
-                    required
-                  />
-                </div>
-                {options.length > 2 && (
-                  <button
-                    type="button"
-                    onClick={() => removeOption(index)}
-                    className={styles.removeOptionButton}
-                    aria-label="Remove option"
-                  >
-                    <Icon icon={ICON_X} aria-hidden />
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+            <ul className={styles.optionsList}>
+              {options.map((option, index) => (
+                <li key={option.id || `option-${index}`} className={styles.optionItem}>
+                  <span className={styles.optionNumber}>{index + 1}</span>
+                  <div className={styles.optionInputs}>
+                    <input
+                      type="text"
+                      value={option.label}
+                      onChange={(e) => handleOptionChange(index, e.target.value)}
+                      className={styles.input}
+                      placeholder="Option"
+                      required
+                    />
+                  </div>
+                  {options.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => removeOption(index)}
+                      className={styles.removeOptionButton}
+                      aria-label="Remove option"
+                    >
+                      <Icon icon={ICON_X} aria-hidden />
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className={styles.formActions}>
           <Link href="/admin/deep-rest?tab=questions" className={styles.cancelButton}>

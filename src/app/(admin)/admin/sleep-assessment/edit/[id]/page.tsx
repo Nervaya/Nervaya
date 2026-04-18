@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useMemo, useRef, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
@@ -30,10 +30,30 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     order: 1,
   });
 
+  const nextOptionId = useRef(0);
   const [options, setOptions] = useState<IQuestionOption[]>([
     { id: '1', label: '', value: '' },
     { id: '2', label: '', value: '' },
   ]);
+
+  const [usedOrders, setUsedOrders] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const result = await sleepAssessmentApi.getQuestions(true);
+        if (result.success && result.data) {
+          const orders = result.data.filter((q) => q._id !== id).map((q) => q.order);
+          setUsedOrders(new Set(orders));
+        }
+      } catch {}
+    };
+    fetchOrders();
+  }, [id]);
+
+  const isOrderDuplicate = useMemo(() => {
+    return usedOrders.has(Number(formData.order));
+  }, [formData.order, usedOrders]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -64,7 +84,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : type === 'number' ? Number(value) : value,
     }));
   };
 
@@ -83,7 +103,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
   };
 
   const addOption = () => {
-    setOptions((prev) => [...prev, { id: String(prev.length + 1), label: '', value: '' }]);
+    setOptions((prev) => [...prev, { id: String(++nextOptionId.current), label: '', value: '' }]);
   };
 
   const removeOption = (index: number) => {
@@ -97,6 +117,12 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
+
+    if (isOrderDuplicate) {
+      setError(`Display Order ${formData.order} is already in use. Please choose a different number.`);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const validOptions = options.filter((opt) => opt.label.trim());
@@ -185,6 +211,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
               min="1"
               required
             />
+            {isOrderDuplicate && <span className={styles.orderWarning}>This order is already taken</span>}
           </div>
         </div>
 
@@ -264,7 +291,7 @@ export default function EditQuestionPage({ params }: { params: Promise<{ id: str
           <Link href="/admin/sleep-assessment" className={styles.cancelButton}>
             Cancel
           </Link>
-          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+          <button type="submit" className={styles.submitButton} disabled={isSubmitting || isOrderDuplicate}>
             {isSubmitting ? (
               <>
                 <Icon icon={ICON_LOADING} className={styles.loaderIcon} />

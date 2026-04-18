@@ -19,6 +19,7 @@ interface SupplementListProps {
 
 const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, onEdit, loading = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const [confirmDelete, setConfirmDelete] = useState<{
     id: string;
     name: string;
@@ -82,14 +83,16 @@ const SupplementList: React.FC<SupplementListProps> = ({ supplements, onDelete, 
             <li key={supplement._id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image
-                  src={supplement.image || '/default-supplement.png'}
+                  src={
+                    failedImages.has(supplement._id)
+                      ? '/default-supplement.png'
+                      : supplement.image || '/default-supplement.png'
+                  }
                   alt={supplement.name}
                   width={120}
                   height={120}
                   className={styles.image}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/default-supplement.png';
-                  }}
+                  onError={() => setFailedImages((prev) => new Set(prev).add(supplement._id))}
                 />
                 {!supplement.isActive && <div className={styles.inactiveBadge}>Inactive</div>}
               </div>

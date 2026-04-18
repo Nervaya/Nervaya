@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
@@ -26,6 +26,7 @@ export default function AddQuestionPage() {
     order: 1,
   });
 
+  const nextOptionId = useRef(0);
   const [options, setOptions] = useState<IQuestionOption[]>([
     { id: '1', label: '', value: '' },
     { id: '2', label: '', value: '' },
@@ -60,7 +61,7 @@ export default function AddQuestionPage() {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : type === 'number' ? Number(value) : value,
     }));
   };
 
@@ -79,7 +80,7 @@ export default function AddQuestionPage() {
   };
 
   const addOption = () => {
-    setOptions((prev) => [...prev, { id: String(prev.length + 1), label: '', value: '' }]);
+    setOptions((prev) => [...prev, { id: String(++nextOptionId.current), label: '', value: '' }]);
   };
 
   const removeOption = (index: number) => {
@@ -91,6 +92,7 @@ export default function AddQuestionPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsSubmitting(true);
     if (isOrderDuplicate) {
       setError(`Display Order ${formData.order} is already in use. Please choose a different number.`);

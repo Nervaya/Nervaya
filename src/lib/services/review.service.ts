@@ -111,7 +111,9 @@ export async function deleteReview(reviewId: string, userId: string) {
     if (!review) {
       throw new ValidationError('Review not found');
     }
-    await updateSupplementAggregates(review.productId.toString());
+    if (review.itemType === 'Supplement') {
+      await updateSupplementAggregates(review.productId.toString());
+    }
     return { message: 'Review deleted successfully' };
   } catch (error) {
     throw handleError(error);

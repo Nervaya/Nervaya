@@ -26,10 +26,15 @@ export async function getAllFeedback(page = 1, limit = 10, filters?: AdminFeedba
   if (filters?.dateFrom || filters?.dateTo) {
     query.createdAt = {};
     if (filters.dateFrom) (query.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
-    if (filters.dateTo) (query.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+    if (filters.dateTo) {
+      const d = new Date(filters.dateTo);
+      d.setHours(23, 59, 59, 999);
+      (query.createdAt as Record<string, unknown>).$lte = d;
+    }
   }
   if (filters?.search) {
-    const searchRegex = new RegExp(filters.search, 'i');
+    const escaped = filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const searchRegex = new RegExp(escaped, 'i');
     const matchingUsers = await User.find({
       $or: [{ name: searchRegex }, { email: searchRegex }, { phone: searchRegex }],
     })
@@ -98,7 +103,11 @@ export async function getFeedbackByUser(page = 1, limit = 20, filters?: AdminFee
   if (filters?.dateFrom || filters?.dateTo) {
     matchStage.createdAt = {};
     if (filters.dateFrom) (matchStage.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
-    if (filters.dateTo) (matchStage.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+    if (filters.dateTo) {
+      const d = new Date(filters.dateTo);
+      d.setHours(23, 59, 59, 999);
+      (matchStage.createdAt as Record<string, unknown>).$lte = d;
+    }
   }
 
   const pipeline = [

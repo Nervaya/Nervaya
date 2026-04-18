@@ -27,7 +27,9 @@ export async function createSession(
     const startHour = parseInt(startTime.split(':')[0]);
     const isPM = startTime.includes('PM');
     const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
-    const endTime = `${hour24 + 1 > 12 ? hour24 + 1 - 12 : hour24 + 1}:00 ${hour24 + 1 >= 12 ? 'PM' : 'AM'}`;
+    const nextHour24 = (hour24 + 1) % 24;
+    const displayHour = nextHour24 === 0 ? 12 : nextHour24 > 12 ? nextHour24 - 12 : nextHour24;
+    const endTime = `${displayHour}:00 ${nextHour24 >= 12 ? 'PM' : 'AM'}`;
 
     // When called from payment.service (with mongooseSession), run inside the existing transaction.
     // When called standalone, create our own transaction for atomicity.
@@ -177,26 +179,30 @@ export async function rescheduleSession(sessionId: string, userId: string, newDa
     const startHour = parseInt(newStartTime.split(':')[0]);
     const isPM = newStartTime.includes('PM');
     const hour24 = isPM && startHour !== 12 ? startHour + 12 : !isPM && startHour === 12 ? 0 : startHour;
-    const newEndTime = `${hour24 + 1 > 12 ? hour24 + 1 - 12 : hour24 + 1}:00 ${hour24 + 1 >= 12 ? 'PM' : 'AM'}`;
+    const newNextHour24 = (hour24 + 1) % 24;
+    const newDisplayHour = newNextHour24 === 0 ? 12 : newNextHour24 > 12 ? newNextHour24 - 12 : newNextHour24;
+    const newEndTime = `${newDisplayHour}:00 ${newNextHour24 >= 12 ? 'PM' : 'AM'}`;
 
-    // 2. Atomically update the session to the new slot, relying on the partial unique index
-    //    to prevent double-booking if a concurrent request targets the same slot.
+    // 2. Atomically update the session and re-mark slots in a transaction
+    const txnSession = await mongoose.startSession();
     try {
-      // First cancel the old session's status temporarily so the unique index allows the new slot
-      session.date = newDate;
-      session.startTime = newStartTime;
-      session.endTime = newEndTime;
-      await session.save();
+      await txnSession.withTransaction(async () => {
+        session.date = newDate;
+        session.startTime = newStartTime;
+        session.endTime = newEndTime;
+        await session.save({ session: txnSession });
+
+        await releaseSlot(session.therapistId.toString(), oldDate, oldStartTime, txnSession);
+        await bookSlot(session.therapistId.toString(), newDate, newStartTime, session._id.toString(), txnSession);
+      });
     } catch (error) {
       if (error instanceof Error && 'code' in error && (error as { code: number }).code === 11000) {
         throw new ValidationError('The new slot is already booked');
       }
       throw error;
+    } finally {
+      await txnSession.endSession();
     }
-
-    // 3. Re-mark slots in therapist schedule
-    await releaseSlot(session.therapistId.toString(), oldDate, oldStartTime);
-    await bookSlot(session.therapistId.toString(), newDate, newStartTime, session._id.toString());
 
     // 4. Update Google Calendar (awaited inline)
     try {

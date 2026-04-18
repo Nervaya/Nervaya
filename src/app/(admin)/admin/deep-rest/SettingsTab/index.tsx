@@ -38,6 +38,10 @@ export default function SettingsTab() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (price < 1) {
+      setError('Price must be at least ₹1');
+      return;
+    }
     try {
       setSaving(true);
       setError('');
@@ -84,7 +88,7 @@ export default function SettingsTab() {
                   className={styles.input}
                   placeholder="999"
                   required
-                  min="0"
+                  min="1"
                 />
               </div>
               <p className={styles.helpText}>

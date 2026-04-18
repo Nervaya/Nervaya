@@ -79,8 +79,12 @@ const SupplementFormInner: React.FC<SupplementFormInnerProps> = ({
 
   const handleSubmit = async () => {
     if (!formData) return;
-    await onSubmit(formData);
-    onClose();
+    try {
+      await onSubmit(formData);
+      onClose();
+    } catch {
+      // Error is handled by the parent's toast
+    }
   };
 
   if (!formData) return null;

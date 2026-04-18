@@ -95,7 +95,6 @@ export default function AdminPromoCodesPage() {
           handleModalClose();
         } else {
           toast.error('Failed to update promo code');
-          throw new Error('Failed to update promo code');
         }
       } else {
         const response = (await api.post('/promo', data)) as { success: boolean };
@@ -105,12 +104,10 @@ export default function AdminPromoCodesPage() {
           handleModalClose();
         } else {
           toast.error('Failed to create promo code');
-          throw new Error('Failed to create promo code');
         }
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to save promo code');
-      throw err;
     } finally {
       setSubmitting(false);
     }

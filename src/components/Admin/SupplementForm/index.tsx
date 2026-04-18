@@ -26,16 +26,31 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
   loading = false,
   submitLabel = 'Create Supplement',
 }) => {
-  const [ingredientsText, setIngredientsText] = useState(formData.ingredients?.join(', ') || '');
-  const [benefitsText, setBenefitsText] = useState(formData.benefits?.join(', ') || '');
+  // Track the serialized formData arrays so we can detect external changes (e.g. Live Editor)
+  // and reset local text state accordingly, using the React-recommended "store previous value in state" pattern.
+  const ingredientsSerialized = formData.ingredients?.join(', ') || '';
+  const benefitsSerialized = formData.benefits?.join(', ') || '';
+  const [ingredientsText, setIngredientsText] = useState(ingredientsSerialized);
+  const [benefitsText, setBenefitsText] = useState(benefitsSerialized);
+  const [prevIngredients, setPrevIngredients] = useState(ingredientsSerialized);
+  const [prevBenefits, setPrevBenefits] = useState(benefitsSerialized);
+  const [priceText, setPriceText] = useState(String(formData.price));
+  const [prevPrice, setPrevPrice] = useState(formData.price);
   const [imageUploading, setImageUploading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof SupplementFormData, string>>>({});
 
-  // Sync internal text pads with formData changes (from Live Editor)
-  const ingredientsKey = formData.ingredients?.join(', ') || '';
-  const benefitsKey = formData.benefits?.join(', ') || '';
-  if (ingredientsText !== ingredientsKey) setIngredientsText(ingredientsKey);
-  if (benefitsText !== benefitsKey) setBenefitsText(benefitsKey);
+  if (prevIngredients !== ingredientsSerialized) {
+    setPrevIngredients(ingredientsSerialized);
+    setIngredientsText(ingredientsSerialized);
+  }
+  if (prevBenefits !== benefitsSerialized) {
+    setPrevBenefits(benefitsSerialized);
+    setBenefitsText(benefitsSerialized);
+  }
+  if (prevPrice !== formData.price) {
+    setPrevPrice(formData.price);
+    setPriceText(String(formData.price));
+  }
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof SupplementFormData, string>> = {};
@@ -68,6 +83,11 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Ensure priceText is flushed to formData (user may submit without blurring the price input)
+    const parsedPrice = parseFloat(priceText) || 0;
+    if (parsedPrice !== formData.price) {
+      handleChange('price', parsedPrice);
+    }
     if (!validate()) {
       return;
     }
@@ -201,8 +221,9 @@ const SupplementForm: React.FC<SupplementFormProps> = ({
           <Input
             label="Selling Price (₹)"
             type="number"
-            value={formData.price.toString()}
-            onChange={(e) => handleChange('price', parseFloat(e.target.value) || 0)}
+            value={priceText}
+            onChange={(e) => setPriceText(e.target.value)}
+            onBlur={() => handleChange('price', parseFloat(priceText) || 0)}
             error={errors.price}
             required
             min="0"

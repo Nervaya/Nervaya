@@ -20,6 +20,7 @@ export default function AdminTherapistsPage() {
   const [error, setError] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const breadcrumbs: BreadcrumbItem[] = [{ label: 'Admin', href: '/admin/dashboard' }, { label: 'Therapists' }];
 
@@ -50,6 +51,12 @@ export default function AdminTherapistsPage() {
   useEffect(() => {
     fetchTherapists();
   }, []);
+
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages]);
 
   const handleDeleteClick = (id: string, name: string) => {
     setConfirmDelete({ id, name });
@@ -145,15 +152,17 @@ export default function AdminTherapistsPage() {
               <li key={therapist._id} className={styles.card}>
                 <div className={styles.therapistInfo}>
                   <Image
-                    src={therapist.image || '/default-therapist.png'}
+                    src={
+                      failedImages.has(therapist._id)
+                        ? `https://ui-avatars.com/api/?name=${encodeURIComponent(therapist.name)}&background=random`
+                        : therapist.image || '/default-therapist.png'
+                    }
                     alt={therapist.name}
                     width={100}
                     height={100}
                     className={styles.therapistImage}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(therapist.name)}&background=random`;
-                    }}
+                    unoptimized={failedImages.has(therapist._id)}
+                    onError={() => setFailedImages((prev) => new Set(prev).add(therapist._id))}
                   />
                   <div className={styles.details}>
                     <h3>{therapist.name}</h3>

@@ -321,6 +321,13 @@
   transform: none;
 }
 
+.orderWarning {
+  color: var(--color-error);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  margin-top: var(--space-2);
+}
+
 @media (max-width: 900px) {
   .formGrid {
     grid-template-columns: 1fr;

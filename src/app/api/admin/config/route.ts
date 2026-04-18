@@ -26,6 +26,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { key, value, isPublic, description } = body;
 
+    if (!key || typeof key !== 'string' || !key.trim()) {
+      return NextResponse.json(errorResponse('Configuration key is required', null, 400), { status: 400 });
+    }
+
     const updatedConfig = await configService.set(key, value, authResult.user.userId, isPublic, description);
     return NextResponse.json(successResponse('Configuration updated', updatedConfig));
   } catch (error) {

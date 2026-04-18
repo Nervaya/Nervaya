@@ -52,6 +52,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
           throw new ValidationError(`Supplement ${supplement.name} is not available`);
         }
 
+        // TODO: Race condition — stock check is not atomic. Use $inc with $gte guard at payment confirmation time.
         if (supplement.stock < cartItem.quantity) {
           throw new ValidationError(`Insufficient stock for ${supplement.name}`);
         }
@@ -161,6 +162,7 @@ export async function createDirectOrder(userId: string, params: DirectOrderParam
       const supplement = await Supplement.findById(params.itemId);
       if (!supplement) throw new ValidationError('Supplement not found');
       if (!supplement.isActive) throw new ValidationError('Supplement is not available');
+      // TODO: Race condition — stock check is not atomic. Use $inc with $gte guard at payment confirmation time.
       if (supplement.stock < params.quantity) throw new ValidationError('Insufficient stock');
 
       finalPrice = supplement.price;
@@ -390,9 +392,15 @@ export async function updatePaymentStatus(
     }
 
     if (paymentStatus === PAYMENT_STATUS.PAID) {
-      await Order.findByIdAndUpdate(orderId, {
-        orderStatus: ORDER_STATUS.CONFIRMED,
-      });
+      const confirmedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { orderStatus: ORDER_STATUS.CONFIRMED },
+        { new: true, runValidators: true },
+      );
+      if (!confirmedOrder) {
+        throw new ValidationError('Order not found after confirming');
+      }
+      return confirmedOrder;
     }
 
     return order;

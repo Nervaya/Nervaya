@@ -7,6 +7,8 @@ import { ICON_X } from '@/constants/icons';
 import { useModalDismiss } from '@/hooks/useModalDismiss';
 import styles from './AdminModal.module.css';
 
+let openModalCount = 0;
+
 interface AdminModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -32,11 +34,17 @@ export default function AdminModal({
   useEffect(() => {
     const id = setTimeout(() => setMounted(true), 0);
     if (isOpen) {
+      openModalCount++;
       document.body.style.overflow = 'hidden';
     }
     return () => {
       clearTimeout(id);
-      document.body.style.overflow = 'unset';
+      if (isOpen) {
+        openModalCount--;
+        if (openModalCount === 0) {
+          document.body.style.overflow = '';
+        }
+      }
     };
   }, [isOpen]);
 

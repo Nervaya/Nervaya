@@ -49,6 +49,8 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
   const [addSubmitting, setAddSubmitting] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const addSlotModalRef = useRef<HTMLDivElement>(null);
+  const scheduleRequestId = useRef(0);
+  const weekRequestId = useRef(0);
 
   const handleCloseAddSlot = useCallback(() => {
     if (!addSubmitting) setAddSlotOpen(false);
@@ -57,28 +59,34 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
   useModalDismiss(addSlotOpen, addSlotModalRef, handleCloseAddSlot);
 
   const fetchSchedule = useCallback(async () => {
+    const currentId = ++scheduleRequestId.current;
     setLoading(true);
     setError(null);
     try {
       const dateStr = selectedDate.toISOString().split('T')[0];
       const result = await scheduleApi.getByDate(therapistId, dateStr);
+      if (currentId !== scheduleRequestId.current) return;
       if (result.data && result.data.slots) {
         setSchedule(result.data);
       } else {
         setSchedule({ date: dateStr, slots: [] });
       }
     } catch (err) {
+      if (currentId !== scheduleRequestId.current) return;
       setError(err instanceof Error ? err.message : 'Failed to load schedule');
       setSchedule({
         date: selectedDate.toISOString().split('T')[0],
         slots: [],
       });
     } finally {
-      setLoading(false);
+      if (currentId === scheduleRequestId.current) {
+        setLoading(false);
+      }
     }
   }, [selectedDate, therapistId]);
 
   const fetchWeekSchedules = useCallback(async () => {
+    const currentId = ++weekRequestId.current;
     try {
       const startDate = new Date(selectedDate);
       startDate.setDate(startDate.getDate() - startDate.getDay());
@@ -89,8 +97,10 @@ export default function SlotManager({ therapistId, onSlotUpdate }: SlotManagerPr
       const endDateStr = endDate.toISOString().split('T')[0];
 
       const result = await scheduleApi.getByDateRange(therapistId, startDateStr, endDateStr);
+      if (currentId !== weekRequestId.current) return;
       setWeekSchedules(result.data || []);
     } catch (_err) {
+      if (currentId !== weekRequestId.current) return;
       setWeekSchedules([]);
     }
   }, [selectedDate, therapistId]);

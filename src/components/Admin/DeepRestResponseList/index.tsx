@@ -24,10 +24,6 @@ const DeepRestResponseList = ({ responses, questions, onAssign }: DeepRestRespon
   const [activeResponseId, setActiveResponseId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(responses.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-
   const activeResponse = activeResponseId ? responses.find((r) => r._id === activeResponseId) : null;
 
   const getQuestionText = (questionId: string) => {
@@ -71,6 +67,9 @@ const DeepRestResponseList = ({ responses, questions, onAssign }: DeepRestRespon
     });
   }, [responses]);
 
+  const totalPages = Math.ceil(groupedResponses.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
   const totalGroups = groupedResponses.length;
   const currentGroups = groupedResponses.slice(startIndex, endIndex);
 

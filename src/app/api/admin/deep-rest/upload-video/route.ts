@@ -19,6 +19,10 @@ export async function POST(request: NextRequest) {
     const responseId = formData.get('responseId') as string;
     const userId = formData.get('userId') as string;
 
+    if (!responseId || !userId || !/^[a-f\d]{24}$/i.test(userId) || !/^[a-f\d]{24}$/i.test(responseId)) {
+      return NextResponse.json(errorResponse('Valid userId and responseId are required', null, 400), { status: 400 });
+    }
+
     if (!video) {
       return NextResponse.json(errorResponse('Video file is required', null, 400), { status: 400 });
     }

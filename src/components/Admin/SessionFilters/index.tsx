@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { therapistsApi } from '@/lib/api/therapists';
 import type { SessionFiltersParams } from '@/lib/api/sessions';
 import type { Therapist } from '@/types/therapist.types';
@@ -14,6 +14,24 @@ const SESSION_STATUS_OPTIONS = [
   { value: 'completed', label: 'Completed' },
   { value: 'cancelled', label: 'Cancelled' },
 ];
+
+const DEBOUNCE_MS = 400;
+
+function buildFilters(
+  status: string,
+  therapistId: string,
+  dateFrom: string,
+  dateTo: string,
+  search: string,
+): SessionFiltersParams {
+  const filters: SessionFiltersParams = {};
+  if (status) filters.status = status;
+  if (therapistId) filters.therapistId = therapistId;
+  if (dateFrom) filters.dateFrom = dateFrom;
+  if (dateTo) filters.dateTo = dateTo;
+  if (search.trim()) filters.search = search.trim();
+  return filters;
+}
 
 export interface SessionFiltersProps {
   initialFilters?: SessionFiltersParams;
@@ -34,6 +52,8 @@ export default function SessionFilters({
   const [dateTo, setDateTo] = useState(initialFilters.dateTo ?? '');
   const [search, setSearch] = useState(initialFilters.search ?? '');
   const [therapists, setTherapists] = useState<Therapist[]>([]);
+  const isFirstRender = useRef(true);
+  const isResetting = useRef(false);
 
   useEffect(() => {
     therapistsApi
@@ -44,17 +64,42 @@ export default function SessionFilters({
       .catch(() => {});
   }, []);
 
-  const handleApply = useCallback(() => {
-    const filters: SessionFiltersParams = {};
-    if (status) filters.status = status;
-    if (therapistId) filters.therapistId = therapistId;
-    if (dateFrom) filters.dateFrom = dateFrom;
-    if (dateTo) filters.dateTo = dateTo;
-    if (search.trim()) filters.search = search.trim();
-    onApply(filters);
-  }, [status, therapistId, dateFrom, dateTo, search, onApply]);
+  const applyNow = useCallback(
+    (st: string, tid: string, df: string, dt: string, s: string) => {
+      onApply(buildFilters(st, tid, df, dt, s));
+    },
+    [onApply],
+  );
+
+  // Debounce search text input
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (isResetting.current) {
+      isResetting.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      applyNow(status, therapistId, dateFrom, dateTo, search);
+    }, DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
+  // Instant apply for dropdowns and dates
+  const handleInstantChange = (setter: (v: string) => void, value: string) => {
+    setter(value);
+    const st = setter === setStatus ? value : status;
+    const tid = setter === setTherapistId ? value : therapistId;
+    const df = setter === setDateFrom ? value : dateFrom;
+    const dt = setter === setDateTo ? value : dateTo;
+    applyNow(st, tid, df, dt, search);
+  };
 
   const handleReset = useCallback(() => {
+    isResetting.current = true;
     setStatus('');
     setTherapistId('');
     setDateFrom('');
@@ -71,7 +116,7 @@ export default function SessionFilters({
           id="session-status"
           options={SESSION_STATUS_OPTIONS}
           value={status}
-          onChange={setStatus}
+          onChange={(v) => handleInstantChange(setStatus, v)}
           ariaLabel="Session status"
         />
       </div>
@@ -84,7 +129,7 @@ export default function SessionFilters({
             ...therapists.map((t) => ({ value: t._id, label: t.name })),
           ]}
           value={therapistId}
-          onChange={setTherapistId}
+          onChange={(v) => handleInstantChange(setTherapistId, v)}
           ariaLabel="Therapist"
         />
       </div>
@@ -94,7 +139,7 @@ export default function SessionFilters({
           id="session-date-from"
           type="date"
           value={dateFrom}
-          onChange={(e) => setDateFrom(e.target.value)}
+          onChange={(e) => handleInstantChange(setDateFrom, e.target.value)}
           aria-label="Date from"
         />
       </div>
@@ -104,7 +149,7 @@ export default function SessionFilters({
           id="session-date-to"
           type="date"
           value={dateTo}
-          onChange={(e) => setDateTo(e.target.value)}
+          onChange={(e) => handleInstantChange(setDateTo, e.target.value)}
           aria-label="Date to"
         />
       </div>
@@ -121,9 +166,6 @@ export default function SessionFilters({
       </div>
       <div className={styles.actions}>
         {activeCount > 0 && <span className={styles.badge}>{activeCount} filter(s) active</span>}
-        <button type="button" onClick={handleApply} className={styles.applyButton}>
-          Apply
-        </button>
         <button type="button" onClick={handleReset} className={styles.resetButton}>
           Reset
         </button>

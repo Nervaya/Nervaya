@@ -23,6 +23,7 @@ export default function EditSupplementPage() {
   const [editMode, setEditMode] = useState<'form' | 'live'>('live');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSupplement = async () => {
@@ -72,16 +73,16 @@ export default function EditSupplementPage() {
     if (!formData) return;
     try {
       setIsSaving(true);
-      setError(null);
+      setSaveError(null);
       const response = (await api.put(`/supplements/${params.id}`, formData)) as { success: boolean };
       if (response.success) {
         toast.success('Supplement updated successfully');
         router.push('/admin/supplements');
       } else {
-        setError('Failed to update supplement');
+        setSaveError('Failed to update supplement');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update supplement');
+      setSaveError(err instanceof Error ? err.message : 'Failed to update supplement');
     } finally {
       setIsSaving(false);
       setIsConfirmModalOpen(false);
@@ -152,7 +153,7 @@ export default function EditSupplementPage() {
         breadcrumbs={breadcrumbs}
         actions={backAction}
       />
-      {error && <div className={styles.error}>{error}</div>}
+      {saveError && <div className={styles.error}>{saveError}</div>}
       {editMode === 'form' ? (
         <SupplementForm
           formData={formData}

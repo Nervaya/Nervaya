@@ -53,6 +53,11 @@ export default function AdminFeedbackPage() {
       .catch(() => undefined);
   }, []);
 
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+    setExpandedUsers(new Set());
+  }, []);
+
   const handleFiltersApply = useCallback((newFilters: AdminFeedbackFiltersParams) => {
     setFilters(newFilters);
     setPage(1);
@@ -270,7 +275,7 @@ export default function AdminFeedbackPage() {
               limit={paginationMeta.limit}
               total={paginationMeta.total}
               totalPages={paginationMeta.totalPages}
-              onPageChange={setPage}
+              onPageChange={handlePageChange}
               ariaLabel="Feedback pagination"
             />
           </div>

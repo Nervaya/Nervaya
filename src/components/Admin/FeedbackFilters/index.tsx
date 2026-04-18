@@ -41,6 +41,7 @@ export default function FeedbackFilters({
   const [dateFrom, setDateFrom] = useState(initialFilters.dateFrom ?? '');
   const [dateTo, setDateTo] = useState(initialFilters.dateTo ?? '');
   const isFirstRender = useRef(true);
+  const isResetting = useRef(false);
 
   const applyNow = useCallback(
     (s: string, mn: string, mx: string, df: string, dt: string) => {
@@ -53,6 +54,10 @@ export default function FeedbackFilters({
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      return;
+    }
+    if (isResetting.current) {
+      isResetting.current = false;
       return;
     }
     const timer = setTimeout(() => {
@@ -76,6 +81,7 @@ export default function FeedbackFilters({
   };
 
   const handleReset = useCallback(() => {
+    isResetting.current = true;
     setSearch('');
     setMinScore('');
     setMaxScore('');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { OrderFiltersParams } from '@/lib/api/orders';
 import { Dropdown } from '@/components/common';
 import styles from '../FilterBar/styles.module.css';
@@ -22,6 +22,30 @@ const PAYMENT_STATUS_OPTIONS = [
   { value: 'refunded', label: 'Refunded' },
 ];
 
+const DEBOUNCE_MS = 400;
+
+function buildFilters(
+  orderStatus: string,
+  paymentStatus: string,
+  dateFrom: string,
+  dateTo: string,
+  minAmount: string,
+  maxAmount: string,
+  userId: string,
+): OrderFiltersParams {
+  const filters: OrderFiltersParams = {};
+  if (orderStatus) filters.orderStatus = orderStatus;
+  if (paymentStatus) filters.paymentStatus = paymentStatus;
+  if (dateFrom) filters.dateFrom = dateFrom;
+  if (dateTo) filters.dateTo = dateTo;
+  const min = minAmount ? Number(minAmount) : undefined;
+  const max = maxAmount ? Number(maxAmount) : undefined;
+  if (min != null && !Number.isNaN(min)) filters.minAmount = min;
+  if (max != null && !Number.isNaN(max)) filters.maxAmount = max;
+  if (userId.trim()) filters.userId = userId.trim();
+  return filters;
+}
+
 export interface OrderFiltersProps {
   initialFilters?: OrderFiltersParams;
   onApply: (filters: OrderFiltersParams) => void;
@@ -37,22 +61,45 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
   const [minAmount, setMinAmount] = useState(initialFilters.minAmount?.toString() ?? '');
   const [maxAmount, setMaxAmount] = useState(initialFilters.maxAmount?.toString() ?? '');
   const [userId, setUserId] = useState(initialFilters.userId ?? '');
+  const isFirstRender = useRef(true);
+  const isResetting = useRef(false);
 
-  const handleApply = useCallback(() => {
-    const filters: OrderFiltersParams = {};
-    if (orderStatus) filters.orderStatus = orderStatus;
-    if (paymentStatus) filters.paymentStatus = paymentStatus;
-    if (dateFrom) filters.dateFrom = dateFrom;
-    if (dateTo) filters.dateTo = dateTo;
-    const min = minAmount ? Number(minAmount) : undefined;
-    const max = maxAmount ? Number(maxAmount) : undefined;
-    if (min != null && !Number.isNaN(min)) filters.minAmount = min;
-    if (max != null && !Number.isNaN(max)) filters.maxAmount = max;
-    if (userId.trim()) filters.userId = userId.trim();
-    onApply(filters);
-  }, [orderStatus, paymentStatus, dateFrom, dateTo, minAmount, maxAmount, userId, onApply]);
+  const applyNow = useCallback(
+    (os: string, ps: string, df: string, dt: string, mn: string, mx: string, uid: string) => {
+      onApply(buildFilters(os, ps, df, dt, mn, mx, uid));
+    },
+    [onApply],
+  );
+
+  // Debounce text/number inputs
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (isResetting.current) {
+      isResetting.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      applyNow(orderStatus, paymentStatus, dateFrom, dateTo, minAmount, maxAmount, userId);
+    }, DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minAmount, maxAmount, userId]);
+
+  // Instant apply for dropdowns and dates
+  const handleInstantChange = (setter: (v: string) => void, value: string) => {
+    setter(value);
+    const os = setter === setOrderStatus ? value : orderStatus;
+    const ps = setter === setPaymentStatus ? value : paymentStatus;
+    const df = setter === setDateFrom ? value : dateFrom;
+    const dt = setter === setDateTo ? value : dateTo;
+    applyNow(os, ps, df, dt, minAmount, maxAmount, userId);
+  };
 
   const handleReset = useCallback(() => {
+    isResetting.current = true;
     setOrderStatus('');
     setPaymentStatus('');
     setDateFrom('');
@@ -71,7 +118,7 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
           id="order-status"
           options={ORDER_STATUS_OPTIONS}
           value={orderStatus}
-          onChange={setOrderStatus}
+          onChange={(v) => handleInstantChange(setOrderStatus, v)}
           ariaLabel="Order status"
         />
       </div>
@@ -81,7 +128,7 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
           id="payment-status"
           options={PAYMENT_STATUS_OPTIONS}
           value={paymentStatus}
-          onChange={setPaymentStatus}
+          onChange={(v) => handleInstantChange(setPaymentStatus, v)}
           ariaLabel="Payment status"
         />
       </div>
@@ -91,7 +138,7 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
           id="order-date-from"
           type="date"
           value={dateFrom}
-          onChange={(e) => setDateFrom(e.target.value)}
+          onChange={(e) => handleInstantChange(setDateFrom, e.target.value)}
           aria-label="Date from"
         />
       </div>
@@ -101,7 +148,7 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
           id="order-date-to"
           type="date"
           value={dateTo}
-          onChange={(e) => setDateTo(e.target.value)}
+          onChange={(e) => handleInstantChange(setDateTo, e.target.value)}
           aria-label="Date to"
         />
       </div>
@@ -144,9 +191,6 @@ export default function OrderFilters({ initialFilters = {}, onApply, onReset, ac
       </div>
       <div className={styles.actions}>
         {activeCount > 0 && <span className={styles.badge}>{activeCount} filter(s) active</span>}
-        <button type="button" onClick={handleApply} className={styles.applyButton}>
-          Apply
-        </button>
         <button type="button" onClick={handleReset} className={styles.resetButton}>
           Reset
         </button>

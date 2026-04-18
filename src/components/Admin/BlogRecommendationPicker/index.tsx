@@ -71,6 +71,7 @@ export function BlogRecommendationPicker({ selectedIds, onChange, currentBlogId 
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
           className={styles.searchInput}
           placeholder="Search blogs to recommend..."
         />

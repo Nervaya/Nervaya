@@ -61,6 +61,7 @@ export default function ReviewFilters({ initialFilters = {}, onApply, onReset, a
   const [dateFrom, setDateFrom] = useState(initialFilters.dateFrom ?? '');
   const [dateTo, setDateTo] = useState(initialFilters.dateTo ?? '');
   const isFirstRender = useRef(true);
+  const isResetting = useRef(false);
 
   // Auto-apply on dropdown/date changes (instant)
   const applyNow = useCallback(
@@ -74,6 +75,10 @@ export default function ReviewFilters({ initialFilters = {}, onApply, onReset, a
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      return;
+    }
+    if (isResetting.current) {
+      isResetting.current = false;
       return;
     }
     const timer = setTimeout(() => {
@@ -96,6 +101,7 @@ export default function ReviewFilters({ initialFilters = {}, onApply, onReset, a
   };
 
   const handleReset = useCallback(() => {
+    isResetting.current = true;
     setSearch('');
     setRating('');
     setVisibility('');

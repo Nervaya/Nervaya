@@ -32,7 +32,11 @@ export async function getAllReviews(page = 1, limit = 10, filters?: AdminReviewF
   if (filters?.dateFrom || filters?.dateTo) {
     query.createdAt = {};
     if (filters.dateFrom) (query.createdAt as Record<string, unknown>).$gte = new Date(filters.dateFrom);
-    if (filters.dateTo) (query.createdAt as Record<string, unknown>).$lte = new Date(filters.dateTo);
+    if (filters.dateTo) {
+      const d = new Date(filters.dateTo);
+      d.setHours(23, 59, 59, 999);
+      (query.createdAt as Record<string, unknown>).$lte = d;
+    }
   }
   if (filters?.search) {
     const escaped = filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
