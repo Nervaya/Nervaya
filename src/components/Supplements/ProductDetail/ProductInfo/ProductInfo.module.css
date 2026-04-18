@@ -161,9 +161,14 @@
   }
 }
 
-.buyNowButton {
+.buyNowButton[class] {
   min-width: 120px;
   width: 100%;
+  background: var(--color-accent-dim-hover);
+}
+
+.buyNowButton[class]:hover:not(:disabled) {
+  background: var(--color-accent-dim);
 }
 
 .error {

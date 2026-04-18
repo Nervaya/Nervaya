@@ -46,15 +46,6 @@ export const CURRENCY = {
 
 export type CurrencyCode = (typeof CURRENCY)['CODE'];
 
-export const DELIVERY_METHOD = {
-  STANDARD: 'standard',
-  EXPRESS: 'express',
-} as const;
-
-export type DeliveryMethod = (typeof DELIVERY_METHOD)[keyof typeof DELIVERY_METHOD];
-
-export const DELIVERY_METHOD_VALUES = Object.values(DELIVERY_METHOD);
-
 export const DISCOUNT_TYPE = {
   PERCENTAGE: 'percentage',
   FIXED: 'fixed',

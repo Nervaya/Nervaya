@@ -57,8 +57,10 @@ export default function OrderSuccessPage() {
   useEffect(() => {
     if (!order) return;
     const subtotalForShipping = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const deliveryMethod = order.deliveryMethod ?? 'standard';
-    const shippingCost = getShippingCost(deliveryMethod, subtotalForShipping);
+    const orderIsDigital = order.items.every(
+      (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
+    );
+    const shippingCost = orderIsDigital ? 0 : getShippingCost(subtotalForShipping);
     trackPurchase({
       transaction_id: order._id,
       order_id: order._id,
@@ -142,8 +144,7 @@ export default function OrderSuccessPage() {
   }
 
   const subtotal = getSubtotal(order.items);
-  const deliveryMethod = order.deliveryMethod ?? 'standard';
-  const shipping = getShippingCost(deliveryMethod, subtotal);
+  const shipping = isDigitalOnly ? 0 : getShippingCost(subtotal);
   const promoDiscount = order.promoDiscount ?? 0;
   const orderDate = formatOrderDate(order.createdAt);
   const orderNumber = formatOrderNumber(order._id);

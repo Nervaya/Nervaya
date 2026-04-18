@@ -114,9 +114,6 @@ const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplemen
             <span className={styles.outOfStock}>Out of Stock</span>
           )}
         </div>
-        <Link href={`/supplements/${supplement._id}`} className={styles.quickView}>
-          QUICK VIEW
-        </Link>
       </div>
     </article>
   );

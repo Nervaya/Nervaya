@@ -1,25 +1,18 @@
 'use client';
 
-import type { DeliveryMethod } from '@/types/supplement.types';
 import { Icon } from '@iconify/react';
 import { ICON_BOX } from '@/constants/icons';
 import { formatPrice } from '@/utils/cart.util';
 import { getShippingCost } from '@/utils/shipping.util';
 import styles from './styles.module.css';
 
-const DELIVERY_OPTIONS: { method: DeliveryMethod; label: string; duration: string }[] = [
-  { method: 'standard', label: 'Standard Delivery', duration: '5-7 business days' },
-  { method: 'express', label: 'Express Delivery', duration: '2-3 business days' },
-];
-
 interface DeliveryOptionsProps {
-  selectedMethod: DeliveryMethod;
-  onSelect: (method: DeliveryMethod) => void;
   subtotal: number;
 }
 
-export function DeliveryOptions({ selectedMethod, onSelect, subtotal }: DeliveryOptionsProps) {
-  const getCost = (method: DeliveryMethod) => getShippingCost(method, subtotal);
+export function DeliveryOptions({ subtotal }: DeliveryOptionsProps) {
+  const cost = getShippingCost(subtotal);
+  const isFree = cost === 0;
 
   return (
     <div className={styles.wrapper}>
@@ -27,35 +20,29 @@ export function DeliveryOptions({ selectedMethod, onSelect, subtotal }: Delivery
         <span className={styles.headerIcon} aria-hidden>
           <Icon icon={ICON_BOX} />
         </span>
-        <h3 className={styles.headerTitle}>Delivery Options</h3>
+        <h3 className={styles.headerTitle}>Delivery</h3>
       </div>
       <ul className={styles.body} aria-label="Delivery options">
-        {DELIVERY_OPTIONS.map((opt) => {
-          const cost = getCost(opt.method);
-          const isFree = cost === 0;
-          return (
-            <li key={opt.method}>
-              <label className={`${styles.option} ${selectedMethod === opt.method ? styles.optionSelected : ''}`}>
-                <input
-                  type="radio"
-                  name="deliveryMethod"
-                  value={opt.method}
-                  checked={selectedMethod === opt.method}
-                  onChange={() => onSelect(opt.method)}
-                  className={styles.radio}
-                  aria-label={`${opt.label}, ${opt.duration}, ${isFree ? 'Free' : formatPrice(cost)}`}
-                />
-                <div className={styles.optionContent}>
-                  <span className={styles.optionLabel}>{opt.label}</span>
-                  <span className={styles.optionDuration}>{opt.duration}</span>
-                </div>
-                <span className={isFree ? styles.optionFree : styles.optionCost}>
-                  {isFree ? 'Free' : formatPrice(cost)}
-                </span>
-              </label>
-            </li>
-          );
-        })}
+        <li>
+          <label className={`${styles.option} ${styles.optionSelected}`}>
+            <input
+              type="radio"
+              name="deliveryMethod"
+              value="standard"
+              checked
+              readOnly
+              className={styles.radio}
+              aria-label={`Standard Delivery, 5-7 business days, ${isFree ? 'Free' : formatPrice(cost)}`}
+            />
+            <div className={styles.optionContent}>
+              <span className={styles.optionLabel}>Standard Delivery</span>
+              <span className={styles.optionDuration}>5-7 business days</span>
+            </div>
+            <span className={isFree ? styles.optionFree : styles.optionCost}>
+              {isFree ? 'Free' : formatPrice(cost)}
+            </span>
+          </label>
+        </li>
       </ul>
     </div>
   );

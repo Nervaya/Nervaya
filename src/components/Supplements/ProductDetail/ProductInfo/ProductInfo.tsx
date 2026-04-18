@@ -74,7 +74,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 Add to Cart
               </Button>
               <Link href="/cart" className={styles.buyNowLink}>
-                <Button variant="secondary" type="button" className={styles.buyNowButton}>
+                <Button variant="ghost" type="button" className={styles.buyNowButton}>
                   Buy Now
                 </Button>
               </Link>

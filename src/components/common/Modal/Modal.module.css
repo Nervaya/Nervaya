@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 5000;
   padding: var(--spacing-md);
 }
 
@@ -19,7 +19,7 @@
   border: 1px solid var(--color-border-light, #e2e8f0);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 500px;
+  max-width: 560px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@
 }
 
 .content {
-  padding: var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-lg);
   overflow-y: auto;
   flex: 1;
 }

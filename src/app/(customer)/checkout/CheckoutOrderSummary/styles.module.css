@@ -86,6 +86,13 @@
   margin-top: var(--spacing-lg);
 }
 
+.addressHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-warning);
+  text-align: center;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
 .proceedButton {
   width: 100%;
 }

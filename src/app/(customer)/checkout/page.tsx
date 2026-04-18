@@ -34,8 +34,6 @@ export default function CheckoutPage() {
     handleAddressSubmit,
     handleUseAddress,
     handleEditAddress,
-    selectedDeliveryMethod,
-    handleDeliveryMethodSelect,
     promoCode,
     setPromoCode,
     appliedPromoCode,
@@ -154,11 +152,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <DeliveryOptions
-                  selectedMethod={selectedDeliveryMethod}
-                  onSelect={handleDeliveryMethodSelect}
-                  subtotal={cart.totalAmount}
-                />
+                <DeliveryOptions subtotal={cart.totalAmount} />
               </>
             )}
           </div>
@@ -174,10 +168,10 @@ export default function CheckoutPage() {
             <CheckoutOrderSummary
               cart={cart}
               isDigitalOnly={isDigitalOnly}
-              deliveryMethod={selectedDeliveryMethod}
               promoDiscount={promoDiscount}
               onProceedToPayment={handleProceedToPayment}
               loading={creatingOrder}
+              addressSelected={isDigitalOnly || !!selectedAddress}
             />
             <PromoCode
               code={promoCode}

@@ -6,6 +6,7 @@ import { Cart } from '@/types/supplement.types';
 import { ITEM_TYPE } from '@/lib/constants/enums';
 import { Button } from '@/components/common';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
+import { getShippingCost } from '@/utils/shipping.util';
 import { trackViewCart, trackBeginCheckout } from '@/utils/analytics';
 import styles from './styles.module.css';
 
@@ -21,7 +22,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = f
   const isDigitalOnly = cart.items.every(
     (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
   );
-  const shipping = isDigitalOnly ? 0 : subtotal > 500 ? 0 : 50;
+  const shipping = isDigitalOnly ? 0 : getShippingCost(subtotal);
   const total = subtotal + shipping;
 
   React.useEffect(() => {

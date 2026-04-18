@@ -4,7 +4,6 @@ import api from '@/lib/axios';
 import { ITEM_TYPE } from '@/lib/constants/enums';
 import { promoApi } from '@/lib/api/promo';
 import type { Cart, Order, ShippingAddress, SavedAddress, Supplement } from '@/types/supplement.types';
-import { getShippingCost, type DeliveryMethod } from '@/utils/shipping.util';
 import {
   trackBeginCheckout,
   trackAddPaymentInfo,
@@ -13,8 +12,6 @@ import {
   trackPurchaseFailed,
   type ItemParams,
 } from '@/utils/analytics';
-
-export { getShippingCost };
 
 function cartItemsToGaItems(cart: Cart): ItemParams[] {
   return cart.items.map((item) => {
@@ -60,8 +57,6 @@ export function useCheckout() {
   const [editingAddress, setEditingAddress] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
-  const [showSavedAddresses, setShowSavedAddresses] = useState(true);
-  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<DeliveryMethod>('standard');
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
   const [promoDiscount, setPromoDiscount] = useState(0);
@@ -102,9 +97,8 @@ export function useCheckout() {
       if (response.success && response.data) {
         setSavedAddresses(response.data);
       }
-      setShowSavedAddresses(true);
     } catch {
-      setShowSavedAddresses(true);
+      // Saved addresses fetch failed silently
     }
   }, []);
 
@@ -144,10 +138,6 @@ export function useCheckout() {
 
   const handleCloseAddressModal = useCallback(() => {
     setIsAddressModalOpen(false);
-  }, []);
-
-  const handleDeliveryMethodSelect = useCallback((method: DeliveryMethod) => {
-    setSelectedDeliveryMethod(method);
   }, []);
 
   const mapPromoErrorMessage = useCallback((message: string): string => {
@@ -207,7 +197,7 @@ export function useCheckout() {
       if (!isDigitalOnly && selectedAddress) {
         trackAddShippingInfo({
           shipping_country: selectedAddress.country,
-          shipping_method: selectedDeliveryMethod,
+          shipping_method: 'standard',
           value: cart.totalAmount - promoDiscount,
           currency: 'INR',
         });
@@ -222,7 +212,6 @@ export function useCheckout() {
       const orderPayload = {
         ...(isDigitalOnly ? {} : { shippingAddress: selectedAddress }),
         ...(appliedPromoCode && { promoCode: appliedPromoCode, promoDiscount }),
-        ...(!isDigitalOnly && selectedDeliveryMethod && { deliveryMethod: selectedDeliveryMethod }),
       };
       const orderResponse = (await api.post('/orders', orderPayload)) as OrderResponse;
       if (!orderResponse.success || !orderResponse.data) {
@@ -257,7 +246,7 @@ export function useCheckout() {
     } finally {
       setCreatingOrder(false);
     }
-  }, [cart, selectedAddress, selectedDeliveryMethod, appliedPromoCode, promoDiscount, isDigitalOnly]);
+  }, [cart, selectedAddress, appliedPromoCode, promoDiscount, isDigitalOnly]);
 
   return {
     cart,
@@ -266,7 +255,6 @@ export function useCheckout() {
     error,
     creatingOrder,
     savedAddresses,
-    showSavedAddresses,
     selectedAddress,
     editingAddress,
     isAddressModalOpen,
@@ -276,8 +264,6 @@ export function useCheckout() {
     handleAddressSubmit,
     handleUseAddress,
     handleEditAddress,
-    selectedDeliveryMethod,
-    handleDeliveryMethodSelect,
     promoCode,
     setPromoCode,
     appliedPromoCode,

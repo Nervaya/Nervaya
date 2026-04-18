@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { ICON_LOCATION } from '@/constants/icons';
 import { ShippingAddress } from '@/types/supplement.types';
 import { Input, Button } from '@/components/common';
 import styles from './styles.module.css';
@@ -83,120 +81,112 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading: _loading
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionHeaderIcon} aria-hidden>
-          <Icon icon={ICON_LOCATION} width={20} height={20} />
-        </span>
-        <h2 className={styles.title}>Shipping Address</h2>
+    <form onSubmit={handleSubmit} className={styles.formBody}>
+      <div className={styles.formGrid}>
+        <Input
+          label="Full Name"
+          value={formData.name}
+          onChange={(e) => handleChange('name', e.target.value)}
+          error={errors.name}
+          required
+          variant="light"
+        />
+        <Input
+          label="Phone Number"
+          type="tel"
+          value={formData.phone}
+          onChange={(e) => handleChange('phone', e.target.value)}
+          error={errors.phone}
+          required
+          variant="light"
+        />
+        <Input
+          label="Address Line 1"
+          value={formData.addressLine1}
+          onChange={(e) => handleChange('addressLine1', e.target.value)}
+          error={errors.addressLine1}
+          required
+          containerClassName={styles.fullWidth}
+          variant="light"
+        />
+        <Input
+          label="Address Line 2 (Optional)"
+          value={formData.addressLine2}
+          onChange={(e) => handleChange('addressLine2', e.target.value)}
+          error={errors.addressLine2}
+          containerClassName={styles.fullWidth}
+          variant="light"
+        />
+        <Input
+          label="City"
+          value={formData.city}
+          onChange={(e) => handleChange('city', e.target.value)}
+          error={errors.city}
+          required
+          variant="light"
+        />
+        <Input
+          label="State"
+          value={formData.state}
+          onChange={(e) => handleChange('state', e.target.value)}
+          error={errors.state}
+          required
+          variant="light"
+        />
+        <Input
+          label="Zip Code"
+          value={formData.zipCode}
+          onChange={(e) => handleChange('zipCode', e.target.value)}
+          error={errors.zipCode}
+          required
+          variant="light"
+        />
+        <Input
+          label="Country"
+          value={formData.country}
+          onChange={(e) => handleChange('country', e.target.value)}
+          error={errors.country}
+          required
+          variant="light"
+        />
       </div>
-      <div className={styles.formBody}>
-        <div className={styles.formGrid}>
-          <Input
-            label="Full Name"
-            value={formData.name}
-            onChange={(e) => handleChange('name', e.target.value)}
-            error={errors.name}
-            required
-            variant="light"
-          />
-          <Input
-            label="Phone Number"
-            type="tel"
-            value={formData.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            error={errors.phone}
-            required
-            variant="light"
-          />
-          <Input
-            label="Address Line 1"
-            value={formData.addressLine1}
-            onChange={(e) => handleChange('addressLine1', e.target.value)}
-            error={errors.addressLine1}
-            required
-            containerClassName={styles.fullWidth}
-            variant="light"
-          />
-          <Input
-            label="Address Line 2 (Optional)"
-            value={formData.addressLine2}
-            onChange={(e) => handleChange('addressLine2', e.target.value)}
-            error={errors.addressLine2}
-            containerClassName={styles.fullWidth}
-            variant="light"
-          />
-          <Input
-            label="City"
-            value={formData.city}
-            onChange={(e) => handleChange('city', e.target.value)}
-            error={errors.city}
-            required
-            variant="light"
-          />
-          <Input
-            label="State"
-            value={formData.state}
-            onChange={(e) => handleChange('state', e.target.value)}
-            error={errors.state}
-            required
-            variant="light"
-          />
-          <Input
-            label="Zip Code"
-            value={formData.zipCode}
-            onChange={(e) => handleChange('zipCode', e.target.value)}
-            error={errors.zipCode}
-            required
-            variant="light"
-          />
-          <Input
-            label="Country"
-            value={formData.country}
-            onChange={(e) => handleChange('country', e.target.value)}
-            error={errors.country}
-            required
-            variant="light"
-          />
-        </div>
 
-        <div className={styles.saveAddressSection}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={saveAddress}
-              onChange={(e) => setSaveAddress(e.target.checked)}
-              className={styles.checkbox}
-            />
-            <span>Save this address for future use</span>
-          </label>
+      <div className={styles.saveAddressSection}>
+        <label className={styles.checkboxLabel}>
+          <input
+            type="checkbox"
+            checked={saveAddress}
+            onChange={(e) => setSaveAddress(e.target.checked)}
+            className={styles.checkbox}
+          />
+          <span>Save this address for future use</span>
+        </label>
 
-          {saveAddress && (
-            <div className={styles.labelSelection}>
-              <span className={styles.labelText}>Save as:</span>
-              <div className={styles.radioGroup}>
-                {['Home', 'Work', 'Other'].map((l) => (
-                  <label key={l} className={styles.radioLabel}>
-                    <input
-                      type="radio"
-                      name="addressLabel"
-                      value={l}
-                      checked={label === l}
-                      onChange={(e) => setLabel(e.target.value)}
-                      className={styles.radio}
-                    />
-                    {l}
-                  </label>
-                ))}
-              </div>
+        {saveAddress && (
+          <div className={styles.labelSelection}>
+            <span className={styles.labelText}>Save as:</span>
+            <div className={styles.radioGroup}>
+              {['Home', 'Work', 'Other'].map((l) => (
+                <label key={l} className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="addressLabel"
+                    value={l}
+                    checked={label === l}
+                    onChange={(e) => setLabel(e.target.value)}
+                    className={styles.radio}
+                  />
+                  {l}
+                </label>
+              ))}
             </div>
-          )}
-        </div>
-
-        <Button type="submit" variant="primary" loading={false} className={styles.submitButton}>
-          Use this address
-        </Button>
+          </div>
+        )}
       </div>
+
+      <Button type="submit" variant="primary" loading={false} className={styles.submitButton}>
+        Use this address
+      </Button>
     </form>
   );
 };

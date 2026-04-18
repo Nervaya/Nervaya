@@ -23,13 +23,12 @@ export interface CreateOrderParams {
   shippingAddress?: IOrder['shippingAddress'];
   promoCode?: string;
   promoDiscount?: number;
-  deliveryMethod?: 'standard' | 'express';
 }
 
 export async function createOrder(userId: string, params: CreateOrderParams) {
   await connectDB();
   try {
-    const { shippingAddress, promoCode, promoDiscount = 0, deliveryMethod } = params;
+    const { shippingAddress, promoCode, promoDiscount = 0 } = params;
     if (!userId || typeof userId !== 'string') {
       throw new ValidationError('Invalid User ID');
     }
@@ -109,7 +108,7 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
     const isDigitalOnly = cart.items.every(
       (item) => item.itemType === ITEM_TYPE.DRIFT_OFF || item.itemType === ITEM_TYPE.THERAPY,
     );
-    const shipping = isDigitalOnly ? 0 : getShippingCost(deliveryMethod, subtotal);
+    const shipping = isDigitalOnly ? 0 : getShippingCost(subtotal);
     const totalAmount = Math.max(0, subtotal + shipping - promoDiscount);
 
     const order = await Order.create({
@@ -120,7 +119,6 @@ export async function createOrder(userId: string, params: CreateOrderParams) {
       orderStatus: ORDER_STATUS.PENDING,
       shippingAddress,
       ...(promoCode && { promoCode, promoDiscount }),
-      ...(deliveryMethod && { deliveryMethod }),
     });
 
     // Promo usage is incremented in payment.service.ts AFTER successful payment verification

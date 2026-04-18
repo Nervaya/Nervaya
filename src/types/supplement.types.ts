@@ -1,11 +1,5 @@
 import { Types } from 'mongoose';
-import {
-  PaymentStatus,
-  OrderStatus,
-  type DeliveryMethod,
-  type DiscountType,
-  type ItemType,
-} from '@/lib/constants/enums';
+import { PaymentStatus, OrderStatus, type DiscountType, type ItemType } from '@/lib/constants/enums';
 
 export interface StarDistribution {
   1: number;
@@ -126,15 +120,6 @@ export interface SavedAddress extends ShippingAddress {
   isDefault: boolean;
 }
 
-export type { DeliveryMethod };
-
-export interface DeliveryOption {
-  method: DeliveryMethod;
-  label: string;
-  duration: string;
-  cost: number;
-}
-
 export interface PromoCode {
   _id: string;
   code: string;
@@ -180,7 +165,6 @@ export interface Order {
   shippingAddress: ShippingAddress;
   promoCode?: string;
   promoDiscount?: number;
-  deliveryMethod?: 'standard' | 'express';
   createdAt: Date;
   updatedAt: Date;
 }

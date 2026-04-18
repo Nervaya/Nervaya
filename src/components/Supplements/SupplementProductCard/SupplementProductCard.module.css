@@ -287,17 +287,3 @@
   font-weight: var(--weight-semibold);
   text-align: center;
 }
-
-.quickView {
-  font-size: var(--text-label);
-  color: var(--color-text-muted);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: var(--spacing-xs);
-  transition: color var(--transition-base);
-}
-
-.quickView:hover {
-  color: var(--color-accent);
-}

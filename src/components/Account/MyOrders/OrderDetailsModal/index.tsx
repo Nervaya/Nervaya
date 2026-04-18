@@ -17,7 +17,7 @@ interface OrderDetailsModalProps {
 
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, onClose }) => {
   const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingCost = getShippingCost(order.deliveryMethod ?? 'standard', subtotal);
+  const shippingCost = getShippingCost(subtotal);
   const modalRef = useRef<HTMLDivElement>(null);
   useModalDismiss(true, modalRef, onClose);
 

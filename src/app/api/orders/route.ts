@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { shippingAddress, promoCode, promoDiscount, deliveryMethod } = body;
+    const { shippingAddress, promoCode, promoDiscount } = body;
 
     if (shippingAddress) {
       if (typeof shippingAddress !== 'object') {
@@ -94,7 +94,6 @@ export async function POST(request: NextRequest) {
       shippingAddress,
       ...(promoCode != null && { promoCode }),
       ...(promoDiscount != null && typeof promoDiscount === 'number' && { promoDiscount }),
-      ...(deliveryMethod && { deliveryMethod }),
     });
     return NextResponse.json(successResponse('Order created successfully', order, 201), {
       status: 201,

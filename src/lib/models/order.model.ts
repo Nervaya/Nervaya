@@ -4,7 +4,6 @@ import {
   ORDER_STATUS,
   PAYMENT_STATUS_VALUES,
   ORDER_STATUS_VALUES,
-  DELIVERY_METHOD_VALUES,
   PaymentStatus,
   OrderStatus,
   type ItemType,
@@ -43,7 +42,6 @@ export interface IOrder extends Document {
 
   promoCode?: string;
   promoDiscount?: number;
-  deliveryMethod?: 'standard' | 'express';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -174,7 +172,6 @@ const orderSchema = new Schema<IOrder>(
     },
     promoCode: { type: String },
     promoDiscount: { type: Number, min: 0 },
-    deliveryMethod: { type: String, enum: DELIVERY_METHOD_VALUES },
   },
   {
     timestamps: true,

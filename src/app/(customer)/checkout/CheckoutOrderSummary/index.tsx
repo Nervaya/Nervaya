@@ -3,31 +3,31 @@
 import { Icon } from '@iconify/react';
 import { ICON_RECEIPT, ICON_SHIELD } from '@/constants/icons';
 import { formatPrice, getCartItemCount } from '@/utils/cart.util';
-import { getShippingCost } from '../useCheckout';
-import type { Cart, DeliveryMethod } from '@/types/supplement.types';
+import { getShippingCost } from '@/utils/shipping.util';
+import type { Cart } from '@/types/supplement.types';
 import Button from '@/components/common/Button';
 import styles from './styles.module.css';
 
 interface CheckoutOrderSummaryProps {
   cart: Cart;
   isDigitalOnly?: boolean;
-  deliveryMethod?: DeliveryMethod;
   promoDiscount?: number;
   onProceedToPayment: () => void;
   loading?: boolean;
+  addressSelected?: boolean;
 }
 
 export function CheckoutOrderSummary({
   cart,
   isDigitalOnly = false,
-  deliveryMethod = 'standard',
   promoDiscount = 0,
   onProceedToPayment,
   loading = false,
+  addressSelected = true,
 }: CheckoutOrderSummaryProps) {
   const itemCount = getCartItemCount(cart.items);
   const subtotal = cart.totalAmount;
-  const shipping = isDigitalOnly ? 0 : getShippingCost(deliveryMethod, subtotal);
+  const shipping = isDigitalOnly ? 0 : getShippingCost(subtotal);
   const total = Math.max(0, subtotal + shipping - promoDiscount);
 
   return (
@@ -62,7 +62,7 @@ export function CheckoutOrderSummary({
               <span className={styles.discount}>−{formatPrice(promoDiscount)}</span>
             </div>
           )}
-          {subtotal < 500 && deliveryMethod === 'standard' && (
+          {!isDigitalOnly && subtotal < 500 && (
             <div className={styles.freeShipping}>
               Add {formatPrice(500 - subtotal)} more for free standard shipping!
             </div>
@@ -74,11 +74,15 @@ export function CheckoutOrderSummary({
           </div>
         </div>
         <div className={styles.actions}>
+          {!isDigitalOnly && !addressSelected && (
+            <p className={styles.addressHint}>Please enter your shipping address to proceed</p>
+          )}
           <Button
             type="button"
             variant="primary"
             onClick={onProceedToPayment}
             loading={loading}
+            disabled={!isDigitalOnly && !addressSelected}
             className={styles.proceedButton}
           >
             Proceed to Payment
