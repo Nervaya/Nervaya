@@ -70,24 +70,15 @@ export function useBookingSlots(therapistId: string, selectedDate: Date, visible
         if (!Array.isArray(schedules)) return;
 
         const booked = new Set<string>();
-        const scheduleDates = new Set<string>();
         const availabilityMap = new Map<string, number>();
 
+        // Only mark dates as "fully booked" when a schedule exists but has zero open slots.
+        // Dates without a schedule row are treated as unknown (clickable) — the per-date
+        // fetch will reveal whether real slots exist.
         for (const s of schedules) {
-          scheduleDates.add(s.date);
           const availableCount = s.slots?.filter((slot) => slot.isAvailable).length ?? 0;
           availabilityMap.set(s.date, availableCount);
-
-          const hasAvailable = s.slots?.some((slot) => slot.isAvailable) ?? false;
-          if (!hasAvailable) booked.add(s.date);
-        }
-
-        for (let d = 1; d <= lastDay; d++) {
-          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-          if (!scheduleDates.has(dateStr)) {
-            booked.add(dateStr);
-            availabilityMap.set(dateStr, 0);
-          }
+          if (availableCount === 0) booked.add(s.date);
         }
 
         setFullyBookedDates(booked);

@@ -9,6 +9,7 @@ import {
   isDateDisabled as checkDateDisabled,
   getDaysInMonth,
   getFirstDayOfMonth,
+  toDateString,
 } from './datePickerUtils';
 
 interface DatePickerProps {
@@ -53,20 +54,14 @@ export default function DatePicker({
 
   const isSelected = (date: Date) => isSameDay(date, selectedDate);
 
-  // Determine availability status for color coding
   const getAvailabilityStatus = (date: Date) => {
     if (isDateDisabled(date)) return 'disabled';
-    if (!slotAvailability) return 'normal';
+    if (!slotAvailability) return 'unknown';
 
-    const dateStr = date.toISOString().split('T')[0];
-    const availableSlots = slotAvailability?.get(dateStr);
+    const availableSlots = slotAvailability.get(toDateString(date));
 
-    // If we have data for this date and it's 0, it's fully booked
     if (availableSlots === 0) return 'fullyBooked';
-
-    // If no data is available for a future date, assume it's normal (clickable)
-    if (availableSlots === undefined) return 'normal';
-
+    if (availableSlots === undefined) return 'unknown';
     if (availableSlots <= 1) return 'critical';
     if (availableSlots <= 3) return 'limited';
     return 'normal';
@@ -82,15 +77,16 @@ export default function DatePicker({
 
     switch (status) {
       case 'disabled':
-        return `${classes} ${styles.dayDisabled}`;
       case 'fullyBooked':
         return `${classes} ${styles.dayDisabled}`;
       case 'critical':
-        return `${classes} ${styles.dateCritical}`;
+        return `${classes} ${styles.dayAvailable} ${styles.dateCritical}`;
       case 'limited':
-        return `${classes} ${styles.dateLimited}`;
+        return `${classes} ${styles.dayAvailable} ${styles.dateLimited}`;
       case 'normal':
-        return `${classes} ${styles.dateNormal}`;
+        return `${classes} ${styles.dayAvailable} ${styles.dateNormal}`;
+      case 'unknown':
+        return `${classes} ${styles.dayAvailable}`;
       default:
         return classes;
     }

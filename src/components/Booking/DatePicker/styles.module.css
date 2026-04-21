@@ -142,6 +142,18 @@
   color: var(--color-accent);
 }
 
+/* Clickable / Available State (has at least one open slot) */
+.dayAvailable {
+  color: #1a1a1a;
+  font-weight: var(--weight-semibold);
+}
+
+.dayAvailable:hover:not(.daySelected) {
+  background: var(--color-background-alt, #f1f5f9);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
 /* Selected State */
 .daySelected {
   background: var(--color-accent) !important;
@@ -150,12 +162,18 @@
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
   transform: scale(1.05);
   z-index: 1;
+  text-decoration: none !important;
+  pointer-events: auto;
 }
 
+/* Disabled / Fully-booked / Past — cal.com-style strikethrough */
 .dayDisabled {
-  opacity: 0.25;
+  color: var(--color-text-disabled, #cbd5e1);
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
   cursor: not-allowed;
   background: transparent;
+  pointer-events: none;
 }
 
 /* Availability Indicators */
