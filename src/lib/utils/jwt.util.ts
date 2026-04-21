@@ -11,7 +11,7 @@ if (!process.env.JWT_SECRET) {
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'dev-fallback-secret-key-change-in-production');
 
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '3h';
 
 export async function generateToken(userId: string, role: string): Promise<string> {
   const alg = 'HS256';

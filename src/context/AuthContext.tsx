@@ -9,7 +9,7 @@ import { getApiErrorMessage } from '@/lib/utils/apiError.util';
 import { ROLES, Role } from '@/lib/constants/roles';
 import { ROUTES } from '@/utils/routesConstants';
 import { validateReturnUrl } from '@/utils/returnUrl';
-import { AUTH_STORAGE_KEYS } from '@/utils/cookieConstants';
+import { AUTH_STORAGE_KEYS, COOKIE_OPTIONS } from '@/utils/cookieConstants';
 import { trackLoggedIn, updateGaUserContext } from '@/utils/analytics';
 
 interface User {
@@ -118,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(true);
 
     if (typeof window !== 'undefined') {
-      const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
+      const expiresAt = Date.now() + COOKIE_OPTIONS.AUTH_TOKEN_MAX_AGE * 1000;
       localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_USER, JSON.stringify(data.user));
       localStorage.setItem(AUTH_STORAGE_KEYS.AUTH_EXPIRES_AT, String(expiresAt));
       localStorage.setItem(AUTH_STORAGE_KEYS.IS_LOGGED_IN, 'true');
