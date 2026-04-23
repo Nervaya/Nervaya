@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import NextImage from 'next/image';
 import { QuantitySelector, Button, StarRating } from '@/components/common';
 import { formatPrice } from '@/utils/cart.util';
@@ -13,7 +12,9 @@ interface ProductInfoProps {
   quantity: number;
   onQuantityChange: (q: number) => void;
   onAddToCart: () => void;
+  onBuyNow: () => void;
   adding: boolean;
+  buying: boolean;
   isOutOfStock: boolean;
   maxQuantity: number;
   error: string | null;
@@ -24,7 +25,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   quantity,
   onQuantityChange,
   onAddToCart,
+  onBuyNow,
   adding,
+  buying,
   isOutOfStock,
   maxQuantity,
   error,
@@ -68,16 +71,21 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 variant="primary"
                 onClick={onAddToCart}
                 loading={adding}
-                disabled={adding || isOutOfStock}
+                disabled={adding || buying || isOutOfStock}
                 className={styles.addButton}
               >
                 Add to Cart
               </Button>
-              <Link href="/cart" className={styles.buyNowLink}>
-                <Button variant="ghost" type="button" className={styles.buyNowButton}>
-                  Buy Now
-                </Button>
-              </Link>
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={onBuyNow}
+                loading={buying}
+                disabled={adding || buying || isOutOfStock}
+                className={styles.buyNowButton}
+              >
+                Buy Now
+              </Button>
             </div>
           </div>
         </>

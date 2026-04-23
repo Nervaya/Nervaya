@@ -89,11 +89,12 @@ const DriftOffLandingHero = () => {
           </Button>
           <Button
             type="button"
-            variant="secondary"
+            variant="ghost"
             size="lg"
             fullWidth={false}
             onClick={handleAddToCart}
             disabled={isAdding}
+            loading={isAdding}
             className={styles.ctaSecondary}
           >
             Add to Cart

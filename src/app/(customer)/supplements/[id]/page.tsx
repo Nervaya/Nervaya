@@ -24,6 +24,7 @@ export default function SupplementDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [buying, setBuying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { refreshCart } = useCart();
 
@@ -73,6 +74,47 @@ export default function SupplementDetailPage() {
       fetchSupplement();
     }
   }, [params.id, fetchSupplement]);
+
+  const handleBuyNow = async () => {
+    if (!supplement) return;
+    if (!isAuthenticated) {
+      const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+      const currentPath = `/supplements/${id}`;
+      const returnUrl = encodeURIComponent(currentPath);
+      router.push(`${ROUTES.LOGIN}?returnUrl=${returnUrl}`);
+      return;
+    }
+    setBuying(true);
+    setError(null);
+    try {
+      const response = await cartApi.add(supplement._id, quantity);
+      if (response.success) {
+        trackAddToCart({
+          currency: 'INR',
+          value: supplement.price * quantity,
+          items: [
+            {
+              item_id: supplement._id,
+              item_name: supplement.name,
+              item_category: 'Supplements',
+              price: supplement.price,
+              quantity,
+              currency: 'INR',
+              page_type: 'product_detail_buy_now',
+            },
+          ],
+        });
+        refreshCart();
+        router.push('/checkout');
+      } else {
+        setError('Failed to add to cart');
+        setBuying(false);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add to cart');
+      setBuying(false);
+    }
+  };
 
   const handleAddToCart = async () => {
     if (!supplement) return;
@@ -204,7 +246,9 @@ export default function SupplementDetailPage() {
               quantity={quantity}
               onQuantityChange={setQuantity}
               onAddToCart={handleAddToCart}
+              onBuyNow={handleBuyNow}
               adding={adding}
+              buying={buying}
               isOutOfStock={isOutOfStock}
               maxQuantity={maxQuantity}
               error={error}
