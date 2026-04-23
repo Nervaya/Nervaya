@@ -2,14 +2,19 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 import ProgressBar from '@/components/SleepAssessment/ProgressBar';
 import { AssessmentQuestionStep } from '@/components/SleepAssessment/AssessmentContainer/AssessmentQuestionStep';
 import { AssessmentNav } from '@/components/SleepAssessment/AssessmentContainer/AssessmentNav';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
+import { ICON_INFO } from '@/constants/icons';
 import { useDriftOffAssessmentState } from './useDriftOffAssessmentState';
 import type { ISleepAssessmentQuestion } from '@/types/sleepAssessment.types';
 import type { IDriftOffAnswer } from '@/types/driftOff.types';
 import styles from './styles.module.css';
+
+const ONE_TIME_NOTE =
+  'This assessment can only be taken once. Your responses will be saved and our specialists will use them to curate your personalized session.';
 
 interface DriftOffAssessmentContainerProps {
   questions: ISleepAssessmentQuestion[];
@@ -76,18 +81,27 @@ export default function DriftOffAssessmentContainer({
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Deep Rest Audio Questionnaire</h1>
+        <div className={styles.titleRow}>
+          <h1 className={styles.title}>Deep Rest Audio Questionnaire</h1>
+          <span className={styles.infoWrap}>
+            <span
+              className={styles.infoIcon}
+              role="button"
+              tabIndex={0}
+              aria-label="About this questionnaire"
+              aria-describedby="questionnaire-info-tip"
+            >
+              <Icon icon={ICON_INFO} width={16} height={16} aria-hidden />
+            </span>
+            <span id="questionnaire-info-tip" role="tooltip" className={styles.tooltip}>
+              {ONE_TIME_NOTE}
+            </span>
+          </span>
+        </div>
         <span className={styles.stepCounter} aria-hidden>
           {currentQuestionIndex + 1}/{totalQuestions}
         </span>
       </header>
-
-      <div className={styles.oneTimeNote} role="status">
-        <p>
-          This assessment can only be taken once. We do this to ensure the authenticity of your responses. Your
-          responses will be saved and our specialists will use them to curate your personalized session.
-        </p>
-      </div>
 
       <div className={styles.progressSection}>
         <ProgressBar currentStep={currentQuestionIndex + 1} totalSteps={totalQuestions} showStepCounter={false} />
