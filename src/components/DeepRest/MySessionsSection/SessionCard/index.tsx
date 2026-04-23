@@ -104,11 +104,18 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
             Complete Assessment
           </Button>
         )}
-        {isPreparing && <p className={styles.preparationNote}>Expected in 1-2 days</p>}
+        {isPreparing && (
+          <>
+            <p className={styles.preparationNote}>Expected in 1-2 days</p>
+            <Button type="button" variant="ghost" size="md" fullWidth disabled aria-disabled="true">
+              Edit Answers & Re-Request
+            </Button>
+          </>
+        )}
         {isReady && (
           <>
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
-            {(!hasRequestedReSession || isRequesting) && (
+            {!hasRequestedReSession ? (
               <Button
                 href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
                 variant="ghost"
@@ -118,16 +125,10 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
               >
                 Edit Answers & Re-Request
               </Button>
-            )}
-            {hasPendingReSessionRequest && !isRequesting && (
-              <Badge variant="purple" fullWidth>
-                Re-Session Requested
-              </Badge>
-            )}
-            {hasResolvedReSessionRequest && (
-              <Badge variant="neutral" fullWidth>
-                Re-Session Used
-              </Badge>
+            ) : (
+              <Button type="button" variant="ghost" size="md" fullWidth disabled aria-disabled="true">
+                {hasPendingReSessionRequest ? 'Re-Session Requested' : 'Re-Session Used'}
+              </Button>
             )}
           </>
         )}

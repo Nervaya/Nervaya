@@ -127,7 +127,7 @@ export function useDriftOffAssessmentState(
     setSubmitError(null);
 
     try {
-      if (answerToSave !== null) {
+      if (!isReSession && answerToSave !== null) {
         await deepRestApi.saveAnswer({
           deepRestOrderId: driftOffOrderId,
           questionId: currentQuestion._id,
@@ -136,7 +136,17 @@ export function useDriftOffAssessmentState(
       }
       if (isLastQuestion) {
         if (isReSession && responseId) {
-          await deepRestApi.requestReSession(responseId);
+          const seen = new Set<string>();
+          const payload: { questionId: string; answer: string | string[] }[] = [];
+          for (const q of questions) {
+            const value = answers.get(q._id) ?? answers.get(q.questionId);
+            if (value === undefined) continue;
+            const key = q.questionId || q._id;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            payload.push({ questionId: key, answer: value });
+          }
+          await deepRestApi.requestReSession(responseId, payload);
         } else {
           await deepRestApi.completeAssessment(driftOffOrderId);
         }
@@ -145,7 +155,11 @@ export function useDriftOffAssessmentState(
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
       }
     } catch {
-      setSubmitError('Failed to save your answer. Please try again.');
+      setSubmitError(
+        isReSession
+          ? 'Unable to submit your re-session request. Please try again.'
+          : 'Failed to save your answer. Please try again.',
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -158,6 +172,8 @@ export function useDriftOffAssessmentState(
     driftOffOrderId,
     isReSession,
     responseId,
+    questions,
+    answers,
   ]);
 
   const handlePrevious = useCallback(() => {

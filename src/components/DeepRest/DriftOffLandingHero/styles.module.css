@@ -82,10 +82,53 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   flex-wrap: wrap;
   justify-content: flex-start;
   row-gap: 0.75rem;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  min-width: 200px;
+  font-size: var(--text-body-lg);
+  padding-block: 14px;
+}
+
+@media (max-width: 640px) {
+  .ctaPrimary,
+  .ctaSecondary {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+.tertiaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-5);
+  color: var(--color-accent);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-base);
+  width: fit-content;
+}
+
+.tertiaryLink:hover {
+  color: var(--color-accent-hover);
+}
+
+.tertiaryIcon {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-base);
+}
+
+.tertiaryLink:hover .tertiaryIcon {
+  transform: translateX(3px);
 }
 
 .heroRight {
@@ -152,13 +195,21 @@
   padding: var(--space-5) 20px;
   background: var(--color-white-bright);
   border-top: 1px solid var(--color-border-light);
+  gap: var(--space-4);
+}
+
+.videoMetaText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 @media (max-width: 480px) {
   .videoMeta {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 }
 
@@ -178,4 +229,28 @@
   font-size: 0.78rem;
   color: var(--color-foreground);
   opacity: 0.8;
+}
+
+.viewSessionsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-accent);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: color var(--transition-base);
+}
+
+.viewSessionsLink:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.viewSessionsIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
 }

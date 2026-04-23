@@ -7,11 +7,58 @@ import styles from './styles.module.css';
 
 interface CheckoutFormProps {
   onSubmit: (address: ShippingAddress, saveAddress: boolean, label: string) => void;
+  onCancel?: () => void;
   loading?: boolean;
   initialAddress?: Partial<ShippingAddress>;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading: _loading = false, initialAddress }) => {
+type FieldErrors = Partial<Record<keyof ShippingAddress, string>>;
+
+const NAME_REGEX = /^[A-Za-z][A-Za-z\s.'-]{1,49}$/;
+const INDIAN_MOBILE_REGEX = /^[6-9]\d{9}$/;
+const ZIP_REGEX = /^[1-9]\d{5}$/;
+
+const validateField = (field: keyof ShippingAddress, value: string): string | undefined => {
+  const trimmed = value.trim();
+  switch (field) {
+    case 'name':
+      if (!trimmed) return 'Full name is required';
+      if (!NAME_REGEX.test(trimmed)) return 'Enter a valid name (letters only)';
+      return undefined;
+    case 'phone': {
+      if (!trimmed) return 'Phone number is required';
+      const digits = trimmed.replace(/\D/g, '');
+      if (!INDIAN_MOBILE_REGEX.test(digits)) return 'Enter a valid 10-digit mobile number';
+      return undefined;
+    }
+    case 'addressLine1':
+      if (!trimmed) return 'Address is required';
+      if (trimmed.length < 4) return 'Address looks too short';
+      return undefined;
+    case 'city':
+      if (!trimmed) return 'City is required';
+      return undefined;
+    case 'state':
+      if (!trimmed) return 'State is required';
+      return undefined;
+    case 'zipCode':
+      if (!trimmed) return 'Zip code is required';
+      if (!ZIP_REGEX.test(trimmed)) return 'Enter a valid 6-digit PIN code';
+      return undefined;
+    case 'country':
+      if (!trimmed) return 'Country is required';
+      return undefined;
+    default:
+      return undefined;
+  }
+};
+
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
+  onSubmit,
+  onCancel,
+  loading: _loading = false,
+  initialAddress,
+}) => {
   const [formData, setFormData] = useState<ShippingAddress>({
     name: initialAddress?.name || '',
     phone: initialAddress?.phone || '',
@@ -25,129 +72,148 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading: _loading
 
   const [saveAddress, setSaveAddress] = useState(false);
   const [label, setLabel] = useState('Home');
-  const [errors, setErrors] = useState<Partial<Record<keyof ShippingAddress, string>>>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
 
-  const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof ShippingAddress, string>> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone is required';
-    } else if (!/^[0-9]{10}$/.test(formData.phone.replace(/\D/g, ''))) {
-      newErrors.phone = 'Please enter a valid 10-digit phone number';
-    }
-
-    if (!formData.addressLine1.trim()) {
-      newErrors.addressLine1 = 'Address line 1 is required';
-    }
-
-    if (!formData.city.trim()) {
-      newErrors.city = 'City is required';
-    }
-
-    if (!formData.state.trim()) {
-      newErrors.state = 'State is required';
-    }
-
-    if (!formData.zipCode.trim()) {
-      newErrors.zipCode = 'Zip code is required';
-    } else if (!/^[0-9]{6}$/.test(formData.zipCode)) {
-      newErrors.zipCode = 'Please enter a valid 6-digit zip code';
-    }
-
-    if (!formData.country.trim()) {
-      newErrors.country = 'Country is required';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validateAll = (): boolean => {
+    const nextErrors: FieldErrors = {};
+    (Object.keys(formData) as (keyof ShippingAddress)[]).forEach((field) => {
+      if (field === 'addressLine2') return;
+      const err = validateField(field, formData[field] || '');
+      if (err) nextErrors[field] = err;
+    });
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
+    if (validateAll()) {
       onSubmit(formData, saveAddress, label);
     }
   };
 
-  const handleChange = (field: keyof ShippingAddress, value: string) => {
+  const handleChange = (field: keyof ShippingAddress, rawValue: string) => {
+    let value = rawValue;
+    if (field === 'phone') value = rawValue.replace(/\D/g, '').slice(0, 10);
+    if (field === 'zipCode') value = rawValue.replace(/\D/g, '').slice(0, 6);
+
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
+  const handleBlur = (field: keyof ShippingAddress) => {
+    if (field === 'addressLine2') return;
+    const err = validateField(field, formData[field] || '');
+    setErrors((prev) => ({ ...prev, [field]: err }));
+  };
+
   return (
-    <form onSubmit={handleSubmit} className={styles.formBody}>
+    <form onSubmit={handleSubmit} className={styles.formBody} noValidate>
       <div className={styles.formGrid}>
         <Input
           label="Full Name"
           value={formData.name}
           onChange={(e) => handleChange('name', e.target.value)}
+          onBlur={() => handleBlur('name')}
           error={errors.name}
+          autoComplete="name"
+          maxLength={50}
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
         <Input
           label="Phone Number"
           type="tel"
+          inputMode="numeric"
           value={formData.phone}
           onChange={(e) => handleChange('phone', e.target.value)}
+          onBlur={() => handleBlur('phone')}
           error={errors.phone}
+          autoComplete="tel-national"
+          maxLength={10}
+          placeholder="10-digit mobile"
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
         <Input
           label="Address Line 1"
           value={formData.addressLine1}
           onChange={(e) => handleChange('addressLine1', e.target.value)}
+          onBlur={() => handleBlur('addressLine1')}
           error={errors.addressLine1}
+          autoComplete="address-line1"
+          placeholder="House / flat, street"
           required
+          showRequiredIndicator
           containerClassName={styles.fullWidth}
           variant="light"
+          compact
         />
         <Input
-          label="Address Line 2 (Optional)"
+          label="Address Line 2"
           value={formData.addressLine2}
           onChange={(e) => handleChange('addressLine2', e.target.value)}
-          error={errors.addressLine2}
+          autoComplete="address-line2"
+          placeholder="Landmark, area (optional)"
           containerClassName={styles.fullWidth}
           variant="light"
+          compact
         />
         <Input
           label="City"
           value={formData.city}
           onChange={(e) => handleChange('city', e.target.value)}
+          onBlur={() => handleBlur('city')}
           error={errors.city}
+          autoComplete="address-level2"
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
         <Input
           label="State"
           value={formData.state}
           onChange={(e) => handleChange('state', e.target.value)}
+          onBlur={() => handleBlur('state')}
           error={errors.state}
+          autoComplete="address-level1"
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
         <Input
           label="Zip Code"
+          inputMode="numeric"
           value={formData.zipCode}
           onChange={(e) => handleChange('zipCode', e.target.value)}
+          onBlur={() => handleBlur('zipCode')}
           error={errors.zipCode}
+          autoComplete="postal-code"
+          maxLength={6}
+          placeholder="6-digit PIN"
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
         <Input
           label="Country"
           value={formData.country}
           onChange={(e) => handleChange('country', e.target.value)}
-          error={errors.country}
+          autoComplete="country-name"
+          readOnly
           required
+          showRequiredIndicator
           variant="light"
+          compact
         />
       </div>
 
@@ -184,9 +250,16 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, loading: _loading
         )}
       </div>
 
-      <Button type="submit" variant="primary" loading={false} className={styles.submitButton}>
-        Use this address
-      </Button>
+      <div className={styles.actions}>
+        {onCancel && (
+          <Button type="button" variant="secondary" onClick={onCancel} className={styles.cancelButton}>
+            Cancel
+          </Button>
+        )}
+        <Button type="submit" variant="primary" loading={false} className={styles.submitButton}>
+          Use this address
+        </Button>
+      </div>
     </form>
   );
 };

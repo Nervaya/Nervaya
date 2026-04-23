@@ -3,7 +3,11 @@ import DriftOffResponse, { IDriftOffResponse as DriftOffResponseDocument } from 
 import DriftOffOrder from '@/lib/models/driftOffOrder.model';
 import { ValidationError, NotFoundError } from '@/lib/utils/error.util';
 import { Types, ClientSession } from 'mongoose';
-import type { IDriftOffResponse as DriftOffResponseDto, SaveDriftOffAnswerInput } from '@/types/driftOff.types';
+import type {
+  IDriftOffResponse as DriftOffResponseDto,
+  IDriftOffAnswer,
+  SaveDriftOffAnswerInput,
+} from '@/types/driftOff.types';
 import { toObjectId } from '@/lib/utils/objectId.util';
 
 type PopulatedDriftOffUser = {
@@ -181,7 +185,11 @@ export async function assignVideo(responseId: string, videoUrl: string): Promise
   return response.save();
 }
 
-export async function requestReSession(userId: string, responseId: string): Promise<DriftOffResponseDocument> {
+export async function requestReSession(
+  userId: string,
+  responseId: string,
+  updatedAnswers?: IDriftOffAnswer[],
+): Promise<DriftOffResponseDocument> {
   await connectDB();
   if (!Types.ObjectId.isValid(responseId)) {
     throw new ValidationError('Invalid response ID');
@@ -202,6 +210,10 @@ export async function requestReSession(userId: string, responseId: string): Prom
 
   if (response.reSessionRequestedAt) {
     throw new ValidationError('You can request a re-session only once for this session');
+  }
+
+  if (updatedAnswers && updatedAnswers.length > 0) {
+    response.answers = updatedAnswers.map((a) => ({ questionId: a.questionId, answer: a.answer }));
   }
 
   response.reSessionRequestedAt = new Date();

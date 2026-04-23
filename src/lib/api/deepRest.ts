@@ -82,8 +82,13 @@ export const deepRestApi = {
       ApiResponse<IDeepRestResponse>
     >,
 
-  requestReSession: (responseId: string): Promise<ApiResponse<IDeepRestResponse>> =>
-    api.post(`/deep-rest/responses/${responseId}/request-re-session`) as Promise<ApiResponse<IDeepRestResponse>>,
+  requestReSession: (
+    responseId: string,
+    answers?: { questionId: string; answer: string | string[] }[],
+  ): Promise<ApiResponse<IDeepRestResponse>> =>
+    api.post(`/deep-rest/responses/${responseId}/request-re-session`, answers ? { answers } : undefined) as Promise<
+      ApiResponse<IDeepRestResponse>
+    >,
 
   submitReview: (responseId: string, body: { rating: number; comment?: string }): Promise<ApiResponse<unknown>> =>
     api.post(`/deep-rest/responses/${responseId}/reviews`, body) as Promise<ApiResponse<unknown>>,

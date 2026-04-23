@@ -86,12 +86,23 @@ export default function DriftOffQuestionnairePage() {
         try {
           const responseRes = await axiosInstance.get<
             unknown,
-            ApiResponse<{ _id: string; completedAt?: string; answers?: IDriftOffAnswer[] }>
+            ApiResponse<{
+              _id: string;
+              completedAt?: string;
+              answers?: IDriftOffAnswer[];
+              reSessionRequestedAt?: string | null;
+            }>
           >(`/deep-rest/responses/order/${orderIdToLoad}`);
 
           const isReSessionMode = searchParams.get('mode') === 're-session';
 
           if (responseRes.success && responseRes.data?.completedAt && !isReSessionMode) {
+            hasCheckedRedirectsRef.current = true;
+            router.replace('/deep-rest/sessions');
+            return;
+          }
+
+          if (responseRes.success && responseRes.data?.reSessionRequestedAt && isReSessionMode) {
             hasCheckedRedirectsRef.current = true;
             router.replace('/deep-rest/sessions');
             return;

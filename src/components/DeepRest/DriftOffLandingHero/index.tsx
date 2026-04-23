@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useSyncExternalStore, useEffect } from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
-import { ICON_PLAY } from '@/constants/icons';
+import { ICON_PLAY, ICON_EYE, ICON_ARROW_RIGHT } from '@/constants/icons';
 import { DRIFT_OFF_LANDING_VIDEO_URL, DRIFT_OFF_SESSION_IMAGE } from '@/lib/constants/driftOff.constants';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/context/CartContext';
@@ -32,7 +33,6 @@ const DriftOffLandingHero = () => {
   const [sessionPrice, setSessionPrice] = useState<number | null>(null);
 
   useEffect(() => {
-    // Fetch dynamic price from backend config
     fetch('/api/deep-rest/plan')
       .then((r) => r.json())
       .then((res) => {
@@ -84,26 +84,25 @@ const DriftOffLandingHero = () => {
           min Deep Rest Session for you targeting your special mental needs.
         </p>
         <div className={styles.actions}>
-          <Button href="/deep-rest/payment" variant="primary" size="md" fullWidth={false}>
-            Buy Audio
+          <Button href="/deep-rest/payment" variant="primary" size="lg" fullWidth={false} className={styles.ctaPrimary}>
+            Buy Tailored Audio
           </Button>
           <Button
             type="button"
-            variant="ghost"
-            size="md"
+            variant="secondary"
+            size="lg"
             fullWidth={false}
             onClick={handleAddToCart}
             disabled={isAdding}
+            className={styles.ctaSecondary}
           >
             Add to Cart
           </Button>
-          <Button href="/deep-rest/sessions" variant="secondary" size="md" fullWidth={false}>
-            View My Sessions
-          </Button>
-          <Button href="/deep-rest/about" variant="secondary" size="md" fullWidth={false}>
-            What are Deep Rest sessions?
-          </Button>
         </div>
+        <Link href="/deep-rest/about" className={styles.tertiaryLink}>
+          What are Deep Rest sessions?
+          <Icon icon={ICON_ARROW_RIGHT} aria-hidden className={styles.tertiaryIcon} />
+        </Link>
       </div>
 
       <div className={styles.heroRight}>
@@ -132,10 +131,16 @@ const DriftOffLandingHero = () => {
             )}
           </div>
           <div className={styles.videoMeta}>
-            <span className={styles.videoTitle}>
-              Sample Guided Meditation <span className={styles.dot}>●</span>
-            </span>
-            <span className={styles.videoAuthor}>By Practia</span>
+            <div className={styles.videoMetaText}>
+              <span className={styles.videoTitle}>
+                Sample Guided Meditation <span className={styles.dot}>●</span>
+              </span>
+              <span className={styles.videoAuthor}>By Practia</span>
+            </div>
+            <Link href="/deep-rest/sessions" className={styles.viewSessionsLink} aria-label="View my sessions">
+              <Icon icon={ICON_EYE} width={16} height={16} aria-hidden className={styles.viewSessionsIcon} />
+              View My Sessions
+            </Link>
           </div>
         </div>
       </div>

@@ -45,12 +45,16 @@ export function getSessionCounts(sessions: Session[]): SessionCounts {
   return counts;
 }
 
-export function getNextSessionInfo(sessions: Session[]): NextSessionInfo | null {
-  const now = new Date();
-  const upcoming = sessions
-    .filter((s) => s.status !== SESSION_STATUS.CANCELLED)
-    .map((s) => ({ session: s, dateTime: parseSessionStartDateTime(s.date, s.startTime) }))
-    .filter((x) => x.dateTime && x.dateTime.getTime() > now.getTime()) as NextSessionInfo[];
+export function getNextSessionInfo(sessions: Session[], nowMs: number = Date.now()): NextSessionInfo | null {
+  const upcoming: NextSessionInfo[] = [];
+  for (const s of sessions) {
+    if (s.status === SESSION_STATUS.CANCELLED) continue;
+    const startDateTime = parseSessionStartDateTime(s.date, s.startTime);
+    const endDateTime = parseSessionStartDateTime(s.date, s.endTime);
+    if (!startDateTime || !endDateTime) continue;
+    if (endDateTime.getTime() <= nowMs) continue;
+    upcoming.push({ session: s, dateTime: startDateTime });
+  }
   upcoming.sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime());
   return upcoming[0] ?? null;
 }

@@ -24,7 +24,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCustomer } from '@/context/CustomerContext';
 import { supplementsApi } from '@/lib/api/supplements';
 import { ROUTES } from '@/utils/routesConstants';
-import { ITEM_TYPE } from '@/lib/constants/enums';
+import { ITEM_TYPE, PAYMENT_STATUS } from '@/lib/constants/enums';
 import type { Supplement } from '@/types/supplement.types';
 import {
   buildRecentActivity,
@@ -59,7 +59,60 @@ export default function DashboardPage() {
     fetchSupps();
   }, []);
 
-  const nextSession = useMemo(() => getNextSessionInfo(sessions), [sessions]);
+  const [nowMs, setNowMs] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNowMs(Date.now()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const nextSession = useMemo(() => getNextSessionInfo(sessions, nowMs), [sessions, nowMs]);
+
+  const hasPurchasedSupplement = useMemo(
+    () =>
+      orders.some(
+        (o) => o.paymentStatus === PAYMENT_STATUS.PAID && o.items?.some((it) => it.itemType === ITEM_TYPE.SUPPLEMENT),
+      ),
+    [orders],
+  );
+
+  const deepRestState = useMemo(() => {
+    const total = driftOffResponses.length;
+    if (total === 0) return { status: 'empty' as const, readyCount: 0, total };
+    const readyCount = driftOffResponses.filter((r) => Boolean(r.assignedVideoUrl)).length;
+    if (readyCount > 0) return { status: 'ready' as const, readyCount, total };
+    return { status: 'preparing' as const, readyCount: 0, total };
+  }, [driftOffResponses]);
+
+  const deepRestTile = useMemo(() => {
+    if (deepRestState.status === 'ready') {
+      return {
+        value: `${deepRestState.readyCount} session${deepRestState.readyCount === 1 ? '' : 's'} ready`,
+        subtitle: 'Your tailored audio is ready to play.',
+        primaryLabel: 'Open Playlist',
+        primaryHref: '/deep-rest/sessions',
+        secondaryLabel: 'Buy Another',
+        iconColor: 'var(--color-tile-emerald)',
+      };
+    }
+    if (deepRestState.status === 'preparing') {
+      return {
+        value: 'In progress',
+        subtitle: 'Our specialists are crafting your personalized audio.',
+        primaryLabel: 'View Status',
+        primaryHref: '/deep-rest/sessions',
+        secondaryLabel: 'Buy Another',
+        iconColor: 'var(--color-tile-amber)',
+      };
+    }
+    return {
+      value: 'Tailored Audio',
+      subtitle: 'Curated Deep Rest audio crafted for your sleep pattern.',
+      primaryLabel: 'Buy Audio',
+      primaryHref: '/deep-rest',
+      secondaryLabel: 'Add to Cart',
+      iconColor: 'var(--color-tile-violet)',
+    };
+  }, [deepRestState]);
 
   const assessmentTile = useMemo(
     () => getAssessmentTileModel(latestAssessment, inProgressAssessment),
@@ -75,6 +128,7 @@ export default function DashboardPage() {
       id: it.id,
       label: it.label,
       timeLabel: it.timeLabel,
+      time: it.time,
       icon:
         it.iconKey === 'session' ? (
           <Icon icon={ICON_CALENDAR} aria-hidden />
@@ -184,31 +238,23 @@ export default function DashboardPage() {
 
               <StatTile
                 title="Deep Rest"
-                value={
-                  driftOffResponses.length > 0
-                    ? `Purchased: ${driftOffResponses.length} session${driftOffResponses.length === 1 ? '' : 's'}`
-                    : 'Tailored Audio'
-                }
-                subtitle={
-                  driftOffResponses.length > 0
-                    ? 'Your tailored audio is ready.'
-                    : 'Listen to our curated deep rest sessions.'
-                }
+                value={deepRestTile.value}
+                subtitle={deepRestTile.subtitle}
                 icon={<Icon icon={ICON_MOON_SLEEP} aria-hidden />}
                 cta={[
                   {
-                    label: driftOffResponses.length > 0 ? 'Playlist' : 'Buy Audio',
-                    href: driftOffResponses.length > 0 ? '/deep-rest/sessions' : '/deep-rest',
+                    label: deepRestTile.primaryLabel,
+                    href: deepRestTile.primaryHref,
                     variant: 'primary',
                   },
                   {
-                    label: 'Add to Cart',
-                    href: '',
+                    label: deepRestTile.secondaryLabel,
+                    href: deepRestState.status === 'empty' ? '' : '/deep-rest',
                     variant: 'secondary',
-                    onClick: () => handleAddToCart('DriftOff'),
+                    ...(deepRestState.status === 'empty' ? { onClick: () => handleAddToCart('DriftOff') } : {}),
                   },
                 ]}
-                iconColor="var(--color-tile-violet)"
+                iconColor={deepRestTile.iconColor}
               />
 
               <StatTile
@@ -217,7 +263,11 @@ export default function DashboardPage() {
                 subtitle="Fast-absorbing formula for deep, restorative sleep."
                 icon={<Icon icon={ICON_SHOPPING_BAG} aria-hidden />}
                 cta={[
-                  { label: 'Buy Now', href: '/supplements', variant: 'primary' },
+                  {
+                    label: hasPurchasedSupplement ? 'Buy Again' : 'Buy Now',
+                    href: '/supplements',
+                    variant: 'primary',
+                  },
                   {
                     label: 'Add to Cart',
                     href: '',

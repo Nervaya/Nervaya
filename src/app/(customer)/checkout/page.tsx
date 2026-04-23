@@ -162,7 +162,12 @@ export default function CheckoutPage() {
             onClose={handleCloseAddressModal}
             title={selectedAddress ? 'Edit Address' : 'Add New Address'}
           >
-            <CheckoutForm onSubmit={handleAddressSubmit} loading={false} initialAddress={selectedAddress} />
+            <CheckoutForm
+              onSubmit={handleAddressSubmit}
+              onCancel={handleCloseAddressModal}
+              loading={false}
+              initialAddress={selectedAddress}
+            />
           </Modal>
           <div className={styles.summarySection}>
             <CheckoutOrderSummary
