@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Icon } from '@iconify/react';
 import { IDriftOffResponse } from '@/types/driftOff.types';
-import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY } from '@/constants/icons';
+import { ICON_HEADPHONES, ICON_CLOCK, ICON_PLAY, ICON_INFO } from '@/constants/icons';
 import type { VideoPlayerProps } from '@/components/DeepRest/VideoPlayer';
 import { Badge } from '@/components/common';
 import Button from '@/components/common/Button';
@@ -14,6 +15,59 @@ import styles from './SessionCard.module.css';
 const VideoPlayerDynamic = dynamic(() => import('@/components/DeepRest/VideoPlayer'), {
   ssr: false,
 }) as React.ComponentType<VideoPlayerProps>;
+
+const RE_SESSION_INFO_TEXT = 'You can request for one additional session free of charge';
+
+interface ReRequestLinkProps {
+  href?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  label?: string;
+}
+
+const ReRequestLink: React.FC<ReRequestLinkProps> = ({
+  href,
+  disabled = false,
+  loading = false,
+  label = 'Request Re-Session',
+}) => {
+  const info = (
+    <span className={styles.infoWrap}>
+      <span
+        className={styles.infoIcon}
+        role="button"
+        tabIndex={0}
+        aria-label="Re-session info"
+        aria-describedby="re-session-tip"
+      >
+        <Icon icon={ICON_INFO} width={14} height={14} aria-hidden />
+      </span>
+      <span id="re-session-tip" role="tooltip" className={styles.tooltip}>
+        {RE_SESSION_INFO_TEXT}
+      </span>
+    </span>
+  );
+
+  if (disabled || !href) {
+    return (
+      <span className={`${styles.reRequestRow} ${styles.reRequestDisabled}`}>
+        <span className={styles.reRequestLink} aria-disabled="true">
+          {label}
+        </span>
+        {info}
+      </span>
+    );
+  }
+
+  return (
+    <span className={styles.reRequestRow}>
+      <Link href={href} className={styles.reRequestLink} aria-busy={loading || undefined}>
+        {label}
+      </Link>
+      {info}
+    </span>
+  );
+};
 
 interface SessionCardProps {
   session: IDriftOffResponse;
@@ -107,28 +161,19 @@ export const SessionCard: React.FC<SessionCardProps> = ({ session, hasMounted, i
         {isPreparing && (
           <>
             <p className={styles.preparationNote}>Expected in 1-2 days</p>
-            <Button type="button" variant="ghost" size="md" fullWidth disabled aria-disabled="true">
-              Edit Answers & Re-Request
-            </Button>
+            <ReRequestLink disabled />
           </>
         )}
         {isReady && (
           <>
             {!hasRequestedReSession && <p className={styles.readyNote}>Enjoy your personalized Deep Rest session.</p>}
             {!hasRequestedReSession ? (
-              <Button
+              <ReRequestLink
                 href={`/deep-rest/questionnaire?orderId=${session.driftOffOrderId}&mode=re-session`}
-                variant="ghost"
-                size="md"
-                fullWidth
                 loading={isRequesting}
-              >
-                Edit Answers & Re-Request
-              </Button>
+              />
             ) : (
-              <Button type="button" variant="ghost" size="md" fullWidth disabled aria-disabled="true">
-                {hasPendingReSessionRequest ? 'Re-Session Requested' : 'Re-Session Used'}
-              </Button>
+              <ReRequestLink disabled label={hasPendingReSessionRequest ? 'Re-Session Requested' : 'Re-Session Used'} />
             )}
           </>
         )}
