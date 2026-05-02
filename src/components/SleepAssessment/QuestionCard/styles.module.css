@@ -34,7 +34,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: var(--space-4);
 
     .optionCard {
       width: 100%;
@@ -67,7 +67,7 @@
       &[aria-checked='true'] {
         border-color: var(--qc-accent);
         background: var(--qc-selected-bg);
-        box-shadow: var(--shadow-btn-primary);
+        box-shadow: var(--shadow-sm);
 
         .radio {
           border-color: var(--qc-accent);
@@ -165,7 +165,7 @@
         border-color: var(--qc-accent);
         background: var(--qc-selected-bg);
         color: var(--qc-accent);
-        box-shadow: var(--shadow-btn-primary);
+        box-shadow: var(--shadow-sm);
       }
     }
   }

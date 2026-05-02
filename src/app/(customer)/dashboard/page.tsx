@@ -170,7 +170,7 @@ export default function DashboardPage() {
     <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
         <PageHeader
-          title={`Welcome back, ${welcomeName}!`}
+          title={`Welcome, ${welcomeName}!`}
           subtitle="Here's your personalized overview."
           breadcrumbs={breadcrumbs}
         />
