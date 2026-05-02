@@ -84,7 +84,7 @@ export async function checkOTPSendLimit(identifier: string): Promise<OTPSendLimi
   const entry = await RateLimit.findOneAndUpdate(
     { key },
     {
-      $setOnInsert: { count: 0, expiresAt: new Date(now.getTime() + OTP_SEND_WINDOW_MS) },
+      $setOnInsert: { expiresAt: new Date(now.getTime() + OTP_SEND_WINDOW_MS) },
       $inc: { count: 1, sendCount: 1 },
     },
     { upsert: true, new: true },
