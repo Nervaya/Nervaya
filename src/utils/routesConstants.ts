@@ -27,8 +27,8 @@ export const AUTH_ROUTES = ['/login', '/signup'] as const;
 
 export const CUSTOMER_ONLY_ROUTES = [
   '/dashboard',
-  '/blog',
-  '/supplements',
+  '/sleep-blog',
+  '/sleep-supplements',
   '/deep-rest',
   '/drift-off',
   '/therapy-corner',
@@ -55,7 +55,7 @@ export const ROUTES = {
   THERAPIST_DASHBOARD: '/therapist/dashboard',
   DEEP_REST: '/deep-rest',
   ADMIN_DEEP_REST: '/admin/deep-rest',
-  SUPPLEMENTS: '/supplements',
+  SUPPLEMENTS: '/sleep-supplements',
   CART: '/cart',
   CHECKOUT: '/checkout',
   ORDER_SUCCESS: '/order-success',

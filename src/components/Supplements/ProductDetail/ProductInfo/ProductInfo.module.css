@@ -217,14 +217,11 @@
 }
 
 .trustIconContainer {
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-light, #e2e8f0);
 }
 
 .trustImage {

@@ -47,11 +47,9 @@ export default function SleepAssessmentPage() {
     <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.pageContainer}>
         <div className={containerStyles.container}>
-          <PageHeader
-            title="Sleep Assessment"
-            subtitle="Evaluate your sleep quality and get personalized recommendations"
-            breadcrumbs={breadcrumbs}
-          />
+          <div className={styles.headerSpacer}>
+            <PageHeader title="" subtitle="" breadcrumbs={breadcrumbs} />
+          </div>
 
           {showPageLoader && (
             <div className={styles.loadingContainer}>

@@ -9,7 +9,6 @@ import {
   ICON_CLIPBOARD,
   ICON_CALENDAR,
   ICON_CHEVRON_RIGHT,
-  ICON_BED,
   ICON_SHOPPING_BAG,
   ICON_MOON_SLEEP,
 } from '@/constants/icons';
@@ -17,6 +16,7 @@ import Sidebar from '@/components/Sidebar/LazySidebar';
 import PageHeader from '@/components/PageHeader/PageHeader';
 import { GlobalLoader } from '@/components/common/GlobalLoader';
 import { StatTile } from '@/components/Dashboard/StatTile';
+import { AssessmentTile } from '@/components/Dashboard/AssessmentTile';
 import { RecentActivity, type ActivityItem } from '@/components/Dashboard/RecentActivity';
 import type { BreadcrumbItem } from '@/components/common';
 import styles from './styles.module.css';
@@ -86,7 +86,7 @@ export default function DashboardPage() {
   const deepRestTile = useMemo(() => {
     if (deepRestState.status === 'ready') {
       return {
-        value: `${deepRestState.readyCount} session${deepRestState.readyCount === 1 ? '' : 's'} ready`,
+        value: `${deepRestState.readyCount}  tailored audio session${deepRestState.readyCount === 1 ? '' : 's'} ready`,
         subtitle: 'Your tailored audio is ready to play.',
         primaryLabel: 'Open Playlist',
         primaryHref: '/deep-rest/sessions',
@@ -150,11 +150,12 @@ export default function DashboardPage() {
       if (type === 'DriftOff') {
         router.push(`/cart?addItemId=drift-off-session&itemType=${ITEM_TYPE.DRIFT_OFF}`);
       } else {
-        const sleepElixir = supplements.find((s) => s.name.toLowerCase().includes('sleep elixir')) || supplements[0];
+        const sleepElixir =
+          supplements.find((s) => s.name.toLowerCase().includes('sleep essentials')) || supplements[0];
 
         if (!sleepElixir) {
-          toast.error('Sleep Elixir not found');
-          router.push('/supplements');
+          toast.error('Sleep Essentials not found');
+          router.push('/sleep-supplements');
           return;
         }
         router.push(`/cart?addItemId=${sleepElixir._id}&itemType=${ITEM_TYPE.SUPPLEMENT}`);
@@ -189,18 +190,7 @@ export default function DashboardPage() {
         ) : (
           <>
             <div className={styles.assessmentRow}>
-              <StatTile
-                title="Sleep assessment"
-                value={assessmentTile.value}
-                subtitle={assessmentTile.subtitle}
-                icon={<Icon icon={ICON_BED} aria-hidden />}
-                cta={
-                  !assessmentTile.hideCta && assessmentTile.ctaLabel
-                    ? { label: assessmentTile.ctaLabel, href: '/sleep-assessment' }
-                    : undefined
-                }
-                iconColor="var(--color-tile-rose)"
-              />
+              <AssessmentTile data={assessmentTile} />
             </div>
 
             <div className={styles.tilesGrid} aria-label="Module status tiles">
@@ -226,10 +216,10 @@ export default function DashboardPage() {
                   nextSession?.session.meetLink
                     ? [
                         { label: 'Join Meeting', href: nextSession.session.meetLink, variant: 'primary' },
-                        { label: 'Book Another', href: '/therapy-corner', variant: 'secondary' },
+                        { label: 'Schedule Another', href: '/therapy-corner', variant: 'secondary' },
                       ]
                     : [
-                        { label: 'Book Session', href: '/therapy-corner', variant: 'primary' },
+                        { label: 'Schedule Appointment', href: '/therapy-corner', variant: 'primary' },
                         { label: 'Add to Cart', href: '/therapy-corner', variant: 'secondary' },
                       ]
                 }
@@ -258,14 +248,14 @@ export default function DashboardPage() {
               />
 
               <StatTile
-                title="Sleep Elixir"
-                value="Supplements"
-                subtitle="Fast-absorbing formula for deep, restorative sleep."
+                title="Sleep Supplements"
+                value="Sleep Supplements"
+                subtitle="Completely natural, herbal formula for deep, restorative sleep."
                 icon={<Icon icon={ICON_SHOPPING_BAG} aria-hidden />}
                 cta={[
                   {
                     label: hasPurchasedSupplement ? 'Buy Again' : 'Buy Now',
-                    href: '/supplements',
+                    href: '/sleep-supplements',
                     variant: 'primary',
                   },
                   {

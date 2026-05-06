@@ -85,13 +85,13 @@ export default function BlogListPage() {
 
   const getExcerpt = (content: string, maxLength?: number) => getPlainExcerpt(content, maxLength);
 
-  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'Blog' }];
+  const breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', href: '/dashboard' }, { label: 'SleepBlog' }];
 
   return (
     <Sidebar hideGlobalBreadcrumbs>
       <div className={styles.container}>
         <PageHeader
-          title="Sleep & Wellness Insights"
+          title="Sleep Blog"
           subtitle="Insights, tips, and stories about sleep wellness"
           breadcrumbs={breadcrumbs}
         />

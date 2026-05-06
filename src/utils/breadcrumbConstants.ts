@@ -1,7 +1,7 @@
 import { type BreadcrumbItem } from '@/components/common';
 
 const SEGMENT_LABELS: Record<string, string> = {
-  supplements: 'Supplements',
+  supplements: 'Sleep Supplements',
   cart: 'Cart',
   checkout: 'Checkout',
   'order-success': 'Order Success',
@@ -14,7 +14,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   questionnaire: 'Questionnaire',
   'therapy-corner': 'Therapy Corner',
   support: 'Support',
-  blog: 'Blog',
+  blog: 'Sleep Blog',
   'about-us': 'About Us',
   'privacy-policy': 'Privacy Policy',
   admin: 'Admin',
@@ -23,7 +23,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   settings: 'Settings',
   users: 'Users',
   billing: 'Billing',
-  blogs: 'Blogs',
+  blogs: 'Sleep Blog',
   add: 'Add',
   edit: 'Edit',
   feedback: 'Feedback',

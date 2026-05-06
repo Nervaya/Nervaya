@@ -264,7 +264,7 @@ export default function TherapyCornerPage() {
         <section className={styles.section}>
           <PageHeader
             title="Finding the right therapist is not easy."
-            subtitle="Based on your needs, we curated a shortlist tailored for you."
+            subtitle="We carefully handpicked therapists who are experienced, trusted, and genuinely invested in your journey."
             breadcrumbs={breadcrumbs}
             actions={
               <Badge variant="purple" size="sm" className={styles.sectionMeta}>

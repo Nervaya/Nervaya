@@ -97,7 +97,7 @@ export default function BlogDetailClient({ params }: BlogDetailClientProps) {
         <div className={styles.errorContainer}>
           <h2>Blog Not Found</h2>
           <p>{error || 'The blog post you are looking for does not exist.'}</p>
-          <Link href="/blog" className={styles.backButton}>
+          <Link href="/sleep-blog" className={styles.backButton}>
             <Icon icon={ICON_CHEVRON_LEFT} />
             Back to Blog
           </Link>

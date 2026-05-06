@@ -13,7 +13,7 @@ export const EmptyOrders: React.FC = () => (
     </div>
     <h3 className={styles.emptyTitle}>No orders yet</h3>
     <p className={styles.emptyText}>Your product purchases will appear here</p>
-    <Link href="/supplements" className={styles.shopLink}>
+    <Link href="/sleep-supplements" className={styles.shopLink}>
       Browse Supplements
     </Link>
   </div>

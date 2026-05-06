@@ -15,7 +15,7 @@ export function QuickActions() {
           <Icon icon={ICON_CHAT} width={20} height={20} aria-hidden />
           Book a therapist
         </Link>
-        <Link className={styles.action} href="/supplements">
+        <Link className={styles.action} href="/sleep-supplements">
           <Icon icon={ICON_USER} width={20} height={20} aria-hidden />
           Browse supplements
         </Link>

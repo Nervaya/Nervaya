@@ -1,8 +1,13 @@
 .pageContainer {
   min-height: 100vh;
-  background: transparent;
+  background: var(--color-background-page);
   padding-bottom: var(--space-8);
   position: relative;
+}
+
+.headerSpacer {
+  margin-top: var(--space-4);
+  margin-bottom: -40px;
 }
 
 .loadingContainer {

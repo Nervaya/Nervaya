@@ -60,7 +60,7 @@ export default function SupplementsClient({ supplements, serverError = null }: S
               title="Failed to load supplements"
               message={serverError ?? 'Something went wrong'}
               action={
-                <Link href="/supplements" className={styles.retryButton}>
+                <Link href="/sleep-supplements" className={styles.retryButton}>
                   Try again
                 </Link>
               }

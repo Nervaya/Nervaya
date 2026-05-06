@@ -53,6 +53,8 @@ export interface SleepAssessmentResult {
   severityScore: number;
   severityBand: SleepAssessmentSeverityBand;
   severityLabel: string;
+  description: string;
+  bannerText: string;
   explanation: string;
   reasoning: string[];
   recommendations: SleepAssessmentRecommendation[];

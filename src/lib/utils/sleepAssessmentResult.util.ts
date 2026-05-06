@@ -45,24 +45,62 @@ const SEGMENT_LABELS: Record<SleepSegment, string> = {
   ONSET_ONLY: 'Mild Sleep Issues Detected',
   QUALITY_ONLY: 'Mild Sleep Issues Detected',
   ANXIETY_ONLY: 'Mild Sleep Issues Detected',
-  QUALITY_ONSET: 'Moderate Sleep Issues Detected',
-  ONSET_ANXIETY: 'Moderate Sleep Issues Detected',
-  QUALITY_ANXIETY: 'Moderate Sleep Issues Detected',
-  ALL_THREE: 'Severe Sleep Issues Detected',
+  QUALITY_ONSET: 'Moderate Sleep Disruptions Identified',
+  ONSET_ANXIETY: 'Moderate Sleep Disruptions Identified',
+  QUALITY_ANXIETY: 'Moderate Sleep Disruptions Identified',
+  ALL_THREE: 'Severe Sleep Disruptions Identified',
   NO_DOMAIN: 'No Major Sleep Issues Detected',
+};
+
+const SEGMENT_DESCRIPTIONS: Record<SleepSegment, string> = {
+  ONSET_ONLY:
+    'Some minor inconsistencies in your sleep patterns have been identified. While not critical, addressing these now can prevent future disruptions.',
+  QUALITY_ONLY:
+    'Some minor inconsistencies in your sleep patterns have been identified. While not critical, addressing these now can prevent future disruptions.',
+  ANXIETY_ONLY:
+    'Some minor inconsistencies in your sleep patterns have been identified. While not critical, addressing these now can prevent future disruptions.',
+  QUALITY_ONSET:
+    'Your sleep patterns show some inconsistencies that may be affecting recovery and energy. With the right adjustments, these are typically reversible and sustainable.',
+  ONSET_ANXIETY:
+    'Your sleep patterns show some inconsistencies that may be affecting recovery and energy. With the right adjustments, these are typically reversible and sustainable.',
+  QUALITY_ANXIETY:
+    'Your sleep patterns show some inconsistencies that may be affecting recovery and energy. With the right adjustments, these are typically reversible and sustainable.',
+  ALL_THREE:
+    'Significant disruptions in your sleep patterns are likely impacting your daily functioning. Focused intervention and structured habits are recommended to restore balance.',
+  NO_DOMAIN:
+    'Your sleep patterns appear healthy and consistent. Maintaining these habits will ensure long-term restorative rest and vitality.',
+};
+
+const SEGMENT_BANNERS: Record<SleepSegment, string> = {
+  ONSET_ONLY:
+    '**Proactive steps** today can lead to better rest tomorrow. Your personalized plan offers simple tweaks to optimize your current sleep routine.',
+  QUALITY_ONLY:
+    '**Proactive steps** today can lead to better rest tomorrow. Your personalized plan offers simple tweaks to optimize your current sleep routine.',
+  ANXIETY_ONLY:
+    '**Proactive steps** today can lead to better rest tomorrow. Your personalized plan offers simple tweaks to optimize your current sleep routine.',
+  QUALITY_ONSET:
+    'Good news: Small, consistent changes can **significantly improve** your sleep quality within weeks. Your **personalized plan** focuses on what matters most for you—so you can sleep better, feel better.',
+  ONSET_ANXIETY:
+    'Good news: Small, consistent changes can **significantly improve** your sleep quality within weeks. Your **personalized plan** focuses on what matters most for you—so you can sleep better, feel better.',
+  QUALITY_ANXIETY:
+    'Good news: Small, consistent changes can **significantly improve** your sleep quality within weeks. Your **personalized plan** focuses on what matters most for you—so you can sleep better, feel better.',
+  ALL_THREE:
+    '**Support is available**: Implementing a structured approach can help regain control over your sleep. Your personalized plan prioritizes **high-impact strategies** for immediate relief.',
+  NO_DOMAIN:
+    'Good news: Your **sleep hygiene is excellent**. Continue focusing on consistency to maintain your energy and mental clarity throughout the day.',
 };
 
 const RECOMMENDATION_LIBRARY: Record<string, Omit<SleepAssessmentRecommendation, 'key' | 'priority'>> = {
   supplement: {
-    title: 'Sleep Elixir',
-    description: 'Fast-absorbing formula for deep, restorative sleep.',
-    buttonText: 'Buy Now',
+    title: 'Sleep Essentials',
+    description: 'Natural aids crafted to support faster sleep onset and deeper rest.',
+    buttonText: 'Explore Range',
     href: '/supplements',
   },
   counselling: {
     title: 'Therapy Corner',
     description: 'One-on-one support to address the root of your sleep patterns.',
-    buttonText: 'Book Session',
+    buttonText: 'Schedule Appointment',
     href: '/therapy-corner',
   },
   guided_audio: {
@@ -229,6 +267,8 @@ export function buildSleepAssessmentResult({
     severityScore,
     severityBand,
     severityLabel: SEGMENT_LABELS[segment],
+    description: SEGMENT_DESCRIPTIONS[segment],
+    bannerText: SEGMENT_BANNERS[segment],
     explanation: `Segment: ${segment}. Sleep Onset (B): ${B}, Sleep Quality (R): ${R}, Anxiety/Stress (G): ${G}.`,
     reasoning: [`Classification: ${segment}`, `Scores — B: ${B}, R: ${R}, G: ${G}`],
     recommendations,
@@ -260,6 +300,14 @@ export function getSleepRecommendationType(
   if (result.flags.recommendsCounselling) return 'therapy';
   if (result.flags.recommendsSupplement) return 'product';
   return 'content';
+}
+
+export function getSleepAssessmentDescription(response: ISleepAssessmentResponse | null): string {
+  return getSleepAssessmentResult(response)?.description || '';
+}
+
+export function getSleepAssessmentBanner(response: ISleepAssessmentResponse | null): string {
+  return getSleepAssessmentResult(response)?.bannerText || '';
 }
 
 export const SLEEP_ASSESSMENT_QUESTION_GROUPS = {

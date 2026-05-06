@@ -55,7 +55,7 @@ export function BlogRecommendations({ recommendations }: BlogRecommendationsProp
           <ul className={styles.recGrid} aria-label="Related articles">
             {visible.map((rec) => (
               <li key={rec._id}>
-                <Link href={`/blog/${rec.slug}`} className={styles.recCard}>
+                <Link href={`/sleep-blog/${rec.slug}`} className={styles.recCard}>
                   <div className={styles.recImageWrapper}>
                     {rec.coverImage ? (
                       <Image src={rec.coverImage} alt={rec.title} fill className={styles.recImage} />
@@ -77,7 +77,7 @@ export function BlogRecommendations({ recommendations }: BlogRecommendationsProp
               </li>
             ))}
           </ul>
-          <Link href="/blog" className={styles.recViewAll}>
+          <Link href="/sleep-blog" className={styles.recViewAll}>
             View all articles
             <Icon icon={ICON_ARROW_RIGHT} width={16} height={16} />
           </Link>
@@ -89,7 +89,7 @@ export function BlogRecommendations({ recommendations }: BlogRecommendationsProp
           </div>
           <p className={styles.recEmptyTitle}>More articles coming soon</p>
           <p className={styles.recEmptyText}>We&apos;re crafting new articles on sleep and wellness.</p>
-          <Link href="/blog" className={styles.recEmptyCta}>
+          <Link href="/sleep-blog" className={styles.recEmptyCta}>
             Browse all articles
             <Icon icon={ICON_ARROW_RIGHT} width={16} height={16} />
           </Link>

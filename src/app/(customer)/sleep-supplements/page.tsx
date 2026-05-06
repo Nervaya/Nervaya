@@ -24,7 +24,7 @@ export default async function SupplementsPage() {
   }
 
   if (supplements.length === 1) {
-    redirect(`/supplements/${supplements[0]._id}`);
+    redirect(`/sleep-supplements/${supplements[0]._id}`);
   }
 
   return <SupplementsClient supplements={supplements} serverError={serverError} />;
@@ -165,7 +165,7 @@ export default async function SupplementsPage() {
  *               title="No supplements available"
  *               message="There are no supplements to display at the moment."
  *               action={
- *                 <Link href="/supplements" className={styles.browseLink}>
+ *                 <Link href="/sleep-supplements" className={styles.browseLink}>
  *                   Browse supplements
  *                 </Link>
  *               }

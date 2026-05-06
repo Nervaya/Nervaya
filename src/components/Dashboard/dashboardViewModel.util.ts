@@ -4,7 +4,6 @@ import type { ISleepAssessmentResponse } from '@/types/sleepAssessment.types';
 import { SESSION_STATUS } from '@/lib/constants/enums';
 import { formatTimeAgo } from '@/lib/utils/timeAgo.util';
 import { parseSessionStartDateTime } from '@/lib/utils/sessionDateTime.util';
-import { getSleepScoreLabel } from '@/lib/utils/sleepScore.util';
 
 export interface SessionCounts {
   pending: number;
@@ -67,6 +66,7 @@ export function getAssessmentTileModel(
   if (inProgress) {
     const updatedAt = inProgress.updatedAt;
     return {
+      status: 'in_progress',
       value: 'In progress',
       subtitle: updatedAt ? `Last updated ${formatTimeAgo(updatedAt)}` : 'Continue where you left off.',
       ctaLabel: 'Continue assessment',
@@ -74,17 +74,21 @@ export function getAssessmentTileModel(
   }
 
   const completedAt = latestAssessment?.completedAt;
-  if (latestAssessment && completedAt) {
-    const scoreLabel = getSleepScoreLabel(latestAssessment);
+  const result = latestAssessment?.result;
+  if (latestAssessment && completedAt && result) {
     return {
-      value: scoreLabel,
-      subtitle: `Last completed ${formatTimeAgo(completedAt)}`,
-      ctaLabel: '',
-      hideCta: true,
+      status: 'completed',
+      value: result.severityLabel,
+      subtitle: 'Based on your latest inputs',
+      description: result.description,
+      bannerText: result.bannerText,
+      lastAssessed: formatTimeAgo(completedAt),
+      ctaLabel: 'View Your Personalized Sleep Plan',
     };
   }
 
   return {
+    status: 'not_started',
     value: 'Not started',
     subtitle: 'Take a quick assessment to personalize your journey.',
     ctaLabel: 'Start assessment',

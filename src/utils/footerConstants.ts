@@ -15,7 +15,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     links: [
       { text: 'Therapy Corner', href: '/therapy-corner' },
       { text: 'Deep Rest', href: '/deep-rest' },
-      { text: 'Supplements', href: '/supplements' },
+      { text: 'Sleep Supplements', href: '/sleep-supplements' },
     ],
   },
   {
@@ -32,7 +32,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     links: [
       { text: 'Support Center', href: '/support' },
       { text: 'Sleep Assessment', href: '/sleep-assessment' },
-      { text: 'Blog', href: '/blog' },
+      { text: 'Sleep Blog', href: '/sleep-blog' },
     ],
   },
 ];

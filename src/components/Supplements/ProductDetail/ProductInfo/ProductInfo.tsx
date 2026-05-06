@@ -94,9 +94,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
       <div className={styles.trustBadges}>
         {[
-          { src: '/fssai.png', label: 'FSSAI Approved', width: 42, height: 42 },
-          { src: '/badge.png', label: 'Quality Pure', width: 42, height: 42 },
-          { src: '/safety.png', label: 'No Side Effects', width: 42, height: 42 },
+          { src: '/assets/GMP_Logo.jpeg', label: 'GMP Certified', width: 100, height: 100 },
+          { src: '/badge.png', label: 'Quality Pure', width: 44, height: 44 },
+          { src: '/safety.png', label: 'No Side Effects', width: 44, height: 44 },
         ].map((item) => (
           <div key={item.label} className={styles.trustBadgeItem}>
             <div className={styles.trustIconContainer}>

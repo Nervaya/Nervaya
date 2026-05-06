@@ -41,6 +41,7 @@ export function AssessmentNav({
           variant="primary"
           size="md"
           fullWidth={false}
+          className={styles.nextButton}
           onClick={onNext}
           disabled={!canProceed}
           loading={isSubmitting}

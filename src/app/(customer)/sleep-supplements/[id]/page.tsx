@@ -187,7 +187,7 @@ export default function SupplementDetailPage() {
                 <button type="button" onClick={fetchSupplement} className={styles.retryButton}>
                   Try again
                 </button>
-                <Link href="/supplements" className={styles.backLink}>
+                <Link href="/sleep-supplements" className={styles.backLink}>
                   Back to supplements
                 </Link>
               </div>
@@ -207,7 +207,7 @@ export default function SupplementDetailPage() {
             title="Product not found"
             message="The product you're looking for doesn't exist or has been removed."
             action={
-              <Link href="/supplements" className={styles.backLink}>
+              <Link href="/sleep-supplements" className={styles.backLink}>
                 Back to supplements
               </Link>
             }

@@ -20,7 +20,7 @@
 
 /* Cancel main (.spacing-xl) + container (.spacing-md) inset; see globals .breadcrumbs-slot for base spacing */
 .breadcrumbsWrapper {
-  margin-left: calc(-1 * (var(--spacing-xl) + var(--spacing-md)));
+  margin-left: 0;
 }
 
 @media (max-width: 768px) {

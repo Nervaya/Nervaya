@@ -70,6 +70,26 @@ const nextConfig: NextConfig = {
         destination: '/api/payments/deep-rest/:path*',
         permanent: true,
       },
+      {
+        source: '/blog',
+        destination: '/sleep-blog',
+        permanent: true,
+      },
+      {
+        source: '/blog/:path*',
+        destination: '/sleep-blog/:path*',
+        permanent: true,
+      },
+      {
+        source: '/supplements',
+        destination: '/sleep-supplements',
+        permanent: true,
+      },
+      {
+        source: '/supplements/:path*',
+        destination: '/sleep-supplements/:path*',
+        permanent: true,
+      },
     ];
   },
   async headers() {

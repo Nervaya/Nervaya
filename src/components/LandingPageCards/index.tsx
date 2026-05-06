@@ -37,7 +37,7 @@ const Cards = () => {
 
       if (title === 'Deep Rest') {
         router.push(`/cart?addItemId=drift-off-session&itemType=${ITEM_TYPE.DRIFT_OFF}`);
-      } else if (title === 'Sleep Elixir') {
+      } else if (title === 'Sleep Essentials') {
         if (supplements.length === 0) {
           toast.error('There are no supplements');
           return;
@@ -45,7 +45,7 @@ const Cards = () => {
         if (supplements.length === 1) {
           router.push(`/cart?addItemId=${supplements[0]._id}&itemType=${ITEM_TYPE.SUPPLEMENT}`);
         } else {
-          router.push('/supplements');
+          router.push('/sleep-supplements');
         }
       } else {
         router.push('/therapy-corner');

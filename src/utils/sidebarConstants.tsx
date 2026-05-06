@@ -37,16 +37,16 @@ export const sidebarMenuGroups: NavigationMenuGroup[] = [
     ],
   },
   {
-    title: 'SHOP',
-    items: [{ title: 'Sleep Elixir', path: '/supplements', icon: 'FaPills' }],
+    title: 'SLEEP ESSENTIALS',
+    items: [{ title: 'Sleep Supplements', path: '/sleep-supplements', icon: 'FaPills' }],
   },
   {
     title: 'HELP',
     items: [
       { title: 'Support', path: '/support', icon: 'FaHeadset' },
-      { title: 'Blogs', path: '/blog', icon: 'FaNewspaper' },
+      { title: 'Sleep Blog', path: '/sleep-blog', icon: 'FaNewspaper' },
       { title: 'Feedback', path: '#feedback', icon: 'FaCommentDots' },
-      { title: 'Account', path: '/account', icon: 'FaUserDoctor' },
+      { title: 'My Account', path: '/account', icon: 'FaUserDoctor' },
     ],
   },
 ];
@@ -63,7 +63,7 @@ export const adminMenuGroups: NavigationMenuGroup[] = [
         icon: 'FaClipboardList',
       },
       { title: 'Deep Rest', path: '/admin/deep-rest', icon: 'FaBed' },
-      { title: 'Supplements', path: '/admin/supplements', icon: 'FaPills' },
+      { title: 'Sleep Supplements', path: '/admin/supplements', icon: 'FaPills' },
       { title: 'Orders', path: '/admin/orders', icon: 'FaBoxOpen' },
       { title: 'Sessions', path: '/admin/sessions', icon: 'FaCalendarCheck' },
       { title: 'Promo Codes', path: '/admin/promo-codes', icon: 'FaTag' },

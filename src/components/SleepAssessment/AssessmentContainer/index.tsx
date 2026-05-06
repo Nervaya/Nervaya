@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { ICON_DOCUMENT } from '@/constants/icons';
+import { ICON_DOCUMENT, ICON_INFO } from '@/constants/icons';
 import ProgressBar from '../ProgressBar';
 import { CompletionView } from './CompletionView';
 import { AssessmentNav } from './AssessmentNav';
@@ -64,6 +64,9 @@ export default function AssessmentContainer({ questions, onHydrated }: Assessmen
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Sleep Assessment</h1>
+        <div className={styles.infoIcon} title="This assessment helps us personalize your sleep journey.">
+          <Icon icon={ICON_INFO} width={24} height={24} />
+        </div>
       </header>
 
       <div className={styles.progressSection}>

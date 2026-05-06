@@ -119,6 +119,9 @@ export const ICON_TICK_ROUND = 'solar:check-read-bold';
 export const ICON_EDIT_FANCY = 'solar:pen-new-square-outline';
 export const ICON_INFO_FANCY = 'solar:info-circle-bold';
 export const ICON_SAVE_FANCY = 'solar:diskette-bold-duotone';
+export const ICON_GRAPH = 'solar:graph-bold-duotone';
+export const ICON_SPARKLES = 'solar:stars-bold-duotone';
+export const ICON_SHIELD_CHECK = 'solar:shield-check-bold';
 
 // Sidebar icon map for NavigationMenuGroup
 type SidebarIconMap = Record<string, string>;

@@ -171,11 +171,11 @@ const SEGMENT_CONTENT: Record<
 const SERVICE_DEFS: Record<'Supplement' | 'Therapy' | 'Guided Audio', Omit<ServiceRecommendation, 'priority'>> = {
   Supplement: {
     name: 'Supplement',
-    title: 'Sleep Elixir',
+    title: 'Sleep Essentials',
     description: 'Fast-absorbing formula for deep, restorative sleep.',
     primaryCta: 'Buy Now',
     secondaryCta: 'Add to Cart',
-    href: '/supplements',
+    href: '/sleep-supplements',
     icon: 'solar:pill-bold',
   },
   Therapy: {

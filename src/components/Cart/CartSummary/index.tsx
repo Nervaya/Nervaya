@@ -77,7 +77,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ cart, onCheckout, loading = f
             Proceed to Checkout
           </Button>
         ) : (
-          <Link href="/supplements" className={styles.shopLink}>
+          <Link href="/sleep-supplements" className={styles.shopLink}>
             <Button variant="primary" className={styles.checkoutButton}>
               Continue Shopping
             </Button>
