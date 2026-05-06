@@ -50,7 +50,7 @@ function getCartItemImage(item: CartItem): string {
 function getCartItemHref(item: CartItem): string {
   const supplement = getSupplementFromCartItem(item);
   return item.itemType === ITEM_TYPE.SUPPLEMENT && supplement?._id
-    ? `/supplements/${supplement._id}`
+    ? `/sleep-supplements/${supplement._id}`
     : ROUTES.DEEP_REST;
 }
 

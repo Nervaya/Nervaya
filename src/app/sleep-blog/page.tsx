@@ -11,6 +11,8 @@ import type { Blog } from '@/types/blog.types';
 import { PAGE_SIZE_3 } from '@/lib/constants/pagination.constants';
 import styles from './styles.module.css';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import FrequentlyAskedQuestions from '@/components/Support/FrequentlyAskedQuestions';
+import { blogFaqData } from '@/utils/blogFaqData';
 
 interface PaginationInfo {
   page: number;
@@ -142,6 +144,13 @@ export default function BlogListPage() {
             )}
           </>
         )}
+        <div className={styles.faqWrapper}>
+          <FrequentlyAskedQuestions
+            data={blogFaqData}
+            title="Frequently Asked Questions About Sleeep"
+            subtitle="Find answers to common questions about sleep health and our Deep Rest Sessions"
+          />
+        </div>
       </div>
     </Sidebar>
   );
