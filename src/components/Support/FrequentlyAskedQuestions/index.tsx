@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { trackFaqOpened } from '@/utils/analytics';
 import { Icon } from '@iconify/react';
 import { ICON_ADD, ICON_REMOVE } from '@/constants/icons';
-import { faqData } from '@/utils/faqData';
+import { faqData, type FAQItem } from '@/utils/faqData';
 import styles from './styles.module.css';
 
 type FAQState = {
@@ -29,12 +29,22 @@ const faqReducer = (state: FAQState, action: FAQAction): FAQState => {
   }
 };
 
-const FrequentlyAskedQuestions = () => {
+interface FAQProps {
+  data?: FAQItem[];
+  title?: string;
+  subtitle?: string;
+}
+
+const FrequentlyAskedQuestions = ({
+  data = faqData,
+  title = 'Frequently Asked Questions',
+  subtitle = 'Find answers to common questions about sleep health and our Deep Rest Sessions',
+}: FAQProps) => {
   const pathname = usePathname();
   const [state, dispatch] = useReducer(faqReducer, { expandedId: 1 });
 
   const handleToggle = (id: number) => {
-    const item = faqData.find((f) => f.id === id);
+    const item = data.find((f) => f.id === id);
     if (state.expandedId !== id && item) {
       trackFaqOpened({
         faq_id: String(id),
@@ -48,13 +58,11 @@ const FrequentlyAskedQuestions = () => {
   return (
     <section className={styles.faqSection}>
       <div className={styles.faqHeader}>
-        <h2 className={styles.faqTitle}>Frequently Asked Questions</h2>
-        <p className={styles.faqSubtitle}>
-          Find answers to common questions about sleep health and our Deep Rest Sessions
-        </p>
+        <h2 className={styles.faqTitle}>{title}</h2>
+        <p className={styles.faqSubtitle}>{subtitle}</p>
       </div>
       <ul className={styles.faqGrid}>
-        {faqData.map((item) => {
+        {data.map((item) => {
           const isExpanded = state.expandedId === item.id;
           return (
             <li key={`faq-item-${item.id}`} className={styles.faqItem} data-faq-id={item.id} data-expanded={isExpanded}>

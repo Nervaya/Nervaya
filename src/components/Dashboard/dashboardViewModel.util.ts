@@ -18,9 +18,13 @@ export interface NextSessionInfo {
 }
 
 export interface AssessmentTileModel {
+  status: 'not_started' | 'in_progress' | 'completed';
   value: string;
   subtitle: string;
   ctaLabel: string;
+  description?: string;
+  bannerText?: string;
+  lastAssessed?: string;
   /** When true, do not show the CTA. */
   hideCta?: boolean;
 }

@@ -24,20 +24,26 @@ export default function BlogFilters({
 }: BlogFiltersProps) {
   return (
     <div className={styles.filtersRow}>
-      <form onSubmit={onSearchSubmit} className={styles.searchForm}>
-        <Icon icon={ICON_MAGNIFYING_GLASS} className={styles.searchIcon} aria-hidden />
-        <input
-          type="search"
-          value={searchInput}
-          onChange={(e) => onSearchInputChange(e.target.value)}
-          placeholder="Search by title, author..."
-          className={styles.searchInput}
-          aria-label="Search blogs"
-        />
-        <button type="submit" className={styles.searchButton}>
+      <div className={styles.searchWrapper}>
+        <label htmlFor="blog-search" className={styles.filterLabel}>
           Search
-        </button>
-      </form>
+        </label>
+        <form onSubmit={onSearchSubmit} className={styles.searchForm}>
+          <Icon icon={ICON_MAGNIFYING_GLASS} className={styles.searchIcon} aria-hidden />
+          <input
+            id="blog-search"
+            type="search"
+            value={searchInput}
+            onChange={(e) => onSearchInputChange(e.target.value)}
+            placeholder="Search by title, author..."
+            className={styles.searchInput}
+            aria-label="Search blogs"
+          />
+          <button type="submit" className={styles.searchButton}>
+            Search
+          </button>
+        </form>
+      </div>
       {allTags.length > 0 && (
         <div className={styles.filterSelectWrapper}>
           <label htmlFor="blog-filter" className={styles.filterLabel}>

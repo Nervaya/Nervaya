@@ -46,7 +46,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove, d
 
   return (
     <div className={styles.cartItem}>
-      <Link href={isSupplement && supplement ? `/supplements/${supplement._id}` : '#'} className={styles.imageLink}>
+      <Link
+        href={isSupplement && supplement ? `/sleep-supplements/${supplement._id}` : '#'}
+        className={styles.imageLink}
+      >
         <div className={styles.imageWrapper}>
           <Image
             src={itemImage}
@@ -61,7 +64,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove, d
         </div>
       </Link>
       <div className={styles.details}>
-        <Link href={isSupplement && supplement ? `/supplements/${supplement._id}` : '#'} className={styles.nameLink}>
+        <Link
+          href={isSupplement && supplement ? `/sleep-supplements/${supplement._id}` : '#'}
+          className={styles.nameLink}
+        >
           <h3 className={styles.name}>{itemName}</h3>
         </Link>
         <p className={styles.price}>{formatPrice(item.price)} each</p>

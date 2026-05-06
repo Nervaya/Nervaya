@@ -79,7 +79,7 @@ export default function SupplementDetailPage() {
     if (!supplement) return;
     if (!isAuthenticated) {
       const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
-      const currentPath = `/supplements/${id}`;
+      const currentPath = `/sleep-supplements/${id}`;
       const returnUrl = encodeURIComponent(currentPath);
       router.push(`${ROUTES.LOGIN}?returnUrl=${returnUrl}`);
       return;
@@ -120,7 +120,7 @@ export default function SupplementDetailPage() {
     if (!supplement) return;
     if (!isAuthenticated) {
       const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
-      const currentPath = `/supplements/${id}`;
+      const currentPath = `/sleep-supplements/${id}`;
       const returnUrl = encodeURIComponent(currentPath);
       router.push(`${ROUTES.LOGIN}?returnUrl=${returnUrl}`);
       return;

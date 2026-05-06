@@ -70,7 +70,7 @@ const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplemen
 
   return (
     <article className={`${styles.card} ${variant === 'list' ? styles.listVariant : ''}`}>
-      <Link href={`/supplements/${supplement._id}`} className={styles.imageLink}>
+      <Link href={`/sleep-supplements/${supplement._id}`} className={styles.imageLink}>
         <div className={styles.imageWrap}>
           <Image
             src={imageUrl || '/default-supplement.png'}
@@ -86,7 +86,7 @@ const SupplementProductCard: React.FC<SupplementProductCardProps> = ({ supplemen
         </div>
       </Link>
       <div className={styles.content}>
-        <Link href={`/supplements/${supplement._id}`} className={styles.nameLink}>
+        <Link href={`/sleep-supplements/${supplement._id}`} className={styles.nameLink}>
           <h3 className={styles.name}>{supplement.name}</h3>
         </Link>
         <p className={styles.description}>{truncatedDesc}</p>
